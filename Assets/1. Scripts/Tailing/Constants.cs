@@ -8,7 +8,7 @@ public static class Constants
         {
             case File.Localization: return "Localization";
             case File.ChoiceEvent: return "ChoiceEvent";
-            case File.Prologue: return "Dialogue_P";
+            case File.Prologue: return "Prologue";
 
             default: return null;
         }

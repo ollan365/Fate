@@ -7,6 +7,11 @@ public class DialgoueParser : MonoBehaviour
 
     private Dictionary<string, string> localiziations;
     private Dictionary<string, Choice> choiceEvent;
+    private void Start()
+    {
+        localiziations = new();
+        choiceEvent = new();
+    }
     public void GetExeclData()
     {
         GetLocalization();
@@ -21,7 +26,9 @@ public class DialgoueParser : MonoBehaviour
         for (int i = 1; i < data.Length; i++)
         {
             string[] row = data[i].Split(new char[] { ',' });
-            localiziations.Add(row[0], row[player.Language + 1]);
+
+            if (!localiziations.ContainsKey(row[0]))
+                localiziations.Add(row[0], row[player.Language + 1]);
         }
     }
     private void GetChoiceEvent()
@@ -36,6 +43,9 @@ public class DialgoueParser : MonoBehaviour
 
             Choice choice = new Choice();
             choice.eventID = row[0];
+
+            if (row[0] == "" || choiceEvent.ContainsKey(row[0])) continue;
+
             choice.choice_A = row[2];
             choice.choice_B = row[3];
             choice.result_A = row[4];
@@ -48,18 +58,20 @@ public class DialgoueParser : MonoBehaviour
     {
         List<Dialogue> dialgoueList = new List<Dialogue>(); // 대사 리스트 생성
         TextAsset csvData = Resources.Load<TextAsset>(_CSVFilieName); // CSV 데이터를 받기 위한 그릇 
-
+        
         string[] data = csvData.text.Split(new char[] { '\n' }); //엔터를 만나면 쪼개어 넣음
         //엔터를 만났다 data[0] - 엑셀시트의 맨 1번째 줄 의미 
 
-        for (int i = 1; i < data.Length;) // i++는 대한 내용은 그다음 내용은 조건문을 통해서 
+        for (int i = 1; i < data.Length; i++) // i++는 대한 내용은 그다음 내용은 조건문을 통해서 
         {
             string[] row = data[i].Split(new char[] { ',' }); //, 단위로 row 줄에 저장
+            if (row.Length < 3 || row[2] == "") break;
 
             Dialogue dialogue = new Dialogue(); // 대사 리스트 생성
             dialogue.id = row[0];
             dialogue.characterName = row[1];
             dialogue.localizations = row[2];
+
             dialogue.eventID = row[3]; // 이벤트 넘버 생성
             dialogue.skipLine = row[4]; // 엑셀 맨끝줄 비고 추가 안하면 오류남
 

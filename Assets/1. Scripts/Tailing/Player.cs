@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
             nameCheckQuestion.text = $"\"{playerName}\"으로 확정하시겠습니까?";
         }
     }
-    private int language;
+    private int language = 1;
     public int Language
     {
         get => language;

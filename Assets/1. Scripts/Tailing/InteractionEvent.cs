@@ -4,9 +4,8 @@ using static Constants;
 public class InteractionEvent : MonoBehaviour
 {
     [SerializeField] private DialgoueParser dialgoueParser;
-    [SerializeField] private Text text;
+    [SerializeField] private Text text, choiceTextA, choiceTextB;
     [SerializeField] private GameObject[] choiceBTNs;
-    [SerializeField] private Text choiceTextA, choiceTextB;
     [SerializeField] private Button[] prologueBTN;
     private Dialogue[] dialogues;
     private int nextIndex;
@@ -16,39 +15,43 @@ public class InteractionEvent : MonoBehaviour
     {
         getDialogue = false;
 
-        prologueBTN[0].onClick.AddListener(() => GetDialogues(File.Prologue));
-        prologueBTN[1].onClick.AddListener(() => GetDialogues(File.Prologue));
+        foreach (Button b in prologueBTN)
+            b.onClick.AddListener(() => GetDialogues(File.Prologue));
     }
     private void Update()
     {
-        if(getDialogue && nextIndex < dialogues.Length && Input.GetMouseButtonDown(0))
+        if (getDialogue && Input.GetMouseButtonDown(0))
+            PrintDialogue();
+    }
+    public void PrintDialogue()
+    {
+        if (nextIndex >= dialogues.Length) { text.text = ""; getDialogue = false; return; }
+
+        text.text = dialgoueParser.Dialogue(dialogues[nextIndex].localizations);
+        if (dialogues[nextIndex].eventID != "")
         {
-            text.text = dialgoueParser.Dialogue(dialogues[nextIndex].localizations);
-            if (dialogues[nextIndex].eventID != "")
+            choiceEvent = dialgoueParser.GetChoiceEvent(dialogues[nextIndex].eventID);
+
+            choiceBTNs[0].SetActive(true); choiceBTNs[1].SetActive(true);
+
+            choiceTextA.text = dialgoueParser.Dialogue(choiceEvent.choice_A);
+            choiceTextB.text = dialgoueParser.Dialogue(choiceEvent.choice_B);
+
+            getDialogue = false;
+        }
+        else if (dialogues[nextIndex].skipLine != "")
+        {
+            for (int i = nextIndex; i < dialogues.Length; i++)
             {
-                choiceEvent = dialgoueParser.GetChoiceEvent(dialogues[nextIndex].eventID);
-
-                choiceBTNs[0].SetActive(true); choiceBTNs[1].SetActive(true);
-
-                choiceTextA.text = choiceEvent.choice_A;
-                choiceTextB.text = choiceEvent.choice_B;
-
-                getDialogue = false;
-            }
-            else if (dialogues[nextIndex].skipLine != "")
-            {
-                for(int i = nextIndex; i <dialogues.Length;i++ )
+                if (dialogues[i].id == dialogues[nextIndex].skipLine)
                 {
-                    if (dialogues[i].id == dialogues[nextIndex].skipLine)
-                    {
-                        nextIndex = i;
-                        break;
-                    }
+                    nextIndex = i;
+                    break;
                 }
             }
-            else
-                nextIndex++;
         }
+        else
+            nextIndex++;
     }
     public void GetDialogues(File file)
     {
@@ -61,7 +64,7 @@ public class InteractionEvent : MonoBehaviour
         if (index == 0)
             for (int i = nextIndex; i < dialogues.Length; i++)
             {
-                if (dialogues[i].id == choiceEvent.result_A)
+                if (dialogues[i].id.Equals(choiceEvent.result_A))
                 {
                     nextIndex = i;
                     getDialogue = true;
@@ -71,7 +74,8 @@ public class InteractionEvent : MonoBehaviour
         else if (index == 1)
             for (int i = nextIndex; i < dialogues.Length; i++)
             {
-                if (dialogues[i].id == choiceEvent.result_B)
+                Debug.Log(dialogues[i].id.CompareTo(choiceEvent.result_B));
+                if (dialogues[i].id.Equals(choiceEvent.result_B))
                 {
                     nextIndex = i;
                     getDialogue = true;
