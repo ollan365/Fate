@@ -74,7 +74,6 @@ public class InteractionEvent : MonoBehaviour
         else if (index == 1)
             for (int i = nextIndex; i < dialogues.Length; i++)
             {
-                Debug.Log(dialogues[i].id.CompareTo(choiceEvent.result_B));
                 if (dialogues[i].id.Equals(choiceEvent.result_B))
                 {
                     nextIndex = i;
