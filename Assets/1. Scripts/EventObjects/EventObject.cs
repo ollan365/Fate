@@ -9,7 +9,7 @@ public class EventObject : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(eventId) && EventManager.Instance)
         {
-            EventManager.Instance.callEvent(eventId);
+            EventManager.Instance.CallEvent(eventId);
         }
     }
 }

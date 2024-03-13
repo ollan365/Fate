@@ -31,7 +31,7 @@ public class ResultManager : MonoBehaviour
         }
     }
     
-    public void excuteResult(string resultID)
+    public void ExcuteResult(string resultID)
     {
         switch (resultID)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class DiaryPassword : MonoBehaviour
 {
@@ -17,11 +18,11 @@ public class DiaryPassword : MonoBehaviour
     private List<string> inputPw = new List<string>();
 
     [SerializeField]
-    private Text pwTxt;
+    private TextMeshPro pwTxt;
 
     private void Start()
     {
-        pwTxt = gameObject.transform.GetChild(0).GetComponent<Text>();
+        pwTxt = gameObject.transform.GetChild(0).GetComponent<TextMeshPro>();
     }
 
     public void Add_inputPwBtn()

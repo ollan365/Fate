@@ -90,7 +90,7 @@ public class EventManager : MonoBehaviour
     }
     
     // Event ID를 받아서 전체 조건의 true/false 판단하여 true인 경우 결과 수행
-    public bool callEvent(string eventID)
+    public bool CallEvent(string eventID)
     {
         List<LogicConditionResult> logicConditionResults = events[eventID].LogicConditionsResults;
         foreach (LogicConditionResult logicConditionResult in logicConditionResults)
@@ -104,7 +104,7 @@ public class EventManager : MonoBehaviour
                 bool isCondition = conditionManager.IsCondition(conditionID);
                 if (isCondition)
                 {
-                    executeResults(results);
+                    ExecuteResults(results);
                 }
             } 
             else if (logic == "OR") // logic이 OR인 경우
@@ -115,7 +115,7 @@ public class EventManager : MonoBehaviour
                     bool isCondition = conditionManager.IsCondition(conditionID);
                     if (isCondition)
                     {
-                        executeResults(results);
+                        ExecuteResults(results);
                         break;
                     }
                 }
@@ -139,19 +139,19 @@ public class EventManager : MonoBehaviour
 
                 if (isConditions)
                 {
-                    executeResults(results);
+                    ExecuteResults(results);
                 }
             }
         }
         return false;
     }
 
-    private void executeResults(List<Result> results)
+    private void ExecuteResults(List<Result> results)
     {
         foreach (Result result in results)
         {
             string resultID = result.ResultID;
-            resultManager.excuteResult(resultID);
+            resultManager.ExcuteResult(resultID);
         }
     }
 
