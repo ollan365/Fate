@@ -28,7 +28,6 @@ public class Player : MonoBehaviour
         {
             gender = value;
             if (language == 2 && gender == 1) language++;
-
         }
     }
 }
