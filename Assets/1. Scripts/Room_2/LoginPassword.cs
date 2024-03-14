@@ -13,19 +13,19 @@ public class LoginPassword : MonoBehaviour
 
     private string inputPw;
 
-    [SerializeField] // 여기도 수정하려 했는데 기존 inputField의 OnSubmit을 어디로 옮겨야할지 모르겠어서 일단 남겨뒀습니다 ㅠㅠ
-    private InputField pwInput;
     [SerializeField] private TMP_InputField pwInput_TMpro;
 
     void Start()
     {
-        pwInput = gameObject.transform.GetChild(0).GetComponent<InputField>();
+        pwInput_TMpro = gameObject.transform.GetChild(0).GetComponent<TMP_InputField>();
+        // inputField의 OnEndEdit 이벤트에 OnInputSubmit 메서드를 연결.
+        pwInput_TMpro.onEndEdit.AddListener(loginPW);
     }
 
     // 로그인 화면에서 암호 입력 후 엔터 치면
-    public void loginPW(InputField input)
+    public void loginPW(string input)
     {
-        inputPw = input.text;
+        inputPw = input;
         
         StartCoroutine(Compare_password());
     }
@@ -35,7 +35,7 @@ public class LoginPassword : MonoBehaviour
     {
         inputPw = "";
 
-        pwInput.text = "";
+        pwInput_TMpro.text = "";
     }
 
     IEnumerator Compare_password()
