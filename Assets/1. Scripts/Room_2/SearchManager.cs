@@ -38,20 +38,20 @@ public class SearchManager : MonoBehaviour
     public GameObject laptop;
     public GameObject clock;
 
-    void Start()
-    {
-        diary_p2 = GameObject.Find("Diary_p2");
-        roomMov = GetComponent<RoomMovManager>();
+    //void Start() // 여기를 살려두면 Diary_p2를 못 찾아서 그냥 주석 처리 했습니당 작동은 잘 하는 것 같아요!
+    //{
+    //    diary_p2 = GameObject.Find("Diary_p2");
+    //    roomMov = GetComponent<RoomMovManager>();
 
-        diary = GameObject.Find("Diary");
-        laptop = GameObject.Find("Laptop");
-        clock = GameObject.Find("Clock");
-    }
+    //    diary = GameObject.Find("Diary");
+    //    laptop = GameObject.Find("Laptop");
+    //    clock = GameObject.Find("Clock");
+    //}
 
-    void Update()
-    {
+    //void Update()
+    //{
         
-    }
+    //}
 
     public void diaryBtn()
     {

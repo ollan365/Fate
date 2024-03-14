@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LoginPassword : MonoBehaviour
 {
@@ -12,8 +13,9 @@ public class LoginPassword : MonoBehaviour
 
     private string inputPw;
 
-    [SerializeField]
+    [SerializeField] // 여기도 수정하려 했는데 기존 inputField의 OnSubmit을 어디로 옮겨야할지 모르겠어서 일단 남겨뒀습니다 ㅠㅠ
     private InputField pwInput;
+    [SerializeField] private TMP_InputField pwInput_TMpro;
 
     void Start()
     {

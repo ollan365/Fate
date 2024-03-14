@@ -18,12 +18,7 @@ public class DiaryPassword : MonoBehaviour
     private List<string> inputPw = new List<string>();
 
     [SerializeField]
-    private TextMeshPro pwTxt;
-
-    private void Start()
-    {
-        pwTxt = gameObject.transform.GetChild(0).GetComponent<TextMeshPro>();
-    }
+    private TextMeshProUGUI pwTxt;
 
     public void Add_inputPwBtn()
     {
