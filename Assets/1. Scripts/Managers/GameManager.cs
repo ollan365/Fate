@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         {
             return variables[variableName];
         }
-        Debug.Log("variable: \"" + variableName + "\" does not exist!");
+        // Debug.Log("variable: \"" + variableName + "\" does not exist!");
         return null;
     }
     

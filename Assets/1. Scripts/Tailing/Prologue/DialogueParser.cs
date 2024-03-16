@@ -1,96 +1,96 @@
-using System.Collections.Generic;
-using UnityEngine;
-using static Constants;
-public class DialgoueParser : MonoBehaviour
-{
-    [SerializeField] private Player player;
-
-    private Dictionary<string, string> localiziations;
-    private Dictionary<string, Choice> choiceEvent;
-    private void Start()
-    {
-        localiziations = new();
-        choiceEvent = new();
-    }
-    public void GetExeclData()
-    {
-        GetLocalization();
-        GetChoiceEvent();
-    }
-    private void GetLocalization()
-    {
-        TextAsset csvData = Resources.Load<TextAsset>(File.Localization.ToString());
-
-        string[] data = csvData.text.Split(new char[] { '\n' });
-
-        for (int i = 1; i < data.Length; i++)
-        {
-            string[] row = data[i].Split(new char[] { ',' });
-
-            if (!localiziations.ContainsKey(row[0]))
-                localiziations.Add(row[0], row[player.Language + 1]);
-        }
-    }
-    private void GetChoiceEvent()
-    {
-        TextAsset csvData = Resources.Load<TextAsset>(File.ChoiceEvent.ToString());
-
-        string[] data = csvData.text.Split(new char[] { '\n' });
-
-        for (int i = 1; i < data.Length; i++)
-        {
-            string[] row = data[i].Split(new char[] { ',' });
-
-            Choice choice = new Choice();
-            choice.eventID = row[0];
-
-            if (row[0] == "" || choiceEvent.ContainsKey(row[0])) continue;
-
-            choice.choice_A = row[2];
-            choice.choice_B = row[3];
-            choice.result_A = row[4];
-            choice.result_B = row[5];
-
-            choiceEvent.Add(choice.eventID, choice);
-        }
-    }
-    public Dialogue[] Parse(string _CSVFilieName)
-    {
-        List<Dialogue> dialgoueList = new List<Dialogue>(); // ´ë»ç ¸®½ºÆ® »ý¼º
-        TextAsset csvData = Resources.Load<TextAsset>(_CSVFilieName); // CSV µ¥ÀÌÅÍ¸¦ ¹Þ±â À§ÇÑ ±×¸© 
-        
-        string[] data = csvData.text.Split(new char[] { '\n' }); //¿£ÅÍ¸¦ ¸¸³ª¸é ÂÉ°³¾î ³ÖÀ½
-        //¿£ÅÍ¸¦ ¸¸³µ´Ù data[0] - ¿¢¼¿½ÃÆ®ÀÇ ¸Ç 1¹øÂ° ÁÙ ÀÇ¹Ì 
-
-        for (int i = 1; i < data.Length; i++) // i++´Â ´ëÇÑ ³»¿ëÀº ±×´ÙÀ½ ³»¿ëÀº Á¶°Ç¹®À» ÅëÇØ¼­ 
-        {
-            string[] row = data[i].Split(new char[] { ',' }); //, ´ÜÀ§·Î row ÁÙ¿¡ ÀúÀå
-            if (row.Length < 3 || row[2] == "") break;
-
-            Dialogue dialogue = new Dialogue(); // ´ë»ç ¸®½ºÆ® »ý¼º
-            dialogue.id = row[0];
-            dialogue.characterName = row[1];
-            dialogue.localizations = row[2];
-
-            dialogue.eventID = row[3]; // ÀÌº¥Æ® ³Ñ¹ö »ý¼º
-            dialogue.skipLine = row[4]; // ¿¢¼¿ ¸Ç³¡ÁÙ ºñ°í Ãß°¡ ¾ÈÇÏ¸é ¿À·ù³²
-
-            dialgoueList.Add(dialogue);
-        }
-
-        return dialgoueList.ToArray();
-    }
-
-    public string Dialogue(string key)
-    {
-        string value;
-        if (localiziations.TryGetValue(key, out value)) return value;
-        else return null;
-    }
-    public Choice GetChoiceEvent(string key)
-    {
-        Choice value;
-        if (choiceEvent.TryGetValue(key, out value)) return value;
-        else return null;
-    }
-}
+// using System.Collections.Generic;
+// using UnityEngine;
+// using static Constants;
+// public class DialgoueParser : MonoBehaviour
+// {
+//     [SerializeField] private Player player;
+//
+//     private Dictionary<string, string> localiziations;
+//     private Dictionary<string, Choice> choiceEvent;
+//     private void Start()
+//     {
+//         localiziations = new();
+//         choiceEvent = new();
+//     }
+//     public void GetExeclData()
+//     {
+//         GetLocalization();
+//         GetChoiceEvent();
+//     }
+//     private void GetLocalization()
+//     {
+//         TextAsset csvData = Resources.Load<TextAsset>(File.Localization.ToString());
+//
+//         string[] data = csvData.text.Split(new char[] { '\n' });
+//
+//         for (int i = 1; i < data.Length; i++)
+//         {
+//             string[] row = data[i].Split(new char[] { ',' });
+//
+//             if (!localiziations.ContainsKey(row[0]))
+//                 localiziations.Add(row[0], row[player.Language + 1]);
+//         }
+//     }
+//     private void GetChoiceEvent()
+//     {
+//         TextAsset csvData = Resources.Load<TextAsset>(File.ChoiceEvent.ToString());
+//
+//         string[] data = csvData.text.Split(new char[] { '\n' });
+//
+//         for (int i = 1; i < data.Length; i++)
+//         {
+//             string[] row = data[i].Split(new char[] { ',' });
+//
+//             Choice choice = new Choice();
+//             choice.eventID = row[0];
+//
+//             if (row[0] == "" || choiceEvent.ContainsKey(row[0])) continue;
+//
+//             choice.choice_A = row[2];
+//             choice.choice_B = row[3];
+//             choice.result_A = row[4];
+//             choice.result_B = row[5];
+//
+//             choiceEvent.Add(choice.eventID, choice);
+//         }
+//     }
+//     public Dialogue[] Parse(string _CSVFilieName)
+//     {
+//         List<Dialogue> dialgoueList = new List<Dialogue>(); // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+//         TextAsset csvData = Resources.Load<TextAsset>(_CSVFilieName); // CSV ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Þ±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ 
+//         
+//         string[] data = csvData.text.Split(new char[] { '\n' }); //ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//         //ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ data[0] - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ 1ï¿½ï¿½Â° ï¿½ï¿½ ï¿½Ç¹ï¿½ 
+//
+//         for (int i = 1; i < data.Length; i++) // i++ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ 
+//         {
+//             string[] row = data[i].Split(new char[] { ',' }); //, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ row ï¿½Ù¿ï¿½ ï¿½ï¿½ï¿½ï¿½
+//             if (row.Length < 3 || row[2] == "") break;
+//
+//             Dialogue dialogue = new Dialogue(); // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+//             dialogue.id = row[0];
+//             dialogue.characterName = row[1];
+//             dialogue.localizations = row[2];
+//
+//             dialogue.eventID = row[3]; // ï¿½Ìºï¿½Æ® ï¿½Ñ¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+//             dialogue.skipLine = row[4]; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ç³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//
+//             dialgoueList.Add(dialogue);
+//         }
+//
+//         return dialgoueList.ToArray();
+//     }
+//
+//     public string Dialogue(string key)
+//     {
+//         string value;
+//         if (localiziations.TryGetValue(key, out value)) return value;
+//         else return null;
+//     }
+//     public Choice GetChoiceEvent(string key)
+//     {
+//         Choice value;
+//         if (choiceEvent.TryGetValue(key, out value)) return value;
+//         else return null;
+//     }
+// }
