@@ -1,36 +1,36 @@
-using UnityEngine;
-
-[System.Serializable]
-public class Dialogue
-{
-    [Tooltip("¾ÆÀÌµð")]
-    public string id;
-
-    [Tooltip("Ä³¸¯ÅÍ ÀÌ¸§")]
-    public string characterName;
-
-    [Tooltip("´ë»ç ³»¿ë")]
-    public string localizations;
-
-    [Tooltip("ÀÌº¥Æ® ¹øÈ£")]
-    public string eventID;
-
-    [Tooltip("½ºÅµ¶óÀÎ")]
-    public string skipLine;
-
-}
-
-[System.Serializable]
-public class Choice
-{
-    [Tooltip("ÀÌº¥Æ® ¹øÈ£")]
-    public string eventID;
-
-    [Header("¼±ÅÃÁö")]
-    public string choice_A;
-    public string choice_B;
-
-    [Header("°á°ú")]
-    public string result_A;
-    public string result_B;
-}
+// using UnityEngine;
+//
+// [System.Serializable]
+// public class Dialogue
+// {
+//     [Tooltip("ï¿½ï¿½ï¿½Ìµï¿½")]
+//     public string id;
+//
+//     [Tooltip("Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½")]
+//     public string characterName;
+//
+//     [Tooltip("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+//     public string localizations;
+//
+//     [Tooltip("ï¿½Ìºï¿½Æ® ï¿½ï¿½È£")]
+//     public string eventID;
+//
+//     [Tooltip("ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½")]
+//     public string skipLine;
+//
+// }
+//
+// [System.Serializable]
+// public class Choice
+// {
+//     [Tooltip("ï¿½Ìºï¿½Æ® ï¿½ï¿½È£")]
+//     public string eventID;
+//
+//     [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+//     public string choice_A;
+//     public string choice_B;
+//
+//     [Header("ï¿½ï¿½ï¿½")]
+//     public string result_A;
+//     public string result_B;
+// }

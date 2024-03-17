@@ -5,7 +5,7 @@ public class Event
     public string EventID { get; private set; }
     public string EventName { get; private set; }
     public string EventDescription { get; private set; }
-    public List<LogicConditionResult> LogicConditionsResults { get; private set; }
+    public List<EventLine> LogicConditionsResults { get; private set; }
 
 
     // initialize function
@@ -14,11 +14,11 @@ public class Event
         EventID = id;
         EventName = name;
         EventDescription = description;
-        LogicConditionsResults = new List<LogicConditionResult>();
+        LogicConditionsResults = new List<EventLine>();
     }
 
     public void AddLogicConditionResult(string logic, List<Condition> conditions, List<Result> results)
     {
-        LogicConditionsResults.Add(new LogicConditionResult(logic, conditions, results));
+        LogicConditionsResults.Add(new EventLine(logic, conditions, results));
     }
 }
