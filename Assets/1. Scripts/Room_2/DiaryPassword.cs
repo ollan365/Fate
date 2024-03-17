@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
@@ -52,6 +51,10 @@ public class DiaryPassword : MonoBehaviour
             // 다이어리 내용 보여짐
             Diary_p2.SetActive(false);
             Diary_p3.SetActive(true);
+
+            // 여기서 게임 매니저의 DiaryPasswordCorrect를 setter로 호출해서 true로 만들기.
+            GameManager.Instance.SetVariable("DiaryPasswordCorrect", true);
+            Debug.Log("DiaryPasswordCorrect는 " + GameManager.Instance.GetVariable("DiaryPasswordCorrect"));
         }
         else
         {

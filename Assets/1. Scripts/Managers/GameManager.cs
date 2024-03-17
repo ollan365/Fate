@@ -19,11 +19,19 @@ public class GameManager : MonoBehaviour
     
     public TextMeshProUGUI variableValueText;
 
+    // 다이어리
+    public bool DiaryPasswordCorrect = false;
+    public int DiaryClick = 0;
+
     void Start()
     {
         // variables에 변수 추가
         SetVariable("PhoneCalled", PhoneCalled);
         SetVariable("HasKey", HasKey);
+
+        SetVariable("DiaryPasswordCorrect", DiaryPasswordCorrect);
+        SetVariable("DiaryClick", DiaryClick);
+
         UpdateUI();
     }
     
@@ -72,5 +80,13 @@ public class GameManager : MonoBehaviour
     void UpdateUI()
     {
         variableValueText.text = "PhoneCalled: " + PhoneCalled + "\n" + "HasKey: " + HasKey;
+    }
+
+// 추가한 코드~~~!
+    public void IncrementObjectClick(string variableName)
+    {
+        int cnt = (int)GetVariable(variableName);
+        cnt++;
+        SetVariable(variableName, cnt);
     }
 }

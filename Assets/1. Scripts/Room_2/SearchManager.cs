@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class SearchManager : MonoBehaviour
 {
     [SerializeField] private RoomMovManager roomMov;
 
+    //public GameObject S_Diary;
     [SerializeField] private GameObject diary_p2;
     [SerializeField] private GameObject diary_p3;
     public static bool clearDiary = false;
