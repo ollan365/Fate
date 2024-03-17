@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,139 +15,85 @@ public class SearchManager : MonoBehaviour
     [SerializeField]
     private RoomMovManager roomMov;
 
-    public static bool clearDiary = false;
+    //public GameObject S_Diary;
+    [SerializeField] private GameObject diary_p2;
+    [SerializeField] private GameObject diary_p3;
+    //public static bool clearDiary = false;
 
-    [SerializeField]
-    private GameObject laptop_login;
+    [SerializeField] private GameObject laptop_login;
+    [SerializeField] private GameObject laptop_p1;
+    //public static bool clearLaptop = false;
 
-    [SerializeField]
-    private GameObject laptop_p1;
+    [SerializeField] private GameObject Clock_bg;
+    [SerializeField] private GameObject key_bg;
+    //public static bool clearClock = false;
 
-    public static bool clearLaptop = false;
+    //public Button[] buttons;
 
-    [SerializeField]
-    private GameObject Clock_bg;
-
-    [SerializeField]
-    private GameObject key_bg;
-
-    public static bool clearClock = false;
-
-    // ªÁπ∞µÈ¿ª.....πˆ∆∞¿∏∑Œ «ÿπˆ∑¡º≠...«ÿ¥Á ªÁπ∞ πˆ∆∞ ¥≠∑Øº≠
-    // ¥‹º≠ ªÛºº √¢ µÈæÓ∞¨¿ª ∂ß ¥Ÿ∏• πˆ∆∞µÈ¿Ã ∫∏ø©º≠.. ±◊∞≈ ≤Ù¥¬ øÎµµ...
-    public GameObject diary;
-    public GameObject laptop;
-    public GameObject clock;
-
-    //void Start() // ø©±‚∏¶ ªÏ∑¡µŒ∏È Diary_p2∏¶ ∏¯ √£æ∆º≠ ±◊≥… ¡÷ºÆ √≥∏Æ «ﬂΩ¿¥œ¥Á ¿€µø¿∫ ¿ﬂ «œ¥¬ ∞Õ ∞∞æ∆ø‰!
+    //public void diaryBtn()
     //{
-    //    diary_p2 = GameObject.Find("Diary_p2");
-    //    roomMov = GetComponent<RoomMovManager>();
-
-    //    diary = GameObject.Find("Diary");
-    //    laptop = GameObject.Find("Laptop");
-    //    clock = GameObject.Find("Clock");
+    //    if (!clearDiary)
+    //        ActivateObject(diary_p2);
+    //    else
+    //        Debug.Log("Ïù¥ÎØ∏ ÏÇ¥Ìé¥Î≥∏ Îã®ÏÑúÎã§.");
     //}
 
-    //void Update()
+    //public void laptopBtn()
     //{
-        
+    //    if (!clearLaptop)
+    //        ActivateObject(laptop_login);
+    //    else
+    //        Debug.Log("Ïù¥ÎØ∏ ÏÇ¥Ìé¥Î≥∏ Îã®ÏÑúÎã§.");
     //}
 
-    public void diaryBtn()
-    {
-        if (!clearDiary)
-        {
-            // ¥Ÿ∏• πˆ∆∞µÈ æ» ∫∏¿Ã∞‘ ≤˚
-            laptop.SetActive(false);
-            clock.SetActive(false);
-
-            roomMov.isResearch = true;
-            diary_p2.SetActive(true);
-        }
-        else
-        {
-            Debug.Log("¿ÃπÃ ªÏ∆Ï∫ª ¥‹º≠¥Ÿ.");
-        }
-    }
-
-    public void laptopBtn()
-    {
-        if (!clearLaptop)
-        {
-            diary.SetActive(false);
-            clock.SetActive(false);
-
-            roomMov.isResearch = true;
-            laptop_login.SetActive(true);
-        }
-        else
-        {
-            Debug.Log("¿ÃπÃ ªÏ∆Ï∫ª ¥‹º≠¥Ÿ.");
-        }
-    }
-
-    public void clockBtn()
-    {
-        if (!clearClock)
-        {
-            diary.SetActive(false);
-            laptop.SetActive(false);
-
-            roomMov.isResearch = true;
-            Clock_bg.SetActive(true);
-        }
-        else
-        {
-            Debug.Log("¿ÃπÃ ªÏ∆Ï∫ª ¥‹º≠¥Ÿ.");
-        }
-    }
+    //public void clockBtn()
+    //{
+    //    if (!clearClock)
+    //        ActivateObject(Clock_bg);
+    //    else
+    //        Debug.Log("Ïù¥ÎØ∏ ÏÇ¥Ìé¥Î≥∏ Îã®ÏÑúÎã§.");
+    //}
 
     public void SearchExitBtn()
     {
         if (diary_p2.activeSelf)
         {
-            roomMov.isResearch = false;
-            diary_p2.SetActive(false);
+            // ÏÉÅÏÑ∏ ÌôîÎ©¥..ÏóêÏÑú ÎÇòÍ∞ÄÍ∏∞
+            DeactivateObjects(diary_p2, diary_p3);
         }
         else if (diary_p3.activeSelf)
         {
-            roomMov.isResearch = false;
-            diary_p3.SetActive(false);
-
-            clearDiary = true;
+            DeactivateObjects(laptop_login, laptop_p1);
         }
 
-        if (laptop_p1.activeSelf)
+        if (key_bg.activeSelf || Clock_bg.activeSelf)
         {
-            roomMov.isResearch = false;
-            laptop_login.SetActive(false);
-            laptop_p1.SetActive(false);
-
-            clearLaptop = true;
-        }
-        else if (laptop_login.activeSelf)
-        {
-            roomMov.isResearch = false;
-            laptop_login.SetActive(false);
+            DeactivateObjects(key_bg, Clock_bg);
         }
 
-        if (key_bg.activeSelf)
-        {
-            roomMov.isResearch = false;
-            key_bg.SetActive(false);
-            Clock_bg.SetActive(false);
+        roomMov.isResearch = false;
+        //ActivateButtons();
+    }
+
+    //private void ActivateObject(GameObject obj)
+    //{
+    //    foreach (Button button in buttons)
+    //        button.gameObject.SetActive(false);
+
+    //    roomMov.isResearch = true;
+    //    obj.SetActive(true);
+    //}
 
             clearClock = true;
         }
         else if (Clock_bg.activeSelf)
         {
-            roomMov.isResearch = false;
-            Clock_bg.SetActive(false);
+            obj.SetActive(false);
         }
 
-        diary.SetActive(true);
-        laptop.SetActive(true);
-        clock.SetActive(true);
-    }
+    //private void ActivateButtons()
+    //{
+    //    foreach (Button button in buttons)
+    //        button.gameObject.SetActive(true);
+    //}
 }

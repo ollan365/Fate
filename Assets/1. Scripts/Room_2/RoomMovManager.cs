@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class RoomMovManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject roomP1;
-    [SerializeField]
-    private GameObject roomP2;
-    [SerializeField]
-    private GameObject roomP3;
+    public GameObject roomP1;
+    public GameObject roomP2;
+    public GameObject roomP3;
 
     // 조사 이벤트 중이면 움직이지 못하게 하는 전역변수
     public bool isResearch = false;
@@ -22,7 +19,6 @@ public class RoomMovManager : MonoBehaviour
     }
 
     // 보통 클릭 이벤트 발생해서 조사 중이면 A와 D로 움직일 수 없어야 함
-
     void Update()
     {
         if (!isResearch)
