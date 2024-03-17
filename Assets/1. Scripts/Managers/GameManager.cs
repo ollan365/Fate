@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
             
         }
-        Debug.Log("variable: \"" + variableName + "\" does not exist!");
+        // Debug.Log("variable: \"" + variableName + "\" does not exist!");
         return null;
     }
     

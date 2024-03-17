@@ -9,9 +9,6 @@ public class ResultManager : MonoBehaviour
     // results: dictionary of "Results"s indexed by string "Result ID"
     public Dictionary<string, Result> results = new Dictionary<string, Result>();
 
-    public DisplayLog displayLog;
-    public FlashImage flashImage;
-    
     public void ParseResults()
     {
         string[] lines = resultsCSV.text.Split('\n');
@@ -31,21 +28,11 @@ public class ResultManager : MonoBehaviour
         }
     }
     
-    public void ExcuteResult(string resultID)
+    public void ExecuteResult(string resultID)
     {
         switch (resultID)
         {
-            case "r1":
-                displayLog.DisplayLogOnScreen("아무 소리도 들리지 않는다");
-                break;
-            case "r2":
-                displayLog.DisplayLogOnScreen("낯선 자: 열쇠가 필요해");
-                break;
-            case "r3":
-                flashImage.ImageFlash();
-                break;
-            case "r4":
-                displayLog.DisplayLogOnScreen("금고가 열렸다");
+            case "Result_001":
                 break;
         }
     }

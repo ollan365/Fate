@@ -6,7 +6,14 @@ using UnityEngine.UI;
 
 public class SearchManager : MonoBehaviour
 {
-    [SerializeField] private RoomMovManager roomMov;
+    [SerializeField]
+    private GameObject diary_p2;
+
+    [SerializeField]
+    private GameObject diary_p3;
+
+    [SerializeField]
+    private RoomMovManager roomMov;
 
     //public GameObject S_Diary;
     [SerializeField] private GameObject diary_p2;
@@ -28,7 +35,7 @@ public class SearchManager : MonoBehaviour
     //    if (!clearDiary)
     //        ActivateObject(diary_p2);
     //    else
-    //        Debug.Log("¿ÃπÃ ªÏ∆Ï∫ª ¥‹º≠¥Ÿ.");
+    //        Debug.Log("Ïù¥ÎØ∏ ÏÇ¥Ìé¥Î≥∏ Îã®ÏÑúÎã§.");
     //}
 
     //public void laptopBtn()
@@ -36,7 +43,7 @@ public class SearchManager : MonoBehaviour
     //    if (!clearLaptop)
     //        ActivateObject(laptop_login);
     //    else
-    //        Debug.Log("¿ÃπÃ ªÏ∆Ï∫ª ¥‹º≠¥Ÿ.");
+    //        Debug.Log("Ïù¥ÎØ∏ ÏÇ¥Ìé¥Î≥∏ Îã®ÏÑúÎã§.");
     //}
 
     //public void clockBtn()
@@ -44,18 +51,17 @@ public class SearchManager : MonoBehaviour
     //    if (!clearClock)
     //        ActivateObject(Clock_bg);
     //    else
-    //        Debug.Log("¿ÃπÃ ªÏ∆Ï∫ª ¥‹º≠¥Ÿ.");
+    //        Debug.Log("Ïù¥ÎØ∏ ÏÇ¥Ìé¥Î≥∏ Îã®ÏÑúÎã§.");
     //}
 
     public void SearchExitBtn()
     {
-        if (diary_p2.activeSelf || diary_p3.activeSelf)
+        if (diary_p2.activeSelf)
         {
-            // ªÛºº »≠∏È..ø°º≠ ≥™∞°±‚
+            // ÏÉÅÏÑ∏ ÌôîÎ©¥..ÏóêÏÑú ÎÇòÍ∞ÄÍ∏∞
             DeactivateObjects(diary_p2, diary_p3);
         }
-
-        if (laptop_p1.activeSelf || laptop_login.activeSelf)
+        else if (diary_p3.activeSelf)
         {
             DeactivateObjects(laptop_login, laptop_p1);
         }
@@ -78,13 +84,12 @@ public class SearchManager : MonoBehaviour
     //    obj.SetActive(true);
     //}
 
-    private void DeactivateObjects(params GameObject[] objects)
-    {
-        foreach (GameObject obj in objects)
+            clearClock = true;
+        }
+        else if (Clock_bg.activeSelf)
         {
             obj.SetActive(false);
         }
-    }
 
     //private void ActivateButtons()
     //{

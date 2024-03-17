@@ -28,12 +28,4 @@ public class FlashImage : MonoBehaviour
     {
         flashImage.color = new Color(flashImage.color.r, flashImage.color.g, flashImage.color.b, 0);
     }
-
-    // private void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.A))
-    //     {
-    //         ImageFlash();
-    //     }
-    // }
 }
