@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, object> variables = new Dictionary<string, object>();
 
     // 변수 초기값 설정
-    int PhoneCalled = 0;
-    bool HasKey = false;
+    //int PhoneCalled = 0;
+    //bool HasKey = false;
 
     public TextMeshProUGUI variableValueText;
 
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         SetVariable("ClockTimeCorrect", false);
         SetVariable("ClockClick", 0);
 
-        UpdateUI();
+        // UpdateUI();
     }
     
     void Awake()
@@ -68,31 +68,33 @@ public class GameManager : MonoBehaviour
         // Debug.Log("variable: \"" + variableName + "\" does not exist!");
         return null;
     }
-    
-    public void IncrementPhoneCalled()
-    {
-        PhoneCalled++;
-        SetVariable("PhoneCalled", PhoneCalled);
-        UpdateUI();
-    }
-    
-    public void InverseHasKey()
-    {
-        HasKey = !HasKey;
-        SetVariable("HasKey", HasKey);
-        UpdateUI();
-    }
 
-    void UpdateUI()
-    {
-        variableValueText.text = "PhoneCalled: " + PhoneCalled + "\n" + "HasKey: " + HasKey;
-    }
-
-// 추가한 코드~~~!
     public void IncrementObjectClick(string variableName)
     {
         int cnt = (int)GetVariable(variableName);
         cnt++;
         SetVariable(variableName, cnt);
     }
+
+
+
+
+    //public void IncrementPhoneCalled()
+    //{
+    //    PhoneCalled++;
+    //    SetVariable("PhoneCalled", PhoneCalled);
+    //    UpdateUI();
+    //}
+
+    //public void InverseHasKey()
+    //{
+    //    HasKey = !HasKey;
+    //    SetVariable("HasKey", HasKey);
+    //    UpdateUI();
+    //}
+
+    //void UpdateUI()
+    //{
+    //    variableValueText.text = "PhoneCalled: " + PhoneCalled + "\n" + "HasKey: " + HasKey;
+    //}
 }
