@@ -45,6 +45,8 @@ public class LoginPassword : MonoBehaviour
         {
             // 노트북 잠금 풀림
             Laptop_p1.SetActive(true);
+
+            GameManager.Instance.SetVariable("LaptopPasswordCorrect", true);
         }
         else
         {

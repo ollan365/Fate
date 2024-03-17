@@ -54,7 +54,7 @@ public class DiaryPassword : MonoBehaviour
 
             // 여기서 게임 매니저의 DiaryPasswordCorrect를 setter로 호출해서 true로 만들기.
             GameManager.Instance.SetVariable("DiaryPasswordCorrect", true);
-            Debug.Log("DiaryPasswordCorrect는 " + GameManager.Instance.GetVariable("DiaryPasswordCorrect"));
+            //Debug.Log("DiaryPasswordCorrect는 " + GameManager.Instance.GetVariable("DiaryPasswordCorrect"));
         }
         else
         {

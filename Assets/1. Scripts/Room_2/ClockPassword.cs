@@ -55,6 +55,7 @@ public class ClockPassword : MonoBehaviour
         {
             // ½Ã°è ¿­¸®°í ¿­¼è È¹µæ
             key_bg.SetActive(true);
+            GameManager.Instance.SetVariable("ClockTimeCorrect", true);
         }
         else
         {

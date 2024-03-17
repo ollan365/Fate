@@ -4205,6 +4205,7 @@ GameObject:
   - component: {fileID: 353499204}
   - component: {fileID: 353499203}
   - component: {fileID: 353499202}
+  - component: {fileID: 353499205}
   m_Layer: 5
   m_Name: Laptop
   m_TagString: Untagged
@@ -4275,6 +4276,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 353499205}
+        m_TargetAssemblyTypeName: Laptop, Assembly-CSharp
+        m_MethodName: ClickBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2099146768}
         m_TargetAssemblyTypeName: UnityEngine.Transform, UnityEngine
         m_MethodName: SetAsLastSibling
@@ -4286,18 +4299,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 531644766}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &353499203
 MonoBehaviour:
@@ -4337,6 +4338,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 353499200}
   m_CullTransparentMesh: 1
+--- !u!114 &353499205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353499200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e80faba358a5204384ace9ed16aa4fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: Event_13
+  _object: {fileID: 531644766}
 --- !u!1 &362014130
 GameObject:
   m_ObjectHideFlags: 0
@@ -12962,6 +12977,7 @@ GameObject:
   - component: {fileID: 1221171859}
   - component: {fileID: 1221171858}
   - component: {fileID: 1221171857}
+  - component: {fileID: 1221171860}
   m_Layer: 5
   m_Name: Clock
   m_TagString: Untagged
@@ -13032,9 +13048,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1365179213}
-        m_TargetAssemblyTypeName: UnityEngine.Transform, UnityEngine
-        m_MethodName: SetAsLastSibling
+      - m_Target: {fileID: 1221171860}
+        m_TargetAssemblyTypeName: Clock, Assembly-CSharp
+        m_MethodName: ClickBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13044,10 +13060,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1024176503}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1365179213}
+        m_TargetAssemblyTypeName: UnityEngine.Transform, UnityEngine
+        m_MethodName: SetAsLastSibling
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13094,6 +13110,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1221171855}
   m_CullTransparentMesh: 1
+--- !u!114 &1221171860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221171855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3152df38ef3b8c4db01d9cfae83a1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: Event_11
+  _object: {fileID: 1024176503}
 --- !u!1 &1223314356
 GameObject:
   m_ObjectHideFlags: 0
@@ -18271,10 +18301,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 665616727}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1708121928}
+        m_TargetAssemblyTypeName: Diary, Assembly-CSharp
+        m_MethodName: ClickBtn
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18286,18 +18316,6 @@ MonoBehaviour:
       - m_Target: {fileID: 18489747}
         m_TargetAssemblyTypeName: UnityEngine.Transform, UnityEngine
         m_MethodName: SetAsLastSibling
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1708121928}
-        m_TargetAssemblyTypeName: Diary, Assembly-CSharp
-        m_MethodName: ClickBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18358,6 +18376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventId: Event_010
+  _object: {fileID: 665616727}
 --- !u!1 &1734228987
 GameObject:
   m_ObjectHideFlags: 0
