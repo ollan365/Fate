@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     //int PhoneCalled = 0;
     //bool HasKey = false;
 
-    public TextMeshProUGUI variableValueText;
+    // public TextMeshProUGUI variableValueText;
 
     //// 다이어리
     //public bool DiaryPasswordCorrect = false;
