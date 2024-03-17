@@ -10,7 +10,7 @@ public class Diary : EventObject
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room2 Manager").GetComponent<RoomMovManager>();
+        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
     }
 
     public void ClickBtn()
