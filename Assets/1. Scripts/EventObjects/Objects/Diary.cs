@@ -25,6 +25,7 @@ public class Diary : EventObject
             // 다이어리 잠금 장치 실행
             // Diary_p2 켜짐
             _object.SetActive(true);
+            roomMov.addScreenObjects(_object);
             roomMov.isResearch = true;
         }
     }

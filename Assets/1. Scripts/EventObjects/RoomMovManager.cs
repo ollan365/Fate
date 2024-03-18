@@ -11,6 +11,8 @@ public class RoomMovManager : MonoBehaviour
     // 조사 이벤트 중이면 움직이지 못하게 하는 전역변수
     public bool isResearch = false;
 
+    public List<GameObject> ScreenObjects = new List<GameObject>();
+
     void Start()
     {
         roomP1.SetActive(true);
@@ -67,5 +69,27 @@ public class RoomMovManager : MonoBehaviour
             }
         }
 
+    }
+
+    public void SearchExitBtn()
+    {
+        DeactivateObjects();
+        isResearch = false;
+    }
+
+    private void DeactivateObjects()
+    {
+        foreach (GameObject obj in ScreenObjects)
+        {
+            obj.SetActive(false);
+        }
+        // 리스트 클리어로 비우려고 하면 가끔 제대로 안 비워지는 오류가 있어서 클리어로 못하게 됨...
+        //ScreenObjects.Clear();
+    }
+
+    public void addScreenObjects(GameObject obj)
+    {
+        if (!ScreenObjects.Contains(obj))
+            ScreenObjects.Add(obj);
     }
 }

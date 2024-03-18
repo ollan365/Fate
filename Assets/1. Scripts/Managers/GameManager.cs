@@ -41,6 +41,13 @@ public class GameManager : MonoBehaviour
         SetVariable("ClockTimeCorrect", false);
         SetVariable("ClockClick", 0);
 
+        // 인형 수납장
+        SetVariable("DollCabinetClick", 0);
+        // 배게
+        SetVariable("PillowClick", 0);
+        // 의자
+        SetVariable("ChairClick", 0);
+
         // UpdateUI();
     }
     

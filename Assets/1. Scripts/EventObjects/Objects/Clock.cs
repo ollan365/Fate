@@ -22,6 +22,7 @@ public class Clock : EventObject
         {
             // 시계 시간 맞추는 장치 실행
             _object.SetActive(true);
+            roomMov.addScreenObjects(_object);
             roomMov.isResearch = true;
         }
     }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Laptop : EventObject
 {
     // 로그인 페이지 켜지면 시점 이동 안 되니까..시점 이동 제한
-    [SerializeField] private RoomMovManager roomMov;    
+    [SerializeField] private RoomMovManager roomMov;
     [SerializeField] private GameObject _object;
 
     private void Start()
@@ -25,6 +25,7 @@ public class Laptop : EventObject
             // 노트북 잠금 장치 실행
             // 로그인 페이지 켜짐
             _object.SetActive(true);
+            roomMov.addScreenObjects(_object);
             roomMov.isResearch = true;
         }
     }

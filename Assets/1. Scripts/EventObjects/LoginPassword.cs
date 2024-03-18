@@ -15,8 +15,12 @@ public class LoginPassword : MonoBehaviour
 
     [SerializeField] private TMP_InputField pwInput_TMpro;
 
+    private RoomMovManager roomMov;
+
     void Start()
     {
+        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
+
         pwInput_TMpro = gameObject.transform.GetChild(0).GetComponent<TMP_InputField>();
         // inputField의 OnEndEdit 이벤트에 OnInputSubmit 메서드를 연결.
         pwInput_TMpro.onEndEdit.AddListener(loginPW);
@@ -26,7 +30,7 @@ public class LoginPassword : MonoBehaviour
     public void loginPW(string input)
     {
         inputPw = input;
-        
+
         StartCoroutine(Compare_password());
     }
 
@@ -46,6 +50,7 @@ public class LoginPassword : MonoBehaviour
             // 노트북 잠금 풀림
             Laptop_p1.SetActive(true);
 
+            roomMov.addScreenObjects(Laptop_p1);
             GameManager.Instance.SetVariable("LaptopPasswordCorrect", true);
         }
         else

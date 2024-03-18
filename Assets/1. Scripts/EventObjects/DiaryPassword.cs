@@ -11,13 +11,19 @@ public class DiaryPassword : MonoBehaviour
 
     private int pw_Count = 0;
 
-    public GameObject Diary_p2;
     public GameObject Diary_p3;
 
     private List<string> inputPw = new List<string>();
 
     [SerializeField]
     private TextMeshProUGUI pwTxt;
+
+    private RoomMovManager roomMov;
+
+    private void Start()
+    {
+        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
+    }
 
     public void Add_inputPwBtn()
     {
@@ -49,9 +55,9 @@ public class DiaryPassword : MonoBehaviour
         if (Enumerable.SequenceEqual(pw, inputPw))
         {
             // 다이어리 내용 보여짐
-            Diary_p2.SetActive(false);
             Diary_p3.SetActive(true);
 
+            roomMov.addScreenObjects(Diary_p3);
             // 여기서 게임 매니저의 DiaryPasswordCorrect를 setter로 호출해서 true로 만들기.
             GameManager.Instance.SetVariable("DiaryPasswordCorrect", true);
             //Debug.Log("DiaryPasswordCorrect는 " + GameManager.Instance.GetVariable("DiaryPasswordCorrect"));
