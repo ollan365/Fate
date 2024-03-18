@@ -78,9 +78,9 @@ public class EventManager : MonoBehaviour
                 results.Add(resultManager.results[resultID.Trim()]);
             }
 
-            if (events.ContainsKey(eventID)) // 이미 존재하는 event ID인 경우: LogicConditionResult를 추가
+            if (events.ContainsKey(eventID)) // 이미 존재하는 event ID인 경우: EventLine을 추가
             {
-                events[eventID].AddLogicConditionResult(eventLogic, conditions, results);
+                events[eventID].AddEventLine(eventLogic, conditions, results);
             }
             else // 새로운 event ID인 경우: events에 새로 추가
             {
@@ -90,7 +90,7 @@ public class EventManager : MonoBehaviour
                     eventName,
                     eventDescription
                 );
-                event_.AddLogicConditionResult(eventLogic, conditions, results);
+                event_.AddEventLine(eventLogic, conditions, results);
                 events[event_.EventID] = event_;
             }
 
@@ -100,12 +100,12 @@ public class EventManager : MonoBehaviour
     // Event ID를 받아서 전체 조건의 true/false 판단하여 true인 경우 결과 수행
     public void CallEvent(string eventID)
     {
-        List<EventLine> logicConditionResults = events[eventID].LogicConditionsResults;
-        foreach (EventLine logicConditionResult in logicConditionResults)
+        List<EventLine> eventLines = events[eventID].EventLine;
+        foreach (EventLine eventLine in eventLines)
         {
-            string logic = logicConditionResult.Logic;
-            List<Condition> conditions = logicConditionResult.Conditions;
-            List<Result> results = logicConditionResult.Results;
+            string logic = eventLine.Logic;
+            List<Condition> conditions = eventLine.Conditions;
+            List<Result> results = eventLine.Results;
             
             if (conditions.Count == 0) { // 조건이 존재하지 않는 경우 무조건 실행
                 ExecuteResults(results);

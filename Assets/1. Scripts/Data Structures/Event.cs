@@ -1,12 +1,12 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Event
 {
     public string EventID { get; private set; }
     public string EventName { get; private set; }
     public string EventDescription { get; private set; }
-    public List<EventLine> LogicConditionsResults { get; private set; }
-
+    public List<EventLine> EventLine { get; private set; }
 
     // initialize function
     public Event(string id, string name, string description)
@@ -14,11 +14,11 @@ public class Event
         EventID = id;
         EventName = name;
         EventDescription = description;
-        LogicConditionsResults = new List<EventLine>();
+        EventLine = new List<EventLine>();
     }
 
-    public void AddLogicConditionResult(string logic, List<Condition> conditions, List<Result> results)
+    public void AddEventLine(string logic, List<Condition> conditions, List<Result> results)
     {
-        LogicConditionsResults.Add(new EventLine(logic, conditions, results));
+        EventLine.Add(new EventLine(logic, conditions, results));
     }
 }

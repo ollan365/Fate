@@ -228,15 +228,15 @@ public class DialogueManager : MonoBehaviour
             string scriptID = fields[0].Trim().Trim('\n');
             string engScript = fields[1].Trim().Replace("\\n", "\n");
             string korScript = fields[2].Trim().Replace("\\n", "\n");
-            string jp_M_Script = fields[3].Trim().Replace("\\n", "\n");
-            string jp_W_Script = fields[4].Trim().Replace("\\n", "\n");
+            string jpMScript = fields[3].Trim().Replace("\\n", "\n");
+            string jpWScript = fields[4].Trim().Replace("\\n", "\n");
 
             Script script = new Script(
                 scriptID,
                 engScript,
                 korScript,
-                jp_M_Script,
-                jp_W_Script
+                jpMScript,
+                jpWScript
             );
             scripts[scriptID] = script;
         }
