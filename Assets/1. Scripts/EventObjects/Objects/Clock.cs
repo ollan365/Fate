@@ -15,8 +15,7 @@ public class Clock : EventObject
 
     public void ClickBtn()
     {
-        // 클릭 횟수 증가
-        GameManager.Instance.IncrementObjectClick("ClockClick");
+        OnClick();
 
         if (!(bool)GameManager.Instance.GetVariable("ClockTimeCorrect"))
         {
@@ -25,5 +24,9 @@ public class Clock : EventObject
             roomMov.addScreenObjects(_object);
             roomMov.isResearch = true;
         }
+
+        // 클릭 횟수 증가
+        GameManager.Instance.IncrementObjectClick("ClockClick");
     }
+
 }

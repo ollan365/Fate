@@ -20,9 +20,12 @@ public class DiaryPassword : MonoBehaviour
 
     private RoomMovManager roomMov;
 
+    [SerializeField] private EventObject diary;
+
     private void Start()
     {
         roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
+        diary = GameObject.Find("Diary").GetComponent<EventObject>();
     }
 
     public void Add_inputPwBtn()
@@ -60,10 +63,14 @@ public class DiaryPassword : MonoBehaviour
             roomMov.addScreenObjects(Diary_p3);
             // 여기서 게임 매니저의 DiaryPasswordCorrect를 setter로 호출해서 true로 만들기.
             GameManager.Instance.SetVariable("DiaryPasswordCorrect", true);
+
+            EventManager.Instance.CallEvent(diary.getEventId());
             //Debug.Log("DiaryPasswordCorrect는 " + GameManager.Instance.GetVariable("DiaryPasswordCorrect"));
         }
         else
         {
+            EventManager.Instance.CallEvent(diary.getEventId());
+
             delete_inputPassword();
         }
 

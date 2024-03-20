@@ -167,6 +167,7 @@ public class EventManager : MonoBehaviour
         foreach (Result result in results)
         {
             string resultID = result.ResultID;
+            Debug.Log("리절트id "+resultID);
             resultManager.ExecuteResult(resultID);
         }
     }

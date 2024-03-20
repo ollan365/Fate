@@ -16,8 +16,7 @@ public class Laptop : EventObject
 
     public void ClickBtn()
     {
-        // 클릭 횟수 증가
-        GameManager.Instance.IncrementObjectClick("LaptopClick");
+        OnClick();
 
         // LaptopPasswordCorrect가 false 일 때만 작동함
         if (!(bool)GameManager.Instance.GetVariable("LaptopPasswordCorrect"))
@@ -28,5 +27,9 @@ public class Laptop : EventObject
             roomMov.addScreenObjects(_object);
             roomMov.isResearch = true;
         }
+
+        // 클릭 횟수 증가
+        GameManager.Instance.IncrementObjectClick("LaptopClick");
     }
+
 }

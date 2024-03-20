@@ -24,9 +24,12 @@ public class ClockPassword : MonoBehaviour
 
     private RoomMovManager roomMov;
 
+    [SerializeField] private EventObject clock;
+
     private void Start()
     {
         roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
+        clock = GameObject.Find("Clock").GetComponent<EventObject>();
 
         min_hand = GameObject.Find("minute_hand");
         hour_hand = GameObject.Find("hour_hand");
@@ -62,9 +65,12 @@ public class ClockPassword : MonoBehaviour
 
             roomMov.addScreenObjects(key_bg);
             GameManager.Instance.SetVariable("ClockTimeCorrect", true);
+
+            EventManager.Instance.CallEvent(clock.getEventId());
         }
         else
         {
+            EventManager.Instance.CallEvent(clock.getEventId());
             delete_inputPassword();
         }
 

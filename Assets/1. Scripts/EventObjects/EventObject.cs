@@ -12,4 +12,17 @@ public class EventObject : MonoBehaviour
             EventManager.Instance.CallEvent(eventId);
         }
     }
+
+    protected void OnClick()
+    {
+        if (!string.IsNullOrEmpty(eventId) && EventManager.Instance)
+        {
+            EventManager.Instance.CallEvent(eventId);
+        }
+    }
+
+    public string getEventId()
+    {
+        return eventId;
+    }
 }

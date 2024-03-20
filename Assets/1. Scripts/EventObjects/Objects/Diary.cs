@@ -15,8 +15,8 @@ public class Diary : EventObject
 
     public void ClickBtn()
     {
-        // 클릭 횟수 증가
-        GameManager.Instance.IncrementObjectClick("DiaryClick");
+        OnClick();
+
         //Debug.Log("다이어리클릭 횟수: "+ GameManager.Instance.GetVariable("DiaryClick"));
 
         // DiaryPasswordCorrect가 false 일 때만 작동함
@@ -28,5 +28,8 @@ public class Diary : EventObject
             roomMov.addScreenObjects(_object);
             roomMov.isResearch = true;
         }
+
+        // 클릭 횟수 증가
+        GameManager.Instance.IncrementObjectClick("DiaryClick");
     }
 }
