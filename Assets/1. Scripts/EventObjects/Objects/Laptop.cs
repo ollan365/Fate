@@ -1,33 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Laptop : EventObject
+public class Laptop : EventObject, IResultExecutable
 {
-    // �α��� ������ ������ ���� �̵� �� �Ǵϱ�..���� �̵� ����
-    [SerializeField] private GameObject _object;
+    // 로그인 페이지 켜지면 시점 이동 안 되니까..시점 이동 제한
+    [SerializeField]
+    private GameObject laptopLock;
 
     private void Start()
     {
+        ResultManager.Instance.RegisterExecutable("Laptop", this);
     }
 
-    public void ClickBtn()
+    public new void OnMouseDown()
     {
-        OnMouseDown();
-
-        // LaptopPasswordCorrect�� false �� ���� �۵���
-        if (!(bool)GameManager.Instance.GetVariable("LaptopPasswordCorrect"))
-        {
-            // ��Ʈ�� ��� ��ġ ����
-            // �α��� ������ ����
-            _object.SetActive(true);
-            RoomManager.Instance.AddScreenObjects(_object);
-            RoomManager.Instance.isResearch = true;
-        }
-
-        // Ŭ�� Ƚ�� ����
+        base.OnMouseDown();
         GameManager.Instance.IncrementVariable("LaptopClick");
     }
 
+    public void ExecuteAction()
+    {
+        ActivateLaptopLock();
+    }
+
+    // 노트북 잠금 장치 실행 (로그인 페이지 켜짐)
+    public void ActivateLaptopLock()
+    {
+        laptopLock.SetActive(true);
+        RoomManager.Instance.AddScreenObjects(laptopLock);
+        RoomManager.Instance.isResearch = true;
+    }
 }

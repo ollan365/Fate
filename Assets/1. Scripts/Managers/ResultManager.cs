@@ -12,16 +12,6 @@ public class ResultManager : MonoBehaviour
     public Dictionary<string, Result> results = new Dictionary<string, Result>();
     
     // ----------------- 스펠링 실수로 인한 에러를 피하기 위해 스트링 변수들을 선언 -----------------
-    // Condition variables
-    private string BedTeddyClick = "BedTeddyClick", BlanketClick = "BlanketClick";
-    private string DrinkAndPillsClick = "DrinkAndPillsClick", LampClick = "LampClick";
-    private string DollCabinetClick = "DollCabinetClick", PillowClick = "PillowClick";
-    private string DiaryClick = "DiaryClick", DiaryPasswordCorrect = "DiaryPasswordCorrect";
-    private string ClockClick = "ClockClick", ClockTimeCorrect = "ClockTimeCorrect";
-    private string ChairClick = "ChairClick", LaptopClick = "LaptopClick";
-    private string LaptopPasswordCorrect = "LaptopPasswordCorrect", CarpetClick = "CarpetClick";
-    private string PaperClick = "PaperClick";
-
     // System variables
     private string ActionPoint = "ActionPoint";
     
@@ -123,10 +113,12 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape_009");
                 break;
             
-            case "Result_014": // 다이어리 잠금 장치 활성화됨 - ### 추후 구현 필요 ###
+            case "Result_014": // 다이어리 잠금 장치 활성화됨
+                executableObjects["Diary"].ExecuteAction();
                 break;
             
-            case "Result_015": // 다이어리가 열림 - ### 추후 구현 필요 ###
+            case "Result_015": // 다이어리가 열림
+                executableObjects["DiaryLock"].ExecuteAction();
                 break;
             
             case "Result_016": // 다이어리에 대한 메모가 작성됨 - ### 추후 구현 필요 ###
@@ -144,10 +136,12 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape_012");
                 break;
             
-            case "Result_020": // 시계 시스템 활성화 - ### 추후 구현 필요 ###
+            case "Result_020": // 시계 시스템 활성화
+                executableObjects["Clock"].ExecuteAction();
                 break;
 
-            case "Result_021": // 열쇠를 획득 - ### 추후 구현 필요 ###
+            case "Result_021": // 열쇠를 획득
+                executableObjects["ClockPuzzle"].ExecuteAction();
                 break;
 
             case "Result_022": // 열쇠를 획득 후 스크립트
@@ -165,10 +159,12 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape_014");
                 break;
 
-            case "Result_026": // 노트북 비밀번호 화면 활성화 - ### 추후 구현 필요 ###
+            case "Result_026": // 노트북 비밀번호 화면 활성화
+                executableObjects["Laptop"].ExecuteAction();
                 break;
 
-            case "Result_027": // 노트북이 열림 - ### 추후 구현 필요 ###
+            case "Result_027": // 노트북이 열림
+                executableObjects["LaptopLock"].ExecuteAction();
                 break;
 
             case "Result_028": // 노트북에 대한 설명이 메모에 기록됨 - ### 추후 구현 필요 ###

@@ -2,32 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Diary : EventObject
+public class Diary : EventObject, IResultExecutable
 {
-    // ���̾ �����ġ ���� ���� �� ���� �̵� ����
-    [SerializeField] private GameObject _object;
+    // 다이어리 잠금장치 보고 있을 때 시점 이동 제한
+    [SerializeField]
+    private GameObject diaryLock;
 
     private void Start()
     {
+        ResultManager.Instance.RegisterExecutable("Diary", this);
+    }
+    
+    public new void OnMouseDown()
+    {
+        base.OnMouseDown();
+        GameManager.Instance.IncrementVariable("DiaryClick");
     }
 
-    public void ClickBtn()
+    public void ExecuteAction()
     {
-        OnMouseDown();
+        ActivateDiaryLock();
+    }
 
-        //Debug.Log("���̾Ŭ�� Ƚ��: "+ GameManager.Instance.GetVariable("DiaryClick"));
-
-        // DiaryPasswordCorrect�� false �� ���� �۵���
-        if (!(bool)GameManager.Instance.GetVariable("DiaryPasswordCorrect"))
-        {
-            // ���̾ ��� ��ġ ����
-            // Diary_p2 ����
-            _object.SetActive(true);
-            RoomManager.Instance.AddScreenObjects(_object);
-            RoomManager.Instance.isResearch = true;
-        }
-
-        // Ŭ�� Ƚ�� ����
-        GameManager.Instance.IncrementVariable("DiaryClick");
+    // 다이어리 잠금 장치 실행
+    public void ActivateDiaryLock()
+    {
+        diaryLock.SetActive(true);
+        RoomManager.Instance.AddScreenObjects(diaryLock);
+        RoomManager.Instance.isResearch = true;
     }
 }

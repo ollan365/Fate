@@ -56,10 +56,13 @@ public class GameManager : MonoBehaviour
         // 다이어리
         SetVariable("DiaryClick", 0);
         SetVariable("DiaryPasswordCorrect", false);
+        SetVariable("DiaryPassword", "0410");
         
         // 시계
         SetVariable("ClockClick", 0);
         SetVariable("ClockTimeCorrect", false);
+        float[] clockPassword = { 210f, 180f };
+        SetVariable("ClockPassword", clockPassword);
         
         // 의자
         SetVariable("ChairMoved", false);
@@ -67,6 +70,7 @@ public class GameManager : MonoBehaviour
         // 노트북
         SetVariable("LaptopClick", 0);
         SetVariable("LaptopPasswordCorrect", false);
+        SetVariable("LaptopPassword", "0410");
         
         // 카펫
         SetVariable("CarpetClick", 0);
