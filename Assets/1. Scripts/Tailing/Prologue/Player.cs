@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
     private string playerName;
     public string Name { get => playerName; set => playerName = value; }
 
@@ -25,5 +27,7 @@ public class Player : MonoBehaviour
     private int month, day;
     public int Month { get => month; set => month = value; }
     public int Day { get => day; set => day = value; }
-    
+
+    private int actPower;
+    public int ActPower { get => actPower; set => actPower = Math.Clamp(value, 0, 15); }
 }

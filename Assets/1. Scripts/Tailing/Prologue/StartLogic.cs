@@ -20,9 +20,9 @@ public class StartLogic : MonoBehaviour
 
     public void ChangeDayOption()
     {
-        List<int> optionList = new();
+        List<TMP_Dropdown.OptionData> optionList = new();
         for (int i = 1; i <= 29; i++)
-            optionList.Add(i);
+            optionList.Add(new TMP_Dropdown.OptionData(i.ToString()));
 
         switch (monthDropdown.value + 1)
         {
@@ -32,13 +32,15 @@ public class StartLogic : MonoBehaviour
             case 6:
             case 9:
             case 11:
-                optionList.Add(30);
+                optionList.Add(new TMP_Dropdown.OptionData(30.ToString()));
                 break;
             default:
-                optionList.Add(30);
-                optionList.Add(31);
+                optionList.Add(new TMP_Dropdown.OptionData(30.ToString()));
+                optionList.Add(new TMP_Dropdown.OptionData(31.ToString()));
                 break;
         }
+        dayDropdown.ClearOptions();
+        dayDropdown.AddOptions(optionList);
     }
     public void SetBirth()
     {
