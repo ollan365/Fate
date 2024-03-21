@@ -1,32 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Laptop : EventObject
+public class Laptop : EventObject, IResultExecutable
 {
-    // ·Î±×ÀÎ ÆäÀÌÁö ÄÑÁö¸é ½ÃÁ¡ ÀÌµ¿ ¾È µÇ´Ï±î..½ÃÁ¡ ÀÌµ¿ Á¦ÇÑ
-    [SerializeField] private RoomMovManager roomMov;
-    [SerializeField] private GameObject _object;
+    // ë¡œê·¸ì¸ í˜ì´ì§€ ì¼œì§€ë©´ ì‹œì  ì´ë™ ì•ˆ ë˜ë‹ˆê¹Œ..ì‹œì  ì´ë™ ì œí•œ
+    [SerializeField]
+    private GameObject laptopLock;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
+        ResultManager.Instance.RegisterExecutable("Laptop", this);
     }
 
-    public void ClickBtn()
+    public new void OnMouseDown()
     {
-        // Å¬¸¯ È½¼ö Áõ°¡
-        GameManager.Instance.IncrementObjectClick("LaptopClick");
+        base.OnMouseDown();
+        GameManager.Instance.IncrementVariable("LaptopClick");
+    }
 
-        // LaptopPasswordCorrect°¡ false ÀÏ ¶§¸¸ ÀÛµ¿ÇÔ
-        if (!(bool)GameManager.Instance.GetVariable("LaptopPasswordCorrect"))
-        {
-            // ³ëÆ®ºÏ Àá±İ ÀåÄ¡ ½ÇÇà
-            // ·Î±×ÀÎ ÆäÀÌÁö ÄÑÁü
-            _object.SetActive(true);
-            roomMov.addScreenObjects(_object);
-            roomMov.isResearch = true;
-        }
+    public void ExecuteAction()
+    {
+        ActivateLaptopLock();
+    }
+
+    // ë…¸íŠ¸ë¶ ì ê¸ˆ ì¥ì¹˜ ì‹¤í–‰ (ë¡œê·¸ì¸ í˜ì´ì§€ ì¼œì§)
+    public void ActivateLaptopLock()
+    {
+        laptopLock.SetActive(true);
+        RoomManager.Instance.AddScreenObjects(laptopLock);
+        RoomManager.Instance.isResearch = true;
     }
 }

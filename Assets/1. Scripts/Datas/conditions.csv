@@ -1,26 +1,35 @@
 Condition ID,Condition Description,Variable Name,Logic,Value
-Condition_001,침대 위 곰인형을 처음 클릭 했을 때,BedTeddyClick,==,0
-Condition_002,침대 위 곰인형을 한번 이상 클릭했을 때,BedTeddyClick,>,0
-Condition_003,이불을 처음 클릭했을 때,BlanketClick,==,0
-Condition_004,이불을 한번 이상 클릭했을 때,BlanketClick,>,0
-Condition_005,술과 감기약을 처음 클릭했을 때,DrinkClick,==,0
-Condition_006,술과 감기약을 한번 이상클릭했을 때,DrinkClick,>,0
-Condition_007,책상 위 스탠드를 처음 클릭했을 때,StandClick,==,0
-Condition_008,책상 위 스탠드를 한번 이상클릭했을 때,StandClick,>,0
-Condition_009,인형 수납장을 처음 클릭했을 때,DollCabinetClick,==,0
-Condition_010,인형 수납장을 처음 클릭했을 때,DollCabinetClick,>,0
+Condition_001,침대 위 곰인형을 처음 클릭 했을 때,DollsClick,==,0
+Condition_002,침대 위 곰인형을 한번 이상 클릭했을 때,DollsClick,>,0
+Condition_003,이불을 처음 클릭했을 때,BlanketsClick,==,0
+Condition_004,이불을 한번 이상 클릭했을 때,BlanketsClick,>,0
+Condition_005,술과 감기약을 처음 클릭했을 때,LiquorAndPillsClick,==,0
+Condition_006,술과 감기약을 한번 이상클릭했을 때,LiquorAndPillsClick,>,0
+Condition_007,책상 위 스탠드를 처음 클릭했을 때,LampClick,==,0
+Condition_008,책상 위 스탠드를 한번 이상클릭했을 때,LampClick,>,0
+Condition_009,인형 수납장을 처음 클릭했을 때,ShelvesClick,==,0
+Condition_010,인형 수납장을 처음 클릭했을 때,ShelvesClick,>,0
 Condition_011,베개를 처음 클릭,PillowClick,==,0
 Condition_012,베개를 두번째 클릭,PillowClick,==,1
 Condition_013,베개를 세번 이상 클릭,PillowClick,>,1
 Condition_014,다이어리를 처음 클릭,DiaryClick,==,0
-Condition_015,다이어리 비밀번호를 맞춤,DiaryPasswordCorrect,==,TRUE
-Condition_016,다이어리 비밀번호를 틀림,DiaryPasswordCorrect,==,FALSE
+Condition_015,다이어리 비밀번호를 맞춘 상태,DiaryPasswordCorrect,==,TRUE
+Condition_016,다이어리 비밀번호를 맞추지 않은 상태,DiaryPasswordCorrect,==,FALSE
 Condition_017,다이어리를 한번 이상 클릭,DiaryClick,>,0
 Condition_018,고장난 시계를 처음 클릭,ClockClick,==,0
 Condition_019,고장난 시계를 한번 이상 클릭했을 때,ClockClick,>,0
-Condition_020,시계가 맞는 시간일 때,ClockTimeCorrect,==,TRUE
-Condition_021,의자를 처음 클릭,ChairClick,==,0
+Condition_020,시계를 맞춘 상태,ClockTimeCorrect,==,TRUE
+Condition_021,시계를 맞추지 않은 상태,ClockTimeCorrect,==,FALSE
 Condition_022,노트북을 처음 클릭,LaptopClick,==,0
 Condition_023,노트북의 비밀번호를 맞춤,LaptopPasswordCorrect,==,TRUE
 Condition_024,노트북의 비밀번호를 틀림,LaptopPasswordCorrect,==,FALSE
 Condition_025,노트북을 한번 이상 클릭,LaptopClick,>,0
+Condition_026,카펫을 처음 클릭,CarpetClick,==,0
+Condition_027,카펫 밑에 있던 종이를 클릭,PaperClick,==,0
+Condition_028,카펫을 두번째로 클릭,CarpetClick,==,1
+Condition_029,카펫을 그 이후로 클릭,CarpetClick,>,1
+Condition_030,포스터를 처음 클릭,PosterClick,==,0
+Condition_031,포스터를 한번 이상 클릭,PosterClick,>,0
+Condition_032,커터칼 클릭,KnifeClick,==,0
+Condition_033,포스터를 클릭,PosterClick,>=,0
+Condition_034,옷장 문이 닫혀 있을 때 문을 클릭,,,

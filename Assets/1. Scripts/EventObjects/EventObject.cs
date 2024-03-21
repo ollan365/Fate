@@ -12,4 +12,9 @@ public class EventObject : MonoBehaviour
             EventManager.Instance.CallEvent(eventId);
         }
     }
+
+    public string GetEventId()
+    {
+        return eventId;
+    }
 }

@@ -2,28 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clock : EventObject
+public class Clock : EventObject, IResultExecutable
 {
-    // ½Ã°è ½Ã°£ ¸ÂÃß´Â È­¸éÀÏ ¶§ ½ÃÁ¡ ÀÌµ¿ Á¦ÇÑ
-    [SerializeField] private RoomMovManager roomMov;
-    [SerializeField] private GameObject _object;
+    // ì‹œê³„ ì‹œê°„ ë§ì¶”ëŠ” í™”ë©´ì¼ ë•Œ ì‹œì  ì´ë™ ì œí•œ
+    [SerializeField]
+    private GameObject clockPuzzle;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
+        ResultManager.Instance.RegisterExecutable("Clock", this);
     }
 
-    public void ClickBtn()
+    public new void OnMouseDown()
     {
-        // Å¬¸¯ È½¼ö Áõ°¡
-        GameManager.Instance.IncrementObjectClick("ClockClick");
-
-        if (!(bool)GameManager.Instance.GetVariable("ClockTimeCorrect"))
-        {
-            // ½Ã°è ½Ã°£ ¸ÂÃß´Â ÀåÄ¡ ½ÇÇà
-            _object.SetActive(true);
-            roomMov.addScreenObjects(_object);
-            roomMov.isResearch = true;
-        }
+        base.OnMouseDown();
+        GameManager.Instance.IncrementVariable("ClockClick");
     }
+
+    public void ExecuteAction()
+    {
+        ActivateClockPuzzle();
+    }
+
+    // ì‹œê³„ ì‹œê°„ ë§ì¶”ëŠ” ì¥ì¹˜ ì‹¤í–‰
+    private void ActivateClockPuzzle()
+    {
+        clockPuzzle.SetActive(true);
+        RoomManager.Instance.AddScreenObjects(clockPuzzle);
+        RoomManager.Instance.isResearch = true;
+    }
+
 }

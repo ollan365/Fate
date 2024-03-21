@@ -3,10 +3,25 @@ using UnityEngine;
 
 public class ConditionManager : MonoBehaviour
 {
+    public static ConditionManager Instance { get; private set; }
+    
     public TextAsset conditionsCSV;
     
     // conditions: dictionary of "Condition"s indexed by string "Condition ID"
     public Dictionary<string, Condition> conditions = new Dictionary<string, Condition>();
+    
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     
     // conditions.csv 파일 파싱
     public void ParseConditions()

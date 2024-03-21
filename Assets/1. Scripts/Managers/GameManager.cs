@@ -30,25 +30,60 @@ public class GameManager : MonoBehaviour
     
     void Start()
     {
-        // variables에 변수 추가
-        // 다이어리
-        SetVariable("DiaryPasswordCorrect", false);
-        SetVariable("DiaryClick", 0);
-        // 노트북
-        SetVariable("LaptopPasswordCorrect", false);
-        SetVariable("LaptopClick", 0);
-        // 시계
-        SetVariable("ClockTimeCorrect", false);
-        SetVariable("ClockClick", 0);
-
+        // ------------------------- 변수 초기화 -------------------------
+        // 1. 시스템 관련 변수들
+        SetVariable("ActionPoint", 25);
+        
+        // 2. 이벤트 오브젝트 관련 변수들
+        // 침대 위 곰인형
+        SetVariable("DollsClick", 0);
+        
+        // 이불
+        SetVariable("BlanketsClick", 0);
+        
+        // 술과 감기약
+        SetVariable("LiquorAndPillsClick", 0);
+        
+        // 스탠드
+        SetVariable("LampClick", 0);
+        
         // 인형 수납장
-        SetVariable("DollCabinetClick", 0);
+        SetVariable("ShelvesClick", 0);
+        
         // 배게
         SetVariable("PillowClick", 0);
+        
+        // 다이어리
+        SetVariable("DiaryClick", 0);
+        SetVariable("DiaryPasswordCorrect", false);
+        SetVariable("DiaryPassword", "0410");
+        
+        // 시계
+        SetVariable("ClockClick", 0);
+        SetVariable("ClockTimeCorrect", false);
+        float[] clockPassword = { 210f, 180f };
+        SetVariable("ClockPassword", clockPassword);
+        
         // 의자
-        SetVariable("ChairClick", 0);
+        SetVariable("ChairMoved", false);
+        
+        // 노트북
+        SetVariable("LaptopClick", 0);
+        SetVariable("LaptopPasswordCorrect", false);
+        SetVariable("LaptopPassword", "0410");
+        
+        // 카펫
+        SetVariable("CarpetClick", 0);
 
-        // UpdateUI();
+        // 카펫 아래 종이
+        SetVariable("PaperClick", 0);
+
+        // 포스터
+        SetVariable("PosterClick", 0);
+
+        // 커터칼
+        SetVariable("KnifeClick", 0);
+
     }
     
     public void SetVariable(string variableName, object value)
@@ -66,11 +101,25 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    public void IncrementObjectClick(string variableName)
+    public void IncrementVariable(string variableName)
     {
         int cnt = (int)GetVariable(variableName);
         cnt++;
         SetVariable(variableName, cnt);
+    }
+    
+    public void DecrementVariable(string variableName)
+    {
+        int cnt = (int)GetVariable(variableName);
+        cnt--;
+        SetVariable(variableName, cnt);
+    }
+
+    public void InverseVariable(string variableName)
+    {
+        bool variableValue= (bool)GetVariable(variableName);
+        variableValue = !variableValue;
+        SetVariable(variableName, variableValue);
     }
 
     //void UpdateUI()

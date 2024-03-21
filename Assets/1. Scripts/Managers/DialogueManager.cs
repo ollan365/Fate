@@ -16,7 +16,16 @@ public class DialogueManager : MonoBehaviour
     public TextAsset scriptsCSV;
     public TextAsset choicesCSV;
     public TextAsset imagePathsCSV;
-
+    
+    // Dialogue UI
+    [Header("Dialogue UI")]
+    public GameObject dialogueCanvas;
+    public TextMeshProUGUI speakerText;
+    public TextMeshProUGUI scriptText;
+    public SpriteRenderer characterImage;
+    public Transform choicesContainer;
+    public GameObject choicePrefab;
+    
     // 자료 구조
     public Dictionary<string, Dialogue> dialogues = new Dictionary<string, Dialogue>();
     public Dictionary<string, Script> scripts = new Dictionary<string, Script>();
@@ -27,18 +36,6 @@ public class DialogueManager : MonoBehaviour
     private string currentDialogueID = "";
     private bool isDialogueActive = false;
     private bool isChoiceActive = false;
-    
-    // 대화창
-    [Header("Dialogue UI")]
-    public GameObject dialoguePanel;
-    public TextMeshProUGUI speakerText;
-    public TextMeshProUGUI scriptText;
-    public Image characterImage; 
-    
-    // 선택창
-    [Header("Choices UI")]
-    public Transform choicesPanel;
-    public GameObject choicePrefab;
     
     void Awake()
     {
@@ -56,11 +53,7 @@ public class DialogueManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
-        // StartDialogue("Prologue_002");
+        dialogueCanvas.SetActive(false);
     }
 
     private void Update()
@@ -112,7 +105,7 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(string dialogueID)
     {
         isDialogueActive = true;
-        dialoguePanel.SetActive(true);
+        dialogueCanvas.SetActive(true);
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0]; 
@@ -121,7 +114,7 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayDialogueLine(DialogueLine dialogueLine)
     {
-        foreach (Transform child in choicesPanel)
+        foreach (Transform child in choicesContainer)
         {
             Destroy(child.gameObject);
         }
@@ -133,7 +126,7 @@ public class DialogueManager : MonoBehaviour
         string imageID = dialogueLine.ImageID;
         if (string.IsNullOrWhiteSpace(imageID))
         {
-            Debug.Log("image ID does not exist!");
+            // Debug.Log("image ID does not exist!");
             characterImage.sprite = null;
             return;
         }
@@ -148,14 +141,14 @@ public class DialogueManager : MonoBehaviour
     private void EndDialogue()
     {
         isDialogueActive = false;
-        dialoguePanel.SetActive(false);
+        dialogueCanvas.SetActive(false);
         characterImage.gameObject.SetActive(false);
     }
     
     // ---------------------------------------------- Choice methods ----------------------------------------------
     private void DisplayChoices(string choiceID)
     {
-        foreach (Transform child in choicesPanel)
+        foreach (Transform child in choicesContainer)
         {
             Destroy(child.gameObject);
         }
@@ -164,7 +157,7 @@ public class DialogueManager : MonoBehaviour
 
         foreach (ChoiceLine choiceLine in choiceLines)
         {
-            var choiceButton = Instantiate(choicePrefab, choicesPanel).GetComponent<Button>();
+            var choiceButton = Instantiate(choicePrefab, choicesContainer).GetComponent<Button>();
             var choiceText = choiceButton.GetComponentInChildren<TextMeshProUGUI>();
             
             // 언어마다 다르게 불러오도록 변경 필요
@@ -176,7 +169,7 @@ public class DialogueManager : MonoBehaviour
     private void OnChoiceSelected(string dialogueID)
     {
         StartDialogue(dialogueID);
-        foreach (Transform child in choicesPanel)
+        foreach (Transform child in choicesContainer)
         {
             Destroy(child.gameObject);
         }

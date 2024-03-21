@@ -2,31 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Diary : EventObject
+public class Diary : EventObject, IResultExecutable
 {
-    // ´ÙÀÌ¾î¸® Àá±İÀåÄ¡ º¸°í ÀÖÀ» ¶§ ½ÃÁ¡ ÀÌµ¿ Á¦ÇÑ
-    [SerializeField] private RoomMovManager roomMov;
-    [SerializeField] private GameObject _object;
+    // ë‹¤ì´ì–´ë¦¬ ì ê¸ˆì¥ì¹˜ ë³´ê³  ìˆì„ ë•Œ ì‹œì  ì´ë™ ì œí•œ
+    [SerializeField]
+    private GameObject diaryLock;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
+        ResultManager.Instance.RegisterExecutable("Diary", this);
+    }
+    
+    public new void OnMouseDown()
+    {
+        base.OnMouseDown();
+        GameManager.Instance.IncrementVariable("DiaryClick");
     }
 
-    public void ClickBtn()
+    public void ExecuteAction()
     {
-        // Å¬¸¯ È½¼ö Áõ°¡
-        GameManager.Instance.IncrementObjectClick("DiaryClick");
-        //Debug.Log("´ÙÀÌ¾î¸®Å¬¸¯ È½¼ö: "+ GameManager.Instance.GetVariable("DiaryClick"));
+        ActivateDiaryLock();
+    }
 
-        // DiaryPasswordCorrect°¡ false ÀÏ ¶§¸¸ ÀÛµ¿ÇÔ
-        if (!(bool)GameManager.Instance.GetVariable("DiaryPasswordCorrect"))
-        {
-            // ´ÙÀÌ¾î¸® Àá±İ ÀåÄ¡ ½ÇÇà
-            // Diary_p2 ÄÑÁü
-            _object.SetActive(true);
-            roomMov.addScreenObjects(_object);
-            roomMov.isResearch = true;
-        }
+    // ë‹¤ì´ì–´ë¦¬ ì ê¸ˆ ì¥ì¹˜ ì‹¤í–‰
+    public void ActivateDiaryLock()
+    {
+        diaryLock.SetActive(true);
+        RoomManager.Instance.AddScreenObjects(diaryLock);
+        RoomManager.Instance.isResearch = true;
     }
 }

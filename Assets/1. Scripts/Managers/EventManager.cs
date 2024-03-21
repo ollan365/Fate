@@ -12,8 +12,6 @@ public class EventManager : MonoBehaviour
     // events: dictionary of "Event"s indexed by string "Event ID"
     public Dictionary<string, Event> events = new Dictionary<string, Event>();
 
-    public ConditionManager conditionManager;
-    public ResultManager resultManager;
     
     void Awake()
     {
@@ -23,8 +21,8 @@ public class EventManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
 
             // ParseConditions와 ParseResults가 먼저 실행되어야 함
-            conditionManager.ParseConditions();
-            resultManager.ParseResults();
+            ConditionManager.Instance.ParseConditions();
+            ResultManager.Instance.ParseResults();
             ParseEvents();
             
             // 디버깅용
@@ -63,19 +61,19 @@ public class EventManager : MonoBehaviour
                 string[] conditionIDs = fields[4].Trim().Split('/');
                 foreach (string conditionID in conditionIDs)
                 {
-                    if (!conditionManager.conditions.ContainsKey(conditionID.Trim()))
+                    if (!ConditionManager.Instance.conditions.ContainsKey(conditionID.Trim()))
                     {
                         Debug.Log($"Condition ID \"{conditionID.Trim()}\" not found!");
                         continue;
                     }
-                    conditions.Add(conditionManager.conditions[conditionID.Trim()]);
+                    conditions.Add(ConditionManager.Instance.conditions[conditionID.Trim()]);
                 }
             }
             
             string[] resultIDs = fields[5].Trim().Split('/');
             foreach (string resultID in resultIDs)
             {
-                results.Add(resultManager.results[resultID.Trim()]);
+                results.Add(ResultManager.Instance.results[resultID.Trim()]);
             }
 
             if (events.ContainsKey(eventID)) // 이미 존재하는 event ID인 경우: EventLine을 추가
@@ -123,7 +121,7 @@ public class EventManager : MonoBehaviour
             else // logic이 빈칸인 경우
             {
                 string conditionID = conditions[0].ConditionID;
-                bool isCondition = conditionManager.IsCondition(conditionID);
+                bool isCondition = ConditionManager.Instance.IsCondition(conditionID);
                 if (isCondition)
                 {
                     ExecuteResults(results);
@@ -137,7 +135,7 @@ public class EventManager : MonoBehaviour
         foreach (Condition condition in conditions)
         {
             string conditionID = condition.ConditionID;
-            bool isCondition = conditionManager.IsCondition(conditionID);
+            bool isCondition = ConditionManager.Instance.IsCondition(conditionID);
             if (isCondition)
             {
                 return true;
@@ -152,7 +150,7 @@ public class EventManager : MonoBehaviour
         foreach (Condition condition in conditions)
         {
             string conditionID = condition.ConditionID;
-            bool isCondition = conditionManager.IsCondition(conditionID);
+            bool isCondition = ConditionManager.Instance.IsCondition(conditionID);
             if (!isCondition)
             {
                 return false;
@@ -167,7 +165,8 @@ public class EventManager : MonoBehaviour
         foreach (Result result in results)
         {
             string resultID = result.ResultID;
-            resultManager.ExecuteResult(resultID);
+            // Debug.Log("리절트id "+resultID);
+            ResultManager.Instance.ExecuteResult(resultID);
         }
     }
 
