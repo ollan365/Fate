@@ -4,32 +4,30 @@ using UnityEngine;
 
 public class Diary : EventObject
 {
-    // ´ÙÀÌ¾î¸® Àá±ÝÀåÄ¡ º¸°í ÀÖÀ» ¶§ ½ÃÁ¡ ÀÌµ¿ Á¦ÇÑ
-    [SerializeField] private RoomMovManager roomMov;
+    // ï¿½ï¿½ï¿½Ì¾î¸® ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private GameObject _object;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
     }
 
     public void ClickBtn()
     {
-        OnClick();
+        OnMouseDown();
 
-        //Debug.Log("´ÙÀÌ¾î¸®Å¬¸¯ È½¼ö: "+ GameManager.Instance.GetVariable("DiaryClick"));
+        //Debug.Log("ï¿½ï¿½ï¿½Ì¾î¸®Å¬ï¿½ï¿½ È½ï¿½ï¿½: "+ GameManager.Instance.GetVariable("DiaryClick"));
 
-        // DiaryPasswordCorrect°¡ false ÀÏ ¶§¸¸ ÀÛµ¿ÇÔ
+        // DiaryPasswordCorrectï¿½ï¿½ false ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½ï¿½ï¿½
         if (!(bool)GameManager.Instance.GetVariable("DiaryPasswordCorrect"))
         {
-            // ´ÙÀÌ¾î¸® Àá±Ý ÀåÄ¡ ½ÇÇà
-            // Diary_p2 ÄÑÁü
+            // ï¿½ï¿½ï¿½Ì¾î¸® ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+            // Diary_p2 ï¿½ï¿½ï¿½ï¿½
             _object.SetActive(true);
-            roomMov.addScreenObjects(_object);
-            roomMov.isResearch = true;
+            RoomManager.Instance.AddScreenObjects(_object);
+            RoomManager.Instance.isResearch = true;
         }
 
-        // Å¬¸¯ È½¼ö Áõ°¡
-        GameManager.Instance.IncrementObjectClick("DiaryClick");
+        // Å¬ï¿½ï¿½ È½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        GameManager.Instance.IncrementVariable("DiaryClick");
     }
 }

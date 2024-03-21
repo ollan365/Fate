@@ -15,18 +15,14 @@ public class LoginPassword : MonoBehaviour
 
     [SerializeField] private TMP_InputField pwInput_TMpro;
 
-    private RoomMovManager roomMov;
-
     void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
-
         pwInput_TMpro = gameObject.transform.GetChild(0).GetComponent<TMP_InputField>();
-        // inputFieldÀÇ OnEndEdit ÀÌº¥Æ®¿¡ OnInputSubmit ¸Þ¼­µå¸¦ ¿¬°á.
+        // inputFieldï¿½ï¿½ OnEndEdit ï¿½Ìºï¿½Æ®ï¿½ï¿½ OnInputSubmit ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½.
         pwInput_TMpro.onEndEdit.AddListener(loginPW);
     }
 
-    // ·Î±×ÀÎ È­¸é¿¡¼­ ¾ÏÈ£ ÀÔ·Â ÈÄ ¿£ÅÍ Ä¡¸é
+    // ï¿½Î±ï¿½ï¿½ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½È£ ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¡ï¿½ï¿½
     public void loginPW(string input)
     {
         inputPw = input;
@@ -34,7 +30,7 @@ public class LoginPassword : MonoBehaviour
         StartCoroutine(Compare_password());
     }
 
-    // ºñ¹Ð¹øÈ£ ÀÔ·Â ÃÊ±âÈ­
+    // ï¿½ï¿½Ð¹ï¿½È£ ï¿½Ô·ï¿½ ï¿½Ê±ï¿½È­
     private void delete_inputPassword()
     {
         inputPw = "";
@@ -47,10 +43,10 @@ public class LoginPassword : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         if (Enumerable.SequenceEqual(pw, inputPw))
         {
-            // ³ëÆ®ºÏ Àá±Ý Ç®¸²
+            // ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½
             Laptop_p1.SetActive(true);
 
-            roomMov.addScreenObjects(Laptop_p1);
+            RoomManager.Instance.AddScreenObjects(Laptop_p1);
             GameManager.Instance.SetVariable("LaptopPasswordCorrect", true);
         }
         else

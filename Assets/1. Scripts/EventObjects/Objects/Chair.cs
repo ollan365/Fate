@@ -1,43 +1,43 @@
 
 using UnityEngine;
 
-public class Chair : EventObject
+public class Chair : EventObject, IResultExecutable
 {
-    public void ClickBtn()
-    {
-        OnClick();
-
-        // ÀÇÀÚ ¿·À¸·Î ¿òÁ÷ÀÌ±â
-        if (buttonRectTransform.anchoredPosition.x != movePos.x)
-        {
-            // ¿·À¸·Î ¿òÁ÷ÀÓ
-            buttonRectTransform.anchoredPosition = movePos;
-            // Çàµ¿·Â °¨¼Ò
-
-            // Ä¿ÅÍÄ® Á¶»ç °¡´É?
-
-        }
-        else
-        {
-            buttonRectTransform.anchoredPosition = originalPos;
-        }
-
-        // Å¬¸¯ È½¼ö Áõ°¡
-        GameManager.Instance.IncrementObjectClick("ChairClick");
-
-    }
-
-    private Vector3 originalPos;
-    private Vector3 movePos;
-
+    private Vector3 originalPosition;
+    private Vector3 movedPosition;
     private RectTransform buttonRectTransform;
-
+    
     private void Start()
     {
+        ResultManager.Instance.RegisterExecutable("Chair", this);
+        
         buttonRectTransform = GetComponent<RectTransform>();
 
-        movePos = originalPos = buttonRectTransform.anchoredPosition;
-        movePos.x = -125f;
+        movedPosition = originalPosition = buttonRectTransform.anchoredPosition;
+        movedPosition.x = -125f;
+    }
+    
+    public new void OnMouseDown()
+    {
+        base.OnMouseDown();
+        GameManager.Instance.InverseVariable("ChairMoved");
+    }
+    
+    public void ExecuteAction()
+    {
+        MoveChair();
+    }
+    
+    public void MoveChair()
+    {
+        if ((bool)GameManager.Instance.GetVariable("ChairMoved"))  // ì˜ìê°€ ì´ë™í•œ ìƒíƒœì¸ ê²½ìš°
+        {
+            buttonRectTransform.anchoredPosition = originalPosition;
+        }
+        else  // ì˜ìê°€ ì´ë™í•˜ì§€ ì•Šì€ ìƒíƒœì¸ ê²½ìš°
+        {
+            buttonRectTransform.anchoredPosition = movedPosition;
+        }
     }
 
 }

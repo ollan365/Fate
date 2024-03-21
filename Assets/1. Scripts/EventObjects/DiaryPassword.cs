@@ -18,22 +18,20 @@ public class DiaryPassword : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI pwTxt;
 
-    private RoomMovManager roomMov;
 
     [SerializeField] private EventObject diary;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
         diary = GameObject.Find("Diary").GetComponent<EventObject>();
     }
 
     public void Add_inputPwBtn()
     {
-        // ÇöÀç Å¬¸¯µÈ °ÔÀÓ¿ÀºêÁ§Æ® °¡Á®¿È(pw¹öÆ° ÀÌ¸§)
+        // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(pwï¿½ï¿½Æ° ï¿½Ì¸ï¿½)
         string Number = EventSystem.current.currentSelectedGameObject.name;
         inputPw.Add(Number);
-        // ÅØ½ºÆ®ÀÎ pwTxt¿¡µµ ¼ýÀÚ µé¾î°¡´Â°Å º¸¿©Áü
+        // ï¿½Ø½ï¿½Æ®ï¿½ï¿½ pwTxtï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         pwTxt.text += Number;
 
         pw_Count++;
@@ -44,7 +42,7 @@ public class DiaryPassword : MonoBehaviour
         }
     }
 
-    // ºñ¹Ð¹øÈ£ ÀÔ·Â ÃÊ±âÈ­
+    // ï¿½ï¿½Ð¹ï¿½È£ ï¿½Ô·ï¿½ ï¿½Ê±ï¿½È­
     private void delete_inputPassword()
     {
         inputPw.Clear();
@@ -57,19 +55,19 @@ public class DiaryPassword : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         if (Enumerable.SequenceEqual(pw, inputPw))
         {
-            // ´ÙÀÌ¾î¸® ³»¿ë º¸¿©Áü
+            // ï¿½ï¿½ï¿½Ì¾î¸® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             Diary_p3.SetActive(true);
 
-            roomMov.addScreenObjects(Diary_p3);
-            // ¿©±â¼­ °ÔÀÓ ¸Å´ÏÀúÀÇ DiaryPasswordCorrect¸¦ setter·Î È£ÃâÇØ¼­ true·Î ¸¸µé±â.
+            RoomManager.Instance.AddScreenObjects(Diary_p3);
+            // ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ DiaryPasswordCorrectï¿½ï¿½ setterï¿½ï¿½ È£ï¿½ï¿½ï¿½Ø¼ï¿½ trueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
             GameManager.Instance.SetVariable("DiaryPasswordCorrect", true);
 
-            EventManager.Instance.CallEvent(diary.getEventId());
-            //Debug.Log("DiaryPasswordCorrect´Â " + GameManager.Instance.GetVariable("DiaryPasswordCorrect"));
+            EventManager.Instance.CallEvent(diary.GetEventId());
+            //Debug.Log("DiaryPasswordCorrectï¿½ï¿½ " + GameManager.Instance.GetVariable("DiaryPasswordCorrect"));
         }
         else
         {
-            EventManager.Instance.CallEvent(diary.getEventId());
+            EventManager.Instance.CallEvent(diary.GetEventId());
 
             delete_inputPassword();
         }

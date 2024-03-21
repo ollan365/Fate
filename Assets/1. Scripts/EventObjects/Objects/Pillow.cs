@@ -2,52 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pillow : EventObject
+public class Pillow : EventObject, IResultExecutable
 {
-    [SerializeField] private RoomMovManager roomMov;
-    [SerializeField] private GameObject _object;
+    [SerializeField]
+    private GameObject amulet;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
+        ResultManager.Instance.RegisterExecutable("Pillow", this);
     }
 
-    public void ClickBtn()
+    public new void OnMouseDown()
     {
-        OnClick();
-
-        // Ã¹¹øÂ° Å¬¸¯
-        if ((int)GameManager.Instance.GetVariable("PillowClick") == 0)
-        {
-            Debug.Log("¹è°Ô Å¬¸¯ È½¼ö: " + GameManager.Instance.GetVariable("PillowClick"));
-            // ¹è°Ô¿¡ ´ëÇÑ ¼³¸í
-           
-            // Çàµ¿·Â °¨¼ÒµÊ
-
-        }
-        else if ((int)GameManager.Instance.GetVariable("PillowClick") == 1) // µÎ¹øÂ° Å¬¸¯
-        {
-            Debug.Log("¹è°Ô Å¬¸¯ È½¼ö: " + GameManager.Instance.GetVariable("PillowClick"));
-            // ¹è°Ô ¾È¿¡ ÀÖ´Â ºÎÀû ¹ß°ß
-            _object.SetActive(true);
-            roomMov.addScreenObjects(_object);
-            roomMov.isResearch = true;
-
-            // Çàµ¿·Â °¨¼ÒµÊ
-
-            // ºÎÀû¿¡ ´ëÇÑ ¸Ş¸ğ ÀÛ¼º
-
-        }
-        else // ¼¼¹ø ÀÌ»ó Å¬¸¯
-        {
-            Debug.Log("¹è°Ô Å¬¸¯ È½¼ö: " + GameManager.Instance.GetVariable("PillowClick"));
-            // Á¶»ç ¿Ï·á ½ºÅ©¸³Æ®
-
-        }
-
-        // Å¬¸¯ È½¼ö Áõ°¡
-        GameManager.Instance.IncrementObjectClick("PillowClick");
-
+        base.OnMouseDown();
+        GameManager.Instance.IncrementVariable("PillowClick");
+    }
+    
+    public void ExecuteAction()
+    {
+        ShowAmulet();
     }
 
+    private void ShowAmulet()  // ë°°ê²Œ ì•ˆì— ìˆëŠ” ë¶€ì  ë°œê²¬
+    {
+        amulet.SetActive(true);
+        RoomManager.Instance.AddScreenObjects(amulet);
+        RoomManager.Instance.isResearch = true;
+    }
+    
 }

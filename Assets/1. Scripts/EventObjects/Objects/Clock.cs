@@ -4,29 +4,27 @@ using UnityEngine;
 
 public class Clock : EventObject
 {
-    // ½Ã°è ½Ã°£ ¸ÂÃß´Â È­¸éÀÏ ¶§ ½ÃÁ¡ ÀÌµ¿ Á¦ÇÑ
-    [SerializeField] private RoomMovManager roomMov;
+    // ï¿½Ã°ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ß´ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private GameObject _object;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
     }
 
     public void ClickBtn()
     {
-        OnClick();
+        OnMouseDown();
 
         if (!(bool)GameManager.Instance.GetVariable("ClockTimeCorrect"))
         {
-            // ½Ã°è ½Ã°£ ¸ÂÃß´Â ÀåÄ¡ ½ÇÇà
+            // ï¿½Ã°ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ß´ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
             _object.SetActive(true);
-            roomMov.addScreenObjects(_object);
-            roomMov.isResearch = true;
+            RoomManager.Instance.AddScreenObjects(_object);
+            RoomManager.Instance.isResearch = true;
         }
 
-        // Å¬¸¯ È½¼ö Áõ°¡
-        GameManager.Instance.IncrementObjectClick("ClockClick");
+        // Å¬ï¿½ï¿½ È½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        GameManager.Instance.IncrementVariable("ClockClick");
     }
 
 }

@@ -13,8 +13,8 @@ public class ClockPassword : MonoBehaviour
     [SerializeField]
     private GameObject hour_hand;
 
-    public float pw_hour = 210f;  // 5½Ã
-    public float pw_min = 180f;   // 30ºÐ
+    public float pw_hour = 210f;  // 5ï¿½ï¿½
+    public float pw_min = 180f;   // 30ï¿½ï¿½
 
     private float input_hour;
     private float input_min;
@@ -22,13 +22,11 @@ public class ClockPassword : MonoBehaviour
     [SerializeField]
     private GameObject key_bg;
 
-    private RoomMovManager roomMov;
 
     [SerializeField] private EventObject clock;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
         clock = GameObject.Find("Clock").GetComponent<EventObject>();
 
         min_hand = GameObject.Find("minute_hand");
@@ -40,12 +38,12 @@ public class ClockPassword : MonoBehaviour
         input_hour = hour_hand.transform.rotation.eulerAngles.z;
         input_min = min_hand.transform.rotation.eulerAngles.z;
 
-        //Debug.Log(input_hour + "½Ã "+ input_min + "ºÐ");
+        //Debug.Log(input_hour + "ï¿½ï¿½ "+ input_min + "ï¿½ï¿½");
 
         StartCoroutine(Compare_password());
     }
 
-    // ½ÃÄ§ ºÐÄ§ ÀÔ·Â ÃÊ±âÈ­
+    // ï¿½ï¿½Ä§ ï¿½ï¿½Ä§ ï¿½Ô·ï¿½ ï¿½Ê±ï¿½È­
     private void delete_inputPassword()
     {
         input_hour = 0f;
@@ -60,17 +58,17 @@ public class ClockPassword : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (pw_hour == input_hour && pw_min == input_min)
         {
-            // ½Ã°è ¿­¸®°í ¿­¼è È¹µæ
+            // ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¹ï¿½ï¿½
             key_bg.SetActive(true);
 
-            roomMov.addScreenObjects(key_bg);
+            RoomManager.Instance.AddScreenObjects(key_bg);
             GameManager.Instance.SetVariable("ClockTimeCorrect", true);
 
-            EventManager.Instance.CallEvent(clock.getEventId());
+            EventManager.Instance.CallEvent(clock.GetEventId());
         }
         else
         {
-            EventManager.Instance.CallEvent(clock.getEventId());
+            EventManager.Instance.CallEvent(clock.GetEventId());
             delete_inputPassword();
         }
 

@@ -13,15 +13,7 @@ public class EventObject : MonoBehaviour
         }
     }
 
-    protected void OnClick()
-    {
-        if (!string.IsNullOrEmpty(eventId) && EventManager.Instance)
-        {
-            EventManager.Instance.CallEvent(eventId);
-        }
-    }
-
-    public string getEventId()
+    public string GetEventId()
     {
         return eventId;
     }

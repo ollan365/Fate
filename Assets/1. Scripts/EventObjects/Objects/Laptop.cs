@@ -5,31 +5,29 @@ using UnityEngine;
 
 public class Laptop : EventObject
 {
-    // ·Î±×ÀÎ ÆäÀÌÁö ÄÑÁö¸é ½ÃÁ¡ ÀÌµ¿ ¾È µÇ´Ï±î..½ÃÁ¡ ÀÌµ¿ Á¦ÇÑ
-    [SerializeField] private RoomMovManager roomMov;
+    // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ ï¿½Ç´Ï±ï¿½..ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private GameObject _object;
 
     private void Start()
     {
-        roomMov = GameObject.Find("Room1 Manager").GetComponent<RoomMovManager>();
     }
 
     public void ClickBtn()
     {
-        OnClick();
+        OnMouseDown();
 
-        // LaptopPasswordCorrect°¡ false ÀÏ ¶§¸¸ ÀÛµ¿ÇÔ
+        // LaptopPasswordCorrectï¿½ï¿½ false ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½ï¿½ï¿½
         if (!(bool)GameManager.Instance.GetVariable("LaptopPasswordCorrect"))
         {
-            // ³ëÆ®ºÏ Àá±Ý ÀåÄ¡ ½ÇÇà
-            // ·Î±×ÀÎ ÆäÀÌÁö ÄÑÁü
+            // ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+            // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             _object.SetActive(true);
-            roomMov.addScreenObjects(_object);
-            roomMov.isResearch = true;
+            RoomManager.Instance.AddScreenObjects(_object);
+            RoomManager.Instance.isResearch = true;
         }
 
-        // Å¬¸¯ È½¼ö Áõ°¡
-        GameManager.Instance.IncrementObjectClick("LaptopClick");
+        // Å¬ï¿½ï¿½ È½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        GameManager.Instance.IncrementVariable("LaptopClick");
     }
 
 }
