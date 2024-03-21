@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class ResultManager : MonoBehaviour
@@ -67,6 +68,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_002": // 설명창 띄우기 - ### 추후 구현 필요 ###
+                SceneManager.LoadScene(1);
                 break;
             
             case "Result_003": // 행동력 감소
