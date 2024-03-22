@@ -1,12 +1,19 @@
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Chair : EventObject, IResultExecutable
 {
     private Vector3 originalPosition;
     private Vector3 movedPosition;
+    // targetPosition에 위의 origin 위치랑 moved 위치를 대입해서 거기까지 움직이게 함.
+    private Vector3 targetPosition;
     private RectTransform buttonRectTransform;
-    
+
+    public float speed = 1.5f; // 이동 속도
+
+    public bool isMoving = false; // 의자가 움직이는지 여부
+
     private void Start()
     {
         ResultManager.Instance.RegisterExecutable("Chair", this);
@@ -16,11 +23,29 @@ public class Chair : EventObject, IResultExecutable
         movedPosition = originalPosition = buttonRectTransform.anchoredPosition;
         movedPosition.x = -125f;
     }
-    
+
+    // 의자 천천히 움직이게 하기
+    void Update()
+    {
+        if (isMoving)
+        {
+            buttonRectTransform.anchoredPosition = Vector3.Lerp(buttonRectTransform.anchoredPosition, targetPosition, Time.deltaTime * speed);
+
+            // 목표 위치에 도달했는지 확인
+            if (Vector3.Distance(buttonRectTransform.anchoredPosition, targetPosition) < 0.1f)
+            {
+                isMoving = false;
+            }
+        }
+    }
+
     public new void OnMouseDown()
     {
-        base.OnMouseDown();
-        GameManager.Instance.InverseVariable("ChairMoved");
+        if (!isMoving)
+        {
+            base.OnMouseDown();
+            GameManager.Instance.InverseVariable("ChairMoved");
+        }
     }
     
     public void ExecuteAction()
@@ -30,13 +55,12 @@ public class Chair : EventObject, IResultExecutable
     
     public void MoveChair()
     {
-        if ((bool)GameManager.Instance.GetVariable("ChairMoved"))  // 의자가 이동한 상태인 경우
+        // 의자의 현재 위치와 목표 위치가 다르면 이동 시작
+        if (!isMoving)
         {
-            buttonRectTransform.anchoredPosition = originalPosition;
-        }
-        else  // 의자가 이동하지 않은 상태인 경우
-        {
-            buttonRectTransform.anchoredPosition = movedPosition;
+            isMoving = true;
+
+            targetPosition = ((bool)GameManager.Instance.GetVariable("ChairMoved")) ? originalPosition : movedPosition;
         }
     }
 
