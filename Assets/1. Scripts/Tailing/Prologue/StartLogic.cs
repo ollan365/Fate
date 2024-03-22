@@ -14,8 +14,8 @@ public class StartLogic : MonoBehaviour
 
     public void SetName()
     {
-        Player.Instance.Name = nameInput.text == "" ? "ÇÊ¿¬" : nameInput.text;
-        nameCheckQuestion.text = $"\"{Player.Instance.Name}\"À¸·Î È®Á¤ÇÏ½Ã°Ú½À´Ï±î?";
+        Player.Instance.Name = nameInput.text == "" ? "í•„ì—°" : nameInput.text;
+        nameCheckQuestion.text = $"\"{Player.Instance.Name}\"ìœ¼ë¡œ í™•ì •í•˜ì‹œê² ìŠµë‹ˆê¹Œ?";
     }
 
     public void ChangeDayOption()
