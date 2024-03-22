@@ -10,7 +10,7 @@ public class Chair : EventObject, IResultExecutable
     private Vector3 targetPosition;
     private RectTransform buttonRectTransform;
 
-    public float speed = 1.5f; // 이동 속도
+    public float speed = 6f; // 이동 속도
 
     public bool isMoving = false; // 의자가 움직이는지 여부
 
