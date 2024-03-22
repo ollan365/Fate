@@ -64,7 +64,8 @@ public class ResultManager : MonoBehaviour
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
-            case "Result_001": // 눈 깜박거리는 효과 - ### 추후 구현 필요 ###
+            case "Result_001": // 눈 뜨는 효과
+                executableObjects["StartLogic"].ExecuteAction();
                 break;
             
             case "Result_002": // 설명창 띄우기 - ### 추후 구현 필요 ###

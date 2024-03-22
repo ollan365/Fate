@@ -32,6 +32,7 @@ public class RoomManager : MonoBehaviour
         roomP1.SetActive(true);
         roomP2.SetActive(false);
         roomP3.SetActive(false);
+        DialogueManager.Instance.StartDialogue("Prologue_015");
     }
 
     // ���� Ŭ�� �̺�Ʈ �߻��ؼ� ���� ���̸� A�� D�� ������ �� ����� ��

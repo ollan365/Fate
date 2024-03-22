@@ -32,15 +32,15 @@ public class DiaryLock : EventObject, IResultExecutable
         RoomManager.Instance.isResearch = true;
     }
 
-    public void InputNumber(string input)
+    public void InputNumber(string buttonInput)
     {
         // 현재 클릭된 게임오브젝트 가져옴(pw버튼 이름)
-        string numberInput = EventSystem.current.currentSelectedGameObject.name;
+        // string numberInput = EventSystem.current.currentSelectedGameObject.name;
 
         if (passwordInput.Length < 4)
         {
             // 텍스트에도 숫자 들어가는거 보여짐
-            passwordInput += numberInput;
+            passwordInput += buttonInput;
             passwordText.text = passwordInput;
             if (passwordInput.Length < 4) return;
         }
