@@ -25,6 +25,7 @@ public class DialogueManager : MonoBehaviour
     public SpriteRenderer characterImage;
     public Transform choicesContainer;
     public GameObject choicePrefab;
+    public SpriteRenderer teddyBearIcon;
     
     // 타자 효과 속도
     [Header("Type Sentence Speed")]
@@ -150,6 +151,7 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator TypeSentence(string sentence)
     {
+        teddyBearIcon.gameObject.SetActive(false);
         scriptText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
@@ -157,6 +159,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
+        teddyBearIcon.gameObject.SetActive(true);
     }
     
     private void EndDialogue()

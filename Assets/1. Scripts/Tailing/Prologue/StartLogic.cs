@@ -29,7 +29,8 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     public void ExecuteAction()
     {
         PlayFadeOutAnimation();
-        StartCoroutine(GoSceneAfterDelay(1, 2.5f));
+        StartCoroutine(PlayFadeInAnimationAfterDelay(5f));
+        StartCoroutine(GoSceneAfterDelay(1, 7.5f));
     }
     
     public void GoScene(int sceneNum)
@@ -77,7 +78,8 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     public void SettingsComplete()
     {
         fadeEffectImage.SetActive(true); // Fade Effect Image 활성화
-        background.GetComponent<Image>().sprite = Resources.Load<Sprite>("PrototypeImage/Side 1"); // Background 이미지 변경
+        background.GetComponent<Image>().color = Color.white;
+        background.GetComponent<Image>().sprite = Resources.Load<Sprite>("PrototypeImage/Side 1 Full"); // Background 이미지 변경
         PlayFadeInAnimation();
         StartCoroutine(StartDialogueAfterDelay("Prologue_002", 2.5f));
     }
@@ -92,6 +94,12 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     {
         yield return new WaitForSeconds(delaySeconds);
         GoScene(sceneNumber);
+    }
+
+    IEnumerator PlayFadeInAnimationAfterDelay(float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        PlayFadeInAnimation();
     }
 
     // "Fade In" 애니메이션 재생 메서드
