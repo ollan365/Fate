@@ -25,6 +25,11 @@ public class DialogueManager : MonoBehaviour
     public SpriteRenderer characterImage;
     public Transform choicesContainer;
     public GameObject choicePrefab;
+    public SpriteRenderer teddyBearIcon;
+    
+    // 타자 효과 속도
+    [Header("Type Sentence Speed")]
+    public float typeSpeed = 0.05f;
     
     // 자료 구조
     public Dictionary<string, Dialogue> dialogues = new Dictionary<string, Dialogue>();
@@ -34,9 +39,11 @@ public class DialogueManager : MonoBehaviour
 
     // 상태 변수
     private string currentDialogueID = "";
-    private bool isDialogueActive = false;
+    public bool isDialogueActive = false;
     private bool isChoiceActive = false;
-    
+    private bool isTyping = false;
+
+
     void Awake()
     {
         if (Instance == null)
@@ -58,7 +65,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (isDialogueActive && Input.GetKeyDown(KeyCode.Space) && !isChoiceActive)
+        if (isDialogueActive && Input.GetKeyDown(KeyCode.Space) && !isChoiceActive &&!isTyping)
         {
             ProceedToNext();
         }
@@ -121,7 +128,11 @@ public class DialogueManager : MonoBehaviour
         
         // 언어마다 다르게 불러오도록 변경 필요
         speakerText.text = scripts[dialogueLine.SpeakerID].KorScript;
-        scriptText.text = scripts[dialogueLine.ScriptID].KorScript;
+
+        // 타자 효과 적용
+        // scriptText.text = scripts[dialogueLine.ScriptID].KorScript;
+        isTyping = true;
+        StartCoroutine(TypeSentence(scripts[dialogueLine.ScriptID].KorScript));
         
         string imageID = dialogueLine.ImageID;
         if (string.IsNullOrWhiteSpace(imageID))
@@ -138,6 +149,19 @@ public class DialogueManager : MonoBehaviour
         characterImage.gameObject.SetActive(true);
     }
 
+    IEnumerator TypeSentence(string sentence)
+    {
+        teddyBearIcon.gameObject.SetActive(false);
+        scriptText.text = "";
+        foreach (char letter in sentence.ToCharArray())
+        {
+            scriptText.text += letter;
+            yield return new WaitForSeconds(typeSpeed);
+        }
+        isTyping = false;
+        teddyBearIcon.gameObject.SetActive(true);
+    }
+    
     private void EndDialogue()
     {
         isDialogueActive = false;

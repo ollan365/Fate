@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class Chair : EventObject, IResultExecutable
 
     public float speed = 6f; // 이동 속도
 
-    public bool isMoving = false; // 의자가 움직이는지 여부
+    private bool isMoving = false; // 의자가 움직이는지 여부
 
     private void Start()
     {
@@ -29,13 +30,7 @@ public class Chair : EventObject, IResultExecutable
     {
         if (isMoving)
         {
-            buttonRectTransform.anchoredPosition = Vector3.Lerp(buttonRectTransform.anchoredPosition, targetPosition, Time.deltaTime * speed);
-
-            // 목표 위치에 도달했는지 확인
-            if (Vector3.Distance(buttonRectTransform.anchoredPosition, targetPosition) < 0.1f)
-            {
-                isMoving = false;
-            }
+            StartCoroutine(MoveChairCoroutine());
         }
     }
 
@@ -61,6 +56,22 @@ public class Chair : EventObject, IResultExecutable
             isMoving = true;
 
             targetPosition = ((bool)GameManager.Instance.GetVariable("ChairMoved")) ? originalPosition : movedPosition;
+        }
+    }
+
+    private IEnumerator MoveChairCoroutine()
+    {
+        while (isMoving)
+        {
+            buttonRectTransform.anchoredPosition = Vector3.Lerp(buttonRectTransform.anchoredPosition, targetPosition, Time.deltaTime * speed);
+
+            // 목표 위치에 도달했는지 확인
+            if (Vector3.Distance(buttonRectTransform.anchoredPosition, targetPosition) < 0.1f)
+            {
+                isMoving = false;
+            }
+
+            yield return null;
         }
     }
 
