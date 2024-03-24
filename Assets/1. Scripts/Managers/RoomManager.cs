@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoomManager : MonoBehaviour
 {
@@ -10,10 +12,13 @@ public class RoomManager : MonoBehaviour
     public GameObject roomP2;
     public GameObject roomP3;
 
-    // ���� �̺�Ʈ ���̸� �������� ���ϰ� �ϴ� ��������
+    // 조사 중이면 이동키로 시점 바꾸지 못하게 함
     public bool isResearch = false;
 
     public List<GameObject> ScreenObjects = new List<GameObject>();
+
+    // 다이얼로그 매니저의 isDialogueActive가 true면 다른 버튼들 비활성화시킴
+    private Button[] otherButtons;
 
     void Awake()
     {
@@ -29,15 +34,29 @@ public class RoomManager : MonoBehaviour
     
     void Start()
     {
+        // "Controlled Button" 태그를 가진 모든 버튼들을 찾아서 otherButtons에 넣음.
+        otherButtons = GameObject.FindGameObjectsWithTag("Controlled Button").Select(g => g.GetComponent<Button>()).ToArray();
+
         roomP1.SetActive(true);
         roomP2.SetActive(false);
         roomP3.SetActive(false);
         DialogueManager.Instance.StartDialogue("Prologue_015");
     }
 
-    // ���� Ŭ�� �̺�Ʈ �߻��ؼ� ���� ���̸� A�� D�� ������ �� ����� ��
+    // A키와 D키로 시점 이동
     void Update()
     {
+        // 대사 출력되고 있으면 버튼들 클릭 비활성화시킴
+        if (DialogueManager.Instance.isDialogueActive)
+        {
+            offControlledBtn();
+        }
+        else // 대사 출력이 끝나면 버튼들 클릭 다시 활성화시킴
+        {
+            onControlledBtn();
+        }
+        
+
         if (!isResearch)
         {
             if (Input.GetKeyDown(KeyCode.A))
@@ -98,12 +117,30 @@ public class RoomManager : MonoBehaviour
         {
             obj.SetActive(false);
         }
-        // ����Ʈ Ŭ����� ������ �ϸ� ���� ����� �� ������� ������ �־ Ŭ����� ���ϰ� ��...
+
         //ScreenObjects.Clear();
     }
 
     public void AddScreenObjects(GameObject obj)
     {
         if (!ScreenObjects.Contains(obj)) ScreenObjects.Add(obj);
+    }
+
+    // 대사 출력 동안 버튼들 클릭 비활성화
+    private void offControlledBtn()
+    {
+        foreach (Button button in otherButtons)
+        {
+            button.interactable = false;
+        }
+    }
+
+    // 대사 출력 끝나면 버튼들 클릭 다시 활성화
+    private void onControlledBtn()
+    {
+        foreach (Button button in otherButtons)
+        {
+            button.interactable = true;
+        }
     }
 }

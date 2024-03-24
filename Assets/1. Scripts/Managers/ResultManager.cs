@@ -181,10 +181,12 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape_016");
                 break;
             
-            case "Result_031": // 카펫이 들쳐짐- ### 추후 구현 필요 ###
+            case "Result_031": // 카펫이 들쳐짐
+                executableObjects["Carpet"].ExecuteAction();
                 break;
             
             case "Result_032": // 종이를 확대해주는 UI- ### 추후 구현 필요 ###
+
                 break;
             
             case "Result_033": // 종이에 대한 스크립트
@@ -192,6 +194,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_034": // 카펫이 원래대로 돌아감
+                executableObjects["Carpet"].ExecuteAction();
                 DialogueManager.Instance.StartDialogue("RoomEscape_018");
                 break;
             

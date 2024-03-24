@@ -39,7 +39,7 @@ public class DialogueManager : MonoBehaviour
 
     // 상태 변수
     private string currentDialogueID = "";
-    private bool isDialogueActive = false;
+    public bool isDialogueActive = false;
     private bool isChoiceActive = false;
     private bool isTyping = false;
 
