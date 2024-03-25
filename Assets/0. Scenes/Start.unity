@@ -694,7 +694,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 83125720}
-  - component: {fileID: 83125717}
   - component: {fileID: 83125721}
   m_Layer: 0
   m_Name: Tutorial Logic
@@ -703,21 +702,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &83125717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 83125716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc278bac64591674aa3ea45cfe9c59f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerName: 
-  language: 1
-  fateGender: 0
 --- !u!4 &83125720
 Transform:
   m_ObjectHideFlags: 0
@@ -6360,7 +6344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7940ce3d7f99e435586a89e168011e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialoguesCSV: {fileID: 4900000, guid: eb8675065381249c2b3dab99bea2bd26, type: 3}
+  dialoguesCSV: {fileID: 4900000, guid: 32d77356b1d409342ba03e00b7935778, type: 3}
   scriptsCSV: {fileID: 4900000, guid: 78398540b196c4001b97a350113f4ed9, type: 3}
   choicesCSV: {fileID: 4900000, guid: f9524f740e23d4fb88f393a9746d974f, type: 3}
   imagePathsCSV: {fileID: 4900000, guid: c6f4932fde8674037aa4278a65b462e6, type: 3}
@@ -7636,7 +7620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ccd1cfa80864eddbfeda5f250de817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventsCSV: {fileID: 4900000, guid: f3625faadcf3b44e4950e34205ce0c9c, type: 3}
+  eventsCSV: {fileID: 4900000, guid: e015c6e45785b3c4aba0d65d8f22d6c9, type: 3}
 --- !u!4 &1304673125
 Transform:
   m_ObjectHideFlags: 0
@@ -9236,7 +9220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcf0a45e8a19d47b386d98a350df1ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resultsCSV: {fileID: 4900000, guid: 92bc534d5a3204fa29f1eb9107f14aa7, type: 3}
+  resultsCSV: {fileID: 4900000, guid: c1fa0e400d9671c4f8b5dd709e72f675, type: 3}
 --- !u!1 &1564529215
 GameObject:
   m_ObjectHideFlags: 0
@@ -10620,18 +10604,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 83125721}
-        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
-        m_MethodName: set_Language
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 843877249}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine

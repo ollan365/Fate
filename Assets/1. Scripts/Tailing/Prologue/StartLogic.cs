@@ -11,7 +11,7 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     [SerializeField] private TextMeshProUGUI nameCheckQuestion;
     [SerializeField] private TMP_Dropdown monthDropdown, dayDropdown;
     private string fateName;
-    private int language, fateGender;
+    private int language = 1, fateGender;
     public int Language { set => language = value; }
     public int FateGender { set => fateGender = value; }
     
@@ -74,6 +74,8 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     }
     public void SetVariable()
     {
+        if (language == 2 && fateGender == 1) language++;
+
         GameManager.Instance.SetVariable("Language", language);
         GameManager.Instance.SetVariable("FateName", fateName);
         GameManager.Instance.SetVariable("DialogueC_003", fateGender);

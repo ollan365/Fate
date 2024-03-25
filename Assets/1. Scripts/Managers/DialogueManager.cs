@@ -80,8 +80,8 @@ public class DialogueManager : MonoBehaviour
         
         if (EventManager.Instance.events.ContainsKey(next))  // Event인 경우
         {
-            EventManager.Instance.CallEvent(next);
             EndDialogue();
+            EventManager.Instance.CallEvent(next);
         }
         else if (dialogues.ContainsKey(next))  // Dialogue인 경우
         {
@@ -115,7 +115,7 @@ public class DialogueManager : MonoBehaviour
         dialogueCanvas.SetActive(true);
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
-        DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0]; 
+        DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
         DisplayDialogueLine(initialDialogueLine);
     }
 
@@ -143,12 +143,12 @@ public class DialogueManager : MonoBehaviour
         }
 
         // 성별마다 다르게 불러오도록 변경 필요
-        int gender = (int)GameManager.Instance.GetVariable(dialogueLine.SpeakerID);
+        int gender = (int)GameManager.Instance.GetVariable("DialogueC_002"); // 일단은 무조건 우연의 사진을 가져옴
         Sprite characterSprite = Resources.Load<Sprite>(imagePaths[imageID].Path(gender));
         
         characterImage.sprite = characterSprite;
-        if (gender == 0) characterImage.GetComponent<RectTransform>().position = new Vector3(0, -600, 0);
-        else if (gender == 1) characterImage.GetComponent<RectTransform>().position = new Vector3(0, -650, 0);
+        // if (gender == 0) characterImage.GetComponent<RectTransform>().position = new Vector3(0, -600, 0);
+        // else if (gender == 1) characterImage.GetComponent<RectTransform>().position = new Vector3(0, -650, 0);
         characterImage.gameObject.SetActive(true);
     }
 

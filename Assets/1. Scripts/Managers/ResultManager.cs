@@ -69,7 +69,7 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("Prologue_008");
                 break;
             case "Result_boy":
-                GameManager.Instance.SetVariable("DialogueC_002", 1);
+                GameManager.Instance.SetVariable("DialogueC_002", 0);
                 DialogueManager.Instance.StartDialogue("Prologue_008");
                 break;
             case "Result_001": // 눈 뜨는 효과
