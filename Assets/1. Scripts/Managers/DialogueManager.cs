@@ -147,8 +147,8 @@ public class DialogueManager : MonoBehaviour
         Sprite characterSprite = Resources.Load<Sprite>(imagePaths[imageID].Path(gender));
         
         characterImage.sprite = characterSprite;
-        // if (gender == 0) characterImage.GetComponent<RectTransform>().position = new Vector3(0, -600, 0);
-        // else if (gender == 1) characterImage.GetComponent<RectTransform>().position = new Vector3(0, -650, 0);
+        if (gender == 0) characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -1000, 0);
+        else if (gender == 1) characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -650, 0);
         characterImage.gameObject.SetActive(true);
     }
 
