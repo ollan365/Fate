@@ -14,4 +14,16 @@ public class Script
         JP_M_Script = jp_m;
         JP_W_Script = jp_w;
     }
+
+    public string GetScript()
+    {
+        switch (GameManager.Instance.GetVariable("Language"))
+        {
+            case 0: return EngScript;
+            case 1: return KorScript;
+            case 2: return JP_M_Script;
+            case 3: return JP_W_Script;
+            default: return KorScript;
+        }
+    }
 }

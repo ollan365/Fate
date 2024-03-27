@@ -64,6 +64,14 @@ public class ResultManager : MonoBehaviour
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
+            case "Result_girl":
+                GameManager.Instance.SetVariable("DialogueC_002", 1);
+                DialogueManager.Instance.StartDialogue("Prologue_008");
+                break;
+            case "Result_boy":
+                GameManager.Instance.SetVariable("DialogueC_002", 0);
+                DialogueManager.Instance.StartDialogue("Prologue_008");
+                break;
             case "Result_001": // 눈 뜨는 효과
                 executableObjects["StartLogic"].ExecuteAction();
                 break;
@@ -197,7 +205,6 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Carpet"].ExecuteAction();
                 DialogueManager.Instance.StartDialogue("RoomEscape_018");
                 break;
-
             case "Result_035": // 포스터에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_019");
                 break;

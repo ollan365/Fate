@@ -11,4 +11,10 @@ public class ImagePath
         GirlPath = girlPath;
         BoyPath = boyPath;
     }
+
+    public string Path(int gender)
+    {
+        if (gender == 0) return BoyPath;
+        else return GirlPath;
+    }
 }

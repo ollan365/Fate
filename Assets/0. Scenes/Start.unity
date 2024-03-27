@@ -694,7 +694,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 83125720}
-  - component: {fileID: 83125717}
   - component: {fileID: 83125721}
   m_Layer: 0
   m_Name: Tutorial Logic
@@ -703,18 +702,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &83125717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 83125716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc278bac64591674aa3ea45cfe9c59f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &83125720
 Transform:
   m_ObjectHideFlags: 0
@@ -1241,9 +1228,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 83125717}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: set_Gender
+      - m_Target: {fileID: 83125721}
+        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
+        m_MethodName: set_FateGender
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1847,8 +1834,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 83125717}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 83125721}
+        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
         m_MethodName: set_Language
         m_Mode: 3
         m_Arguments:
@@ -5667,138 +5654,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
---- !u!1 &915189803
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 915189807}
-  - component: {fileID: 915189806}
-  - component: {fileID: 915189805}
-  - component: {fileID: 915189804}
-  m_Layer: 5
-  m_Name: Tutorial Start
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &915189804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 915189803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 915189805}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 915189803}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &915189805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 915189803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &915189806
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 915189803}
-  m_CullTransparentMesh: 1
---- !u!224 &915189807
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 915189803}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1266384658}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1027574661
 GameObject:
   m_ObjectHideFlags: 0
@@ -6489,7 +6344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7940ce3d7f99e435586a89e168011e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialoguesCSV: {fileID: 4900000, guid: eb8675065381249c2b3dab99bea2bd26, type: 3}
+  dialoguesCSV: {fileID: 4900000, guid: 32d77356b1d409342ba03e00b7935778, type: 3}
   scriptsCSV: {fileID: 4900000, guid: 78398540b196c4001b97a350113f4ed9, type: 3}
   choicesCSV: {fileID: 4900000, guid: f9524f740e23d4fb88f393a9746d974f, type: 3}
   imagePathsCSV: {fileID: 4900000, guid: c6f4932fde8674037aa4278a65b462e6, type: 3}
@@ -6673,8 +6528,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 83125717}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 83125721}
+        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
         m_MethodName: set_Language
         m_Mode: 3
         m_Arguments:
@@ -7421,7 +7276,6 @@ RectTransform:
   - {fileID: 83125720}
   - {fileID: 187033255}
   - {fileID: 1645823359}
-  - {fileID: 915189807}
   - {fileID: 1314175240}
   - {fileID: 682884148}
   m_Father: {fileID: 0}
@@ -7766,7 +7620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ccd1cfa80864eddbfeda5f250de817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventsCSV: {fileID: 4900000, guid: f3625faadcf3b44e4950e34205ce0c9c, type: 3}
+  eventsCSV: {fileID: 4900000, guid: e015c6e45785b3c4aba0d65d8f22d6c9, type: 3}
 --- !u!4 &1304673125
 Transform:
   m_ObjectHideFlags: 0
@@ -8904,8 +8758,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 83125717}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 83125721}
+        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
         m_MethodName: set_Language
         m_Mode: 3
         m_Arguments:
@@ -9366,7 +9220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcf0a45e8a19d47b386d98a350df1ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resultsCSV: {fileID: 4900000, guid: 92bc534d5a3204fa29f1eb9107f14aa7, type: 3}
+  resultsCSV: {fileID: 4900000, guid: c1fa0e400d9671c4f8b5dd709e72f675, type: 3}
 --- !u!1 &1564529215
 GameObject:
   m_ObjectHideFlags: 0
@@ -10739,9 +10593,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 83125717}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: set_Gender
+      - m_Target: {fileID: 83125721}
+        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
+        m_MethodName: set_FateGender
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10750,18 +10604,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 83125717}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: set_Gender
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 843877249}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -12084,18 +11926,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 83125721}
-        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
-        m_MethodName: SetBirth
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2133328744}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -12108,10 +11938,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 915189803}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 83125721}
+        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
+        m_MethodName: SetVariable
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

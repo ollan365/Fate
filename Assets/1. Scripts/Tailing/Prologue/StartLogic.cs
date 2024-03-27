@@ -10,6 +10,10 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TextMeshProUGUI nameCheckQuestion;
     [SerializeField] private TMP_Dropdown monthDropdown, dayDropdown;
+    private string fateName;
+    private int language = 1, fateGender;
+    public int Language { set => language = value; }
+    public int FateGender { set => fateGender = value; }
     
     [SerializeField] private GameObject background;
     [SerializeField] private GameObject fadeEffectImage;
@@ -40,8 +44,8 @@ public class StartLogic : MonoBehaviour, IResultExecutable
 
     public void SetName()
     {
-        Player.Instance.Name = nameInput.text == "" ? "필연" : nameInput.text;
-        nameCheckQuestion.text = $"\"{Player.Instance.Name}\"으로 확정하시겠습니까?";
+        fateName = nameInput.text == "" ? "필연" : nameInput.text;
+        nameCheckQuestion.text = $"\"{fateName}\"으로 확정하시겠습니까?";
     }
 
     public void ChangeDayOption()
@@ -68,10 +72,14 @@ public class StartLogic : MonoBehaviour, IResultExecutable
         dayDropdown.ClearOptions();
         dayDropdown.AddOptions(optionList);
     }
-    public void SetBirth()
+    public void SetVariable()
     {
-        Player.Instance.Month = monthDropdown.value + 1;
-        Player.Instance.Day = dayDropdown.value + 1;
+        if (language == 2 && fateGender == 1) language++;
+
+        GameManager.Instance.SetVariable("Language", language);
+        GameManager.Instance.SetVariable("FateName", fateName);
+        GameManager.Instance.SetVariable("DialogueC_003", fateGender);
+        GameManager.Instance.SetVariable("Birth", (monthDropdown.value + 1) * 100 + (dayDropdown.value + 1));
     }
     
     // Background 이미지 변경 및 Fade Effect Image 활성화 메서드
