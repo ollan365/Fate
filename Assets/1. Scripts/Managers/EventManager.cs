@@ -6,13 +6,13 @@ public class EventManager : MonoBehaviour
 {
     // EventManager를 싱글턴으로 생성
     public static EventManager Instance { get; private set; }
-    
+
     public TextAsset eventsCSV;
 
     // events: dictionary of "Event"s indexed by string "Event ID"
     public Dictionary<string, Event> events = new Dictionary<string, Event>();
 
-    
+
     void Awake()
     {
         if (Instance == null)
@@ -24,7 +24,7 @@ public class EventManager : MonoBehaviour
             ConditionManager.Instance.ParseConditions();
             ResultManager.Instance.ParseResults();
             ParseEvents();
-            
+
             // 디버깅용
             // DebugLogConditions();
             // DebugLogResults();
@@ -46,7 +46,7 @@ public class EventManager : MonoBehaviour
             if (string.IsNullOrWhiteSpace(lines[i])) continue;
 
             string[] fields = lines[i].Split(',');
-            
+
             string eventID = fields[0].Trim();
             string eventName = fields[1].Trim();
             string eventDescription = fields[2].Trim();
@@ -55,7 +55,7 @@ public class EventManager : MonoBehaviour
             // conditions와 results: '/' 기준으로 스플릿한 리스트
             List<Condition> conditions = new List<Condition>();
             List<Result> results = new List<Result>();
-            
+
             if (!string.IsNullOrWhiteSpace(fields[4].Trim()))  // 조건이 존재할 때만 수행
             {
                 string[] conditionIDs = fields[4].Trim().Split('/');
@@ -69,7 +69,7 @@ public class EventManager : MonoBehaviour
                     conditions.Add(ConditionManager.Instance.conditions[conditionID.Trim()]);
                 }
             }
-            
+
             string[] resultIDs = fields[5].Trim().Split('/');
             foreach (string resultID in resultIDs)
             {
@@ -94,7 +94,7 @@ public class EventManager : MonoBehaviour
 
         }
     }
-    
+
     // Event ID를 받아서 전체 조건의 true/false 판단하여 true인 경우 결과 수행
     public void CallEvent(string eventID)
     {
@@ -104,12 +104,13 @@ public class EventManager : MonoBehaviour
             string logic = eventLine.Logic;
             List<Condition> conditions = eventLine.Conditions;
             List<Result> results = eventLine.Results;
-            
-            if (conditions.Count == 0) { // 조건이 존재하지 않는 경우 무조건 실행
+
+            if (conditions.Count == 0)
+            { // 조건이 존재하지 않는 경우 무조건 실행
                 ExecuteResults(results);
                 continue;
             }
-            
+
             if (logic == "AND") // logic이 AND인 경우
             {
                 if (CheckConditions_AND(conditions)) ExecuteResults(results);
@@ -159,7 +160,7 @@ public class EventManager : MonoBehaviour
 
         return true;
     }
-    
+
     private void ExecuteResults(List<Result> results)
     {
         foreach (Result result in results)

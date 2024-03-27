@@ -32,7 +32,7 @@ public class ConditionManager : MonoBehaviour
             if (string.IsNullOrWhiteSpace(lines[i])) continue;
 
             string[] fields = lines[i].Split(',');
-            
+
             Condition condition = new Condition(
                 fields[0].Trim(), // Condition ID
                 fields[1].Trim(), // Condition Description

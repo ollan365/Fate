@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Carpet : EventObject, IResultExecutable
 {
+    [SerializeField] private GameObject CarpetPaper;
+
     private void Start()
     {
         ResultManager.Instance.RegisterExecutable("Carpet", this);
@@ -29,15 +31,21 @@ public class Carpet : EventObject, IResultExecutable
         }
     }
 
-    private void CarpetOpen(){  // 카펫 들추기
-        //amulet.SetActive(true);
-        //RoomManager.Instance.AddScreenObjects(amulet);
-        //RoomManager.Instance.isResearch = true;
+    private void CarpetOpen()
+    {  // 카펫 들추기
         transform.GetComponent<Image>().sprite= Resources.Load<Sprite>("PrototypeImage/Carpet Open");
+        // 종이 클릭을 위해 들춘 후에는 카펫 클릭 비활성화
+        GetComponent<Button>().interactable = false;
+
+        // 카펫 밑 종이 버튼 활성화
+        CarpetPaper.SetActive(true);
     }
 
     private void CarpetClose()   // 카펫 닫기
     {  
         transform.GetComponent<Image>().sprite = Resources.Load<Sprite>("PrototypeImage/Carpet Closed");
+
+        // 카펫 밑 종이 비활성화
+        CarpetPaper.SetActive(false);
     }
 }

@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
 
         // 포스터
         SetVariable("PosterClick", 0);
+        SetVariable("PosterCorrect", false);
 
         // 커터칼
         SetVariable("KnifeClick", 0);
