@@ -5,7 +5,7 @@ public class ConditionManager : MonoBehaviour
 {
     public static ConditionManager Instance { get; private set; }
     
-    public TextAsset conditionsCSV;
+    private TextAsset conditionsCSV;
     
     // conditions: dictionary of "Condition"s indexed by string "Condition ID"
     public Dictionary<string, Condition> conditions = new Dictionary<string, Condition>();
@@ -14,6 +14,7 @@ public class ConditionManager : MonoBehaviour
     {
         if (Instance == null)
         {
+            conditionsCSV = Resources.Load<TextAsset>("Datas/conditions");
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }

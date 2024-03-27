@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,51 +8,46 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
     
-    // CSV 파일
-    [Header("CSV files")]
-    public TextAsset dialoguesCSV;
-    public TextAsset scriptsCSV;
-    public TextAsset choicesCSV;
-    public TextAsset imagePathsCSV;
-    
     // Dialogue UI
     [Header("Dialogue UI")]
     public GameObject dialogueCanvas;
     public TextMeshProUGUI speakerText;
     public TextMeshProUGUI scriptText;
     public SpriteRenderer characterImage;
+    public GameObject dialoguePanel;
     public Transform choicesContainer;
     public GameObject choicePrefab;
     public SpriteRenderer teddyBearIcon;
     
     // 타자 효과 속도
-    [Header("Type Sentence Speed")]
+    [Header("Typing Speed")]
     public float typeSpeed = 0.05f;
     
     // 자료 구조
     public Dictionary<string, Dialogue> dialogues = new Dictionary<string, Dialogue>();
-    public Dictionary<string, Script> scripts = new Dictionary<string, Script>();
-    public Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
-    public Dictionary<string, ImagePath> imagePaths = new Dictionary<string, ImagePath>();
+    private Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+    private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
+    private Dictionary<string, ImagePath> imagePaths = new Dictionary<string, ImagePath>();
 
     // 상태 변수
     private string currentDialogueID = "";
     public bool isDialogueActive = false;
     private bool isChoiceActive = false;
     private bool isTyping = false;
-
+    private string fullSentence;
 
     void Awake()
     {
         if (Instance == null)
         {
+            DialoguesParser dialoguesParser = new DialoguesParser();
+            dialogues = dialoguesParser.ParseDialogues();
+            scripts = dialoguesParser.ParseScripts();
+            choices = dialoguesParser.ParseChoices();
+            imagePaths = dialoguesParser.ParseImagePaths();
+            
             Instance = this;
             DontDestroyOnLoad(gameObject);
-
-            ParseDialogues();
-            ParseScripts();
-            ParseChoices();
-            ParseImagePaths();
         }
         else
         {
@@ -63,16 +56,63 @@ public class DialogueManager : MonoBehaviour
         dialogueCanvas.SetActive(false);
     }
 
-    private void Update()
+    // ---------------------------------------------- Dialogue methods ----------------------------------------------
+    public void StartDialogue(string dialogueID)
     {
-        if (isDialogueActive && Input.GetKeyDown(KeyCode.Space) && !isChoiceActive &&!isTyping)
-        {
-            ProceedToNext();
-        }
+        isDialogueActive = true;
+        dialogueCanvas.SetActive(true);
+        dialogues[dialogueID].SetCurrentLineIndex(0);
+        currentDialogueID = dialogueID;
+        DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
+        DisplayDialogueLine(initialDialogueLine);
     }
 
-    // ---------------------------------------------- Dialogue methods ----------------------------------------------
+    private void DisplayDialogueLine(DialogueLine dialogueLine)
+    {
+        foreach (Transform child in choicesContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
 
+        // 타자 효과 적용
+        isTyping = true;
+        string sentence = scripts[dialogueLine.ScriptID].GetScript();
+        if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0)
+        {
+            string fateName = (string)GameManager.Instance.GetVariable("FateName");
+            sentence = sentence.Replace("{PlayerName", fateName);
+        }
+        StartCoroutine(TypeSentence(sentence));
+        
+        // 화자 이미지 표시
+        string imageID = dialogueLine.ImageID;
+        if (string.IsNullOrWhiteSpace(imageID))
+        {
+            characterImage.sprite = null;
+        }
+        else
+        {
+            int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
+            Sprite characterSprite = Resources.Load<Sprite>(imagePaths[imageID].GetPath(accidyGender));
+            int yOffset = (accidyGender == 0) ? -650 : -844;
+
+            characterImage.sprite = characterSprite;
+            characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
+            characterImage.gameObject.SetActive(true);
+        }
+        
+    }
+    
+    private void EndDialogue()
+    {
+        isDialogueActive = false;
+        dialogueCanvas.SetActive(false);
+        characterImage.gameObject.SetActive(false);
+    }
+    
+    // ---------------------------------------------- Script methods ----------------------------------------------
     private void ProceedToNext()
     {
         if (RoomManager.Instance)
@@ -97,9 +137,6 @@ public class DialogueManager : MonoBehaviour
         {
             currentDialogueLineIndex++;
             
-            // Debug.Log($"currentDialogueLineIndex: {currentDialogueLineIndex}, len(dialogueLines): {dialogues[currentDialogueID].Lines.Count}");
-            // Debug.Log($"dialogueID: {currentDialogueID}");
-            
             if (currentDialogueLineIndex >= dialogues[currentDialogueID].Lines.Count)
             {
                 if (RoomManager.Instance)
@@ -118,54 +155,12 @@ public class DialogueManager : MonoBehaviour
             DisplayChoices(next);
         }
     }
-
-    public void StartDialogue(string dialogueID)
-    {
-        isDialogueActive = true;
-        dialogueCanvas.SetActive(true);
-        dialogues[dialogueID].SetCurrentLineIndex(0);
-        currentDialogueID = dialogueID;
-        DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
-        DisplayDialogueLine(initialDialogueLine);
-    }
-
-    private void DisplayDialogueLine(DialogueLine dialogueLine)
-    {
-        foreach (Transform child in choicesContainer)
-        {
-            Destroy(child.gameObject);
-        }
-        
-        // 언어마다 다르게 불러오도록 변경 필요
-        speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
-
-        // 타자 효과 적용
-        // scriptText.text = scripts[dialogueLine.ScriptID].KorScript;
-        isTyping = true;
-        StartCoroutine(TypeSentence(scripts[dialogueLine.ScriptID].GetScript()));
-        
-        string imageID = dialogueLine.ImageID;
-        if (string.IsNullOrWhiteSpace(imageID))
-        {
-            // Debug.Log("image ID does not exist!");
-            characterImage.sprite = null;
-            return;
-        }
-
-        // 성별마다 다르게 불러오도록 변경 필요
-        int gender = (int)GameManager.Instance.GetVariable("DialogueC_002"); // 일단은 무조건 우연의 사진을 가져옴
-        Sprite characterSprite = Resources.Load<Sprite>(imagePaths[imageID].Path(gender));
-        
-        characterImage.sprite = characterSprite;
-        if (gender == 0) characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -1000, 0);
-        else if (gender == 1) characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -650, 0);
-        characterImage.gameObject.SetActive(true);
-    }
-
+    
     IEnumerator TypeSentence(string sentence)
     {
         teddyBearIcon.gameObject.SetActive(false);
         scriptText.text = "";
+        fullSentence = sentence;
         foreach (char letter in sentence.ToCharArray())
         {
             scriptText.text += letter;
@@ -175,11 +170,27 @@ public class DialogueManager : MonoBehaviour
         teddyBearIcon.gameObject.SetActive(true);
     }
     
-    private void EndDialogue()
+    public void OnDialoguePanelClick()
     {
-        isDialogueActive = false;
-        dialogueCanvas.SetActive(false);
-        characterImage.gameObject.SetActive(false);
+        if (isDialogueActive)
+        {
+            if (isTyping)
+            {
+                CompleteSentence();
+            }
+            else
+            {
+                ProceedToNext();
+            }
+        }
+    }
+    
+    private void CompleteSentence()
+    {
+        StopAllCoroutines();
+        scriptText.text = fullSentence;
+        isTyping = false;
+        teddyBearIcon.gameObject.SetActive(true);
     }
     
     // ---------------------------------------------- Choice methods ----------------------------------------------
@@ -203,124 +214,21 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void OnChoiceSelected(string dialogueID)
+    private void OnChoiceSelected(string next)
     {
-        StartDialogue(dialogueID);
+        if (dialogues.ContainsKey(next))
+        {
+            StartDialogue(next);
+        }
+        else if (EventManager.Instance.events.ContainsKey(next))
+        {
+            EventManager.Instance.CallEvent(next);
+        }
+        
         foreach (Transform child in choicesContainer)
         {
             Destroy(child.gameObject);
         }
     }
     
-    // ---------------------------------------------- Parse methods ----------------------------------------------
-    private void ParseDialogues()
-    {
-        string[] lines = dialoguesCSV.text.Split('\n');
-
-        string lastDialogueID = "";
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-            
-            string[] fields = lines[i].Split(',');
-            if (string.IsNullOrWhiteSpace(fields[0]) && string.IsNullOrWhiteSpace(fields[1])) continue;
-
-            string dialogueID = fields[0].Trim();
-            if (string.IsNullOrWhiteSpace(dialogueID)) dialogueID = lastDialogueID;
-            else lastDialogueID = dialogueID;
-
-            string speakerID = fields[1].Trim();
-            string scriptID = fields[2].Trim();
-            string imageID = fields[3].Trim();
-            string next = fields[4].Trim();
-
-            if (!dialogues.ContainsKey(dialogueID))
-            {
-                Dialogue dialogue = new Dialogue(dialogueID);
-                dialogues[dialogueID] = dialogue;
-            }
-
-            dialogues[dialogueID].AddLine(speakerID, scriptID, imageID, next);
-        }
-    }
-
-    private void ParseScripts()
-    {
-        string[] lines = scriptsCSV.text.Split("EOL");
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-
-            string[] fields = lines[i].Split(',');
-
-            string scriptID = fields[0].Trim().Trim('\n');
-            string engScript = fields[1].Trim().Replace("\\n", "\n");
-            string korScript = fields[2].Trim().Replace("\\n", "\n");
-            string jpMScript = fields[3].Trim().Replace("\\n", "\n");
-            string jpWScript = fields[4].Trim().Replace("\\n", "\n");
-
-            Script script = new Script(
-                scriptID,
-                engScript,
-                korScript,
-                jpMScript,
-                jpWScript
-            );
-            scripts[scriptID] = script;
-        }
-    }
-
-    private void ParseChoices()
-    {
-        string[] lines = choicesCSV.text.Split('\n');
-
-        string lastChoiceID = "";
-        
-        for (int i = 1; i < lines.Length; i++)
-        {
-            if(string.IsNullOrWhiteSpace(lines[i])) continue;
-
-            string[] fields = lines[i].Split(',');
-
-            string choiceID = fields[0].Trim();
-            if (string.IsNullOrWhiteSpace(choiceID)) choiceID = lastChoiceID;
-            else lastChoiceID = choiceID;
-            
-            string scriptID = fields[1].Trim();
-            string next = fields[2].Trim();
-
-            if (!choices.ContainsKey(choiceID))
-            {
-                choices[choiceID] = new Choice(choiceID);
-            }
-            
-            choices[choiceID].AddLine(scriptID, next);
-        }
-    }
-
-    private void ParseImagePaths()
-    {
-        string[] lines = imagePathsCSV.text.Split('\n');
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            if(string.IsNullOrWhiteSpace(lines[i])) continue;
-
-            string[] fields = lines[i].Split(',');
-
-            string imageID = fields[0].Trim();
-            string girlPath = fields[1].Trim();
-            string boyPath = fields[2].Trim();
-            girlPath = $"Characters/{girlPath}";
-            boyPath = $"Characters/{boyPath}";
-            ImagePath imagePath = new ImagePath(
-                imageID,
-                girlPath,
-                boyPath
-            );
-            imagePaths[imageID] = imagePath;
-        }
-    }
 }

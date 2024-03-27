@@ -32,64 +32,80 @@ public class GameManager : MonoBehaviour
     {
         // ------------------------- 변수 초기화 -------------------------
         // 1. 시스템 관련 변수들
-        SetVariable("ActionPoint", 25);
+        variables["Language"] = 0;  // 시스템 언어
+        
+        variables["FateName"] = "필연";  // 필연 이름
+        variables["FateGender"] = 0;  // 필연 성별 {0: 여자, 1: 남자}
+        variables["FateBirthday"] = 0;  // 필연 생일
+        
+        variables["AccidyGender"] = 0;  // 우연 성별 {0: 여자, 1: 남자}
+        
+        variables["ActionPoint"] = 25;  // 행동력 
         
         // 2. 이벤트 오브젝트 관련 변수들
         // 침대 위 곰인형
-        SetVariable("DollsClick", 0);
+        variables["DollsClick"] = 0;
         
         // 이불
-        SetVariable("BlanketsClick", 0);
+        variables["BlanketsClick"] = 0;
         
         // 술과 감기약
-        SetVariable("LiquorAndPillsClick", 0);
+        variables["LiquorAndPillsClick"] = 0;
         
         // 스탠드
-        SetVariable("LampClick", 0);
-        
+        variables["LampClick"] = 0;
+
         // 인형 수납장
-        SetVariable("ShelvesClick", 0);
-        
+        variables["ShelvesClick"] = 0;
+
         // 배게
-        SetVariable("PillowClick", 0);
-        
+        variables["PillowClick"] = 0;
+
         // 다이어리
-        SetVariable("DiaryClick", 0);
-        SetVariable("DiaryPasswordCorrect", false);
-        SetVariable("DiaryPassword", "0410");
-        
+        variables["DiaryClick"] = 0;
+        variables["DiaryPasswordCorrect"] = false;
+        variables["DiaryPassword"] = "0410";
+
         // 시계
-        SetVariable("ClockClick", 0);
-        SetVariable("ClockTimeCorrect", false);
+        variables["ClockClick"] = 0;
+        variables["ClockTimeCorrect"] = false;
+        
         float[] clockPassword = { 210f, 180f };
-        SetVariable("ClockPassword", clockPassword);
-        
+        variables["clockPassword"] = clockPassword;
+
         // 의자
-        SetVariable("ChairMoved", false);
-        
+        variables["ChairMoved"] = false;
+
         // 노트북
-        SetVariable("LaptopClick", 0);
-        SetVariable("LaptopPasswordCorrect", false);
-        SetVariable("LaptopPassword", "0410");
-        
+        variables["LaptopClick"] = 0;
+        variables["LaptopPasswordCorrect"] = false;
+        variables["LaptopPassword"] = "0410";
+
         // 카펫
-        SetVariable("CarpetClick", 0);
+        variables["CarpetClick"] = 0;
 
         // 카펫 아래 종이
-        SetVariable("PaperClick", 0);
+        variables["PaperClick"] = 0;
 
         // 포스터
-        SetVariable("PosterClick", 0);
-        SetVariable("PosterCorrect", false);
+        variables["PosterClick"] = 0;
+        variables["PosterCorrect"] = false;
 
         // 커터칼
-        SetVariable("KnifeClick", 0);
+        variables["KnifeClick"] = 0;
 
     }
     
     public void SetVariable(string variableName, object value)
     {
-        variables[variableName] = value;
+        if (variables.ContainsKey(variableName))
+        {
+            variables[variableName] = value;
+        }
+        else
+        {
+            Debug.Log($"variable \"{variableName}\" does not exist!");
+        }
     }
 
     public object GetVariable(string variableName)

@@ -7,7 +7,7 @@ public class ResultManager : MonoBehaviour
 {
     public static ResultManager Instance { get; private set; }
 
-    public TextAsset resultsCSV;
+    private TextAsset resultsCSV;
     
     // results: dictionary of "Results"s indexed by string "Result ID"
     public Dictionary<string, Result> results = new Dictionary<string, Result>();
@@ -31,6 +31,7 @@ public class ResultManager : MonoBehaviour
     {
         if (Instance == null)
         {
+            resultsCSV = Resources.Load<TextAsset>("Datas/results");
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -64,14 +65,16 @@ public class ResultManager : MonoBehaviour
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
-            case "Result_girl":
-                GameManager.Instance.SetVariable("DialogueC_002", 1);
-                DialogueManager.Instance.StartDialogue("Prologue_008");
+            case "Result_girl":  // 우연의 성별을 여자로 설정
+                GameManager.Instance.SetVariable("AccidyGender", 0);
+                DialogueManager.Instance.StartDialogue("Prologue_006");
                 break;
-            case "Result_boy":
-                GameManager.Instance.SetVariable("DialogueC_002", 0);
-                DialogueManager.Instance.StartDialogue("Prologue_008");
+            
+            case "Result_boy":  // 우연의 성별을 남자로 설정
+                GameManager.Instance.SetVariable("AccidyGender", 1);
+                DialogueManager.Instance.StartDialogue("Prologue_007");
                 break;
+            
             case "Result_001": // 눈 뜨는 효과
                 executableObjects["StartLogic"].ExecuteAction();
                 break;

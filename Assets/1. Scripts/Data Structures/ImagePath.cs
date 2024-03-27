@@ -12,9 +12,9 @@ public class ImagePath
         BoyPath = boyPath;
     }
 
-    public string Path(int gender)
+    public string GetPath(int gender)
     {
-        if (gender == 0) return BoyPath;
-        else return GirlPath;
+        if (gender == 0) return GirlPath;
+        else return BoyPath;
     }
 }

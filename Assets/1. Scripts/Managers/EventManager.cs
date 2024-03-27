@@ -7,7 +7,7 @@ public class EventManager : MonoBehaviour
     // EventManager를 싱글턴으로 생성
     public static EventManager Instance { get; private set; }
 
-    public TextAsset eventsCSV;
+    private TextAsset eventsCSV;
 
     // events: dictionary of "Event"s indexed by string "Event ID"
     public Dictionary<string, Event> events = new Dictionary<string, Event>();
@@ -17,6 +17,7 @@ public class EventManager : MonoBehaviour
     {
         if (Instance == null)
         {
+            eventsCSV = Resources.Load<TextAsset>("Datas/events");
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
