@@ -185,8 +185,8 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Carpet"].ExecuteAction();
                 break;
             
-            case "Result_032": // 종이를 확대해주는 UI- ### 추후 구현 필요 ###
-
+            case "Result_032": // 종이를 확대해주는 UI
+                executableObjects["Carpet_Paper"].ExecuteAction();
                 break;
             
             case "Result_033": // 종이에 대한 스크립트
@@ -197,7 +197,26 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Carpet"].ExecuteAction();
                 DialogueManager.Instance.StartDialogue("RoomEscape_018");
                 break;
-            
+
+            case "Result_035": // 포스터에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_019");
+                break;
+
+            case "Result_036": // 커터칼에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_020");
+                break;
+
+            case "Result_037": // 커터칼 사라짐
+                executableObjects["Knife"].ExecuteAction();
+                break;
+
+            case "Result_038": // 포스터 뒷장에 대한 설명
+                executableObjects["Poster"].ExecuteAction();
+                DialogueManager.Instance.StartDialogue("RoomEscape_021");
+                break;
+
+            case "Result_039": // 포스터에 대한 메모 - ### 추후 구현 필요 ###
+                break;
         }
     }
 }
