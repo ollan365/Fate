@@ -37,12 +37,18 @@ public class ClockPuzzle : EventObject, IResultExecutable
         float currentMinuteAngle = minuteHand.transform.rotation.eulerAngles.z;
         StartCoroutine(CompareClockHands(currentHourAngle, currentMinuteAngle));
     }
-    
+
+    private float[] correctAngles = { 210f, 180f };
+
     IEnumerator CompareClockHands(float hourAngle, float minuteAngle)
     {
         yield return new WaitForSeconds(0.2f);
         
-        float[] correctAngles = (float[])GameManager.Instance.GetVariable("ClockPassword");
+        //float[] correctAngles = (float[])GameManager.Instance.GetVariable("ClockPassword");
+
+        //Debug.Log("시계정답 : " + (float[])GameManager.Instance.GetVariable("ClockPassword"));
+        //Debug.Log("시계정답 : "+correctAngles[0]+" "+ correctAngles[1]);
+
         float correctHourAngle = correctAngles[0], correctMinuteAngle = correctAngles[1];
         bool isTimeCorrect = Mathf.Approximately(correctHourAngle, hourAngle) &&
                              Mathf.Approximately(correctMinuteAngle, minuteAngle);

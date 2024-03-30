@@ -6,23 +6,37 @@ using UnityEngine.UI;
 public class Chair : EventObject, IResultExecutable
 {
     private Vector3 originalPosition;
-    private Vector3 movedPosition;
+    private Vector3 movedPosition1; // 사이드 1번 방 의자 움직임
+    [SerializeField] private Vector3 movedPosition2; // 사이드 2번 방 의자 움직임
+
     // targetPosition에 위의 origin 위치랑 moved 위치를 대입해서 거기까지 움직이게 함.
     private Vector3 targetPosition;
     private RectTransform buttonRectTransform;
 
     public float speed = 6f; // 이동 속도
 
-    private bool isMoving = false; // 의자가 움직이는지 여부
+    public bool isMoving = false; // 의자가 움직이는지 여부
 
-    private void Start()
+    private void Awake()
     {
-        ResultManager.Instance.RegisterExecutable("Chair", this);
+        ResultManager.Instance.RegisterExecutable($"Chair{sideNum}", this);
         
         buttonRectTransform = GetComponent<RectTransform>();
 
-        movedPosition = originalPosition = buttonRectTransform.anchoredPosition;
-        movedPosition.x = -125f;
+        switch (sideNum)
+        {
+            case 1:
+                // 사이드 1번 방의 의자 위치
+                movedPosition1 = originalPosition = buttonRectTransform.anchoredPosition;
+                movedPosition1.x = -125f;
+                break;
+            case 2:
+                // 사이드 2번 방의 의자 위치 
+                movedPosition2 = originalPosition = buttonRectTransform.anchoredPosition;
+                movedPosition2.x = 652f;
+                movedPosition2.y = -497f;
+                break;
+        }
     }
 
     // 의자 천천히 움직이게 하기
@@ -34,12 +48,27 @@ public class Chair : EventObject, IResultExecutable
         }
     }
 
+    void OnEnable()
+    {
+        // 다른 사이드에서 이미 의자 움직였으면 해당 사이드에도 적용함
+        StartCoroutine(readyChairCoroutine());
+    }
+
     public new void OnMouseDown()
     {
         if (!isMoving)
         {
             base.OnMouseDown();
-            GameManager.Instance.InverseVariable("ChairMoved");
+            
+            switch (sideNum)
+            {
+                case 1:
+                    GameManager.Instance.InverseVariable("ChairMoved1");
+                    break;
+                case 2:
+                    GameManager.Instance.InverseVariable("ChairMoved2");
+                    break;
+            }
         }
     }
     
@@ -55,7 +84,15 @@ public class Chair : EventObject, IResultExecutable
         {
             isMoving = true;
 
-            targetPosition = ((bool)GameManager.Instance.GetVariable("ChairMoved")) ? originalPosition : movedPosition;
+            switch (sideNum)
+            {
+                case 1:
+                    targetPosition = ((bool)GameManager.Instance.GetVariable("ChairMoved1")) ? originalPosition : movedPosition1;
+                    break;
+                case 2:
+                    targetPosition = ((bool)GameManager.Instance.GetVariable("ChairMoved2")) ? originalPosition : movedPosition2;
+                    break;
+            }
         }
     }
 
@@ -75,4 +112,32 @@ public class Chair : EventObject, IResultExecutable
         }
     }
 
+    private IEnumerator readyChairCoroutine()
+    {
+        if ((bool)GameManager.Instance.GetVariable("ChairMoved1") != (bool)GameManager.Instance.GetVariable("ChairMoved2"))
+        {
+            //Debug.Log(sideNum+" 의자 보정 전- 1번 의자 : "+ (bool)GameManager.Instance.GetVariable("ChairMoved1")
+            //+" 2번 의자 : " + (bool)GameManager.Instance.GetVariable("ChairMoved2"));
+            switch (sideNum)
+            {
+                case 1:
+                    if ((bool)GameManager.Instance.GetVariable("ChairMoved2"))
+                        buttonRectTransform.anchoredPosition = movedPosition1;
+                    else
+                        buttonRectTransform.anchoredPosition = originalPosition;
+                    GameManager.Instance.InverseVariable("ChairMoved1");
+                    break;
+                case 2:
+                    if ((bool)GameManager.Instance.GetVariable("ChairMoved1"))
+                        buttonRectTransform.anchoredPosition = movedPosition2;
+                    else
+                        buttonRectTransform.anchoredPosition = originalPosition;
+                    GameManager.Instance.InverseVariable("ChairMoved2");
+                    break;
+            }
+            //Debug.Log(sideNum + " 의자 보정 후- 1번 의자 : " + (bool)GameManager.Instance.GetVariable("ChairMoved1")
+            //+ " 2번 의자 : " + (bool)GameManager.Instance.GetVariable("ChairMoved2"));
+        }
+        yield return null;
+    }
 }

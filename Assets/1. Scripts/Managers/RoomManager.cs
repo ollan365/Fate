@@ -176,4 +176,8 @@ public class RoomManager : MonoBehaviour
     //    yield return null;
     //}
 
+    public void onResearch()
+    {
+        isResearch = true;
+    }
 }

@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     {
         // ------------------------- 변수 초기화 -------------------------
         // 1. 시스템 관련 변수들
-        variables["Language"] = 0;  // 시스템 언어
+        variables["Language"] = 1;  // 시스템 언어
         
         variables["FateName"] = "필연";  // 필연 이름
         variables["FateGender"] = 0;  // 필연 성별 {0: 여자, 1: 남자}
@@ -72,9 +72,14 @@ public class GameManager : MonoBehaviour
         
         float[] clockPassword = { 210f, 180f };
         variables["clockPassword"] = clockPassword;
+        // 위의 상태로는 이상하게도 (float[])GameManager.Instance.GetVariable("ClockPassword")를 가져오면 빈 값으로 나옴.
+
+        //Debug.Log("시계정답 : " + (float[])GameManager.Instance.GetVariable("ClockPassword"));
+        //Debug.Log("시계정답 : " + clockPassword[0]+ " "+ clockPassword[1]);
 
         // 의자
-        variables["ChairMoved"] = false;
+        variables["ChairMoved1"] = false;
+        variables["ChairMoved2"] = false;
 
         // 노트북
         variables["LaptopClick"] = 0;
@@ -93,6 +98,38 @@ public class GameManager : MonoBehaviour
 
         // 커터칼
         variables["KnifeClick"] = 0;
+
+        // 사이드 2번 
+        // 옷장
+        variables["ClosetOffClick"] = 0;
+        variables["ClosetDoor"] = false;
+
+        // 옷장 속 가방
+        variables["BagClick"] = 0;
+        variables["BagClue"] = false;
+
+        // 옷장 위 상자
+        variables["BoxClick"] = 0;
+        variables["BoxCorrect"] = false;
+
+        // 서랍장
+        variables["CabinetOffClick"] = 0;
+        variables["CabinetDoor"] = false;
+
+        // 서랍장 속 달력
+        variables["CalendarClick"] = 0;
+        variables["CalendarClue"] = 0;
+        variables["CalendarMonth"] = false;
+
+        // 달력
+        // 필연 생일
+        variables["FBDClick"] = 0;
+        // 우연 생일
+        variables["ABDClick"] = 0;
+        // 10월 1일 클릭
+        variables["_1001Click"] = 0;
+        // 10월 31일 클릭
+        variables["_1031Click"] = 0;
 
     }
     

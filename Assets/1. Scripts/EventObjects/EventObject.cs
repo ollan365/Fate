@@ -5,6 +5,9 @@ public class EventObject : MonoBehaviour
     [SerializeField]
     protected string eventId;
 
+    [SerializeField]
+    protected int sideNum;
+
     protected void OnMouseDown()
     {
         if (!string.IsNullOrEmpty(eventId) && EventManager.Instance)
@@ -16,5 +19,10 @@ public class EventObject : MonoBehaviour
     public string GetEventId()
     {
         return eventId;
+    }
+
+    public int GetSideNum()
+    {
+        return sideNum;
     }
 }

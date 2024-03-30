@@ -8,6 +8,12 @@ public class Knife : EventObject, IResultExecutable
     private void Start()
     {
         ResultManager.Instance.RegisterExecutable("Knife", this);
+
+        // 다른 사이드에서 이미 커터칼 챙겼으면 커터칼 안 보이게 함
+        if ((int)GameManager.Instance.GetVariable("KnifeClick") > 0)
+        {
+            getKnife();
+        }
     }
 
     public new void OnMouseDown()
