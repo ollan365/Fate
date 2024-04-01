@@ -25,7 +25,7 @@ public class DialogueManager : MonoBehaviour
     
     // 자료 구조
     public Dictionary<string, Dialogue> dialogues = new Dictionary<string, Dialogue>();
-    private Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+    public Dictionary<string, Script> scripts = new Dictionary<string, Script>(); // 메모에서 접근을 위해 public으로 바꿔둠
     private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
     private Dictionary<string, ImagePath> imagePaths = new Dictionary<string, ImagePath>();
 
