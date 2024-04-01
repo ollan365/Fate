@@ -33,7 +33,7 @@ public class Carpet : EventObject, IResultExecutable
 
     private void CarpetOpen()
     {  // 카펫 들추기
-        transform.GetComponent<Image>().sprite= Resources.Load<Sprite>("PrototypeImage/Carpet Open");
+        transform.GetComponent<Image>().sprite= Resources.Load<Sprite>("Room/Room1/Carpet Open");
         // 종이 클릭을 위해 들춘 후에는 카펫 클릭 비활성화
         GetComponent<Button>().interactable = false;
 
@@ -43,7 +43,7 @@ public class Carpet : EventObject, IResultExecutable
 
     private void CarpetClose()   // 카펫 닫기
     {  
-        transform.GetComponent<Image>().sprite = Resources.Load<Sprite>("PrototypeImage/Carpet Closed");
+        transform.GetComponent<Image>().sprite = Resources.Load<Sprite>("Room/Room1/Carpet Closed");
 
         // 카펫 밑 종이 비활성화
         CarpetPaper.SetActive(false);

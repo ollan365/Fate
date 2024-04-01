@@ -12,10 +12,6 @@ public class ResultManager : MonoBehaviour
     // results: dictionary of "Results"s indexed by string "Result ID"
     public Dictionary<string, Result> results = new Dictionary<string, Result>();
     
-    // ----------------- 스펠링 실수로 인한 에러를 피하기 위해 스트링 변수들을 선언 -----------------
-    // System variables
-    private string ActionPoint = "ActionPoint";
-    
     // 이벤트 오브젝트 참조
     private Dictionary<string, IResultExecutable> executableObjects = new Dictionary<string, IResultExecutable>();
     
@@ -84,7 +80,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_003": // 행동력 감소
-                GameManager.Instance.DecrementVariable(ActionPoint);
+                GameManager.Instance.DecrementVariable("ActionPoint");
                 break;
             
             case "Result_004": // 조사 완료 스크립트
@@ -166,7 +162,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_024": // 의자가 옆으로 이동함
-                executableObjects["Chair"].ExecuteAction();
+                executableObjects["Chair1"].ExecuteAction();
+                executableObjects["Chair2"].ExecuteAction();
                 break;
 
             case "Result_025": // 노트북에 대한 설명
@@ -221,11 +218,96 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_038": // 포스터 뒷장에 대한 설명
+                Debug.Log("포스터 뒷장에 대한 설명");
                 executableObjects["Poster"].ExecuteAction();
+                Debug.Log("포스터 뒷장에 대한 설명 스크립트 시작");
+                // 이 부분 대사 스크립트 계속 오류남!!
                 DialogueManager.Instance.StartDialogue("RoomEscape_021");
                 break;
 
             case "Result_039": // 포스터에 대한 메모 - ### 추후 구현 필요 ###
+                break;
+
+            case "Result_040": // 옷장 문이 열림
+                executableObjects["ClosetDoor_close"].ExecuteAction();
+                break;
+                
+            case "Result_041": // 옷장 문이 닫힘
+                executableObjects["ClosetDoor_L"].ExecuteAction();
+                executableObjects["ClosetDoor_R"].ExecuteAction();
+                break;
+
+            case "Result_042": // 옷장 처음 상호작용했을 때 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_022");
+                break;
+
+            case "Result_043": // 옷장 속 가방 클릭 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_023");
+                break;
+
+            case "Result_044": // 옷장 속 가방 내에 전단지에 대한 메모 - ### 추후 구현 필요 ###
+                break;
+
+            case "Result_045": // 옷장 위 상자에 대한 설명(열쇠X 상태 일 때)
+                DialogueManager.Instance.StartDialogue("RoomEscape_024");
+                break;
+
+            case "Result_046": // 상자가 열리는 스크립트
+                Debug.Log("상자 열리는 스크립트");
+                DialogueManager.Instance.StartDialogue("RoomEscape_025");
+                break;
+
+            case "Result_047": // 상자 열리는 사운드 - ### 추후 구현 필요 ###
+                break;
+
+            case "Result_048": // 상자 안 사진들이 UI로 보임
+                Debug.Log("상자 안의 사진들이 보임");
+                executableObjects["Box"].ExecuteAction();
+                break;
+
+            case "Result_049": // 서랍장이 열리는 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_026");
+                break;
+
+            case "Result_050": // 서랍장이 열림
+                executableObjects["CabinetDoor_Close"].ExecuteAction();
+                break;
+
+            case "Result_051": // 서랍장이 닫힘
+                executableObjects["CabinetDoor_L"].ExecuteAction();
+                executableObjects["CabinetDoor_R"].ExecuteAction();
+                break;
+
+            case "Result_052": // 달력이 열림
+                executableObjects["Calendar"].ExecuteAction();
+                break;
+
+            case "Result_053": // 필연 생일에 대한 스크립트 - ### 추후 구현 필요 ###
+                DialogueManager.Instance.StartDialogue("RoomEscape_027");
+                break;
+
+            case "Result_054": // 우연 생일에 대한 스크립트 - ### 추후 구현 필요 ###
+                DialogueManager.Instance.StartDialogue("RoomEscape_028");
+                break;
+
+            case "Result_055": // 10월 31일에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_029");
+                break;
+
+            case "Result_056": // 10월 1일에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_030");
+                break;
+
+            case "Result_057": // 필연 생일 메모 - ### 추후 구현 필요 ###
+                break;
+
+            case "Result_058": // 우연 생일 메모 - ### 추후 구현 필요 ###
+                break;
+
+            case "Result_059": // 10월 31일 메모 - ### 추후 구현 필요 ###
+                break;
+
+            case "Result_060": // 10월 1일 메모 - ### 추후 구현 필요 ###
                 break;
         }
     }

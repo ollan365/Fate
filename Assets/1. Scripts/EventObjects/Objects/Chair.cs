@@ -1,78 +1,77 @@
 
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Chair : EventObject, IResultExecutable
 {
-    private Vector3 originalPosition;
-    private Vector3 movedPosition;
+    // 의자 위치
+    private Vector2 originalPosition;  // 기존 위치 
+    private List<Vector2> movedPositions = new List<Vector2> { Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero};  // 사이드별 이동한 위치
+
     // targetPosition에 위의 origin 위치랑 moved 위치를 대입해서 거기까지 움직이게 함.
-    private Vector3 targetPosition;
-    private RectTransform buttonRectTransform;
+    private RectTransform rectTransform;
 
-    public float speed = 6f; // 이동 속도
+    [SerializeField] private float moveDuration = 0.3f; // 이동에 걸리는 시간
 
-    private bool isMoving = false; // 의자가 움직이는지 여부
+    private bool isMoving = false; // 의자가 움직이는 중인지 여부
 
-    private void Start()
+    private void Awake()
     {
-        ResultManager.Instance.RegisterExecutable("Chair", this);
-        
-        buttonRectTransform = GetComponent<RectTransform>();
+        ResultManager.Instance.RegisterExecutable($"Chair{sideNum}", this);
+        rectTransform = GetComponent<RectTransform>();
 
-        movedPosition = originalPosition = buttonRectTransform.anchoredPosition;
-        movedPosition.x = -125f;
-    }
-
-    // 의자 천천히 움직이게 하기
-    void Update()
-    {
-        if (isMoving)
+        originalPosition = rectTransform.anchoredPosition;  // 초기 위치 저장
+        switch (sideNum)  // 사이드별 이동한 의자 위치
         {
-            StartCoroutine(MoveChairCoroutine());
+            case 1:
+                movedPositions[1] = new Vector2(-125f, originalPosition.y);
+                break;
+            case 2:
+                movedPositions[2] = new Vector2(652f, -497f);
+                break;
         }
     }
 
     public new void OnMouseDown()
     {
-        if (!isMoving)
-        {
-            base.OnMouseDown();
-            GameManager.Instance.InverseVariable("ChairMoved");
-        }
+        if (isMoving) return;
+        
+        base.OnMouseDown();
+        GameManager.Instance.InverseVariable("ChairMoved");
     }
     
     public void ExecuteAction()
     {
-        MoveChair();
+        bool chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
+        Vector2 targetPosition = chairMoved ? originalPosition : movedPositions[sideNum];
+        if (isActiveAndEnabled) StartCoroutine(MoveChair(targetPosition));
     }
     
-    public void MoveChair()
+    IEnumerator MoveChair(Vector2 targetPosition)
     {
-        // 의자의 현재 위치와 목표 위치가 다르면 이동 시작
-        if (!isMoving)
+        isMoving = true;
+        float elapsedTime = 0;
+        Vector2 startingPosition = rectTransform.anchoredPosition;
+
+        while (elapsedTime < moveDuration)
         {
-            isMoving = true;
-
-            targetPosition = ((bool)GameManager.Instance.GetVariable("ChairMoved")) ? originalPosition : movedPosition;
-        }
-    }
-
-    private IEnumerator MoveChairCoroutine()
-    {
-        while (isMoving)
-        {
-            buttonRectTransform.anchoredPosition = Vector3.Lerp(buttonRectTransform.anchoredPosition, targetPosition, Time.deltaTime * speed);
-
-            // 목표 위치에 도달했는지 확인
-            if (Vector3.Distance(buttonRectTransform.anchoredPosition, targetPosition) < 0.1f)
-            {
-                isMoving = false;
-            }
-
+            rectTransform.anchoredPosition = Vector2.Lerp(startingPosition, targetPosition, (elapsedTime / moveDuration));
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
+
+        rectTransform.anchoredPosition = targetPosition;
+        
+        isMoving = false;
     }
 
+    private void OnEnable()
+    {
+        bool chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
+        rectTransform.anchoredPosition = chairMoved ? movedPositions[sideNum] : originalPosition;
+    }
 }
