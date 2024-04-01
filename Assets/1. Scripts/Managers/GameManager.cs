@@ -78,8 +78,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("시계정답 : " + clockPassword[0]+ " "+ clockPassword[1]);
 
         // 의자
-        variables["ChairMoved1"] = false;
-        variables["ChairMoved2"] = false;
+        variables["ChairMoved"] = false;
 
         // 노트북
         variables["LaptopClick"] = 0;
@@ -171,7 +170,7 @@ public class GameManager : MonoBehaviour
 
     public void InverseVariable(string variableName)
     {
-        bool variableValue= (bool)GetVariable(variableName);
+        bool variableValue = (bool)GetVariable(variableName);
         variableValue = !variableValue;
         SetVariable(variableName, variableValue);
     }

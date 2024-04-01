@@ -12,10 +12,6 @@ public class ResultManager : MonoBehaviour
     // results: dictionary of "Results"s indexed by string "Result ID"
     public Dictionary<string, Result> results = new Dictionary<string, Result>();
     
-    // ----------------- 스펠링 실수로 인한 에러를 피하기 위해 스트링 변수들을 선언 -----------------
-    // System variables
-    private string ActionPoint = "ActionPoint";
-    
     // 이벤트 오브젝트 참조
     private Dictionary<string, IResultExecutable> executableObjects = new Dictionary<string, IResultExecutable>();
     
@@ -84,7 +80,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_003": // 행동력 감소
-                GameManager.Instance.DecrementVariable(ActionPoint);
+                GameManager.Instance.DecrementVariable("ActionPoint");
                 break;
             
             case "Result_004": // 조사 완료 스크립트
@@ -166,10 +162,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_024": // 의자가 옆으로 이동함
-                if(RoomManager.Instance.roomP1.activeSelf)
-                    executableObjects["Chair1"].ExecuteAction();
-                else
-                    executableObjects["Chair2"].ExecuteAction();
+                executableObjects["Chair1"].ExecuteAction();
+                executableObjects["Chair2"].ExecuteAction();
                 break;
 
             case "Result_025": // 노트북에 대한 설명

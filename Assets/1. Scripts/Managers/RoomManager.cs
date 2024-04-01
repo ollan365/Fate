@@ -2,26 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
     
-    public GameObject roomP1;
-    public GameObject roomP2;
-    public GameObject roomP3;
+    private GameObject currentView;  // 현재 뷰
+    [SerializeField] private List<GameObject> sides;  // 시점들
+    private int currentSideIndex = 0;  // 현재 시점 인덱스
 
     // 조사 중이면 이동키로 시점 바꾸지 못하게 함
-    public bool isResearch = false;
+    public bool isInvestigating = false;
 
-    public List<GameObject> ScreenObjects = new List<GameObject>();
+    private List<GameObject> screenObjects = new List<GameObject>();
 
     // 다이얼로그 매니저의 isDialogueActive가 true면 다른 버튼들 비활성화시킴
     private Button[] otherButtons;
 
     // 나가기 버튼
-    private Button exitBtn;
+    [Header("나가기 버튼")] [SerializeField] private Button exitButton;
 
     void Awake()
     {
@@ -37,97 +38,48 @@ public class RoomManager : MonoBehaviour
     
     void Start()
     {
-        exitBtn = GameObject.Find("Exit Button").GetComponent<Button>();
         // "Controlled Button" 태그를 가진 모든 버튼들을 찾아서 otherButtons에 넣음.
         otherButtons = GameObject.FindGameObjectsWithTag("Controlled Button").Select(g => g.GetComponent<Button>()).ToArray();
 
-        roomP1.SetActive(true);
-        roomP2.SetActive(false);
-        roomP3.SetActive(false);
+        // 모든 Side 켰다 끄기
+        foreach (GameObject side in sides)
+        {
+            side.SetActive(true);
+            side.SetActive(false);
+        }
+        
+        // Side 1으로 초기화
+        currentView = sides[0];
+        SetCurrentSide(0);
+        
         DialogueManager.Instance.StartDialogue("Prologue_015");
     }
 
     // A키와 D키로 시점 이동
     void Update()
     {
-        //// 대사 출력되고 있으면 버튼들 클릭 비활성화시킴
-        //if (DialogueManager.Instance.isDialogueActive)
-        //{
-        //    StartCoroutine(offControlledBtn());
-        //}
-        //else // 대사 출력이 끝나면 버튼들 클릭 다시 활성화시킴
-        //{
-        //    StartCoroutine(onControlledBtn());
-        //}
-        
-
-        if (!isResearch)
+        if (isInvestigating || DialogueManager.Instance.isDialogueActive) return; 
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                // P1 -> P2
-                // P2 -> P3
-                // P3 -> P1
-                if (roomP1.activeSelf)
-                {
-                    roomP1.SetActive(false);
-                    roomP2.SetActive(true);
-                }
-                else if (roomP2.activeSelf)
-                {
-                    roomP2.SetActive(false);
-                    roomP3.SetActive(true);
-                }
-                else
-                {
-                    roomP3.SetActive(false);
-                    roomP1.SetActive(true);
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                // P1 -> P3
-                // P2 -> P1
-                // P3 -> P2
-                if (roomP1.activeSelf)
-                {
-                    roomP1.SetActive(false);
-                    roomP3.SetActive(true);
-                }
-                else if (roomP2.activeSelf)
-                {
-                    roomP2.SetActive(false);
-                    roomP1.SetActive(true);
-                }
-                else
-                {
-                    roomP3.SetActive(false);
-                    roomP2.SetActive(true);
-                }
-            }
+            int newSideIndex = (currentSideIndex - 1 + sides.Count) % sides.Count;
+            SetCurrentSide(newSideIndex);
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.D))
         {
-            if (!DialogueManager.Instance.isDialogueActive)
-            {
-                // 조사 중이면 다른 단서들 클릭 못하게 막기... 나가기 버튼은 활성화 해둬야 함.
-                offControlledBtn();
-
-                exitBtn.interactable = true;
-            }
+            int newSideIndex = (currentSideIndex + 1) % sides.Count;
+            SetCurrentSide(newSideIndex);
         }
     }
 
-    public void SearchExitBtn()
+    public void SearchExitButton()
     {
         DeactivateObjects();
-        onControlledBtn();
-        isResearch = false;
+        isInvestigating = false;
     }
 
     private void DeactivateObjects()
     {
-        foreach (GameObject obj in ScreenObjects)
+        foreach (GameObject obj in screenObjects)
         {
             obj.SetActive(false);
         }
@@ -137,47 +89,27 @@ public class RoomManager : MonoBehaviour
 
     public void AddScreenObjects(GameObject obj)
     {
-        if (!ScreenObjects.Contains(obj)) ScreenObjects.Add(obj);
+        if (!screenObjects.Contains(obj)) screenObjects.Add(obj);
     }
 
-    // 대사 출력 동안 버튼들 클릭 비활성화
-    public void offControlledBtn()
+    // ######################################## setters ########################################
+    private void SetIsInvestigating(bool isTrue)
     {
-        foreach (Button button in otherButtons)
-        {
-            button.interactable = false;
-        }
+        isInvestigating = isTrue;
     }
-    //private IEnumerator offControlledBtn()
-    //{
-    //    foreach (Button button in otherButtons)
-    //    {
-    //        button.interactable = false;
-    //    }
 
-    //    yield return null;
-    //}
-
-    // 대사 출력 끝나면 버튼들 클릭 다시 활성화
-    public void onControlledBtn()
+    // 시점 전환
+    private void SetCurrentSide(int newSideIndex)
     {
-        foreach (Button button in otherButtons)
-        {
-            button.interactable = true;
-        }
+        SetCurrentView(sides[newSideIndex]);
+        currentSideIndex = newSideIndex;
     }
-    //private IEnumerator onControlledBtn()
-    //{
-    //    foreach (Button button in otherButtons)
-    //    {
-    //        button.interactable = true;
-    //    }
-
-    //    yield return null;
-    //}
-
-    public void onResearch()
+    
+    // 뷰 전환
+    private void SetCurrentView(GameObject newView)
     {
-        isResearch = true;
+        currentView.SetActive(false);
+        newView.SetActive(true);
+        currentView = newView;
     }
 }

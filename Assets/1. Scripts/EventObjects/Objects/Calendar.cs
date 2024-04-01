@@ -23,13 +23,13 @@ public class Calendar : EventObject, IResultExecutable
         ShowCalendarUI();
     }
 
-    private void ShowCalendarUI()   // ´Ş·Â »ó¼¼·Î º¸¿©ÁÜ
+    private void ShowCalendarUI()   // ë‹¬ë ¥ ìƒì„¸ë¡œ ë³´ì—¬ì¤Œ
     {
         if ((int)GameManager.Instance.GetVariable("CalendarClue")<4)
         {
             calendarUI.SetActive(true);
             RoomManager.Instance.AddScreenObjects(calendarUI);
-            RoomManager.Instance.isResearch = true;
+            RoomManager.Instance.isInvestigating = true;
         }
         
     }
@@ -39,7 +39,7 @@ public class Calendar : EventObject, IResultExecutable
         GameManager.Instance.SetVariable("CalendarMonth", false);
     }
 
-    // month¹öÆ°µé ¸¶´Ù ºÙÀÓ
+    // monthë²„íŠ¼ë“¤ ë§ˆë‹¤ ë¶™ì„
     public void OnCalendarMonth()
     {
         GameManager.Instance.SetVariable("CalendarMonth", true);

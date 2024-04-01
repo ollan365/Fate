@@ -29,6 +29,6 @@ public class Diary : EventObject, IResultExecutable
     {
         diaryLock.SetActive(true);
         RoomManager.Instance.AddScreenObjects(diaryLock);
-        RoomManager.Instance.isResearch = true;
+        RoomManager.Instance.isInvestigating = true;
     }
 }

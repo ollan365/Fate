@@ -27,7 +27,7 @@ public class Pillow : EventObject, IResultExecutable
     {
         amulet.SetActive(true);
         RoomManager.Instance.AddScreenObjects(amulet);
-        RoomManager.Instance.isResearch = true;
+        RoomManager.Instance.isInvestigating = true;
     }
     
 }

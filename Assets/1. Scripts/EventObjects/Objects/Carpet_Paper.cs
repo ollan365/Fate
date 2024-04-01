@@ -29,10 +29,10 @@ public class Carpet_Paper : EventObject, IResultExecutable
 
     private void LookPaper()
     {
-        // Ä«Æê ¹Ø Á¾ÀÌ Å¬¸¯ÇÏ¸é Á¾ÀÌ È®´ëµÊ(UI¿¡¼­ È®´ëµÈ Á¾ÀÌ º¸¿©Áü).
+        // Ä«ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½(UIï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½).
         paperCloseUp.SetActive(true);
         RoomManager.Instance.AddScreenObjects(paperCloseUp);
-        RoomManager.Instance.isResearch = true;
+        RoomManager.Instance.isInvestigating = true;
         carpet.interactable = true;
     }
 }

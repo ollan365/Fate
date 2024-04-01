@@ -29,7 +29,7 @@ public class LaptopLock : EventObject, IResultExecutable
     {
         laptopContent.SetActive(true);
         RoomManager.Instance.AddScreenObjects(laptopContent);
-        RoomManager.Instance.isResearch = true;
+        RoomManager.Instance.isInvestigating = true;
     } 
 
     // 로그인 화면에서 암호 입력 후 엔터 치면

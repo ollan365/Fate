@@ -27,7 +27,7 @@ public class ClockPuzzle : EventObject, IResultExecutable
     {
         keys.SetActive(true);
         RoomManager.Instance.AddScreenObjects(keys);
-        RoomManager.Instance.isResearch = true;
+        RoomManager.Instance.isInvestigating = true;
     }
 
     public void TryPassword()

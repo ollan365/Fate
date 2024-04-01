@@ -5,7 +5,7 @@ using UnityEngine;
 public class Box : EventObject, IResultExecutable
 {
     [SerializeField]
-    private GameObject photos; // »óÀÚ ¼Ó »çÁøµé
+    private GameObject photos; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private void Start()
     {
@@ -23,14 +23,14 @@ public class Box : EventObject, IResultExecutable
         ShowPhotos();
     }
 
-    private void ShowPhotos()  // ¿­¼è·Î ¿­¸é »óÀÚ ¼Ó Àü´ÜÁö ¹ß°ß
+    private void ShowPhotos()  // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
     {
         if ((bool)GameManager.Instance.GetVariable("ClockTimeCorrect")&& !(bool)GameManager.Instance.GetVariable("BoxCorrect"))
         {
             photos.SetActive(true);
             RoomManager.Instance.AddScreenObjects(photos);
             GameManager.Instance.SetVariable("BoxCorrect", true);
-            RoomManager.Instance.isResearch = true;
+            RoomManager.Instance.isInvestigating = true;
         }
     }
 

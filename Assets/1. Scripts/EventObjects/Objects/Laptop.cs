@@ -29,6 +29,6 @@ public class Laptop : EventObject, IResultExecutable
     {
         laptopLock.SetActive(true);
         RoomManager.Instance.AddScreenObjects(laptopLock);
-        RoomManager.Instance.isResearch = true;
+        RoomManager.Instance.isInvestigating = true;
     }
 }

@@ -32,7 +32,6 @@ public class DialogueManager : MonoBehaviour
     // 상태 변수
     private string currentDialogueID = "";
     public bool isDialogueActive = false;
-    private bool isChoiceActive = false;
     private bool isTyping = false;
     private string fullSentence;
 
@@ -115,12 +114,6 @@ public class DialogueManager : MonoBehaviour
     // ---------------------------------------------- Script methods ----------------------------------------------
     private void ProceedToNext()
     {
-        if (RoomManager.Instance)
-        {
-            // 다이얼로그 진행되는 동안에 다른 오브젝트 버튼들 못 누르게 함
-            RoomManager.Instance.offControlledBtn();
-        }
-
         int currentDialogueLineIndex = dialogues[currentDialogueID].CurrentLineIndex;
         string next = dialogues[currentDialogueID].Lines[currentDialogueLineIndex].Next;
         
@@ -139,10 +132,6 @@ public class DialogueManager : MonoBehaviour
             
             if (currentDialogueLineIndex >= dialogues[currentDialogueID].Lines.Count)
             {
-                if (RoomManager.Instance)
-                {
-                    RoomManager.Instance.onControlledBtn();
-                }
                 EndDialogue();  // 더 이상 DialogueLine이 존재하지 않으면 대화 종료
                 return;
             }
