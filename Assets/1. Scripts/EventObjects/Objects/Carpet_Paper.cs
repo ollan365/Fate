@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Carpet_Paper : EventObject, IResultExecutable
 {
-    [SerializeField]
-    private GameObject paperCloseUp;
+    //[SerializeField]
+    //private GameObject paperCloseUp;
 
     private Button carpet;
 
@@ -29,9 +29,9 @@ public class Carpet_Paper : EventObject, IResultExecutable
 
     private void LookPaper()
     {
-        // ī�� �� ���� Ŭ���ϸ� ���� Ȯ���(UI���� Ȯ��� ���� ������).
-        paperCloseUp.SetActive(true);
-        RoomManager.Instance.AddScreenObjects(paperCloseUp);
+        RoomManager.Instance.SetEventObjectPanel(true, "Carpet_Paper");
+        //paperCloseUp.SetActive(true);
+        //RoomManager.Instance.AddScreenObjects(paperCloseUp);
         RoomManager.Instance.isInvestigating = true;
         carpet.interactable = true;
     }

@@ -25,8 +25,9 @@ public class ClockPuzzle : EventObject, IResultExecutable
     // 시계 열리고 열쇠 획득
     private void ShowKey()
     {
-        keys.SetActive(true);
-        RoomManager.Instance.AddScreenObjects(keys);
+        RoomManager.Instance.SetEventObjectPanel(true, "ClockKeys");
+        //keys.SetActive(true);
+        //RoomManager.Instance.AddScreenObjects(keys);
         RoomManager.Instance.isInvestigating = true;
     }
 
@@ -38,7 +39,8 @@ public class ClockPuzzle : EventObject, IResultExecutable
         StartCoroutine(CompareClockHands(currentHourAngle, currentMinuteAngle));
     }
 
-    private float[] correctAngles = { 210f, 180f };
+    private float[] correctAngles = { 210f, 180f };     //오후 5시 30분
+    //private float[] correctAngles = { 180f, 180f };   //오후 6시 30분
 
     IEnumerator CompareClockHands(float hourAngle, float minuteAngle)
     {

@@ -31,9 +31,14 @@ public class Carpet : EventObject, IResultExecutable
         }
     }
 
+    // 리소스 관련 변수
+    [Header("카펫 이미지 리소스")]
+    [SerializeField] private Sprite carpetOpen;
+    [SerializeField] private Sprite carpetClosed;
+
     private void CarpetOpen()
     {  // 카펫 들추기
-        transform.GetComponent<Image>().sprite= Resources.Load<Sprite>("Room/Room1/Carpet Open");
+        transform.GetComponent<Image>().sprite= carpetOpen;
         // 종이 클릭을 위해 들춘 후에는 카펫 클릭 비활성화
         GetComponent<Button>().interactable = false;
 
@@ -43,7 +48,7 @@ public class Carpet : EventObject, IResultExecutable
 
     private void CarpetClose()   // 카펫 닫기
     {  
-        transform.GetComponent<Image>().sprite = Resources.Load<Sprite>("Room/Room1/Carpet Closed");
+        transform.GetComponent<Image>().sprite = carpetClosed;
 
         // 카펫 밑 종이 비활성화
         CarpetPaper.SetActive(false);

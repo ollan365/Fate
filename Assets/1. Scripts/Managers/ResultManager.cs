@@ -59,6 +59,11 @@ public class ResultManager : MonoBehaviour
     public void ExecuteResult(string resultID)
     {
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
+
+        //// 기본적으로는 나가기 버튼이 보이지 않음
+        //if(RoomManager.Instance)
+        //    RoomManager.Instance.SetExitButton(false);
+
         switch (resultID)
         {
             case "Result_girl":  // 우연의 성별을 여자로 설정
@@ -96,6 +101,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_007": // 술과 감기약에 대한 설명
+                RoomManager.Instance.SetEventObjectPanel(true, "Liquor");
                 DialogueManager.Instance.StartDialogue("RoomEscape_003");
                 break;
             
@@ -114,6 +120,7 @@ public class ResultManager : MonoBehaviour
             case "Result_011": // 베개 안에 부적을 발견
                 executableObjects["Pillow"].ExecuteAction();
                 DialogueManager.Instance.StartDialogue("RoomEscape_007");
+                //RoomManager.Instance.SetExitButton(true);
                 break;
             
             case "Result_012": // 부적에 대한 메모 작성 - ### 추후 구현 필요 ###
@@ -125,6 +132,7 @@ public class ResultManager : MonoBehaviour
             
             case "Result_014": // 다이어리 잠금 장치 활성화됨
                 executableObjects["Diary"].ExecuteAction();
+                RoomManager.Instance.SetExitButton(true);
                 break;
             
             case "Result_015": // 다이어리가 열림
@@ -143,11 +151,13 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_019": // 시계에 대한 설명
+                //RoomManager.Instance.SetEventObjectPanel(true, "clock1");
                 DialogueManager.Instance.StartDialogue("RoomEscape_012");
                 break;
             
             case "Result_020": // 시계 시스템 활성화
                 executableObjects["Clock"].ExecuteAction();
+                RoomManager.Instance.SetExitButton(true);
                 break;
 
             case "Result_021": // 열쇠를 획득
@@ -172,6 +182,7 @@ public class ResultManager : MonoBehaviour
 
             case "Result_026": // 노트북 비밀번호 화면 활성화
                 executableObjects["Laptop"].ExecuteAction();
+                RoomManager.Instance.SetExitButton(true);
                 break;
 
             case "Result_027": // 노트북이 열림
@@ -195,6 +206,7 @@ public class ResultManager : MonoBehaviour
             
             case "Result_032": // 종이를 확대해주는 UI
                 executableObjects["Carpet_Paper"].ExecuteAction();
+                RoomManager.Instance.SetExitButton(true);
                 break;
             
             case "Result_033": // 종이에 대한 스크립트
@@ -206,10 +218,12 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape_018");
                 break;
             case "Result_035": // 포스터에 대한 스크립트
+                RoomManager.Instance.SetEventObjectPanel(true, "Poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_019");
                 break;
 
             case "Result_036": // 커터칼에 대한 스크립트
+                RoomManager.Instance.SetEventObjectPanel(true, "Knife");
                 DialogueManager.Instance.StartDialogue("RoomEscape_020");
                 break;
 
@@ -253,8 +267,9 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_046": // 상자가 열리는 스크립트
-                Debug.Log("상자 열리는 스크립트");
+                //Debug.Log("상자 열리는 스크립트");
                 DialogueManager.Instance.StartDialogue("RoomEscape_025");
+                RoomManager.Instance.SetExitButton(true);
                 break;
 
             case "Result_047": // 상자 열리는 사운드 - ### 추후 구현 필요 ###
@@ -280,6 +295,7 @@ public class ResultManager : MonoBehaviour
 
             case "Result_052": // 달력이 열림
                 executableObjects["Calendar"].ExecuteAction();
+                RoomManager.Instance.SetExitButton(true);
                 break;
 
             case "Result_053": // 필연 생일에 대한 스크립트 - ### 추후 구현 필요 ###
