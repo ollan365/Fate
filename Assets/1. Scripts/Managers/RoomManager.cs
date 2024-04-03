@@ -24,6 +24,9 @@ public class RoomManager : MonoBehaviour
     // 나가기 버튼
     [Header("나가기 버튼")] [SerializeField] private Button exitButton;
 
+    // 이벤트오브젝트패널
+    [Header("이벤트 오브젝트 패널")] [SerializeField] private GameObject eventObjectPanel;
+
     void Awake()
     {
         if (Instance == null)
@@ -112,4 +115,62 @@ public class RoomManager : MonoBehaviour
         newView.SetActive(true);
         currentView = newView;
     }
+
+    // 나가기 버튼 필요 시, 보이게 함 (ResultManager에서 호출하게 함)
+    public void SetExitButton(bool isTrue)
+    {
+        exitButton.gameObject.SetActive(isTrue);
+    }
+
+    // EventObjectPanel 켜서 해당 오브젝트 확대 UI 보여줌
+    [Header("이벤트 오브젝트 확대 이미지")]
+    [SerializeField] private GameObject amuletImage;
+    [SerializeField] private GameObject carpetPaperImage;
+    [SerializeField] private GameObject clockImage;
+    [SerializeField] private GameObject keysImage;
+    [SerializeField] private GameObject knifeImage;
+    [SerializeField] private GameObject posterImage;
+    [SerializeField] private GameObject liquorImage;
+    public void SetEventObjectPanel(bool isTrue, string objName)
+    {
+        eventObjectPanel.SetActive(isTrue);
+        if (eventObjectPanel.activeSelf)
+        {
+            AddScreenObjects(eventObjectPanel);
+            SetExitButton(true);
+        }
+        switch (objName)
+        {
+            case "Pillow":
+                amuletImage.SetActive(isTrue);
+                AddScreenObjects(amuletImage);
+                break;
+            case "Carpet_Paper":
+                carpetPaperImage.SetActive(isTrue);
+                AddScreenObjects(carpetPaperImage);
+                break;
+            case "clock1":
+                clockImage.SetActive(isTrue);
+                AddScreenObjects(clockImage);
+                break;
+            case "ClockKeys":
+                keysImage.SetActive(isTrue);
+                AddScreenObjects(keysImage);
+                break;
+            case "Knife":
+                knifeImage.SetActive(isTrue);
+                AddScreenObjects(knifeImage);
+                break;
+            case "Poster":
+                posterImage.SetActive(isTrue);
+                AddScreenObjects(posterImage);
+                break;
+            case "Liquor":
+                liquorImage.SetActive(isTrue);
+                AddScreenObjects(liquorImage);
+                break;
+        }
+    }
+
+
 }
