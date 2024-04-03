@@ -20,6 +20,8 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     
     private Animator fadeEffectAnimator;
 
+    [SerializeField] private TextMeshProUGUI testText;
+
     private void Awake()
     {
         fadeEffectAnimator = fadeEffectImage.GetComponent<Animator>();
@@ -29,7 +31,6 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     {
         ResultManager.Instance.RegisterExecutable("StartLogic", this);
     }
-    
     public void ExecuteAction()
     {
         PlayFadeOutAnimation();

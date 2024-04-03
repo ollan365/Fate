@@ -45,6 +45,8 @@ public class MemoManager : MonoBehaviour
         foreach (string memo in savedMemoList)
         {
             GameObject memoTextObject = Instantiate(memoTextPrefab, scrollViewContent);
+            memo.Replace("[", "<color=red>");
+            memo.Replace("]", "</color>");
             memoTextObject.GetComponent<TextMeshProUGUI>().text = memo;
         }
     }
