@@ -22,6 +22,11 @@ public class FollowObject : EventObject
             Destroy(child.gameObject);
 
         var eventButton = Instantiate(FollowManager.Instance.eventButtonPrefab, FollowManager.Instance.blockingPanel.transform).GetComponent<Button>();
+
+        // 자식의 이미지 변경
+        eventButton.transform.GetChild(0).GetComponent<Image>().sprite = gameObject.GetComponent<Image>().sprite;
+        eventButton.transform.GetChild(0).GetComponent<Image>().SetNativeSize();
+
         eventButton.onClick.AddListener(() => OnMouseDown_Normal());
         eventButton.onClick.AddListener(() => eventButton.gameObject.SetActive(false));
     }

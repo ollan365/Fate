@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using static Constants;
 
 public class ResultManager : MonoBehaviour
 {
