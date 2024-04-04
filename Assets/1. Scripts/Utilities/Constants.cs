@@ -1,7 +1,19 @@
 public static class Constants
 {
     // 대화창의 종류
-    public enum DialogueType { ROOM, FOLLOW_NORMAL, FOLLOW_SPECIAL }
+    public enum DialogueType { ROOM, FOLLOW }
+    public static int ToInt(this DialogueType dialogueType)
+    {
+        // 다이얼로그 타입에 따라 다른 숫자 반환
+        switch (dialogueType)
+        {
+            case DialogueType.ROOM: return 0;
+            case DialogueType.FOLLOW: return 1;
+            default: return 0;
+        }
+    }
+
+
 
 
     // -------------- 미행 관련 변수들 -------------- //
