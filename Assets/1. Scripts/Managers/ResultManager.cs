@@ -325,6 +325,54 @@ public class ResultManager : MonoBehaviour
 
             case "Result_060": // 10월 1일 메모 - ### 추후 구현 필요 ###
                 break;
+
+            case "Result_063": // 빌라에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_002");
+                break;
+
+            case "Result_064": // 빵집에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_003");
+                break;
+
+            case "Result_065": // 편의점에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_004");
+                break;
+
+            case "Result_066": // 바에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_005");
+                break;
+
+            case "Result_067": // 이자카야에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_006");
+                break;
+
+            case "Result_068": // 고양이에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_007");
+                break;
+
+            case "Result_069": // 카페에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_008");
+                break;
+
+            case "Result_070": // 카페에 대한 메모 1
+                break;
+
+            case "Result_071": // 카페에 대한 메모 2
+                break;
+
+            case "Result_072": // 영수증에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_009");
+                break;
+
+            case "Result_073": // 영수증에 대한 메모
+                break;
+
+            case "Result_074": // 신호등에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_010");
+                break;
+
+            case "Result_075": // 신호등에 대한 메모
+                break;
         }
     }
 }

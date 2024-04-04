@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         
         variables["ActionPoint"] = 25;  // 행동력 
         
-        // 2. 이벤트 오브젝트 관련 변수들
+        // 2 - 1. 이벤트 오브젝트 관련 변수들 - 첫번째 방탈출
         // 침대 위 곰인형
         variables["DollsClick"] = 0;
         
@@ -130,8 +130,27 @@ public class GameManager : MonoBehaviour
         // 10월 31일 클릭
         variables["_1031Click"] = 0;
 
+        // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
+        // 빌라
+        variables["VillaClick"] = 0;
+        // 2층 빵집
+        variables["BreadClick"] = 0;
+        // 1층 편의점
+        variables["ConClick"] = 0;
+        // 3층 바
+        variables["BarClick"] = 0;
+        // 이자카야
+        variables["IzakawaClick"] = 0;
+        // 고양이
+        variables["CatClick"] = 0;
+        // 카페
+        variables["CafeClick"] = 0;
+        // 카페 영수증
+        variables["ReceiptClick"] = 0;
+        // 신호등
+        variables["LightClick"] = 0;
     }
-    
+
     public void SetVariable(string variableName, object value)
     {
         if (variables.ContainsKey(variableName))
