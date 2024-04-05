@@ -1,10 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 using TMPro;
 
 public class FollowAnim : MonoBehaviour
 {
     [SerializeField] private Transform backgroundPosition;
+    [SerializeField] private Transform frontCanvasPosition;
     [SerializeField] private float moveSpeed;
+
+    [SerializeField] private Image beaconImage;
+    [SerializeField] private Sprite[] beaconSprites;
 
     [SerializeField] private Animator fateBoy, fateGirl, accidyBoy, accidyGirl;
     private Animator fate, accidy;
@@ -16,11 +22,16 @@ public class FollowAnim : MonoBehaviour
     private void Start()
     {
         SetCharcter();
+        StartCoroutine(ChangeBeaconSprite());
     }
     private void Update()
     {
         if (!isStop) // 배경 이동
-            backgroundPosition.position += Vector3.left * moveSpeed * Time.deltaTime;
+        {
+            Vector3 moveVector = Vector3.left * moveSpeed * Time.deltaTime;
+            backgroundPosition.position += moveVector;
+            frontCanvasPosition.position += moveVector;
+        }
     }
     public void ChangeAnimStatus()
     {
@@ -44,5 +55,18 @@ public class FollowAnim : MonoBehaviour
 
         fate.gameObject.SetActive(true);
         accidy.gameObject.SetActive(true);
+    }
+
+    private IEnumerator ChangeBeaconSprite()
+    {
+        // 신호등의 색을 3초마다 바꿔준다
+        while (true)
+        {
+            foreach (Sprite sprite in beaconSprites)
+            {
+                beaconImage.sprite = sprite;
+                yield return new WaitForSeconds(3f);
+            }
+        }
     }
 }
