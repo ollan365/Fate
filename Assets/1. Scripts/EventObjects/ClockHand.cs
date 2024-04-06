@@ -23,6 +23,19 @@ public class ClockHand : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
     [SerializeField]
     private GameObject clockPuzzle;
 
+    // 시침 오브젝트의 ClockHand 컴포넌트
+    [SerializeField]
+    private GameObject hourHand;
+
+    // 분침의 누적 회전 각도
+    private float accumulatedMinuteAngle = 0f;
+
+    // 시침의 누적 회전 각도
+    private float accumulatedHourAngle = 0f;
+
+    // 현재 시간을 저장하는 변수
+    private int currentHour = 12;
+
     public void OnDrag(PointerEventData eventData)
     {
         // 드래그 중일 때만 실행
@@ -39,8 +52,23 @@ public class ClockHand : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             // 바늘의 회전 각도를 설정
             float newAngle = Mathf.Clamp(angle - startAngle, -maxAngle, maxAngle);
             transform.rotation = Quaternion.Euler(0f, 0f, newAngle);
+
+            // 분침의 누적 회전 각도 업데이트
+            //accumulatedMinuteAngle += newAngle - startAngle;
+            accumulatedMinuteAngle += newAngle;
+
+            endAngle = newAngle * -1;
+            // 시침도 함께 움직이도록 설정
+            if (hourHand != null)
+            {
+                // 시침의 누적 회전 각도 업데이트
+                float hourHandAngle = (accumulatedMinuteAngle / 360f) % 30f + accumulatedHourAngle;
+                hourHand.transform.rotation = Quaternion.Euler(0f, 0f, hourHandAngle);
+            }
         }
     }
+
+    float endAngle;
 
     public void OnEndDrag(PointerEventData eventData)
     {
@@ -50,10 +78,10 @@ public class ClockHand : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
         // 바늘이 원하는 위치에 멈추도록 보정
         SnapToStepAngle();
 
-        //Debug.Log(this.gameObject.name + "의 위치 " + transform.rotation.z);
+        Debug.Log(endAngle);
 
         // 분침이 멈출 때마다 ClockPassword.cs의 loginPW() 호출
-        if (this.gameObject.name=="minute hand")
+        if (this.gameObject.name == "minute hand")
             clockPuzzle.GetComponent<ClockPuzzle>().TryPassword();
     }
 
@@ -76,5 +104,12 @@ public class ClockHand : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
 
         // 바늘의 회전 각도를 설정
         transform.rotation = Quaternion.Euler(0f, 0f, snappedAngle);
+
+        //// 분침이 한 바퀴를 돌면 시침을 한 시간씩 증가시킴
+        //if (Mathf.Approximately(snappedAngle, 0f))
+        //{
+        //    accumulatedHourAngle += 30f;
+        //    currentHour = (currentHour % 12) + 1;
+        //}
     }
 }

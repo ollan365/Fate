@@ -15,7 +15,8 @@ public class Carpet : EventObject, IResultExecutable
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("CarpetClick");
+        if((bool)GameManager.Instance.GetVariable("ChairMoved"))
+            GameManager.Instance.IncrementVariable("CarpetClick");
     }
 
     public void ExecuteAction()
@@ -44,6 +45,10 @@ public class Carpet : EventObject, IResultExecutable
 
         // 카펫 밑 종이 버튼 활성화
         CarpetPaper.SetActive(true);
+
+        // 카펫 밑 종이 버튼 제외하고 다 버튼 안 눌리게 함.
+        RoomManager.Instance.ControllEventButtons(false);
+        RoomManager.Instance.SetIsInvestigating(true);
     }
 
     private void CarpetClose()   // 카펫 닫기
@@ -52,5 +57,9 @@ public class Carpet : EventObject, IResultExecutable
 
         // 카펫 밑 종이 비활성화
         CarpetPaper.SetActive(false);
+
+        // 카펫 닫으면 다른 버튼들 다시 활성화
+        RoomManager.Instance.ControllEventButtons(true);
+        RoomManager.Instance.SetIsInvestigating(false);
     }
 }
