@@ -1,13 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class Bag : EventObject { 
+public class Bag : EventObject
+{
+    private void Awake()
+    {
+        GetComponent<CircleCollider2D>().enabled = false;
+    }
 
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("BagClick");
-        GameManager.Instance.SetVariable("BagClue", true);
+        GameManager.Instance.IncrementVariable("BagClick"); 
     }
 }

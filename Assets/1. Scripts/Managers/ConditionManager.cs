@@ -30,9 +30,9 @@ public class ConditionManager : MonoBehaviour
         string[] lines = conditionsCSV.text.Split('\n');
         for (int i = 1; i < lines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-
             string[] fields = lines[i].Split(',');
+
+            if ((string.IsNullOrWhiteSpace(lines[i])) || (fields[0] == "" && fields[1] == "")) continue;
 
             Condition condition = new Condition(
                 fields[0].Trim(), // Condition ID
@@ -57,8 +57,6 @@ public class ConditionManager : MonoBehaviour
 
         if (variableValue is int intVal)
         {
-            // Debug.Log("name: " + variableName + ", | logic: " + logic + ", | value: " + int.Parse(value) + ", | variableValue: " + variableValue);
-            
             int targetValue = int.Parse(value);
             return logic switch
             {

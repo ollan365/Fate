@@ -17,6 +17,7 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     
     [SerializeField] private GameObject background;
     [SerializeField] private GameObject fadeEffectImage;
+    [SerializeField] private Sprite room1Side1BackgroundSprite;
     
     private Animator fadeEffectAnimator;
 
@@ -88,7 +89,7 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     {
         fadeEffectImage.SetActive(true); // Fade Effect Image 활성화
         background.GetComponent<Image>().color = Color.white;
-        background.GetComponent<Image>().sprite = Resources.Load<Sprite>("PrototypeImage/Side 1 Full"); // Background 이미지 변경
+        background.GetComponent<Image>().sprite = room1Side1BackgroundSprite; // Background 이미지 변경
         PlayFadeInAnimation();
         StartCoroutine(StartDialogueAfterDelay("Prologue_002", 2.5f));
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,6 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI speakerText;
     public TextMeshProUGUI scriptText;
     public SpriteRenderer characterImage;
-    public GameObject dialoguePanel;
     public Transform choicesContainer;
     public GameObject choicePrefab;
     public SpriteRenderer teddyBearIcon;
@@ -34,6 +34,9 @@ public class DialogueManager : MonoBehaviour
     public bool isDialogueActive = false;
     private bool isTyping = false;
     private string fullSentence;
+    
+    // Dialogue Queue
+    private Queue<string> dialogueQueue = new Queue<string>();
 
     void Awake()
     {
@@ -58,6 +61,14 @@ public class DialogueManager : MonoBehaviour
     // ---------------------------------------------- Dialogue methods ----------------------------------------------
     public void StartDialogue(string dialogueID)
     {
+        if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
+        {
+            Debug.Log($"dialogue ID: {dialogueID} queued!");
+            
+            dialogueQueue.Enqueue(dialogueID);
+            return;
+        }
+        
         isDialogueActive = true;
         dialogueCanvas.SetActive(true);
         dialogues[dialogueID].SetCurrentLineIndex(0);
@@ -103,12 +114,18 @@ public class DialogueManager : MonoBehaviour
         }
         
     }
-    
+
     private void EndDialogue()
     {
         isDialogueActive = false;
         dialogueCanvas.SetActive(false);
         characterImage.gameObject.SetActive(false);
+
+        if (dialogueQueue.Count > 0)  // 큐에 다이얼로그가 들어있으면 다시 대화 시작
+        {
+            string queuedDialogueID = dialogueQueue.Dequeue();
+            StartDialogue(queuedDialogueID);
+        }
     }
     
     // ---------------------------------------------- Script methods ----------------------------------------------

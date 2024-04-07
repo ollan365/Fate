@@ -7,13 +7,14 @@ public class Calendar : EventObject, IResultExecutable
     [SerializeField]
     private GameObject calendarUI;
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("Calendar", this);
     }
 
     public new void OnMouseDown()
     {
+        if (DialogueManager.Instance.isDialogueActive) return;
         base.OnMouseDown();
         GameManager.Instance.IncrementVariable("CalendarClick");
     }
@@ -25,7 +26,7 @@ public class Calendar : EventObject, IResultExecutable
 
     private void ShowCalendarUI()   // 달력 상세로 보여줌
     {
-        if ((int)GameManager.Instance.GetVariable("CalendarClue")<4)
+        if ((int)GameManager.Instance.GetVariable("CalendarCluesFound")<4)
         {
             calendarUI.SetActive(true);
             RoomManager.Instance.AddScreenObjects(calendarUI);
