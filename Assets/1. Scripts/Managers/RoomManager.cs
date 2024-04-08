@@ -24,6 +24,11 @@ public class RoomManager : MonoBehaviour
     // 다이얼로그 매니저의 isDialogueActive가 true면 다른 버튼들 비활성화시킴
     private Button[] otherButtons;
 
+    // 이동 버튼
+    [Header("이동 버튼들")] 
+    [SerializeField] private Button moveButtonLeft;
+    [SerializeField] private Button moveButtonRight;
+
     // 나가기 버튼
     [Header("나가기 버튼")] [SerializeField] private Button exitButton;
 
@@ -80,16 +85,60 @@ public class RoomManager : MonoBehaviour
     // A키와 D키로 시점 이동
     void Update()
     {
-        if (isInvestigating || isZoomed || DialogueManager.Instance.isDialogueActive) return; 
-        if (Input.GetKeyDown(KeyCode.A))
+        //if (isInvestigating || DialogueManager.Instance.isDialogueActive) return; 
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    int newSideIndex = (currentSideIndex - 1 + sides.Count) % sides.Count;
+        //    SetCurrentSide(newSideIndex);
+        //}
+        //else if (Input.GetKeyDown(KeyCode.D))
+        //{
+        //    int newSideIndex = (currentSideIndex + 1) % sides.Count;
+        //    SetCurrentSide(newSideIndex);
+        //}
+
+        // 조사/다이얼로그 출력을 안 하고 있을 때만 이동 버튼이 보임.
+        if (isInvestigating || DialogueManager.Instance.isDialogueActive)
+            SetMoveButton(false);
+        else
+            SetMoveButton(true);
+    }
+
+    // 왼쪽 이동 버튼
+    public void MoveLeftButton()
+    {
+        if (isInvestigating || DialogueManager.Instance.isDialogueActive) return;
+        else
         {
             int newSideIndex = (currentSideIndex - 1 + sides.Count) % sides.Count;
             SetCurrentSide(newSideIndex);
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+    }
+
+    // 오른쪽 이동 버튼
+    public void MoveRightButton()
+    {
+        if (isInvestigating || DialogueManager.Instance.isDialogueActive) return;
+        else
         {
             int newSideIndex = (currentSideIndex + 1) % sides.Count;
             SetCurrentSide(newSideIndex);
+        }
+    }
+
+    // 이동 버튼들이 조사/다이얼로그 출력 시에는 화면 상에서 보이지 않게 함
+    public void SetMoveButton(bool isTrue)
+    {
+        moveButtonLeft.gameObject.SetActive(isTrue);
+        moveButtonRight.gameObject.SetActive(isTrue);
+    }
+
+
+    public void ControllEventButtons(bool isTrue)
+    {
+        foreach (Button button in otherButtons)
+        {
+            button.interactable = isTrue;
         }
     }
 
@@ -125,7 +174,7 @@ public class RoomManager : MonoBehaviour
     }
 
     // ######################################## setters ########################################
-    private void SetIsInvestigating(bool isTrue)
+    public void SetIsInvestigating(bool isTrue)
     {
         isInvestigating = isTrue;
     }
