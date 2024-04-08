@@ -14,7 +14,7 @@ public class DiaryLock : EventObject, IResultExecutable
     [SerializeField]
     private TextMeshProUGUI passwordText;
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("DiaryLock", this);
     }

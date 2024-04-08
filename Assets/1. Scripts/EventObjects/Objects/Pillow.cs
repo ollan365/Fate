@@ -7,7 +7,7 @@ public class Pillow : EventObject, IResultExecutable
     //[SerializeField]
     //private GameObject amulet;
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("Pillow", this);
     }

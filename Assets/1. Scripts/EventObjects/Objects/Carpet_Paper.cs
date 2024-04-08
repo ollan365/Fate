@@ -10,7 +10,7 @@ public class Carpet_Paper : EventObject, IResultExecutable
 
     private Button carpet;
 
-    private void Start()
+    private void Awake()
     {
         carpet = GameObject.Find("carpet").GetComponent<Button>();
         ResultManager.Instance.RegisterExecutable("Carpet_Paper", this);

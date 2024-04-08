@@ -10,11 +10,14 @@ public class RoomManager : MonoBehaviour
     public static RoomManager Instance { get; private set; }
     
     private GameObject currentView;  // 현재 뷰
-    [SerializeField] private List<GameObject> sides;  // 시점들
+    [Header("시점들")][SerializeField] private List<GameObject> sides;  // 시점들
     private int currentSideIndex = 0;  // 현재 시점 인덱스
 
-    // 조사 중이면 이동키로 시점 바꾸지 못하게 함
+    [Header("확대 화면들")][SerializeField] private List<GameObject> zoomViews;  // 확대 화면들
+    
+    // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
     public bool isInvestigating = false;
+    public bool isZoomed = false;
 
     private List<GameObject> screenObjects = new List<GameObject>();
 
@@ -26,6 +29,15 @@ public class RoomManager : MonoBehaviour
 
     // 이벤트오브젝트패널
     [Header("이벤트 오브젝트 패널")] [SerializeField] private GameObject eventObjectPanel;
+    
+    [Header("이벤트 오브젝트 확대 이미지")]
+    [SerializeField] private GameObject amuletImage;
+    [SerializeField] private GameObject carpetPaperImage;
+    [SerializeField] private GameObject clockImage;
+    [SerializeField] private GameObject keysImage;
+    [SerializeField] private GameObject knifeImage;
+    [SerializeField] private GameObject posterImage;
+    [SerializeField] private GameObject liquorImage;
 
     void Awake()
     {
@@ -51,6 +63,13 @@ public class RoomManager : MonoBehaviour
             side.SetActive(false);
         }
         
+        // 모든 확대 화면 켰다 끄기
+        foreach (GameObject zoomView in zoomViews)
+        {
+            zoomView.SetActive(true);
+            zoomView.SetActive(false);
+        }
+        
         // Side 1으로 초기화
         currentView = sides[0];
         SetCurrentSide(0);
@@ -61,7 +80,7 @@ public class RoomManager : MonoBehaviour
     // A키와 D키로 시점 이동
     void Update()
     {
-        if (isInvestigating || DialogueManager.Instance.isDialogueActive) return; 
+        if (isInvestigating || isZoomed || DialogueManager.Instance.isDialogueActive) return; 
         if (Input.GetKeyDown(KeyCode.A))
         {
             int newSideIndex = (currentSideIndex - 1 + sides.Count) % sides.Count;
@@ -76,8 +95,18 @@ public class RoomManager : MonoBehaviour
 
     public void SearchExitButton()
     {
-        DeactivateObjects();
-        isInvestigating = false;
+        if (isInvestigating)
+        {
+            DeactivateObjects();
+            isInvestigating = false;
+        }
+        else if (isZoomed)
+        {
+            SetCurrentView(sides[currentSideIndex]);
+            isZoomed = false;
+        }
+        
+        if (!isInvestigating && !isZoomed) exitButton.gameObject.SetActive(false); 
     }
 
     private void DeactivateObjects()
@@ -109,11 +138,17 @@ public class RoomManager : MonoBehaviour
     }
     
     // 뷰 전환
-    private void SetCurrentView(GameObject newView)
+    public void SetCurrentView(GameObject newView)
     {
         currentView.SetActive(false);
         newView.SetActive(true);
         currentView = newView;
+        
+        if (!sides.Contains(newView))  // side 중 하나가 아니라면 확대중인 화면이다
+        {
+            SetExitButton(true);
+            isZoomed = true;
+        }
     }
 
     // 나가기 버튼 필요 시, 보이게 함 (ResultManager에서 호출하게 함)
@@ -123,14 +158,6 @@ public class RoomManager : MonoBehaviour
     }
 
     // EventObjectPanel 켜서 해당 오브젝트 확대 UI 보여줌
-    [Header("이벤트 오브젝트 확대 이미지")]
-    [SerializeField] private GameObject amuletImage;
-    [SerializeField] private GameObject carpetPaperImage;
-    [SerializeField] private GameObject clockImage;
-    [SerializeField] private GameObject keysImage;
-    [SerializeField] private GameObject knifeImage;
-    [SerializeField] private GameObject posterImage;
-    [SerializeField] private GameObject liquorImage;
     public void SetEventObjectPanel(bool isTrue, string objName)
     {
         eventObjectPanel.SetActive(isTrue);
@@ -171,6 +198,5 @@ public class RoomManager : MonoBehaviour
                 break;
         }
     }
-
 
 }

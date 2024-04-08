@@ -14,7 +14,7 @@ public class LaptopLock : EventObject, IResultExecutable
     [SerializeField]
     private TMP_InputField passwordInputField;
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("LaptopLock", this);
     }

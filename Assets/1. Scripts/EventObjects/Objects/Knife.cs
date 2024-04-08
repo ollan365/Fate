@@ -1,35 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Knife : EventObject, IResultExecutable
 {
-
-    private void Start()
+    private void Awake()
     {
-        ResultManager.Instance.RegisterExecutable("Knife", this);
-
-        // 다른 사이드에서 이미 커터칼 챙겼으면 커터칼 안 보이게 함
-        if ((int)GameManager.Instance.GetVariable("KnifeClick") > 0)
-        {
-            getKnife();
-        }
+        ResultManager.Instance.RegisterExecutable($"Knife{sideNum}", this);
     }
 
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("KnifeClick");
+        GameManager.Instance.InverseVariable("HasKnife");
     }
 
     public void ExecuteAction()
     {
-        getKnife();
+        if (isActiveAndEnabled) HideKnife();
     }
 
-    // 커터칼 사라짐
-    private void getKnife()
+    private void HideKnife()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        bool hasKnife = (bool)GameManager.Instance.GetVariable("HasKnife");
+        if (hasKnife) gameObject.SetActive(false);
     }
 }
