@@ -1,49 +1,72 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+using TMPro;
 
 public class FollowAnim : MonoBehaviour
 {
-	//[Header("배경")]
-	//[SerializeField] private Transform[] positions;
-	//[SerializeField] private float moveSpeed;
+    [SerializeField] private Transform backgroundPosition;
+    [SerializeField] private Transform frontCanvasPosition;
+    [SerializeField] private float moveSpeed;
 
-	//[Header("캐릭터")]
-	//[SerializeField] private Player player;
- //   [SerializeField] private Animator fateBoy, fateGirl, accidyBoy, accidyGirl;
-	//private Animator fate, accidy;
+    [SerializeField] private Image beaconImage;
+    [SerializeField] private Sprite[] beaconSprites;
 
-	//private bool isStop;
-	//public bool IsStop
-	//{
-	//	set
-	//	{
-	//		isStop = !isStop;
-	//		fate.SetBool("Walking", !isStop);
-	//		accidy.SetBool("Walking", !isStop);
-	//	}
-	//}
- //   private void Start()
- //   {
-	//	isStop = true;
-	//	SetCharcter(1);
- //   }
- //   private void Update()
-	//{
-	//	if (!isStop)
-	//	{
-	//		foreach (Transform t in positions)
-	//			t.position += Vector3.left * moveSpeed * Time.deltaTime;
-	//	}
-	//}
+    [SerializeField] private Animator fateBoy, fateGirl, accidyBoy, accidyGirl;
+    private Animator fate, accidy;
 
-	//public void SetCharcter(int accidyGender)
- //   {
-	//	if (player.FateGender == 0) fate = fateBoy;
-	//	else fate = fateGirl;
+    [SerializeField] private TextMeshProUGUI stopButtonText; // 이동&멈춤 버튼의 글씨
+    private bool isStop = true; // 현재 이동 중인지를 나타내는 변수
+    public bool IsStop { get => isStop; }
+    
+    private void Start()
+    {
+        SetCharcter();
+        StartCoroutine(ChangeBeaconSprite());
+    }
+    private void Update()
+    {
+        if (!isStop) // 배경 이동
+        {
+            Vector3 moveVector = Vector3.left * moveSpeed * Time.deltaTime;
+            backgroundPosition.position += moveVector;
+            frontCanvasPosition.position += moveVector;
+        }
+    }
+    public void ChangeAnimStatus()
+    {
+        // 이동을 멈춤 or 시작
+        isStop = !isStop;
 
-	//	if (accidyGender == 0) accidy = accidyBoy;
-	//	else accidy = accidyGirl;
+        if (isStop) stopButtonText.text = "이동";
+        else stopButtonText.text = "정지";
 
-	//	fate.gameObject.SetActive(true);
-	//	accidy.gameObject.SetActive(true);
-	//}
+        fate.SetBool("Walking", !isStop);
+        accidy.SetBool("Walking", !isStop);
+    }
+    public void SetCharcter()
+    {
+        // 필연과 우연의 성별에 따라 다른 애니메이터 작동
+        if ((int)GameManager.Instance.GetVariable("FateGender") == 0) fate = fateGirl;
+        else fate = fateBoy;
+
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidyGirl;
+        else accidy = accidyBoy;
+
+        fate.gameObject.SetActive(true);
+        accidy.gameObject.SetActive(true);
+    }
+
+    private IEnumerator ChangeBeaconSprite()
+    {
+        // 신호등의 색을 3초마다 바꿔준다
+        while (true)
+        {
+            foreach (Sprite sprite in beaconSprites)
+            {
+                beaconImage.sprite = sprite;
+                yield return new WaitForSeconds(3f);
+            }
+        }
+    }
 }

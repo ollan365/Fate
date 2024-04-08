@@ -4,17 +4,20 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Constants;
 
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
-    
+
     // Dialogue UI
     [Header("Dialogue UI")]
-    public GameObject dialogueCanvas;
+    public DialogueType dialogueType = DialogueType.ROOM; // 사용할 대화창 종류
+    public GameObject[] dialogueCanvas;
     public TextMeshProUGUI speakerText;
-    public TextMeshProUGUI scriptText;
+    public TextMeshProUGUI[] scriptText;
     public SpriteRenderer characterImage;
+    public GameObject[] dialoguePanel;
     public Transform choicesContainer;
     public GameObject choicePrefab;
     public SpriteRenderer teddyBearIcon;
@@ -55,7 +58,7 @@ public class DialogueManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        dialogueCanvas.SetActive(false);
+        dialogueCanvas[dialogueType.ToInt()].SetActive(false);
     }
 
     // ---------------------------------------------- Dialogue methods ----------------------------------------------
@@ -70,7 +73,11 @@ public class DialogueManager : MonoBehaviour
         }
         
         isDialogueActive = true;
-        dialogueCanvas.SetActive(true);
+
+        // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
+        foreach (GameObject canvas in dialogueCanvas) canvas.SetActive(false);
+        dialogueCanvas[dialogueType.ToInt()].SetActive(true);
+
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
@@ -95,7 +102,10 @@ public class DialogueManager : MonoBehaviour
             sentence = sentence.Replace("{PlayerName", fateName);
         }
         StartCoroutine(TypeSentence(sentence));
-        
+
+        // 미행 파트라면 대화창 크기 조절
+        if (dialogueType == DialogueType.FOLLOW) SetPanelSize(sentence);
+
         // 화자 이미지 표시
         string imageID = dialogueLine.ImageID;
         if (string.IsNullOrWhiteSpace(imageID))
@@ -118,14 +128,17 @@ public class DialogueManager : MonoBehaviour
     private void EndDialogue()
     {
         isDialogueActive = false;
-        dialogueCanvas.SetActive(false);
+        dialogueCanvas[dialogueType.ToInt()].SetActive(false);
         characterImage.gameObject.SetActive(false);
-
         if (dialogueQueue.Count > 0)  // 큐에 다이얼로그가 들어있으면 다시 대화 시작
         {
             string queuedDialogueID = dialogueQueue.Dequeue();
             StartDialogue(queuedDialogueID);
+            return;
         }
+
+        // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
+        if (dialogueType == DialogueType.FOLLOW) FollowManager.Instance.EndScript();
     }
     
     // ---------------------------------------------- Script methods ----------------------------------------------
@@ -161,15 +174,25 @@ public class DialogueManager : MonoBehaviour
             DisplayChoices(next);
         }
     }
-    
+    private void SetPanelSize(string scriptText)
+    {
+        // scriptText의 길이를 기반으로 대화창의 크기를 조절
+        float preferredWidth = Mathf.Clamp(scriptText.Length, 21, 60) * 100;
+
+        // 대화창의 RectTransform 가져오기
+        RectTransform panelRect = dialoguePanel[dialogueType.ToInt()].GetComponent<RectTransform>();
+
+        // 대화창의 너비를 Text의 Preferred Width로 설정
+        panelRect.sizeDelta = new Vector2(preferredWidth, panelRect.sizeDelta.y);
+    }
     IEnumerator TypeSentence(string sentence)
     {
         teddyBearIcon.gameObject.SetActive(false);
-        scriptText.text = "";
+        scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
         foreach (char letter in sentence.ToCharArray())
         {
-            scriptText.text += letter;
+            scriptText[dialogueType.ToInt()].text += letter;
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
@@ -194,7 +217,7 @@ public class DialogueManager : MonoBehaviour
     private void CompleteSentence()
     {
         StopAllCoroutines();
-        scriptText.text = fullSentence;
+        scriptText[dialogueType.ToInt()].text = fullSentence;
         isTyping = false;
         teddyBearIcon.gameObject.SetActive(true);
     }
