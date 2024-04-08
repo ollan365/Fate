@@ -20,9 +20,10 @@ public static class Constants
     public enum FirstFollowObject
     {
         // 첫번째 배경 (빌라, 빵집, 편의점, 바, 이자카야, 카페, 영수증, 신호등)
-        Villa, Bread, Con, Bar, Izakawa, Cat, Cafe, Receipt, Light
+        Villa, Bread, Con, Bar, Izakawa, Cat, Cafe, Receipt, Light,
 
         // 두번째 배경
+        Angry, Caution, Club, Construction, NeOmerice, NHCocktail, SJMusicBar, Stair, StyleYoung, Wreath
     }
 
     public static string EventID(this FirstFollowObject objectName)
@@ -30,6 +31,7 @@ public static class Constants
         // 미행 오브젝트에 따라 event id 반환
         switch (objectName)
         {
+            // 첫번째 배경
             case FirstFollowObject.Villa:   return "Event_019";
             case FirstFollowObject.Bread:   return "Event_020";
             case FirstFollowObject.Con:     return "Event_021";
@@ -39,6 +41,9 @@ public static class Constants
             case FirstFollowObject.Cafe:    return "Event_025";
             case FirstFollowObject.Receipt: return "Event_026";
             case FirstFollowObject.Light:   return "Event_027";
+
+            // 두번째 배경
+
             default: return null;
         }
     }
