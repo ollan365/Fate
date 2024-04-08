@@ -8,7 +8,7 @@ public class Clock : EventObject, IResultExecutable
     [SerializeField]
     private GameObject clockPuzzle;
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("Clock", this);
     }

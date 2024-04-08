@@ -42,9 +42,9 @@ public class ResultManager : MonoBehaviour
         string[] lines = resultsCSV.text.Split('\n');
         for (int i = 1; i < lines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-
             string[] fields = lines[i].Split(',');
+            
+            if ((string.IsNullOrWhiteSpace(lines[i])) || (fields[0] == "" && fields[1] == "")) continue;
             
             Result result = new Result(
                 fields[0].Trim(),
@@ -58,12 +58,9 @@ public class ResultManager : MonoBehaviour
     
     public void ExecuteResult(string resultID)
     {
+        if (GameManager.Instance.isDebug) Debug.Log(resultID);
+        
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
-
-        //// 기본적으로는 나가기 버튼이 보이지 않음
-        //if(RoomManager.Instance)
-        //    RoomManager.Instance.SetExitButton(false);
-
         switch (resultID)
         {
             case "Result_girl":  // 우연의 성별을 여자로 설정
@@ -217,6 +214,7 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Carpet"].ExecuteAction();
                 DialogueManager.Instance.StartDialogue("RoomEscape_018");
                 break;
+            
             case "Result_035": // 포스터에 대한 스크립트
                 RoomManager.Instance.SetEventObjectPanel(true, "Poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_019");
@@ -228,29 +226,26 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_037": // 커터칼 사라짐
-                executableObjects["Knife"].ExecuteAction();
+                executableObjects["Knife1"].ExecuteAction();
+                executableObjects["Knife2"].ExecuteAction();
                 break;
 
             case "Result_038": // 포스터 뒷장에 대한 설명
-                Debug.Log("포스터 뒷장에 대한 설명");
-                executableObjects["Poster"].ExecuteAction();
-                Debug.Log("포스터 뒷장에 대한 설명 스크립트 시작");
-                // 이 부분 대사 스크립트 계속 오류남!!
                 DialogueManager.Instance.StartDialogue("RoomEscape_021");
+                GameManager.Instance.SetVariable("PosterOpened", true);
                 break;
 
             case "Result_039": // 포스터에 대한 메모 - ### 추후 구현 필요 ###
                 break;
 
             case "Result_040": // 옷장 문이 열림
-                executableObjects["ClosetDoor_close"].ExecuteAction();
+                executableObjects["ClosedClosetDoors"].ExecuteAction();
+                break;
+            
+            case "Result_041": // 옷장 문이 닫힘
+                executableObjects["OpenClosetDoors"].ExecuteAction();
                 break;
                 
-            case "Result_041": // 옷장 문이 닫힘
-                executableObjects["ClosetDoor_L"].ExecuteAction();
-                executableObjects["ClosetDoor_R"].ExecuteAction();
-                break;
-
             case "Result_042": // 옷장 처음 상호작용했을 때 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_022");
                 break;
@@ -267,7 +262,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_046": // 상자가 열리는 스크립트
-                //Debug.Log("상자 열리는 스크립트");
                 DialogueManager.Instance.StartDialogue("RoomEscape_025");
                 RoomManager.Instance.SetExitButton(true);
                 break;
@@ -276,7 +270,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_048": // 상자 안 사진들이 UI로 보임
-                Debug.Log("상자 안의 사진들이 보임");
                 executableObjects["Box"].ExecuteAction();
                 break;
 
@@ -285,12 +278,11 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_050": // 서랍장이 열림
-                executableObjects["CabinetDoor_Close"].ExecuteAction();
+                executableObjects["ClosedCabinetDoors"].ExecuteAction();
                 break;
 
             case "Result_051": // 서랍장이 닫힘
-                executableObjects["CabinetDoor_L"].ExecuteAction();
-                executableObjects["CabinetDoor_R"].ExecuteAction();
+                executableObjects["OpenCabinetDoors"].ExecuteAction();
                 break;
 
             case "Result_052": // 달력이 열림
@@ -324,6 +316,15 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_060": // 10월 1일 메모 - ### 추후 구현 필요 ###
+                break;
+
+            case "Result_061": // 옷장 확대 화면으로 전환
+                executableObjects["Closet Unzoomed 2"].ExecuteAction();
+                break;
+            
+            case "Result_062": // 서랍장 확대 화면으로 전환
+                // executableObjects["Cabinet Unzoomed 2"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed 3"].ExecuteAction();
                 break;
 
             case "Result_063": // 빌라에 대한 스크립트

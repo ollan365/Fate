@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour
     // 변수의 타입은 int 또는 bool
     private Dictionary<string, object> variables = new Dictionary<string, object>();
 
-    // public TextMeshProUGUI variableValueText;
+    // 디버깅용
+    [SerializeField] private TextMeshProUGUI variablesText;
+    public bool isDebug = false;
 
     void Awake()
     {
@@ -70,12 +72,8 @@ public class GameManager : MonoBehaviour
         variables["ClockClick"] = 0;
         variables["ClockTimeCorrect"] = false;
         
-        float[] clockPassword = { 210f, 180f };
-        variables["clockPassword"] = clockPassword;
-        // 위의 상태로는 이상하게도 (float[])GameManager.Instance.GetVariable("ClockPassword")를 가져오면 빈 값으로 나옴.
-
-        //Debug.Log("시계정답 : " + (float[])GameManager.Instance.GetVariable("ClockPassword"));
-        //Debug.Log("시계정답 : " + clockPassword[0]+ " "+ clockPassword[1]);
+        float[] clockPassword = { 180f, 180f };
+        variables["ClockPassword"] = clockPassword;
 
         // 의자
         variables["ChairMoved"] = false;
@@ -93,31 +91,29 @@ public class GameManager : MonoBehaviour
 
         // 포스터
         variables["PosterClick"] = 0;
-        variables["PosterCorrect"] = false;
+        variables["PosterOpened"] = false;
 
         // 커터칼
-        variables["KnifeClick"] = 0;
+        variables["HasKnife"] = false;
 
-        // 사이드 2번 
         // 옷장
-        variables["ClosetOffClick"] = 0;
-        variables["ClosetDoor"] = false;
+        variables["ClosetDoorsClosed"] = true;
+        variables["ClosedClosetDoorsClick"] = 0;
 
         // 옷장 속 가방
         variables["BagClick"] = 0;
-        variables["BagClue"] = false;
 
         // 옷장 위 상자
         variables["BoxClick"] = 0;
-        variables["BoxCorrect"] = false;
+        variables["BoxOpened"] = false;
 
         // 서랍장
-        variables["CabinetOffClick"] = 0;
-        variables["CabinetDoor"] = false;
+        variables["CabinetDoorsClosed"] = true;
+        variables["ClosedCabinetDoorsClick"] = 0;
 
         // 서랍장 속 달력
         variables["CalendarClick"] = 0;
-        variables["CalendarClue"] = 0;
+        variables["CalendarCluesFound"] = 0;
         variables["CalendarMonth"] = false;
 
         // 달력
@@ -149,6 +145,9 @@ public class GameManager : MonoBehaviour
         variables["ReceiptClick"] = 0;
         // 신호등
         variables["LightClick"] = 0;
+
+        if (isDebug) ShowVariables();
+
     }
 
     public void SetVariable(string variableName, object value)
@@ -161,6 +160,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"variable \"{variableName}\" does not exist!");
         }
+        
+        if (isDebug) ShowVariables();
     }
 
     public object GetVariable(string variableName)
@@ -178,6 +179,8 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt++;
         SetVariable(variableName, cnt);
+    
+        if (isDebug) ShowVariables();
     }
     
     public void DecrementVariable(string variableName)
@@ -185,6 +188,8 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt--;
         SetVariable(variableName, cnt);
+        
+        if (isDebug) ShowVariables();
     }
 
     public void InverseVariable(string variableName)
@@ -192,10 +197,24 @@ public class GameManager : MonoBehaviour
         bool variableValue = (bool)GetVariable(variableName);
         variableValue = !variableValue;
         SetVariable(variableName, variableValue);
+        
+        if (isDebug) ShowVariables();
     }
 
-    //void UpdateUI()
-    //{
-    //    variableValueText.text = "PhoneCalled: " + PhoneCalled + "\n" + "HasKey: " + HasKey;
-    //}
+    // 디버깅 용
+    private void ShowVariables()
+    {
+        variablesText.text = "";  // 텍스트 초기화
+
+        // 화면에 표시하고 싶은 변수명 추가
+        List<string> keysToShow = new List<string>(new string[]
+        {
+            "ActionPoint",
+        });
+        
+        foreach (var item in variables)
+        {
+            if (keysToShow.Contains(item.Key)) variablesText.text += $"{item.Key}: {item.Value}\n";
+        }
+    }
 }

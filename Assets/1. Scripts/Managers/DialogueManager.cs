@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,6 +37,9 @@ public class DialogueManager : MonoBehaviour
     public bool isDialogueActive = false;
     private bool isTyping = false;
     private string fullSentence;
+    
+    // Dialogue Queue
+    private Queue<string> dialogueQueue = new Queue<string>();
 
     void Awake()
     {
@@ -60,6 +64,14 @@ public class DialogueManager : MonoBehaviour
     // ---------------------------------------------- Dialogue methods ----------------------------------------------
     public void StartDialogue(string dialogueID)
     {
+        if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
+        {
+            Debug.Log($"dialogue ID: {dialogueID} queued!");
+            
+            dialogueQueue.Enqueue(dialogueID);
+            return;
+        }
+        
         isDialogueActive = true;
 
         // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
@@ -112,12 +124,18 @@ public class DialogueManager : MonoBehaviour
         }
         
     }
-    
+
     private void EndDialogue()
     {
         isDialogueActive = false;
         dialogueCanvas[dialogueType.ToInt()].SetActive(false);
         characterImage.gameObject.SetActive(false);
+        if (dialogueQueue.Count > 0)  // 큐에 다이얼로그가 들어있으면 다시 대화 시작
+        {
+            string queuedDialogueID = dialogueQueue.Dequeue();
+            StartDialogue(queuedDialogueID);
+            return;
+        }
 
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
         if (dialogueType == DialogueType.FOLLOW) FollowManager.Instance.EndScript();

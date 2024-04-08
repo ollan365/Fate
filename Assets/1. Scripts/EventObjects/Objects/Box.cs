@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Box : EventObject, IResultExecutable
 {
     [SerializeField]
-    private GameObject photos; // ���� �� ������
+    private GameObject photos; // 상자 속 사진들
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("Box", this);
     }
@@ -23,15 +21,12 @@ public class Box : EventObject, IResultExecutable
         ShowPhotos();
     }
 
-    private void ShowPhotos()  // ����� ���� ���� �� ������ �߰�
+    private void ShowPhotos()  // 열쇠로 열면 상자 속 전단지 발견
     {
-        if ((bool)GameManager.Instance.GetVariable("ClockTimeCorrect")&& !(bool)GameManager.Instance.GetVariable("BoxCorrect"))
-        {
-            photos.SetActive(true);
-            RoomManager.Instance.AddScreenObjects(photos);
-            GameManager.Instance.SetVariable("BoxCorrect", true);
-            RoomManager.Instance.isInvestigating = true;
-        }
+        photos.SetActive(true);
+        RoomManager.Instance.AddScreenObjects(photos);
+        RoomManager.Instance.isInvestigating = true;
+        GameManager.Instance.SetVariable("BoxOpened", true);
     }
 
 }
