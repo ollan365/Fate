@@ -44,9 +44,9 @@ public class EventManager : MonoBehaviour
 
         for (int i = 1; i < lines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-
             string[] fields = lines[i].Split(',');
+            
+            if ((string.IsNullOrWhiteSpace(lines[i])) || (fields[0] == "" && fields[1] == "")) continue;
 
             string eventID = fields[0].Trim();
             string eventName = fields[1].Trim();
@@ -100,8 +100,14 @@ public class EventManager : MonoBehaviour
     public void CallEvent(string eventID)
     {
         List<EventLine> eventLines = events[eventID].EventLine;
+
+        int eventCount = 0;
+        
         foreach (EventLine eventLine in eventLines)
         {
+            eventCount++;
+            if (GameManager.Instance.isDebug) Debug.Log($"--------- #{eventCount} ---------");
+            
             string logic = eventLine.Logic;
             List<Condition> conditions = eventLine.Conditions;
             List<Result> results = eventLine.Results;
@@ -114,7 +120,10 @@ public class EventManager : MonoBehaviour
 
             if (logic == "AND") // logic이 AND인 경우
             {
-                if (CheckConditions_AND(conditions)) ExecuteResults(results);
+                if (CheckConditions_AND(conditions))
+                {
+                    ExecuteResults(results);
+                }
             }
             else if (logic == "OR") // logic이 OR인 경우
             {
@@ -167,7 +176,6 @@ public class EventManager : MonoBehaviour
         foreach (Result result in results)
         {
             string resultID = result.ResultID;
-            // Debug.Log("리절트id "+resultID);
             ResultManager.Instance.ExecuteResult(resultID);
         }
     }

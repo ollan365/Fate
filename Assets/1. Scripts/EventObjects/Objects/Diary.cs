@@ -8,7 +8,7 @@ public class Diary : EventObject, IResultExecutable
     [SerializeField]
     private GameObject diaryLock;
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("Diary", this);
     }

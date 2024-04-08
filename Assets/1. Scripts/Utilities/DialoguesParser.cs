@@ -24,10 +24,9 @@ public class DialoguesParser : MonoBehaviour
 
         for (int i = 1; i < lines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-            
             string[] fields = lines[i].Split(',');
-            if (string.IsNullOrWhiteSpace(fields[0]) && string.IsNullOrWhiteSpace(fields[1])) continue;
+
+            if ((string.IsNullOrWhiteSpace(lines[i])) || (fields[0] == "" && fields[1] == "")) continue;
 
             string dialogueID = fields[0].Trim();
             if (string.IsNullOrWhiteSpace(dialogueID)) dialogueID = lastDialogueID;

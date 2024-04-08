@@ -12,7 +12,7 @@ public class ClockPuzzle : EventObject, IResultExecutable
     [SerializeField]
     private GameObject keys;
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("ClockPuzzle", this);
     }
@@ -33,20 +33,20 @@ public class ClockPuzzle : EventObject, IResultExecutable
 
     public void TryPassword()
     {
-        Debug.Log("TryPassword() called");
+        // Debug.Log("TryPassword() called");
         float currentHourAngle = hourHand.transform.rotation.eulerAngles.z;
         float currentMinuteAngle = minuteHand.transform.rotation.eulerAngles.z;
         StartCoroutine(CompareClockHands(currentHourAngle, currentMinuteAngle));
     }
 
-    private float[] correctAngles = { 210f, 180f };     //오후 5시 30분
-    //private float[] correctAngles = { 180f, 180f };   //오후 6시 30분
+    // private float[] correctAngles = { 210f, 180f };     //오후 5시 30분
+    // private float[] correctAngles = { 180f, 180f };   //오후 6시 30분
 
     IEnumerator CompareClockHands(float hourAngle, float minuteAngle)
     {
         yield return new WaitForSeconds(0.2f);
         
-        //float[] correctAngles = (float[])GameManager.Instance.GetVariable("ClockPassword");
+        float[] correctAngles = (float[])GameManager.Instance.GetVariable("ClockPassword");
 
         //Debug.Log("시계정답 : " + (float[])GameManager.Instance.GetVariable("ClockPassword"));
         //Debug.Log("시계정답 : "+correctAngles[0]+" "+ correctAngles[1]);

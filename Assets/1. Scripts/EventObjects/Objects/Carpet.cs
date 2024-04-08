@@ -7,7 +7,7 @@ public class Carpet : EventObject, IResultExecutable
 {
     [SerializeField] private GameObject CarpetPaper;
 
-    private void Start()
+    private void Awake()
     {
         ResultManager.Instance.RegisterExecutable("Carpet", this);
     }
@@ -21,29 +21,29 @@ public class Carpet : EventObject, IResultExecutable
 
     public void ExecuteAction()
     {
-        if ((int)GameManager.Instance.GetVariable("PaperClick")>0) // Á¾ÀÌ Å¬¸¯Çß´Ù¸é
+        if ((int)GameManager.Instance.GetVariable("PaperClick")>0) // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ß´Ù¸ï¿½
         {
-            // Ä«Æê ¿øÀ§Ä¡
+            // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
             CarpetClose();
         }
-        else // Á¾ÀÌ Å¬¸¯ ¾È ÇÔ. Ã³À½ Å¬¸¯ÀÌ¸é
+        else // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½. Ã³ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¸ï¿½
         {
             CarpetOpen();
         }
     }
 
-    // ¸®¼Ò½º °ü·Ã º¯¼ö
-    [Header("Ä«Æê ÀÌ¹ÌÁö ¸®¼Ò½º")]
+    // ï¿½ï¿½ï¿½Ò½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [Header("Ä«ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ò½ï¿½")]
     [SerializeField] private Sprite carpetOpen;
     [SerializeField] private Sprite carpetClosed;
 
     private void CarpetOpen()
-    {  // Ä«Æê µéÃß±â
+    {  // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ß±ï¿½
         transform.GetComponent<Image>().sprite= carpetOpen;
-        // Á¾ÀÌ Å¬¸¯À» À§ÇØ µéÃá ÈÄ¿¡´Â Ä«Æê Å¬¸¯ ºñÈ°¼ºÈ­
+        // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¿ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ Å¬ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
         GetComponent<Button>().interactable = false;
 
-        // Ä«Æê ¹Ø Á¾ÀÌ ¹öÆ° È°¼ºÈ­
+        // Ä«ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° È°ï¿½ï¿½È­
         CarpetPaper.SetActive(true);
 
         // Ä«Æê ¹Ø Á¾ÀÌ ¹öÆ° Á¦¿ÜÇÏ°í ´Ù ¹öÆ° ¾È ´­¸®°Ô ÇÔ.
@@ -51,11 +51,11 @@ public class Carpet : EventObject, IResultExecutable
         RoomManager.Instance.SetIsInvestigating(true);
     }
 
-    private void CarpetClose()   // Ä«Æê ´Ý±â
+    private void CarpetClose()   // Ä«ï¿½ï¿½ ï¿½Ý±ï¿½
     {  
         transform.GetComponent<Image>().sprite = carpetClosed;
 
-        // Ä«Æê ¹Ø Á¾ÀÌ ºñÈ°¼ºÈ­
+        // Ä«ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
         CarpetPaper.SetActive(false);
 
         // Ä«Æê ´ÝÀ¸¸é ´Ù¸¥ ¹öÆ°µé ´Ù½Ã È°¼ºÈ­
