@@ -7,6 +7,9 @@ public class MemoManager : MonoBehaviour
     public static MemoManager Instance { get; private set; }
     public TextAsset memosCSV;
 
+    [SerializeField] private GameObject memoPage;
+    [SerializeField] private GameObject memoButton;
+
     // 모든 메모
     public Dictionary<string, string> allMemo = new();
 
@@ -25,6 +28,7 @@ public class MemoManager : MonoBehaviour
         {
             Instance = this;
             ParseMemos();
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -40,17 +44,36 @@ public class MemoManager : MonoBehaviour
     }
 
     // 메모장 열기
-    public void ShowMemo()
+    public void OpenMemoPage()
     {
-        foreach (string memo in savedMemoList)
+        // 메모장이 켜져있을 때는 메모장을 닫고, 켜져있을 때는 끈다
+        if (!memoPage.activeSelf)
         {
-            GameObject memoTextObject = Instantiate(memoTextPrefab, scrollViewContent);
-            memo.Replace("[", "<color=red>");
-            memo.Replace("]", "</color>");
-            memoTextObject.GetComponent<TextMeshProUGUI>().text = memo;
+            foreach (string memo in savedMemoList)
+            {
+                GameObject memoTextObject = Instantiate(memoTextPrefab, scrollViewContent);
+                memo.Replace("[", "<color=red>");
+                memo.Replace("]", "</color>");
+                memoTextObject.GetComponent<TextMeshProUGUI>().text = memo;
+            }
+
+            memoPage.SetActive(true);
+        }
+        else if (memoPage.activeSelf)
+        {
+            memoPage.SetActive(false);
+
+            foreach (Transform child in scrollViewContent)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
-
+    public void HideMemoButton(bool flag)
+    {
+        // 메모 버튼을 보이지 않게 or 보이게 할 수 있음
+        memoButton.SetActive(!flag);
+    }
     // memos.csv 파일 파싱
     public void ParseMemos()
     {

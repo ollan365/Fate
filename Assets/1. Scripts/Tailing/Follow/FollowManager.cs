@@ -27,7 +27,8 @@ public class FollowManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        DialogueManager.Instance.dialogueType = Constants.DialogueType.FOLLOW;
+        MemoManager.Instance.HideMemoButton(false);
+        DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
     }
 
     public void ClickObject()

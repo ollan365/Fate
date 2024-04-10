@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RoomManager : MonoBehaviour
 {
@@ -44,6 +45,10 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private GameObject posterImage;
     [SerializeField] private GameObject liquorImage;
 
+
+    // 시연 용 미행 씬 이동 버튼
+    [SerializeField] private Button goFollowSceneButton;
+
     void Awake()
     {
         if (Instance == null)
@@ -78,7 +83,13 @@ public class RoomManager : MonoBehaviour
         // Side 1으로 초기화
         currentView = sides[0];
         SetCurrentSide(0);
-        
+
+        // 메모 버튼이 보이게 함
+        MemoManager.Instance.HideMemoButton(false);
+
+        // 시연 용 미행 씬 이동 버튼 기능 추가
+        goFollowSceneButton.onClick.AddListener(() => SceneManager.LoadScene(2));
+
         DialogueManager.Instance.StartDialogue("Prologue_015");
     }
 
@@ -112,6 +123,9 @@ public class RoomManager : MonoBehaviour
         {
             int newSideIndex = (currentSideIndex - 1 + sides.Count) % sides.Count;
             SetCurrentSide(newSideIndex);
+
+            // 화면 이동 효과
+            ScreenEffect.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(-1, 0, 0));
         }
     }
 
@@ -123,6 +137,9 @@ public class RoomManager : MonoBehaviour
         {
             int newSideIndex = (currentSideIndex + 1) % sides.Count;
             SetCurrentSide(newSideIndex);
+
+            // 화면 이동 효과
+            ScreenEffect.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(1, 0, 0));
         }
     }
 
