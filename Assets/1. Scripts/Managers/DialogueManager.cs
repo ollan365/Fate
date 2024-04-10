@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject[] dialoguePanel;
     public Transform choicesContainer;
     public GameObject choicePrefab;
-    public SpriteRenderer teddyBearIcon;
+    public GameObject teddyBearIcon;
     
     // 타자 효과 속도
     [Header("Typing Speed")]
@@ -187,7 +187,7 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeSentence(string sentence)
     {
-        teddyBearIcon.gameObject.SetActive(false);
+        teddyBearIcon.SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
         foreach (char letter in sentence.ToCharArray())
@@ -196,7 +196,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
-        teddyBearIcon.gameObject.SetActive(true);
+        teddyBearIcon.SetActive(true);
     }
     
     public void OnDialoguePanelClick()
@@ -219,7 +219,7 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
         scriptText[dialogueType.ToInt()].text = fullSentence;
         isTyping = false;
-        teddyBearIcon.gameObject.SetActive(true);
+        teddyBearIcon.SetActive(true);
     }
     
     // ---------------------------------------------- Choice methods ----------------------------------------------
