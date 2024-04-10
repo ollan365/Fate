@@ -374,6 +374,58 @@ public class ResultManager : MonoBehaviour
 
             case "Result_075": // 신호등에 대한 메모
                 break;
+
+            case "Result_076": // 음료에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_011");
+                break;
+
+            case "Result_077": // 음료에 대한 메모
+                break;
+
+            case "Result_078": // 1층 옷가게에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_012");
+                break;
+
+            case "Result_079": // 1층 옷가게에 대한 메모
+                break;
+
+            case "Result_080": // 2층 옷가게에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_013");
+                break;
+
+            case "Result_081": // 2층 옷가게에 대한 메모
+                break;
+
+            case "Result_082": // 공사장에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_014");
+                break;
+
+            case "Result_083": // 공사장에 대한 메모
+                break;
+
+            case "Result_084": // 식당에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_015");
+                break;
+
+            case "Result_085": // 칵테일바에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_016");
+                break;
+
+            case "Result_086": // 화장품 가게에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_017");
+                break;
+
+            case "Result_087": // 뮤직바에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_018");
+                break;
+
+            case "Result_088": // 클럽에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_019");
+                break;
+
+            case "Result_089": // 술집에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow_020");
+                break;
         }
     }
 }
