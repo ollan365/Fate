@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using TMPro;
 
-public class UITextInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class TextEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 	[System.Serializable]
 	private class OnClickEvent : UnityEvent { }

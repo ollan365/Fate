@@ -49,6 +49,9 @@ public class Carpet : EventObject, IResultExecutable
         // Ä«Æê ¹Ø Á¾ÀÌ ¹öÆ° Á¦¿ÜÇÏ°í ´Ù ¹öÆ° ¾È ´­¸®°Ô ÇÔ.
         RoomManager.Instance.ControllEventButtons(false);
         RoomManager.Instance.SetIsInvestigating(true);
+
+        // Ä«Æê ¿ÀÇÂ È¿°úÀ½
+        SoundPlayer.Instance.UISoundPlay(Constants.Sound_CarpetOpen);
     }
 
     private void CarpetClose()   // Ä«ï¿½ï¿½ ï¿½Ý±ï¿½
@@ -61,5 +64,8 @@ public class Carpet : EventObject, IResultExecutable
         // Ä«Æê ´ÝÀ¸¸é ´Ù¸¥ ¹öÆ°µé ´Ù½Ã È°¼ºÈ­
         RoomManager.Instance.ControllEventButtons(true);
         RoomManager.Instance.SetIsInvestigating(false);
+
+        // Ä«Æê Å¬·ÎÁî È¿°úÀ½
+        SoundPlayer.Instance.UISoundPlay(Constants.Sound_CarpetClose);
     }
 }

@@ -54,6 +54,10 @@ public class Chair : EventObject, IResultExecutable
     IEnumerator MoveChair(Vector2 targetPosition)
     {
         isMoving = true;
+
+        // 의자 움직이는 효과음
+        SoundPlayer.Instance.UISoundPlay(Constants.Sound_ChairMovement);
+
         float elapsedTime = 0;
         Vector2 startingPosition = rectTransform.anchoredPosition;
 

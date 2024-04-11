@@ -14,6 +14,14 @@ public static class Constants
         }
     }
 
+    // 사운드 종류
+    public const int
+        Sound_Click = 0, Sound_CarpetOpen = 1, Sound_CarpetClose = 2,
+        Sound_ClosetOpen = 3, Sound_ClosetClose = 4, Sound_StorageOpen = 5, Sound_StorageClose = 6,
+        Sound_ClockMovement = 7, Sound_LockerKeyMovement = 8, Sound_LockerUnlock = 10,
+        Sound_DiaryUnlock = 11, Sound_LaptopBoot = 12, Sound_Poster = 13, Sound_ChairMovement = 14,
+        Sound_Correct = 16, Sound_Wrong = 17;
+    // 클릭, 카펫open&close, 의자
 
 
 
