@@ -104,7 +104,7 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(TypeSentence(sentence));
 
         // 미행 파트라면 대화창 크기 조절
-        if (dialogueType == DialogueType.FOLLOW) SetPanelSize(sentence);
+        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_ANGRY) SetPanelSize(sentence);
 
         // 화자 이미지 표시
         string imageID = dialogueLine.ImageID;

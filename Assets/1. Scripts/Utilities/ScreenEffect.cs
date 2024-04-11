@@ -22,8 +22,8 @@ public class ScreenEffect : MonoBehaviour
     // 방에서 이동 버튼 눌렀을 때 (영상이랑 비슷한 값으로 조정)
     public void MoveButtonEffect(GameObject screen, Vector3 direction)
     {
-        StartCoroutine(OnMove(screen, direction, 100, 0.5f));
-        StartCoroutine(OnFade(0, 1, 0.2f, true, 0.2f, +0.05f));
+        StartCoroutine(OnMoveUI(screen, direction, 100, 0.5f));
+        StartCoroutine(OnFade(0, 1, 0, true, 0.2f, +0.25f));
     }
 
     // <summary> 변수 설명
@@ -40,7 +40,7 @@ public class ScreenEffect : MonoBehaviour
 
         float current = 0, percent = 0;
 
-        while (percent < 1)
+        while (percent < 1 && fadeTime != 0)
         {
             current += Time.deltaTime;
             percent = current / fadeTime;
@@ -49,6 +49,7 @@ public class ScreenEffect : MonoBehaviour
 
             yield return null;
         }
+        coverPanel.color = new(0, 0, 0, end);
 
         // 곧바로 다시 어두워지거나 밝아지게 하고 싶을 때
         if (blink)
@@ -61,7 +62,12 @@ public class ScreenEffect : MonoBehaviour
         if (end == 0) coverPanel.gameObject.SetActive(false);
     }
 
-    public IEnumerator OnMove(GameObject screen, Vector3 direction, float distance, float time)
+    // <summary> 변수 설명
+    // 화면 이동할 때 사용하기 위해 만든 거라 동작이 조금 특이합니다...
+    // screen의 현재 위치가 목적지로 설정이 되고,
+    // 출발지점은 현재 위치(목적지)에서 direction 방향으로 distance 만큼 이동한 곳이 됩니다
+    // </summary>
+    public IEnumerator OnMoveUI(GameObject screen, Vector3 direction, float distance, float time)
     {
         RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
         // 원래 위치 (목적지)
