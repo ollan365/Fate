@@ -90,12 +90,6 @@ public class MemoManager : MonoBehaviour
     }
     public void HideMemoButton(bool flag)
     {
-        // 튜토리얼 중이면 메모 버튼 켜도 보이지 않음
-        //if ((int)GameManager.Instance.GetVariable("Tutorial_Now") < 4)
-        //{
-        //    memoButton.SetActive(false);
-        //}
-        
         // 메모 버튼을 보이지 않게 or 보이게 할 수 있음
         memoButton.SetActive(!flag);
     }

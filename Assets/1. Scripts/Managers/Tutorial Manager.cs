@@ -74,6 +74,8 @@ public class TutorialManager : MonoBehaviour
     {
         GameManager.Instance.SetVariable("isTutorial", false);
         RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
+
+        MemoManager.Instance.HideMemoButton(false);
     }
     
 }
