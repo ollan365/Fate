@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class MemoManager : MonoBehaviour
@@ -22,6 +23,9 @@ public class MemoManager : MonoBehaviour
     // 메모가 저장될 스크롤
     public Transform scrollViewContent;
 
+    // 현재 미행 씬인지 방탈출 씬인지
+    public bool isFollow;
+
     void Awake()
     {
         if (Instance == null)
@@ -40,6 +44,10 @@ public class MemoManager : MonoBehaviour
     public void AddMemo(string memoID)
     {
         string scriptID = allMemo[memoID];
+        foreach(string savedMemo in savedMemoList)
+        {
+            if (scriptID == savedMemo) return;
+        }
         savedMemoList.Add(DialogueManager.Instance.scripts[scriptID].GetScript());
     }
 
@@ -49,6 +57,11 @@ public class MemoManager : MonoBehaviour
         // 메모장이 켜져있을 때는 메모장을 닫고, 켜져있을 때는 끈다
         if (!memoPage.activeSelf)
         {
+            // 메모장을 켰을 때는 무조건 메모장이 선명하게 보이게 한다
+            ColorBlock colors = memoButton.GetComponent<Button>().colors;
+            colors.normalColor = new Color(1, 1, 1, 1);
+            memoButton.GetComponent<Button>().colors = colors;
+
             foreach (string memo in savedMemoList)
             {
                 GameObject memoTextObject = Instantiate(memoTextPrefab, scrollViewContent);
@@ -57,10 +70,16 @@ public class MemoManager : MonoBehaviour
                 memoTextObject.GetComponent<TextMeshProUGUI>().text = memo;
             }
 
+            if (isFollow) FollowManager.Instance.ClickObject();
+
             memoPage.SetActive(true);
         }
         else if (memoPage.activeSelf)
         {
+            MemoButtonAlphaChange(); // 만약 미행 파트이면 다시 버튼을 투명하게 만든다
+
+            if (isFollow) FollowManager.Instance.EndScript(false);
+
             memoPage.SetActive(false);
 
             foreach (Transform child in scrollViewContent)
@@ -82,6 +101,17 @@ public class MemoManager : MonoBehaviour
             memoButton.SetActive(!flag);
         }
         
+    }
+    public void MemoButtonAlphaChange()
+    {
+        ColorBlock colors = memoButton.GetComponent<Button>().colors;
+
+        // Normal 상태의 색상을 씬에 따라 변경
+        if (isFollow) colors.normalColor = new Color(1, 1, 1, 0.5f); // 미행일 때
+        if (!isFollow) colors.normalColor = new Color(1, 1, 1, 1); // 미행이 아닐 때
+
+        // 변경된 ColorBlock을 다시 버튼에 할당합니다.
+        memoButton.GetComponent<Button>().colors = colors;
     }
     // memos.csv 파일 파싱
     public void ParseMemos()

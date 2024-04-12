@@ -29,6 +29,8 @@ public class FollowManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        MemoManager.Instance.isFollow = true;
+        MemoManager.Instance.MemoButtonAlphaChange();
         MemoManager.Instance.HideMemoButton(false);
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
     }
@@ -42,9 +44,9 @@ public class FollowManager : MonoBehaviour
         onMove = !followAnim.IsStop; // 원래 이동 중이었는지를 저장
         if (onMove) followAnim.ChangeAnimStatus(); // 이동 중이었다면 멈춘다
     }
-    public void EndScript()
+    public void EndScript(bool changeCount)
     {
-        miniGame.ClickCount++;
+        if(changeCount) miniGame.ClickCount++;
         if (miniGame.ClickCount % 10 == 0) onMove = false; // 미니 게임이 끝나고 오면 움직이지 않도록 만든다
 
         if (angryCanvas.activeSelf) EndAngryDialogue();

@@ -14,16 +14,30 @@ public static class Constants
         }
     }
 
+    public enum SoundType { BGM, ROOM_OBJECT, FOLLOW_OBJECT, LOOP, ETC }
     // 사운드 종류
+    // 1. 배경음
+
+    // 2. 방탈출 오브젝트들
     public const int
-        Sound_Click = 0, Sound_CarpetOpen = 1, Sound_CarpetClose = 2,
-        Sound_ClosetOpen = 3, Sound_ClosetClose = 4, Sound_StorageOpen = 5, Sound_StorageClose = 6,
-        Sound_ClockMovement = 7, Sound_LockerKeyMovement = 8, Sound_LockerUnlock = 10,
-        Sound_DiaryUnlock = 11, Sound_LaptopBoot = 12, Sound_Poster = 13, Sound_ChairMovement = 14,
-        Sound_Correct = 16, Sound_Wrong = 17;
-    // 클릭, 카펫open&close, 의자
+        Sound_CarpetOpen = 0, Sound_CarpetClose = 1, Sound_ClosetOpen = 2, Sound_ClosetClose = 3,
+        Sound_StorageOpen = 4, Sound_StorageClose = 5, Sound_ClockMovement = 6, Sound_LockerKeyMovement = 7, Sound_LockerUnlock = 9,
+        Sound_DiaryUnlock = 10, Sound_LaptopBoot = 11, Sound_Poster = 12, Sound_ChairMovement = 13;
 
+    // 3. 미행
+    public const int
+        Sound_Building = 0, Sound_FollowSpecialObject = 1, Sound_Cat = 2;
 
+    // 4. 루프 (반복 되어야 하는 것)
+    public const int
+        Sound_Typing = 0, Sound_FootStep = 1;
+
+    // 5. 그 외
+    public const int
+        Sound_Click = 0, Sound_Correct = 1, Sound_Wrong = 2;
+        
+
+    // 시계 부분
 
     // -------------- 미행 관련 변수들 -------------- //
     public enum FirstFollowObject

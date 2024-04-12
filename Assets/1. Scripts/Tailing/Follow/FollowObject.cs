@@ -7,6 +7,7 @@ public class FollowObject : EventObject
     [SerializeField] private FirstFollowObject objectName;
     [SerializeField] private bool isSpecial;
     [SerializeField] private Sprite specialSprite;
+    [SerializeField] private float scaleValue;
     public new void OnMouseDown()
     {
         if (!FollowManager.Instance.CanClick) return; // 상호작용 할 수 없는 상태면 리턴
@@ -34,6 +35,7 @@ public class FollowObject : EventObject
         // 자식의 이미지 변경
         eventButton.transform.GetChild(0).GetComponent<Image>().sprite = specialSprite;
         eventButton.transform.GetChild(0).GetComponent<Image>().SetNativeSize();
+        eventButton.transform.GetChild(0).GetComponent<RectTransform>().localScale = new(scaleValue, scaleValue, scaleValue);
 
         eventButton.onClick.AddListener(() => OnMouseDown_Normal());
         eventButton.onClick.AddListener(() => eventButton.gameObject.SetActive(false));
