@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
     
-    private GameObject currentView;  // 현재 뷰
     [Header("시점들")][SerializeField] private List<GameObject> sides;  // 시점들
+    private GameObject currentView;  // 현재 뷰
     private int currentSideIndex = 0;  // 현재 시점 인덱스
+
     // [0] 시점 1번
     // [2] 시점 2번
     // [1] 시점 3번
@@ -41,8 +43,11 @@ public class RoomManager : MonoBehaviour
     // 나가기 버튼
     [Header("나가기 버튼")] [SerializeField] private Button exitButton;
 
-    // 이벤트오브젝트패널
-    [Header("이벤트 오브젝트 패널")] [SerializeField] private GameObject eventObjectPanel;
+    // 이벤트 오브젝트 패널 매니저
+    [FormerlySerializedAs("eventObjectPanelManager")] public ImageAndLockPanelManager imageAndLockPanelManager;
+    // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
+    [SerializeField] private bool isInvestigating = false;
+    [SerializeField] private bool isZoomed = false;
     
     [Header("이벤트 오브젝트 확대 이미지")]
     [SerializeField] private GameObject amuletImage;
@@ -89,7 +94,7 @@ public class RoomManager : MonoBehaviour
             zoomView.SetActive(true);
             zoomView.SetActive(false);
         }
-        
+
         // Side 1으로 초기화
         currentView = sides[0];
         SetCurrentSide(0);
@@ -126,11 +131,9 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    // 오른쪽 이동 버튼
-    public void MoveRightButton()
+    public void MoveSides(int leftOrRight)  // left: -1, right: 1
     {
-        if (isInvestigating || DialogueManager.Instance.isDialogueActive) return;
-        else
+        if (leftOrRight != -1 && leftOrRight != 1)
         {
             int newSideIndex = (currentSideIndex + 1) % sides.Count;
             SetCurrentSide(newSideIndex);
@@ -233,18 +236,29 @@ public class RoomManager : MonoBehaviour
         BlockingPanel3.gameObject.SetActive(isTrue);
     }
 
-    public void SearchExitButton()
+    public void OnExitButtonClick()
     {
         if (isInvestigating)
         {
+            // 지은님 코드
             DeactivateObjects();
             SetIsInvestigating(false);
             SetBlockingPanel(false);
+            
+            // 성환님 코드
+            imageAndLockPanelManager.OnExitButtonClick();
+            
+            SetButtons();
+            
+            return;
         }
-        else if (isZoomed)
+        
+        if (isZoomed)
         {
             SetCurrentView(sides[currentSideIndex]);
             isZoomed = false;
+            
+            SetButtons();
         }
 
         if (!isInvestigating && !isZoomed)
@@ -277,6 +291,11 @@ public class RoomManager : MonoBehaviour
         isInvestigating = isTrue;
         GameManager.Instance.SetVariable("IsInvestigating", isTrue);
     }
+    
+    public void SetIsZoomed(bool isTrue)
+    {
+        isZoomed = isTrue;
+    }
 
     // 시점 전환
     private void SetCurrentSide(int newSideIndex)
@@ -303,14 +322,8 @@ public class RoomManager : MonoBehaviour
         currentView.SetActive(false);
         newView.SetActive(true);
         currentView = newView;
-        
-        if (!sides.Contains(newView))  // side 중 하나가 아니라면 확대중인 화면이다
-        {
-            SetExitButton(true);
-            isZoomed = true;
-        }
     }
-
+    
     // 나가기 버튼 필요 시, 보이게 함 (ResultManager에서 호출하게 함)
     public void SetExitButton(bool isTrue)
     {
@@ -364,4 +377,13 @@ public class RoomManager : MonoBehaviour
         }
     }
 
+    public void SetButtons()
+    {
+        bool isInvestigatingOrZoomed = isInvestigating || isZoomed;
+        bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
+        
+        SetExitButton(isInvestigatingOrZoomed && !isDialogueActive);
+        SetMoveButtons(!(isInvestigatingOrZoomed || isDialogueActive));
+    }
+    
 }

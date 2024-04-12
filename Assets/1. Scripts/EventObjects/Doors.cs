@@ -1,15 +1,17 @@
 using UnityEngine;
 
-public class ClosedDoors : EventObject, IResultExecutable
+public class Doors : EventObject, IResultExecutable
 {
-    public GameObject openDoors;
+    public bool isClosedDoors; 
+    public GameObject otherDoors;
     public Collider2D objectBehindCollider;
-
     public string parentObjectName;  // 옷장, 수남장 등 부모 오브젝트 이름
+    private string closedOrOpen;
 
     private void Awake()
     {
-        ResultManager.Instance.RegisterExecutable($"Closed{parentObjectName}Doors", this);
+        closedOrOpen = isClosedDoors ? "Closed" : "Open";
+        ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Doors", this);
         objectBehindCollider = objectBehindCollider.GetComponent<Collider2D>();
     }
 
@@ -18,19 +20,20 @@ public class ClosedDoors : EventObject, IResultExecutable
         if (DialogueManager.Instance.isDialogueActive) return;
         
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable($"Closed{parentObjectName}DoorsClick");
+        
+        if (isClosedDoors) GameManager.Instance.IncrementVariable($"{closedOrOpen}{parentObjectName}DoorsClick");
     }
 
     public void ExecuteAction()
     {
-        OpenDoors();
+        ToggleDoors();
     }
 
-    public void OpenDoors()
+    private void ToggleDoors()
     {
-        objectBehindCollider.enabled = true;
+        objectBehindCollider.enabled = isClosedDoors;
         GameManager.Instance.InverseVariable($"{parentObjectName}DoorsClosed");
-        openDoors.SetActive(true);
+        otherDoors.SetActive(true);
         gameObject.SetActive(false);
     }
 }

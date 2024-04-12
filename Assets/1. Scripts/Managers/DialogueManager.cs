@@ -71,9 +71,9 @@ public class DialogueManager : MonoBehaviour
             dialogueQueue.Enqueue(dialogueID);
             return;
         }
-        
-        isDialogueActive = true;
 
+        isDialogueActive = true;
+        
         // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
         foreach (GameObject canvas in dialogueCanvas) canvas.SetActive(false);
         dialogueCanvas[dialogueType.ToInt()].SetActive(true);
@@ -82,6 +82,8 @@ public class DialogueManager : MonoBehaviour
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
         DisplayDialogueLine(initialDialogueLine);
+        
+        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
 
     private void DisplayDialogueLine(DialogueLine dialogueLine)
@@ -125,7 +127,7 @@ public class DialogueManager : MonoBehaviour
         
     }
 
-    private void EndDialogue()
+    public void EndDialogue()
     {
         isDialogueActive = false;
         dialogueCanvas[dialogueType.ToInt()].SetActive(false);
@@ -139,6 +141,8 @@ public class DialogueManager : MonoBehaviour
 
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
         if (dialogueType == DialogueType.FOLLOW) FollowManager.Instance.EndScript();
+        
+        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
     
     // ---------------------------------------------- Script methods ----------------------------------------------
@@ -154,6 +158,7 @@ public class DialogueManager : MonoBehaviour
         }
         else if (dialogues.ContainsKey(next))  // Dialogue인 경우
         {
+            EndDialogue();
             StartDialogue(next);
         }
         else if (string.IsNullOrWhiteSpace(next))  // 빈칸인 경우 다음 줄(대사)로 이동
@@ -247,6 +252,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (dialogues.ContainsKey(next))
         {
+            EndDialogue();
             StartDialogue(next);
         }
         else if (EventManager.Instance.events.ContainsKey(next))

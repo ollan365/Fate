@@ -65,11 +65,13 @@ public class ResultManager : MonoBehaviour
         {
             case "Result_girl":  // 우연의 성별을 여자로 설정
                 GameManager.Instance.SetVariable("AccidyGender", 0);
+                DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("Prologue_006");
                 break;
             
             case "Result_boy":  // 우연의 성별을 남자로 설정
                 GameManager.Instance.SetVariable("AccidyGender", 1);
+                DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("Prologue_007");
                 break;
             
@@ -175,7 +177,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_007": // 술과 감기약에 대한 설명
-                RoomManager.Instance.SetEventObjectPanel(true, "Liquor");
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "liquorAndPills");
                 DialogueManager.Instance.StartDialogue("RoomEscape_003");
                 break;
             
@@ -192,9 +194,8 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_011": // 베개 안에 부적을 발견
-                executableObjects["Pillow"].ExecuteAction();
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "amulet");
                 DialogueManager.Instance.StartDialogue("RoomEscape_007");
-                //RoomManager.Instance.SetExitButton(true);
                 break;
             
             case "Result_012": // 부적에 대한 메모 작성 - ### 추후 구현 필요 ###
@@ -205,8 +206,8 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_014": // 다이어리 잠금 장치 활성화됨
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "diary");
                 executableObjects["Diary"].ExecuteAction();
-                RoomManager.Instance.SetExitButton(true);
                 break;
             
             case "Result_015": // 다이어리가 열림
@@ -224,18 +225,21 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape_011");
                 break;
             
+            case "Result_showClockImage":  // 시계 확대 이미지를 표시
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "clock");
+                break;
+            
             case "Result_019": // 시계에 대한 설명
-                //RoomManager.Instance.SetEventObjectPanel(true, "clock1");
                 DialogueManager.Instance.StartDialogue("RoomEscape_012");
                 break;
             
             case "Result_020": // 시계 시스템 활성화
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "clock");
                 executableObjects["Clock"].ExecuteAction();
-                RoomManager.Instance.SetExitButton(true);
                 break;
 
             case "Result_021": // 열쇠를 획득
-                executableObjects["ClockPuzzle"].ExecuteAction();
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
                 break;
 
             case "Result_022": // 열쇠를 획득 후 스크립트
@@ -255,8 +259,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_026": // 노트북 비밀번호 화면 활성화
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "laptop");
                 executableObjects["Laptop"].ExecuteAction();
-                RoomManager.Instance.SetExitButton(true);
                 break;
 
             case "Result_027": // 노트북이 열림
@@ -281,7 +285,6 @@ public class ResultManager : MonoBehaviour
             
             case "Result_032": // 종이를 확대해주는 UI
                 executableObjects["Carpet_Paper"].ExecuteAction();
-                RoomManager.Instance.SetExitButton(true);
                 break;
             
             case "Result_033": // 종이에 대한 스크립트
@@ -295,12 +298,12 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_035": // 포스터에 대한 스크립트
-                RoomManager.Instance.SetEventObjectPanel(true, "Poster");
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_019");
                 break;
 
             case "Result_036": // 커터칼에 대한 스크립트
-                RoomManager.Instance.SetEventObjectPanel(true, "Knife");
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "knife");
                 DialogueManager.Instance.StartDialogue("RoomEscape_020");
                 break;
 
@@ -342,14 +345,14 @@ public class ResultManager : MonoBehaviour
 
             case "Result_046": // 상자가 열리는 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_025");
-                RoomManager.Instance.SetExitButton(true);
                 break;
 
             case "Result_047": // 상자 열리는 사운드 - ### 추후 구현 필요 ###
                 break;
 
             case "Result_048": // 상자 안 사진들이 UI로 보임
-                executableObjects["Box"].ExecuteAction();
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "photoInsideBox");
+                GameManager.Instance.SetVariable("BoxOpened", true);
                 break;
 
             case "Result_049": // 서랍장이 열리는 스크립트
@@ -365,8 +368,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_052": // 달력이 열림
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "calendar");
                 executableObjects["Calendar"].ExecuteAction();
-                RoomManager.Instance.SetExitButton(true);
                 break;
 
             case "Result_053": // 필연 생일에 대한 스크립트 - ### 추후 구현 필요 ###

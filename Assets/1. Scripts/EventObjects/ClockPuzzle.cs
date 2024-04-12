@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class ClockPuzzle : EventObject, IResultExecutable
+public class ClockPuzzle : EventObject
 {
     [SerializeField]
     private GameObject hourHand;
@@ -50,12 +50,13 @@ public class ClockPuzzle : EventObject, IResultExecutable
         
         float[] correctAngles = (float[])GameManager.Instance.GetVariable("ClockPassword");
 
-        //Debug.Log("시계정답 : " + (float[])GameManager.Instance.GetVariable("ClockPassword"));
-        //Debug.Log("시계정답 : "+correctAngles[0]+" "+ correctAngles[1]);
-
         float correctHourAngle = correctAngles[0], correctMinuteAngle = correctAngles[1];
         bool isTimeCorrect = Mathf.Approximately(correctHourAngle, hourTime) &&
                              Mathf.Approximately(correctMinuteAngle, minuteAngle);
+        
+        // # - # - # - # - # 디버깅용 # - # - # - # - #
+        // isTimeCorrect = true;
+        
         GameManager.Instance.SetVariable("ClockTimeCorrect", isTimeCorrect);
         
         OnMouseDown();

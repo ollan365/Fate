@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Diary : EventObject, IResultExecutable
 {
-    // 다이어리 잠금장치 보고 있을 때 시점 이동 제한
     [SerializeField]
     private GameObject diaryLock;
 
@@ -28,7 +27,5 @@ public class Diary : EventObject, IResultExecutable
     public void ActivateDiaryLock()
     {
         diaryLock.SetActive(true);
-        RoomManager.Instance.AddScreenObjects(diaryLock);
-        RoomManager.Instance.isInvestigating = true;
     }
 }
