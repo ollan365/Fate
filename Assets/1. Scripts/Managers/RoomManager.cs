@@ -9,7 +9,11 @@ using UnityEngine.UI;
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
-    
+
+    // 이게 사라져있었습니다 할당 부탁드립니당...
+    public GameObject eventObjectPanel;
+    // ClockPuzzle의 Awake 부분 주석 처리했는데 수정 부탁드립니당...
+
     [Header("시점들")][SerializeField] private List<GameObject> sides;  // 시점들
     private GameObject currentView;  // 현재 뷰
     private int currentSideIndex = 0;  // 현재 시점 인덱스
@@ -45,9 +49,6 @@ public class RoomManager : MonoBehaviour
 
     // 이벤트 오브젝트 패널 매니저
     [FormerlySerializedAs("eventObjectPanelManager")] public ImageAndLockPanelManager imageAndLockPanelManager;
-    // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
-    [SerializeField] private bool isInvestigating = false;
-    [SerializeField] private bool isZoomed = false;
     
     [Header("이벤트 오브젝트 확대 이미지")]
     [SerializeField] private GameObject amuletImage;
@@ -383,7 +384,7 @@ public class RoomManager : MonoBehaviour
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
         
         SetExitButton(isInvestigatingOrZoomed && !isDialogueActive);
-        SetMoveButtons(!(isInvestigatingOrZoomed || isDialogueActive));
+        SetMoveButton(!(isInvestigatingOrZoomed || isDialogueActive));
     }
     
 }

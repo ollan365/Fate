@@ -16,7 +16,7 @@ public class ClockPuzzle : EventObject
 
     private void Awake()
     {
-        ResultManager.Instance.RegisterExecutable("ClockPuzzle", this);
+        // ResultManager.Instance.RegisterExecutable("ClockPuzzle", this);
     }
     
     public void ExecuteAction()
