@@ -92,76 +92,10 @@ public class ResultManager : MonoBehaviour
                 break;
                 
             // 튜토리얼
-            case "Tutorial_Result_001":
-                DialogueManager.Instance.StartDialogue("Tutorial_001");
+            case "Result_nextTutorialPhase":  // 튜토리얼 다음 페이즈로 진행
+                RoomManager.Instance.tutorialManager.ProceedToNextPhase();
                 break;
-
-            case "Tutorial_Result_002":
-                GameManager.Instance.SetVariable("Tutorial_Now", 1);
-                break;
-
-            case "Tutorial_Result_003":
-                RoomManager.Instance.SetBlockingPanel(true);
-                RoomManager.Instance.Tutorial_SetMoveButtonInteractable(true);
-                break;
-
-            case "Tutorial_Result_004":
-                GameManager.Instance.SetVariable("Tutorial_Now", 2);
-                break;
-
-            case "Tutorial_Result_005":
-                //이동버튼 가능, 시점1번 가기 전까지 다른 이벤트오브젝트버튼들 클릭X
-                DialogueManager.Instance.StartDialogue("Tutorial_002_A");
-                RoomManager.Instance.SetBlockingPanel(true);
-                RoomManager.Instance.Tutorial_SetMoveButtonInteractable(true);
-                break;
-
-            case "Tutorial_Result_006":
-                DialogueManager.Instance.StartDialogue("Tutorial_002_B");
-                //스크립트 끝나면 이동버튼 클릭X, 의자, 카펫 버튼 이외 이벤트오브젝트버튼들 클릭안됨
-                RoomManager.Instance.SetBlockingPanel(true);
-                RoomManager.Instance.Tutorial_SetMoveButtonInteractable(false);
-                RoomManager.Instance.Tutorial2_ChairAndCarpetInteractable(true);
-                break;
-
-            case "Tutorial_Result_007":
-                DialogueManager.Instance.StartDialogue("Tutorial_003");
-                GameManager.Instance.SetVariable("Tutorial_Now", 3);
-                break;
-
-            case "Tutorial_Result_008":
-                DialogueManager.Instance.StartDialogue("Tutorial_004");
-                // Tutorial_Now를 4로 바꿔서 튜토리얼 끝나게 함.
-                GameManager.Instance.SetVariable("Tutorial_Now", 4);
-                // TutorialLogic.setActcie를 false로 바꿔서 튜토리얼 관련으로 동작 안 일어나게 함.
-                RoomManager.Instance.SetTutorialLogic(false);
-
-                // 튜토리얼 거의 끝나가면 의자랑 카펫 버튼 맨 위로 올렸던거 때문에 
-                // BlockingPanel1 맨앞으로 다시 올림
-                RoomManager.Instance.Tutorial2_ChairAndCarpetInteractable(false);
-                // 다른 이벤트오브젝트 버튼들 안 눌리게 했던 투명 패널 끔.
-                RoomManager.Instance.SetBlockingPanel(false);
-                // 이동버튼 누를 수 있게 함.
-                RoomManager.Instance.Tutorial_SetMoveButtonInteractable(true);
-                break;
-
-            case "Tutorial_Result_009":
-                GameManager.Instance.SetVariable("Tutorial_RoomSide2_Look", true);
-                break;
-
-            case "Tutorial_Result_010":
-                GameManager.Instance.SetVariable("Tutorial_RoomSide3_Look", true);
-                break;
-
-            //case "Tutorial_Result_011":
-            //    // 튜토리얼 끝나면 메모 버튼도 보이게 함.
-            //    MemoManager.Instance.HideMemoButton(false);
-            //    break;
-
-            case "HideMoveButton":
-                RoomManager.Instance.SetMoveButton(false);
-                break;
-
+            
             case "Result_005": // 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_001");
                 break;
@@ -249,6 +183,7 @@ public class ResultManager : MonoBehaviour
             case "Result_024": // 의자가 옆으로 이동함
                 executableObjects["Chair1"].ExecuteAction();
                 executableObjects["Chair2"].ExecuteAction();
+                GameManager.Instance.InverseVariable("ChairMoved");
                 break;
 
             case "Result_025": // 노트북에 대한 설명
@@ -277,12 +212,11 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_031": // 카펫이 들쳐짐
-                executableObjects["Carpet_Closed"].ExecuteAction();
-                GameManager.Instance.SetVariable("CarpetClosed", false);
+                executableObjects["ClosedCarpet"].ExecuteAction();
                 break;
             
             case "Result_032": // 종이를 확대해주는 UI
-                executableObjects["Carpet_Paper"].ExecuteAction();
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "letterOfResignation");
                 break;
             
             case "Result_033": // 종이에 대한 스크립트
@@ -290,8 +224,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_034": // 카펫이 원래대로 돌아감
-                executableObjects["Carpet_Open"].ExecuteAction();
-                GameManager.Instance.SetVariable("CarpetClosed", true);
+                executableObjects["OpenCarpet"].ExecuteAction();
                 DialogueManager.Instance.StartDialogue("RoomEscape_018");
                 break;
             

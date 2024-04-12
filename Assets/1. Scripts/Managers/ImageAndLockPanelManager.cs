@@ -83,7 +83,6 @@ public class ImageAndLockPanelManager : MonoBehaviour
             RoomManager.Instance.SetIsInvestigating(isImageOrLockActive);
         }
         
-        
     }
 
     public void SetObjectImageGroup(bool isTrue, string eventObjectName = null)
@@ -156,9 +155,11 @@ public class ImageAndLockPanelManager : MonoBehaviour
         SetBlockingPanel();
     }
     
-    private void SetBlockingPanel()
+    public void SetBlockingPanel()
     {
-        bool isImageOrLockActive = isImageActive || isLockObjectActive;
+        bool isTutorial = (bool)GameManager.Instance.GetVariable("isTutorial"); 
+
+        bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorial;
         blockingPanel.SetActive(isImageOrLockActive);
     }
 }

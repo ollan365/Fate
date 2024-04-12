@@ -38,10 +38,11 @@ public class Chair : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
-        if (isMoving) return;
+        bool isBusy = GameManager.Instance.GetIsBusy(); 
+        
+        if (isMoving | isBusy) return;
         
         base.OnMouseDown();
-        GameManager.Instance.InverseVariable("ChairMoved");
     }
     
     public void ExecuteAction()

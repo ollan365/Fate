@@ -45,19 +45,8 @@ public class GameManager : MonoBehaviour
         variables["ActionPoint"] = 25;  // 행동력 
 
         // 2 - 0. 튜토리얼 관련 변수들 - 첫번째 방탈출
-        // 튜토리얼 진행 상태
-        variables["Tutorial_Now"] = 0;
-
-        // 튜토리얼1
-        variables["RoomCurrentSideIndex"] = 0;
-        // 2번으로 시점 이동 상태
-        variables["Tutorial_RoomSide2_Look"] = false;
-        // 3번으로 시점 이동 상태
-        variables["Tutorial_RoomSide3_Look"] = false;
-
-        // 튜토리얼3
-        // RoomManager의 isInvestigating 상태 
-        variables["IsInvestigating"] = false;
+        variables["isTutorial"] = false;
+        variables["TutorialPhase"] = 0;
 
         // 2 - 1. 이벤트 오브젝트 관련 변수들 - 첫번째 방탈출
         // 침대 위 곰인형
@@ -99,14 +88,10 @@ public class GameManager : MonoBehaviour
         variables["LaptopPassword"] = "0410";
 
         // 카펫
-        variables["CarpetClick"] = 0;
+        variables["ClosedCarpetClick"] = 0;
         variables["CarpetClosed"] = true;
-
         // 카펫 아래 종이
         variables["PaperClick"] = 0;
-
-        variables["CarpetClosed"] = true;
-
 
         // 포스터
         variables["PosterClick"] = 0;
@@ -249,11 +234,27 @@ public class GameManager : MonoBehaviour
         List<string> keysToShow = new List<string>(new string[]
         {
             "ActionPoint",
+            "isTutorial",
+            "TutorialPhase",
+            "ChairMoved",
+            "ClosedCarpetClick",
+            "CarpetClosed"
         });
         
         foreach (var item in variables)
         {
             if (keysToShow.Contains(item.Key)) variablesText.text += $"{item.Key}: {item.Value}\n";
         }
+    }
+
+    public bool GetIsBusy()  // 클릭을 막아야 하는 상황들
+    {
+        bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
+        bool isInvestigating = RoomManager.Instance.isInvestigating;
+        bool isTutorialPhase1 = (int)variables["TutorialPhase"] == 1;
+
+        bool isBusy = isDialogueActive || isInvestigating || isTutorialPhase1;
+
+        return isBusy;
     }
 }

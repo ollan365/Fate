@@ -10,6 +10,9 @@ public class Bag : EventObject
 
     public new void OnMouseDown()
     {
+        bool isBusy = GameManager.Instance.GetIsBusy();
+        if (isBusy) return;
+        
         base.OnMouseDown();
         GameManager.Instance.IncrementVariable("BagClick"); 
     }

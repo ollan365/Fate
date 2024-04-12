@@ -91,7 +91,7 @@ public class StartLogic : MonoBehaviour, IResultExecutable
         background.GetComponent<Image>().color = Color.white;
         background.GetComponent<Image>().sprite = room1Side1BackgroundSprite; // Background 이미지 변경
         PlayFadeInAnimation();
-        StartCoroutine(StartDialogueAfterDelay("Prologue_002", 2.5f));
+        StartCoroutine(StartDialogueAfterDelay("Prologue_002", 2.0f));
     }
 
     IEnumerator StartDialogueAfterDelay(string dialogueID, float delay)

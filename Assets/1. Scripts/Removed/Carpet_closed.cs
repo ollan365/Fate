@@ -15,8 +15,7 @@ public class Carpet_closed : EventObject, IResultExecutable
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        if((bool)GameManager.Instance.GetVariable("ChairMoved"))
-            GameManager.Instance.IncrementVariable("CarpetClick");
+        if((bool)GameManager.Instance.GetVariable("ChairMoved")) GameManager.Instance.IncrementVariable("CarpetClick");
     }
 
     public void ExecuteAction()
@@ -24,7 +23,7 @@ public class Carpet_closed : EventObject, IResultExecutable
         CarpetOpen();
     }
 
-    [Header("µÚÁýÀº Ä«Æê ¹öÆ°")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½Æ°")]
     [SerializeField] private GameObject carpetOpen;
 
     private void CarpetOpen()
@@ -34,11 +33,11 @@ public class Carpet_closed : EventObject, IResultExecutable
 
         CarpetPaper.SetActive(true);
 
-        // Ä«Æê ¹Ø Á¾ÀÌ ¹öÆ° Á¦¿ÜÇÏ°í ´Ù ¹öÆ° ¾È ´­¸®°Ô ÇÔ.
-        RoomManager.Instance.SetBlockingPanel(true);
+        // Ä«ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½.
+        // RoomManager.Instance.SetBlockingPanel(true);
 
-        RoomManager.Instance.Tutorial2_ChairAndCarpetInteractable(false);
-        // CarpetPaperÀ» ¶Ç ¸Ç À§·Î ¿Ã¸®°Ô ÇÔ.
+        // RoomManager.Instance.Tutorial2_ChairAndCarpetInteractable(false);
+        // CarpetPaperï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½ ï¿½ï¿½.
         CarpetPaper.GetComponent<RectTransform>().SetAsLastSibling();
 
         RoomManager.Instance.SetIsInvestigating(true);

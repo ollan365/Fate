@@ -29,8 +29,8 @@ public class Calendar : EventObject, IResultExecutable
         if ((int)GameManager.Instance.GetVariable("CalendarCluesFound")<4)
         {
             calendarUI.SetActive(true);
-            RoomManager.Instance.AddScreenObjects(calendarUI);
-            RoomManager.Instance.isInvestigating = true;
+            // RoomManager.Instance.AddScreenObjects(calendarUI);
+            // RoomManager.Instance.isInvestigating = true;
         }
         
     }
