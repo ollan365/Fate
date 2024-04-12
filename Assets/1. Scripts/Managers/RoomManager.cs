@@ -13,6 +13,7 @@ public class RoomManager : MonoBehaviour
 
     // 이게 사라져있었습니다 할당 부탁드립니당...
     public GameObject eventObjectPanel;
+    // 이외에도 인스펙터 창에 Room Manager에 할당된 것들이 많이 사라졌습니다... ㅠㅠ
     // ClockPuzzle의 Awake 부분 주석 처리했는데 수정 부탁드립니당...
 
     [Header("시점들")][SerializeField] private List<GameObject> sides;  // 시점들
@@ -235,7 +236,7 @@ public class RoomManager : MonoBehaviour
     // 메모버튼 튜토리얼 중에는 보이지 않게 함 온오프 함수
     public void SetMemoButton(bool isTrue)
     {
-        memoButton.SetActive(isTrue);
+        MemoManager.Instance.HideMemoButton(!isTrue);
     }
 
     // ---------------------------------------------------------------
