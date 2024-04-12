@@ -17,6 +17,10 @@ public class ZoomView : EventObject, IResultExecutable
     
     public void ExecuteAction()
     {
-        if (isActiveAndEnabled) RoomManager.Instance.SetCurrentView(zoomedView);
+        if (!isActiveAndEnabled) return;
+        
+        RoomManager.Instance.SetCurrentView(zoomedView);
+        RoomManager.Instance.SetIsZoomed(true);
+        RoomManager.Instance.SetButtons();
     }
 }

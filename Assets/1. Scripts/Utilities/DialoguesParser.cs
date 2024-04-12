@@ -15,6 +15,14 @@ public class DialoguesParser : MonoBehaviour
     private Dictionary<string, Script> scripts = new Dictionary<string, Script>();
     private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
     private Dictionary<string, ImagePath> imagePaths = new Dictionary<string, ImagePath>();
+
+    private string Escaper(string originalString)
+    {
+        string modifiedString = originalString.Replace("\\n", "\n");
+        modifiedString = modifiedString.Replace("`", ",");
+
+        return modifiedString;
+    }
     
     public Dictionary<string, Dialogue> ParseDialogues()
     {
@@ -60,11 +68,11 @@ public class DialoguesParser : MonoBehaviour
             string[] fields = lines[i].Split(',');
 
             string scriptID = fields[0].Trim().Trim('\n');
-            string engScript = fields[1].Trim().Replace("\\n", "\n");
-            string korScript = fields[2].Trim().Replace("\\n", "\n");
-            string jpMScript = fields[3].Trim().Replace("\\n", "\n");
-            string jpWScript = fields[4].Trim().Replace("\\n", "\n");
-            string placeholder = fields[5].Trim().Replace("\\n", "\n");
+            string engScript = Escaper(fields[1].Trim());
+            string korScript = Escaper(fields[2].Trim());
+            string jpMScript = Escaper(fields[3].Trim());
+            string jpWScript = Escaper(fields[4].Trim());
+            string placeholder = Escaper(fields[5].Trim());
 
             Script script = new Script(
                 scriptID,

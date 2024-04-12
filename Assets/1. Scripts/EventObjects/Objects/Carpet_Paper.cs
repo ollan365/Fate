@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class Carpet_Paper : EventObject, IResultExecutable
 {
-    //[SerializeField]
-    //private GameObject paperCloseUp;
+    [SerializeField]
+    private GameObject paperCloseUp;
 
     private Button carpet;
 
     private void Awake()
     {
-        carpet = GameObject.Find("carpet").GetComponent<Button>();
+        carpet = GameObject.Find("carpet_open").GetComponent<Button>();
         ResultManager.Instance.RegisterExecutable("Carpet_Paper", this);
     }
 
@@ -35,4 +35,5 @@ public class Carpet_Paper : EventObject, IResultExecutable
         RoomManager.Instance.isInvestigating = true;
         carpet.interactable = true;
     }
+
 }
