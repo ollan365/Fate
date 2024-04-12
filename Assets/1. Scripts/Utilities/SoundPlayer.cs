@@ -1,0 +1,54 @@
+using UnityEngine;
+using static Constants;
+
+public class SoundPlayer : MonoBehaviour
+{
+    public static SoundPlayer Instance { get; private set; }
+    [SerializeField] private AudioSource bgmPlayer; // 배경음 플레이어
+    [SerializeField] private AudioClip[] bgmClip; // 배경음들
+    [SerializeField] private AudioSource[] UISoundPlayer; // UI 효과음 플레이어들
+    [SerializeField] private AudioClip[] UISoundClip; // UI 효과음들
+
+    // 동시에 여러 UI 효과음들이 플레이 될 수도 있으므로 여러 플레이어를 두고 순차적으로 실행하기 위한 변수
+    private int UISoundPlayerCursor;
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    private void Update()
+    {
+        // 마우스 클릭 시 효과음 발생
+        if (Input.GetMouseButtonDown(0))
+            UISoundPlay(Sound_Click);
+    }
+    public void ChangeBGM(DialogueType dialogueType)
+    {
+        // 배경 음악을 바꾼다
+        bgmPlayer.clip = bgmClip[dialogueType.ToInt()];
+        bgmPlayer.Play();
+    }
+
+    public void UISoundPlay(int type)
+    {
+        // 음악이 여러개인 경우 랜덤으로 재생
+        if (type == Sound_LockerKeyMovement || type == Sound_ChairMovement)
+            type = Random.Range(type, type + 2);
+
+        // 재생할 음악 변경
+        UISoundPlayer[UISoundPlayerCursor].clip = UISoundClip[type];
+
+        // 음악 재생
+        UISoundPlayer[UISoundPlayerCursor].Play();
+
+        // 다음 효과음 Player로 넘긴다
+        UISoundPlayerCursor = (UISoundPlayerCursor + 1) % UISoundPlayer.Length;
+    }
+}

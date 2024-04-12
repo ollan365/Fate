@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject[] dialoguePanel;
     public Transform choicesContainer;
     public GameObject choicePrefab;
-    public SpriteRenderer teddyBearIcon;
+    public GameObject teddyBearIcon;
     
     // 타자 효과 속도
     [Header("Typing Speed")]
@@ -106,7 +106,7 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(TypeSentence(sentence));
 
         // 미행 파트라면 대화창 크기 조절
-        if (dialogueType == DialogueType.FOLLOW) SetPanelSize(sentence);
+        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_ANGRY) SetPanelSize(sentence);
 
         // 화자 이미지 표시
         string imageID = dialogueLine.ImageID;
@@ -192,16 +192,39 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeSentence(string sentence)
     {
-        teddyBearIcon.gameObject.SetActive(false);
+        teddyBearIcon.SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
+
+        // <color=red> 같은 글씨 효과들은 출력되지 않도록 변수 설정
+        bool isEffect = false;
+        string effectText = "";
         foreach (char letter in sentence.ToCharArray())
         {
+            if (letter == '<')
+            {
+                effectText = ""; // effectText 초기화
+                isEffect = true;
+            }
+            else if (letter == '>') // > 가 나오면 scriptText에 한번에 붙인다
+            {
+                effectText += letter;
+                scriptText[dialogueType.ToInt()].text += effectText;
+                isEffect = false;
+                continue;
+            }
+
+            if (isEffect) // < 가 나온 이후부터는 effectText에 붙인다
+            {
+                effectText += letter;
+                continue;
+            }
+
             scriptText[dialogueType.ToInt()].text += letter;
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
-        teddyBearIcon.gameObject.SetActive(true);
+        teddyBearIcon.SetActive(true);
     }
     
     public void OnDialoguePanelClick()
@@ -224,7 +247,7 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
         scriptText[dialogueType.ToInt()].text = fullSentence;
         isTyping = false;
-        teddyBearIcon.gameObject.SetActive(true);
+        teddyBearIcon.SetActive(true);
     }
     
     // ---------------------------------------------- Choice methods ----------------------------------------------

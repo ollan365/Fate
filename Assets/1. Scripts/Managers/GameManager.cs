@@ -164,6 +164,26 @@ public class GameManager : MonoBehaviour
         variables["ReceiptClick"] = 0;
         // 신호등
         variables["LightClick"] = 0;
+        // 음료
+        variables["LatteClcik"] = 0;
+        // 1층 옷가게
+        variables["1FClothesClick"] = 0;
+        // 2층 옷가게
+        variables["2FClothesClick"] = 0;
+        // 공사장
+        variables["ConstructionClick"] = 0;
+        // 식당
+        variables["RestaurantClick"] = 0;
+        // 칵테일 바
+        variables["CocktailBarClick"] = 0;
+        // 화장품 가게
+        variables["CosemeticClick"] = 0;
+        // 뮤직바
+        variables["MusicBarClick"] = 0;
+        // 클럽
+        variables["ClubCliclk"] = 0;
+        // 술집
+        variables["BeerClick"] = 0;
 
         if (isDebug) ShowVariables();
 

@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RoomManager : MonoBehaviour
 {
@@ -59,6 +60,9 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private GameObject posterImage;
     [SerializeField] private GameObject liquorImage;
 
+    // 시연 용 미행 씬 이동 버튼
+    [SerializeField] private Button goFollowSceneButton;
+
     // 튜토리얼 관련..
     [Header("튜토리얼 관련")]
     [SerializeField] private GameObject tutorialLogic;
@@ -66,7 +70,6 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private GameObject carpetButton;
     // 튜토리얼 때는 메모 버튼 볼 수 없게 함 
     [SerializeField] private GameObject memoButton;
-
 
     void Awake()
     {
@@ -100,6 +103,12 @@ public class RoomManager : MonoBehaviour
         currentView = sides[0];
         SetCurrentSide(0);
 
+        // 메모 버튼이 보이게 함
+        MemoManager.Instance.HideMemoButton(false);
+
+        // 시연 용 미행 씬 이동 버튼 기능 추가
+        goFollowSceneButton.onClick.AddListener(() => SceneManager.LoadScene(2));
+
         //// "Controlled Button" 태그를 가진 모든 버튼들을 찾아서 otherButtons에 넣음.
         //// Side1의 버튼들만 들어간 상태..
         //otherButtons = GameObject.FindGameObjectsWithTag("Controlled Button").Select(g => g.GetComponent<Button>()).ToArray();
@@ -126,9 +135,13 @@ public class RoomManager : MonoBehaviour
             int newSideIndex = (currentSideIndex - 1 + sides.Count) % sides.Count;
             SetCurrentSide(newSideIndex);
 
+            // 화면 이동 효과
+            ScreenEffect.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(-1, 0, 0));
+
             // 튜토리얼 관련
             if(tutorialLogic.activeSelf)
                 tutorialLogic.GetComponent<TutorialLogic>().Tutorial_MoveLeft();
+
         }
     }
 
@@ -138,10 +151,14 @@ public class RoomManager : MonoBehaviour
         {
             int newSideIndex = (currentSideIndex + 1) % sides.Count;
             SetCurrentSide(newSideIndex);
+            
+            // 화면 이동 효과
+            ScreenEffect.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(1, 0, 0));
 
             // 튜토리얼 관련
             if (tutorialLogic.activeSelf)
                 tutorialLogic.GetComponent<TutorialLogic>().Tutorial_MoveRight();
+
         }
     }
 
