@@ -105,9 +105,6 @@ public class DialogueManager : MonoBehaviour
         }
         StartCoroutine(TypeSentence(sentence));
 
-        // 미행 파트라면 대화창 크기 조절
-        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_ANGRY) SetPanelSize(sentence);
-
         // 화자 이미지 표시
         string imageID = dialogueLine.ImageID;
         if (string.IsNullOrWhiteSpace(imageID))
@@ -140,7 +137,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
-        if (dialogueType == DialogueType.FOLLOW) FollowManager.Instance.EndScript();
+        if (dialogueType == DialogueType.FOLLOW) FollowManager.Instance.EndScript(true);
         
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
@@ -179,22 +176,13 @@ public class DialogueManager : MonoBehaviour
             DisplayChoices(next);
         }
     }
-    private void SetPanelSize(string scriptText)
-    {
-        // scriptText의 길이를 기반으로 대화창의 크기를 조절
-        float preferredWidth = Mathf.Clamp(scriptText.Length, 21, 60) * 100;
-
-        // 대화창의 RectTransform 가져오기
-        RectTransform panelRect = dialoguePanel[dialogueType.ToInt()].GetComponent<RectTransform>();
-
-        // 대화창의 너비를 Text의 Preferred Width로 설정
-        panelRect.sizeDelta = new Vector2(preferredWidth, panelRect.sizeDelta.y);
-    }
     IEnumerator TypeSentence(string sentence)
     {
         teddyBearIcon.SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
+
+        SoundPlayer.Instance.UISoundPlay_LOOP(Sound_Typing, true);
 
         // <color=red> 같은 글씨 효과들은 출력되지 않도록 변수 설정
         bool isEffect = false;
@@ -223,6 +211,7 @@ public class DialogueManager : MonoBehaviour
             scriptText[dialogueType.ToInt()].text += letter;
             yield return new WaitForSeconds(typeSpeed);
         }
+        SoundPlayer.Instance.UISoundPlay_LOOP(Sound_Typing, false);
         isTyping = false;
         teddyBearIcon.SetActive(true);
     }
@@ -244,6 +233,8 @@ public class DialogueManager : MonoBehaviour
     
     private void CompleteSentence()
     {
+        SoundPlayer.Instance.UISoundPlay_LOOP(Sound_Typing, false);
+
         StopAllCoroutines();
         scriptText[dialogueType.ToInt()].text = fullSentence;
         isTyping = false;

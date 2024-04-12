@@ -18,7 +18,7 @@ public class FollowAnim : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stopButtonText; // 이동&멈춤 버튼의 글씨
     private bool isStop = true; // 현재 이동 중인지를 나타내는 변수
     public bool IsStop { get => isStop; }
-    
+
     private void Start()
     {
         SetCharcter();
@@ -37,6 +37,9 @@ public class FollowAnim : MonoBehaviour
     {
         // 이동을 멈춤 or 시작
         isStop = !isStop;
+
+        // 이동 중에는 발자국 소리
+        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep, !isStop);
 
         if (isStop) stopButtonText.text = "이동";
         else stopButtonText.text = "정지";
