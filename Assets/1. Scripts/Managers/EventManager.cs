@@ -27,9 +27,9 @@ public class EventManager : MonoBehaviour
             ParseEvents();
 
             // 디버깅용
-            // DebugLogConditions();
-            // DebugLogResults();
-            // DebugLogEvents();
+            //DebugLogConditions();
+            //DebugLogResults();
+            //DebugLogEvents();
         }
         else
         {
@@ -181,49 +181,49 @@ public class EventManager : MonoBehaviour
     }
 
     // ############### 디버깅용 메서드들 #################
-    // Condition 정보를 로그로 출력하는 메서드
+    //Condition 정보를 로그로 출력하는 메서드
     // private void DebugLogConditions()
-    // {
-    //     Debug.Log("##### conditions #####");
-    //     foreach (var item in conditionManager.conditions)
-    //     {
-    //         Debug.Log($"Condition ID: {item.Key}, Description: {item.Value.Description}, Variable: {item.Value.VariableName}, Logic: {item.Value.Logic}, Value: {item.Value.Value}");
-    //     }
-    //     Debug.Log('\n');
-    // }
-    //
-    // // Result 정보를 로그로 출력하는 메서드
-    // private void DebugLogResults()
-    // {
-    //     Debug.Log("##### results #####");
-    //     foreach (var item in resultManager.results)
-    //     {
-    //         Debug.Log($"Result ID: {item.Key}, Description: {item.Value.Description}, Action: {item.Value.Action}");
-    //     }
-    //     Debug.Log('\n');
-    // }
-    //
-    // // Event 정보를 로그로 출력하는 메서드
-    // private void DebugLogEvents()
-    // {
-    //     Debug.Log("##### events #####");
-    //     foreach (var evt in events)
-    //     {
-    //         Debug.Log($"Event ID: {evt.Value.EventID}, Name: {evt.Value.EventName}, Description: {evt.Value.EventDescription}");
-    //         foreach (var lcr in evt.Value.LogicConditionsResults)
-    //         {
-    //             Debug.Log($"    Logic: {lcr.Logic}");
-    //             Debug.Log("    Conditions:");
-    //             foreach (var condition in lcr.Conditions)
-    //             {
-    //                 Debug.Log($"        {condition.ConditionID}");
-    //             }
-    //             Debug.Log("    Results:");
-    //             foreach (var result in lcr.Results)
-    //             {
-    //                 Debug.Log($"        {result.ResultID}");
-    //             }
-    //         }
-    //     }
-    // }
+    //{
+    //    Debug.Log("##### conditions #####");
+    //    foreach (var item in conditionManager.conditions)
+    //    {
+    //        Debug.Log($"Condition ID: {item.Key}, Description: {item.Value.Description}, Variable: {item.Value.VariableName}, Logic: {item.Value.Logic}, Value: {item.Value.Value}");
+    //    }
+    //    Debug.Log('\n');
+    //}
+
+    // Result 정보를 로그로 출력하는 메서드
+    //private void DebugLogResults()
+    //{
+    //    Debug.Log("##### results #####");
+    //    foreach (var item in resultManager.results)
+    //    {
+    //        Debug.Log($"Result ID: {item.Key}, Description: {item.Value.Description}, Action: {item.Value.Action}");
+    //    }
+    //    Debug.Log('\n');
+    //}
+
+    // Event 정보를 로그로 출력하는 메서드
+    //private void DebugLogEvents()
+    //{
+    //    Debug.Log("##### events #####");
+    //    foreach (var evt in events)
+    //    {
+    //        Debug.Log($"Event ID: {evt.Value.EventID}, Name: {evt.Value.EventName}, Description: {evt.Value.EventDescription}");
+    //        foreach (var lcr in evt.Value.LogicConditionsResults)
+    //        {
+    //            Debug.Log($"    Logic: {lcr.Logic}");
+    //            Debug.Log("    Conditions:");
+    //            foreach (var condition in lcr.Conditions)
+    //            {
+    //                Debug.Log($"        {condition.ConditionID}");
+    //            }
+    //            Debug.Log("    Results:");
+    //            foreach (var result in lcr.Results)
+    //            {
+    //                Debug.Log($"        {result.ResultID}");
+    //            }
+    //        }
+    //    }
+    //}
 }

@@ -27,7 +27,7 @@ public class ClockPuzzle : EventObject
     // 시계 열리고 열쇠 획득
     private void ShowKey()
     {
-        RoomManager.Instance.SetEventObjectPanel(true, "ClockKeys");
+        RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
         //keys.SetActive(true);
         //RoomManager.Instance.AddScreenObjects(keys);
         RoomManager.Instance.isInvestigating = true;

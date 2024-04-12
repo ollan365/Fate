@@ -29,7 +29,7 @@ public class Carpet_Paper : EventObject, IResultExecutable
 
     private void LookPaper()
     {
-        RoomManager.Instance.SetEventObjectPanel(true, "Carpet_Paper");
+        RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "carpetPaper");
         //paperCloseUp.SetActive(true);
         //RoomManager.Instance.AddScreenObjects(paperCloseUp);
         RoomManager.Instance.isInvestigating = true;

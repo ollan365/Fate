@@ -90,7 +90,7 @@ public class ResultManager : MonoBehaviour
             case "Result_004": // 조사 완료 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_008");
                 break;
-
+                
             // 튜토리얼
             case "Tutorial_Result_001":
                 DialogueManager.Instance.StartDialogue("Tutorial_001");
@@ -153,20 +153,14 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.SetVariable("Tutorial_RoomSide3_Look", true);
                 break;
 
+            //case "Tutorial_Result_011":
+            //    // 튜토리얼 끝나면 메모 버튼도 보이게 함.
+            //    MemoManager.Instance.HideMemoButton(false);
+            //    break;
 
             case "HideMoveButton":
                 RoomManager.Instance.SetMoveButton(false);
                 break;
-
-            case "HideMemoButton":
-                RoomManager.Instance.SetMemoButton(false);
-                break;
-
-            case "ShowMemoButton":
-                RoomManager.Instance.SetMemoButton(true);
-                break;
-
-
 
             case "Result_005": // 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_001");
