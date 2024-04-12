@@ -8,7 +8,9 @@ using UnityEngine.UI;
 public class ClockPuzzle : EventObject, IResultExecutable
 {
     [SerializeField]
-    private GameObject hourHand, minuteHand;
+    private GameObject hourHand;
+    [SerializeField]
+    private GameObject minuteHand;
     [SerializeField]
     private GameObject keys;
 
@@ -31,18 +33,18 @@ public class ClockPuzzle : EventObject, IResultExecutable
         RoomManager.Instance.isInvestigating = true;
     }
 
-    public void TryPassword()
+    public void TryPassword(float hourTime)
     {
         // Debug.Log("TryPassword() called");
-        float currentHourAngle = hourHand.transform.rotation.eulerAngles.z;
+        float currentHourTime = hourTime;
         float currentMinuteAngle = minuteHand.transform.rotation.eulerAngles.z;
-        StartCoroutine(CompareClockHands(currentHourAngle, currentMinuteAngle));
+        StartCoroutine(CompareClockHands(currentHourTime, currentMinuteAngle));
     }
 
     // private float[] correctAngles = { 210f, 180f };     //오후 5시 30분
     // private float[] correctAngles = { 180f, 180f };   //오후 6시 30분
 
-    IEnumerator CompareClockHands(float hourAngle, float minuteAngle)
+    IEnumerator CompareClockHands(float hourTime, float minuteAngle)
     {
         yield return new WaitForSeconds(0.2f);
         
@@ -52,7 +54,7 @@ public class ClockPuzzle : EventObject, IResultExecutable
         //Debug.Log("시계정답 : "+correctAngles[0]+" "+ correctAngles[1]);
 
         float correctHourAngle = correctAngles[0], correctMinuteAngle = correctAngles[1];
-        bool isTimeCorrect = Mathf.Approximately(correctHourAngle, hourAngle) &&
+        bool isTimeCorrect = Mathf.Approximately(correctHourAngle, hourTime) &&
                              Mathf.Approximately(correctMinuteAngle, minuteAngle);
         GameManager.Instance.SetVariable("ClockTimeCorrect", isTimeCorrect);
         

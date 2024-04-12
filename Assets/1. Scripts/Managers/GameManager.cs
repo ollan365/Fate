@@ -43,7 +43,22 @@ public class GameManager : MonoBehaviour
         variables["AccidyGender"] = 0;  // 우연 성별 {0: 여자, 1: 남자}
         
         variables["ActionPoint"] = 25;  // 행동력 
-        
+
+        // 2 - 0. 튜토리얼 관련 변수들 - 첫번째 방탈출
+        // 튜토리얼 진행 상태
+        variables["Tutorial_Now"] = 0;
+
+        // 튜토리얼1
+        variables["RoomCurrentSideIndex"] = 0;
+        // 2번으로 시점 이동 상태
+        variables["Tutorial_RoomSide2_Look"] = false;
+        // 3번으로 시점 이동 상태
+        variables["Tutorial_RoomSide3_Look"] = false;
+
+        // 튜토리얼3
+        // RoomManager의 isInvestigating 상태 
+        variables["IsInvestigating"] = false;
+
         // 2 - 1. 이벤트 오브젝트 관련 변수들 - 첫번째 방탈출
         // 침대 위 곰인형
         variables["DollsClick"] = 0;
@@ -72,7 +87,7 @@ public class GameManager : MonoBehaviour
         variables["ClockClick"] = 0;
         variables["ClockTimeCorrect"] = false;
         
-        float[] clockPassword = { 180f, 180f };
+        float[] clockPassword = { 5f, 180f };
         variables["ClockPassword"] = clockPassword;
 
         // 의자
@@ -88,6 +103,9 @@ public class GameManager : MonoBehaviour
 
         // 카펫 아래 종이
         variables["PaperClick"] = 0;
+
+        variables["CarpetClosed"] = true;
+
 
         // 포스터
         variables["PosterClick"] = 0;
