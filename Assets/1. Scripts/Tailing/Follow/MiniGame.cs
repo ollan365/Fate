@@ -28,7 +28,7 @@ public class MiniGame : MonoBehaviour
         {
             clickCount = value;
 
-            if (clickCount % 10 == 0) StartCoroutine(StartMiniGame());
+            if (clickCount % 5 == 0) StartCoroutine(StartMiniGame());
         }
     }
 
@@ -84,9 +84,13 @@ public class MiniGame : MonoBehaviour
                 if (heartCount < 0) isGameOver = true;
                 else // 체력을 1 깎고 다시 벽쪽으로 돌아간다
                 {
+                    fateSit.GetComponent<Image>().color = Color.red;
                     fateMove = false;
                     heartImages[heartCount].SetActive(false);
                     StartCoroutine(FateMove(false));
+
+                    yield return new WaitForSeconds(0.2f);
+                    fateSit.GetComponent<Image>().color = new Color(1, 1, 1, 0);
                 }
             }
             else if (!fateMove) // 필연이 움직이지 않으면 천천히 게이지 감소
@@ -97,8 +101,13 @@ public class MiniGame : MonoBehaviour
             yield return null;
         }
 
-        // 게임 오버
-        // 추후 구현 필요!!!
+        // 게임 오버 (현재는 무조건 미행으로 돌아감)
+
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
+        yield return new WaitForSeconds(0.2f);
+        miniGameCanvas.SetActive(false);
+        followCanvas.SetActive(true);
+        yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
     }
 
     public void MemoButtonOnClick()
@@ -107,7 +116,12 @@ public class MiniGame : MonoBehaviour
         {
             StartCoroutine(FateMove(true));
         }
-        else gaugeSlider.value += 0.05f;
+        else
+        {
+            gaugeSlider.value += 0.015f;
+
+            if(gaugeSlider.value == 1) isGameOver = true;
+        }
     }
     public void WallButtonOnClick()
     {
@@ -120,10 +134,10 @@ public class MiniGame : MonoBehaviour
         if (goToMemo)
         {
             // 필연의 위치가 바뀌는 애니메이션
-            StartCoroutine(ScreenEffect.Instance.OnFade(fateBack.GetComponent<Image>(), 1, 0, 0.25f, false, 0, 0));
-            yield return new WaitForSeconds(0.25f);
-            StartCoroutine(ScreenEffect.Instance.OnFade(fateSit.GetComponent<Image>(), 0, 1, 0.25f, false, 0, 0));
-            yield return new WaitForSeconds(0.25f);
+            StartCoroutine(ScreenEffect.Instance.OnFade(fateBack.GetComponent<Image>(), 1, 0, 0.2f, false, 0, 0));
+            yield return new WaitForSeconds(0.2f);
+            StartCoroutine(ScreenEffect.Instance.OnFade(fateSit.GetComponent<Image>(), 0, 1, 0.2f, false, 0, 0));
+            yield return new WaitForSeconds(0.2f);
 
             // 필연의 상태를 이동한 상태로 변경
             fateMove = true;
@@ -134,10 +148,10 @@ public class MiniGame : MonoBehaviour
             fateMove = false;
 
             // 필연의 위치가 바뀌는 애니메이션
-            StartCoroutine(ScreenEffect.Instance.OnFade(fateSit.GetComponent<Image>(), 1, 0, 0.25f, false, 0, 0));
-            yield return new WaitForSeconds(0.25f);
-            StartCoroutine(ScreenEffect.Instance.OnFade(fateBack.GetComponent<Image>(), 0, 1, 0.25f, false, 0, 0));
-            yield return new WaitForSeconds(0.25f);
+            StartCoroutine(ScreenEffect.Instance.OnFade(fateSit.GetComponent<Image>(), 1, 0, 0.2f, false, 0, 0));
+            yield return new WaitForSeconds(0.2f);
+            StartCoroutine(ScreenEffect.Instance.OnFade(fateBack.GetComponent<Image>(), 0, 1, 0.2f, false, 0, 0));
+            yield return new WaitForSeconds(0.2f);
         }
         memoButton.gameObject.SetActive(true);
     }
@@ -156,7 +170,7 @@ public class MiniGame : MonoBehaviour
         accidyAnimator.SetBool("isMove", true);
 
         // 3초에서 6초 사이 랜덤한 시간 동안 우연이 움직임
-        float moveTime = Random.Range(3, 6), currentTime = 0;
+        float moveTime = Random.Range(2.5f, 5.5f), currentTime = 0;
         while (!isGameOver)
         {
             currentTime += Time.deltaTime;
@@ -168,10 +182,10 @@ public class MiniGame : MonoBehaviour
                 yield return new WaitForSeconds(difficulty);
 
                 // 우연의 모습이 바뀌는 애니메이션
-                StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.25f, true, 0, 0));
-                yield return new WaitForSeconds(0.25f);
+                StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
+                yield return new WaitForSeconds(0.2f);
                 accidy.sprite = accidyBackSprite;
-                yield return new WaitForSeconds(0.25f);
+                yield return new WaitForSeconds(0.2f);
 
                 // 우연이 뒤를 돌아본 상태 (1초 간 유지)
                 accidyBack = true;
@@ -179,14 +193,14 @@ public class MiniGame : MonoBehaviour
                 accidyBack = false;
 
                 // 다시 앞을 보는 애니메이션
-                StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.25f, true, 0, 0));
-                yield return new WaitForSeconds(0.25f);
+                StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
+                yield return new WaitForSeconds(0.2f);
                 accidy.sprite = accidyFrontSprite;
-                yield return new WaitForSeconds(0.25f);
+                yield return new WaitForSeconds(0.2f);
 
                 // 변수들 초기화
                 currentTime = 0;
-                moveTime = Random.Range(3, 6);
+                moveTime = Random.Range(2.5f, 5.5f);
 
                 // 다시 우연이 움직이는 애니메이션 시작
                 accidyAnimator.SetBool("isMove", true);

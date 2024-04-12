@@ -44,6 +44,10 @@ public class MemoManager : MonoBehaviour
     public void AddMemo(string memoID)
     {
         string scriptID = allMemo[memoID];
+        foreach(string savedMemo in savedMemoList)
+        {
+            if (scriptID == savedMemo) return;
+        }
         savedMemoList.Add(DialogueManager.Instance.scripts[scriptID].GetScript());
     }
 

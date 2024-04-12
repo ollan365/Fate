@@ -16,7 +16,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject[] dialogueCanvas;
     public TextMeshProUGUI speakerText;
     public TextMeshProUGUI[] scriptText;
-    public SpriteRenderer characterImage;
+    public Image characterImage;
     public GameObject[] dialoguePanel;
     public Transform choicesContainer;
     public GameObject choicePrefab;
@@ -109,15 +109,17 @@ public class DialogueManager : MonoBehaviour
         string imageID = dialogueLine.ImageID;
         if (string.IsNullOrWhiteSpace(imageID))
         {
-            characterImage.sprite = null;
+            characterImage.color = new Color(1, 1, 1, 0);
         }
         else
         {
             int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
             Sprite characterSprite = Resources.Load<Sprite>(imagePaths[imageID].GetPath(accidyGender));
-            int yOffset = (accidyGender == 0) ? -650 : -844;
+            int yOffset = (accidyGender == 0) ? -195 : -150;
 
+            characterImage.color = new Color(1, 1, 1, 1);
             characterImage.sprite = characterSprite;
+            characterImage.SetNativeSize();
             characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
             characterImage.gameObject.SetActive(true);
         }
