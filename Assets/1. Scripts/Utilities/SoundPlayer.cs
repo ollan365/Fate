@@ -37,8 +37,9 @@ public class SoundPlayer : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             UISoundPlay(SoundType.ETC, Sound_Click);
     }
-    public void ChangeBGM(DialogueType dialogueType)
+    public void ChangeBGM(DialogueType dialogueType, bool stopBGM)
     {
+        if (stopBGM) { bgmPlayer.Stop(); return; }
         // ¹è°æ À½¾ÇÀ» ¹Ù²Û´Ù
         bgmPlayer.clip = bgmClip[dialogueType.ToInt()];
         bgmPlayer.Play();

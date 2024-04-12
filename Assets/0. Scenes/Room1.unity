@@ -3796,6 +3796,7 @@ GameObject:
   - component: {fileID: 410188223}
   - component: {fileID: 410188222}
   - component: {fileID: 410188221}
+  - component: {fileID: 410188224}
   m_Layer: 5
   m_Name: "Goto Follow Button (\uC2DC\uC5F0\uC6A9)"
   m_TagString: Untagged
@@ -3866,7 +3867,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 410188222}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 410188224}
+        m_TargetAssemblyTypeName: GoToFollow, Assembly-CSharp
+        m_MethodName: GoFollowScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &410188222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3905,6 +3918,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410188219}
   m_CullTransparentMesh: 1
+--- !u!114 &410188224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410188219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31aaf4873b2b0d54d88aa05e6b65abad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &412036797
 GameObject:
   m_ObjectHideFlags: 0
@@ -8201,6 +8226,7 @@ MonoBehaviour:
   exitButton: {fileID: 1804974304}
   imageAndLockPanelManager: {fileID: 370811677}
   isInvestigating: 0
+  tutorialManager: {fileID: 1180950097}
 --- !u!4 &1149435151
 Transform:
   m_ObjectHideFlags: 0

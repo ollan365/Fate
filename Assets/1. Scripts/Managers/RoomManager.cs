@@ -36,6 +36,7 @@ public class RoomManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            SoundPlayer.Instance.ChangeBGM(Constants.DialogueType.ROOM, false);
         }
         else
         {

@@ -21,13 +21,16 @@ public class FollowManager : MonoBehaviour
     public GameObject eventButtonPrefab;
 
     // 상태 변수
-    private bool onMove; // 원래 이동 상태였는지
+    [SerializeField] private bool onMove; // 원래 이동 상태였는지
     private bool canClick = true; // 현재 오브젝트를 누를 수 있는지
     public bool CanClick { get => canClick; }
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        // 원래는 bgm
+        SoundPlayer.Instance.ChangeBGM(DialogueType.FOLLOW, true);
 
         MemoManager.Instance.isFollow = true;
         MemoManager.Instance.MemoButtonAlphaChange();
@@ -46,8 +49,8 @@ public class FollowManager : MonoBehaviour
     }
     public void EndScript(bool changeCount)
     {
-        if(changeCount) miniGame.ClickCount++;
-        if (miniGame.ClickCount % 10 == 0) onMove = false; // 미니 게임이 끝나고 오면 움직이지 않도록 만든다
+        if (changeCount) miniGame.ClickCount++;
+        if (miniGame.ClickCount % 5 == 0) onMove = false; // 미니 게임이 끝나고 오면 움직이지 않도록 만든다
 
         if (angryCanvas.activeSelf) EndAngryDialogue();
 
