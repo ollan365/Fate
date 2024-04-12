@@ -13,8 +13,27 @@ public class RoomManager : MonoBehaviour
     [Header("시점들")][SerializeField] private List<GameObject> sides;  // 시점들
     private GameObject currentView;  // 현재 뷰
     private int currentSideIndex = 0;  // 현재 시점 인덱스
-    
+
+    // [0] 시점 1번
+    // [2] 시점 2번
+    // [1] 시점 3번
+
     [Header("확대 화면들")][SerializeField] private List<GameObject> zoomViews;  // 확대 화면들
+    
+    // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
+    public bool isInvestigating = false;
+    public bool isZoomed = false;
+
+    private List<GameObject> screenObjects = new List<GameObject>();
+
+    //// 다이얼로그 매니저의 isDialogueActive가 true면 다른 버튼들 비활성화시킴
+    //private Button[] otherButtons;
+
+    // 버튼 클릭 막는 투명 패널
+    [Header("블록 패널")]
+    [SerializeField] private GameObject BlockingPanel1;
+    [SerializeField] private GameObject BlockingPanel2;
+    [SerializeField] private GameObject BlockingPanel3;
 
     // 이동 버튼
     [Header("이동 버튼들")] 
@@ -30,6 +49,24 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private bool isInvestigating = false;
     [SerializeField] private bool isZoomed = false;
     
+    [Header("이벤트 오브젝트 확대 이미지")]
+    [SerializeField] private GameObject amuletImage;
+    [SerializeField] private GameObject carpetPaperImage;
+    [SerializeField] private GameObject clockImage;
+    [SerializeField] private GameObject keysImage;
+    [SerializeField] private GameObject knifeImage;
+    [SerializeField] private GameObject posterImage;
+    [SerializeField] private GameObject liquorImage;
+
+    // 튜토리얼 관련..
+    [Header("튜토리얼 관련")]
+    [SerializeField] private GameObject tutorialLogic;
+    [SerializeField] private GameObject chairButton;
+    [SerializeField] private GameObject carpetButton;
+    // 튜토리얼 때는 메모 버튼 볼 수 없게 함 
+    [SerializeField] private GameObject memoButton;
+
+
     void Awake()
     {
         if (Instance == null)
@@ -62,25 +99,153 @@ public class RoomManager : MonoBehaviour
         currentView = sides[0];
         SetCurrentSide(0);
 
+        //// "Controlled Button" 태그를 가진 모든 버튼들을 찾아서 otherButtons에 넣음.
+        //// Side1의 버튼들만 들어간 상태..
+        //otherButtons = GameObject.FindGameObjectsWithTag("Controlled Button").Select(g => g.GetComponent<Button>()).ToArray();
+
         DialogueManager.Instance.StartDialogue("Prologue_015");
+    }
+
+    // A키와 D키로 시점 이동
+    void Update()
+    {
+        // 조사/다이얼로그 출력을 안 하고 있을 때만 이동 버튼이 보임.
+        if (isInvestigating || DialogueManager.Instance.isDialogueActive)
+            SetMoveButton(false);
+        else
+            SetMoveButton(true);
+    }
+
+    // 왼쪽 이동 버튼
+    public void MoveLeftButton()
+    {
+        if (isInvestigating || DialogueManager.Instance.isDialogueActive) return;
+        else
+        {
+            int newSideIndex = (currentSideIndex - 1 + sides.Count) % sides.Count;
+            SetCurrentSide(newSideIndex);
+
+            // 튜토리얼 관련
+            if(tutorialLogic.activeSelf)
+                tutorialLogic.GetComponent<TutorialLogic>().Tutorial_MoveLeft();
+        }
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
     {
         if (leftOrRight != -1 && leftOrRight != 1)
         {
-            Debug.Log("Value of leftOrRight must be -1 or 1!");
-            return;
-        }
+            int newSideIndex = (currentSideIndex + 1) % sides.Count;
+            SetCurrentSide(newSideIndex);
 
-        int newSideIndex = (currentSideIndex + sides.Count + leftOrRight) % sides.Count;
-        SetCurrentSide(newSideIndex);
+            // 튜토리얼 관련
+            if (tutorialLogic.activeSelf)
+                tutorialLogic.GetComponent<TutorialLogic>().Tutorial_MoveRight();
+        }
+    }
+
+    // 이동 버튼들이 조사/다이얼로그 출력 시에는 화면 상에서 보이지 않게 함
+    public void SetMoveButton(bool isTrue)
+    {
+        //moveButtonLeft.gameObject.SetActive(isTrue);
+        //moveButtonRight.gameObject.SetActive(isTrue);
+
+        if ((isInvestigating || DialogueManager.Instance.isDialogueActive)&&!isTrue)
+        {
+            moveButtonLeft.gameObject.SetActive(false);
+            moveButtonRight.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (isTrue)
+            {
+                // 사이드 1번에선 양쪽 버튼 다 보임
+                if (currentSideIndex == 0)
+                {
+                    moveButtonLeft.gameObject.SetActive(true);
+                    moveButtonRight.gameObject.SetActive(true);
+                }
+                else if (currentSideIndex == 1)  // 사이드 3번에선 왼쪽 버튼만 보임
+                {
+                    moveButtonLeft.gameObject.SetActive(true);
+                    moveButtonRight.gameObject.SetActive(false);
+                }
+                else if (currentSideIndex == 2)   // 사이드 2번에선 오른쪽 버튼만 보임
+                {
+                    moveButtonLeft.gameObject.SetActive(false);
+                    moveButtonRight.gameObject.SetActive(true);
+                }
+                else
+                {
+                    moveButtonLeft.gameObject.SetActive(false);
+                    moveButtonRight.gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+
+    // ------------------------ 튜토리얼 관련 ------------------------
+    // 튜토리얼1 : 이벤트버튼들 제외하고 이동 버튼들만 상호작용가능
+    public void Tutorial_SetMoveButtonInteractable(bool isTrue)
+    {
+        moveButtonLeft.interactable = isTrue;
+        moveButtonRight.interactable = isTrue;
+    }
+
+    // 튜토리얼2 : 의자, 카펫 버튼만 클릭 가능
+    // 그리고 튜토리얼 끝나면 다시 BlockingPanel1을 맨 앞으로 올리기
+    public void Tutorial2_ChairAndCarpetInteractable(bool isTrue)
+    {
+        //carpetButton.interactable = isTrue;
+        //chairButton.interactable = isTrue;
+
+        if (isTrue)
+        {
+            carpetButton.GetComponent<RectTransform>().SetAsLastSibling();
+            chairButton.GetComponent<RectTransform>().SetAsLastSibling();
+        }
+        else
+        {
+            BlockingPanel1.GetComponent<RectTransform>().SetAsLastSibling();
+        }
+    }
+
+    public void SetTutorialLogic(bool isTrue)
+    {
+        tutorialLogic.SetActive(isTrue);
+    }
+    // 메모버튼 튜토리얼 중에는 보이지 않게 함 온오프 함수
+    public void SetMemoButton(bool isTrue)
+    {
+        memoButton.SetActive(isTrue);
+    }
+
+    // ---------------------------------------------------------------
+
+    public void SetBlockingPanel(bool isTrue)
+    {
+        //foreach (Button button in otherButtons)
+        //{
+        //    button.interactable = isTrue;
+        //    //Debug.Log(button.name+ " "+button.interactable);
+        //}
+
+        // 투명한 패널 켜기
+        BlockingPanel1.gameObject.SetActive(isTrue);
+        BlockingPanel2.gameObject.SetActive(isTrue);
+        BlockingPanel3.gameObject.SetActive(isTrue);
     }
 
     public void OnExitButtonClick()
     {
         if (isInvestigating)
         {
+            // 지은님 코드
+            DeactivateObjects();
+            SetIsInvestigating(false);
+            SetBlockingPanel(false);
+            
+            // 성환님 코드
             imageAndLockPanelManager.OnExitButtonClick();
             
             SetButtons();
@@ -95,12 +260,36 @@ public class RoomManager : MonoBehaviour
             
             SetButtons();
         }
+
+        if (!isInvestigating && !isZoomed)
+        {
+            exitButton.gameObject.SetActive(false);
+
+            SetBlockingPanel(false);
+            SetMoveButton(true);
+        }
+    }
+
+    private void DeactivateObjects()
+    {
+        foreach (GameObject obj in screenObjects)
+        {
+            obj.SetActive(false);
+        }
+
+        //ScreenObjects.Clear();
+    }
+
+    public void AddScreenObjects(GameObject obj)
+    {
+        if (!screenObjects.Contains(obj)) screenObjects.Add(obj);
     }
 
     // ######################################## setters ########################################
     public void SetIsInvestigating(bool isTrue)
     {
         isInvestigating = isTrue;
+        GameManager.Instance.SetVariable("IsInvestigating", isTrue);
     }
     
     public void SetIsZoomed(bool isTrue)
@@ -113,6 +302,18 @@ public class RoomManager : MonoBehaviour
     {
         SetCurrentView(sides[newSideIndex]);
         currentSideIndex = newSideIndex;
+
+        GameManager.Instance.SetVariable("RoomCurrentSideIndex", currentSideIndex);
+
+        //otherButtons = GameObject.FindGameObjectsWithTag("Controlled Button")
+        //.Select(g =>
+        //{
+        //    Button button = g.GetComponent<Button>();
+        //    // 버튼 이름에 currentSideIndex 추가
+        //    button.name += "_" + currentSideIndex.ToString();
+        //    return button;
+        //})
+        //.ToArray();
     }
     
     // 뷰 전환
@@ -128,12 +329,52 @@ public class RoomManager : MonoBehaviour
     {
         exitButton.gameObject.SetActive(isTrue);
     }
-    
-    // 이동 버튼들이 조사/다이얼로그 출력 시에는 화면 상에서 보이지 않게 함
-    private void SetMoveButtons(bool isTrue)
+
+    // EventObjectPanel 켜서 해당 오브젝트 확대 UI 보여줌
+    // 이 상태에는 나가기 버튼 제외 다른 오브젝트 버튼들,이동 버튼 클릭X
+    public void SetEventObjectPanel(bool isTrue, string objName)
     {
-        moveButtonLeft.gameObject.SetActive(isTrue);
-        moveButtonRight.gameObject.SetActive(isTrue);
+        eventObjectPanel.SetActive(isTrue);
+        if (eventObjectPanel.activeSelf)
+        {
+            AddScreenObjects(eventObjectPanel);
+            SetExitButton(true);
+            SetBlockingPanel(true);
+            SetMoveButton(false);
+
+            SetIsInvestigating(true);
+        }
+        switch (objName)
+        {
+            case "Pillow":
+                amuletImage.SetActive(isTrue);
+                AddScreenObjects(amuletImage);
+                break;
+            case "Carpet_Paper":
+                carpetPaperImage.SetActive(isTrue);
+                AddScreenObjects(carpetPaperImage);
+                break;
+            case "clock1":
+                clockImage.SetActive(isTrue);
+                AddScreenObjects(clockImage);
+                break;
+            case "ClockKeys":
+                keysImage.SetActive(isTrue);
+                AddScreenObjects(keysImage);
+                break;
+            case "Knife":
+                knifeImage.SetActive(isTrue);
+                AddScreenObjects(knifeImage);
+                break;
+            case "Poster":
+                posterImage.SetActive(isTrue);
+                AddScreenObjects(posterImage);
+                break;
+            case "Liquor":
+                liquorImage.SetActive(isTrue);
+                AddScreenObjects(liquorImage);
+                break;
+        }
     }
 
     public void SetButtons()
