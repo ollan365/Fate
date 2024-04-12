@@ -28,8 +28,6 @@ public class Clock : EventObject, IResultExecutable
     private void ActivateClockPuzzle()
     {
         clockPuzzle.SetActive(true);
-        RoomManager.Instance.AddScreenObjects(clockPuzzle);
-        RoomManager.Instance.isInvestigating = true;
     }
 
 }

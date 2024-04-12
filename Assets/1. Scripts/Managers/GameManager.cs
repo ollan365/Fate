@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
 
         // 카펫
         variables["CarpetClick"] = 0;
+        variables["CarpetClosed"] = true;
 
         // 카펫 아래 종이
         variables["PaperClick"] = 0;

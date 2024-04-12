@@ -5,42 +5,19 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class ClockPuzzle : EventObject, IResultExecutable
+public class ClockPuzzle : EventObject
 {
     [SerializeField]
     private GameObject hourHand, minuteHand;
     [SerializeField]
     private GameObject keys;
 
-    private void Awake()
-    {
-        ResultManager.Instance.RegisterExecutable("ClockPuzzle", this);
-    }
-    
-    public void ExecuteAction()
-    {
-        ShowKey();
-    }
-
-    // 시계 열리고 열쇠 획득
-    private void ShowKey()
-    {
-        RoomManager.Instance.SetEventObjectPanel(true, "ClockKeys");
-        //keys.SetActive(true);
-        //RoomManager.Instance.AddScreenObjects(keys);
-        RoomManager.Instance.isInvestigating = true;
-    }
-
     public void TryPassword()
     {
-        // Debug.Log("TryPassword() called");
         float currentHourAngle = hourHand.transform.rotation.eulerAngles.z;
         float currentMinuteAngle = minuteHand.transform.rotation.eulerAngles.z;
         StartCoroutine(CompareClockHands(currentHourAngle, currentMinuteAngle));
     }
-
-    // private float[] correctAngles = { 210f, 180f };     //오후 5시 30분
-    // private float[] correctAngles = { 180f, 180f };   //오후 6시 30분
 
     IEnumerator CompareClockHands(float hourAngle, float minuteAngle)
     {
@@ -48,12 +25,13 @@ public class ClockPuzzle : EventObject, IResultExecutable
         
         float[] correctAngles = (float[])GameManager.Instance.GetVariable("ClockPassword");
 
-        //Debug.Log("시계정답 : " + (float[])GameManager.Instance.GetVariable("ClockPassword"));
-        //Debug.Log("시계정답 : "+correctAngles[0]+" "+ correctAngles[1]);
-
         float correctHourAngle = correctAngles[0], correctMinuteAngle = correctAngles[1];
         bool isTimeCorrect = Mathf.Approximately(correctHourAngle, hourAngle) &&
                              Mathf.Approximately(correctMinuteAngle, minuteAngle);
+        
+        // # - # - # - # - # 디버깅용 # - # - # - # - #
+        // isTimeCorrect = true;
+        
         GameManager.Instance.SetVariable("ClockTimeCorrect", isTimeCorrect);
         
         OnMouseDown();

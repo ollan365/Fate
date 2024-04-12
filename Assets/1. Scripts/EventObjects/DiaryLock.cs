@@ -28,8 +28,6 @@ public class DiaryLock : EventObject, IResultExecutable
     private void ShowDiaryContent()
     {
         diaryContent.SetActive(true);
-        RoomManager.Instance.AddScreenObjects(diaryContent);
-        RoomManager.Instance.isInvestigating = true;
     }
 
     public void InputNumber(string buttonInput)
