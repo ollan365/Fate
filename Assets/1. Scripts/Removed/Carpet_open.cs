@@ -15,8 +15,7 @@ public class Carpet_open : EventObject, IResultExecutable
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        if ((bool)GameManager.Instance.GetVariable("ChairMoved"))
-            GameManager.Instance.IncrementVariable("CarpetClick");
+        if ((bool)GameManager.Instance.GetVariable("ChairMoved")) GameManager.Instance.IncrementVariable("CarpetClick");
     }
 
     public void ExecuteAction()
@@ -24,7 +23,7 @@ public class Carpet_open : EventObject, IResultExecutable
         CarpetClose();
     }
 
-    [Header("´ÝÈù Ä«Æê ¹öÆ°")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½Æ°")]
     [SerializeField] private GameObject carpetClosed;
 
     private void CarpetClose()
@@ -34,9 +33,5 @@ public class Carpet_open : EventObject, IResultExecutable
 
         // Ä«ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
         CarpetPaper.SetActive(false);
-
-        //// Ä«Æê ´ÝÀ¸¸é ´Ù¸¥ ¹öÆ°µé ´Ù½Ã È°¼ºÈ­
-        //RoomManager.Instance.ControllEventButtons(true);
-        //RoomManager.Instance.SetIsInvestigating(false);
     }
 }

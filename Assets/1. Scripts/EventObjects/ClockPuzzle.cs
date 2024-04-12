@@ -7,31 +7,8 @@ using UnityEngine.UI;
 
 public class ClockPuzzle : EventObject
 {
-    [SerializeField]
-    private GameObject hourHand;
-    [SerializeField]
-    private GameObject minuteHand;
-    [SerializeField]
-    private GameObject keys;
-
-    private void Awake()
-    {
-        // ResultManager.Instance.RegisterExecutable("ClockPuzzle", this);
-    }
-    
-    public void ExecuteAction()
-    {
-        ShowKey();
-    }
-
-    // 시계 열리고 열쇠 획득
-    private void ShowKey()
-    {
-        RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
-        //keys.SetActive(true);
-        //RoomManager.Instance.AddScreenObjects(keys);
-        RoomManager.Instance.isInvestigating = true;
-    }
+    [SerializeField] private GameObject hourHand;
+    [SerializeField] private GameObject minuteHand;
 
     public void TryPassword(float hourTime)
     {

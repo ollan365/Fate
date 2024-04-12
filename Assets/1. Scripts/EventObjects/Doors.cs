@@ -17,7 +17,8 @@ public class Doors : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
-        if (DialogueManager.Instance.isDialogueActive) return;
+        bool isBusy = GameManager.Instance.GetIsBusy();
+        if (isBusy) return;
         
         base.OnMouseDown();
         
