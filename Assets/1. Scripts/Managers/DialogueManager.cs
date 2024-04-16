@@ -184,8 +184,6 @@ public class DialogueManager : MonoBehaviour
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
 
-        SoundPlayer.Instance.UISoundPlay_LOOP(Sound_Typing, true);
-
         // <color=red> 같은 글씨 효과들은 출력되지 않도록 변수 설정
         bool isEffect = false;
         string effectText = "";
@@ -211,9 +209,9 @@ public class DialogueManager : MonoBehaviour
             }
 
             scriptText[dialogueType.ToInt()].text += letter;
+            SoundPlayer.Instance.UISoundPlay(SoundType.ETC, Sound_Typing); // 타자 소리 한번씩만
             yield return new WaitForSeconds(typeSpeed);
         }
-        SoundPlayer.Instance.UISoundPlay_LOOP(Sound_Typing, false);
         isTyping = false;
         teddyBearIcon.SetActive(true);
     }
@@ -235,8 +233,6 @@ public class DialogueManager : MonoBehaviour
     
     private void CompleteSentence()
     {
-        SoundPlayer.Instance.UISoundPlay_LOOP(Sound_Typing, false);
-
         StopAllCoroutines();
         scriptText[dialogueType.ToInt()].text = fullSentence;
         isTyping = false;
