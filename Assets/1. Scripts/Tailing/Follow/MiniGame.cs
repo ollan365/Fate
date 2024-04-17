@@ -52,6 +52,7 @@ public class MiniGame : MonoBehaviour
             accidyBackSprite = accidyBoyBack;
         }
         accidy.sprite = accidyFrontSprite;
+        accidy.SetNativeSize();
     }
     private IEnumerator StartMiniGame()
     {
@@ -81,13 +82,14 @@ public class MiniGame : MonoBehaviour
             {
                 heartCount--;
 
-                if (heartCount < 0) isGameOver = true;
+                if (heartCount <= 0) isGameOver = true;
                 else // 체력을 1 깎고 다시 벽쪽으로 돌아간다
                 {
-                    fateSit.GetComponent<Image>().color = Color.red;
                     fateMove = false;
-                    heartImages[heartCount].SetActive(false);
                     StartCoroutine(FateMove(false));
+
+                    fateSit.GetComponent<Image>().color = Color.red;
+                    heartImages[heartCount].SetActive(false);
 
                     yield return new WaitForSeconds(0.2f);
                     fateSit.GetComponent<Image>().color = new Color(1, 1, 1, 0);
@@ -161,9 +163,9 @@ public class MiniGame : MonoBehaviour
         float difficulty = 0;
         switch(ClickCount / 10) // 이미지 바뀌는 시간을 고려하여 0.5f씩 줄임
         {
-            case 1: difficulty = 2.5f; break;
-            case 2: difficulty = 1.5f; break;
-            default: difficulty = 0.5f; break;
+            case 1: difficulty = 3f; break;
+            case 2: difficulty = 2f; break;
+            default: difficulty = 1f; break;
         }
 
         Animator accidyAnimator = accidy.GetComponent<Animator>();
@@ -185,6 +187,7 @@ public class MiniGame : MonoBehaviour
                 StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
                 yield return new WaitForSeconds(0.2f);
                 accidy.sprite = accidyBackSprite;
+                accidy.SetNativeSize();
                 yield return new WaitForSeconds(0.2f);
 
                 // 우연이 뒤를 돌아본 상태 (1초 간 유지)
@@ -196,6 +199,7 @@ public class MiniGame : MonoBehaviour
                 StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
                 yield return new WaitForSeconds(0.2f);
                 accidy.sprite = accidyFrontSprite;
+                accidy.SetNativeSize();
                 yield return new WaitForSeconds(0.2f);
 
                 // 변수들 초기화

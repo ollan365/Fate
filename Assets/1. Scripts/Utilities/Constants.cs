@@ -30,11 +30,11 @@ public static class Constants
 
     // 4. 루프 (반복 되어야 하는 것)
     public const int
-        Sound_Typing = 0, Sound_FootStep = 1;
+        Sound_FootStep = 0;
 
     // 5. 그 외
     public const int
-        Sound_Click = 0, Sound_Correct = 1, Sound_Wrong = 2;
+        Sound_Typing = 0, Sound_Click = 1, Sound_Correct = 2, Sound_Wrong = 3;
         
 
     // 시계 부분

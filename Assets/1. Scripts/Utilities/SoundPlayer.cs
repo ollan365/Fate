@@ -7,7 +7,8 @@ public class SoundPlayer : MonoBehaviour
 
     [Header("Audio Source")]
     [SerializeField] private AudioSource bgmPlayer; // 배경음 플레이어
-    [SerializeField] private AudioSource[] UISoundLoopPlayer; // UI 효과음 플레이어들 (반복)
+    [SerializeField] private AudioSource typingSoundPlayer; // 타이핑 효과음 플레이어 (반복)
+    [SerializeField] private AudioSource UISoundLoopPlayer; // UI 효과음 플레이어 (반복)
     [SerializeField] private AudioSource[] UISoundPlayer; // UI 효과음 플레이어들
 
     [Header("AudioClip")]
@@ -37,33 +38,25 @@ public class SoundPlayer : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             UISoundPlay(SoundType.ETC, Sound_Click);
     }
-    public void ChangeBGM(DialogueType dialogueType, bool stopBGM)
+    public void ChangeBGM(DialogueType dialogueType)
     {
-        if (stopBGM) { bgmPlayer.Stop(); return; }
         // 배경 음악을 바꾼다
         bgmPlayer.clip = bgmClip[dialogueType.ToInt()];
         bgmPlayer.Play();
     }
     public void UISoundPlay_LOOP(int num, bool play)
     {
-        if (num == 0)
+        if (play)
         {
-            if (play) UISoundLoopPlayer[0].Play();
-            else UISoundLoopPlayer[0].Stop();
-        }
-        else
-        {
-            if (play)
+            switch (num)
             {
-                switch (num)
-                {
-                    case Sound_FootStep: num = Random.Range(num, num + 6); break;
-                }
-                UISoundLoopPlayer[1].clip = UISoundClip_LOOP[num];
-                UISoundLoopPlayer[1].Play();
+                case Sound_FootStep: num = Random.Range(num, num + 6); break;
             }
-            else UISoundLoopPlayer[1].Stop();
+            UISoundLoopPlayer.clip = UISoundClip_LOOP[num];
+            UISoundLoopPlayer.Play();
         }
+        else UISoundLoopPlayer.Stop();
+        
         return;
     }
     public void UISoundPlay(SoundType type, int num)
@@ -87,6 +80,11 @@ public class SoundPlayer : MonoBehaviour
                 UISoundPlayer[UISoundPlayerCursor].clip = UISoundClip_FOLLOW_OBJECT[num];
                 break;
             case SoundType.ETC:
+                if(num == Sound_Typing)
+                {
+                    typingSoundPlayer.Play();
+                    return;
+                }
                 UISoundPlayer[UISoundPlayerCursor].clip = UISoundClip_ETC[num];
                 break;
             default: return;

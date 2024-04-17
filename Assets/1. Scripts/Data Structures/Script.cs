@@ -30,18 +30,29 @@ public class Script
     }
     string TextFormat(string text)
     {
-        // 검색하여 특정 텍스트를 찾아 붉은색으로 변경
-        int startIndex = text.IndexOf('[');
-        int endIndex = text.IndexOf(']');
-        if (startIndex != -1 && endIndex != -1 && endIndex > startIndex)
+        string newText = text;
+        bool textEffect = false;
+        int startIndex = -1, endIndex = -1;
+        for (int i = 0; i < text.Length; i++)
         {
-            string newText = text.Substring(0, startIndex);
-            newText += "<color=red>";
-            newText += text.Substring(startIndex + 1, endIndex - startIndex - 1);
-            newText += "</color>";
-            newText += text.Substring(endIndex + 1);
-            return newText;
+            if(text[i] == '[')
+            {
+                textEffect = true;
+                startIndex = i;
+            }
+            if(textEffect && text[i] == ']')
+            {
+                endIndex = i;
+
+                newText = text.Substring(0, startIndex);
+                newText += "<color=red>";
+                newText += text.Substring(startIndex + 1, endIndex - startIndex - 1);
+                newText += "</color>";
+                newText += text.Substring(endIndex + 1);
+
+                text = newText;
+            }
         }
-        return text;
+        return newText;
     }
 }

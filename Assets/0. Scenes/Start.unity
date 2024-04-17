@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 42254435}
   - component: {fileID: 42254437}
   - component: {fileID: 42254436}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -945,6 +945,138 @@ MonoBehaviour:
   fadeEffectImage: {fileID: 1295699510}
   room1Side1BackgroundSprite: {fileID: 21300000, guid: f615a5a79bd794c58a59644ed71ec49f, type: 3}
   testText: {fileID: 0}
+--- !u!1 &95769146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 95769147}
+  - component: {fileID: 95769150}
+  - component: {fileID: 95769151}
+  - component: {fileID: 95769148}
+  m_Layer: 6
+  m_Name: Next Dialogue Button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &95769147
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95769146}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1107064907}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &95769148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95769146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1194422742}
+        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
+        m_MethodName: OnDialoguePanelClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!222 &95769150
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95769146}
+  m_CullTransparentMesh: 1
+--- !u!114 &95769151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95769146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &104333522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1897,7 +2029,6 @@ GameObject:
   - component: {fileID: 205626223}
   - component: {fileID: 205626226}
   - component: {fileID: 205626224}
-  - component: {fileID: 205626225}
   - component: {fileID: 205626228}
   - component: {fileID: 205626227}
   m_Layer: 6
@@ -1958,62 +2089,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &205626225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205626222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 0
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 688401517}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1194422742}
-        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: OnDialoguePanelClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!222 &205626226
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3308,6 +3383,111 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 340644776}
   m_CullTransparentMesh: 1
+--- !u!1 &348608932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 348608936}
+  - component: {fileID: 348608933}
+  - component: {fileID: 348608935}
+  - component: {fileID: 348608934}
+  m_Layer: 0
+  m_Name: Memo Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!20 &348608933
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348608932}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 4
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 1
+  orthographic size: 10
+  m_Depth: 2
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!114 &348608934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348608932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8403d5c6b284809a95035e98d0e827, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!81 &348608935
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348608932}
+  m_Enabled: 0
+--- !u!4 &348608936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348608932}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &358499119
 GameObject:
   m_ObjectHideFlags: 0
@@ -3948,7 +4128,7 @@ GameObject:
   - component: {fileID: 494351232}
   - component: {fileID: 494351234}
   - component: {fileID: 494351233}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4158,7 +4338,7 @@ GameObject:
   - component: {fileID: 513884956}
   - component: {fileID: 513884955}
   - component: {fileID: 513884954}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5260,7 +5440,7 @@ GameObject:
   - component: {fileID: 616627787}
   - component: {fileID: 616627786}
   - component: {fileID: 616627785}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5350,7 +5530,7 @@ GameObject:
   - component: {fileID: 642379755}
   - component: {fileID: 642379754}
   - component: {fileID: 642379753}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Memo Page
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6380,7 +6560,7 @@ GameObject:
   - component: {fileID: 768073961}
   - component: {fileID: 768073960}
   - component: {fileID: 768073959}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Memo Button
   m_TagString: Controlled Button
   m_Icon: {fileID: 0}
@@ -7380,6 +7560,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 205626223}
+  - {fileID: 95769147}
   m_Father: {fileID: 1194422746}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7398,7 +7579,7 @@ GameObject:
   - component: {fileID: 1134198339}
   - component: {fileID: 1134198341}
   - component: {fileID: 1134198340}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7475,7 +7656,7 @@ GameObject:
   - component: {fileID: 1136146024}
   - component: {fileID: 1136146026}
   - component: {fileID: 1136146025}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8317,7 +8498,7 @@ GameObject:
   - component: {fileID: 1212860652}
   - component: {fileID: 1212860651}
   - component: {fileID: 1212860650}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Scrollbar Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9714,7 +9895,7 @@ GameObject:
   - component: {fileID: 1324410588}
   - component: {fileID: 1324410587}
   - component: {fileID: 1324410586}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Scrollbar Horizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10107,7 +10288,7 @@ GameObject:
   - component: {fileID: 1348696679}
   - component: {fileID: 1348696681}
   - component: {fileID: 1348696680}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11456,7 +11637,7 @@ GameObject:
   - component: {fileID: 1479727054}
   - component: {fileID: 1479727056}
   - component: {fileID: 1479727055}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12034,7 +12215,7 @@ GameObject:
   - component: {fileID: 1602302242}
   - component: {fileID: 1602302241}
   - component: {fileID: 1602302240}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Scrollbar Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12878,7 +13059,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1735399845}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12935,15 +13116,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmPlayer: {fileID: 1000066264}
-  UISoundLoopPlayer:
-  - {fileID: 2051272036}
-  - {fileID: 2066602602}
+  typingSoundPlayer: {fileID: 2051272036}
+  UISoundLoopPlayer: {fileID: 2066602602}
   UISoundPlayer:
   - {fileID: 2069385471}
   - {fileID: 1974877536}
   - {fileID: 1544168346}
   bgmClip:
   - {fileID: 8300000, guid: 0941a1b579567834ca64f62aed197cc5, type: 3}
+  - {fileID: 8300000, guid: a0dfdd96b64d1204e9fe691989dfbb89, type: 3}
   UISoundClip_ROOM_OBJECT:
   - {fileID: 8300000, guid: aabb96edea111ee43916f5826c697727, type: 3}
   - {fileID: 8300000, guid: d734c8ce17b9b134a82286aa6a4b07ca, type: 3}
@@ -12965,7 +13146,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 420a6e4e68349364fbd945209076ef05, type: 3}
   - {fileID: 8300000, guid: 65e50203271de5d48b3101ff343a8f98, type: 3}
   UISoundClip_LOOP:
-  - {fileID: 8300000, guid: 2ff4d510dbc822b48ae4d8a5194d6610, type: 3}
   - {fileID: 8300000, guid: 149bdb6d82ff57c4e8ea4cc13deef873, type: 3}
   - {fileID: 8300000, guid: ed81326cd7204f4469c9e8f8f947c3cc, type: 3}
   - {fileID: 8300000, guid: ca7ba97f55b1e9b4297aea6014130d55, type: 3}
@@ -12973,6 +13153,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6a9962fb0cfc8d94e8153475fe61c341, type: 3}
   - {fileID: 8300000, guid: f573d3e40529bf04c9eb220b7567032a, type: 3}
   UISoundClip_ETC:
+  - {fileID: 8300000, guid: 2ff4d510dbc822b48ae4d8a5194d6610, type: 3}
   - {fileID: 8300000, guid: 4571c1add3cffe943ab75672eddaf9b8, type: 3}
   - {fileID: 8300000, guid: 95e4d5547b752e84fa2a795679348312, type: 3}
   - {fileID: 8300000, guid: d82e0a3268067e34a95348bc2ea8010d, type: 3}
@@ -13237,7 +13418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1801134339}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13869,7 +14050,7 @@ GameObject:
   - component: {fileID: 1855674858}
   - component: {fileID: 1855674857}
   - component: {fileID: 1855674856}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Memo Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13992,7 +14173,7 @@ GameObject:
   - component: {fileID: 1888889134}
   - component: {fileID: 1888889133}
   - component: {fileID: 1888889132}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Scrollbar Horizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14199,7 +14380,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1927062958}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15012,7 +15193,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -15359,7 +15540,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2089917306}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15525,7 +15706,7 @@ GameObject:
   - component: {fileID: 2104244531}
   - component: {fileID: 2104244530}
   - component: {fileID: 2104244529}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Memo Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15562,11 +15743,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1024
 --- !u!114 &2104244531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15579,12 +15760,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -15599,15 +15780,15 @@ Canvas:
   m_GameObject: {fileID: 2104244528}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 348608933}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -15854,6 +16035,7 @@ SceneRoots:
   - {fileID: 1237131794}
   - {fileID: 1194422746}
   - {fileID: 1809334685}
+  - {fileID: 348608936}
   - {fileID: 2104244533}
   - {fileID: 1315134038}
   - {fileID: 1745158356}
