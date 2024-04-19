@@ -1,15 +1,17 @@
 public static class Constants
 {
     // 대화창의 종류
-    public enum DialogueType { ROOM, FOLLOW, FOLLOW_ANGRY }
+    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_ANGRY }
     public static int ToInt(this DialogueType dialogueType)
     {
         // 다이얼로그 타입에 따라 다른 숫자 반환
         switch (dialogueType)
         {
             case DialogueType.ROOM: return 0;
-            case DialogueType.FOLLOW: return 1;
-            case DialogueType.FOLLOW_ANGRY: return 2;
+            case DialogueType.ROOM_THINKING: return 1;
+            case DialogueType.FOLLOW: return 2;
+            case DialogueType.FOLLOW_THINKING: return 3;
+            case DialogueType.FOLLOW_ANGRY: return 4;
             default: return 0;
         }
     }

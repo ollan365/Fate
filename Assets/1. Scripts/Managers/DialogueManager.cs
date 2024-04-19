@@ -18,9 +18,9 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI[] scriptText;
     public Image characterImage;
     public GameObject[] dialoguePanel;
-    public Transform choicesContainer;
+    public Transform[] choicesContainer;
     public GameObject choicePrefab;
-    public GameObject teddyBearIcon;
+    public GameObject[] teddyBearIcon;
     
     // 타자 효과 속도
     [Header("Typing Speed")]
@@ -74,10 +74,6 @@ public class DialogueManager : MonoBehaviour
 
         isDialogueActive = true;
         
-        // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
-        foreach (GameObject canvas in dialogueCanvas) canvas.SetActive(false);
-        dialogueCanvas[dialogueType.ToInt()].SetActive(true);
-
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
@@ -88,11 +84,25 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayDialogueLine(DialogueLine dialogueLine)
     {
-        foreach (Transform child in choicesContainer)
+        foreach (Transform child in choicesContainer[dialogueType.ToInt()])
         {
             Destroy(child.gameObject);
         }
-        
+
+        // 화자가 DialogueC_004인지 아닌지로 속마음 UI 또는 그냥 UI로 대화창 변경
+        if (dialogueType == DialogueType.ROOM && dialogueLine.SpeakerID == "DialogueC_004")
+            dialogueType = DialogueType.ROOM_THINKING;
+        else if (dialogueType == DialogueType.FOLLOW && dialogueLine.SpeakerID == "DialogueC_004")
+            dialogueType = DialogueType.FOLLOW_THINKING;
+        else if (dialogueType == DialogueType.ROOM_THINKING && dialogueLine.SpeakerID != "DialogueC_004")
+            dialogueType = DialogueType.ROOM;
+        else if (dialogueType == DialogueType.FOLLOW_THINKING && dialogueLine.SpeakerID != "DialogueC_004")
+            dialogueType = DialogueType.FOLLOW;
+
+        // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
+        foreach (GameObject canvas in dialogueCanvas) canvas.SetActive(false);
+        dialogueCanvas[dialogueType.ToInt()].SetActive(true);
+
         speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
 
         // 타자 효과 적용
@@ -139,7 +149,8 @@ public class DialogueManager : MonoBehaviour
         }
 
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
-        if (dialogueType == DialogueType.FOLLOW) FollowManager.Instance.EndScript(true);
+        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING)
+            FollowManager.Instance.EndScript(true);
         
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
@@ -180,7 +191,7 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeSentence(string sentence)
     {
-        teddyBearIcon.SetActive(false);
+        teddyBearIcon[dialogueType.ToInt()].SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
 
@@ -213,7 +224,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
-        teddyBearIcon.SetActive(true);
+        teddyBearIcon[dialogueType.ToInt()].SetActive(true);
     }
     
     public void OnDialoguePanelClick()
@@ -236,13 +247,13 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
         scriptText[dialogueType.ToInt()].text = fullSentence;
         isTyping = false;
-        teddyBearIcon.SetActive(true);
+        teddyBearIcon[dialogueType.ToInt()].SetActive(true);
     }
     
     // ---------------------------------------------- Choice methods ----------------------------------------------
     private void DisplayChoices(string choiceID)
     {
-        foreach (Transform child in choicesContainer)
+        foreach (Transform child in choicesContainer[dialogueType.ToInt()])
         {
             Destroy(child.gameObject);
         }
@@ -251,7 +262,7 @@ public class DialogueManager : MonoBehaviour
 
         foreach (ChoiceLine choiceLine in choiceLines)
         {
-            var choiceButton = Instantiate(choicePrefab, choicesContainer).GetComponent<Button>();
+            var choiceButton = Instantiate(choicePrefab, choicesContainer[dialogueType.ToInt()]).GetComponent<Button>();
             var choiceText = choiceButton.GetComponentInChildren<TextMeshProUGUI>();
             
             // 언어마다 다르게 불러오도록 변경 필요
@@ -272,7 +283,7 @@ public class DialogueManager : MonoBehaviour
             EventManager.Instance.CallEvent(next);
         }
         
-        foreach (Transform child in choicesContainer)
+        foreach (Transform child in choicesContainer[dialogueType.ToInt()])
         {
             Destroy(child.gameObject);
         }
