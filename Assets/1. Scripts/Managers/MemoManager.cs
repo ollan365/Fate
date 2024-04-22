@@ -16,6 +16,11 @@ public class MemoManager : MonoBehaviour
 
     // 저장된 메모
     private List<string> savedMemoList = new();
+    public List<string> SavedMemoList
+    {
+        get => savedMemoList;
+        set => savedMemoList = value;
+    }
 
     // 메모 프리팹
     [SerializeField] private GameObject memoTextPrefab;

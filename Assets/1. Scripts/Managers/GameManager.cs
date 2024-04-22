@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour
     // 이벤트의 실행 조건을 확인하기 위한 변수를 모두 이곳에서 관리
     // 변수의 타입은 int 또는 bool
     private Dictionary<string, object> variables = new Dictionary<string, object>();
+    public Dictionary<string, object> Variables // 데이터 저장을 위해 작성
+    {
+        get => variables;
+        set => variables = value;
+    }
 
     // 디버깅용
     [SerializeField] private TextMeshProUGUI variablesText;

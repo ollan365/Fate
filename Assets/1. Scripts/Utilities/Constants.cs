@@ -1,15 +1,17 @@
 public static class Constants
 {
     // 대화창의 종류
-    public enum DialogueType { ROOM, FOLLOW, FOLLOW_ANGRY }
+    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_ANGRY }
     public static int ToInt(this DialogueType dialogueType)
     {
         // 다이얼로그 타입에 따라 다른 숫자 반환
         switch (dialogueType)
         {
             case DialogueType.ROOM: return 0;
-            case DialogueType.FOLLOW: return 1;
-            case DialogueType.FOLLOW_ANGRY: return 2;
+            case DialogueType.ROOM_THINKING: return 1;
+            case DialogueType.FOLLOW: return 2;
+            case DialogueType.FOLLOW_THINKING: return 3;
+            case DialogueType.FOLLOW_ANGRY: return 4;
             default: return 0;
         }
     }
@@ -55,29 +57,29 @@ public static class Constants
         switch (objectName)
         {
             // 첫번째 배경
-            case FirstFollowObject.Villa:   return "Event_019";
-            case FirstFollowObject.Bread:   return "Event_020";
-            case FirstFollowObject.Con:     return "Event_021";
-            case FirstFollowObject.Bar:     return "Event_022";
-            case FirstFollowObject.Izakawa: return "Event_023";
-            case FirstFollowObject.Cat:     return "Event_024";
-            case FirstFollowObject.Cafe:    return "Event_025";
-            case FirstFollowObject.Receipt: return "Event_026";
-            case FirstFollowObject.Light:   return "Event_027";
-            case FirstFollowObject.Coffee:  return "Event_028";
-            case FirstFollowObject.Shop_1: return "Event_029";
-            case FirstFollowObject.Shop_2:   return "Event_030";
+            case FirstFollowObject.Villa:   return "EventFollowVilla";
+            case FirstFollowObject.Bread:   return "EventFollowBread";
+            case FirstFollowObject.Con:     return "EventFollowConvenienceStore";
+            case FirstFollowObject.Bar:     return "EventFollowBar";
+            case FirstFollowObject.Izakawa: return "EventFollowIzakaya";
+            case FirstFollowObject.Cat:     return "EventFollowCat";
+            case FirstFollowObject.Cafe:    return "EventFollowCafe";
+            case FirstFollowObject.Receipt: return "EventFollowCafeReceipt";
+            case FirstFollowObject.Light:   return "EventFollowTrafficLight";
+            case FirstFollowObject.Coffee:  return "EventFollowCafeLatte";
+            case FirstFollowObject.Shop_1: return "EventFollow1FClothingStore";
+            case FirstFollowObject.Shop_2:   return "EventFollow2FClothingStore";
 
             // 두번째 배경
-            case FirstFollowObject.Construction: return "Event_031";
-            case FirstFollowObject.Omerice: return "Event_032";
-            case FirstFollowObject.Cocktail: return "Event_033";
-            case FirstFollowObject.MiracleYoung: return "Event_034";
-            case FirstFollowObject.MusicBar: return "Event_035";
-            case FirstFollowObject.Club: return "Event_036";
-            case FirstFollowObject.Beer: return "Event_037";
-            case FirstFollowObject.Wreath: return "Event_038";
-            case FirstFollowObject.Angry: return "Event_039";
+            case FirstFollowObject.Construction: return "EventFollowConstructionSite";
+            case FirstFollowObject.Omerice: return "EventFollowRestaurant";
+            case FirstFollowObject.Cocktail: return " EventFollowCocktailBar";
+            case FirstFollowObject.MiracleYoung: return "EventFollowDrugstore";
+            case FirstFollowObject.MusicBar: return "EventFollowMusicBar";
+            case FirstFollowObject.Club: return "EventFollowClub";
+            case FirstFollowObject.Beer: return "EventFollowPub";
+            case FirstFollowObject.Wreath: return "EventFollowWreath";
+            case FirstFollowObject.Angry: return "EventFollowAngryPerson";
 
             default: return null;
         }
