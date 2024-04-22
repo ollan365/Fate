@@ -117,7 +117,13 @@ public class ResultManager : MonoBehaviour
             case "Result_009": // 인형 수납장에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_005");
                 break;
-            
+
+
+            case "Result_showZoomedPillow": // 배게와 침대 위 인형 확대 화면으로 전환
+                executableObjects["Pillow Unzoomed 1"].ExecuteAction();
+                executableObjects["Pillow Unzoomed 3"].ExecuteAction();
+                break;
+
             case "Result_010": // 베개에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_006");
                 break;
@@ -130,7 +136,12 @@ public class ResultManager : MonoBehaviour
             case "Result_012": // 부적에 대한 메모 작성
                 MemoManager.Instance.AddMemo("R1Memo_001");
                 break;
-            
+
+            case "Result_showZoomedDeskShelf": // 책상 위 선반 확대 화면으로 전환
+                executableObjects["DeskShelf Unzoomed 1"].ExecuteAction();
+                executableObjects["DeskShelf Unzoomed 2"].ExecuteAction();
+                break;
+
             case "Result_013": // 다이어리에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_009");
                 break;
@@ -187,6 +198,11 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Chair1"].ExecuteAction();
                 executableObjects["Chair2"].ExecuteAction();
                 GameManager.Instance.InverseVariable("ChairMoved");
+                break;
+
+            case "Result_showZoomedDesk": // 책상 화면으로 전환
+                executableObjects["Desk Unzoomed 1"].ExecuteAction();
+                executableObjects["Desk Unzoomed 2"].ExecuteAction();
                 break;
 
             case "Result_025": // 노트북에 대한 설명
