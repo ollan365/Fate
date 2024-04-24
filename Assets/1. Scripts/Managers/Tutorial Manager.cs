@@ -9,6 +9,9 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
+        // 만약 이미 프롤로그를 진행한 상태라면 바로 게임 시작
+        if (!(bool)GameManager.Instance.GetVariable("isTutorial")) return;
+
         GameManager.Instance.SetVariable("isTutorial", true);
         GameManager.Instance.SetVariable("TutorialPhase", 1);
         RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();

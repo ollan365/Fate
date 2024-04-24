@@ -64,6 +64,9 @@ public class RoomManager : MonoBehaviour
         currentView = sides[0];
         SetCurrentSide(0);
 
+        // 만약 이미 프롤로그를 진행한 상태라면 바로 게임 시작
+        if (!(bool)GameManager.Instance.GetVariable("isTutorial")) return;
+
         DialogueManager.Instance.StartDialogue("Prologue_015");  // 첫 대사 출력 후 튜토리얼 1페이즈 시작
     }
 
