@@ -12,6 +12,7 @@ public class FollowAnim : MonoBehaviour
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
 
+    [SerializeField] private GameObject[] tutorialFate, tutorialAccidy;
     [SerializeField] private Animator fateBoy, fateGirl, accidyBoy, accidyGirl;
     private Animator fate, accidy;
 
@@ -50,11 +51,27 @@ public class FollowAnim : MonoBehaviour
     public void SetCharcter()
     {
         // 필연과 우연의 성별에 따라 다른 애니메이터 작동
-        if ((int)GameManager.Instance.GetVariable("FateGender") == 0) fate = fateGirl;
-        else fate = fateBoy;
+        if ((int)GameManager.Instance.GetVariable("FateGender") == 0)
+        {
+            fate = fateGirl;
+            tutorialFate[0].SetActive(true);
+        }
+        else
+        {
+            fate = fateBoy;
+            tutorialFate[1].SetActive(true);
+        }
 
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidyGirl;
-        else accidy = accidyBoy;
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)
+        {
+            accidy = accidyGirl;
+            tutorialAccidy[0].SetActive(true);
+        }
+        else
+        {
+            accidy = accidyBoy;
+            tutorialAccidy[1].SetActive(true);
+        }
 
         fate.gameObject.SetActive(true);
         accidy.gameObject.SetActive(true);
