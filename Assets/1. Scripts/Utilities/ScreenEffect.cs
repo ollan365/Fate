@@ -5,7 +5,7 @@ using System.Collections;
 public class ScreenEffect : MonoBehaviour
 {
     public static ScreenEffect Instance { get; private set; }
-    [SerializeField] private Image coverPanel;
+    public Image coverPanel;
     void Awake()
     {
         if (Instance == null)

@@ -24,8 +24,7 @@ public class FollowManager : MonoBehaviour
     // 상태 변수
     public bool isTutorial = false;
     [SerializeField] private bool onMove; // 원래 이동 상태였는지
-    private bool canClick = true; // 현재 오브젝트를 누를 수 있는지
-    public bool CanClick { get => canClick; }
+    public bool canClick = true; // 현재 오브젝트를 누를 수 있는지
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -43,8 +42,6 @@ public class FollowManager : MonoBehaviour
 
     public void ClickObject()
     {
-        if (isTutorial) return;
-
         canClick = false; // 다른 오브젝트를 누를 수 없게 만든다
         frontCanvas.SetActive(false); // 플레이어를 가리는 물체들이 있는 canvas를 꺼버린다
         blockingPanel.SetActive(true); // 화면을 어둡게 만든다
@@ -56,6 +53,7 @@ public class FollowManager : MonoBehaviour
     {
         if (isTutorial) // 튜토리얼 중에는 다르게 작동
         {
+            moveAndStopButton.SetActive(true);
             followTutorial.NextStep();
             return;
         }

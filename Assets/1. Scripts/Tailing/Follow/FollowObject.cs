@@ -10,7 +10,7 @@ public class FollowObject : EventObject
     [SerializeField] private float scaleValue;
     public new void OnMouseDown()
     {
-        if (!FollowManager.Instance.CanClick) return; // 상호작용 할 수 없는 상태면 리턴
+        if (!FollowManager.Instance.canClick) return; // 상호작용 할 수 없는 상태면 리턴
         FollowManager.Instance.ClickObject();
 
         if (isSpecial) OnMouseDown_Special();
@@ -32,10 +32,10 @@ public class FollowObject : EventObject
 
         var eventButton = Instantiate(FollowManager.Instance.eventButtonPrefab, FollowManager.Instance.blockingPanel.transform).GetComponent<Button>();
 
-        // 자식의 이미지 변경
-        eventButton.transform.GetChild(0).GetComponent<Image>().sprite = specialSprite;
-        eventButton.transform.GetChild(0).GetComponent<Image>().SetNativeSize();
-        eventButton.transform.GetChild(0).GetComponent<RectTransform>().localScale = new(scaleValue, scaleValue, scaleValue);
+        // 자식의 이미지 변경 -> 나중에 변경 필요...
+        eventButton.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = specialSprite;
+        eventButton.transform.GetChild(0).GetChild(0).GetComponent<Image>().SetNativeSize();
+        eventButton.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().localScale = new(scaleValue, scaleValue, scaleValue);
 
         eventButton.onClick.AddListener(() => OnMouseDown_Normal());
         eventButton.onClick.AddListener(() => eventButton.gameObject.SetActive(false));
