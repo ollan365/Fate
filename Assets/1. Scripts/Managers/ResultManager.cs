@@ -56,7 +56,10 @@ public class ResultManager : MonoBehaviour
             results[result.ResultID] = result;
         }
     }
-    
+    void StartDialogueWithDelay()
+    {
+        DialogueManager.Instance.StartDialogue("RoomEscape_035");
+    }
     public void ExecuteResult(string resultID)
     {
         if (GameManager.Instance.isDebug) Debug.Log(resultID);
@@ -91,7 +94,27 @@ public class ResultManager : MonoBehaviour
             case "Result_004": // 조사 완료 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_008");
                 break;
-                
+
+            // 휴식 시스템
+            case "Result_restButton": // 휴식에서 예 버튼
+                DialogueManager.Instance.StartDialogue("RoomEscape_034");
+                break;
+
+            case "Result_restYes": // 휴식에서 예 버튼
+                DialogueManager.Instance.EndDialogue();
+                // 눈깜빡
+                ScreenEffect.Instance.RestButtonEffect();
+                // 행동력 5감소
+                GameManager.Instance.DecrementVariable("ActionPoint", 5);
+                // 대사 출력 지연 시키는 건데 아직 미완.
+                Invoke("StartDialogueWithDelay", 5f);
+                break;
+
+            case "Result_restNo": // 휴식에서 아니오 버튼
+                DialogueManager.Instance.EndDialogue();
+                break;
+
+
             // 튜토리얼
             case "Result_nextTutorialPhase":  // 튜토리얼 다음 페이즈로 진행
                 RoomManager.Instance.tutorialManager.ProceedToNextPhase();
@@ -292,6 +315,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_043": // 옷장 속 가방 클릭 스크립트
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "cafePintInBagImage");
                 DialogueManager.Instance.StartDialogue("RoomEscape_023");
                 break;
 
@@ -319,6 +343,18 @@ public class ResultManager : MonoBehaviour
 
             case "Result_090": // 상자 안 사진들에 대한 메모
                 MemoManager.Instance.AddMemo("R1Memo_011");
+                break;
+
+            case "Result_093": // 쇼핑백에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_031");
+                break;
+
+            case "Result_094": // 평범 포스터에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_032");
+                break;
+
+            case "Result_095": // 서랍장 속 인형에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_033");
                 break;
 
             case "Result_049": // 서랍장이 열리는 스크립트

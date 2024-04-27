@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Doors : EventObject, IResultExecutable
 {
     public bool isClosedDoors; 
     public GameObject otherDoors;
-    public Collider2D objectBehindCollider;
+    public List<Collider2D> objectBehindColliders;
     public string parentObjectName;  // 옷장, 수남장 등 부모 오브젝트 이름
     private string closedOrOpen;
 
@@ -12,7 +13,11 @@ public class Doors : EventObject, IResultExecutable
     {
         closedOrOpen = isClosedDoors ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Doors", this);
-        objectBehindCollider = objectBehindCollider.GetComponent<Collider2D>();
+
+        for (int i = 0; i < objectBehindColliders.Count; i++)
+        {
+            objectBehindColliders[i] = objectBehindColliders[i].GetComponent<Collider2D>();
+        }
     }
 
     public new void OnMouseDown()
@@ -32,7 +37,11 @@ public class Doors : EventObject, IResultExecutable
 
     private void ToggleDoors()
     {
-        objectBehindCollider.enabled = isClosedDoors;
+        for (int i = 0; i < objectBehindColliders.Count; i++)
+        {
+            objectBehindColliders[i].enabled = isClosedDoors;
+        }
+
         GameManager.Instance.InverseVariable($"{parentObjectName}DoorsClosed");
         otherDoors.SetActive(true);
         gameObject.SetActive(false);

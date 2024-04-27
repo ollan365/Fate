@@ -19,6 +19,12 @@ public class ScreenEffect : MonoBehaviour
         }
     }
 
+    // ÈÞ½Ä ½Ã½ºÅÛ¿¡¼­ ´«±ôºý
+    public void RestButtonEffect()
+    {
+        StartCoroutine(OnFade(null, 0, 1, 2, true, 0.5f, +0.45f));
+    }
+
     // ¹æ¿¡¼­ ÀÌµ¿ ¹öÆ° ´­·¶À» ¶§
     public void MoveButtonEffect(GameObject screen, Vector3 direction)
     {

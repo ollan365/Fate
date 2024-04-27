@@ -169,5 +169,11 @@ public class RoomManager : MonoBehaviour
         SetExitButton(isInvestigatingOrZoomed && !isDialogueActive);
         SetMoveButtons(!(isInvestigatingOrZoomed || isDialogueActive));
     }
-   
+
+    [SerializeField] private GameObject restButton;
+    public void HideRestButton(bool flag)
+    {
+        // 휴식 버튼을 보이지 않게 or 보이게 할 수 있음
+        restButton.SetActive(!flag);
+    }
 }
