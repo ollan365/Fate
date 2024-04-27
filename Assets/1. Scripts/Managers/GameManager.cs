@@ -125,6 +125,15 @@ public class GameManager : MonoBehaviour
         variables["CalendarCluesFound"] = 0;
         variables["CalendarMonth"] = false;
 
+        // 쇼핑백
+        variables["ShoppingBagClick"] = 0;
+
+        // 침대 옆 일반 포스터
+        variables["NormalPosterClick"] = 0;
+
+        // 서랍장 내부 곰인형
+        variables["StorageTeddyBearClick"] = 0;
+
         // 달력
         // 필연 생일
         variables["FBDClick"] = 0;
@@ -218,6 +227,15 @@ public class GameManager : MonoBehaviour
         cnt--;
         SetVariable(variableName, cnt);
         
+        if (isDebug) ShowVariables();
+    }
+
+    public void DecrementVariable(string variableName, int count)
+    {
+        int cnt = (int)GetVariable(variableName);
+        cnt -= count;
+        SetVariable(variableName, cnt);
+
         if (isDebug) ShowVariables();
     }
 
