@@ -87,8 +87,9 @@ public class ResultManager : MonoBehaviour
                 SceneManager.LoadScene(1);
                 break;
             
-            case "Result_003": // 행동력 감소
+            case "Result_003": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
                 GameManager.Instance.DecrementVariable("ActionPoint");
+                SaveManager.Instance.SaveGameData();
                 break;
             
             case "Result_004": // 조사 완료 스크립트
@@ -187,7 +188,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_018": // 다이어리 비밀번호를 틀렸다는 스크립트
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_DiaryUnlock);
+                SoundPlayer.Instance.UISoundPlay(Sound_DiaryUnlock);
                 DialogueManager.Instance.StartDialogue("RoomEscape_011");
                 break;
             
@@ -217,7 +218,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_024": // 의자가 옆으로 이동함
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_ChairMovement);
+                SoundPlayer.Instance.UISoundPlay(Sound_ChairMovement);
                 executableObjects["Chair1"].ExecuteAction();
                 executableObjects["Chair2"].ExecuteAction();
                 GameManager.Instance.InverseVariable("ChairMoved");
@@ -233,13 +234,13 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_026": // 노트북 비밀번호 화면 활성화
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_LaptopBoot);
+                SoundPlayer.Instance.UISoundPlay(Sound_LaptopBoot);
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "laptop");
                 executableObjects["Laptop"].ExecuteAction();
                 break;
 
             case "Result_027": // 노트북이 열림
-                SoundPlayer.Instance.UISoundPlay(SoundType.ETC, Sound_Correct);
+                SoundPlayer.Instance.UISoundPlay(Sound_Correct);
                 executableObjects["LaptopLock"].ExecuteAction();
                 break;
 
@@ -252,12 +253,12 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_030": // 노트북 비밀번호 틀림에 대한 설명
-                SoundPlayer.Instance.UISoundPlay(SoundType.ETC, Sound_Wrong);
+                SoundPlayer.Instance.UISoundPlay(Sound_Wrong);
                 DialogueManager.Instance.StartDialogue("RoomEscape_016");
                 break;
             
             case "Result_031": // 카펫이 들쳐짐
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_CarpetOpen);
+                SoundPlayer.Instance.UISoundPlay(Sound_CarpetOpen);
                 executableObjects["ClosedCarpet"].ExecuteAction();
                 break;
             
@@ -270,13 +271,13 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_034": // 카펫이 원래대로 돌아감
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_CarpetClose);
+                SoundPlayer.Instance.UISoundPlay(Sound_CarpetClose);
                 executableObjects["OpenCarpet"].ExecuteAction();
                 DialogueManager.Instance.StartDialogue("RoomEscape_018");
                 break;
             
             case "Result_035": // 포스터에 대한 스크립트
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_Poster);
+                SoundPlayer.Instance.UISoundPlay(Sound_Poster);
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_019");
                 break;
@@ -301,12 +302,12 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_040": // 옷장 문이 열림
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_ClosetOpen);
+                SoundPlayer.Instance.UISoundPlay(Sound_ClosetOpen);
                 executableObjects["ClosedClosetDoors"].ExecuteAction();
                 break;
             
             case "Result_041": // 옷장 문이 닫힘
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_ClosetClose);
+                SoundPlayer.Instance.UISoundPlay(Sound_ClosetClose);
                 executableObjects["OpenClosetDoors"].ExecuteAction();
                 break;
                 
@@ -324,7 +325,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_045": // 옷장 위 상자에 대한 설명(열쇠X 상태 일 때)
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_LockerUnlock);
+                SoundPlayer.Instance.UISoundPlay(Sound_LockerUnlock);
                 DialogueManager.Instance.StartDialogue("RoomEscape_024");
                 break;
 
@@ -333,7 +334,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_047": // 상자 열리는 사운드 - ### 추후 구현 필요 ###
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_LockerKeyMovement);
+                SoundPlayer.Instance.UISoundPlay(Sound_LockerKeyMovement);
                 break;
 
             case "Result_048": // 상자 안 사진들이 UI로 보임
@@ -362,12 +363,12 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_050": // 서랍장이 열림
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_StorageOpen);
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
                 executableObjects["ClosedCabinetDoors"].ExecuteAction();
                 break;
 
             case "Result_051": // 서랍장이 닫힘
-                SoundPlayer.Instance.UISoundPlay(SoundType.ROOM_OBJECT, Sound_StorageClose);
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
                 executableObjects["OpenCabinetDoors"].ExecuteAction();
                 break;
 

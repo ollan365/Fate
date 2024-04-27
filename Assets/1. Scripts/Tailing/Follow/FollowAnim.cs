@@ -18,6 +18,7 @@ public class FollowAnim : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stopButtonText; // 이동&멈춤 버튼의 글씨
     private bool isStop = true; // 현재 이동 중인지를 나타내는 변수
     public bool IsStop { get => isStop; }
+    private float moveTime = 0;
 
     private void Start()
     {
@@ -28,6 +29,12 @@ public class FollowAnim : MonoBehaviour
     {
         if (!isStop) // 배경 이동
         {
+            if (FollowManager.Instance.isTutorial)
+            {
+                moveTime += Time.deltaTime;
+                if (moveTime > 2) return;
+            }
+
             Vector3 moveVector = Vector3.left * moveSpeed * Time.deltaTime;
             backgroundPosition.position += moveVector;
             frontCanvasPosition.position += moveVector;

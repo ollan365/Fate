@@ -10,7 +10,7 @@ public class MiniGame : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Slider gaugeSlider;
-    [SerializeField] private GameObject[] heartImages;
+    [SerializeField] private Animator[] heartAnimator;
     [SerializeField] private Button memoButton;
 
     [Header("Character")]
@@ -62,6 +62,9 @@ public class MiniGame : MonoBehaviour
         fateMove = false;
         gaugeSlider.value = 0;
 
+        // 메모 버튼 없애기
+        MemoManager.Instance.HideMemoButton(true);
+
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 미니 게임 캔버스를 켠다
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
         yield return new WaitForSeconds(0.2f);
@@ -88,11 +91,16 @@ public class MiniGame : MonoBehaviour
                     fateMove = false;
                     StartCoroutine(FateMove(false));
 
-                    fateSit.GetComponent<Image>().color = Color.red;
-                    heartImages[heartCount].SetActive(false);
+                    // 하트가 터지는 애니메이션 재생
+                    heartAnimator[heartCount].SetTrigger("Break");
 
-                    yield return new WaitForSeconds(0.2f);
-                    fateSit.GetComponent<Image>().color = new Color(1, 1, 1, 0);
+                    // 화면이 붉어지는 애니메이션
+                    ScreenEffect.Instance.coverPanel.color = Color.red;
+                    StartCoroutine(ScreenEffect.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
+                    yield return new WaitForSeconds(0.5f);
+
+                    heartAnimator[heartCount].gameObject.SetActive(false);
+                    ScreenEffect.Instance.coverPanel.color = Color.black;
                 }
             }
             else if (!fateMove) // 필연이 움직이지 않으면 천천히 게이지 감소
@@ -104,6 +112,7 @@ public class MiniGame : MonoBehaviour
         }
 
         // 게임 오버 (현재는 무조건 미행으로 돌아감)
+        MemoManager.Instance.HideMemoButton(false);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
         yield return new WaitForSeconds(0.2f);

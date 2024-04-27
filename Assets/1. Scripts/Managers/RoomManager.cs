@@ -100,6 +100,9 @@ public class RoomManager : MonoBehaviour
         
         if (isZoomed)
         {
+            // 화면 전환 효과
+            ScreenEffect.Instance.MoveButtonEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0));
+
             SetCurrentView(sides[currentSideIndex]);
             isZoomed = false;
             

@@ -77,41 +77,14 @@ public class SaveManager : MonoBehaviour
 public class SaveData
 {
     public DialogueType dialogueType; // 어느 씬에서 끝났는지
-    public Dictionary<string, object> variables // GameManager의 변수들을 json 형태로 바꿔서 저장
+
+    public string variablesToJson; //  Dictionary<string, string> 을 json 형태로 저장
+    public Dictionary<string, object> variables // GameManager의 변수들
     {
-        get
-        {
-            // JSON 문자열을 Dictionary<string, string>으로 역직렬화
-            Dictionary<string, string> stringVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(variablesToJson);
-
-            // Dictionary<string, object>을 생성하여 변환된 값들을 추가
-            Dictionary<string, object> objectVariables = new();
-            foreach (var variable in stringVariables)
-            {
-                object value;
-                // string을 적절한 형식으로 변환하여 object 변수에 할당
-                if (int.TryParse(variable.Value, out int intValue))
-                {
-                    value = intValue;
-                }
-                else if (bool.TryParse(variable.Value, out bool boolValue))
-                {
-                    value = boolValue;
-                }
-                else
-                {
-                    value = variable.Value; // string 그대로 할당
-                }
-
-                objectVariables.Add(variable.Key, value);
-            }
-
-            return objectVariables;
-        }
+        get => ToDictionary(variablesToJson);
     }
-    public List<string> savedMemoList; // Memo 저장
 
-    private string variablesToJson; //  Dictionary<string, string> 을 json 형태로 저장
+    public List<string> savedMemoList; // Memo 저장
 
     public SaveData(DialogueType type, Dictionary<string, object> variables, List<string> memo)
     {
@@ -129,10 +102,55 @@ public class SaveData
         foreach (var variable in dictionary)
         {
             string key = variable.Key;
-            string value = variable.Value.ToString(); // object를 string으로 변환
-            stringVariables.Add(key, value);
+            object value = variable.Value;
+            string stringValue;
+
+            // 값의 유형에 따라 적절한 처리를 수행
+            if (value is int intValue)
+            {
+                stringValue = intValue.ToString();
+            }
+            else if (value is bool boolValue)
+            {
+                stringValue = boolValue.ToString();
+            }
+            else
+            {
+                stringValue = value.ToString();
+            }
+
+            stringVariables.Add(key, stringValue);
         }
 
         return JsonConvert.SerializeObject(stringVariables, Formatting.Indented);
+    }
+    private Dictionary<string, object> ToDictionary(string json)
+    {
+        // JSON 문자열을 Dictionary<string, string>으로 역직렬화
+        Dictionary<string, string> stringVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(variablesToJson);
+
+        // Dictionary<string, object>을 생성하여 변환된 값들을 추가
+        Dictionary<string, object> objectVariables = new();
+        foreach (var variable in stringVariables)
+        {
+            object value;
+            // string을 적절한 형식으로 변환하여 object 변수에 할당
+            if (int.TryParse(variable.Value, out int intValue))
+            {
+                value = intValue;
+            }
+            else if (bool.TryParse(variable.Value, out bool boolValue))
+            {
+                value = boolValue;
+            }
+            else
+            {
+                value = variable.Value;
+            }
+
+            objectVariables.Add(variable.Key, value);
+        }
+
+        return objectVariables;
     }
 }

@@ -1,7 +1,7 @@
 public static class Constants
 {
     // 대화창의 종류
-    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_ANGRY }
+    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_ANGRY, FOLLOW_TUTORIAL }
     public static int ToInt(this DialogueType dialogueType)
     {
         // 다이얼로그 타입에 따라 다른 숫자 반환
@@ -12,11 +12,12 @@ public static class Constants
             case DialogueType.FOLLOW: return 2;
             case DialogueType.FOLLOW_THINKING: return 3;
             case DialogueType.FOLLOW_ANGRY: return 4;
+            case DialogueType.FOLLOW_TUTORIAL: return 5;
             default: return 0;
         }
     }
 
-    public enum SoundType { BGM, ROOM_OBJECT, FOLLOW_OBJECT, LOOP, ETC }
+    public enum SoundType { BGM, LOOP, SOUND_EFFECT }
     // 사운드 종류
     // 1. 배경음
 
@@ -28,7 +29,7 @@ public static class Constants
 
     // 3. 미행
     public const int
-        Sound_Building = 0, Sound_FollowSpecialObject = 1, Sound_Cat = 2;
+        Sound_Building = 15, Sound_FollowSpecialObject = 16, Sound_Cat = 17;
 
     // 4. 루프 (반복 되어야 하는 것)
     public const int
@@ -36,10 +37,12 @@ public static class Constants
 
     // 5. 그 외
     public const int
-        Sound_Typing = 0, Sound_Click = 1, Sound_Correct = 2, Sound_Wrong = 3;
+        Sound_Typing = -1, Sound_Click = 18, Sound_Correct = 19, Sound_Wrong = 20;
         
 
     // 시계 부분
+
+
 
     // -------------- 미행 관련 변수들 -------------- //
     public enum FirstFollowObject

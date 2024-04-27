@@ -7,6 +7,7 @@ public class FollowManager : MonoBehaviour
     // FollowManager를 싱글턴으로 생성
     public static FollowManager Instance { get; private set; }
 
+    [SerializeField] private FollowTutorial followTutorial;
     [SerializeField] private MiniGame miniGame;
 
     [SerializeField] private FollowAnim followAnim;
@@ -21,9 +22,9 @@ public class FollowManager : MonoBehaviour
     public GameObject eventButtonPrefab;
 
     // 상태 변수
+    public bool isTutorial = false;
     [SerializeField] private bool onMove; // 원래 이동 상태였는지
-    private bool canClick = true; // 현재 오브젝트를 누를 수 있는지
-    public bool CanClick { get => canClick; }
+    public bool canClick = true; // 현재 오브젝트를 누를 수 있는지
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -35,6 +36,8 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.MemoButtonAlphaChange();
         MemoManager.Instance.HideMemoButton(false);
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
+
+        StartCoroutine(followTutorial.StartTutorial());
     }
 
     public void ClickObject()
@@ -48,6 +51,13 @@ public class FollowManager : MonoBehaviour
     }
     public void EndScript(bool changeCount)
     {
+        if (isTutorial) // 튜토리얼 중에는 다르게 작동
+        {
+            moveAndStopButton.SetActive(true);
+            followTutorial.NextStep();
+            return;
+        }
+
         if (changeCount) miniGame.ClickCount++;
         if (miniGame.ClickCount % 5 == 0) onMove = false; // 미니 게임이 끝나고 오면 움직이지 않도록 만든다
 

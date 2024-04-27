@@ -220,7 +220,7 @@ public class DialogueManager : MonoBehaviour
             }
 
             scriptText[dialogueType.ToInt()].text += letter;
-            SoundPlayer.Instance.UISoundPlay(SoundType.ETC, Sound_Typing); // 타자 소리 한번씩만
+            SoundPlayer.Instance.UISoundPlay(Sound_Typing); // 타자 소리 한번씩만
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
