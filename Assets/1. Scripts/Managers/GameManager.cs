@@ -183,6 +183,10 @@ public class GameManager : MonoBehaviour
         variables["ClubCliclk"] = 0;
         // 술집
         variables["BeerClick"] = 0;
+        // 화환
+        variables["WreathClick"] = 0;
+        // 화난 사람
+        variables["AngryClick"] = 0;
 
         if (isDebug) ShowVariables();
 

@@ -24,7 +24,7 @@ public class CSVDownloaderEditor : EditorWindow
     {
         foreach (var sheet in sheetIds)
         {
-            string url = $"https://docs.google.com/spreadsheets/u/0/d/1HKmv7JCwqAQGGxA361nO0V_E8HfC5RkxSU-OMMx127Y/export?format=csv&id=1HKmv7JCwqAQGGxA361nO0V_E8HfC5RkxSU-OMMx127Y&gid={sheet.Value}";
+            string url = $"https://docs.google.com/spreadsheets/d/1SKttr_HWyf_27mcdkaDspWrscGZ3a55PNPBQS6c5NTI/export?format=csv&id=1SKttr_HWyf_27mcdkaDspWrscGZ3a55PNPBQS6c5NTI&gid={sheet.Value}";
             string filePath = Path.Combine(Application.dataPath, "Resources/Datas", $"{sheet.Key}.csv");
 
             using (UnityWebRequest webRequest = UnityWebRequest.Get(url))

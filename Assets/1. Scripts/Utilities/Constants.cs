@@ -20,6 +20,8 @@ public static class Constants
     public enum SoundType { BGM, LOOP, SOUND_EFFECT }
     // 사운드 종류
     // 1. 배경음
+    public const int
+        BGM_ROOM = 0, BGM_FOLLOW = 1, BGM_MINIGAME = 2;
 
     // 2. 방탈출 오브젝트들
     public const int
@@ -33,7 +35,7 @@ public static class Constants
 
     // 4. 루프 (반복 되어야 하는 것)
     public const int
-        Sound_FootStep = 0;
+        Sound_FootStep_Accidy = 0, Sound_FootStep_Fate = 1;
 
     // 5. 그 외
     public const int
@@ -113,6 +115,8 @@ public static class Constants
             case FirstFollowObject.MusicBar: return "MusicBarClick";
             case FirstFollowObject.Club: return "ClubCliclk";
             case FirstFollowObject.Beer: return "BeerClick";
+            case FirstFollowObject.Wreath: return "WreathClick";
+            case FirstFollowObject.Angry: return "AngryClick";
             default: return null;
         }
     }
