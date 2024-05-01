@@ -83,7 +83,8 @@ public class DialogueManager : MonoBehaviour
     }
 
     // 대사 출력을 second초 후에 출력을 시작함. (휴식 시스템에서 눈 깜빡이는 5초 후에 출력되게 함)
-    public IEnumerator StartDialogue(string dialogueID, float second)
+    // 기본값 second 0으로 넣기
+    public IEnumerator StartDialogue(string dialogueID, float second = 0f)
     {
         yield return new WaitForSeconds(second);
 

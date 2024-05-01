@@ -274,7 +274,6 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_035": // 포스터에 대한 스크립트
-                SoundPlayer.Instance.UISoundPlay(Sound_Poster);
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_019");
                 break;
@@ -290,6 +289,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_038": // 포스터 뒷장에 대한 설명
+                SoundPlayer.Instance.UISoundPlay(Sound_Poster);
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_021");
                 GameManager.Instance.SetVariable("PosterOpened", true);
                 break;
