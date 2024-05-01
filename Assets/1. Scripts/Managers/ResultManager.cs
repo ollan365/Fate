@@ -56,10 +56,7 @@ public class ResultManager : MonoBehaviour
             results[result.ResultID] = result;
         }
     }
-    void StartDialogueWithDelay()
-    {
-        DialogueManager.Instance.StartDialogue("RoomEscape_035");
-    }
+
     public void ExecuteResult(string resultID)
     {
         if (GameManager.Instance.isDebug) Debug.Log(resultID);
@@ -107,8 +104,8 @@ public class ResultManager : MonoBehaviour
                 ScreenEffect.Instance.RestButtonEffect();
                 // 행동력 5감소
                 GameManager.Instance.DecrementVariable("ActionPoint", 5);
-                // 대사 출력 지연 시키는 건데 아직 미완.
-                Invoke("StartDialogueWithDelay", 5f);
+                // 대사 출력 지연 시킴
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", 5f));
                 break;
 
             case "Result_restNo": // 휴식에서 아니오 버튼
@@ -277,7 +274,6 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_035": // 포스터에 대한 스크립트
-                SoundPlayer.Instance.UISoundPlay(Sound_Poster);
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_019");
                 break;
@@ -293,6 +289,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_038": // 포스터 뒷장에 대한 설명
+                SoundPlayer.Instance.UISoundPlay(Sound_Poster);
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_021");
                 GameManager.Instance.SetVariable("PosterOpened", true);
                 break;

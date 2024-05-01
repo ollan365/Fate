@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
         variables["ClockClick"] = 0;
         variables["ClockTimeCorrect"] = false;
         
-        float[] clockPassword = { 5f, 180f };
+        float[] clockPassword = { 6f, 180f };
         variables["ClockPassword"] = clockPassword;
 
         // 의자
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         // 노트북
         variables["LaptopClick"] = 0;
         variables["LaptopPasswordCorrect"] = false;
-        variables["LaptopPassword"] = "0410";
+        variables["LaptopPassword"] = "04551";
 
         // 카펫
         variables["ClosedCarpetClick"] = 0;
