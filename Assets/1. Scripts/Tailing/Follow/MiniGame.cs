@@ -6,6 +6,7 @@ public class MiniGame : MonoBehaviour
 {
     [Header("Canvas")]
     [SerializeField] private GameObject followCanvas;
+    [SerializeField] private GameObject followUICanvas;
     [SerializeField] private GameObject miniGameCanvas;
 
     [Header("UI")]
@@ -65,11 +66,14 @@ public class MiniGame : MonoBehaviour
         // 메모 버튼 없애기
         MemoManager.Instance.HideMemoButton(true);
 
-        // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 미니 게임 캔버스를 켠다
+        // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 미니 게임 캔버스를 켠다 + 브금을 바꾼다
+        followUICanvas.SetActive(false);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW);
         yield return new WaitForSeconds(0.2f);
         followCanvas.SetActive(false);
         miniGameCanvas.SetActive(true);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
         yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
 
         // 우연의 움직임 시작
@@ -115,10 +119,13 @@ public class MiniGame : MonoBehaviour
         MemoManager.Instance.HideMemoButton(false);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
         yield return new WaitForSeconds(0.2f);
         miniGameCanvas.SetActive(false);
         followCanvas.SetActive(true);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW);
         yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
+        followUICanvas.SetActive(true);
     }
 
     public void MemoButtonOnClick()

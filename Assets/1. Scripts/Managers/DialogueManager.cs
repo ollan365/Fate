@@ -17,7 +17,6 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI speakerText;
     public TextMeshProUGUI[] scriptText;
     public Image characterImage;
-    public GameObject[] dialoguePanel;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] teddyBearIcon;
@@ -135,7 +134,7 @@ public class DialogueManager : MonoBehaviour
         if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0)
         {
             string fateName = (string)GameManager.Instance.GetVariable("FateName");
-            sentence = sentence.Replace("{PlayerName", fateName);
+            sentence = sentence.Replace("{PlayerName}", fateName);
         }
         StartCoroutine(TypeSentence(sentence));
 
@@ -162,6 +161,10 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
+        // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
+        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_ANGRY || dialogueType == DialogueType.FOLLOW_THINKING)
+            FollowManager.Instance.EndScript(true);
+
         isDialogueActive = false;
         dialogueCanvas[dialogueType.ToInt()].SetActive(false);
         characterImage.gameObject.SetActive(false);
@@ -172,10 +175,6 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
-        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING)
-            FollowManager.Instance.EndScript(true);
-        
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
     

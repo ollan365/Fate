@@ -38,6 +38,15 @@ public class FollowAnim : MonoBehaviour
             Vector3 moveVector = Vector3.left * moveSpeed * Time.deltaTime;
             backgroundPosition.position += moveVector;
             frontCanvasPosition.position += moveVector;
+
+            if(backgroundPosition.position.x < -33)
+            {
+                ChangeAnimStatus();
+                FollowManager.Instance.FollowEndLogicStart();
+
+                // 다음 배경 이동 시에는 반대 방향으로 1.5배 속도
+                moveSpeed *= -1.5f;
+            }
         }
     }
     public void ChangeAnimStatus()
@@ -46,7 +55,8 @@ public class FollowAnim : MonoBehaviour
         isStop = !isStop;
 
         // 이동 중에는 발자국 소리
-        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep, !isStop);
+        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Accidy, !isStop, 1);
+        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Fate, !isStop, 1);
 
         if (isStop) stopButtonText.text = "이동";
         else stopButtonText.text = "정지";
@@ -70,7 +80,7 @@ public class FollowAnim : MonoBehaviour
     private IEnumerator ChangeBeaconSprite()
     {
         // 신호등의 색을 3초마다 바꿔준다
-        while (true)
+        while (gameObject.activeSelf)
         {
             foreach (Sprite sprite in beaconSprites)
             {
@@ -79,4 +89,45 @@ public class FollowAnim : MonoBehaviour
             }
         }
     }
+
+    public void ChangeAnimStatusOnEnd(int num)
+    {
+        if (num == 0)
+        {
+            accidy.SetBool("Back", true);
+        }
+        else if (num == 1)
+        {
+            fate.speed = 0.6f;
+            fate.SetBool("Walking", true);
+        }
+        else if (num == 2)
+        {
+            fate.SetBool("Walking", false);
+            fate.SetBool("Back", true);
+
+            // 이동을 시작
+            isStop = false;
+
+            // 빠르게 이동하므로 음악 속도도 빠르게
+            SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Fate, !isStop, 2);
+        }
+    }
+    public IEnumerator MoveFate()
+    {
+        Vector3 originPosition = fate.transform.position;
+        Vector3 targetPosition = originPosition + new Vector3(-0.3f, 0, 0);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 1.2f)
+        {
+            fate.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / 1.2f);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        fate.transform.position = targetPosition;
+    }
+
 }
