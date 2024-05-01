@@ -17,7 +17,6 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI speakerText;
     public TextMeshProUGUI[] scriptText;
     public Image characterImage;
-    public GameObject[] dialoguePanel;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] teddyBearIcon;
@@ -82,6 +81,30 @@ public class DialogueManager : MonoBehaviour
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
 
+    // 대사 출력을 second초 후에 출력을 시작함. (휴식 시스템에서 눈 깜빡이는 5초 후에 출력되게 함)
+    // 기본값 second 0으로 넣기
+    public IEnumerator StartDialogue(string dialogueID, float second = 0f)
+    {
+        yield return new WaitForSeconds(second);
+
+        if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
+        {
+            Debug.Log($"dialogue ID: {dialogueID} queued!");
+
+            dialogueQueue.Enqueue(dialogueID);
+            yield break;
+        }
+
+        isDialogueActive = true;
+
+        dialogues[dialogueID].SetCurrentLineIndex(0);
+        currentDialogueID = dialogueID;
+        DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
+        DisplayDialogueLine(initialDialogueLine);
+
+        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+    }
+
     private void DisplayDialogueLine(DialogueLine dialogueLine)
     {
         foreach (Transform child in choicesContainer[dialogueType.ToInt()])
@@ -111,7 +134,7 @@ public class DialogueManager : MonoBehaviour
         if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0)
         {
             string fateName = (string)GameManager.Instance.GetVariable("FateName");
-            sentence = sentence.Replace("{PlayerName", fateName);
+            sentence = sentence.Replace("{PlayerName}", fateName);
         }
         StartCoroutine(TypeSentence(sentence));
 
@@ -138,6 +161,10 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
+        // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
+        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_ANGRY || dialogueType == DialogueType.FOLLOW_THINKING)
+            FollowManager.Instance.EndScript(true);
+
         isDialogueActive = false;
         dialogueCanvas[dialogueType.ToInt()].SetActive(false);
         characterImage.gameObject.SetActive(false);
@@ -148,10 +175,6 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
-        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING)
-            FollowManager.Instance.EndScript(true);
-        
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
     

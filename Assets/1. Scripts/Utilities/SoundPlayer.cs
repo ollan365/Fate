@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using static Constants;
 
 public class SoundPlayer : MonoBehaviour
@@ -8,7 +9,7 @@ public class SoundPlayer : MonoBehaviour
     [Header("Audio Source")]
     [SerializeField] private AudioSource bgmPlayer; // 배경음 플레이어
     [SerializeField] private AudioSource typingSoundPlayer; // 타이핑 효과음 플레이어 (반복)
-    [SerializeField] private AudioSource UISoundLoopPlayer; // UI 효과음 플레이어 (반복)
+    [SerializeField] private AudioSource[] UISoundLoopPlayer; // UI 효과음 플레이어 (반복)
     [SerializeField] private AudioSource[] UISoundPlayer; // UI 효과음 플레이어들
 
     [Header("AudioClip")]
@@ -36,24 +37,57 @@ public class SoundPlayer : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             UISoundPlay(Sound_Click);
     }
-    public void ChangeBGM(DialogueType dialogueType)
+    public void ChangeBGM(int bgm)
     {
-        // 배경 음악을 바꾼다
-        bgmPlayer.clip = bgmClip[dialogueType.ToInt()];
-        bgmPlayer.Play();
-    }
-    public void UISoundPlay_LOOP(int num, bool play)
-    {
-        if (play)
+        bool stop = false;
+        if (bgmPlayer.clip == bgmClip[bgm]) stop = true;
+
+        switch (bgm)
         {
-            switch (num)
-            {
-                case Sound_FootStep: num = Random.Range(num, num + 6); break;
-            }
-            UISoundLoopPlayer.clip = UISoundClip_LOOP[num];
-            UISoundLoopPlayer.Play();
+            case BGM_ROOM:
+                StartCoroutine(ChangeBGMFade(bgm, stop, 0.5f));
+                break;
+            case BGM_FOLLOW:
+                StartCoroutine(ChangeBGMFade(bgm, stop, 0.5f));
+                break;
+            case BGM_MINIGAME:
+                StartCoroutine(ChangeBGMFade(bgm, stop, 0.5f));
+                break;
         }
-        else UISoundLoopPlayer.Stop();
+    }
+    private IEnumerator ChangeBGMFade (int bgm, bool stop, float time)
+    {
+        if (stop)
+        {
+            float currentTime = 0.0f;
+
+            while (currentTime < time)
+            {
+                currentTime += Time.deltaTime;
+                bgmPlayer.volume = Mathf.Lerp(1, 0, currentTime / time);
+                yield return null;
+            }
+            bgmPlayer.Stop();
+        }
+        else
+        {
+            bgmPlayer.clip = bgmClip[bgm];
+            bgmPlayer.volume = 1;
+            bgmPlayer.Play();
+        }
+    }
+    public void UISoundPlay_LOOP(int num, bool play, float speed)
+    {
+        if (play) // loop를 쓰는게 발걸음 밖에 없고 뒤로도 없을 거 같아서 간단하게 만듦
+        {
+            UISoundLoopPlayer[num].pitch = speed;
+            UISoundLoopPlayer[num].clip = UISoundClip_LOOP[num];
+            UISoundLoopPlayer[num].Play();
+        }
+        else
+        {
+            UISoundLoopPlayer[num].Stop();
+        }
         
         return;
     }
