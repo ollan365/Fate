@@ -82,6 +82,30 @@ public class DialogueManager : MonoBehaviour
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
 
+    // 대사 출력을 second초 후에 출력을 시작함. (휴식 시스템에서 눈 깜빡이는 5초 후에 출력되게 함)
+    // 기본값 second 0으로 넣기
+    public IEnumerator StartDialogue(string dialogueID, float second = 0f)
+    {
+        yield return new WaitForSeconds(second);
+
+        if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
+        {
+            Debug.Log($"dialogue ID: {dialogueID} queued!");
+
+            dialogueQueue.Enqueue(dialogueID);
+            yield break;
+        }
+
+        isDialogueActive = true;
+
+        dialogues[dialogueID].SetCurrentLineIndex(0);
+        currentDialogueID = dialogueID;
+        DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
+        DisplayDialogueLine(initialDialogueLine);
+
+        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+    }
+
     private void DisplayDialogueLine(DialogueLine dialogueLine)
     {
         foreach (Transform child in choicesContainer[dialogueType.ToInt()])

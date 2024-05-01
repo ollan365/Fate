@@ -14,9 +14,23 @@ public class LaptopLock : EventObject, IResultExecutable
     [SerializeField]
     private TMP_InputField passwordInputField;
 
+    [SerializeField]
+    private Sprite girlVersionBackground;
+    [SerializeField]
+    private Sprite boyVersionBackground;
+
+    private Image imageComponent;
+
     private void Awake()
     {
+        imageComponent = GetComponent<Image>();
+
         ResultManager.Instance.RegisterExecutable("LaptopLock", this);
+
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)
+            imageComponent.sprite = girlVersionBackground;
+        else
+            imageComponent.sprite = boyVersionBackground;
     }
 
     public void ExecuteAction()
