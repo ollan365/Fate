@@ -4,7 +4,7 @@ using TMPro;
 using static Constants;
 public class FollowManager : MonoBehaviour
 {
-    // FollowManager¸¦ ½Ì±ÛÅÏÀ¸·Î »ı¼º
+    // FollowManagerë¥¼ ì‹±ê¸€í„´ìœ¼ë¡œ ìƒì„±
     public static FollowManager Instance { get; private set; }
 
     [SerializeField] private FollowTutorial followTutorial;
@@ -21,14 +21,14 @@ public class FollowManager : MonoBehaviour
 
     public GameObject blockingPanel;
 
-    // Æ¯º°ÇÑ ¿ÀºêÁ§Æ®¸¦ Å¬¸¯ÇßÀ» ¶§ ¹öÆ° »ı¼º
+    // íŠ¹ë³„í•œ ì˜¤ë¸Œì íŠ¸ë¥¼ í´ë¦­í–ˆì„ ë•Œ ë²„íŠ¼ ìƒì„±
     public GameObject eventButtonPrefab;
 
-    // »óÅÂ º¯¼ö
+    // ìƒíƒœ ë³€ìˆ˜
     public bool isTutorial = false;
     private bool isEnd = false;
-    public bool canClick = true; // ÇöÀç ¿ÀºêÁ§Æ®¸¦ ´©¸¦ ¼ö ÀÖ´ÂÁö
-    private bool onMove; // ¿ø·¡ ÀÌµ¿ »óÅÂ¿´´ÂÁö
+    public bool canClick = true; // í˜„ì¬ ì˜¤ë¸Œì íŠ¸ë¥¼ ëˆ„ë¥¼ ìˆ˜ ìˆëŠ”ì§€
+    private bool onMove; // ì›ë˜ ì´ë™ ìƒíƒœì˜€ëŠ”ì§€
 
     void Awake()
     {
@@ -42,23 +42,23 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton(false);
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
 
-        // return; // Æ©Åä¸®¾ó °Ç³Ê¶Ù±â (Å×½ºÆ®¿ë)
+        // return; // íŠœí† ë¦¬ì–¼ ê±´ë„ˆë›°ê¸° (í…ŒìŠ¤íŠ¸ìš©)
 
         StartCoroutine(followTutorial.StartTutorial());
     }
 
     public void ClickObject()
     {
-        canClick = false; // ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ ´©¸¦ ¼ö ¾ø°Ô ¸¸µç´Ù
-        frontCanvas.SetActive(false); // ÇÃ·¹ÀÌ¾î¸¦ °¡¸®´Â ¹°Ã¼µéÀÌ ÀÖ´Â canvas¸¦ ²¨¹ö¸°´Ù
-        blockingPanel.SetActive(true); // È­¸éÀ» ¾îµÓ°Ô ¸¸µç´Ù
-        moveAndStopButton.SetActive(false); // ÀÌµ¿&Á¤Áö ¹öÆ°À» ´©¸¦ ¼ö ¾øµµ·Ï È­¸é¿¡¼­ ¾ø¾Ø´Ù
-        onMove = !followAnim.IsStop; // ¿ø·¡ ÀÌµ¿ ÁßÀÌ¾ú´ÂÁö¸¦ ÀúÀå
-        if (onMove) followAnim.ChangeAnimStatus(); // ÀÌµ¿ ÁßÀÌ¾ú´Ù¸é ¸ØÃá´Ù
+        canClick = false; // ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ëˆ„ë¥¼ ìˆ˜ ì—†ê²Œ ë§Œë“ ë‹¤
+        frontCanvas.SetActive(false); // í”Œë ˆì´ì–´ë¥¼ ê°€ë¦¬ëŠ” ë¬¼ì²´ë“¤ì´ ìˆëŠ” canvasë¥¼ êº¼ë²„ë¦°ë‹¤
+        blockingPanel.SetActive(true); // í™”ë©´ì„ ì–´ë‘¡ê²Œ ë§Œë“ ë‹¤
+        moveAndStopButton.SetActive(false); // ì´ë™&ì •ì§€ ë²„íŠ¼ì„ ëˆ„ë¥¼ ìˆ˜ ì—†ë„ë¡ í™”ë©´ì—ì„œ ì—†ì•¤ë‹¤
+        onMove = !followAnim.IsStop; // ì›ë˜ ì´ë™ ì¤‘ì´ì—ˆëŠ”ì§€ë¥¼ ì €ì¥
+        if (onMove) followAnim.ChangeAnimStatus(); // ì´ë™ ì¤‘ì´ì—ˆë‹¤ë©´ ë©ˆì¶˜ë‹¤
     }
     public void EndScript(bool changeCount)
     {
-        if (isTutorial) // Æ©Åä¸®¾ó Áß¿¡´Â ´Ù¸£°Ô ÀÛµ¿
+        if (isTutorial) // íŠœí† ë¦¬ì–¼ ì¤‘ì—ëŠ” ë‹¤ë¥´ê²Œ ì‘ë™
         {
             frontCanvas.SetActive(true);
             moveAndStopButton.SetActive(true);
@@ -74,14 +74,14 @@ public class FollowManager : MonoBehaviour
         if (angryCanvas.activeSelf) { EndAngryDialogue(); return; }
 
         if (changeCount) miniGame.ClickCount++;
-        if (miniGame.ClickCount % 5 == 0) onMove = false; // ¹Ì´Ï °ÔÀÓÀÌ ³¡³ª°í ¿À¸é ¿òÁ÷ÀÌÁö ¾Êµµ·Ï ¸¸µç´Ù
+        if (miniGame.ClickCount % 5 == 0) onMove = false; // ë¯¸ë‹ˆ ê²Œì„ì´ ëë‚˜ê³  ì˜¤ë©´ ì›€ì§ì´ì§€ ì•Šë„ë¡ ë§Œë“ ë‹¤
 
-        canClick = true; // ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ ´©¸¦ ¼ö ÀÖ°Ô ¸¸µç´Ù
-        frontCanvas.SetActive(true); // ÇÃ·¹ÀÌ¾î¸¦ °¡¸®´Â ¹°Ã¼µéÀÌ ÀÖ´Â canvas¸¦ ÄÒ´Ù
-        blockingPanel.SetActive(false); // È­¸éÀ» °¡¸®´Â ÆÇ³ÚÀ» ²ö´Ù
-        moveAndStopButton.SetActive(true); // ÀÌµ¿&Á¤Áö ¹öÆ°À» ´Ù½Ã È­¸é¿¡ µå·¯³½´Ù
+        canClick = true; // ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ëˆ„ë¥¼ ìˆ˜ ìˆê²Œ ë§Œë“ ë‹¤
+        frontCanvas.SetActive(true); // í”Œë ˆì´ì–´ë¥¼ ê°€ë¦¬ëŠ” ë¬¼ì²´ë“¤ì´ ìˆëŠ” canvasë¥¼ ì¼ ë‹¤
+        blockingPanel.SetActive(false); // í™”ë©´ì„ ê°€ë¦¬ëŠ” íŒë„¬ì„ ëˆë‹¤
+        moveAndStopButton.SetActive(true); // ì´ë™&ì •ì§€ ë²„íŠ¼ì„ ë‹¤ì‹œ í™”ë©´ì— ë“œëŸ¬ë‚¸ë‹¤
 
-        if (onMove) followAnim.ChangeAnimStatus(); // ¿ø·¡ ÀÌµ¿ ÁßÀÌ¾ú´Ù¸é ´Ù½Ã ÀÌµ¿ÇÏµµ·Ï ¸¸µç´Ù
+        if (onMove) followAnim.ChangeAnimStatus(); // ì›ë˜ ì´ë™ ì¤‘ì´ì—ˆë‹¤ë©´ ë‹¤ì‹œ ì´ë™í•˜ë„ë¡ ë§Œë“ ë‹¤
     }
     public void ClickAngry()
     {
@@ -115,6 +115,6 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton(false);
         DialogueManager.Instance.dialogueType = DialogueType.ROOM;
 
-        // ¾À º¯°æ, ¹è°æÀ½ º¯°æ µîµî
+        // ì”¬ ë³€ê²½, ë°°ê²½ìŒ ë³€ê²½ ë“±ë“±
     }
 }
