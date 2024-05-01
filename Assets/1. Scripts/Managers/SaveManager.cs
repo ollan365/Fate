@@ -42,6 +42,7 @@ public class SaveManager : MonoBehaviour
 
             // 저장된 내용 로드
             DialogueManager.Instance.dialogueType = data.dialogueType;
+            RoomManager.Instance.currentSideIndex = data.lastSideIndex;
             GameManager.Instance.Variables = data.variables;
             MemoManager.Instance.SavedMemoList = data.savedMemoList;
 
@@ -62,7 +63,7 @@ public class SaveManager : MonoBehaviour
     public void SaveGameData()
     {
         // 저장할 데이터 생성
-        data = new(DialogueManager.Instance.dialogueType, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
+        data = new(DialogueManager.Instance.dialogueType, RoomManager.Instance.currentSideIndex, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
 
         // 클래스를 Json 형식으로 전환 (true : 가독성 좋게 작성)
         string ToJsonData = JsonUtility.ToJson(data, true);
@@ -77,7 +78,7 @@ public class SaveManager : MonoBehaviour
 public class SaveData
 {
     public DialogueType dialogueType; // 어느 씬에서 끝났는지
-
+    public int lastSideIndex;
     public string variablesToJson; //  Dictionary<string, string> 을 json 형태로 저장
     public Dictionary<string, object> variables // GameManager의 변수들
     {
@@ -86,9 +87,10 @@ public class SaveData
 
     public List<string> savedMemoList; // Memo 저장
 
-    public SaveData(DialogueType type, Dictionary<string, object> variables, List<string> memo)
+    public SaveData(DialogueType type, int currentSideIndex, Dictionary<string, object> variables, List<string> memo)
     {
         dialogueType = type;
+        lastSideIndex = currentSideIndex;
         variablesToJson = ToJson(variables);
         savedMemoList = memo;
     }

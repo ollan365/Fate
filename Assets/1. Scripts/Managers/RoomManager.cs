@@ -10,7 +10,7 @@ public class RoomManager : MonoBehaviour
     
     [Header("시점들")][SerializeField] private List<GameObject> sides;  // 시점들
     private GameObject currentView;  // 현재 뷰
-    private int currentSideIndex = 0;  // 현재 시점 인덱스
+    public int currentSideIndex = 0;  // 현재 시점 인덱스
     
     [Header("확대 화면들")][SerializeField] private List<GameObject> zoomViews;  // 확대 화면들
 
@@ -61,8 +61,8 @@ public class RoomManager : MonoBehaviour
         }
 
         // Side 1으로 초기화
-        currentView = sides[0];
-        SetCurrentSide(0);
+        currentView = sides[currentSideIndex];
+        SetCurrentSide(currentSideIndex);
 
         DialogueManager.Instance.StartDialogue("Prologue_015");  // 첫 대사 출력 후 튜토리얼 1페이즈 시작
     }
