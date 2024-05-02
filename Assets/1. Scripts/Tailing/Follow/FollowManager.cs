@@ -100,7 +100,10 @@ public class FollowManager : MonoBehaviour
         angryCanvas.SetActive(false);
         blockingPanel.SetActive(true);
     }
-
+    public void ClickCat()
+    {
+        SoundPlayer.Instance.UISoundPlay(Sound_Cat);
+    }
     public void FollowEndLogicStart()
     {
         isEnd = true;

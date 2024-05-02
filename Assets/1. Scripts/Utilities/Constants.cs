@@ -1,10 +1,10 @@
 public static class Constants
 {
-    // ´ëÈ­Ã¢ÀÇ Á¾·ù
+    // ëŒ€í™”ì°½ì˜ ì¢…ë¥˜
     public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_ANGRY, FOLLOW_TUTORIAL }
     public static int ToInt(this DialogueType dialogueType)
     {
-        // ´ÙÀÌ¾ó·Î±× Å¸ÀÔ¿¡ µû¶ó ´Ù¸¥ ¼ıÀÚ ¹İÈ¯
+        // ë‹¤ì´ì–¼ë¡œê·¸ íƒ€ì…ì— ë”°ë¼ ë‹¤ë¥¸ ìˆ«ì ë°˜í™˜
         switch (dialogueType)
         {
             case DialogueType.ROOM: return 0;
@@ -18,50 +18,50 @@ public static class Constants
     }
 
     public enum SoundType { BGM, LOOP, SOUND_EFFECT }
-    // »ç¿îµå Á¾·ù
-    // 1. ¹è°æÀ½
+    // ì‚¬ìš´ë“œ ì¢…ë¥˜
+    // 1. ë°°ê²½ìŒ
     public const int
         BGM_ROOM = 0, BGM_FOLLOW = 1, BGM_MINIGAME = 2;
 
-    // 2. ¹æÅ»Ãâ ¿ÀºêÁ§Æ®µé
+    // 2. ë°©íƒˆì¶œ ì˜¤ë¸Œì íŠ¸ë“¤
     public const int
         Sound_CarpetOpen = 0, Sound_CarpetClose = 1, Sound_ClosetOpen = 2, Sound_ClosetClose = 3,
         Sound_StorageOpen = 4, Sound_StorageClose = 5, Sound_ClockMovement = 6, Sound_LockerKeyMovement = 7, Sound_LockerUnlock = 9,
         Sound_DiaryUnlock = 10, Sound_LaptopBoot = 11, Sound_Poster = 12, Sound_ChairMovement = 13;
 
-    // 3. ¹ÌÇà
+    // 3. ë¯¸í–‰
     public const int
-        Sound_Building = 15, Sound_FollowSpecialObject = 16, Sound_Cat = 17;
+        Sound_Building = 15, Sound_FollowSpecialObject = 16, Sound_Cat = 17, Sound_TurnAround = 18, Sound_FollowEnd = 19;
 
-    // 4. ·çÇÁ (¹İº¹ µÇ¾î¾ß ÇÏ´Â °Í)
+    // 4. ë£¨í”„ (ë°˜ë³µ ë˜ì–´ì•¼ í•˜ëŠ” ê²ƒ)
     public const int
-        Sound_FootStep_Accidy = 0, Sound_FootStep_Fate = 1;
+        Sound_FootStep_Fate = 0, Sound_FootStep_Accidy = 1;
 
-    // 5. ±× ¿Ü
+    // 5. ê·¸ ì™¸
     public const int
-        Sound_Typing = -1, Sound_Click = 18, Sound_Correct = 19, Sound_Wrong = 20;
+        Sound_Typing = -1, Sound_Click = 20, Sound_Correct = 21, Sound_Wrong = 22;
         
 
-    // ½Ã°è ºÎºĞ
+    // ì‹œê³„ ë¶€ë¶„
 
 
 
-    // -------------- ¹ÌÇà °ü·Ã º¯¼öµé -------------- //
+    // -------------- ë¯¸í–‰ ê´€ë ¨ ë³€ìˆ˜ë“¤ -------------- //
     public enum FirstFollowObject
     {
-        // ºô¶ó, »§Áı, ÆíÀÇÁ¡, ¹Ù, ÀÌÀÚÄ«¾ß, Ä«Æä, ¿µ¼öÁõ, ½ÅÈ£µî, À½·á, 1Ãş ¿Ê°¡°Ô, 2Ãş ¿Ê°¡°Ô
+        // ë¹Œë¼, ë¹µì§‘, í¸ì˜ì , ë°”, ì´ìì¹´ì•¼, ì¹´í˜, ì˜ìˆ˜ì¦, ì‹ í˜¸ë“±, ìŒë£Œ, 1ì¸µ ì˜·ê°€ê²Œ, 2ì¸µ ì˜·ê°€ê²Œ
         Villa, Bread, Con, Bar, Izakawa, Cat, Cafe, Receipt, Light, Coffee, Shop_1, Shop_2,
 
-        // °ø»çÀå, ½Ä´ç, Ä¬Å×ÀÏ ¹Ù, È­ÀåÇ° °¡°Ô, ¹ÂÁ÷¹Ù, Å¬·´, ¼úÁı, È­È¯, È­³­ »ç¶÷
+        // ê³µì‚¬ì¥, ì‹ë‹¹, ì¹µí…Œì¼ ë°”, í™”ì¥í’ˆ ê°€ê²Œ, ë®¤ì§ë°”, í´ëŸ½, ìˆ ì§‘, í™”í™˜, í™”ë‚œ ì‚¬ëŒ
         Construction, Omerice, Cocktail, MiracleYoung, MusicBar, Club, Beer, Wreath, Angry
     }
 
     public static string EventID(this FirstFollowObject objectName)
     {
-        // ¹ÌÇà ¿ÀºêÁ§Æ®¿¡ µû¶ó event id ¹İÈ¯
+        // ë¯¸í–‰ ì˜¤ë¸Œì íŠ¸ì— ë”°ë¼ event id ë°˜í™˜
         switch (objectName)
         {
-            // Ã¹¹øÂ° ¹è°æ
+            // ì²«ë²ˆì§¸ ë°°ê²½
             case FirstFollowObject.Villa:   return "EventFollowVilla";
             case FirstFollowObject.Bread:   return "EventFollowBread";
             case FirstFollowObject.Con:     return "EventFollowConvenienceStore";
@@ -75,7 +75,7 @@ public static class Constants
             case FirstFollowObject.Shop_1: return "EventFollow1FClothingStore";
             case FirstFollowObject.Shop_2:   return "EventFollow2FClothingStore";
 
-            // µÎ¹øÂ° ¹è°æ
+            // ë‘ë²ˆì§¸ ë°°ê²½
             case FirstFollowObject.Construction: return "EventFollowConstructionSite";
             case FirstFollowObject.Omerice: return "EventFollowRestaurant";
             case FirstFollowObject.Cocktail: return " EventFollowCocktailBar";
@@ -92,7 +92,7 @@ public static class Constants
 
     public static string ClickVariable(this FirstFollowObject objectName)
     {
-        // ¹ÌÇà ¿ÀºêÁ§Æ®¿¡ µû¶ó º¯¼ö ÀÌ¸§ ¹İÈ¯
+        // ë¯¸í–‰ ì˜¤ë¸Œì íŠ¸ì— ë”°ë¼ ë³€ìˆ˜ ì´ë¦„ ë°˜í™˜
         switch (objectName)
         {
             case FirstFollowObject.Villa:   return "VillaClick";

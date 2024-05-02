@@ -13,58 +13,59 @@ public class FollowEnd : MonoBehaviour
     }
     public IEnumerator EndFollow()
     {
-        // ÇÊ¿¬À¸·Î ÁÜÀÎ
+        // í•„ì—°ìœ¼ë¡œ ì¤Œì¸
         StartCoroutine(ZoomIn(Position.Fate));
         yield return new WaitForSeconds(zoomTime + 0.5f);
 
-        // ½ºÅ©¸³Æ® "Follow1Fianal" Ãâ·Â + ´À³¦Ç¥
+        // ìŠ¤í¬ë¦½íŠ¸ "Follow1Fianal" ì¶œë ¥ + ëŠë‚Œí‘œ
         FollowManager.Instance.blockingPanel.SetActive(true);
         DialogueManager.Instance.StartDialogue("Follow1Fianal_001");
 
-        // ½ºÅ©¸³Æ®°¡ ³¡³¯ ¶§±îÁö ´ë±â
+        // ìŠ¤í¬ë¦½íŠ¸ê°€ ëë‚  ë•Œê¹Œì§€ ëŒ€ê¸°
         while (FollowManager.Instance.blockingPanel.activeSelf)
             yield return null;
         yield return new WaitForSeconds(0.5f);
 
-        // ¿ì¿¬À¸·Î ÁÜÀÎ
+        // ìš°ì—°ìœ¼ë¡œ ì¤Œì¸
         StartCoroutine(ZoomIn(Position.Accidy));
         yield return new WaitForSeconds(zoomTime + 0.5f);
 
-        // ¿ì¿¬ ´ë»ç Ãâ·Â
+        // ìš°ì—° ëŒ€ì‚¬ ì¶œë ¥
         FollowManager.Instance.blockingPanel.SetActive(true);
         DialogueManager.Instance.StartDialogue("Follow1Fianal_002");
 
-        // ½ºÅ©¸³Æ®°¡ ³¡³¯ ¶§±îÁö ´ë±â
+        // ìŠ¤í¬ë¦½íŠ¸ê°€ ëë‚  ë•Œê¹Œì§€ ëŒ€ê¸°
         while (FollowManager.Instance.blockingPanel.activeSelf)
             yield return null;
         yield return new WaitForSeconds(0.5f);
 
-        // ¿ì¿¬ÀÌ µÚµ¹¾Æº½
+        // ìš°ì—°ì´ ë’¤ëŒì•„ë´„
         FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(0);
+        SoundPlayer.Instance.UISoundPlay(Constants.Sound_TurnAround);
         yield return new WaitForSeconds(0.5f);
 
-        // ´Ù½Ã ÇÊ¿¬ ÂÊÀ¸·Î ÁÜÀÎ
+        // ë‹¤ì‹œ í•„ì—° ìª½ìœ¼ë¡œ ì¤Œì¸
         StartCoroutine(ZoomIn(Position.Fate));
         yield return new WaitForSeconds(zoomTime + 0.5f);
 
-        // µŞ°ÉÀ½Áú 3¹ø ÈÄ µÚµ¹¾Æ¼­ 1.5¹è¼Ó ´Ş¸®±â
+        // ë’·ê±¸ìŒì§ˆ 3ë²ˆ í›„ ë’¤ëŒì•„ì„œ 1.5ë°°ì† ë‹¬ë¦¬ê¸°
+        SoundPlayer.Instance.UISoundPlay(Constants.Sound_FollowEnd);
         FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(1);
         for (int i = 0; i < 3; i++)
         {
             StartCoroutine(FollowManager.Instance.followAnim.MoveFate());
-            SoundPlayer.Instance.UISoundPlay(Constants.Sound_FootStep_Fate);
             yield return new WaitForSeconds(1f);
         }
 
-        // È­³­ »ç¶÷ ¾ÕÂÊ ±îÁö °¡¸é¼­ ÆäÀÌµå ¾Æ¿ô
+        // í™”ë‚œ ì‚¬ëŒ ì•ìª½ ê¹Œì§€ ê°€ë©´ì„œ í˜ì´ë“œ ì•„ì›ƒ
         FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(2);
         yield return new WaitForSeconds(1f);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 2, false, 0, 0));
 
-        // °ÔÀÓ ÀúÀå
+        // ê²Œì„ ì €ì¥
         SaveManager.Instance.SaveGameData();
 
-        // ¹ÌÇà ³¡
+        // ë¯¸í–‰ ë
         FollowManager.Instance.FollowEnd();
     }
 
@@ -95,7 +96,7 @@ public class FollowEnd : MonoBehaviour
 
         while (elapsedTime < zoomTime)
         {
-            // º¸°£ÇÏ¿© Ä«¸Ş¶ó À§Ä¡¿Í Å©±â¸¦ º¯°æ
+            // ë³´ê°„í•˜ì—¬ ì¹´ë©”ë¼ ìœ„ì¹˜ì™€ í¬ê¸°ë¥¼ ë³€ê²½
             mainCam.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
             mainCam.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
 
@@ -103,7 +104,7 @@ public class FollowEnd : MonoBehaviour
             yield return null;
         }
 
-        // º¯°æÀÌ ¿Ï·áµÈ ÈÄ ÃÖÁ¾ ¸ñÇ¥°ªÀ¸·Î ¼³Á¤
+        // ë³€ê²½ì´ ì™„ë£Œëœ í›„ ìµœì¢… ëª©í‘œê°’ìœ¼ë¡œ ì„¤ì •
         mainCam.transform.position = targetPosition;
         mainCam.orthographicSize = targetSize;
     }
