@@ -18,11 +18,12 @@ public class Knife : EventObject, IResultExecutable
 
     public void ExecuteAction()
     {
-        if (isActiveAndEnabled) HideKnife();
+        HideKnife();
     }
 
     private void HideKnife()
     {
+        Debug.Log($"hideknife{sideNum} called!");
         gameObject.SetActive(false);
     }
 
