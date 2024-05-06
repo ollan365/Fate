@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
     public bool isDebug = false;
     public bool skipTutorial = false;
 
+    // 행동력 변수 변경될 때 호출될 이벤트
+    public delegate void ActionPointChangedEventHandler(int newActionPointValue);
+    public static event ActionPointChangedEventHandler OnActionPointChanged;
+
     void Awake()
     {
         if (Instance == null)
@@ -224,7 +228,11 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt--;
         SetVariable(variableName, cnt);
-        
+
+        // 행동력 감소 시 행동력 감소함을 이벤트로 알림
+        if (variableName == "ActionPoint")
+            OnActionPointChanged?.Invoke(cnt);
+
         if (isDebug) ShowVariables();
     }
 
@@ -233,6 +241,10 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt -= count;
         SetVariable(variableName, cnt);
+
+        // 행동력 감소 시 행동력 감소함을 이벤트로 알림
+        if (variableName == "ActionPoint")
+            OnActionPointChanged?.Invoke(cnt);
 
         if (isDebug) ShowVariables();
     }
