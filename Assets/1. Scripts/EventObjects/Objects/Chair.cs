@@ -19,6 +19,8 @@ public class Chair : EventObject, IResultExecutable
 
     private bool isMoving = false; // 의자가 움직이는 중인지 여부
 
+    [SerializeField] private Button deskUnzoomedButton;
+
     private void Awake()
     {
         ResultManager.Instance.RegisterExecutable($"Chair{sideNum}", this);
@@ -34,6 +36,8 @@ public class Chair : EventObject, IResultExecutable
                 movedPositions[2] = new Vector2(652f, -497f);
                 break;
         }
+
+        deskUnzoomedButton = deskUnzoomedButton.GetComponent<Button>();
     }
 
     public new void OnMouseDown()
@@ -54,6 +58,7 @@ public class Chair : EventObject, IResultExecutable
     
     IEnumerator MoveChair(Vector2 targetPosition)
     {
+        deskUnzoomedButton.enabled = false;
         isMoving = true;
 
         float elapsedTime = 0;
@@ -69,6 +74,7 @@ public class Chair : EventObject, IResultExecutable
         rectTransform.anchoredPosition = targetPosition;
         
         isMoving = false;
+        deskUnzoomedButton.enabled = true;
     }
 
     private void OnEnable()

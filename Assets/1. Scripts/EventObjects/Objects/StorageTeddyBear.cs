@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class StorageTeddyBear : EventObject
 {
+    private void Awake()
+    {
+        GetComponent<Collider2D>().enabled = false;
+    }
+    
     public new void OnMouseDown()
     {
-        if (DialogueManager.Instance.isDialogueActive) return;
+        bool isBusy = GameManager.Instance.GetIsBusy();
+        if (isBusy) return;
+        
         base.OnMouseDown();
         GameManager.Instance.IncrementVariable("StorageTeddyBearClick");
     }
