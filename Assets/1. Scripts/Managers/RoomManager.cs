@@ -29,7 +29,7 @@ public class RoomManager : MonoBehaviour
     private bool isZoomed = false;
     
     // 튜토리얼 매니저
-    public TutorialManager tutorialManager = new TutorialManager();
+    public TutorialManager tutorialManager;
     
     void Awake()
     {
@@ -60,11 +60,14 @@ public class RoomManager : MonoBehaviour
             zoomView.SetActive(false);
         }
 
-        // Side 1으로 초기화
+        // Side 1으로 초기화?
         currentView = sides[currentSideIndex];
         SetCurrentSide(currentSideIndex);
+        
+        SetButtons();
 
-        DialogueManager.Instance.StartDialogue("Prologue_015");  // 첫 대사 출력 후 튜토리얼 1페이즈 시작
+        // 첫 대사 출력 후 튜토리얼 1페이즈 시작
+        if (!GameManager.Instance.skipTutorial) DialogueManager.Instance.StartDialogue("Prologue_015");
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
@@ -145,23 +148,11 @@ public class RoomManager : MonoBehaviour
     // 이동 버튼들이 조사/다이얼로그 출력 시에는 화면 상에서 보이지 않게 함
     private void SetMoveButtons(bool isTrue)
     {
-        switch (currentSideIndex)
-        {
-            case 0:
-                moveButtonLeft.gameObject.SetActive(isTrue);
-                moveButtonRight.gameObject.SetActive(isTrue);
-                break;
-
-            case 2:
-                moveButtonLeft.gameObject.SetActive(false);
-                moveButtonRight.gameObject.SetActive(isTrue);
-                break;
-
-            case 1:
-                moveButtonLeft.gameObject.SetActive(isTrue);
-                moveButtonRight.gameObject.SetActive(false);
-                break;
-        }
+        moveButtonLeft.gameObject.SetActive(isTrue);
+        moveButtonRight.gameObject.SetActive(isTrue);
+        
+        if (currentSideIndex == 1) moveButtonRight.gameObject.SetActive(false);
+        else if (currentSideIndex == 2) moveButtonLeft.gameObject.SetActive(false);
     }
 
     public void SetButtons()

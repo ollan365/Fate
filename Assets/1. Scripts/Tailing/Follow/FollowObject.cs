@@ -10,7 +10,7 @@ public class FollowObject : EventObject
     [SerializeField] private float scaleValue;
     public new void OnMouseDown()
     {
-        if (!FollowManager.Instance.canClick) return; // »óÈ£ÀÛ¿ë ÇÒ ¼ö ¾ø´Â »óÅÂ¸é ¸®ÅÏ
+        if (!FollowManager.Instance.canClick) return; // ìƒí˜¸ì‘ìš© í•  ìˆ˜ ì—†ëŠ” ìƒíƒœë©´ ë¦¬í„´
         FollowManager.Instance.ClickObject();
 
         if (isSpecial) OnMouseDown_Special();
@@ -18,7 +18,7 @@ public class FollowObject : EventObject
     }
     private void OnMouseDown_Special()
     {
-        // isSpecial = false; // ÀÌÈÄ¿¡ Å¬¸¯ÇÒ ½Ã¿¡´Â ¹Ù·Î OnMouseDown_Normal()°¡ È£ÃâµÇµµ·Ï ÇÑ´Ù
+        // isSpecial = false; // ì´í›„ì— í´ë¦­í•  ì‹œì—ëŠ” ë°”ë¡œ OnMouseDown_Normal()ê°€ í˜¸ì¶œë˜ë„ë¡ í•œë‹¤
 
         if(objectName == FirstFollowObject.Angry)
         {
@@ -27,12 +27,14 @@ public class FollowObject : EventObject
             return;
         }
 
+        SoundPlayer.Instance.UISoundPlay(Sound_FollowSpecialObject);
+
         foreach (Transform child in FollowManager.Instance.blockingPanel.transform)
             Destroy(child.gameObject);
 
         var eventButton = Instantiate(FollowManager.Instance.eventButtonPrefab, FollowManager.Instance.blockingPanel.transform).GetComponent<Button>();
 
-        // ÀÚ½ÄÀÇ ÀÌ¹ÌÁö º¯°æ -> ³ªÁß¿¡ º¯°æ ÇÊ¿ä...
+        // ìì‹ì˜ ì´ë¯¸ì§€ ë³€ê²½ -> ë‚˜ì¤‘ì— ë³€ê²½ í•„ìš”...
         eventButton.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = specialSprite;
         eventButton.transform.GetChild(0).GetChild(0).GetComponent<Image>().SetNativeSize();
         eventButton.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().localScale = new(scaleValue, scaleValue, scaleValue);

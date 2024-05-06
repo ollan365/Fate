@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     // 디버깅용
     [SerializeField] private TextMeshProUGUI variablesText;
     public bool isDebug = false;
+    public bool skipTutorial = false;
 
     // 행동력 변수 변경될 때 호출될 이벤트
     public delegate void ActionPointChangedEventHandler(int newActionPointValue);
@@ -47,9 +48,10 @@ public class GameManager : MonoBehaviour
         
         variables["FateName"] = "필연";  // 필연 이름
         variables["FateGender"] = 0;  // 필연 성별 {0: 여자, 1: 남자}
-        variables["FateBirthday"] = 0;  // 필연 생일
+        variables["FateBirthday"] = "0505";  // 필연 생일
         
         variables["AccidyGender"] = 0;  // 우연 성별 {0: 여자, 1: 남자}
+        variables["AccidyBirthday"] = "0616";  // 필연 생일
         
         variables["ActionPoint"] = 25;  // 행동력 
 
@@ -126,8 +128,8 @@ public class GameManager : MonoBehaviour
 
         // 서랍장 속 달력
         variables["CalendarClick"] = 0;
-        variables["CalendarCluesFound"] = 0;
-        variables["CalendarMonth"] = false;
+        variables["CalendarCluesFound"] = false;
+        variables["CalendarMonth"] = 0;
 
         // 쇼핑백
         variables["ShoppingBagClick"] = 0;
@@ -139,15 +141,7 @@ public class GameManager : MonoBehaviour
         variables["StorageTeddyBearClick"] = 0;
 
         // 달력
-        // 필연 생일
-        variables["FBDClick"] = 0;
-        // 우연 생일
-        variables["ABDClick"] = 0;
-        // 10월 1일 클릭
-        variables["_1001Click"] = 0;
-        // 10월 31일 클릭
-        variables["_1031Click"] = 0;
-
+        
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
         variables["VillaClick"] = 0;

@@ -9,6 +9,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
+        if (GameManager.Instance.skipTutorial) return;
         GameManager.Instance.SetVariable("isTutorial", true);
         GameManager.Instance.SetVariable("TutorialPhase", 1);
         RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
