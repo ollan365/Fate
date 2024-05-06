@@ -15,8 +15,8 @@ public class FollowAnim : MonoBehaviour
     [SerializeField] private Animator fateBoy, fateGirl, accidyBoy, accidyGirl;
     private Animator fate, accidy;
 
-    [SerializeField] private TextMeshProUGUI stopButtonText; // ¿Ãµø&∏ÿ√„ πˆ∆∞¿« ±€ææ
-    private bool isStop = true; // «ˆ¿Á ¿Ãµø ¡ﬂ¿Œ¡ˆ∏¶ ≥™≈∏≥ª¥¬ ∫Øºˆ
+    [SerializeField] private TextMeshProUGUI stopButtonText; // Ïù¥Îèô&Î©àÏ∂§ Î≤ÑÌäºÏùò Í∏ÄÏî®
+    private bool isStop = true; // ÌòÑÏû¨ Ïù¥Îèô Ï§ëÏù∏ÏßÄÎ•º ÎÇòÌÉÄÎÇ¥Îäî Î≥ÄÏàò
     public bool IsStop { get => isStop; }
     private float moveTime = 0;
 
@@ -27,7 +27,7 @@ public class FollowAnim : MonoBehaviour
     }
     private void Update()
     {
-        if (!isStop) // πË∞Ê ¿Ãµø
+        if (!isStop) // Î∞∞Í≤Ω Ïù¥Îèô
         {
             if (FollowManager.Instance.isTutorial)
             {
@@ -39,34 +39,34 @@ public class FollowAnim : MonoBehaviour
             backgroundPosition.position += moveVector;
             frontCanvasPosition.position += moveVector;
 
-            if(backgroundPosition.position.x < -33)
+            if(backgroundPosition.position.x < -39)
             {
                 ChangeAnimStatus();
                 FollowManager.Instance.FollowEndLogicStart();
 
-                // ¥Ÿ¿Ω πË∞Ê ¿Ãµø Ω√ø°¥¬ π›¥Î πÊ«‚¿∏∑Œ 1.5πË º”µµ
+                // Îã§Ïùå Î∞∞Í≤Ω Ïù¥Îèô ÏãúÏóêÎäî Î∞òÎåÄ Î∞©Ìñ•ÏúºÎ°ú 1.5Î∞∞ ÏÜçÎèÑ
                 moveSpeed *= -1.5f;
             }
         }
     }
     public void ChangeAnimStatus()
     {
-        // ¿Ãµø¿ª ∏ÿ√„ or Ω√¿€
+        // Ïù¥ÎèôÏùÑ Î©àÏ∂§ or ÏãúÏûë
         isStop = !isStop;
 
-        // ¿Ãµø ¡ﬂø°¥¬ πﬂ¿⁄±π º“∏Æ
+        // Ïù¥Îèô Ï§ëÏóêÎäî Î∞úÏûêÍµ≠ ÏÜåÎ¶¨
         SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Accidy, !isStop, 1);
         SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Fate, !isStop, 1);
 
-        if (isStop) stopButtonText.text = "¿Ãµø";
-        else stopButtonText.text = "¡§¡ˆ";
+        if (isStop) stopButtonText.text = "Ïù¥Îèô";
+        else stopButtonText.text = "Ï†ïÏßÄ";
 
         fate.SetBool("Walking", !isStop);
         accidy.SetBool("Walking", !isStop);
     }
     public void SetCharcter()
     {
-        // « ø¨∞˙ øÏø¨¿« º∫∫∞ø° µ˚∂Û ¥Ÿ∏• æ÷¥œ∏ﬁ¿Ã≈Õ ¿€µø
+        // ÌïÑÏó∞Í≥º Ïö∞Ïó∞Ïùò ÏÑ±Î≥ÑÏóê Îî∞Îùº Îã§Î•∏ Ïï†ÎãàÎ©îÏù¥ÌÑ∞ ÏûëÎèô
         if ((int)GameManager.Instance.GetVariable("FateGender") == 0) fate = fateGirl;
         else fate = fateBoy;
 
@@ -79,7 +79,7 @@ public class FollowAnim : MonoBehaviour
 
     private IEnumerator ChangeBeaconSprite()
     {
-        // Ω≈»£µÓ¿« ªˆ¿ª 3√ ∏∂¥Ÿ πŸ≤„¡ÿ¥Ÿ
+        // Ïã†Ìò∏Îì±Ïùò ÏÉâÏùÑ 3Ï¥àÎßàÎã§ Î∞îÍøîÏ§ÄÎã§
         while (gameObject.activeSelf)
         {
             foreach (Sprite sprite in beaconSprites)
@@ -106,10 +106,10 @@ public class FollowAnim : MonoBehaviour
             fate.SetBool("Walking", false);
             fate.SetBool("Back", true);
 
-            // ¿Ãµø¿ª Ω√¿€
+            // Ïù¥ÎèôÏùÑ ÏãúÏûë
             isStop = false;
 
-            // ∫¸∏£∞‘ ¿Ãµø«œπ«∑Œ ¿Ωæ« º”µµµµ ∫¸∏£∞‘
+            // Îπ†Î•¥Í≤å Ïù¥ÎèôÌïòÎØÄÎ°ú ÏùåÏïÖ ÏÜçÎèÑÎèÑ Îπ†Î•¥Í≤å
             SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Fate, !isStop, 2);
         }
     }
