@@ -10,6 +10,7 @@ public class MemoManager : MonoBehaviour
 
     [SerializeField] private GameObject memoPage;
     [SerializeField] private GameObject memoButton;
+    [SerializeField] private GameObject closeButton;
 
     // 모든 메모
     public Dictionary<string, string> allMemo = new();
@@ -76,6 +77,7 @@ public class MemoManager : MonoBehaviour
             if (isFollow) FollowManager.Instance.ClickObject();
 
             memoPage.SetActive(true);
+            closeButton.SetActive(true);
         }
         else if (memoPage.activeSelf)
         {
@@ -84,6 +86,7 @@ public class MemoManager : MonoBehaviour
             if (isFollow) FollowManager.Instance.EndScript(false);
 
             memoPage.SetActive(false);
+            closeButton.SetActive(false);
 
             foreach (Transform child in scrollViewContent)
             {
