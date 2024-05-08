@@ -8,11 +8,12 @@ using UnityEngine.UI;
 public class ImageAndLockPanelManager : MonoBehaviour
 {
     [SerializeField] private GameObject blockingPanel;
+    [SerializeField] private GameObject TutorialBlockingPanel;
     [SerializeField] private GameObject objectImageGroup;
     [SerializeField] private GameObject objectImage;
     private Image objectImageImageComponent;
     private RectTransform objectImageRectTransform;
-    
+
     [Header("이벤트 오브젝트 확대 이미지")]
     [SerializeField] private Sprite amuletImage;
     [SerializeField] private Sprite carpetPaperImage;
@@ -26,22 +27,32 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private Sprite cafePintInBagImage;
 
     [Header("잠금 장치들")]
-    [SerializeField] private GameObject laptopGameObject; 
+    [SerializeField] private GameObject laptopGameObject;
     [SerializeField] private GameObject clockGameObject;
     [SerializeField] private GameObject diaryGameObject;
     [SerializeField] private GameObject calendarGameObject;
 
+    [Header("튜토리얼 강조 이미지들")]
+    [SerializeField] private GameObject LeftMoveButton;
+    [SerializeField] private GameObject RightMoveButton;
+    [SerializeField] private GameObject Chair;
+    [SerializeField] private GameObject Carpet;
+    [SerializeField] private GameObject CarpetPaper;
+    [SerializeField] private GameObject CarpetOpen;
+
     private Dictionary<string, Sprite> imageDictionary;
     private Dictionary<string, GameObject> lockObjectDictionary;
+    private Dictionary<string, GameObject> TutorialimageDictionary;
     [SerializeField] private bool isImageActive = false;
     [SerializeField] private bool isLockObjectActive = false;
+    [SerializeField] private bool isTutorialObjectActive = false;
     private string currentLockObjectName = null;
 
     private void Awake()
     {
         objectImageImageComponent = objectImage.GetComponent<Image>();
         objectImageRectTransform = objectImage.GetComponent<RectTransform>();
-        
+
         imageDictionary = new Dictionary<string, Sprite>()  // imageDictionary 초기화
         {
             {"amulet", amuletImage},
@@ -63,6 +74,16 @@ public class ImageAndLockPanelManager : MonoBehaviour
             { "diary", diaryGameObject },
             { "calendar", calendarGameObject },
         };
+
+        TutorialimageDictionary = new Dictionary<string, GameObject>()
+        {
+            {"TutorialLeftMoveButton", LeftMoveButton},
+            {"TutorialRightMoveButton", RightMoveButton},
+            {"TutorialChair", Chair},
+            {"TutorialCarpet", Carpet},
+            {"TutorialCarpetPaper", CarpetPaper},
+            {"TutorialCarpetOpen", CarpetOpen},
+        };
     }
 
     public void OnExitButtonClick()
@@ -70,21 +91,35 @@ public class ImageAndLockPanelManager : MonoBehaviour
         if (isImageActive)
         {
             SetObjectImageGroup(false);
-            
-            bool isImageOrLockActive = isImageActive || isLockObjectActive;
+
+            bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorialObjectActive;
             RoomManager.Instance.SetIsInvestigating(isImageOrLockActive);
-            
+
             return;
         }
 
         if (isLockObjectActive)
         {
             SetLockObject(false);
-            
-            bool isImageOrLockActive = isImageActive || isLockObjectActive;
+
+            bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorialObjectActive;
             RoomManager.Instance.SetIsInvestigating(isImageOrLockActive);
         }
-        
+
+        if (isTutorialObjectActive)
+        {
+            if (TutorialBlockingPanel.activeSelf && currentLockObjectName == null)
+            {
+                SetTutorialBlockingPanel(false);
+            }
+            else
+            {
+                SetTutorialImageObject(false);
+            }
+
+            bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorialObjectActive;
+            RoomManager.Instance.SetIsInvestigating(isImageOrLockActive);
+        }
     }
 
     public void SetObjectImageGroup(bool isTrue, string eventObjectName = null)
@@ -140,28 +175,91 @@ public class ImageAndLockPanelManager : MonoBehaviour
             Debug.Log("lockObjectName must be a correct value!");
             return;
         }
-        
+
         isLockObjectActive = isTrue;
 
         if (isTrue)
         {
             SetObjectImageGroup(false);  // 이미지 켜져있을 때 Lock object activate하면 이미지 숨기기
             lockObjectDictionary[lockObjectName].gameObject.SetActive(true);
-            
+
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
         }
         else lockObjectDictionary[currentLockObjectName].gameObject.SetActive(false);
         currentLockObjectName = lockObjectName;
-        
+
         SetBlockingPanel();
     }
-    
+
+    public void SetTutorialImageObject(bool isTrue, string tutorialImageObjectName = null)
+    {
+        if (isTrue && tutorialImageObjectName == null)
+        {
+            Debug.Log("lockObjectName must be a correct value!");
+            return;
+        }
+
+        isTutorialObjectActive = isTrue;
+
+        if (isTrue)
+        {
+            SetObjectImageGroup(false);  // 이미지 켜져있을 때 Lock object activate하면 이미지 숨기기
+
+            if (tutorialImageObjectName == "TutorialMoveButton")
+            {
+                TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(isTrue);
+                TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(isTrue);
+
+                if (RoomManager.Instance.currentSideIndex == 1) TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(false);
+                else if (RoomManager.Instance.currentSideIndex == 2) TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(false);
+            }
+            else
+            {
+                TutorialimageDictionary[tutorialImageObjectName].gameObject.SetActive(true);
+            }
+
+            RoomManager.Instance.SetIsInvestigating(true);
+            RoomManager.Instance.SetButtons();
+        }
+        else
+        {
+            if (currentLockObjectName == "TutorialMoveButton")
+            {
+                TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(false);
+                TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(false);
+            }
+            else
+            {
+                TutorialimageDictionary[currentLockObjectName].gameObject.SetActive(false);
+            }
+        }
+        currentLockObjectName = tutorialImageObjectName;
+
+        SetTutorialBlockingPanel();
+    }
+
     public void SetBlockingPanel()
     {
-        bool isTutorial = (bool)GameManager.Instance.GetVariable("isTutorial"); 
+        bool isTutorial = (bool)GameManager.Instance.GetVariable("isTutorial");
 
         bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorial;
         blockingPanel.SetActive(isImageOrLockActive);
+    }
+
+    public void SetTutorialBlockingPanel()
+    {
+        bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorialObjectActive;
+        TutorialBlockingPanel.SetActive(isImageOrLockActive);
+    }
+
+    public void SetTutorialBlockingPanel(bool isTrue)
+    {
+        isTutorialObjectActive = isTrue;
+        RoomManager.Instance.SetIsInvestigating(true);
+        RoomManager.Instance.SetButtons();
+
+        bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorialObjectActive;
+        TutorialBlockingPanel.SetActive(isImageOrLockActive);
     }
 }

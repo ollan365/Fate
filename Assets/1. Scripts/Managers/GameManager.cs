@@ -55,6 +55,10 @@ public class GameManager : MonoBehaviour
         
         variables["ActionPoint"] = 25;  // 행동력 
 
+        variables["isInquiry"] = false; // 조사 시스템에서 예 누르면 true되고 계속 조사 가능.
+
+        variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
+
         // 2 - 0. 튜토리얼 관련 변수들 - 첫번째 방탈출
         variables["isTutorial"] = false;
         variables["TutorialPhase"] = 0;
