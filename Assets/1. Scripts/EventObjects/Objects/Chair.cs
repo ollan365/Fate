@@ -42,8 +42,8 @@ public class Chair : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
-        bool isBusy = GameManager.Instance.GetIsBusy(); 
-        
+        bool isBusy = GameManager.Instance.GetIsBusy();
+
         if (isMoving | isBusy) return;
         
         base.OnMouseDown();

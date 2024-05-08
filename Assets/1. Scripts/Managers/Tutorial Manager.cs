@@ -55,8 +55,12 @@ public class TutorialManager : MonoBehaviour
             case 2:
                 DialogueManager.Instance.StartDialogue("Tutorial_003");
                 break;
-            
+
             case 3:
+                DialogueManager.Instance.StartDialogue("Tutorial_003_B");
+                break;
+
+            case 4:
                 DialogueManager.Instance.StartDialogue("Tutorial_004");
                 EndTutorial();
                 break;

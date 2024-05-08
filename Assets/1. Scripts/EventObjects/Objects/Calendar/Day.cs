@@ -25,19 +25,19 @@ public class Day: MonoBehaviour
 
         if (date == fateBirthday)
         {
-            EventManager.Instance.CallEvent("EventCalendarBirthdayFate");
+            EventManager.Instance.CallEvent("EventStorageCalendarFateBirth");
         }
         else if (date == accidyBirthday)
         {
-            EventManager.Instance.CallEvent("EventCalendarBirthdayAccidy");
+            EventManager.Instance.CallEvent("EventStorageCalendarAccidyBirth");
         }
         else if (date == "1031")
         {
-            EventManager.Instance.CallEvent("EventCalendarSpecialDateA");
+            EventManager.Instance.CallEvent("EventStorageCalendar1031");
         }
         else if (date == "1001")
         {
-            EventManager.Instance.CallEvent("EventCalendarSpecialDateB");
+            EventManager.Instance.CallEvent("EventStorageCalendar1001");
         }
     }
 }
