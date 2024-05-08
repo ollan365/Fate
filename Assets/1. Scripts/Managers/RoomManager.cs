@@ -30,7 +30,8 @@ public class RoomManager : MonoBehaviour
     
     // 튜토리얼 매니저
     public TutorialManager tutorialManager;
-    
+
+
     void Awake()
     {
         if (Instance == null)
@@ -69,6 +70,7 @@ public class RoomManager : MonoBehaviour
         // 첫 대사 출력 후 튜토리얼 1페이즈 시작
         if (!GameManager.Instance.skipTutorial) DialogueManager.Instance.StartDialogue("Prologue_015");
     }
+
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
     {
@@ -129,6 +131,7 @@ public class RoomManager : MonoBehaviour
     {
         SetCurrentView(sides[newSideIndex]);
         currentSideIndex = newSideIndex;
+        GameManager.Instance.SetVariable("currentSideIndex", currentSideIndex);
     }
     
     // 뷰 전환
