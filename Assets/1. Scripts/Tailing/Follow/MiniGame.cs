@@ -17,8 +17,7 @@ public class MiniGame : MonoBehaviour
 
     [Header("Character")]
     [SerializeField] private Image accidy;
-    [SerializeField] private GameObject fateBack;
-    [SerializeField] private GameObject[] fateSit;
+    [SerializeField] private Image[] fatePositions;
     [SerializeField] private Sprite accidyGirlFront, accidyGirlBack, accidyBoyFront, accidyBoyBack;
     private Sprite accidyFrontSprite, accidyBackSprite;
 
@@ -31,54 +30,72 @@ public class MiniGame : MonoBehaviour
         {
             clickCount = value;
 
-            switch (ClickCount / 10) // 이미지 바뀌는 시간을 고려하여 0.5f씩 줄임
+            if (clickCount % 3 != 0) return;
+
+            for (int i = 0; i < 3; i++) clear[i] = true;
+
+            switch (ClickCount / 3) // 이미지 바뀌는 시간을 고려하여 0.5f씩 줄임
             {
                 case 1:
                     difficulty = 3f;
                     gaugeSliders[ToInt(Place.MEMO)].gameObject.SetActive(true);
                     buttons[ToInt(Place.MEMO)].gameObject.SetActive(true);
                     buttonImages[ToInt(Place.MEMO)].gameObject.SetActive(true);
+
+                    // 클리어 해야하는 것
+                    clear[ToInt(Place.MEMO)] = false;
                     break;
                 case 2:
                     difficulty = 2f;
                     gaugeSliders[ToInt(Place.FIRST)].gameObject.SetActive(true);
                     buttons[ToInt(Place.FIRST)].gameObject.SetActive(true);
                     buttonImages[ToInt(Place.FIRST)].gameObject.SetActive(true);
+
+                    // 클리어 해야하는 것
+                    clear[ToInt(Place.MEMO)] = false;
+                    clear[ToInt(Place.FIRST)] = false;
                     break;
                 default:
                     difficulty = 1f;
                     gaugeSliders[ToInt(Place.THIRD)].gameObject.SetActive(true);
                     buttons[ToInt(Place.THIRD)].gameObject.SetActive(true);
                     buttonImages[ToInt(Place.THIRD)].gameObject.SetActive(true);
+
+                    // 클리어 해야하는 것
+                    clear[ToInt(Place.MEMO)] = false;
+                    clear[ToInt(Place.FIRST)] = false;
+                    clear[ToInt(Place.THIRD)] = false;
                     break;
             }
 
-            if (clickCount % 10 == 0) StartCoroutine(StartMiniGame());
+             StartCoroutine(StartMiniGame());
         }
     }
 
     // 상태변수
     private int heartCount = 3; // 목숨 개수
     private bool isGameOver; // 게임 오버 되었는가
+    private bool[] clear; // 게이지를 다 채웠는가
     private bool accidyBack; // 우연이 뒤를 보고 있는가
-    private bool fateMove; // 필연이 이동을 했는가
     private bool canClick;
     private float difficulty = 0; // 난이도
     public enum Place { WALL, FIRST, MEMO, THIRD }
-    private Place currentPlace;
+    [SerializeField] private Place currentPlace; // 인스펙터에서 확인
     private int ToInt(Place place)
     {
         switch (place)
         {
-            case Place.WALL: return -1;
             case Place.FIRST: return 0;
             case Place.MEMO: return 1;
             case Place.THIRD: return 2;
+            case Place.WALL: return 3;
         }
         return -1;
     }
     private void Start()
     {
+        clear = new bool[3];
+
         // 우연의 성별에 따라 다른 이미지
         if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)
         {
@@ -98,9 +115,12 @@ public class MiniGame : MonoBehaviour
         // 변수들 초기화
         isGameOver = false;
         accidyBack = false;
-        fateMove = false;
         foreach (Slider s in gaugeSliders) s.value = 0;
         currentPlace = Place.WALL;
+
+        // 필연이 위치 초기화
+        foreach (Image i in fatePositions) i.color = new Color(1, 1, 1, 0);
+        fatePositions[ToInt(Place.WALL)].color = new Color(1, 1, 1, 1);
 
         // 메모 버튼 없애기
         MemoManager.Instance.HideMemoButton(true);
@@ -121,17 +141,25 @@ public class MiniGame : MonoBehaviour
         // 버튼들 활성화
         canClick = true;
 
-        // 필연이 움직였고 우연이 뒤를 돌아본 상태가 중첩되면 하트 하나 감소
+        // 맞은 뒤에는 한동안 무적
+        bool onHit = false;
+
+        // 게임 오버 or 게임 클리어까지 반복
         while (!isGameOver)
         {
-            if(fateMove && accidyBack)
+            // 게임 클리어
+            if (clear[ToInt(Place.MEMO)] && clear[ToInt(Place.FIRST)] && clear[ToInt(Place.THIRD)]) break;
+
+            // 필연이 움직였고 우연이 뒤를 돌아본 상태가 중첩되면 하트 하나 감소
+            if (currentPlace != Place.WALL && accidyBack && !onHit)
             {
+                onHit = true;
                 heartCount--;
 
                 if (heartCount <= 0) isGameOver = true;
                 else // 체력을 1 깎고 다시 벽쪽으로 돌아간다
                 {
-                    fateMove = false;
+                    accidyBack = false; // 한대 맞았으면 더 이상 체력이 깎이지 않도록 한다
                     StartCoroutine(FateMove(Place.WALL));
 
                     // 하트가 터지는 애니메이션 재생
@@ -145,73 +173,70 @@ public class MiniGame : MonoBehaviour
                     heartAnimator[heartCount].gameObject.SetActive(false);
                     ScreenEffect.Instance.coverPanel.color = Color.black;
                 }
+                onHit = false;
             }
-
             yield return null;
         }
 
-        // 게임 오버 (현재는 무조건 미행으로 돌아감)
-        MemoManager.Instance.HideMemoButton(false);
+        if (isGameOver) // 게임 오버
+        {
+            
+        }
+        else // 게임 클리어
+        {
+            isGameOver = true; // 다른 코루틴들이 멈추도록 설정
 
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
-        yield return new WaitForSeconds(0.2f);
-        miniGameCanvas.SetActive(false);
-        followCanvas.SetActive(true);
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW);
-        yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
-        followUICanvas.SetActive(true);
+            MemoManager.Instance.HideMemoButton(false);
+
+            StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
+            SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
+            yield return new WaitForSeconds(0.2f);
+            miniGameCanvas.SetActive(false);
+            followCanvas.SetActive(true);
+            SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW);
+            yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
+            followUICanvas.SetActive(true);
+        }
     }
 
-    public void MemoButtonOnClick(Place place)
+    public void ButtonOnClick(int placeNum)
     {
         if (!canClick) return;
 
-        if (!fateMove) // 필연이 숨어있는 상태였다면
+        Place place = Place.WALL;
+
+        switch (placeNum)
         {
-            StartCoroutine(FateMove(place));
+            case 0: place = Place.FIRST; break;
+            case 1: place = Place.MEMO; break;
+            case 2: place = Place.THIRD; break;
         }
-        else
+
+        if (currentPlace == place && currentPlace != Place.WALL) // 현재 장소와 클릭한 곳이 같을 떄
         {
             gaugeSliders[ToInt(place)].value += 0.015f;
 
-            if(gaugeSliders[ToInt(place)].value == 1) isGameOver = true; // 이거 수정
+            if(gaugeSliders[ToInt(place)].value == 1) clear[ToInt(place)] = true;
         }
-    }
-    public void WallButtonOnClick()
-    {
-        StartCoroutine(FateMove(Place.WALL));
+        else if(currentPlace != place) // 필연이 숨어있는 상태 or 숨으러 갈때
+        {
+            StartCoroutine(FateMove(place));
+        }
     }
     private IEnumerator FateMove(Place place)
     {
         canClick = false; // 애니메이션 끝날 때까지 버튼 비활성화
 
-        if (place != Place.WALL)
-        {
-            // 필연의 위치가 바뀌는 애니메이션
-            StartCoroutine(ScreenEffect.Instance.OnFade(fateBack.GetComponent<Image>(), 1, 0, 0.2f, false, 0, 0));
-            yield return new WaitForSeconds(0.2f);
-            StartCoroutine(ScreenEffect.Instance.OnFade(fateSit[ToInt(place)].GetComponent<Image>(), 0, 1, 0.2f, false, 0, 0));
-            yield return new WaitForSeconds(0.2f);
+        // 필연의 위치가 바뀌는 애니메이션
+        StartCoroutine(ScreenEffect.Instance.OnFade(fatePositions[ToInt(currentPlace)], 1, 0, 0.2f, false, 0, 0));
+        yield return new WaitForSeconds(0.2f);
 
-            // 필연의 상태를 이동한 상태로 변경
-            fateMove = true;
-            currentPlace = place;
-        }
-        else
-        {
-            // 필연의 상태를 이동하지 않은 상태로 변경
-            fateMove = false;
+        // 필연의 상태를 이동한 위치로 변경
+        currentPlace = place;
 
-            // 필연의 위치가 바뀌는 애니메이션
-            StartCoroutine(ScreenEffect.Instance.OnFade(fateSit[ToInt(currentPlace)].GetComponent<Image>(), 1, 0, 0.2f, false, 0, 0));
-            yield return new WaitForSeconds(0.2f);
-            StartCoroutine(ScreenEffect.Instance.OnFade(fateBack.GetComponent<Image>(), 0, 1, 0.2f, false, 0, 0));
-            yield return new WaitForSeconds(0.2f);
+        StartCoroutine(ScreenEffect.Instance.OnFade(fatePositions[ToInt(place)], 0, 1, 0.2f, false, 0, 0));
+        yield return new WaitForSeconds(0.2f);
 
-            // 필연의 위치 변경
-            currentPlace = place;
-        }
         canClick = true;
     }
     private IEnumerator AccidyLogic()

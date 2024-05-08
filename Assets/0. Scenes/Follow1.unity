@@ -667,12 +667,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1830803160}
         m_TargetAssemblyTypeName: MiniGame, Assembly-CSharp
-        m_MethodName: WallButtonOnClick
-        m_Mode: 1
+        m_MethodName: ButtonOnClick
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1450,8 +1450,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1830803160}
         m_TargetAssemblyTypeName: MiniGame, Assembly-CSharp
-        m_MethodName: MemoButtonOnClick
-        m_Mode: 1
+        m_MethodName: ButtonOnClick
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1822,7 +1822,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 235.00002, y: -100}
+  m_AnchoredPosition: {x: 235, y: -100}
   m_SizeDelta: {x: 470.00003, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &389775476
@@ -2855,12 +2855,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1830803160}
         m_TargetAssemblyTypeName: MiniGame, Assembly-CSharp
-        m_MethodName: MemoButtonOnClick
-        m_Mode: 1
+        m_MethodName: ButtonOnClick
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -7910,12 +7910,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1830803160}
         m_TargetAssemblyTypeName: MiniGame, Assembly-CSharp
-        m_MethodName: MemoButtonOnClick
-        m_Mode: 1
+        m_MethodName: ButtonOnClick
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -8830,15 +8830,16 @@ MonoBehaviour:
   - {fileID: 699748112}
   - {fileID: 357815105}
   accidy: {fileID: 734376813}
-  fateBack: {fileID: 650762640}
-  fateSit:
-  - {fileID: 1070707913}
-  - {fileID: 1223995393}
-  - {fileID: 1101260640}
+  fatePositions:
+  - {fileID: 1070707915}
+  - {fileID: 1223995395}
+  - {fileID: 1101260642}
+  - {fileID: 650762642}
   accidyGirlFront: {fileID: 21300000, guid: fecfd15356aa7b44cb29132a8f9dd9dc, type: 3}
   accidyGirlBack: {fileID: 21300000, guid: 6b621e5068a9e604898edfff675e2a0b, type: 3}
   accidyBoyFront: {fileID: 21300000, guid: fb34ea4571909384fa699232185c73dc, type: 3}
   accidyBoyBack: {fileID: 21300000, guid: c6dc1629bb62994449881a7f11f5ee6b, type: 3}
+  currentPlace: 0
 --- !u!114 &1830803161
 MonoBehaviour:
   m_ObjectHideFlags: 0
