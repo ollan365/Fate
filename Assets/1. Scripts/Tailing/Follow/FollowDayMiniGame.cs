@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MiniGame : MonoBehaviour
+public class FollowDayMiniGame : MonoBehaviour
 {
     [Header("Canvas")]
     [SerializeField] private GameObject followCanvas;
@@ -73,7 +73,7 @@ public class MiniGame : MonoBehaviour
     }
 
     // 상태변수
-    private int heartCount = 3; // 목숨 개수
+    public int heartCount = 3; // 목숨 개수
     private bool isGameOver; // 게임 오버 되었는가
     private bool[] clear; // 게이지를 다 채웠는가
     private bool accidyBack; // 우연이 뒤를 보고 있는가
@@ -180,7 +180,7 @@ public class MiniGame : MonoBehaviour
 
         if (isGameOver) // 게임 오버
         {
-            
+            FollowManager.Instance.FollowEnd();
         }
         else // 게임 클리어
         {
