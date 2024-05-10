@@ -57,6 +57,9 @@ public class FollowEnd : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
+        // 카메라 원래대로
+        StartCoroutine(ZoomIn(Position.ZoomOut));
+
         // 화난 사람 앞쪽 까지 가면서 페이드 아웃
         FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(2);
         yield return new WaitForSeconds(1f);
@@ -64,9 +67,6 @@ public class FollowEnd : MonoBehaviour
 
         // 게임 저장 (일단은 건너뜀 - 방탈출까지 하고 와야 오류 없이 저장됨)
         // SaveManager.Instance.SaveGameData();
-
-        // 카메라 원래대로
-        StartCoroutine(ZoomIn(Position.ZoomOut));
 
         // 미행 끝
         FollowManager.Instance.FollowFinishGameStart();
