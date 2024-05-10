@@ -8,12 +8,15 @@ public class FollowFinishMiniGame : MonoBehaviour
     [SerializeField] private GameObject followUICanvas;
     [SerializeField] private GameObject finishGameCanvas;
     [SerializeField] private GameObject finishGameObjects;
+    [SerializeField] private GameObject finishGameEndCanvas;
 
     [Header("UI")]
     [SerializeField] private Animator[] heartAnimator;
 
     [Header("Object")]
     [SerializeField] private GameObject fate;
+    [SerializeField] private GameObject fateEnd;
+    [SerializeField] private GameObject accidyEnd;
     [SerializeField] private GameObject[] obstructionPrefabs;
     [SerializeField] private Transform[] fatePositions;
     [SerializeField] private Transform[] obstructionPositions;
@@ -21,6 +24,7 @@ public class FollowFinishMiniGame : MonoBehaviour
     [Header("Variable")]
     [SerializeField] private float gamePlayTime;
     [SerializeField] private float moveTime;
+    [SerializeField] private float invincibleTime;
     private bool isGameOver = false;
     private int heartCount;
     private int currentPosition = 1;
@@ -47,6 +51,8 @@ public class FollowFinishMiniGame : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         finishGameObjects.SetActive(true); // 페이드 인 아웃 끝
 
+        StartCoroutine(BackgroundMove());
+
         float currentTime = 0;
 
         while (!isGameOver && currentTime < gamePlayTime)
@@ -68,9 +74,48 @@ public class FollowFinishMiniGame : MonoBehaviour
             currentTime += randomTimn;
         }
 
+        isGameOver = true;
+
+        // 미니 게임 끝 (페이드 인아웃)
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
+        yield return new WaitForSeconds(0.2f);
+        finishGameObjects.SetActive(false);
+        finishGameEndCanvas.SetActive(true);
+        yield return new WaitForSeconds(0.4f);
+
+        // 필연이 앞으로 걸어나옴
+        while (true)
+        {
+            fateEnd.transform.position += Vector3.up * Time.deltaTime * 5;
+            if(fateEnd.transform.position.y >= 2.3f)
+            {
+                fateEnd.transform.position = new(fateEnd.transform.position.x, 2.3f, fateEnd.transform.position.z);
+                break;
+            }
+            yield return null;
+        }
+
+        // 대사 같은 걸 출력하겠지...?
+        yield return new WaitForSeconds(1.5f);
+
+        // 우연이 앞으로 걸어나옴
+        while (true)
+        {
+            accidyEnd.transform.position += Vector3.up * Time.deltaTime;
+            if (accidyEnd.transform.position.y >= 0)
+            {
+                accidyEnd.transform.position = new(accidyEnd.transform.position.x, 0, accidyEnd.transform.position.z);
+                break;
+            }
+            yield return null;
+        }
+
+        // 대사 같은 걸 출력하겠지...?
+        yield return new WaitForSeconds(0.5f);
+
         FollowManager.Instance.FollowEnd();
     }
-    public IEnumerator Background() // 배경 움직이기 (미완성)
+    public IEnumerator BackgroundMove() // 배경 움직이기 (미완성)
     {
         while (!isGameOver)
         {
@@ -80,7 +125,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
                 if (t.position.y <= -scrollAmount)
                 {
-                    // t.position = targets.position - Vector3.down * scrollAmount;
+                    t.position += Vector3.up * scrollAmount * 2;
                 }
             }
             yield return null;
@@ -90,12 +135,27 @@ public class FollowFinishMiniGame : MonoBehaviour
     {
         heartCount--;
 
+        // 화면이 붉어지는 애니메이션
+        ScreenEffect.Instance.coverPanel.color = Color.red;
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
+
+        if (heartCount <= 0) isGameOver = true; // 게임 오버
+        else StartCoroutine(PlayerInvincible()); // 아직 생명이 남아있으면 무적 시간
+
         // 하트가 터지는 애니메이션 재생
         heartAnimator[heartCount].SetTrigger("Break");
         yield return new WaitForSeconds(0.5f);
         heartAnimator[heartCount].gameObject.SetActive(false);
 
-        if (heartCount <= 0) isGameOver = true; // 게임 오버
+        ScreenEffect.Instance.coverPanel.color = Color.black;
+    }
+    private IEnumerator PlayerInvincible()
+    {
+        fate.tag = "Untagged";
+        fate.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+        yield return new WaitForSeconds(invincibleTime); // 무적
+        fate.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        fate.tag = "Player";
     }
     public void OnClickMoveButton(int index)
     {

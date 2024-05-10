@@ -9,7 +9,7 @@ public class Obstruction : MonoBehaviour
 
     void Update()
     {
-        transform.position += Vector3.down * speed;
+        transform.position += Vector3.down * speed * 0.01f;
         if(transform.position.y < -10) Destroy(gameObject);
     }
 
