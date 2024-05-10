@@ -8,8 +8,9 @@ public class FollowManager : MonoBehaviour
     public static FollowManager Instance { get; private set; }
 
     [SerializeField] private FollowTutorial followTutorial;
-    [SerializeField] private MiniGame miniGame;
+    [SerializeField] private FollowDayMiniGame miniGame;
     [SerializeField] private FollowEnd followEnd;
+    [SerializeField] private FollowFinishMiniGame followFinishMiniGame;
     public FollowAnim followAnim;
 
     [SerializeField] private GameObject moveAndStopButton;
@@ -112,6 +113,10 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton(true);
 
         StartCoroutine(followEnd.EndFollow());
+    }
+    public void FollowFinishGameStart()
+    {
+        StartCoroutine(followFinishMiniGame.FinishGameStart(miniGame.heartCount));
     }
     public void FollowEnd()
     {

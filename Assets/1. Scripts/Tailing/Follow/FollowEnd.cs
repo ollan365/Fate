@@ -6,7 +6,7 @@ public class FollowEnd : MonoBehaviour
 {
     private Camera mainCam;
     private float zoomTime = 1.5f;
-    private enum Position { Fate, Accidy }
+    private enum Position { Fate, Accidy, ZoomOut }
     private void Start()
     {
         mainCam = Camera.main;
@@ -62,11 +62,14 @@ public class FollowEnd : MonoBehaviour
         yield return new WaitForSeconds(1f);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 2, false, 0, 0));
 
-        // 게임 저장
-        SaveManager.Instance.SaveGameData();
+        // 게임 저장 (일단은 건너뜀 - 방탈출까지 하고 와야 오류 없이 저장됨)
+        // SaveManager.Instance.SaveGameData();
+
+        // 카메라 원래대로
+        StartCoroutine(ZoomIn(Position.ZoomOut));
 
         // 미행 끝
-        FollowManager.Instance.FollowEnd();
+        FollowManager.Instance.FollowFinishGameStart();
     }
 
     private IEnumerator ZoomIn(Position type)

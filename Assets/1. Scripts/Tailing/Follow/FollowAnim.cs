@@ -105,9 +105,6 @@ public class FollowAnim : MonoBehaviour
 
             // 이동을 시작
             isStop = false;
-
-            // 빠르게 이동하므로 음악 속도도 빠르게
-            SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Fate, !isStop, 2);
         }
     }
     public IEnumerator MoveFate()
