@@ -61,7 +61,7 @@ public class ResultManager : MonoBehaviour
     {
         // 강제로 진행하고 있던 result 중지
 
-        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+        //if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
 
     public void ExecuteResult(string resultID)
@@ -108,14 +108,15 @@ public class ResultManager : MonoBehaviour
             case "ResultInquiryYes": // 조사 예 선택
                 GameManager.Instance.SetVariable("isInquiry", true);
                 DialogueManager.Instance.EndDialogue();
-                // 뒤에 있는 result들 계속 되게 하기..
+                // EventID를 넘기면 해당 EventId의 Results들을 실행되게 하는 방법 없나..
+                EventManager.Instance.CallEvent(RoomManager.Instance.getCurrentInquiryObjectName());
                 break;
 
             case "ResultInquiryNo": // 조사 아니오 선택
                 GameManager.Instance.SetVariable("isInquiry",false);
                 DialogueManager.Instance.EndDialogue();
-                // 진행 중인 result들 중단
                 break;
+
 
             // 휴식 시스템
             case "Result_restButton":
