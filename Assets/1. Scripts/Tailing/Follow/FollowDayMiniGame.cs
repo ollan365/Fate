@@ -30,11 +30,11 @@ public class FollowDayMiniGame : MonoBehaviour
         {
             clickCount = value;
 
-            if (clickCount % 3 != 0) return;
+            if (clickCount % 10 != 0) return;
 
             for (int i = 0; i < 3; i++) clear[i] = true;
 
-            switch (ClickCount / 3) // 이미지 바뀌는 시간을 고려하여 0.5f씩 줄임
+            switch (ClickCount / 10) // 이미지 바뀌는 시간을 고려하여 0.5f씩 줄임
             {
                 case 1:
                     difficulty = 3f;

@@ -78,7 +78,7 @@ public static class Constants
             // 두번째 배경
             case FirstFollowObject.Construction: return "EventFollowConstructionSite";
             case FirstFollowObject.Omerice: return "EventFollowRestaurant";
-            case FirstFollowObject.Cocktail: return " EventFollowCocktailBar";
+            case FirstFollowObject.Cocktail: return "EventFollowCocktailBar";
             case FirstFollowObject.MiracleYoung: return "EventFollowDrugstore";
             case FirstFollowObject.MusicBar: return "EventFollowMusicBar";
             case FirstFollowObject.Club: return "EventFollowClub";
