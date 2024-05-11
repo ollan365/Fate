@@ -7,6 +7,5 @@ public class Lamp : EventObject
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("LampClick");
     }
 }

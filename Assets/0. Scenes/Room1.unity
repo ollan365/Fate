@@ -525,6 +525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventCarpetClosed
   sideNum: 1
+  isInquiry: 0
   isClosedCarpet: 1
   otherCarpet: {fileID: 137873178}
   objectBehindCollider: {fileID: 1274495173}
@@ -661,6 +662,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventStorageTeddyBear
   sideNum: 0
+  isInquiry: 1
 --- !u!61 &52636795
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1029,6 +1031,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventKnife
   sideNum: 0
+  isInquiry: 1
 --- !u!114 &62053584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1479,6 +1482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventClosetBox
   sideNum: 2
+  isInquiry: 1
 --- !u!114 &78128994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1546,6 +1550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDiaryA
   sideNum: 1
+  isInquiry: 1
   diaryLock: {fileID: 665616727}
 --- !u!114 &78613627
 MonoBehaviour:
@@ -1708,6 +1713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventStandLight
   sideNum: 1
+  isInquiry: 1
 --- !u!114 &100489860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1963,6 +1969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventPoster
   sideNum: 1
+  isInquiry: 1
 --- !u!114 &126154535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2235,6 +2242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventCarpetOpen
   sideNum: 1
+  isInquiry: 0
   isClosedCarpet: 0
   otherCarpet: {fileID: 37155759}
   objectBehindCollider: {fileID: 1274495173}
@@ -2693,6 +2701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventShoppingBag
   sideNum: 3
+  isInquiry: 1
 --- !u!1 &201156111
 GameObject:
   m_ObjectHideFlags: 0
@@ -2910,9 +2919,7 @@ GameObject:
   - component: {fileID: 207931908}
   - component: {fileID: 207931907}
   - component: {fileID: 207931910}
-  - component: {fileID: 207931913}
   - component: {fileID: 207931911}
-  - component: {fileID: 207931912}
   m_Layer: 6
   m_Name: liquor and pills
   m_TagString: InquiryObject
@@ -2983,18 +2990,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 207931913}
-        m_TargetAssemblyTypeName: EventInquiry, Assembly-CSharp
-        m_MethodName: OnMouseDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 207931910}
         m_TargetAssemblyTypeName: LiquorAndPills, Assembly-CSharp
         m_MethodName: OnMouseDown
@@ -3059,6 +3054,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDrinkAndMedicine
   sideNum: 1
+  isInquiry: 1
 --- !u!114 &207931911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3072,66 +3068,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AlphaThreshold: 0.1
---- !u!61 &207931912
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 207931905}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 68.24, y: 110.64}
-  m_EdgeRadius: 0
---- !u!114 &207931913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 207931905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2a2376a57660bf43b2e2ed344b39ae7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventId: Event_Inquiry
-  sideNum: 0
-  objectName: EventDrinkAndMedicine
 --- !u!1 &216349380
 GameObject:
   m_ObjectHideFlags: 0
@@ -3423,6 +3359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventCalendar
   sideNum: 0
+  isInquiry: 1
   calendarPanel: {fileID: 201156111}
 --- !u!1 &257243166
 GameObject:
@@ -3813,6 +3750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDeskShelfZoom
   sideNum: 2
+  isInquiry: 0
   zoomedView: {fileID: 257243166}
 --- !u!1 &308357905
 GameObject:
@@ -4383,6 +4321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDeskZoom
   sideNum: 1
+  isInquiry: 0
   zoomedView: {fileID: 417709208}
 --- !u!114 &353499207
 MonoBehaviour:
@@ -4539,7 +4478,6 @@ MonoBehaviour:
   objectImageGroup: {fileID: 1520495358}
   objectImage: {fileID: 511911141}
   amuletImage: {fileID: 21300000, guid: 64c29083dfbbda94591089a982864d84, type: 3}
-  carpetPaperImage: {fileID: 21300000, guid: 28a0585caf18da64b8a62e9410cac47d, type: 3}
   clockImage: {fileID: 21300000, guid: d1f413f3ea12844e1beeb09af76a30a0, type: 3}
   keysImage: {fileID: 21300000, guid: 54e68b23ec169c142971d7842e410e8c, type: 3}
   knifeImage: {fileID: 21300000, guid: c75bc9395b4ab416b8e5aac8231a2550, type: 3}
@@ -5064,6 +5002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventPillow
   sideNum: 1
+  isInquiry: 1
 --- !u!114 &429879780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5676,10 +5615,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventLaptopB
   sideNum: 0
+  isInquiry: 0
   laptopContent: {fileID: 965888443}
   passwordInputField: {fileID: 2103142016}
-  girlVersionBackground: {fileID: 0}
-  boyVersionBackground: {fileID: 0}
+  girlVersionBackground: {fileID: 21300000, guid: 2ead13da57ddcad4dad2b668e6258663, type: 3}
+  boyVersionBackground: {fileID: 21300000, guid: e5564a75304cd0a48bbae148359b88bc, type: 3}
 --- !u!1 &534641363
 GameObject:
   m_ObjectHideFlags: 0
@@ -5763,6 +5703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDeskShelfZoom
   sideNum: 2
+  isInquiry: 0
   zoomedView: {fileID: 257243166}
 --- !u!114 &534641367
 MonoBehaviour:
@@ -5919,6 +5860,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventTutorialBlockingPanel
   sideNum: 0
+  isInquiry: 0
 --- !u!114 &607867496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6067,6 +6009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDiaryB
   sideNum: 0
+  isInquiry: 0
   diaryContent: {fileID: 1196163264}
   passwordText: {fileID: 898558688}
 --- !u!1 &674966301
@@ -6771,6 +6714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventClosetClosed
   sideNum: 0
+  isInquiry: 1
   isClosedDoors: 1
   otherDoors: {fileID: 1705609170}
   objectBehindColliders:
@@ -6859,6 +6803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventPillowZoom
   sideNum: 3
+  isInquiry: 0
   zoomedView: {fileID: 1899501866}
 --- !u!114 &776643429
 MonoBehaviour:
@@ -7128,6 +7073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventStorageOpen
   sideNum: 0
+  isInquiry: 0
   isClosedDoors: 0
   otherDoors: {fileID: 1963323793}
   objectBehindColliders:
@@ -7681,6 +7627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventKnife
   sideNum: 1
+  isInquiry: 0
 --- !u!114 &891301996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7882,6 +7829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventChair
   sideNum: 2
+  isInquiry: 0
   moveDuration: 0.3
   deskUnzoomedButton: {fileID: 1796012583}
 --- !u!114 &912454081
@@ -8250,6 +8198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventBlanket
   sideNum: 3
+  isInquiry: 1
 --- !u!1 &1024176503
 GameObject:
   m_ObjectHideFlags: 0
@@ -8344,6 +8293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventClockB
   sideNum: 0
+  isInquiry: 0
   hourHand: {fileID: 60935245}
   minuteHand: {fileID: 412036797}
 --- !u!114 &1024176509
@@ -8600,6 +8550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDrinkAndMedicine
   sideNum: 3
+  isInquiry: 1
 --- !u!114 &1051482924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8707,154 +8658,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AlphaThreshold: 0.1
---- !u!1 &1053103157
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1053103158}
-  - component: {fileID: 1053103162}
-  - component: {fileID: 1053103161}
-  - component: {fileID: 1053103160}
-  - component: {fileID: 1053103159}
-  m_Layer: 6
-  m_Name: test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1053103158
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053103157}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1102780077}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1053103159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053103157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2a2376a57660bf43b2e2ed344b39ae7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventId: Event_Inquiry
-  sideNum: 0
-  objectName: 
---- !u!114 &1053103160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053103157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 1053103161}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1053103159}
-        m_TargetAssemblyTypeName: sssss, Assembly-CSharp
-        m_MethodName: OnMouseDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1053103161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053103157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1053103162
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053103157}
-  m_CullTransparentMesh: 1
 --- !u!1 &1082676157
 GameObject:
   m_ObjectHideFlags: 0
@@ -9003,6 +8806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventClosetZoom
   sideNum: 2
+  isInquiry: 0
   zoomedView: {fileID: 1950428721}
 --- !u!114 &1082676163
 MonoBehaviour:
@@ -9182,8 +8986,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 891301990}
-  - {fileID: 126154530}
   - {fileID: 1121596841}
+  - {fileID: 126154530}
   - {fileID: 207931906}
   - {fileID: 1251615609}
   - {fileID: 1193189834}
@@ -9192,7 +8996,6 @@ RectTransform:
   - {fileID: 2069612834}
   - {fileID: 1456273703}
   - {fileID: 353499201}
-  - {fileID: 1053103158}
   m_Father: {fileID: 207145865}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -9387,6 +9190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventBearStorageCloset
   sideNum: 1
+  isInquiry: 1
 --- !u!114 &1121596846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9560,6 +9364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventStorageTeddyBear
   sideNum: 0
+  isInquiry: 1
 --- !u!61 &1157632437
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9869,6 +9674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventTeddyBear
   sideNum: 1
+  isInquiry: 1
 --- !u!114 &1195374732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10274,6 +10080,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventClockA
   sideNum: 1
+  isInquiry: 1
   clockPuzzle: {fileID: 1024176503}
 --- !u!114 &1209573880
 MonoBehaviour:
@@ -10642,6 +10449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventBlanket
   sideNum: 1
+  isInquiry: 1
 --- !u!114 &1251615614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10850,6 +10658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventClosetBag
   sideNum: 0
+  isInquiry: 1
 --- !u!212 &1270533016
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10998,6 +10807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventCarpetLetterOfResignation
   sideNum: 1
+  isInquiry: 1
 --- !u!61 &1274495173
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11816,6 +11626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDeskShelfZoom
   sideNum: 1
+  isInquiry: 0
   zoomedView: {fileID: 257243166}
 --- !u!114 &1456273706
 MonoBehaviour:
@@ -12148,6 +11959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventBearStorageCloset
   sideNum: 2
+  isInquiry: 1
 --- !u!114 &1495755653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12251,6 +12063,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventNormalPoster
   sideNum: 3
+  isInquiry: 1
 --- !u!114 &1535289541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12651,6 +12464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventRest
   sideNum: 0
+  isInquiry: 0
 --- !u!1 &1625075168
 GameObject:
   m_ObjectHideFlags: 0
@@ -12712,6 +12526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventChair
   sideNum: 1
+  isInquiry: 0
   moveDuration: 0.3
   deskUnzoomedButton: {fileID: 1774755198}
 --- !u!70 &1625075174
@@ -12949,6 +12764,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventStorageZoom
   sideNum: 3
+  isInquiry: 0
   zoomedView: {fileID: 856712065}
 --- !u!114 &1632417574
 MonoBehaviour:
@@ -13017,6 +12833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventPoster
   sideNum: 3
+  isInquiry: 1
 --- !u!114 &1645286389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13309,6 +13126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventNormalPoster
   sideNum: 3
+  isInquiry: 1
 --- !u!114 &1691046188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13607,6 +13425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventClosetOpen
   sideNum: 0
+  isInquiry: 0
   isClosedDoors: 0
   otherDoors: {fileID: 744799711}
   objectBehindColliders:
@@ -13918,6 +13737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventLaptopA
   sideNum: 1
+  isInquiry: 1
   laptopLock: {fileID: 531644766}
 --- !u!114 &1759114527
 MonoBehaviour:
@@ -14198,6 +14018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDeskZoom
   sideNum: 1
+  isInquiry: 0
   zoomedView: {fileID: 417709208}
 --- !u!114 &1774755198
 MonoBehaviour:
@@ -14376,6 +14197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventDeskZoom
   sideNum: 2
+  isInquiry: 0
   zoomedView: {fileID: 417709208}
 --- !u!114 &1796012583
 MonoBehaviour:
@@ -14900,6 +14722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventKnife
   sideNum: 2
+  isInquiry: 0
 --- !u!114 &1858957145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15302,6 +15125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventStorageClosed
   sideNum: 0
+  isInquiry: 1
   isClosedDoors: 1
   otherDoors: {fileID: 784320695}
   objectBehindColliders:
@@ -15496,6 +15320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventNormalPoster
   sideNum: 3
+  isInquiry: 1
 --- !u!114 &2015407721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15673,6 +15498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventPillowZoom
   sideNum: 1
+  isInquiry: 0
   zoomedView: {fileID: 1899501866}
 --- !u!114 &2069612837
 MonoBehaviour:
@@ -16352,6 +16178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventId: EventShoppingBag
   sideNum: 2
+  isInquiry: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -14,8 +14,7 @@ public class LetterOfResignation : EventObject
     {
         bool isBusy = GameManager.Instance.GetIsBusy(); 
         if (isBusy) return;
-        
+
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("PaperClick");
     }
 }

@@ -16,7 +16,6 @@ public class Laptop : EventObject, IResultExecutable
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("LaptopClick");
     }
 
     public void ExecuteAction()
@@ -27,6 +26,7 @@ public class Laptop : EventObject, IResultExecutable
     // 노트북 잠금 장치 실행 (로그인 페이지 켜짐)
     public void ActivateLaptopLock()
     {
+        isInquiry = false;  // 조사 시스템 예 아니오 스킵
         laptopLock.SetActive(true);
     }
 }

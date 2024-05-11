@@ -31,27 +31,6 @@ public class RoomManager : MonoBehaviour
     // 튜토리얼 매니저
     public TutorialManager tutorialManager;
 
-    // 조사시스템 테스트
-    private string currentInquiryObjectName = "";
-
-    public void setCurrentInquiryObjectName(string objectName)
-    {
-        currentInquiryObjectName = objectName;
-    }
-
-    public string getCurrentInquiryObjectName()
-    {
-        if (currentInquiryObjectName == null)
-        {
-            Debug.Log("currentInquiryObjectName is NULL!");
-            return null;
-        }
-        else
-        {
-            return currentInquiryObjectName;
-        }
-    }
-
 
     void Awake()
     {

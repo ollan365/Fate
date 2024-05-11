@@ -7,6 +7,5 @@ public class ShoppingBag : EventObject
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("ShoppingBagClick");
     }
 }
