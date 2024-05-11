@@ -110,6 +110,8 @@ public class EventManager : MonoBehaviour
     // Event ID를 받아서 전체 조건의 true/false 판단하여 true인 경우 결과 수행
     public void CallEvent(string eventID)
     {
+        if (GameManager.Instance.isDebug) Debug.Log($"-#-#-#-#-#-#-#-#- event: \"{eventID}\" -#-#-#-#-#-#-#-#-");
+
         List<EventLine> eventLines = events[eventID].EventLine;
 
         int eventCount = 0;

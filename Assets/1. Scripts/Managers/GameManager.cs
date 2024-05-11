@@ -69,10 +69,10 @@ public class GameManager : MonoBehaviour
         
         variables["FateName"] = "필연";  // 필연 이름
         variables["FateGender"] = 0;  // 필연 성별 {0: 여자, 1: 남자}
-        variables["FateBirthday"] = "0505";  // 필연 생일
+        variables["FateBirthday"] = "0616";  // 필연 생일
         
         variables["AccidyGender"] = 0;  // 우연 성별 {0: 여자, 1: 남자}
-        variables["AccidyBirthday"] = "0616";  // 필연 생일
+        variables["AccidyBirthday"] = "0616";  // 우연 생일
         
         variables["ActionPoint"] = 25;  // 행동력 
 
@@ -152,9 +152,13 @@ public class GameManager : MonoBehaviour
         variables["ClosedCabinetDoorsClick"] = 0;
 
         // 서랍장 속 달력
-        variables["CalendarClick"] = 0;
-        variables["CalendarCluesFound"] = false;
+        variables["CalendarCluesFound"] = 0;
         variables["CalendarMonth"] = 0;
+
+        variables["FateBirthdayClick"] = 0;
+        variables["AccidyBirthdayClick"] = 0;
+        variables["SpecialDateAClick"] = 0;
+        variables["SpecialDateBClick"] = 0;
 
         // 쇼핑백
         variables["ShoppingBagClick"] = 0;
@@ -235,8 +239,11 @@ public class GameManager : MonoBehaviour
         {
             return variables[variableName];
         }
-        // Debug.Log("variable: \"" + variableName + "\" does not exist!");
-        return null;
+        else
+        {
+            Debug.Log($"variable: \"{variableName}\" does not exist!");
+            return null;
+        }
     }
 
     public void IncrementVariable(string variableName)
@@ -299,6 +306,7 @@ public class GameManager : MonoBehaviour
             "CarpetClosed",
             "isInquiry",
             "PillowClick"
+            "CalendarCluesFound",
         });
         
         foreach (var item in variables)
