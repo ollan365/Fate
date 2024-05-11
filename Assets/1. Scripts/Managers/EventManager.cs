@@ -74,18 +74,7 @@ public class EventManager : MonoBehaviour
             string[] resultIDs = fields[5].Trim().Split('/');
             foreach (string resultID in resultIDs)
             {
-                string resultIDTrimmed = resultID.Trim();
-                if (resultIDTrimmed.StartsWith("Result_Increment") ||
-                    resultIDTrimmed.StartsWith("Result_Decrement") ||
-                    resultIDTrimmed.StartsWith("Result_Inverse"))
-                {
-                    Result tempResult = new Result(resultIDTrimmed, "", "");
-                    results.Add(tempResult);
-                }
-                else
-                {
-                    results.Add(ResultManager.Instance.results[resultIDTrimmed]);
-                }
+                results.Add(ResultManager.Instance.results[resultID.Trim()]);
             }
 
             if (events.ContainsKey(eventID)) // 이미 존재하는 event ID인 경우: EventLine을 추가
