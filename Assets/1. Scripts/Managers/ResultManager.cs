@@ -331,6 +331,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "ResultCarpetDropOutLetterZoom": // 종이를 확대해주는 UI
+                SoundPlayer.Instance.UISoundPlay(Sound_GrabPaper);
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "letterOfResignation");
                 break;
             

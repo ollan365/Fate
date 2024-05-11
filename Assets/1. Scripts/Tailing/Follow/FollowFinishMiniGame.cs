@@ -25,7 +25,7 @@ public class FollowFinishMiniGame : MonoBehaviour
     [SerializeField] private float gamePlayTime;
     [SerializeField] private float moveTime;
     [SerializeField] private float invincibleTime;
-    private bool isGameOver = false;
+    public bool isGameOver = false;
     private int heartCount;
     private int currentPosition = 1;
 
@@ -60,13 +60,12 @@ public class FollowFinishMiniGame : MonoBehaviour
             int obstructionCount = Random.Range(1, 3); // 장애물은 1개 또는 2개
             int spawnPosition = Random.Range(0, 3);
 
-            for(int i = 0; i < obstructionCount; i++)
+            for (int i = 0; i < obstructionCount; i++)
             {
                 spawnPosition = spawnPosition + i < 3 ? spawnPosition + i : 0;
-                GameObject obstruction = Instantiate(obstructionPrefabs[Random.Range(0,3)], obstructionPositions[spawnPosition].position, Quaternion.identity);
-                
+                GameObject obstruction = Instantiate(obstructionPrefabs[Random.Range(0, 3)], obstructionPositions[spawnPosition].position, Quaternion.identity);
+
                 obstruction.GetComponent<Obstruction>().followFinishMiniGame = this;
-                obstruction.GetComponent<Obstruction>().speed = backgroundMoveSpeed;
             }
 
             float randomTimn = Random.Range(3, 5); // 3에서 5초 간격으로 랜덤 장애물 생성
@@ -87,7 +86,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         while (true)
         {
             fateEnd.transform.position += Vector3.up * Time.deltaTime * 5;
-            if(fateEnd.transform.position.y >= 2.3f)
+            if (fateEnd.transform.position.y >= 2.3f)
             {
                 fateEnd.transform.position = new(fateEnd.transform.position.x, 2.3f, fateEnd.transform.position.z);
                 break;
@@ -95,7 +94,7 @@ public class FollowFinishMiniGame : MonoBehaviour
             yield return null;
         }
 
-        // 대사 같은 걸 출력하겠지...?
+        // 대사 출력 예정
         yield return new WaitForSeconds(1.5f);
 
         // 우연이 앞으로 걸어나옴
@@ -110,7 +109,7 @@ public class FollowFinishMiniGame : MonoBehaviour
             yield return null;
         }
 
-        // 대사 같은 걸 출력하겠지...?
+        // 대사 출력 예정
         yield return new WaitForSeconds(0.5f);
 
         FollowManager.Instance.FollowEnd();
@@ -153,16 +152,39 @@ public class FollowFinishMiniGame : MonoBehaviour
     {
         fate.tag = "Untagged";
         fate.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
-        yield return new WaitForSeconds(invincibleTime); // 무적
+
+        float current = 0;
+        Color startColor = new Color(1, 1, 1, 1), endColor = new Color(1, 1, 1, 0);
+
+        while (current < invincibleTime)
+        {
+            float t = 0;
+            while (current < invincibleTime && t < 0.5f)
+            {
+                current += Time.deltaTime;
+                t += Time.deltaTime;
+                fate.GetComponent<SpriteRenderer>().color = Color.Lerp(startColor, endColor, t);
+                yield return null;
+            }
+
+            t = 0;
+
+            while (current < invincibleTime && t < 0.5f)
+            {
+                current += Time.deltaTime;
+                t += Time.deltaTime;
+                fate.GetComponent<SpriteRenderer>().color = Color.Lerp(endColor, startColor, t);
+                yield return null;
+            }
+        }
+
         fate.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         fate.tag = "Player";
     }
+
     public void OnClickMoveButton(int index)
     {
-        if (Mathf.Abs(currentPosition - index) == 1)
-        {
-            StartCoroutine(Move(index));
-        }
+        StartCoroutine(Move(index));
     }
     private IEnumerator Move(int index)
     {
@@ -172,7 +194,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
         while (elapsedTime < moveTime)
         {
-            fate.transform.position = Vector3.Lerp(startingPosition, targetPosition, (elapsedTime / moveTime));
+            fate.transform.position = Vector3.Lerp(startingPosition, targetPosition, elapsedTime / moveTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
