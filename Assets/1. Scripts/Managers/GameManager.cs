@@ -27,6 +27,27 @@ public class GameManager : MonoBehaviour
     public delegate void ActionPointChangedEventHandler(int newActionPointValue);
     public static event ActionPointChangedEventHandler OnActionPointChanged;
 
+    // 조사시스템 테스트
+    private string currentInquiryObjectId = "";
+
+    public void setCurrentInquiryObjectId(string objectId)
+    {
+        currentInquiryObjectId = objectId;
+    }
+
+    public string getCurrentInquiryObjectId()
+    {
+        if (currentInquiryObjectId == null)
+        {
+            Debug.Log("currentInquiryObjectId is NULL!");
+            return null;
+        }
+        else
+        {
+            return currentInquiryObjectId;
+        }
+    }
+
     void Awake()
     {
         if (Instance == null)
@@ -278,6 +299,13 @@ public class GameManager : MonoBehaviour
         List<string> keysToShow = new List<string>(new string[]
         {
             "ActionPoint",
+            "isTutorial",
+            "TutorialPhase",
+            "ChairMoved",
+            "ClosedCarpetClick",
+            "CarpetClosed",
+            "isInquiry",
+            "PillowClick"
             "CalendarCluesFound",
         });
         

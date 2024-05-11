@@ -16,6 +16,8 @@ public class Carpet : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
+        GameManager.Instance.SetVariable("isInquiry", false);
+
         bool isBusy = GameManager.Instance.GetIsBusy();
         if (isBusy) return;
         
