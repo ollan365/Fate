@@ -305,7 +305,7 @@ public class GameManager : MonoBehaviour
             "ClosedCarpetClick",
             "CarpetClosed",
             "isInquiry",
-            "PillowClick"
+            "PillowClick",
             "CalendarCluesFound",
         });
         
