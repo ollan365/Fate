@@ -23,34 +23,20 @@ public class CalendarPanel : MonoBehaviour
     {
         DateTime firstDay = new DateTime(year, month, 1);
         int daysInMonth = DateTime.DaysInMonth(year, month);
-        int dayOfWeek = (int)firstDay.DayOfWeek;
 
-        // Update month/year text
+        // 월 년도 텍스트
         monthYearText.text = firstDay.ToString("MMMM yyyy", CultureInfo.InvariantCulture);
 
-        // Clear previous days
         foreach (Transform child in daysParent)
         {
             Destroy(child.gameObject);
         }
 
-        // Generate days
+        // 달력 페이지 생성
         for (int i = 1; i <= daysInMonth; i++)
         {
             GameObject dayObj = Instantiate(dayPrefab, daysParent);
             dayObj.GetComponentInChildren<TextMeshProUGUI>().text = i.ToString();
-            
-            string monthString = month.ToString();
-            if (month < 10) monthString = "0" + monthString;
-            string day = i.ToString();
-            if (day.Length == 1) day = "0" + day;
-            string date = monthString + day;
-            string fateBirthday = (string)GameManager.Instance.GetVariable("FateBirthday");
-            string accidyBirthday = (string)GameManager.Instance.GetVariable("AccidyBirthday");
-
-            string[] specialDates = new[] { fateBirthday, accidyBirthday, "1031", "1001" };
-
-            if (specialDates.Contains(date)) dayObj.GetComponent<Image>().color = Color.magenta;
         }
     }
 
