@@ -43,8 +43,6 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton(false);
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
 
-        return; // 튜토리얼 건너뛰기 (테스트용)
-
         StartCoroutine(followTutorial.StartTutorial());
     }
 
@@ -62,7 +60,6 @@ public class FollowManager : MonoBehaviour
         if (isTutorial) // 튜토리얼 중에는 다르게 작동
         {
             frontCanvas.SetActive(true);
-            moveAndStopButton.SetActive(true);
             followTutorial.NextStep();
             return;
         }
