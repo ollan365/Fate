@@ -8,11 +8,26 @@ public class EventObject : MonoBehaviour
     [SerializeField]
     protected int sideNum;
 
+    [SerializeField] protected bool isInquiry = false;
+
     protected void OnMouseDown()
     {
         if (!string.IsNullOrEmpty(eventId) && EventManager.Instance)
         {
-            EventManager.Instance.CallEvent(eventId);
+            if (isInquiry)
+            {
+                GameManager.Instance.SetVariable("isInquiry", true);
+                GameManager.Instance.setCurrentInquiryObjectId(eventId);
+                EventManager.Instance.CallEvent("Event_Inquiry");
+            }
+            else
+            {
+                GameManager.Instance.SetVariable("isInquiry", false);
+                GameManager.Instance.setCurrentInquiryObjectId(null);
+                EventManager.Instance.CallEvent(eventId);
+            }
+
+            Debug.Log("ÇöÀç inquiryObjectId : " + GameManager.Instance.getCurrentInquiryObjectId());
         }
     }
 

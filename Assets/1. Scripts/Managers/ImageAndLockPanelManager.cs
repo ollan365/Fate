@@ -16,7 +16,6 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
     [Header("이벤트 오브젝트 확대 이미지")]
     [SerializeField] private Sprite amuletImage;
-    [SerializeField] private Sprite carpetPaperImage;
     [SerializeField] private Sprite clockImage;
     [SerializeField] private Sprite keysImage;
     [SerializeField] private Sprite knifeImage;
@@ -56,7 +55,6 @@ public class ImageAndLockPanelManager : MonoBehaviour
         imageDictionary = new Dictionary<string, Sprite>()  // imageDictionary 초기화
         {
             {"amulet", amuletImage},
-            {"carpetPaper", carpetPaperImage},
             {"clock", clockImage},
             {"keys", keysImage },
             {"knife", knifeImage },

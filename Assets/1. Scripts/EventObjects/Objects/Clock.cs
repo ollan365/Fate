@@ -16,7 +16,6 @@ public class Clock : EventObject, IResultExecutable
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("ClockClick");
     }
 
     public void ExecuteAction()
@@ -27,6 +26,7 @@ public class Clock : EventObject, IResultExecutable
     // 시계 시간 맞추는 장치 실행
     private void ActivateClockPuzzle()
     {
+        isInquiry = false;  // 조사 시스템 예 아니오 스킵
         clockPuzzle.SetActive(true);
     }
 

@@ -7,6 +7,5 @@ public class Pillow : EventObject
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("PillowClick");
     }
 }

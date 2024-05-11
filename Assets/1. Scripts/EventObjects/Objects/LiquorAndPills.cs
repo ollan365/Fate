@@ -7,6 +7,5 @@ public class LiquorAndPills : EventObject
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("LiquorAndPillsClick");
     }
 }
