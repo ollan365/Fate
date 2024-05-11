@@ -13,7 +13,6 @@ public class Knife : EventObject, IResultExecutable
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        GameManager.Instance.InverseVariable("HasKnife");
     }
 
     public void ExecuteAction()
@@ -23,7 +22,6 @@ public class Knife : EventObject, IResultExecutable
 
     private void HideKnife()
     {
-        Debug.Log($"hideknife{sideNum} called!");
         gameObject.SetActive(false);
     }
 

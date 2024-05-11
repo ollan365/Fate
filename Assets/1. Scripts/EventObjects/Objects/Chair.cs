@@ -42,6 +42,8 @@ public class Chair : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
+        GameManager.Instance.SetVariable("isInquiry", false);
+
         bool isBusy = GameManager.Instance.GetIsBusy();
 
         if (isMoving | isBusy) return;

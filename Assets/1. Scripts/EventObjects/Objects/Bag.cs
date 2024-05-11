@@ -14,6 +14,5 @@ public class Bag : EventObject
         if (isBusy) return;
         
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("BagClick"); 
     }
 }

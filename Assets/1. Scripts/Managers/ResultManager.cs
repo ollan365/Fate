@@ -57,20 +57,29 @@ public class ResultManager : MonoBehaviour
         }
     }
 
-    public void EndResult()
-    {
-        // 강제로 진행하고 있던 result 중지
-
-        //if (RoomManager.Instance) RoomManager.Instance.SetButtons();
-    }
-
     public void ExecuteResult(string resultID)
     {
         if (GameManager.Instance.isDebug) Debug.Log(resultID);
-        
+        string variableName;
+
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
+            case string temp when temp.StartsWith("Result_Increment"):  // 값++
+                variableName = temp.Substring("Result_Increment".Length);
+                GameManager.Instance.IncrementVariable(variableName);
+                break;
+
+            case string temp when temp.StartsWith("Result_Decrement"):  // 값--
+                variableName = temp.Substring("Result_Decrement".Length);
+                GameManager.Instance.DecrementVariable(variableName);
+                break;
+
+            case string temp when temp.StartsWith("Result_Inverse"):  // !값
+                variableName = temp.Substring("Result_Inverse".Length);
+                GameManager.Instance.InverseVariable(variableName);
+                break;
+
             case "Result_girl":  // 우연의 성별을 여자로 설정
                 GameManager.Instance.SetVariable("AccidyGender", 0);
                 DialogueManager.Instance.EndDialogue();
@@ -108,8 +117,9 @@ public class ResultManager : MonoBehaviour
             case "ResultInquiryYes": // 조사 예 선택
                 GameManager.Instance.SetVariable("isInquiry", true);
                 DialogueManager.Instance.EndDialogue();
-                // EventID를 넘기면 해당 EventId의 Results들을 실행되게 하는 방법 없나..
-                EventManager.Instance.CallEvent(RoomManager.Instance.getCurrentInquiryObjectName());
+
+                EventManager.Instance.CallEvent(GameManager.Instance.getCurrentInquiryObjectId());
+                GameManager.Instance.SetVariable("isInquiry", false);
                 break;
 
             case "ResultInquiryNo": // 조사 아니오 선택
@@ -202,7 +212,7 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "liquorAndPills");
                 DialogueManager.Instance.StartDialogue("RoomEscape_003");
                 break;
-            
+
             case "ResultStandLightScript": // 책상 위 스탠드에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_004");
                 break;
@@ -349,7 +359,6 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_Poster);
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 DialogueManager.Instance.StartDialogue("RoomEscape_021");
-                GameManager.Instance.SetVariable("PosterOpened", true);
                 break;
 
             case "ResultPosterMemo": // 포스터에 대한 메모

@@ -15,6 +15,5 @@ public class StorageTeddyBear : EventObject
         if (isBusy) return;
         
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable("StorageTeddyBearClick");
     }
 }
