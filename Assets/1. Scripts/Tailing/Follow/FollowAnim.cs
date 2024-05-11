@@ -105,13 +105,12 @@ public class FollowAnim : MonoBehaviour
 
             // 이동을 시작
             isStop = false;
-
-            // 빠르게 이동하므로 음악 속도도 빠르게
-            SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Fate, !isStop, 2);
         }
     }
     public IEnumerator MoveFate()
     {
+        accidy.gameObject.SetActive(false); // 꺼두지 않으면 카메라 원상 복귀 때 화면에 잡힘
+
         Vector3 originPosition = fate.transform.position;
         Vector3 targetPosition = originPosition + new Vector3(-0.3f, 0, 0);
 

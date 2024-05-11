@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 
 public class FollowTutorial : MonoBehaviour
@@ -7,8 +8,10 @@ public class FollowTutorial : MonoBehaviour
     [SerializeField] private FollowAnim followAnim;
 
     [SerializeField] private GameObject frontCanvas;
-    [SerializeField] private GameObject highlightPanel, blockingPanel;
+    [SerializeField] private GameObject highlightPanel;
+    [SerializeField] private GameObject blockingPanel;
     [SerializeField] private GameObject nextButton;
+    [SerializeField] private GameObject moveButton;
 
     private GameObject followTutorialCanvas;
     private int tutorialStep = 0;
@@ -19,11 +22,11 @@ public class FollowTutorial : MonoBehaviour
         FollowManager.Instance.isTutorial = true;
         FollowManager.Instance.canClick = false;
         frontCanvas.SetActive(false);
+        moveButton.SetActive(false);
 
-        // 튜토리얼 캔버스를 켠다
-        followTutorialCanvas = DialogueManager.Instance.dialogueCanvas[Constants.DialogueType.FOLLOW_TUTORIAL.ToInt()].transform.parent.gameObject;
-        followTutorialCanvas.SetActive(true);
-
+         // 튜토리얼 캔버스를 할당
+         followTutorialCanvas = DialogueManager.Instance.dialogueCanvas[Constants.DialogueType.FOLLOW_TUTORIAL.ToInt()].transform.parent.gameObject;
+        
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         yield return new WaitForSeconds(1.5f);
 
@@ -79,7 +82,15 @@ public class FollowTutorial : MonoBehaviour
     private void MoveButtonTutorial()
     {
         // 이동 버튼 활성화
+        followTutorialCanvas.SetActive(true);
         followTutorialCanvas.GetComponentInChildren<Button>().onClick.AddListener(() => followAnim.ChangeAnimStatus());
+        followTutorialCanvas.GetComponentInChildren<Button>().onClick.AddListener(() =>
+        {
+            if (FollowManager.Instance.followAnim.IsStop)
+                followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "이동";
+            else
+                followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "멈춤";
+        });
         followTutorialCanvas.GetComponentInChildren<Button>().interactable = true;
 
         // 다른 물체를 누를 수 없도록 만든다
@@ -120,5 +131,6 @@ public class FollowTutorial : MonoBehaviour
         FollowManager.Instance.canClick = true;
         frontCanvas.SetActive(true);
         nextButton.SetActive(false);
+        moveButton.SetActive(true);
     }
 }

@@ -27,7 +27,7 @@ public static class Constants
     public const int
         Sound_CarpetOpen = 0, Sound_CarpetClose = 1, Sound_ClosetOpen = 2, Sound_ClosetClose = 3,
         Sound_StorageOpen = 4, Sound_StorageClose = 5, Sound_ClockMovement = 6, Sound_LockerKeyMovement = 7, Sound_LockerUnlock = 9,
-        Sound_DiaryUnlock = 10, Sound_LaptopBoot = 11, Sound_Poster = 12, Sound_ChairMovement = 13;
+        Sound_DiaryUnlock = 10, Sound_LaptopBoot = 11, Sound_Poster = 12, Sound_ChairMovement = 13, Sound_GrabPaper = 23;
 
     // 3. 미행
     public const int
@@ -78,7 +78,7 @@ public static class Constants
             // 두번째 배경
             case FirstFollowObject.Construction: return "EventFollowConstructionSite";
             case FirstFollowObject.Omerice: return "EventFollowRestaurant";
-            case FirstFollowObject.Cocktail: return " EventFollowCocktailBar";
+            case FirstFollowObject.Cocktail: return "EventFollowCocktailBar";
             case FirstFollowObject.MiracleYoung: return "EventFollowDrugstore";
             case FirstFollowObject.MusicBar: return "EventFollowMusicBar";
             case FirstFollowObject.Club: return "EventFollowClub";

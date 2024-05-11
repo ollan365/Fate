@@ -8,8 +8,9 @@ public class FollowManager : MonoBehaviour
     public static FollowManager Instance { get; private set; }
 
     [SerializeField] private FollowTutorial followTutorial;
-    [SerializeField] private MiniGame miniGame;
+    [SerializeField] private FollowDayMiniGame miniGame;
     [SerializeField] private FollowEnd followEnd;
+    [SerializeField] private FollowFinishMiniGame followFinishMiniGame;
     public FollowAnim followAnim;
 
     [SerializeField] private GameObject moveAndStopButton;
@@ -42,8 +43,6 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton(false);
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
 
-        return; // 튜토리얼 건너뛰기 (테스트용)
-
         StartCoroutine(followTutorial.StartTutorial());
     }
 
@@ -61,7 +60,6 @@ public class FollowManager : MonoBehaviour
         if (isTutorial) // 튜토리얼 중에는 다르게 작동
         {
             frontCanvas.SetActive(true);
-            moveAndStopButton.SetActive(true);
             followTutorial.NextStep();
             return;
         }
@@ -112,6 +110,10 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton(true);
 
         StartCoroutine(followEnd.EndFollow());
+    }
+    public void FollowFinishGameStart()
+    {
+        StartCoroutine(followFinishMiniGame.FinishGameStart(miniGame.heartCount));
     }
     public void FollowEnd()
     {

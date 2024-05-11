@@ -28,7 +28,7 @@ public class Script
             default: return TextFormat(KorScript);
         }
     }
-    string TextFormat(string text)
+    private string TextFormat(string text)
     {
         string newText = text;
         bool textEffect = false;
@@ -54,5 +54,23 @@ public class Script
             }
         }
         return newText;
+    }
+
+    private string CheckEffects(string text)
+    {
+        string[] effects = Placeholder.Split('/');
+        for(int i = 0; i < effects.Length; i++)
+        {
+            switch (effects[i])
+            {
+                case "RED":
+                    break;
+                case "FAST":
+                    break;
+                case "AUTO":
+                    break;
+            }
+        }
+        return text;
     }
 }
