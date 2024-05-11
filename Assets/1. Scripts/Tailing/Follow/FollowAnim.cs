@@ -109,6 +109,8 @@ public class FollowAnim : MonoBehaviour
     }
     public IEnumerator MoveFate()
     {
+        accidy.gameObject.SetActive(false); // 꺼두지 않으면 카메라 원상 복귀 때 화면에 잡힘
+
         Vector3 originPosition = fate.transform.position;
         Vector3 targetPosition = originPosition + new Vector3(-0.3f, 0, 0);
 
