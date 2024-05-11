@@ -5,19 +5,19 @@ using UnityEngine.EventSystems;
 
 public class ClockController : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
-    // µå·¡±× ÁßÀÎÁö ¿©ºÎ¸¦ ³ªÅ¸³»´Â ÇÃ·¡±×
+    // ë“œë˜ê·¸ ì¤‘ì¸ì§€ ì—¬ë¶€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” í”Œë˜ê·¸
     private bool isDragging = false;
 
-    // µå·¡±× ½ÃÀÛ ½Ã ¹Ù´ÃÀÇ ÃÊ±â È¸Àü °¢µµ
+    // ë“œë˜ê·¸ ì‹œì‘ ì‹œ ë°”ëŠ˜ì˜ ì´ˆê¸° íšŒì „ ê°ë„
     private float startAngle;
 
-    // ¹Ù´ÃÀÌ È¸ÀüÇÒ ¼ö ÀÖ´Â ÃÖ´ë °¢µµ
+    // ë°”ëŠ˜ì´ íšŒì „í•  ìˆ˜ ìˆëŠ” ìµœëŒ€ ê°ë„
     public float maxAngle = 360f;
 
-    // ¹Ù´ÃÀÌ È¸ÀüÇÏ´Â ¼Óµµ
+    // ë°”ëŠ˜ì´ íšŒì „í•˜ëŠ” ì†ë„
     public float rotationSpeed = 5f;
 
-    // ÇÑ ¹ø¿¡ È¸ÀüÇÒ °¢µµ (ÇÑ Ä­)
+    // í•œ ë²ˆì— íšŒì „í•  ê°ë„ (í•œ ì¹¸)
     public float stepAngle = 30f;
 
 
@@ -26,58 +26,58 @@ public class ClockController : MonoBehaviour, IDragHandler, IEndDragHandler, IBe
 
     private Vector3 prevMousePosition;
 
-    // ºĞÄ§ÀÇ ´©Àû È¸Àü °¢µµ
+    // ë¶„ì¹¨ì˜ ëˆ„ì  íšŒì „ ê°ë„
     private float accumulatedMinuteAngle = 0f;
     private float min = 0f;
 
-    // ºĞÄ§ ¹Ù´ÃÀÌ ÇÑ ¹ÙÄû¸¦ È¸ÀüÇß´ÂÁö ¿©ºÎ¸¦ ³ªÅ¸³»´Â º¯¼ö
+    // ë¶„ì¹¨ ë°”ëŠ˜ì´ í•œ ë°”í€´ë¥¼ íšŒì „í–ˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜
     private bool hasRotatedOnce = false;
 
-    // ÇöÀç ½Ã°£À» ÀúÀåÇÏ´Â º¯¼ö
+    // í˜„ì¬ ì‹œê°„ì„ ì €ì¥í•˜ëŠ” ë³€ìˆ˜
     private int currentHour = 3;
 
-    // ÇÑ ¹ÙÄû¸¦ µ¹ ¶§ È£ÃâµÉ ÇÔ¼ö
+    // í•œ ë°”í€´ë¥¼ ëŒ ë•Œ í˜¸ì¶œë  í•¨ìˆ˜
     private void OnClockHandRotated()
     {
-        // ÇÑ ¹ÙÄû È¸Àü ½Ã min °ª ¾÷µ¥ÀÌÆ®
+        // í•œ ë°”í€´ íšŒì „ ì‹œ min ê°’ ì—…ë°ì´íŠ¸
         min += 360f;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        // µå·¡±× ÁßÀÏ ¶§¸¸ ½ÇÇà
+        // ë“œë˜ê·¸ ì¤‘ì¼ ë•Œë§Œ ì‹¤í–‰
         if (isDragging)
         {
-            // ÇöÀç ¸¶¿ì½º À§Ä¡¿¡¼­ ½ÃÀÛ ¸¶¿ì½º À§Ä¡·ÎÀÇ º¤ÅÍ¸¦ °è»ê
+            // í˜„ì¬ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì—ì„œ ì‹œì‘ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¡œì˜ ë²¡í„°ë¥¼ ê³„ì‚°
             Vector2 currentPosition = eventData.position;
             Vector2 startPosition = eventData.pressPosition;
             Vector2 dragVector = currentPosition - startPosition;
 
-            // µå·¡±× º¤ÅÍÀÇ °¢µµ¸¦ °è»ê
+            // ë“œë˜ê·¸ ë²¡í„°ì˜ ê°ë„ë¥¼ ê³„ì‚°
             float angle = Mathf.Atan2(dragVector.y, dragVector.x) * Mathf.Rad2Deg;
 
-            // ¹Ù´ÃÀÇ È¸Àü °¢µµ¸¦ ¼³Á¤
+            // ë°”ëŠ˜ì˜ íšŒì „ ê°ë„ë¥¼ ì„¤ì •
             float newAngle = Mathf.Clamp(angle - startAngle, -maxAngle, maxAngle);
             minuteHand.rotation = Quaternion.Euler(0f, 0f, newAngle);
 
-            // ÇÑ ¹ÙÄû¸¦ µ¹¾Ò´ÂÁö È®ÀÎÇÏ°í ÇÑ ¹ø¸¸ È£Ãâ
+            // í•œ ë°”í€´ë¥¼ ëŒì•˜ëŠ”ì§€ í™•ì¸í•˜ê³  í•œ ë²ˆë§Œ í˜¸ì¶œ
             if (Mathf.Abs(minuteHand.rotation.eulerAngles.z) >= 300f && !hasRotatedOnce)
             {
                 OnClockHandRotated();
-                hasRotatedOnce = true; // ÇÑ ¹øÀÇ È¸Àü¸¸ ÀÎ½ÄÇÏµµ·Ï ÇÃ·¡±× ¾÷µ¥ÀÌÆ®
+                hasRotatedOnce = true; // í•œ ë²ˆì˜ íšŒì „ë§Œ ì¸ì‹í•˜ë„ë¡ í”Œë˜ê·¸ ì—…ë°ì´íŠ¸
             }
             else if (Mathf.Abs(minuteHand.rotation.eulerAngles.z) < 300f)
             {
-                hasRotatedOnce = false; // È¸ÀüÀÌ 300µµ ¹Ì¸¸ÀÌ¸é ÇÃ·¡±× Àç¼³Á¤
+                hasRotatedOnce = false; // íšŒì „ì´ 300ë„ ë¯¸ë§Œì´ë©´ í”Œë˜ê·¸ ì¬ì„¤ì •
             }
 
-            // ºĞÄ§ÀÇ ÇöÀç zÃà °ª ¾÷µ¥ÀÌÆ®
+            // ë¶„ì¹¨ì˜ í˜„ì¬ zì¶• ê°’ ì—…ë°ì´íŠ¸
             accumulatedMinuteAngle = 360f - minuteHand.rotation.eulerAngles.z;
 
-            // ½ÃÄ§µµ ÇÔ²² ¿òÁ÷ÀÌµµ·Ï ¼³Á¤
+            // ì‹œì¹¨ë„ í•¨ê»˜ ì›€ì§ì´ë„ë¡ ì„¤ì •
             if (hourHand != null)
             {
-                // ½ÃÄ§ÀÇ ´©Àû È¸Àü °¢µµ ¾÷µ¥ÀÌÆ®
+                // ì‹œì¹¨ì˜ ëˆ„ì  íšŒì „ ê°ë„ ì—…ë°ì´íŠ¸
                 float hourHandAngle = ((accumulatedMinuteAngle + min) / 360f) * 30f;
                 hourHand.rotation = Quaternion.Euler(0f, 0f, -hourHandAngle);
                 currentHour = (int)((accumulatedMinuteAngle + min) / 360f);
@@ -90,34 +90,34 @@ public class ClockController : MonoBehaviour, IDragHandler, IEndDragHandler, IBe
     }
 
 
-    // ¹Ù´ÃÀÌ ¿øÇÏ´Â À§Ä¡¿¡ ¸ØÃßµµ·Ï º¸Á¤ÇÏ´Â ÇÔ¼ö
+    // ë°”ëŠ˜ì´ ì›í•˜ëŠ” ìœ„ì¹˜ì— ë©ˆì¶”ë„ë¡ ë³´ì •í•˜ëŠ” í•¨ìˆ˜
     private void SnapToStepAngle()
     {
-        // ÇöÀç È¸Àü °¢µµ
+        // í˜„ì¬ íšŒì „ ê°ë„
         float currentAngle = minuteHand.eulerAngles.z;
 
-        // ¹Ù´ÃÀÌ ÇÑ ¹ø¿¡ È¸ÀüÇÒ °¢µµ¿¡ °¡±î¿î °¢µµ·Î Á¶Á¤
+        // ë°”ëŠ˜ì´ í•œ ë²ˆì— íšŒì „í•  ê°ë„ì— ê°€ê¹Œìš´ ê°ë„ë¡œ ì¡°ì •
         float snappedAngle = Mathf.Round(currentAngle / stepAngle) * stepAngle;
 
-        // ¹Ù´ÃÀÇ È¸Àü °¢µµ¸¦ ¼³Á¤
+        // ë°”ëŠ˜ì˜ íšŒì „ ê°ë„ë¥¼ ì„¤ì •
         minuteHand.rotation = Quaternion.Euler(0f, 0f, snappedAngle);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // µå·¡±× Á¾·á ½Ã ÇÃ·¡±×¸¦ false·Î ¼³Á¤
+        // ë“œë˜ê·¸ ì¢…ë£Œ ì‹œ í”Œë˜ê·¸ë¥¼ falseë¡œ ì„¤ì •
         isDragging = false;
 
-        // ¹Ù´ÃÀÌ ¿øÇÏ´Â À§Ä¡¿¡ ¸ØÃßµµ·Ï º¸Á¤
+        // ë°”ëŠ˜ì´ ì›í•˜ëŠ” ìœ„ì¹˜ì— ë©ˆì¶”ë„ë¡ ë³´ì •
         SnapToStepAngle();
 
         gameObject.GetComponent<ClockPuzzle>().TryPassword(currentHour);
-        //Debug.Log("TryPassword È£ÃâµÊ");
+        //Debug.Log("TryPassword í˜¸ì¶œë¨");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // µå·¡±× ½ÃÀÛ ½Ã ÇÃ·¡±×¸¦ true·Î ¼³Á¤ÇÏ°í, ½ÃÀÛ °¢µµ¸¦ °è»ê
+        // ë“œë˜ê·¸ ì‹œì‘ ì‹œ í”Œë˜ê·¸ë¥¼ trueë¡œ ì„¤ì •í•˜ê³ , ì‹œì‘ ê°ë„ë¥¼ ê³„ì‚°
         isDragging = true;
         Vector2 dragVector = eventData.position - (Vector2)minuteHand.position;
         startAngle = Mathf.Atan2(dragVector.y, dragVector.x) * Mathf.Rad2Deg;

@@ -67,10 +67,26 @@ public class ResultManager : MonoBehaviour
     public void ExecuteResult(string resultID)
     {
         if (GameManager.Instance.isDebug) Debug.Log(resultID);
+        string variableName;
         
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
+            case string temp when temp.StartsWith("Result_Increment"):  // 값++
+                variableName = temp.Substring("Result_Increment".Length);
+                GameManager.Instance.IncrementVariable(variableName);
+                break;
+            
+            case string temp when temp.StartsWith("Result_Decrement"):  // 값--
+                variableName = temp.Substring("Result_Decrement".Length);
+                GameManager.Instance.DecrementVariable(variableName);
+                break;
+            
+            case string temp when temp.StartsWith("Result_Inverse"):  // !값
+                variableName = temp.Substring("Result_Inverse".Length);
+                GameManager.Instance.InverseVariable(variableName);
+                break;
+            
             case "Result_girl":  // 우연의 성별을 여자로 설정
                 GameManager.Instance.SetVariable("AccidyGender", 0);
                 DialogueManager.Instance.EndDialogue();
@@ -431,10 +447,6 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Calendar"].ExecuteAction();
                 break;
             
-            case "Result_IncrementCalendarCluesFound": // 달력 관련 단서 찾은 수 1 증가
-                GameManager.Instance.IncrementVariable("CalendarCluesFound");
-                break;
-
             case "ResultCalendarFBDScirpt": // 필연 생일에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_027");
                 break;
@@ -467,22 +479,6 @@ public class ResultManager : MonoBehaviour
                 MemoManager.Instance.AddMemo("R1Memo_009");
                 break;
             
-            case "Result_IncrementFateBirthday":  // 필연 클릭 횟수 1 증가
-                GameManager.Instance.IncrementVariable("FateBirthdayClick");
-                break;
-            
-            case "Result_IncrementAccidyBirthday":  // 우연 클릭 횟수 1 증가
-                GameManager.Instance.IncrementVariable("AccidyBirthdayClick");
-                break;
-            
-            case "Result_IncrementSpecialDateA":  // 1031 클릭 횟수 1 증가 
-                GameManager.Instance.IncrementVariable("SpecialDateAClick");
-                break;
-
-            case "Result_IncrementSpecialDateB":  // 1001 클릭 횟수 1 증가 
-                GameManager.Instance.IncrementVariable("SpecialDateBClick");
-                break;
-
             case "ResultClosetZoom": // 옷장 확대 화면으로 전환
                 executableObjects["Closet Unzoomed 2"].ExecuteAction();
                 break;
@@ -633,6 +629,10 @@ public class ResultManager : MonoBehaviour
 
             case "ResultWreathMemo": // 쓰러진 화환에 대한 메모
                 MemoManager.Instance.AddMemo("F1Memo_010");
+                break;
+            
+            default:
+                Debug.Log($"Result ID: {resultID} not found!");
                 break;
         }
     }

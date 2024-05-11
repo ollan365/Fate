@@ -8,10 +8,13 @@ public class EventObject : MonoBehaviour
     [SerializeField]
     protected int sideNum;
 
+    [SerializeField] protected bool isInquiry = false;
+
     protected void OnMouseDown()
     {
         if (!string.IsNullOrEmpty(eventId) && EventManager.Instance)
         {
+            eventId = isInquiry ? "Event_Inquiry" : eventId;
             EventManager.Instance.CallEvent(eventId);
         }
     }
