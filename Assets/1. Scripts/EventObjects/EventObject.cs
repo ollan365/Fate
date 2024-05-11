@@ -27,7 +27,7 @@ public class EventObject : MonoBehaviour
                 EventManager.Instance.CallEvent(eventId);
             }
 
-            Debug.Log("ÇöÀç inquiryObjectId : " + GameManager.Instance.getCurrentInquiryObjectId());
+            Debug.Log("Ã‡Ã¶Ã€Ã§ inquiryObjectId : " + GameManager.Instance.getCurrentInquiryObjectId());
         }
     }
 

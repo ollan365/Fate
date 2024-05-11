@@ -7,20 +7,15 @@ using UnityEngine.UI;
 
 public class ClockPuzzle : EventObject
 {
-    [SerializeField] private GameObject hourHand;
-    [SerializeField] private GameObject minuteHand;
-
     public void TryPassword(float currentHour)
     {
-        // Debug.Log("TryPassword() called");
-        //float currentHourAngle = hourHand.transform.rotation.eulerAngles.z;
         float currentHourAngle = currentHour;
-        float currentMinuteAngle = minuteHand.transform.rotation.eulerAngles.z;
+        // float currentMinuteAngle = minuteHand.transform.rotation.eulerAngles.z;
 
         Debug.Log("현재 시침 각도"+currentHourAngle);
-        Debug.Log("현재 분침 각도" + currentMinuteAngle);
+        // Debug.Log("현재 분침 각도" + currentMinuteAngle);
 
-        StartCoroutine(CompareClockHands(currentHourAngle, currentMinuteAngle));
+        // StartCoroutine(CompareClockHands(currentHourAngle, currentMinuteAngle));
         
     }
 
