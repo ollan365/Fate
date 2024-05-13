@@ -12,6 +12,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Animator[] heartAnimator;
+    [SerializeField] private GameObject blockingPanel;
 
     [Header("Object")]
     [SerializeField] private GameObject fate;
@@ -96,7 +97,6 @@ public class FollowFinishMiniGame : MonoBehaviour
         }
         // fateEnd.GetComponentInChildren<ParticleSystem>().Stop();
 
-        // 대사 출력 예정
         yield return new WaitForSeconds(1.5f);
 
         // 우연이 앞으로 걸어나옴
@@ -111,10 +111,10 @@ public class FollowFinishMiniGame : MonoBehaviour
             yield return null;
         }
 
-        // 대사 출력 예정
         yield return new WaitForSeconds(0.5f);
-
-        FollowManager.Instance.FollowEnd();
+        DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM;
+        blockingPanel.SetActive(true);
+        DialogueManager.Instance.StartDialogue("Follow1Final_003"); // 우연의 대사 출력
     }
     public IEnumerator BackgroundMove() // 배경 움직이기 (미완성)
     {

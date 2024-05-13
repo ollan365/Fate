@@ -35,6 +35,7 @@ public class DialogueManager : MonoBehaviour
     private string currentDialogueID = "";
     public bool isDialogueActive = false;
     private bool isTyping = false;
+    private bool isAuto = false;
     private string fullSentence;
     
     // Dialogue Queue
@@ -131,10 +132,26 @@ public class DialogueManager : MonoBehaviour
         // 타자 효과 적용
         isTyping = true;
         string sentence = scripts[dialogueLine.ScriptID].GetScript();
+        isAuto = false;
         if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0)
         {
-            string fateName = (string)GameManager.Instance.GetVariable("FateName");
-            sentence = sentence.Replace("{PlayerName}", fateName);
+            string[] effects = scripts[dialogueLine.ScriptID].Placeholder.Split('/');
+            for (int i = 0; i < effects.Length; i++)
+            {
+                switch (effects[i])
+                {
+                    case "RED":
+                        sentence = "<color=red>" + sentence + "</color>";
+                        break;
+                    case "AUTO":
+                        isAuto = true;
+                        break;
+                    case "TRUE":
+                        string fateName = (string)GameManager.Instance.GetVariable("FateName");
+                        sentence = sentence.Replace("{PlayerName}", fateName);
+                        break;
+                }
+            }
         }
         StartCoroutine(TypeSentence(sentence));
 
@@ -221,6 +238,10 @@ public class DialogueManager : MonoBehaviour
         // <color=red> 같은 글씨 효과들은 출력되지 않도록 변수 설정
         bool isEffect = false;
         string effectText = "";
+
+        // AUTO 인 경우 두배의 속도로 타이핑 + 끝나면 자동으로 넘어감
+        if (isAuto) typeSpeed /= 2;
+
         foreach (char letter in sentence.ToCharArray())
         {
             if (letter == '<')
@@ -248,11 +269,18 @@ public class DialogueManager : MonoBehaviour
         }
         isTyping = false;
         teddyBearIcon[dialogueType.ToInt()].SetActive(true);
+
+        if (isAuto)
+        {
+            typeSpeed *= 2; // 타이핑 속도 되돌려 놓기
+            isAuto = false;
+            OnDialoguePanelClick(); // 자동으로 넘어감
+        }
     }
     
     public void OnDialoguePanelClick()
     {
-        if (isDialogueActive)
+        if (isDialogueActive && !isAuto)
         {
             if (isTyping)
             {

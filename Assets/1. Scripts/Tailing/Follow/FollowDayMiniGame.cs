@@ -180,7 +180,7 @@ public class FollowDayMiniGame : MonoBehaviour
 
         if (isGameOver) // 게임 오버
         {
-            FollowManager.Instance.FollowEnd();
+
         }
         else // 게임 클리어
         {
