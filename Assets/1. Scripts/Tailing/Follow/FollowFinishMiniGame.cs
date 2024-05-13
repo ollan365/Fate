@@ -41,16 +41,14 @@ public class FollowFinishMiniGame : MonoBehaviour
         this.heartCount = heartCount;
         for (int i = 0; i < heartCount; i++) heartAnimator[i].gameObject.SetActive(true);
 
-        // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다 + 브금을 바꾼다
+        // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다
         followUICanvas.SetActive(false);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW);
         yield return new WaitForSeconds(0.2f);
         followCanvas.SetActive(false);
         finishGameCanvas.SetActive(true);
-        // SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
-        yield return new WaitForSeconds(0.4f);
-        finishGameObjects.SetActive(true); // 페이드 인 아웃 끝
+        finishGameObjects.SetActive(true);
+        yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
 
         StartCoroutine(BackgroundMove());
 
