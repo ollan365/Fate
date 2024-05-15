@@ -19,7 +19,7 @@ public class FollowEnd : MonoBehaviour
 
         // 스크립트 "Follow1Fianal" 출력 + 느낌표
         FollowManager.Instance.blockingPanel.SetActive(true);
-        DialogueManager.Instance.StartDialogue("Follow1Fianal_001");
+        DialogueManager.Instance.StartDialogue("Follow1Final_001");
 
         // 스크립트가 끝날 때까지 대기
         while (FollowManager.Instance.blockingPanel.activeSelf)
@@ -32,7 +32,7 @@ public class FollowEnd : MonoBehaviour
 
         // 우연 대사 출력
         FollowManager.Instance.blockingPanel.SetActive(true);
-        DialogueManager.Instance.StartDialogue("Follow1Fianal_002");
+        DialogueManager.Instance.StartDialogue("Follow1Final_002");
 
         // 스크립트가 끝날 때까지 대기
         while (FollowManager.Instance.blockingPanel.activeSelf)

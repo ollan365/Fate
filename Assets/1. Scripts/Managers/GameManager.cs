@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         
         variables["FateName"] = "필연";  // 필연 이름
         variables["FateGender"] = 0;  // 필연 성별 {0: 여자, 1: 남자}
-        variables["FateBirthday"] = "0516";  // 필연 생일
+        variables["FateBirthday"] = "0616";  // 필연 생일
         
         variables["AccidyGender"] = 0;  // 우연 성별 {0: 여자, 1: 남자}
         variables["AccidyBirthday"] = "0616";  // 우연 생일
@@ -113,8 +113,8 @@ public class GameManager : MonoBehaviour
         variables["ClockClick"] = 0;
         variables["ClockTimeCorrect"] = false;
         
-        variables["ClockPasswordHour"] = 6;
-        variables["ClockPasswordMinute"] = 30;
+        float[] clockPassword = { 6f, 180f };
+        variables["ClockPassword"] = clockPassword;
 
         // 의자
         variables["ChairMoved"] = false;
@@ -170,6 +170,8 @@ public class GameManager : MonoBehaviour
         // 서랍장 내부 곰인형
         variables["StorageTeddyBearClick"] = 0;
 
+        // 달력
+        
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
         variables["VillaClick"] = 0;
@@ -298,9 +300,14 @@ public class GameManager : MonoBehaviour
         List<string> keysToShow = new List<string>(new string[]
         {
             "ActionPoint",
+            "isTutorial",
+            "TutorialPhase",
+            "ChairMoved",
+            "ClosedCarpetClick",
+            "CarpetClosed",
+            "isInquiry",
+            "PillowClick",
             "CalendarCluesFound",
-            "FateBirthdayClick",
-            "HasKnife",
         });
         
         foreach (var item in variables)

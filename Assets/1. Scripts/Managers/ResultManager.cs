@@ -442,6 +442,10 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Calendar"].ExecuteAction();
                 break;
             
+            case "Result_IncrementCalendarCluesFound": // 달력 관련 단서 찾은 수 1 증가
+                GameManager.Instance.IncrementVariable("CalendarCluesFound");
+                break;
+
             case "ResultCalendarFBDScirpt": // 필연 생일에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_027");
                 break;
@@ -474,6 +478,22 @@ public class ResultManager : MonoBehaviour
                 MemoManager.Instance.AddMemo("R1Memo_009");
                 break;
             
+            case "Result_IncrementFateBirthday":  // 필연 클릭 횟수 1 증가
+                GameManager.Instance.IncrementVariable("FateBirthdayClick");
+                break;
+            
+            case "Result_IncrementAccidyBirthday":  // 우연 클릭 횟수 1 증가
+                GameManager.Instance.IncrementVariable("AccidyBirthdayClick");
+                break;
+            
+            case "Result_IncrementSpecialDateA":  // 1031 클릭 횟수 1 증가 
+                GameManager.Instance.IncrementVariable("SpecialDateAClick");
+                break;
+
+            case "Result_IncrementSpecialDateB":  // 1001 클릭 횟수 1 증가 
+                GameManager.Instance.IncrementVariable("SpecialDateBClick");
+                break;
+
             case "ResultClosetZoom": // 옷장 확대 화면으로 전환
                 executableObjects["Closet Unzoomed 2"].ExecuteAction();
                 break;
@@ -624,10 +644,6 @@ public class ResultManager : MonoBehaviour
 
             case "ResultWreathMemo": // 쓰러진 화환에 대한 메모
                 MemoManager.Instance.AddMemo("F1Memo_010");
-                break;
-            
-            default:
-                Debug.Log($"Result ID: {resultID} not found!");
                 break;
         }
     }

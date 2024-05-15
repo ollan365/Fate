@@ -83,7 +83,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
 
         // 필연이 앞으로 걸어나옴
-        fateEnd.GetComponentInChildren<ParticleSystem>().Play();
+        // fateEnd.GetComponentInChildren<ParticleSystem>().Play();
         while (true)
         {
             fateEnd.transform.position += Vector3.up * Time.deltaTime * 5;
@@ -94,7 +94,7 @@ public class FollowFinishMiniGame : MonoBehaviour
             }
             yield return null;
         }
-        fateEnd.GetComponentInChildren<ParticleSystem>().Stop();
+        // fateEnd.GetComponentInChildren<ParticleSystem>().Stop();
 
         // 대사 출력 예정
         yield return new WaitForSeconds(1.5f);
@@ -118,7 +118,7 @@ public class FollowFinishMiniGame : MonoBehaviour
     }
     public IEnumerator BackgroundMove() // 배경 움직이기 (미완성)
     {
-        fate.GetComponentInChildren<ParticleSystem>().Play();
+        // fate.GetComponentInChildren<ParticleSystem>().Play();
         while (!isGameOver)
         {
             foreach (Transform t in backgrounds)
@@ -132,7 +132,7 @@ public class FollowFinishMiniGame : MonoBehaviour
             }
             yield return null;
         }
-        fate.GetComponentInChildren<ParticleSystem>().Stop();
+        // fate.GetComponentInChildren<ParticleSystem>().Stop();
     }
     public IEnumerator OnHit()
     {
