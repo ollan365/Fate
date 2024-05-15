@@ -2,9 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Globalization;
-using System.Linq;
 using TMPro;
-using UnityEngine.Serialization;
 
 public class CalendarPanel : MonoBehaviour
 {
@@ -13,14 +11,26 @@ public class CalendarPanel : MonoBehaviour
     public TextMeshProUGUI monthText;
     public Image calendarBackground;
     public Sprite[] monthBackgrounds;  // 월별 이미지
+    public Button nextButton;
+    public Button prevButton;
+    public RectTransform daysRectTransform;
+    public GridLayoutGroup layoutGroup;
 
-    private DateTime currentDate = DateTime.Now;
+    private DateTime currentDate;
 
     void Start()
     {
-        GameManager.Instance.SetVariable("CalendarMonth", Int32.Parse(currentDate.Month.ToString()));
+        currentDate = new DateTime(2024, 5, 1);  // 2024년 5월 시작으로 고정
+        GameManager.Instance.SetVariable("CalendarMonth", currentDate.Month);
+        UpdateCalendar();
+    }
+
+    void UpdateCalendar()
+    {
         GenerateCalendar(currentDate.Year, currentDate.Month);
         UpdateBackgroundImage(currentDate.Month);
+        ManageNavigationButtons();
+        CheckRowsRequirement();
     }
 
     private void GenerateCalendar(int year, int month)
@@ -43,8 +53,7 @@ public class CalendarPanel : MonoBehaviour
 
         for (int i = 1; i <= daysInMonth; i++)
         {
-            GameObject dayObj = Instantiate(dayPrefab, daysParent);
-            dayObj.GetComponentInChildren<TextMeshProUGUI>().text = i.ToString();
+            Instantiate(dayPrefab, daysParent).GetComponentInChildren<TextMeshProUGUI>().text = i.ToString();
         }
     }
 
@@ -54,25 +63,35 @@ public class CalendarPanel : MonoBehaviour
         {
             calendarBackground.sprite = monthBackgrounds[month - 1];
         }
-        else
+    }
+
+    private void ManageNavigationButtons()
+    {
+        nextButton.gameObject.SetActive(currentDate.Month != 12);
+        prevButton.gameObject.SetActive(currentDate.Month != 1);
+    }
+
+    private void CheckRowsRequirement()
+    {
+        int totalCells = (int)currentDate.DayOfWeek + DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+        if (totalCells > 35)  // 6줄이 필요한 경우
         {
-            Debug.LogError("Invalid month for background image");
+            daysRectTransform.anchoredPosition = new Vector2(-323, daysRectTransform.anchoredPosition.y);
+            layoutGroup.cellSize = new Vector2(layoutGroup.cellSize.x, 81.5f);
+            layoutGroup.spacing = new Vector2(10, 7.4f);
+        }
+        else  // 5줄이 필요한 경우
+        {
+            daysRectTransform.anchoredPosition = new Vector2(-322, daysRectTransform.anchoredPosition.y);
+            layoutGroup.cellSize = new Vector2(layoutGroup.cellSize.x, 98f);
+            layoutGroup.spacing = new Vector2(9.65f, 10.7f);
         }
     }
 
     public void ChangeMonth(int previousOrNext)  // -1 for previous, 1 for next
     {
-        if (previousOrNext != -1 && previousOrNext != 1)
-        {
-            Debug.LogError("previousOrNext must be -1 or 1!");
-            return;
-        }
-
         currentDate = currentDate.AddMonths(previousOrNext);
-        if (previousOrNext == 1)  GameManager.Instance.IncrementVariable("CalendarMonth");
-        else GameManager.Instance.DecrementVariable("CalendarMonth");
-        
-        GenerateCalendar(currentDate.Year, currentDate.Month);
-        UpdateBackgroundImage(currentDate.Month);
+        GameManager.Instance.SetVariable("CalendarMonth", currentDate.Month);
+        UpdateCalendar();
     }
 }

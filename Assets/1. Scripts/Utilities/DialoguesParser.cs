@@ -20,6 +20,7 @@ public class DialoguesParser : MonoBehaviour
     {
         string modifiedString = originalString.Replace("\\n", "\n");
         modifiedString = modifiedString.Replace("`", ",");
+        modifiedString = modifiedString.Replace("", "");
 
         return modifiedString;
     }
