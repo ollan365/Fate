@@ -6,30 +6,31 @@ Event_001,PrologueStart,눈을 뜸.,,,ResultCloseEyes,눈 깜빡이는 연출
 Event_002,PrologueFinsh,잠들었다가 다시 눈을 뜸,,,ResultCloseEyes,눈 깜빡이는 연출
 Event_003,Explain,방 탈출에 대한 설명을 창으로 띄움.,,,ResultTimePass,
 ,,,,,,
-Event_Inquiry,조사 선택지 버튼,,,,ResultInquiry,
+Event_Inquiry,조사 선택지 버튼,,,ConditionInquiryOk,ResultInquiry,
 Event_InquiryYes,조사 선택지 예,,,,ResultInquiryYes,
 Event_InquiryNo,조사 선택지 아니오,,,,ResultInquiryNo,
 ,,,,,,
-EventTeddyBear,곰인형,침대 위 곰인형을 처음 클릭,,ConditionBedTeddyFristClick,ResultTeddyBearScript/ResultTimePass/Result_IncrementDollsClick,
-EventTeddyBear,곰인형,침대 위 곰인형을 클릭,,ConditionBedTeddyManyClick,ResultClueCompleted,
 ,,,,,,
-EventBlanket,이불,이불을 클릭,,ConditionBlanketFirstClick,ResultBlanketScript/ResultTimePass/Result_IncrementBlanketsClick,
-EventBlanket,이불,이불을 한번 이상 클릭,,ConditionBlanketManyClick,ResultClueCompleted,
+EventTeddyBear,곰인형,침대 위 곰인형을 처음 클릭,,ConditionBedTeddyFristClick,ResultTeddyBearScript/ResultTimePass/Result_IncrementDollsClick/Result_IsFinishedEventTeddyBear,Result_IsFinished 추가
+EventTeddyBear,곰인형,침대 위 곰인형을 클릭,,ConditionBedTeddyManyClick,ResultTeddyBearScript/ResultTimePass/Result_IncrementDollsClick,
 ,,,,,,
-EventDrinkAndMedicine,술+감기약,술과 감기약을 클릭,,ConditionDrinkAndMedicineFirstClick,Result_IncrementLiquorAndPillsClick/ResultDrinkAndMedicineScript/ResultTimePass,조사 시스템 테스트 중
-EventDrinkAndMedicine,술+감기약,술과 감기약을 두 번 이상,,ConditionDrinkAndMedicineManyClick,ResultClueCompleted,조사 시스템 테스트 중
+EventBlanket,이불,이불을 클릭,,ConditionBlanketFirstClick,ResultBlanketScript/ResultTimePass/Result_IncrementBlanketsClick/Result_IsFinishedEventBlanket,Result_IsFinished 추가
+EventBlanket,이불,이불을 한번 이상 클릭,,ConditionBlanketManyClick,ResultBlanketScript/ResultTimePass/Result_IncrementBlanketsClick,
 ,,,,,,
-EventStandLight,스탠드,책상 위 스탠드를 클릭,,ConditionStandLightFirstClick, ResultStandLightScript/ResultTimePass/Result_IncrementLampClick,
-EventStandLight,스탠드,책상 위 스탠드를 두 번 이상 클릭,,ConditionStandLightManyClick,ResultClueCompleted,
+EventDrinkAndMedicine,술+감기약,술과 감기약을 두 번 이상,,ConditionDrinkAndMedicineManyClick,ResultDrinkAndMedicineScript/ResultTimePass/Result_IncrementLiquorAndPillsClick,
+EventDrinkAndMedicine,술+감기약,술과 감기약을 클릭,,ConditionDrinkAndMedicineFirstClick,ResultDrinkAndMedicineScript/ResultTimePass/Result_IncrementLiquorAndPillsClick/Result_IsFinishedEventDrinkAndMedicine/ResultDrinkAndMedicinMemo,Result_IsFinished 추가
 ,,,,,,
-EventBearStorageCloset,인형 수납장,수납장을 클릭,,ConditionBearStorageClosetyFirstClick,ResultBearStorageClosetyScript/ResultTimePass/Result_IncrementShelvesClick,
-EventBearStorageCloset,인형 수납장,수납장을 두 번 이상 클릭,,ConditionBearStorageClosetyManyClick,ResultClueCompleted,
+EventStandLight,스탠드,책상 위 스탠드를 클릭,,ConditionStandLightFirstClick, ResultStandLightScript/ResultTimePass/Result_IncrementLampClick/Result_IsFinishedEventStandLight,Result_IsFinished 추가
+EventStandLight,스탠드,책상 위 스탠드를 두 번 이상 클릭,,ConditionStandLightManyClick,ResultStandLightScript/ResultTimePass/Result_IncrementLampClick,
+,,,,,,
+EventBearStorageCloset,인형 수납장,수납장을 클릭,,ConditionBearStorageClosetyFirstClick,ResultBearStorageClosetyScript/ResultTimePass/Result_IncrementShelvesClick/Result_IsFinishedEventBearStorageCloset,Result_IsFinished 추가
+EventBearStorageCloset,인형 수납장,수납장을 두 번 이상 클릭,,ConditionBearStorageClosetyManyClick,ResultBearStorageClosetyScript/ResultTimePass/Result_IncrementShelvesClick,
 ,,,,,,
 EventPillowZoom,,확대 되지 않은 상태에서 배게나 침대 위 인형을 클릭,,,Result_showZoomedPillow,4월19일 추가
 ,,,,,,
 EventPillow,침대 위 베개,베개를 클릭(1/2),,ConditionPillowFirstClick,Result_IncrementPillowClick/ResultPillowScript/ResultTimePass,
-EventPillow,침대 위 베개,베개를 클릭(2/2),,ConditionPillowSecondClick,Result_IncrementPillowClick/ResultPillowAmuletScript/ResultTimePass/ResultPillowAmuletMemo,
-EventPillow,침대 위 베개,베개를 그 이상 클릭,,ConditionPillowManyClick,ResultClueCompleted,
+EventPillow,침대 위 베개,베개를 클릭(2/2),,ConditionPillowSecondClick,Result_IncrementPillowClick/ResultPillowAmuletScript/ResultTimePass/ResultPillowAmuletMemo/Result_IsFinishedEventPillow,Result_IsFinished 추가
+EventPillow,침대 위 베개,베개를 그 이상 클릭,,ConditionPillowManyClick,Result_IncrementPillowClick/ResultPillowAmuletScript/ResultTimePass,
 ,,,,,,
 EventDeskShelfZoom,확대 안 된 책상 위 선반,확대 되지 않은 상태에서 선반에 있는 오브젝트들(다이어리와 시계)을 클릭,,,Result_showZoomedDeskShelf,4월19일 추가
 ,,,,,,
@@ -62,7 +63,7 @@ EventCarpetClosed,닫힌 카펫,의자 이동한 상태에서 자퇴서 조사 �
 EventCarpetOpen,열린 카펫,자퇴서 본 상태에서 열린 카펫을 클릭 + 튜토리얼O,AND,ConditionCarpetOpen/Condition_tutorial/ConditionZeroPaperManyClick,ResultCarpetClosed/Result_nextTutorialPhase,새로 추가(나은)
 EventCarpetOpen,열린 카펫,자퇴서 안 본 상태에서 열린 카펫을 클릭 + 튜토리얼O,AND,ConditionCarpetOpen/Condition_tutorial/CoditionZeroPaperFirstClick,ResultCarpetClosed,새로 추가(나은)
 EventCarpetOpen,열린 카펫,열린 카펫을 클릭 + 튜토리얼X,AND,ConditionCarpetOpen/Condition_notTutorial,ResultCarpetClosed,새로 추가(나은)
-EventCarpetLetterOfResignation,카펫(종이),자퇴서 처음 클릭,,CoditionZeroPaperFirstClick,ResultCarpetDropOutLetterZoom/ResultTimePass/ResultCarpetDropOutLetterScript/Result_nextTutorialPhase/Result_IncrementPaperClick,새로 추가(나은)
+EventCarpetLetterOfResignation,카펫(종이),자퇴서 처음 클릭,,CoditionZeroPaperFirstClick,ResultCarpetDropOutLetterZoom/ResultTimePass/ResultCarpetDropOutLetterScript/Result_nextTutorialPhase/Result_IncrementPaperClick/ResultCarpetDropOutLetterMemo,새로 추가(나은)
 EventCarpetLetterOfResignation,카펫(종이),자퇴서 다시 클릭,,ConditionZeroPaperManyClick,ResultClueCompleted,
 ,,,,,,
 EventKnife,커터칼,커터칼 획득,,,ResultCutterKnifeScript/ResultCutterKnifeDisappear/ResultTimePass/Result_InverseHasKnife,새로 추가(나은)
@@ -173,5 +174,4 @@ EventFollowAngryPerson,화난 사람,화난 사람을 여러번 클릭,,Conditio
 EventFollowMinigameEasy,미니게임,미행 내 이벤트 10회 발생시 난이도 1 미니게임,,Condition10timesClick,ResultFollowMinigameEasy,
 EventFollowMinigameNomal,미니게임,미행 내 이벤트 20회 발생시  난이도 2 미니게임 ,,Condition20timesClick,ResultFollowMinigameNomal,
 EventFollowMinigameHard,미니게임,미행 내 이벤트 30회 혹은 그 이상 10단위 일 때 난이도 3 미니게임,,Condition30timesClick,ResultFollowMinigameHard,
-,,,,,,
-EventFollowTutorial,,,,,,
+EventFollowEnd,미행 끝,미행이 끝남,,,ResultFollowEnd,

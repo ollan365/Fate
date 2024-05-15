@@ -82,16 +82,31 @@ public class ClockHand : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDra
             // 분침의 현재 z축 값 업데이트
             accumulatedMinuteAngle = 360f - rectTransform.rotation.eulerAngles.z;
 
-            // 시침도 함께 움직이도록 설정
-            if (hourHand != null)
-            {
-                // 시침의 누적 회전 각도 업데이트
-                float hourHandAngle = ((accumulatedMinuteAngle + min) / 360f) * 30f;
-                hourHand.rotation = Quaternion.Euler(0f, 0f, -hourHandAngle);
-                currentHour = (int)((accumulatedMinuteAngle + min) / 360f);
-                if (currentHour == 0)
-                    currentHour = 12;
-            }
+    private void CompareClockHands()
+    {
+        if (isClockTimeCorrect) return;
+        
+        int currentHour = CalculateHourFromAngle(hourAngle); 
+        int currentMinute = CalculateMinuteFromAngle(minuteAngle);
+
+        // Debug.Log($"current time: {currentHour}:{currentMinute}");
+        
+        if (currentHour == correctHour && currentMinute == correctMinute)
+        {
+            GameManager.Instance.SetVariable("ClockTimeCorrect", true);
+            isClockTimeCorrect = true;
+
+            // 병합 과정에서 충돌로 인해 아래의 부분을 주석 처리했습니다 문제 없으면 지워주세요!
+            //// 시침도 함께 움직이도록 설정
+            //if (hourHand != null)
+            //{
+            //    // 시침의 누적 회전 각도 업데이트
+            //    float hourHandAngle = ((accumulatedMinuteAngle + min) / 360f) * 30f;
+            //    hourHand.rotation = Quaternion.Euler(0f, 0f, -hourHandAngle);
+            //    currentHour = (int)((accumulatedMinuteAngle + min) / 360f);
+            //    if (currentHour == 0)
+            //        currentHour = 12;
+            //}
         }
     }
 

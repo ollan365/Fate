@@ -80,6 +80,11 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.InverseVariable(variableName);
                 break;
 
+            case string temp when temp.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
+                variableName = temp.Substring("Result_isFinished".Length);
+                EventObjectManager.Instance.SetEventFinished(variableName);
+                break;
+
             case "Result_girl":  // 우연의 성별을 여자로 설정
                 GameManager.Instance.SetVariable("AccidyGender", 0);
                 DialogueManager.Instance.EndDialogue();
@@ -111,7 +116,11 @@ public class ResultManager : MonoBehaviour
 
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
-                DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry");
+                //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
+                //    +" : "+ EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
+                if (!EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()))
+                    DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry");
+                else DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry2");
                 break;
 
             case "ResultInquiryYes": // 조사 예 선택

@@ -77,7 +77,8 @@ public class EventManager : MonoBehaviour
                 string resultIDTrimmed = resultID.Trim();
                 if (resultIDTrimmed.StartsWith("Result_Increment") ||
                     resultIDTrimmed.StartsWith("Result_Decrement") ||
-                    resultIDTrimmed.StartsWith("Result_Inverse"))
+                    resultIDTrimmed.StartsWith("Result_Inverse") ||
+                    resultIDTrimmed.StartsWith("Result_IsFinished"))
                 {
                     Result tempResult = new Result(resultIDTrimmed, "", "");
                     results.Add(tempResult);
@@ -149,6 +150,8 @@ public class EventManager : MonoBehaviour
                 if (isCondition)
                 {
                     ExecuteResults(results);
+                    // 밑에 return 안 넣어주면 계속 다음에 있는 Conditions에 맞는 Results까지 불러오게 됨
+                    return;
                 }
             }
         }
@@ -195,48 +198,48 @@ public class EventManager : MonoBehaviour
 
     // ############### 디버깅용 메서드들 #################
     //Condition 정보를 로그로 출력하는 메서드
-    // private void DebugLogConditions()
+    //private void DebugLogConditions()
     //{
     //    Debug.Log("##### conditions #####");
-    //    foreach (var item in conditionManager.conditions)
+    //    foreach (var item in ConditionManager.Instance.conditions)
     //    {
     //        Debug.Log($"Condition ID: {item.Key}, Description: {item.Value.Description}, Variable: {item.Value.VariableName}, Logic: {item.Value.Logic}, Value: {item.Value.Value}");
     //    }
     //    Debug.Log('\n');
     //}
 
-    // Result 정보를 로그로 출력하는 메서드
+    //Result 정보를 로그로 출력하는 메서드
     //private void DebugLogResults()
     //{
     //    Debug.Log("##### results #####");
-    //    foreach (var item in resultManager.results)
+    //    foreach (var item in ResultManager.Instance.results)
     //    {
     //        Debug.Log($"Result ID: {item.Key}, Description: {item.Value.Description}, Action: {item.Value.Action}");
     //    }
     //    Debug.Log('\n');
     //}
 
-    // Event 정보를 로그로 출력하는 메서드
-    //private void DebugLogEvents()
-    //{
-    //    Debug.Log("##### events #####");
-    //    foreach (var evt in events)
-    //    {
-    //        Debug.Log($"Event ID: {evt.Value.EventID}, Name: {evt.Value.EventName}, Description: {evt.Value.EventDescription}");
-    //        foreach (var lcr in evt.Value.LogicConditionsResults)
-    //        {
-    //            Debug.Log($"    Logic: {lcr.Logic}");
-    //            Debug.Log("    Conditions:");
-    //            foreach (var condition in lcr.Conditions)
-    //            {
-    //                Debug.Log($"        {condition.ConditionID}");
-    //            }
-    //            Debug.Log("    Results:");
-    //            foreach (var result in lcr.Results)
-    //            {
-    //                Debug.Log($"        {result.ResultID}");
-    //            }
-    //        }
-    //    }
-    //}
+    //Event 정보를 로그로 출력하는 메서드
+    private void DebugLogEvents()
+    {
+        Debug.Log("##### events #####");
+        foreach (var evt in events)
+        {
+            Debug.Log($"Event ID: {evt.Value.EventID}, Name: {evt.Value.EventName}, Description: {evt.Value.EventDescription}");
+            foreach (var lcr in evt.Value.EventLine)
+            {
+                Debug.Log($"    Logic: {lcr.Logic}");
+                Debug.Log("    Conditions:");
+                foreach (var condition in lcr.Conditions)
+                {
+                    Debug.Log($"        {condition.ConditionID}");
+                }
+                Debug.Log("    Results:");
+                foreach (var result in lcr.Results)
+                {
+                    Debug.Log($"        {result.ResultID}");
+                }
+            }
+        }
+    }
 }
