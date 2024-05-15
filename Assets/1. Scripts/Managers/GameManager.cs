@@ -308,6 +308,7 @@ public class GameManager : MonoBehaviour
             "isInquiry",
             "PillowClick",
             "CalendarCluesFound",
+            "LiquorAndPillsClick"
         });
         
         foreach (var item in variables)

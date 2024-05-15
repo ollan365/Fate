@@ -71,7 +71,6 @@ public class RoomManager : MonoBehaviour
         if (!GameManager.Instance.skipTutorial) DialogueManager.Instance.StartDialogue("Prologue_015");
     }
 
-
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
     {
         if (leftOrRight != -1 && leftOrRight != 1)
