@@ -526,7 +526,6 @@ MonoBehaviour:
   eventId: EventCarpetClosed
   sideNum: 1
   isInquiry: 0
-  isFinished: 0
   isClosedCarpet: 1
   otherCarpet: {fileID: 137873178}
   objectBehindCollider: {fileID: 1274495173}
@@ -664,7 +663,6 @@ MonoBehaviour:
   eventId: EventStorageTeddyBear
   sideNum: 0
   isInquiry: 1
-  isFinished: 0
 --- !u!61 &52636795
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -900,7 +898,6 @@ MonoBehaviour:
   eventId: EventKnife
   sideNum: 0
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &62053584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1352,7 +1349,6 @@ MonoBehaviour:
   eventId: EventClosetBox
   sideNum: 2
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &78128994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1421,7 +1417,6 @@ MonoBehaviour:
   eventId: EventDiaryA
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
   diaryLock: {fileID: 665616727}
 --- !u!114 &78613627
 MonoBehaviour:
@@ -1719,7 +1714,6 @@ MonoBehaviour:
   eventId: EventStandLight
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &100489860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1976,7 +1970,6 @@ MonoBehaviour:
   eventId: EventPoster
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &126154535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2250,7 +2243,6 @@ MonoBehaviour:
   eventId: EventCarpetOpen
   sideNum: 1
   isInquiry: 0
-  isFinished: 0
   isClosedCarpet: 0
   otherCarpet: {fileID: 37155759}
   objectBehindCollider: {fileID: 1274495173}
@@ -2710,7 +2702,6 @@ MonoBehaviour:
   eventId: EventShoppingBag
   sideNum: 3
   isInquiry: 1
-  isFinished: 0
 --- !u!1 &201156111
 GameObject:
   m_ObjectHideFlags: 0
@@ -3082,7 +3073,6 @@ MonoBehaviour:
   eventId: EventDrinkAndMedicine
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &207931911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3387,7 +3377,6 @@ MonoBehaviour:
   eventId: EventCalendar
   sideNum: 0
   isInquiry: 1
-  isFinished: 0
   calendarPanel: {fileID: 201156111}
 --- !u!1 &257243166
 GameObject:
@@ -3779,7 +3768,6 @@ MonoBehaviour:
   eventId: EventDeskShelfZoom
   sideNum: 2
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 257243166}
 --- !u!1 &308357905
 GameObject:
@@ -4351,7 +4339,6 @@ MonoBehaviour:
   eventId: EventDeskZoom
   sideNum: 1
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 417709208}
 --- !u!114 &353499207
 MonoBehaviour:
@@ -4857,11 +4844,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9330426c849540547a0b12a323790ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAngle: 360
-  rotationSpeed: 5
-  stepAngle: 30
-  clockPuzzle: {fileID: 1024176503}
+  minuteHand: {fileID: 0}
   hourHand: {fileID: 60935246}
+  imageAndLockPanelManager: {fileID: 0}
 --- !u!114 &412036800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5033,7 +5018,6 @@ MonoBehaviour:
   eventId: EventPillow
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &429879780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5691,7 +5675,6 @@ MonoBehaviour:
   eventId: EventLaptopB
   sideNum: 0
   isInquiry: 0
-  isFinished: 0
   laptopContent: {fileID: 965888443}
   passwordInputField: {fileID: 2103142016}
   girlVersionBackground: {fileID: 21300000, guid: 2ead13da57ddcad4dad2b668e6258663, type: 3}
@@ -5780,7 +5763,6 @@ MonoBehaviour:
   eventId: EventDeskShelfZoom
   sideNum: 2
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 257243166}
 --- !u!114 &534641367
 MonoBehaviour:
@@ -5938,7 +5920,6 @@ MonoBehaviour:
   eventId: EventTutorialBlockingPanel
   sideNum: 0
   isInquiry: 0
-  isFinished: 0
 --- !u!114 &607867496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6088,7 +6069,6 @@ MonoBehaviour:
   eventId: EventDiaryB
   sideNum: 0
   isInquiry: 0
-  isFinished: 0
   diaryContent: {fileID: 1196163264}
   passwordText: {fileID: 898558688}
 --- !u!1 &674966301
@@ -6794,7 +6774,6 @@ MonoBehaviour:
   eventId: EventClosetClosed
   sideNum: 0
   isInquiry: 1
-  isFinished: 0
   isClosedDoors: 1
   otherDoors: {fileID: 1705609170}
   objectBehindColliders:
@@ -6884,7 +6863,6 @@ MonoBehaviour:
   eventId: EventPillowZoom
   sideNum: 3
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 1899501866}
 --- !u!114 &776643429
 MonoBehaviour:
@@ -7155,7 +7133,6 @@ MonoBehaviour:
   eventId: EventStorageOpen
   sideNum: 0
   isInquiry: 0
-  isFinished: 0
   isClosedDoors: 0
   otherDoors: {fileID: 1963323793}
   objectBehindColliders:
@@ -7710,7 +7687,6 @@ MonoBehaviour:
   eventId: EventKnife
   sideNum: 1
   isInquiry: 0
-  isFinished: 0
 --- !u!114 &891301996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7913,7 +7889,6 @@ MonoBehaviour:
   eventId: EventChair
   sideNum: 2
   isInquiry: 0
-  isFinished: 0
   moveDuration: 0.3
   deskUnzoomedButton: {fileID: 1796012583}
 --- !u!114 &912454081
@@ -8283,7 +8258,6 @@ MonoBehaviour:
   eventId: EventBlanket
   sideNum: 3
   isInquiry: 1
-  isFinished: 0
 --- !u!1 &1024176503
 GameObject:
   m_ObjectHideFlags: 0
@@ -8297,6 +8271,7 @@ GameObject:
   - component: {fileID: 1024176506}
   - component: {fileID: 1024176508}
   - component: {fileID: 1024176509}
+  - component: {fileID: 1024176510}
   m_Layer: 5
   m_Name: Clock Puzzle
   m_TagString: Untagged
@@ -8379,7 +8354,6 @@ MonoBehaviour:
   eventId: EventClockB
   sideNum: 0
   isInquiry: 0
-  isFinished: 0
   hourHand: {fileID: 60935245}
   minuteHand: {fileID: 412036797}
 --- !u!114 &1024176509
@@ -8399,6 +8373,21 @@ MonoBehaviour:
   stepAngle: 30
   hourHand: {fileID: 60935246}
   minuteHand: {fileID: 412036798}
+--- !u!114 &1024176510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024176503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9330426c849540547a0b12a323790ea2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minuteHand: {fileID: 412036798}
+  hourHand: {fileID: 60935246}
+  imageAndLockPanelManager: {fileID: 370811677}
 --- !u!1 &1025212887
 GameObject:
   m_ObjectHideFlags: 0
@@ -8637,7 +8626,6 @@ MonoBehaviour:
   eventId: EventDrinkAndMedicine
   sideNum: 3
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &1051482924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8894,7 +8882,6 @@ MonoBehaviour:
   eventId: EventClosetZoom
   sideNum: 2
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 1950428721}
 --- !u!114 &1082676163
 MonoBehaviour:
@@ -9279,7 +9266,6 @@ MonoBehaviour:
   eventId: EventBearStorageCloset
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &1121596846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9454,7 +9440,6 @@ MonoBehaviour:
   eventId: EventStorageTeddyBear
   sideNum: 0
   isInquiry: 1
-  isFinished: 0
 --- !u!61 &1157632437
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9765,7 +9750,6 @@ MonoBehaviour:
   eventId: EventTeddyBear
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &1195374732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10172,7 +10156,6 @@ MonoBehaviour:
   eventId: EventClockA
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
   clockPuzzle: {fileID: 1024176503}
 --- !u!114 &1209573880
 MonoBehaviour:
@@ -10542,7 +10525,6 @@ MonoBehaviour:
   eventId: EventBlanket
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &1251615614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10752,7 +10734,6 @@ MonoBehaviour:
   eventId: EventClosetBag
   sideNum: 0
   isInquiry: 1
-  isFinished: 0
 --- !u!212 &1270533016
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10902,7 +10883,6 @@ MonoBehaviour:
   eventId: EventCarpetLetterOfResignation
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
 --- !u!61 &1274495173
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11721,7 +11701,6 @@ MonoBehaviour:
   eventId: EventDeskShelfZoom
   sideNum: 1
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 257243166}
 --- !u!114 &1456273706
 MonoBehaviour:
@@ -12055,7 +12034,6 @@ MonoBehaviour:
   eventId: EventBearStorageCloset
   sideNum: 2
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &1495755653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12160,7 +12138,6 @@ MonoBehaviour:
   eventId: EventNormalPoster
   sideNum: 3
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &1535289541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12562,7 +12539,6 @@ MonoBehaviour:
   eventId: EventRest
   sideNum: 0
   isInquiry: 0
-  isFinished: 0
 --- !u!1 &1625075168
 GameObject:
   m_ObjectHideFlags: 0
@@ -12625,7 +12601,6 @@ MonoBehaviour:
   eventId: EventChair
   sideNum: 1
   isInquiry: 0
-  isFinished: 0
   moveDuration: 0.3
   deskUnzoomedButton: {fileID: 1774755198}
 --- !u!70 &1625075174
@@ -12864,7 +12839,6 @@ MonoBehaviour:
   eventId: EventStorageZoom
   sideNum: 3
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 856712065}
 --- !u!114 &1632417574
 MonoBehaviour:
@@ -12934,7 +12908,6 @@ MonoBehaviour:
   eventId: EventPoster
   sideNum: 3
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &1645286389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13228,7 +13201,6 @@ MonoBehaviour:
   eventId: EventNormalPoster
   sideNum: 3
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &1691046188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13528,7 +13500,6 @@ MonoBehaviour:
   eventId: EventClosetOpen
   sideNum: 0
   isInquiry: 0
-  isFinished: 0
   isClosedDoors: 0
   otherDoors: {fileID: 744799711}
   objectBehindColliders:
@@ -13841,7 +13812,6 @@ MonoBehaviour:
   eventId: EventLaptopA
   sideNum: 1
   isInquiry: 1
-  isFinished: 0
   laptopLock: {fileID: 531644766}
 --- !u!114 &1759114527
 MonoBehaviour:
@@ -14123,7 +14093,6 @@ MonoBehaviour:
   eventId: EventDeskZoom
   sideNum: 1
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 417709208}
 --- !u!114 &1774755198
 MonoBehaviour:
@@ -14303,7 +14272,6 @@ MonoBehaviour:
   eventId: EventDeskZoom
   sideNum: 2
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 417709208}
 --- !u!114 &1796012583
 MonoBehaviour:
@@ -14829,7 +14797,6 @@ MonoBehaviour:
   eventId: EventKnife
   sideNum: 2
   isInquiry: 0
-  isFinished: 0
 --- !u!114 &1858957145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15233,7 +15200,6 @@ MonoBehaviour:
   eventId: EventStorageClosed
   sideNum: 0
   isInquiry: 1
-  isFinished: 0
   isClosedDoors: 1
   otherDoors: {fileID: 784320695}
   objectBehindColliders:
@@ -15295,7 +15261,6 @@ MonoBehaviour:
   eventId: EventNormalPoster
   sideNum: 3
   isInquiry: 1
-  isFinished: 0
 --- !u!114 &2015407721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15474,7 +15439,6 @@ MonoBehaviour:
   eventId: EventPillowZoom
   sideNum: 1
   isInquiry: 0
-  isFinished: 0
   zoomedView: {fileID: 1899501866}
 --- !u!114 &2069612837
 MonoBehaviour:
@@ -16021,7 +15985,6 @@ MonoBehaviour:
   eventId: EventShoppingBag
   sideNum: 2
   isInquiry: 1
-  isFinished: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
