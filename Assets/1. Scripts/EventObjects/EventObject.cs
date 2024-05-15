@@ -14,7 +14,8 @@ public class EventObject : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(eventId) && EventManager.Instance)
         {
-            if (isInquiry)
+            bool skipInquiry = (bool) GameManager.Instance.skipInquiry;
+            if (isInquiry && !skipInquiry)
             {
                 GameManager.Instance.SetVariable("isInquiry", true);
                 GameManager.Instance.setCurrentInquiryObjectId(eventId);

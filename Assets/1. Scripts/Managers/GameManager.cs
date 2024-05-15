@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI variablesText;
     public bool isDebug = false;
     public bool skipTutorial = false;
+    public bool skipInquiry = false;
 
     // 행동력 변수 변경될 때 호출될 이벤트
     public delegate void ActionPointChangedEventHandler(int newActionPointValue);
