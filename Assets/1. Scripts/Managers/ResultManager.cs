@@ -658,6 +658,10 @@ public class ResultManager : MonoBehaviour
             case "ResultFollowEnd": // 미행 끝
                 FollowManager.Instance.FollowEnd();
                 break;
+
+            default:
+                Debug.Log($"Result ID: {resultID} not found!");
+                break;
         }
     }
 }
