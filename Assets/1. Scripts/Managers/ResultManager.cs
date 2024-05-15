@@ -654,6 +654,10 @@ public class ResultManager : MonoBehaviour
             case "ResultWreathMemo": // 쓰러진 화환에 대한 메모
                 MemoManager.Instance.AddMemo("F1Memo_010");
                 break;
+
+            case "ResultFollowEnd": // 미행 끝
+                FollowManager.Instance.FollowEnd();
+                break;
         }
     }
 }

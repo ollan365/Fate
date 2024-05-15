@@ -12,6 +12,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Animator[] heartAnimator;
+    [SerializeField] private GameObject blockingPanel;
 
     [Header("Object")]
     [SerializeField] private GameObject fate;
@@ -40,16 +41,14 @@ public class FollowFinishMiniGame : MonoBehaviour
         this.heartCount = heartCount;
         for (int i = 0; i < heartCount; i++) heartAnimator[i].gameObject.SetActive(true);
 
-        // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다 + 브금을 바꾼다
+        // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다
         followUICanvas.SetActive(false);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW);
         yield return new WaitForSeconds(0.2f);
         followCanvas.SetActive(false);
         finishGameCanvas.SetActive(true);
-        // SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
-        yield return new WaitForSeconds(0.4f);
-        finishGameObjects.SetActive(true); // 페이드 인 아웃 끝
+        finishGameObjects.SetActive(true);
+        yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
 
         StartCoroutine(BackgroundMove());
 
@@ -96,7 +95,6 @@ public class FollowFinishMiniGame : MonoBehaviour
         }
         // fateEnd.GetComponentInChildren<ParticleSystem>().Stop();
 
-        // 대사 출력 예정
         yield return new WaitForSeconds(1.5f);
 
         // 우연이 앞으로 걸어나옴
@@ -111,10 +109,10 @@ public class FollowFinishMiniGame : MonoBehaviour
             yield return null;
         }
 
-        // 대사 출력 예정
         yield return new WaitForSeconds(0.5f);
-
-        FollowManager.Instance.FollowEnd();
+        DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM;
+        blockingPanel.SetActive(true);
+        DialogueManager.Instance.StartDialogue("Follow1Final_003"); // 우연의 대사 출력
     }
     public IEnumerator BackgroundMove() // 배경 움직이기 (미완성)
     {

@@ -14,6 +14,7 @@ public class FollowDayMiniGame : MonoBehaviour
     [SerializeField] private Animator[] heartAnimator;
     [SerializeField] private Button[] buttons;
     [SerializeField] private GameObject[] buttonImages;
+    [SerializeField] private GameObject blockingPanel;
 
     [Header("Character")]
     [SerializeField] private Image accidy;
@@ -156,23 +157,27 @@ public class FollowDayMiniGame : MonoBehaviour
                 onHit = true;
                 heartCount--;
 
-                if (heartCount <= 0) isGameOver = true;
+                if (heartCount <= 0)
+                {
+                    isGameOver = true;
+                }
                 else // 체력을 1 깎고 다시 벽쪽으로 돌아간다
                 {
                     accidyBack = false; // 한대 맞았으면 더 이상 체력이 깎이지 않도록 한다
                     StartCoroutine(FateMove(Place.WALL));
-
-                    // 하트가 터지는 애니메이션 재생
-                    heartAnimator[heartCount].SetTrigger("Break");
-
-                    // 화면이 붉어지는 애니메이션
-                    ScreenEffect.Instance.coverPanel.color = Color.red;
-                    StartCoroutine(ScreenEffect.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
-                    yield return new WaitForSeconds(0.5f);
-
-                    heartAnimator[heartCount].gameObject.SetActive(false);
-                    ScreenEffect.Instance.coverPanel.color = Color.black;
                 }
+
+                // 하트가 터지는 애니메이션 재생
+                heartAnimator[heartCount].SetTrigger("Break");
+
+                // 화면이 붉어지는 애니메이션
+                ScreenEffect.Instance.coverPanel.color = Color.red;
+                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
+                yield return new WaitForSeconds(0.5f);
+
+                heartAnimator[heartCount].gameObject.SetActive(false);
+                ScreenEffect.Instance.coverPanel.color = Color.black;
+                
                 onHit = false;
             }
             yield return null;
@@ -180,7 +185,11 @@ public class FollowDayMiniGame : MonoBehaviour
 
         if (isGameOver) // 게임 오버
         {
-            FollowManager.Instance.FollowEnd();
+            yield return new WaitForSeconds(0.5f);
+
+            DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM;
+            blockingPanel.SetActive(true);
+            DialogueManager.Instance.StartDialogue("Follow1Final_003"); // 우연의 대사 출력
         }
         else // 게임 클리어
         {
@@ -267,6 +276,8 @@ public class FollowDayMiniGame : MonoBehaviour
                 accidyBack = true;
                 yield return new WaitForSeconds(2);
                 accidyBack = false;
+
+                if (isGameOver) break;
 
                 // 다시 앞을 보는 애니메이션
                 StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
