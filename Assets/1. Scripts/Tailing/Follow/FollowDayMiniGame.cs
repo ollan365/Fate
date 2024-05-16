@@ -22,6 +22,12 @@ public class FollowDayMiniGame : MonoBehaviour
     [SerializeField] private Sprite accidyGirlFront, accidyGirlBack, accidyBoyFront, accidyBoyBack;
     private Sprite accidyFrontSprite, accidyBackSprite;
 
+    [Header("Tutorial")]
+    [SerializeField] private GameObject tutorialObject;
+    [SerializeField] private Image tutorialAccidyImage;
+    [SerializeField] private Sprite[] tutorialAccidySprites;
+
+    [Header("Variables")]
     // 물체 클릭 횟수
     private float clickCount;
     public float ClickCount
@@ -42,6 +48,8 @@ public class FollowDayMiniGame : MonoBehaviour
                     gaugeSliders[ToInt(Place.MEMO)].gameObject.SetActive(true);
                     buttons[ToInt(Place.MEMO)].gameObject.SetActive(true);
                     buttonImages[ToInt(Place.MEMO)].gameObject.SetActive(true);
+
+                    tutorialObject.SetActive(true);
 
                     // 클리어 해야하는 것
                     clear[ToInt(Place.MEMO)] = false;
@@ -102,14 +110,17 @@ public class FollowDayMiniGame : MonoBehaviour
         {
             accidyFrontSprite = accidyGirlFront;
             accidyBackSprite = accidyGirlBack;
+            tutorialAccidyImage.sprite = tutorialAccidySprites[0];
         }
         else
         {
             accidyFrontSprite = accidyBoyFront;
             accidyBackSprite = accidyBoyBack;
+            tutorialAccidyImage.sprite = tutorialAccidySprites[1];
         }
         accidy.sprite = accidyFrontSprite;
         accidy.SetNativeSize();
+        tutorialAccidyImage.SetNativeSize();
     }
     private IEnumerator StartMiniGame()
     {
@@ -135,6 +146,8 @@ public class FollowDayMiniGame : MonoBehaviour
         miniGameCanvas.SetActive(true);
         SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
         yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
+
+        while (tutorialObject.activeSelf) yield return new WaitForFixedUpdate(); // 튜토리얼 캔버스가 켜져 있다면 대기
 
         // 우연의 움직임 시작
         StartCoroutine(AccidyLogic());
