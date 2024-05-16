@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FollowFinishMiniGame : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class FollowFinishMiniGame : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Animator[] heartAnimator;
     [SerializeField] private GameObject blockingPanel;
+    [SerializeField] private Sprite[] accidySprite;
+    [SerializeField] private GameObject tutorialCanvas;
 
     [Header("Object")]
     [SerializeField] private GameObject fate;
@@ -28,7 +31,6 @@ public class FollowFinishMiniGame : MonoBehaviour
     [SerializeField] private float invincibleTime;
     public bool isGameOver = false;
     private int heartCount;
-    private int currentPosition = 1;
 
     [Header("Background")]
     [SerializeField] private Transform[] backgrounds;
@@ -41,6 +43,11 @@ public class FollowFinishMiniGame : MonoBehaviour
         this.heartCount = heartCount;
         for (int i = 0; i < heartCount; i++) heartAnimator[i].gameObject.SetActive(true);
 
+        // 우연의 성별에 따라 다른 이미지
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)  accidyEnd.GetComponent<Image>().sprite = accidySprite[0];
+        else accidyEnd.GetComponent<Image>().sprite = accidySprite[1];
+        accidyEnd.GetComponent<Image>().SetNativeSize();
+
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다
         followUICanvas.SetActive(false);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
@@ -49,6 +56,9 @@ public class FollowFinishMiniGame : MonoBehaviour
         finishGameCanvas.SetActive(true);
         finishGameObjects.SetActive(true);
         yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
+
+        // 튜토리얼 캔버스를 끌 때까지 기다린다
+        while (tutorialCanvas.activeSelf) yield return new WaitForFixedUpdate();
 
         StartCoroutine(BackgroundMove());
 
@@ -201,7 +211,6 @@ public class FollowFinishMiniGame : MonoBehaviour
             yield return null;
         }
 
-        currentPosition = index;
         fate.transform.position = targetPosition;
     }
 }
