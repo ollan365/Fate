@@ -251,8 +251,12 @@ public class ImageAndLockPanelManager : MonoBehaviour
         bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorial;
         blockingPanel.SetActive(isImageOrLockActive);
 
-        float alpha = isImageOrLockActive ? 0.7f : 0;  // rgba의 알파값(투명도)
-        blockingPanel.GetComponent<Image>().color = new Color(0, 0, 0, alpha);
+        // 튜토리얼이 아니면 BlockingPanel 알파값 조절 가능
+        if (!(bool)GameManager.Instance.GetVariable("isTutorial"))
+        {
+            float alpha = isImageOrLockActive ? 0.7f : 0;  // rgba의 알파값(투명도)
+            blockingPanel.GetComponent<Image>().color = new Color(0, 0, 0, alpha);
+        }
     }
 
     public void SetTutorialBlockingPanel()
