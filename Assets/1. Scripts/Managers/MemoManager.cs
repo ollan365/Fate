@@ -9,8 +9,10 @@ public class MemoManager : MonoBehaviour
     public TextAsset memosCSV;
 
     [SerializeField] private GameObject memoPage;
-    [SerializeField] private GameObject memoButton;
+    [SerializeField] private GameObject[] memoButtons;
     [SerializeField] private GameObject closeButton;
+
+    private GameObject memoButton; // 현재 사용 중인 메모버튼
 
     // 모든 메모
     public Dictionary<string, string> allMemo = new();
@@ -44,6 +46,8 @@ public class MemoManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        memoButton = memoButtons[0];
     }
 
     // 메모 추가하기
@@ -81,9 +85,14 @@ public class MemoManager : MonoBehaviour
         }
         else if (memoPage.activeSelf)
         {
-            MemoButtonAlphaChange(); // 만약 미행 파트이면 다시 버튼을 투명하게 만든다
+            if (isFollow)
+            {
+                FollowManager.Instance.EndScript(false);
 
-            if (isFollow) FollowManager.Instance.EndScript(false);
+                ColorBlock colors = memoButton.GetComponent<Button>().colors;
+                colors.normalColor = new Color(1, 1, 1, 0.5f);
+                memoButton.GetComponent<Button>().colors = colors;
+            }
 
             memoPage.SetActive(false);
             closeButton.SetActive(false);
@@ -99,16 +108,10 @@ public class MemoManager : MonoBehaviour
         // 메모 버튼을 보이지 않게 or 보이게 할 수 있음
         memoButton.SetActive(!flag);
     }
-    public void MemoButtonAlphaChange()
+    public void MemoButtonChange()
     {
-        ColorBlock colors = memoButton.GetComponent<Button>().colors;
-
-        // Normal 상태의 색상을 씬에 따라 변경
-        if (isFollow) colors.normalColor = new Color(1, 1, 1, 0.5f); // 미행일 때
-        if (!isFollow) colors.normalColor = new Color(1, 1, 1, 1); // 미행이 아닐 때
-
-        // 변경된 ColorBlock을 다시 버튼에 할당합니다.
-        memoButton.GetComponent<Button>().colors = colors;
+        if (!isFollow) memoButton = memoButtons[0];
+        else memoButton = memoButtons[1];
     }
     // memos.csv 파일 파싱
     public void ParseMemos()

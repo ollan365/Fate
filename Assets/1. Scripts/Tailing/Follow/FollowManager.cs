@@ -39,7 +39,7 @@ public class FollowManager : MonoBehaviour
         SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW, true);
 
         MemoManager.Instance.isFollow = true;
-        MemoManager.Instance.MemoButtonAlphaChange();
+        MemoManager.Instance.MemoButtonChange();
         MemoManager.Instance.HideMemoButton(false);
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
 
