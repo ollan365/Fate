@@ -38,6 +38,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private GameObject Carpet;
     [SerializeField] private GameObject CarpetPaper;
     [SerializeField] private GameObject CarpetOpen;
+    [SerializeField] private GameObject MemoButtonImage;
 
     private Dictionary<string, Sprite> imageDictionary;
     private Dictionary<string, GameObject> lockObjectDictionary;
@@ -81,7 +82,13 @@ public class ImageAndLockPanelManager : MonoBehaviour
             {"TutorialCarpet", Carpet},
             {"TutorialCarpetPaper", CarpetPaper},
             {"TutorialCarpetOpen", CarpetOpen},
+            {"TutorialMemoButton", MemoButtonImage}
         };
+    }
+
+    public bool GetIsTutorialObjectActive()
+    {
+        return isTutorialObjectActive;
     }
 
     public void OnExitButtonClick()
@@ -218,7 +225,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             }
 
             RoomManager.Instance.SetIsInvestigating(true);
-            RoomManager.Instance.SetButtons();
+            //RoomManager.Instance.SetButtons();
         }
         else
         {
@@ -258,7 +265,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     {
         isTutorialObjectActive = isTrue;
         RoomManager.Instance.SetIsInvestigating(true);
-        RoomManager.Instance.SetButtons();
+        //RoomManager.Instance.SetButtons();
 
         bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorialObjectActive;
         TutorialBlockingPanel.SetActive(isImageOrLockActive);

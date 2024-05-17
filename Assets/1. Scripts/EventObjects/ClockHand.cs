@@ -19,6 +19,8 @@ public class ClockHand : MonoBehaviour
 
     [SerializeField] private ImageAndLockPanelManager imageAndLockPanelManager;
 
+    [SerializeField] private Clock clockA;
+
     private void Update()
     {
         bool isImageActive = imageAndLockPanelManager.isImageActive;
@@ -96,6 +98,8 @@ public class ClockHand : MonoBehaviour
         if (currentHour == correctHour && currentMinute == correctMinute)
         {
             GameManager.Instance.SetVariable("ClockTimeCorrect", true);
+            // 시계 맞춘 이후에 시계 다시 클릭하면 조사창 패스된거 다시 조사창 나오게 함.
+            clockA.SetIsInquiry(true);
             isClockTimeCorrect = true;
         }
 

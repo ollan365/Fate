@@ -61,6 +61,12 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case 4:
+                DialogueManager.Instance.StartDialogue("Tutorial_003_C");
+                //메모 버튼 반짝반짝 효과
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialMemoButton");
+                break;
+
+            case 5:
                 DialogueManager.Instance.StartDialogue("Tutorial_004");
                 EndTutorial();
                 break;
@@ -83,8 +89,8 @@ public class TutorialManager : MonoBehaviour
         RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
 
         MemoManager.Instance.HideMemoButton(false);
-        // 휴식 버튼도 보이게 함
-        RoomManager.Instance.HideRestButton(false);
+        //// 휴식 버튼도 보이게 함
+        //RoomManager.Instance.HideRestButton(false);
     }
     
 }

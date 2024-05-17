@@ -85,6 +85,12 @@ public class ResultManager : MonoBehaviour
                 EventObjectManager.Instance.SetEventFinished(variableName);
                 break;
 
+            case string temp when temp.StartsWith("Result_IsUnFinished"):  
+                // EventObject의 isFinished를 false로 (포스터 커터칼 있는채로 다시 조사하면 처음 조사 스크립트 나와야 해서 추가됨)
+                variableName = temp.Substring("Result_IsUnFinished".Length);
+                EventObjectManager.Instance.SetEventUnFinished(variableName);
+                break;
+
             case "Result_girl":  // 우연의 성별을 여자로 설정
                 GameManager.Instance.SetVariable("AccidyGender", 0);
                 DialogueManager.Instance.EndDialogue();
@@ -139,6 +145,7 @@ public class ResultManager : MonoBehaviour
 
             // 휴식 시스템
             case "Result_restButton":
+                DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape_034");
                 break;
 
@@ -157,6 +164,18 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.EndDialogue();
                 break;
 
+            // 침대 시스템
+            case "ResultBedChoice": // 침대 선택지 나오게 함
+                DialogueManager.Instance.StartDialogue("RoomEscape_BedClick");
+                break;
+
+            case "ResultBlanketCheck": // 조사하기 버튼 누르면 침대 조사할 수 있게 함
+                DialogueManager.Instance.EndDialogue();
+                GameManager.Instance.SetVariable("isInquiry", true);
+                GameManager.Instance.setCurrentInquiryObjectId("EventBlanket");
+                EventManager.Instance.CallEvent("Event_Inquiry");
+                break;
+                
 
             // 튜토리얼
             case "Result_nextTutorialPhase":  // 튜토리얼 다음 페이즈로 진행
@@ -220,6 +239,10 @@ public class ResultManager : MonoBehaviour
             case "ResultDrinkAndMedicineScript": // 술과 감기약에 대한 설명
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "liquorAndPills");
                 DialogueManager.Instance.StartDialogue("RoomEscape_003");
+                break;
+
+            case "ResultDrinkAndMedicinMemo": // 술과 감기약에 대한 메모 작성
+                MemoManager.Instance.AddMemo("R1Memo_012");
                 break;
 
             case "ResultStandLightScript": // 책상 위 스탠드에 대한 설명
@@ -342,7 +365,11 @@ public class ResultManager : MonoBehaviour
             case "ResultCarpetDropOutLetterScript": // 종이에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_017");
                 break;
-            
+
+            case "ResultCarpetDropOutLetterMemo": // 종이에 대한 메모
+                MemoManager.Instance.AddMemo("R1Memo_013");
+                break;
+
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetClose);
                 executableObjects["OpenCarpet"].ExecuteAction();
