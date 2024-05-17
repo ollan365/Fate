@@ -91,7 +91,6 @@ public class ClockHand : MonoBehaviour
         int currentHour = CalculateHourFromAngle(hourAngle);
         int currentMinute = CalculateMinuteFromAngle(minuteAngle);
 
-        Debug.Log($"current time: {currentHour}:{currentMinute}");
         // Debug.Log($"current time: {currentHour}:{currentMinute}");
 
         if (currentHour == correctHour && currentMinute == correctMinute)

@@ -28,6 +28,7 @@ public class DiaryLock : EventObject, IResultExecutable
     private void ShowDiaryContent()
     {
         diaryContent.SetActive(true);
+        gameObject.SetActive(false);
     }
 
     public void InputNumber(string buttonInput)
@@ -49,7 +50,7 @@ public class DiaryLock : EventObject, IResultExecutable
     IEnumerator ComparePassword()
     {
         yield return new WaitForSeconds(0.2f);
-        string correctPassword = (string)GameManager.Instance.GetVariable("DiaryPassword");
+        string correctPassword = (string)GameManager.Instance.GetVariable("FateBirthday");  // 다이어리 비밀번호 = 필연 생일
         GameManager.Instance.SetVariable("DiaryPasswordCorrect", passwordInput == correctPassword);
 
         OnMouseDown();

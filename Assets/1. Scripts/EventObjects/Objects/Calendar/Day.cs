@@ -40,7 +40,7 @@ public class Day : MonoBehaviour
 
         if (specialDates.ContainsValue(date))
         {
-            GetComponent<Image>().color = Color.magenta;
+            GetComponent<Image>().color = Color.green;
         }
 
     }
