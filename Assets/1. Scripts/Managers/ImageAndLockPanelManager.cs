@@ -140,26 +140,14 @@ public class ImageAndLockPanelManager : MonoBehaviour
         if (isTrue)
         {
             Sprite rawSprite = imageDictionary[eventObjectName];
-            float maxDimension = 900f;
+            float maxHeight = 1050f;
 
             float rawHeight = rawSprite.rect.height;
             float rawWidth = rawSprite.rect.width;
-            float preferredHeight;
-            float preferredWidth;
-            float multiplier;
 
-            if (rawHeight > rawWidth)
-            {
-                multiplier = maxDimension / rawHeight;
-                preferredHeight = maxDimension;
-                preferredWidth = rawWidth * multiplier;
-            }
-            else
-            {
-                multiplier = maxDimension / rawWidth;
-                preferredWidth = maxDimension;
-                preferredHeight = rawHeight * multiplier;
-            }
+            float multiplier = maxHeight / rawHeight;;
+            float preferredHeight = maxHeight;
+            float preferredWidth = rawWidth * multiplier;
 
             objectImageImageComponent.sprite = rawSprite;
             objectImageRectTransform.sizeDelta = new Vector2(preferredWidth, preferredHeight);
