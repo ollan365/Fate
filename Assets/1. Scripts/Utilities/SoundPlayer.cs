@@ -18,7 +18,7 @@ public class SoundPlayer : MonoBehaviour
     [SerializeField] private AudioClip[] UISoundClip_LOOP; // UI 효과음들
 
     // Volume
-    private float bgmVolume = 1;
+    private float bgmVolume = 0.5f;
 
     // 동시에 여러 UI 효과음들이 플레이 될 수도 있으므로 여러 플레이어를 두고 순차적으로 실행하기 위한 변수
     private int UISoundPlayerCursor;
@@ -106,7 +106,14 @@ public class SoundPlayer : MonoBehaviour
         }
         else
         {
-            UISoundLoopPlayer[num].Stop();
+            foreach(AudioSource audio in UISoundLoopPlayer)
+            {
+                if(audio.isPlaying && audio.clip == UISoundClip_LOOP[num])
+                {
+                    audio.Stop();
+                    break;
+                }
+            }
         }
         
         return;
