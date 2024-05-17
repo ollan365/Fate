@@ -17,6 +17,10 @@ public class SoundPlayer : MonoBehaviour
     [SerializeField] private AudioClip[] UISoundClip; // UI 효과음들
     [SerializeField] private AudioClip[] UISoundClip_LOOP; // UI 효과음들
 
+    [Header("Volume")]
+    public float bgmVolume;
+    public float soundEffectVolume;
+
     // 동시에 여러 UI 효과음들이 플레이 될 수도 있으므로 여러 플레이어를 두고 순차적으로 실행하기 위한 변수
     private int UISoundPlayerCursor;
     void Awake()
@@ -36,6 +40,15 @@ public class SoundPlayer : MonoBehaviour
         // 마우스 클릭 시 효과음 발생
         if (Input.GetMouseButtonDown(0))
             UISoundPlay(Sound_Click);
+    }
+
+    public void ChangeVolume(float bgmVolume, float soundEffectVolume)
+    {
+        bgmPlayer.volume = bgmVolume;
+
+        typingSoundPlayer.volume = soundEffectVolume;
+        foreach (AudioSource audio in UISoundLoopPlayer) audio.volume = soundEffectVolume;
+        foreach (AudioSource audio in UISoundPlayer) audio.volume = soundEffectVolume;
     }
     public void ChangeBGM(int bgm)
     {

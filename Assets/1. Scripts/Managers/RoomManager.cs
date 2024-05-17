@@ -47,6 +47,8 @@ public class RoomManager : MonoBehaviour
     
     void Start()
     {
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+
         // 모든 Side 켰다 끄기
         foreach (GameObject side in sides)
         {
