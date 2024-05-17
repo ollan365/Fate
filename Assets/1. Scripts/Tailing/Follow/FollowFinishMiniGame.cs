@@ -50,12 +50,12 @@ public class FollowFinishMiniGame : MonoBehaviour
 
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다
         followUICanvas.SetActive(false);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
-        yield return new WaitForSeconds(0.2f);
         followCanvas.SetActive(false);
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 0.2f, false, 0, 0));
+        yield return new WaitForSeconds(0.2f);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FINISHGAME, true);
         finishGameCanvas.SetActive(true);
         finishGameObjects.SetActive(true);
-        yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
 
         // 튜토리얼 캔버스를 끌 때까지 기다린다
         while (tutorialCanvas.activeSelf) yield return new WaitForFixedUpdate();

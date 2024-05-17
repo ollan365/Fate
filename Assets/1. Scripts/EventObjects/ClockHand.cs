@@ -32,6 +32,7 @@ public class ClockHand : MonoBehaviour
             {
                 lastAngle = Mathf.Atan2(mousePosition.y - minuteHand.position.y, mousePosition.x - minuteHand.position.x) * Mathf.Rad2Deg;
                 dragging = true;
+                SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_ClockMovement, true);
             }
         }
         if (dragging && Input.GetMouseButton(0))
@@ -45,6 +46,7 @@ public class ClockHand : MonoBehaviour
         }
         if (dragging && Input.GetMouseButtonUp(0))
         {
+            SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_ClockMovement, false);
             dragging = false;
             StartCoroutine(SnapHandsToNearestTick());
         }

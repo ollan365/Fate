@@ -36,7 +36,7 @@ public class FollowManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW);
+        SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW, true);
 
         MemoManager.Instance.isFollow = true;
         MemoManager.Instance.MemoButtonAlphaChange();

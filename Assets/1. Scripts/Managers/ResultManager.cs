@@ -283,6 +283,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClockGetKey": // 열쇠를 획득
+                SoundPlayer.Instance.UISoundPlay(Sound_Key);
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
                 break;
 

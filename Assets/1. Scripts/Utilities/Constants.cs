@@ -21,12 +21,12 @@ public static class Constants
     // 사운드 종류
     // 1. 배경음
     public const int
-        BGM_ROOM = 0, BGM_FOLLOW = 1, BGM_MINIGAME = 2;
+        BGM_ROOM = 0, BGM_FOLLOW = 1, BGM_MINIGAME = 2, BGM_FINISHGAME = 3;
 
     // 2. 방탈출 오브젝트들
     public const int
         Sound_CarpetOpen = 0, Sound_CarpetClose = 1, Sound_ClosetOpen = 2, Sound_ClosetClose = 3,
-        Sound_StorageOpen = 4, Sound_StorageClose = 5, Sound_ClockMovement = 6, Sound_LockerKeyMovement = 7, Sound_LockerUnlock = 9,
+        Sound_StorageOpen = 4, Sound_StorageClose = 5, Sound_Key = 6, Sound_LockerKeyMovement = 7, Sound_LockerUnlock = 9,
         Sound_DiaryUnlock = 10, Sound_LaptopBoot = 11, Sound_Poster = 12, Sound_ChairMovement = 13, Sound_GrabPaper = 23;
 
     // 3. 미행
@@ -35,7 +35,7 @@ public static class Constants
 
     // 4. 루프 (반복 되어야 하는 것)
     public const int
-        Sound_FootStep_Fate = 0, Sound_FootStep_Accidy = 1;
+        Sound_FootStep_Fate = 0, Sound_FootStep_Accidy = 1, Sound_ClockMovement = 2;
 
     // 5. 그 외
     public const int

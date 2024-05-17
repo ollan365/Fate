@@ -64,6 +64,8 @@ public class FollowEnd : MonoBehaviour
         FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(2);
         yield return new WaitForSeconds(1f);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 2, false, 0, 0));
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, false);
+        yield return new WaitForSeconds(2f);
 
         // 게임 저장 (일단은 건너뜀 - 방탈출까지 하고 와야 오류 없이 저장됨)
         // SaveManager.Instance.SaveGameData();
