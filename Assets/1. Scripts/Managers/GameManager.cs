@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
         // 다이어리
         variables["DiaryClick"] = 0;
         variables["DiaryPasswordCorrect"] = false;
-        variables["DiaryPassword"] = "0410";
 
         // 시계
         variables["ClockClick"] = 0;
@@ -299,18 +298,8 @@ public class GameManager : MonoBehaviour
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[]
         {
-            "ActionPoint",
-            "isTutorial",
-            "TutorialPhase",
-            "ChairMoved",
-            "ClosedCarpetClick",
-            "CarpetClosed",
-            "isInquiry",
-            "PillowClick",
-            "CalendarCluesFound",
-            "LiquorAndPillsClick",
-            "FateBirthdayClick",
-            "HasKnife"
+            "FateBirthday"
+
         });
         
         foreach (var item in variables)

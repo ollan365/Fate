@@ -81,7 +81,10 @@ public class StartLogic : MonoBehaviour, IResultExecutable
         GameManager.Instance.SetVariable("Language", language);
         GameManager.Instance.SetVariable("FateName", fateName);
         GameManager.Instance.SetVariable("FateGender", fateGender);  // 필연 성별 설정
-        GameManager.Instance.SetVariable("FateBirthday", (monthDropdown.value + 1) * 100 + (dayDropdown.value + 1));
+        
+        string birthday = ((monthDropdown.value + 1) * 100 + (dayDropdown.value + 1)).ToString();
+        if (birthday.Length == 3) birthday = "0" + birthday;
+        GameManager.Instance.SetVariable("FateBirthday", birthday);
     }
     
     // Background 이미지 변경 및 Fade Effect Image 활성화 메서드
