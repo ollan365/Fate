@@ -55,8 +55,8 @@ public class FollowAnim : MonoBehaviour
         isStop = !isStop;
 
         // 이동 중에는 발자국 소리
-        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Accidy, !isStop, 1);
-        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Fate, !isStop, 1);
+        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Accidy, !isStop);
+        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_FootStep_Fate, !isStop);
 
         if (isStop) stopButtonText.text = "이동";
         else stopButtonText.text = "정지";

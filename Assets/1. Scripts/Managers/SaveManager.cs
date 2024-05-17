@@ -28,34 +28,32 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+    public bool CheckGameData()
+    {
+        if (!File.Exists(Application.persistentDataPath + "/" + GameDataFileName)) return false;
+        else return true;
+    }
     // 불러오기
     public void LoadGameData()
     {
         string filePath = Application.persistentDataPath + "/" + GameDataFileName;
 
-        // 저장된 게임이 있다면
-        if (File.Exists(filePath))
-        {
-            // 저장된 파일 읽어오고 Json을 클래스 형식으로 전환해서 할당
-            string FromJsonData = File.ReadAllText(filePath);
-            data = JsonUtility.FromJson<SaveData>(FromJsonData);
+        if (!File.Exists(filePath)) return; // no save game data
 
-            // 저장된 내용 로드
-            DialogueManager.Instance.dialogueType = data.dialogueType;
-            RoomManager.Instance.currentSideIndex = data.lastSideIndex;
-            GameManager.Instance.Variables = data.variables;
-            MemoManager.Instance.SavedMemoList = data.savedMemoList;
+        // 저장된 파일 읽어오고 Json을 클래스 형식으로 전환해서 할당
+        string FromJsonData = File.ReadAllText(filePath);
+        data = JsonUtility.FromJson<SaveData>(FromJsonData);
 
-            GoScene(data.dialogueType);
-        }
-    }
+        // 저장된 내용 로드
+        DialogueManager.Instance.dialogueType = data.dialogueType;
+        RoomManager.Instance.currentSideIndex = data.lastSideIndex;
+        GameManager.Instance.Variables = data.variables;
+        MemoManager.Instance.SavedMemoList = data.savedMemoList;
 
-    // 저장된 게임 데이터가 있다면, 그에 따른 씬으로 이동
-    private void GoScene(DialogueType dialogueType)
-    {
-        if (dialogueType == DialogueType.ROOM || dialogueType == DialogueType.ROOM_THINKING)
+        // 게임 데이터에 따른 씬으로 이동
+        if (data.dialogueType == DialogueType.ROOM || data.dialogueType == DialogueType.ROOM_THINKING)
             SceneManager.LoadScene(1);
-        else if(dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING || dialogueType == DialogueType.FOLLOW_ANGRY)
+        else if (data.dialogueType == DialogueType.FOLLOW || data.dialogueType == DialogueType.FOLLOW_THINKING || data.dialogueType == DialogueType.FOLLOW_ANGRY)
             SceneManager.LoadScene(2);
     }
 
@@ -71,6 +69,15 @@ public class SaveManager : MonoBehaviour
 
         // 이미 저장된 파일이 있다면 덮어쓰고, 없다면 새로 만들어서 저장
         File.WriteAllText(filePath, ToJsonData);
+    }
+
+    // 저장된 게임 데이터 삭제
+    public void DeleteGameData()
+    {
+        string filePath = Application.persistentDataPath + "/" + GameDataFileName;
+
+        // 파일이 존재하는지 확인 후 삭제
+        if (File.Exists(filePath)) File.Delete(filePath);
     }
 }
 

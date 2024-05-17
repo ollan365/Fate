@@ -22,6 +22,12 @@ public class FollowDayMiniGame : MonoBehaviour
     [SerializeField] private Sprite accidyGirlFront, accidyGirlBack, accidyBoyFront, accidyBoyBack;
     private Sprite accidyFrontSprite, accidyBackSprite;
 
+    [Header("Tutorial")]
+    [SerializeField] private GameObject tutorialObject;
+    [SerializeField] private Image tutorialAccidyImage;
+    [SerializeField] private Sprite[] tutorialAccidySprites;
+
+    [Header("Variables")]
     // 물체 클릭 횟수
     private float clickCount;
     public float ClickCount
@@ -42,6 +48,8 @@ public class FollowDayMiniGame : MonoBehaviour
                     gaugeSliders[ToInt(Place.MEMO)].gameObject.SetActive(true);
                     buttons[ToInt(Place.MEMO)].gameObject.SetActive(true);
                     buttonImages[ToInt(Place.MEMO)].gameObject.SetActive(true);
+
+                    tutorialObject.SetActive(true);
 
                     // 클리어 해야하는 것
                     clear[ToInt(Place.MEMO)] = false;
@@ -102,14 +110,17 @@ public class FollowDayMiniGame : MonoBehaviour
         {
             accidyFrontSprite = accidyGirlFront;
             accidyBackSprite = accidyGirlBack;
+            tutorialAccidyImage.sprite = tutorialAccidySprites[0];
         }
         else
         {
             accidyFrontSprite = accidyBoyFront;
             accidyBackSprite = accidyBoyBack;
+            tutorialAccidyImage.sprite = tutorialAccidySprites[1];
         }
         accidy.sprite = accidyFrontSprite;
         accidy.SetNativeSize();
+        tutorialAccidyImage.SetNativeSize();
     }
     private IEnumerator StartMiniGame()
     {
@@ -129,12 +140,14 @@ public class FollowDayMiniGame : MonoBehaviour
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 미니 게임 캔버스를 켠다 + 브금을 바꾼다
         followUICanvas.SetActive(false);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, false);
         yield return new WaitForSeconds(0.2f);
         followCanvas.SetActive(false);
         miniGameCanvas.SetActive(true);
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME, true);
         yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
+
+        while (tutorialObject.activeSelf) yield return new WaitForFixedUpdate(); // 튜토리얼 캔버스가 켜져 있다면 대기
 
         // 우연의 움직임 시작
         StartCoroutine(AccidyLogic());
@@ -198,11 +211,11 @@ public class FollowDayMiniGame : MonoBehaviour
             MemoManager.Instance.HideMemoButton(false);
 
             StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
-            SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME);
+            SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME, false);
             yield return new WaitForSeconds(0.2f);
             miniGameCanvas.SetActive(false);
             followCanvas.SetActive(true);
-            SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW);
+            SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, true);
             yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
             followUICanvas.SetActive(true);
         }

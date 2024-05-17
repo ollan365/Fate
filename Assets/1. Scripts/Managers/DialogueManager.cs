@@ -254,7 +254,7 @@ public class DialogueManager : MonoBehaviour
         string effectText = "";
 
         // AUTO 인 경우 두배의 속도로 타이핑 + 끝나면 자동으로 넘어감
-        if (isAuto) typeSpeed /= 2;
+        if (isAuto) typeSpeed /= 1.75f;
 
         foreach (char letter in sentence.ToCharArray())
         {
@@ -286,8 +286,9 @@ public class DialogueManager : MonoBehaviour
 
         if (isAuto)
         {
-            typeSpeed *= 2; // 타이핑 속도 되돌려 놓기
+            typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
             isAuto = false;
+            yield return new WaitForSeconds(0.25f);
             OnDialoguePanelClick(); // 자동으로 넘어감
         }
     }
