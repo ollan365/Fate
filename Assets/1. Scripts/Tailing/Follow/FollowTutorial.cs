@@ -18,19 +18,19 @@ public class FollowTutorial : MonoBehaviour
 
     public IEnumerator StartTutorial()
     {
-        // ´Ù¸¥ ¹°Ã¼¸¦ ´©¸¦ ¼ö ¾øµµ·Ï ¸¸µç´Ù
+        // ë‹¤ë¥¸ ë¬¼ì²´ë¥¼ ëˆ„ë¥¼ ìˆ˜ ì—†ë„ë¡ ë§Œë“ ë‹¤
         FollowManager.Instance.isTutorial = true;
         FollowManager.Instance.canClick = false;
         frontCanvas.SetActive(false);
         moveButton.SetActive(false);
 
-         // Æ©Åä¸®¾ó Äµ¹ö½º¸¦ ÇÒ´ç
+         // íŠœí† ë¦¬ì–¼ ìº”ë²„ìŠ¤ë¥¼ í• ë‹¹
          followTutorialCanvas = DialogueManager.Instance.dialogueCanvas[Constants.DialogueType.FOLLOW_TUTORIAL.ToInt()].transform.parent.gameObject;
         
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         yield return new WaitForSeconds(1.5f);
 
-        // ¸Ş¸ğ ¹öÆ°À» È­¸é¿¡¼­ »ç¶óÁö°Ô ÇÑ´Ù
+        // ë©”ëª¨ ë²„íŠ¼ì„ í™”ë©´ì—ì„œ ì‚¬ë¼ì§€ê²Œ í•œë‹¤
         MemoManager.Instance.HideMemoButton(true);
         highlightPanel.SetActive(false);
         nextButton.SetActive(false);
@@ -46,10 +46,10 @@ public class FollowTutorial : MonoBehaviour
         switch (tutorialStep)
         {
             case 2:
-                ObjectTutorial(); // ºôµù ÇÏÀÌ¶óÀÌÆ®
+                ObjectTutorial(); // ë¹Œë”© í•˜ì´ë¼ì´íŠ¸
                 break;
             case 3:
-                MoveButtonTutorial(); // ÀÌµ¿ ¹öÆ° ¼³¸í
+                MoveButtonTutorial(); // ì´ë™ ë²„íŠ¼ ì„¤ëª…
                 break;
             case 5:
                 AdditionalTutorialSet();
@@ -66,55 +66,55 @@ public class FollowTutorial : MonoBehaviour
         }
     }
 
-    // ºôµù ÇÏÀÌ¶óÀÌÆ®
+    // ë¹Œë”© í•˜ì´ë¼ì´íŠ¸
     private void ObjectTutorial()
     {
         blockingPanel.SetActive(false);
 
-        // ÇÏÀÌ¶óÀÌÆ® ÆÇ³ÚÀ» ÄÒ´Ù
+        // í•˜ì´ë¼ì´íŠ¸ íŒë„¬ì„ ì¼ ë‹¤
         highlightPanel.SetActive(true);
 
-        // ´Ù¸¥ ¹°Ã¼¸¦ ´©¸¦ ¼ö ÀÖµµ·Ï ¸¸µç´Ù
+        // ë‹¤ë¥¸ ë¬¼ì²´ë¥¼ ëˆ„ë¥¼ ìˆ˜ ìˆë„ë¡ ë§Œë“ ë‹¤
         FollowManager.Instance.canClick = true;
     }
 
-    // ÀÌµ¿ ¹öÆ° ¼³¸í
+    // ì´ë™ ë²„íŠ¼ ì„¤ëª…
     private void MoveButtonTutorial()
     {
-        // ÀÌµ¿ ¹öÆ° È°¼ºÈ­
+        // ì´ë™ ë²„íŠ¼ í™œì„±í™”
         followTutorialCanvas.SetActive(true);
         followTutorialCanvas.GetComponentInChildren<Button>().onClick.AddListener(() => followAnim.ChangeAnimStatus());
         followTutorialCanvas.GetComponentInChildren<Button>().onClick.AddListener(() =>
         {
             if (FollowManager.Instance.followAnim.IsStop)
-                followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "ÀÌµ¿";
+                followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "ì´ë™";
             else
-                followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "¸ØÃã";
+                followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "ë©ˆì¶¤";
         });
         followTutorialCanvas.GetComponentInChildren<Button>().interactable = true;
 
-        // ´Ù¸¥ ¹°Ã¼¸¦ ´©¸¦ ¼ö ¾øµµ·Ï ¸¸µç´Ù
+        // ë‹¤ë¥¸ ë¬¼ì²´ë¥¼ ëˆ„ë¥¼ ìˆ˜ ì—†ë„ë¡ ë§Œë“ ë‹¤
         FollowManager.Instance.canClick = false;
 
-        // ÀÌµ¿ ¹öÆ°¿¡ ´ëÇÑ ¼³¸í
+        // ì´ë™ ë²„íŠ¼ì— ëŒ€í•œ ì„¤ëª…
         blockingPanel.SetActive(true);
         DialogueManager.Instance.StartDialogue("FollowTutorial_004");
     }
 
     private void AdditionalTutorialSet()
     {
-        // ºí·ÎÅ· ÆÇ³ÚÀ» ²ô°í ´ÙÀ½ ¼³¸íÀ» ÁøÇàÇÏ´Â ¹öÆ°À» È°¼ºÈ­ ½ÃÅ²´Ù
+        // ë¸”ë¡œí‚¹ íŒë„¬ì„ ë„ê³  ë‹¤ìŒ ì„¤ëª…ì„ ì§„í–‰í•˜ëŠ” ë²„íŠ¼ì„ í™œì„±í™” ì‹œí‚¨ë‹¤
         nextButton.SetActive(true);
     }
     private void AdditionalTutorial()
     {
-        // ´ÙÀ½ ¼³¸íÀ» ÁøÇàÇÏ´Â ¹öÆ°À» ²ô°í ´ÙÀ½ ¼³¸í ÁøÇà
+        // ë‹¤ìŒ ì„¤ëª…ì„ ì§„í–‰í•˜ëŠ” ë²„íŠ¼ì„ ë„ê³  ë‹¤ìŒ ì„¤ëª… ì§„í–‰
         nextButton.SetActive(false);
         DialogueManager.Instance.StartDialogue("FollowTutorial_006");
     }
     private void EndTutorialSet()
     {
-        // ´ÙÀ½ ´Ü°è¸¦ ÁøÇàÇÏ´Â ¹öÆ° È°¼ºÈ­
+        // ë‹¤ìŒ ë‹¨ê³„ë¥¼ ì§„í–‰í•˜ëŠ” ë²„íŠ¼ í™œì„±í™”
         nextButton.SetActive(true);
     }
     private void EndTutorial()

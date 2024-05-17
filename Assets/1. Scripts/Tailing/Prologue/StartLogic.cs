@@ -29,6 +29,8 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     [SerializeField] private GameObject blockingPanel;
     [SerializeField] private GameObject background;
     [SerializeField] private Sprite room1Side1BackgroundSprite;
+
+    public Sprite prototypeBackground;
     
     private void Start()
     {
@@ -49,6 +51,10 @@ public class StartLogic : MonoBehaviour, IResultExecutable
             start.SetActive(false);
             setting.SetActive(true);
         }
+
+        Image backgroundImage = background.GetComponent<Image>();
+        backgroundImage.sprite = prototypeBackground;
+        backgroundImage.color = new Color(255, 255, 255, 0.7f);
     }
     public void LoadGame()
     {
