@@ -78,7 +78,8 @@ public class EventManager : MonoBehaviour
                 if (resultIDTrimmed.StartsWith("Result_Increment") ||
                     resultIDTrimmed.StartsWith("Result_Decrement") ||
                     resultIDTrimmed.StartsWith("Result_Inverse") ||
-                    resultIDTrimmed.StartsWith("Result_IsFinished"))
+                    resultIDTrimmed.StartsWith("Result_IsFinished") ||
+                    resultIDTrimmed.StartsWith("Result_IsUnFinished"))
                 {
                     Result tempResult = new Result(resultIDTrimmed, "", "");
                     results.Add(tempResult);

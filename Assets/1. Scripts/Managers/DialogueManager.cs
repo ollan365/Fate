@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static Constants;
 
@@ -19,7 +20,8 @@ public class DialogueManager : MonoBehaviour
     public Image characterImage;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
-    public GameObject[] teddyBearIcon;
+    [Header("teddyBearIcons")]public GameObject[] teddyBearIcons;
+    [Header("Blocking Panels")] public Image[] blockingPanels;
     
     // 타자 효과 속도
     [Header("Typing Speed")]
@@ -40,6 +42,9 @@ public class DialogueManager : MonoBehaviour
     
     // Dialogue Queue
     private Queue<string> dialogueQueue = new Queue<string>();
+    
+    // Blocking Panel
+     
 
     void Awake()
     {
@@ -192,7 +197,16 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+        if (RoomManager.Instance) 
+        {
+            // 튜토리얼 중 다른 곳 클릭하면 나오는 강조 이미지가 해당 "ㅁㅁ를 조사해보자" 스크립트 다 끝나면 자동으로 강조 이미지 꺼지게 함.
+            if ((bool)GameManager.Instance.GetVariable("isTutorial") && RoomManager.Instance.imageAndLockPanelManager.GetIsTutorialObjectActive())
+            {
+                RoomManager.Instance.imageAndLockPanelManager.OnExitButtonClick();
+            }
+            RoomManager.Instance.SetButtons(); 
+        }
+        
     }
     
     // ---------------------------------------------- Script methods ----------------------------------------------
@@ -231,7 +245,7 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeSentence(string sentence)
     {
-        teddyBearIcon[dialogueType.ToInt()].SetActive(false);
+        teddyBearIcons[dialogueType.ToInt()].SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
 
@@ -268,7 +282,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
-        teddyBearIcon[dialogueType.ToInt()].SetActive(true);
+        teddyBearIcons[dialogueType.ToInt()].SetActive(true);
 
         if (isAuto)
         {
@@ -299,12 +313,14 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
         scriptText[dialogueType.ToInt()].text = fullSentence;
         isTyping = false;
-        teddyBearIcon[dialogueType.ToInt()].SetActive(true);
+        teddyBearIcons[dialogueType.ToInt()].SetActive(true);
     }
     
     // ---------------------------------------------- Choice methods ----------------------------------------------
     private void DisplayChoices(string choiceID)
     {
+        blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0.7f);
+        
         foreach (Transform child in choicesContainer[dialogueType.ToInt()])
         {
             Destroy(child.gameObject);
@@ -339,6 +355,9 @@ public class DialogueManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        
+        blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0);
+
     }
     
 }
