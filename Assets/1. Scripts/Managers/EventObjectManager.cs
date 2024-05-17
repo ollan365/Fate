@@ -36,6 +36,14 @@ public class EventObjectManager : MonoBehaviour
         }
     }
 
+    public void SetEventUnFinished(string eventId)
+    {
+        if (eventObjectsStatusDict.ContainsKey(eventId))
+        {
+            eventObjectsStatusDict[eventId] = false;
+        }
+    }
+
     public bool GetEventStatus(string eventId)
     {
         if (eventObjectsStatusDict.ContainsKey(eventId))

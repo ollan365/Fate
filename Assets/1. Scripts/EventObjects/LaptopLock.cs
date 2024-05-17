@@ -21,6 +21,8 @@ public class LaptopLock : EventObject, IResultExecutable
 
     private Image imageComponent;
 
+    [SerializeField] private Laptop laptopA;
+
     private void Awake()
     {
         imageComponent = GetComponent<Image>();
@@ -56,7 +58,11 @@ public class LaptopLock : EventObject, IResultExecutable
         yield return new WaitForSeconds(0.2f);
         string correctPassword = (string)GameManager.Instance.GetVariable("LaptopPassword");
         GameManager.Instance.SetVariable("LaptopPasswordCorrect", passwordInput == correctPassword);
-        
+
+        // 노트북 비번 맞춘 이후에 노트북 다시 클릭하면 조사창 패스된거 다시 조사창 나오게 함.
+        if ((bool)GameManager.Instance.GetVariable("LaptopPasswordCorrect"))
+            laptopA.SetIsInquiry(true);
+
         OnMouseDown();
         yield return new WaitForSeconds(0.3f);
         ResetPassword();

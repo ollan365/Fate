@@ -49,6 +49,17 @@ public class EventObject : MonoBehaviour
         return sideNum;
     }
 
+    public bool GetIsInquiry()
+    {
+        return isInquiry;
+    }
+
+    public void SetIsInquiry(bool isInquiry)
+    {
+        this.isInquiry = isInquiry;
+    }
+
+
     public bool GetIsFinished()
     {
         return isFinished;
