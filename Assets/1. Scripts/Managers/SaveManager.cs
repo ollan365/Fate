@@ -46,7 +46,7 @@ public class SaveManager : MonoBehaviour
 
         // 저장된 내용 로드
         DialogueManager.Instance.dialogueType = data.dialogueType;
-        RoomManager.Instance.currentSideIndex = data.lastSideIndex;
+        // RoomManager.Instance.currentSideIndex = data.lastSideIndex;
         GameManager.Instance.Variables = data.variables;
         MemoManager.Instance.SavedMemoList = data.savedMemoList;
 

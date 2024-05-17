@@ -43,8 +43,6 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton(false);
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
 
-        return; // 튜토리얼 건너뛰기
-
         StartCoroutine(followTutorial.StartTutorial());
     }
 

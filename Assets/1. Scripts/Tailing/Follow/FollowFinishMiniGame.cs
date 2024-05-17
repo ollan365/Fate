@@ -77,7 +77,7 @@ public class FollowFinishMiniGame : MonoBehaviour
                 obstruction.GetComponent<Obstruction>().followFinishMiniGame = this;
             }
 
-            float randomTimn = Random.Range(2.5f, 4); // 3에서 5초 간격으로 랜덤 장애물 생성
+            float randomTimn = Random.Range(2f, 3f); // 랜덤 간격으로 장애물 생성
             yield return new WaitForSeconds(randomTimn);
             currentTime += randomTimn;
         }

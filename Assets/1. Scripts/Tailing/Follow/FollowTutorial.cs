@@ -104,27 +104,23 @@ public class FollowTutorial : MonoBehaviour
     private void AdditionalTutorialSet()
     {
         // 블로킹 판넬을 끄고 다음 설명을 진행하는 버튼을 활성화 시킨다
-        blockingPanel.SetActive(false);
         nextButton.SetActive(true);
     }
     private void AdditionalTutorial()
     {
-        // 다음 설명을 진행하는 버튼을 끄고 블로킹 판넬을 켜고 다음 설명 진행
+        // 다음 설명을 진행하는 버튼을 끄고 다음 설명 진행
         nextButton.SetActive(false);
-
-        blockingPanel.SetActive(true);
         DialogueManager.Instance.StartDialogue("FollowTutorial_006");
     }
     private void EndTutorialSet()
     {
-        blockingPanel.SetActive(false);
-
         // 다음 단계를 진행하는 버튼 활성화
         nextButton.SetActive(true);
     }
     private void EndTutorial()
     {
         followTutorialCanvas.SetActive(false);
+        blockingPanel.SetActive(false);
 
         MemoManager.Instance.HideMemoButton(false);
         FollowManager.Instance.isTutorial = false;
