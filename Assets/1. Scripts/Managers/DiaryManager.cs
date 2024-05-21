@@ -4,29 +4,67 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum PageType
+{
+    Left,
+    Right,
+    Back,
+    Front
+}
+
 public class DiaryManager : MonoBehaviour
 {
     public static MemoManager Instance { get; private set; }
     private TextAsset diaryPagesCSV;
 
     private Dictionary<string, string> diaryPages = new Dictionary<string, string>();
+    [SerializeField] private TextMeshProUGUI leftPage;
     [SerializeField] private TextMeshProUGUI rightPage;
-
-    private int currentPage;
+    [SerializeField] private TextMeshProUGUI backPage;
+    [SerializeField] private TextMeshProUGUI frontPage;
 
     private void Awake()
     {
         diaryPagesCSV = Resources.Load<TextAsset>("Datas/diary");
         ParseDiaryPages();
-
-        currentPage = 1;
-        DisplayPage();
     }
 
-    private void DisplayPage()
+    private void DisplayPage(PageType pageType, int pageNum)
     {
-        string diaryID = $"Diary_{currentPage.ToString().PadLeft(3, '0')}";
-        rightPage.text = diaryPages[diaryID];
+        string diaryID = $"Diary_{pageNum.ToString().PadLeft(3, '0')}";
+
+        switch (pageType)
+        {
+            case PageType.Left:
+                leftPage.text = pageNum == 0 ? "" : diaryPages[diaryID];
+                break;
+            
+            case PageType.Right:
+                rightPage.text = pageNum > diaryPages.Count ? "" : diaryPages[diaryID];
+                break;
+            
+            case PageType.Back:
+                backPage.text = diaryPages[diaryID];
+                break;
+            
+            case PageType.Front:
+                frontPage.text = diaryPages[diaryID];
+                break;
+        }
+    }
+
+    public void DisplayPagesDynamic(int currentPage)
+    {
+        DisplayPage(PageType.Left, currentPage);
+        DisplayPage(PageType.Right, currentPage + 3);
+        DisplayPage(PageType.Back, currentPage + 1);
+        DisplayPage(PageType.Front, currentPage + 2);
+    }
+    
+    public void DisplayPagesStatic(int currentPage)
+    {
+        DisplayPage(PageType.Left, currentPage);
+        DisplayPage(PageType.Right, currentPage + 1);
     }
 
     public void ParseDiaryPages()
