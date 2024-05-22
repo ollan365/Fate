@@ -13,14 +13,20 @@ public class ClockHand : MonoBehaviour
     private bool isSnapping = false;
     private float smoothSnapSpeed = 40f;  // 달라붙는 속도
 
-    private int correctHour = (int)GameManager.Instance.GetVariable("ClockPasswordHour");
-    private int correctMinute = (int)GameManager.Instance.GetVariable("ClockPasswordMinute");
+    private int correctMinute;
+    private int correctHour;
     private bool isClockTimeCorrect = false;
 
     [SerializeField] private ImageAndLockPanelManager imageAndLockPanelManager;
 
     [SerializeField] private Clock clockA;
 
+    private void Awake()
+    {
+        correctMinute = (int)GameManager.Instance.GetVariable("ClockPasswordMinute");
+        correctHour = (int)GameManager.Instance.GetVariable("ClockPasswordHour");
+    }
+    
     private void Update()
     {
         bool isImageActive = imageAndLockPanelManager.isImageActive;
