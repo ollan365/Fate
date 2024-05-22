@@ -12,6 +12,7 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     [SerializeField] private GameObject noGameDataPanel; // 이어서를 눌렀을 때, 저장된 데이터가 없으면 켜지는 판넬
     [SerializeField] private GameObject start;
     [SerializeField] private GameObject setting;
+    [SerializeField] private GameObject second;
     [SerializeField] private Slider[] soundSliders;
     [SerializeField] private TextMeshProUGUI[] soundValueTexts;
     private int language = 1;
@@ -28,17 +29,38 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     [Header("Prologue")]
     [SerializeField] private GameObject blockingPanel;
     [SerializeField] private GameObject background;
-    [SerializeField] private Sprite room1Side1BackgroundSprite;
-
-    public Sprite prototypeBackground;
+    [SerializeField] private Sprite titleWithOutLogo, room1Side1BackgroundSprite;
     
     private void Start()
     {
         ResultManager.Instance.RegisterExecutable("StartLogic", this);
+        StartCoroutine(RotateSecond());
     }
     public void ExecuteAction()
     {
         StartCoroutine(EndPrologue());
+    }
+    private IEnumerator RotateSecond()
+    {
+        while (start.activeSelf)
+        {
+            // 1초 동안 한 바퀴 (360도) 회전
+            for (float t = 0; t < 60f; t += Time.deltaTime)
+            {
+                // 현재 시간 대비 회전 각도 계산
+                float angle = Mathf.Lerp(0, 360, t / 60);
+                second.transform.rotation = Quaternion.Euler(0, 0, -angle);
+
+                if (background.GetComponent<Image>().sprite == titleWithOutLogo) // 다른 판넬(옵션 등)이 켜지면 투명해지도록 만든다
+                    second.GetComponent<Image>().color = new Color(1, 1, 1, 0);
+                else
+                    second.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+
+                yield return null; // 한 프레임 기다림
+            }
+            // 정확히 360도 회전하도록 설정
+            second.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
     public void StartNewGame()
     {
@@ -53,7 +75,7 @@ public class StartLogic : MonoBehaviour, IResultExecutable
         }
 
         Image backgroundImage = background.GetComponent<Image>();
-        backgroundImage.sprite = prototypeBackground;
+        backgroundImage.sprite = titleWithOutLogo;
         backgroundImage.color = new Color(255, 255, 255, 0.7f);
     }
     public void LoadGame()
