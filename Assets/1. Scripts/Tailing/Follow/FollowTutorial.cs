@@ -10,9 +10,11 @@ public class FollowTutorial : MonoBehaviour
     [SerializeField] private GameObject frontCanvas;
     [SerializeField] private GameObject highlightPanel;
     [SerializeField] private GameObject blockingPanel;
-    [SerializeField] private GameObject nextButton;
     [SerializeField] private GameObject moveButton;
+    [SerializeField] private Image arrow;
+    [SerializeField] private TextMeshProUGUI startText;
 
+    private int moveButtonClickCount = 0; // 이동 버튼을 누른 횟수
     private GameObject followTutorialCanvas;
     private int tutorialStep = 0;
 
@@ -33,7 +35,6 @@ public class FollowTutorial : MonoBehaviour
         // 메모 버튼을 화면에서 사라지게 한다
         MemoManager.Instance.HideMemoButton(true);
         highlightPanel.SetActive(false);
-        nextButton.SetActive(false);
 
         blockingPanel.SetActive(true);
         DialogueManager.Instance.StartDialogue("FollowTutorial_002");
@@ -54,14 +55,8 @@ public class FollowTutorial : MonoBehaviour
             case 5:
                 AdditionalTutorialSet();
                 break;
-            case 6:
-                AdditionalTutorial();
-                break;
-            case 8:
+            case 7:
                 EndTutorialSet();
-                break;
-            case 9:
-                EndTutorial();
                 break;
         }
     }
@@ -86,6 +81,8 @@ public class FollowTutorial : MonoBehaviour
         followTutorialCanvas.GetComponentInChildren<Button>().onClick.AddListener(() => followAnim.ChangeAnimStatus());
         followTutorialCanvas.GetComponentInChildren<Button>().onClick.AddListener(() =>
         {
+            moveButtonClickCount++;
+
             if (FollowManager.Instance.followAnim.IsStop)
                 followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "이동";
             else
@@ -103,22 +100,36 @@ public class FollowTutorial : MonoBehaviour
 
     private void AdditionalTutorialSet()
     {
-        // 블로킹 판넬을 끄고 다음 설명을 진행하는 버튼을 활성화 시킨다
-        nextButton.SetActive(true);
+        StartCoroutine(AdditionalTutorial());
     }
-    private void AdditionalTutorial()
+    private IEnumerator AdditionalTutorial()
     {
-        // 다음 설명을 진행하는 버튼을 끄고 다음 설명 진행
-        nextButton.SetActive(false);
+        while(moveButtonClickCount == 0) // 이동 버튼을 한번이라도 누를 때까지 깜빡인다
+        {
+            StartCoroutine(ScreenEffect.Instance.OnFade(arrow, 1, 0, 0.5f, true, 0.1f, 0));
+            yield return new WaitForSeconds(1.2f);
+        }
+        arrow.gameObject.SetActive(false);
         DialogueManager.Instance.StartDialogue("FollowTutorial_006");
     }
     private void EndTutorialSet()
     {
-        // 다음 단계를 진행하는 버튼 활성화
-        nextButton.SetActive(true);
+        StartCoroutine(EndTutorial());
     }
-    private void EndTutorial()
+    private IEnumerator EndTutorial()
     {
+        startText.gameObject.SetActive(true);
+        float current = 0, fadeTime = 1;
+        while (current < fadeTime)
+        {
+            current += Time.deltaTime;
+
+            startText.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, current / fadeTime));
+            yield return null;
+        }
+        startText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+
         followTutorialCanvas.SetActive(false);
         blockingPanel.SetActive(false);
 
@@ -126,7 +137,6 @@ public class FollowTutorial : MonoBehaviour
         FollowManager.Instance.isTutorial = false;
         FollowManager.Instance.canClick = true;
         frontCanvas.SetActive(true);
-        nextButton.SetActive(false);
         moveButton.SetActive(true);
     }
 }
