@@ -4,6 +4,8 @@ using TMPro;
 using static Constants;
 public class FollowManager : MonoBehaviour
 {
+    // 인코딩 방식 변경
+
     // FollowManager를 싱글턴으로 생성
     public static FollowManager Instance { get; private set; }
 
