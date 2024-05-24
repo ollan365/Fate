@@ -125,8 +125,16 @@ public class ResultManager : MonoBehaviour
                 //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
                 //    +" : "+ EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
                 if (!EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()))
-                    DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry");
-                else DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry2");
+                {
+                    DialogueManager.Instance.EndDialogue();
+
+                    EventManager.Instance.CallEvent(GameManager.Instance.getCurrentInquiryObjectId());
+                    GameManager.Instance.SetVariable("isInquiry", false);
+                }
+                else
+                {
+                    DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry2");
+                }
                 break;
 
             case "ResultInquiryYes": // 조사 예 선택
