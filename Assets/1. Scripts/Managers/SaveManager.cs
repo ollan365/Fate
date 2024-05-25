@@ -9,10 +9,10 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance { get; private set; }
 
-    // --- °ÔÀÓ µ¥ÀÌÅÍ ÆÄÀÏÀÌ¸§ ¼³Á¤ ("¿øÇÏ´Â ÀÌ¸§(¿µ¹®).json") --- //
+    // --- ê²Œì„ ë°ì´í„° íŒŒì¼ì´ë¦„ ì„¤ì • ("ì›í•˜ëŠ” ì´ë¦„(ì˜ë¬¸).json") --- //
     private string GameDataFileName = "GameData.json";
 
-    // --- ÀúÀå¿ë Å¬·¡½º º¯¼ö --- //
+    // --- ì €ì¥ìš© í´ë˜ìŠ¤ ë³€ìˆ˜ --- //
     public SaveData data;
 
     void Awake()
@@ -33,50 +33,46 @@ public class SaveManager : MonoBehaviour
         if (!File.Exists(Application.persistentDataPath + "/" + GameDataFileName)) return false;
         else return true;
     }
-    // ºÒ·¯¿À±â
+    // ë¶ˆëŸ¬ì˜¤ê¸°
     public void LoadGameData()
     {
         string filePath = Application.persistentDataPath + "/" + GameDataFileName;
 
         if (!File.Exists(filePath)) return; // no save game data
 
-        // ÀúÀåµÈ ÆÄÀÏ ÀĞ¾î¿À°í JsonÀ» Å¬·¡½º Çü½ÄÀ¸·Î ÀüÈ¯ÇØ¼­ ÇÒ´ç
+        // ì €ì¥ëœ íŒŒì¼ ì½ì–´ì˜¤ê³  Jsonì„ í´ë˜ìŠ¤ í˜•ì‹ìœ¼ë¡œ ì „í™˜í•´ì„œ í• ë‹¹
         string FromJsonData = File.ReadAllText(filePath);
         data = JsonUtility.FromJson<SaveData>(FromJsonData);
 
-        // ÀúÀåµÈ ³»¿ë ·Îµå
-        DialogueManager.Instance.dialogueType = data.dialogueType;
-        // RoomManager.Instance.currentSideIndex = data.lastSideIndex;
+        // ì €ì¥ëœ ë‚´ìš© ë¡œë“œ
+        SceneManager.Instance.roomSideIndex = data.lastSideIndex;
         GameManager.Instance.Variables = data.variables;
         MemoManager.Instance.SavedMemoList = data.savedMemoList;
 
-        // °ÔÀÓ µ¥ÀÌÅÍ¿¡ µû¸¥ ¾ÀÀ¸·Î ÀÌµ¿
-        if (data.dialogueType == DialogueType.ROOM || data.dialogueType == DialogueType.ROOM_THINKING)
-            SceneManager.LoadScene(1);
-        else if (data.dialogueType == DialogueType.FOLLOW || data.dialogueType == DialogueType.FOLLOW_THINKING || data.dialogueType == DialogueType.FOLLOW_ANGRY)
-            SceneManager.LoadScene(2);
+        // ê²Œì„ ë°ì´í„°ì— ë”°ë¥¸ ì”¬ìœ¼ë¡œ ì´ë™
+        SceneManager.Instance.LoadScene(data.sceneType);
     }
 
-    // ÀúÀåÇÏ±â
+    // ì €ì¥í•˜ê¸°
     public void SaveGameData()
     {
-        // ÀúÀåÇÒ µ¥ÀÌÅÍ »ı¼º
-        data = new(DialogueManager.Instance.dialogueType, RoomManager.Instance.currentSideIndex, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
+        // ì €ì¥í•  ë°ì´í„° ìƒì„±
+        data = new(SceneManager.Instance.CurrentScene, RoomManager.Instance.currentSideIndex, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
 
-        // Å¬·¡½º¸¦ Json Çü½ÄÀ¸·Î ÀüÈ¯ (true : °¡µ¶¼º ÁÁ°Ô ÀÛ¼º)
+        // í´ë˜ìŠ¤ë¥¼ Json í˜•ì‹ìœ¼ë¡œ ì „í™˜ (true : ê°€ë…ì„± ì¢‹ê²Œ ì‘ì„±)
         string ToJsonData = JsonUtility.ToJson(data, true);
         string filePath = Application.persistentDataPath + "/" + GameDataFileName;
 
-        // ÀÌ¹Ì ÀúÀåµÈ ÆÄÀÏÀÌ ÀÖ´Ù¸é µ¤¾î¾²°í, ¾ø´Ù¸é »õ·Î ¸¸µé¾î¼­ ÀúÀå
+        // ì´ë¯¸ ì €ì¥ëœ íŒŒì¼ì´ ìˆë‹¤ë©´ ë®ì–´ì“°ê³ , ì—†ë‹¤ë©´ ìƒˆë¡œ ë§Œë“¤ì–´ì„œ ì €ì¥
         File.WriteAllText(filePath, ToJsonData);
     }
 
-    // ÀúÀåµÈ °ÔÀÓ µ¥ÀÌÅÍ »èÁ¦
+    // ì €ì¥ëœ ê²Œì„ ë°ì´í„° ì‚­ì œ
     public void DeleteGameData()
     {
         string filePath = Application.persistentDataPath + "/" + GameDataFileName;
 
-        // ÆÄÀÏÀÌ Á¸ÀçÇÏ´ÂÁö È®ÀÎ ÈÄ »èÁ¦
+        // íŒŒì¼ì´ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸ í›„ ì‚­ì œ
         if (File.Exists(filePath)) File.Delete(filePath);
     }
 }
@@ -84,19 +80,19 @@ public class SaveManager : MonoBehaviour
 [System.Serializable]
 public class SaveData
 {
-    public DialogueType dialogueType; // ¾î´À ¾À¿¡¼­ ³¡³µ´ÂÁö
+    public SceneType sceneType; // ì–´ëŠ ì”¬ì—ì„œ ëë‚¬ëŠ”ì§€
     public int lastSideIndex;
-    public string variablesToJson; //  Dictionary<string, string> À» json ÇüÅÂ·Î ÀúÀå
-    public Dictionary<string, object> variables // GameManagerÀÇ º¯¼öµé
+    public string variablesToJson; //  Dictionary<string, string> ì„ json í˜•íƒœë¡œ ì €ì¥
+    public Dictionary<string, object> variables // GameManagerì˜ ë³€ìˆ˜ë“¤
     {
         get => ToDictionary(variablesToJson);
     }
 
-    public List<string> savedMemoList; // Memo ÀúÀå
+    public List<string> savedMemoList; // Memo ì €ì¥
 
-    public SaveData(DialogueType type, int currentSideIndex, Dictionary<string, object> variables, List<string> memo)
+    public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, List<string> memo)
     {
-        dialogueType = type;
+        sceneType = type;
         lastSideIndex = currentSideIndex;
         variablesToJson = ToJson(variables);
         savedMemoList = memo;
@@ -104,17 +100,17 @@ public class SaveData
 
     private string ToJson(Dictionary<string, object> dictionary)
     {
-        // stringÀ¸·Î º¯È¯µÈ °ªÀ» ´ãÀ» Dictionary<string, string>
+        // stringìœ¼ë¡œ ë³€í™˜ëœ ê°’ì„ ë‹´ì„ Dictionary<string, string>
         Dictionary<string, string> stringVariables = new();
 
-        // °¢°¢ÀÇ object¸¦ stringÀ¸·Î º¯È¯ÇÏ¿© stringVariables¿¡ Ãß°¡
+        // ê°ê°ì˜ objectë¥¼ stringìœ¼ë¡œ ë³€í™˜í•˜ì—¬ stringVariablesì— ì¶”ê°€
         foreach (var variable in dictionary)
         {
             string key = variable.Key;
             object value = variable.Value;
             string stringValue;
 
-            // °ªÀÇ À¯Çü¿¡ µû¶ó ÀûÀıÇÑ Ã³¸®¸¦ ¼öÇà
+            // ê°’ì˜ ìœ í˜•ì— ë”°ë¼ ì ì ˆí•œ ì²˜ë¦¬ë¥¼ ìˆ˜í–‰
             if (value is int intValue)
             {
                 stringValue = intValue.ToString();
@@ -135,15 +131,15 @@ public class SaveData
     }
     private Dictionary<string, object> ToDictionary(string json)
     {
-        // JSON ¹®ÀÚ¿­À» Dictionary<string, string>À¸·Î ¿ªÁ÷·ÄÈ­
+        // JSON ë¬¸ìì—´ì„ Dictionary<string, string>ìœ¼ë¡œ ì—­ì§ë ¬í™”
         Dictionary<string, string> stringVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(variablesToJson);
 
-        // Dictionary<string, object>À» »ı¼ºÇÏ¿© º¯È¯µÈ °ªµéÀ» Ãß°¡
+        // Dictionary<string, object>ì„ ìƒì„±í•˜ì—¬ ë³€í™˜ëœ ê°’ë“¤ì„ ì¶”ê°€
         Dictionary<string, object> objectVariables = new();
         foreach (var variable in stringVariables)
         {
             object value;
-            // stringÀ» ÀûÀıÇÑ Çü½ÄÀ¸·Î º¯È¯ÇÏ¿© object º¯¼ö¿¡ ÇÒ´ç
+            // stringì„ ì ì ˆí•œ í˜•ì‹ìœ¼ë¡œ ë³€í™˜í•˜ì—¬ object ë³€ìˆ˜ì— í• ë‹¹
             if (int.TryParse(variable.Value, out int intValue))
             {
                 value = intValue;

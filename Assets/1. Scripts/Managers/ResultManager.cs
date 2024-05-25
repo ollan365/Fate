@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 using static Constants;
 
@@ -108,7 +107,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_002": // 설명창 띄우기 - ### 추후 구현 필요 ###
-                SceneManager.LoadScene(1);
+                SceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
             
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)

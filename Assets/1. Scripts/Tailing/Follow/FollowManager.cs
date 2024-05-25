@@ -38,13 +38,6 @@ public class FollowManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW, true);
-
-        MemoManager.Instance.isFollow = true;
-        MemoManager.Instance.MemoButtonChange();
-        MemoManager.Instance.HideMemoButton(false);
-        DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
-
         StartCoroutine(followTutorial.StartTutorial());
     }
 
@@ -83,11 +76,11 @@ public class FollowManager : MonoBehaviour
 
         if (onMove) followAnim.ChangeAnimStatus(); // 원래 이동 중이었다면 다시 이동하도록 만든다
     }
-    public void ClickAngry()
+    public void ClickExtra(FollowExtra extra)
     {
-        DialogueManager.Instance.dialogueCanvas[DialogueType.FOLLOW_ANGRY.ToInt()] = angryCanvas;
-        DialogueManager.Instance.scriptText[DialogueType.FOLLOW_ANGRY.ToInt()] = angryDialogueText;
-        DialogueManager.Instance.dialogueType = DialogueType.FOLLOW_ANGRY;
+        DialogueManager.Instance.dialogueCanvas[DialogueType.FOLLOW_EXTRA.ToInt()] = angryCanvas;
+        DialogueManager.Instance.scriptText[DialogueType.FOLLOW_EXTRA.ToInt()] = angryDialogueText;
+        DialogueManager.Instance.dialogueType = DialogueType.FOLLOW_EXTRA;
 
         angryDialoguePanel.onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
 
@@ -119,9 +112,6 @@ public class FollowManager : MonoBehaviour
     }
     public void FollowEnd()
     {
-        MemoManager.Instance.HideMemoButton(false);
-        DialogueManager.Instance.dialogueType = DialogueType.ROOM;
-
-        // 씬 변경, 배경음 변경 등등
+        SceneManager.Instance.LoadScene(SceneType.ROOM_2);
     }
 }
