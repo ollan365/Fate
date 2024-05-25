@@ -8,7 +8,9 @@ public class Wheel : MonoBehaviour
     [SerializeField] private GameObject[] numbers;
     [SerializeField] private float rotationTime = 0.3f;
 
-    private int currentNumber;
+    [SerializeField] private TinCaseLock tinCaseLock;
+    
+    public int currentNumber;
     public bool isRotating;
 
     public IEnumerator RotateWheel(float angle)
@@ -31,6 +33,8 @@ public class Wheel : MonoBehaviour
         currentNumber += angle > 0 ? 1 : -1;
         currentNumber = (currentNumber + 10) % 10;
         
+        tinCaseLock.CheckAnswer();
+
         isRotating = false;
     }
     
