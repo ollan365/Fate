@@ -36,20 +36,25 @@ public class SceneManager : MonoBehaviour
         {
             case SceneType.START:
                 sceneIndex = 0;
+                sceneType = SceneType.START;
                 break;
             case SceneType.ROOM_1:
                 sceneIndex = 1;
                 bgmIndex = BGM_ROOM;
+                sceneType = SceneType.ROOM_1;
                 break;
             case SceneType.FOLLOW_1:
                 sceneIndex = 2;
                 bgmIndex = BGM_FOLLOW;
+                sceneType = SceneType.FOLLOW_1;
                 break;
             case SceneType.ROOM_2:
                 sceneIndex = 3;
+                sceneType = SceneType.ROOM_2;
                 break;
             case SceneType.FOLLOW_2:
                 sceneIndex = 4;
+                sceneType = SceneType.FOLLOW_2;
                 break;
         }
         yield return new WaitForSeconds(1f);

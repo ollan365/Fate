@@ -56,8 +56,10 @@ public class SaveManager : MonoBehaviour
     // 저장하기
     public void SaveGameData()
     {
-        // 저장할 데이터 생성
-        data = new(SceneManager.Instance.CurrentScene, RoomManager.Instance.currentSideIndex, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
+        // 저장할 데이터 생성 (방이면 RoomManager에 접근하여 현재 화면의 인덱스도 저장)
+        if (SceneManager.Instance.CurrentScene == SceneType.ROOM_1 || SceneManager.Instance.CurrentScene == SceneType.ROOM_2)
+            data = new(SceneManager.Instance.CurrentScene, RoomManager.Instance.currentSideIndex, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
+        else data = new(SceneManager.Instance.CurrentScene, 1, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
 
         // 클래스를 Json 형식으로 전환 (true : 가독성 좋게 작성)
         string ToJsonData = JsonUtility.ToJson(data, true);
