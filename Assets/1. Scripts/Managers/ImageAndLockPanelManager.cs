@@ -74,7 +74,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             { "clock", clockGameObject },
             { "diary", diaryGameObject },
             { "calendar", calendarGameObject },
-            { "tinCase", tinCaseGameObject }
+            { "tinCase", tinCaseGameObject },
             {"sewingBox", sewingBoxGameObject},
         };
 
