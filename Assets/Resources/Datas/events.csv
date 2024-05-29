@@ -35,23 +35,24 @@ EventPillow,침대 위 베개,베개를 그 이상 클릭,,ConditionPillowManyCl
 ,,,,,,
 EventDeskShelfZoom,확대 안 된 책상 위 선반,확대 되지 않은 상태에서 선반에 있는 오브젝트들(다이어리와 시계)을 클릭,,,Result_showZoomedDeskShelf,4월19일 추가
 ,,,,,,
-EventDiaryA,다이어리,다이어리를 처음 클릭,,ConditionDiaryFirstClick,ResultDiaryScript/ResultDiaryLockActivation/Result_IncrementDiaryClick,
+EventDiaryA,다이어리,다이어리를 처음 클릭,,ConditionDiaryFirstClick,ResultDiaryScript/ResultDiaryLockActivation/Result_IncrementDiaryClick/ResultTimePass,
 EventDiaryA,다이어리,비밀번호를 맞은 상태에서 한번 더 클릭,AND,ConditionDiaryManyClick/ConditionDiaryPasswordCorrect,ResultDiaryLockActivation/Result_IncrementDiaryClick/ResultDiaryLockOpen/ResultDiaryContentScript/ResultTimePass/ResultDiaryMemo/Result_IsFinishedEventDiaryA,
 EventDiaryA,다이어리,비밀번호를 맞추지 않고 다이어리 퍼즐을 나갔다가 다시 누르는 경우,AND,ConditionDiaryManyClick/ConditionDiaryPasswordNotCorrect,ResultDiaryLockActivation/Result_IncrementDiaryClick,
 EventDiaryB,다이어리,다이어리의 비밀번호를 맞음,,ConditionDiaryPasswordCorrect,ResultDiaryLockOpen/ResultDiaryContentScript/ResultTimePass/ResultDiaryMemo/Result_IsFinishedEventDiaryA,Result_IsFinished 추가
 EventDiaryB,다이어리,다이어리의 비밀번호를 틀림,,ConditionDiaryPasswordNotCorrect,ResultDiaryLockFailedScript/ResultTimePass,
 ,,,,,,
-EventClockA,시계,시계를 처음 클릭,,ConditionClockFirstClick,Result_showClockImage/ResultClockScript/Result_IncrementClockClick,
+EventClockA,시계,시계를 처음 클릭,,ConditionClockFirstClick,Result_showClockImage/ResultClockScript/Result_IncrementClockClick/ResultTimePass,
 EventClockA,시계,시계의 시간을 맞추고 또 눌렀을 때,AND,ConditionClockManyClick/ConditionClockCorrect,Result_IncrementClockClick/ResultClockGetKey/ResultClockGetKeyScript/ResultTimePass,
 EventClockA,시계,시계의 시간을 맞추지 않고 나갔다가 다시 들어왔을 때,AND,ConditionClockManyClick/ConditionClockNotCorrect,ResultClockSystemActivartion/Result_IncrementClockClick,
 EventClockB,시계,시계를 알맞은 시간으로 맞춤,,ConditionClockCorrect,ResultClockGetKey/ResultClockGetKeyScript/ResultClockGetKeyMemo/ResultTimePass/Result_IsFinishedEventClockA/Result_IsUnFinishedEventClosetBox,Result_IsFinished 추가(EventClockA) Result_IsUnFinished 추가(EventClosetBox)
+EventClockB,시계,시계를 틀린 시간으로 맞춤,,ConditionClockNotCorrect,ResultTimePass,
 EventActivateClock,시계 잠금장치 활성화,시계에 대한 설명이 끝나고 바로 시계 잠금장치 활성화가 가능하도록 이벤트를 생성함. (dialogue에서 바로 result 실행은 불가능하므로),,,ResultClockSystemActivartion,
 ,,,,,,
 EventChair,책상 앞에 의자,의자를 클릭. 의자가 움직이는 것도 카펫이 닫혀있어야지 가능,,ConditionCarpetClosed,ResultChairMoved,
 ,,,,,,
 EventDeskZoom,확대 안 된 책상,확대 되지 않은 상태에서 책상 위에 있는 오브젝트들(노트북/커터칼/스탠드조명)을 클릭,,,Result_showZoomedDesk,4월 19일 추가
 ,,,,,,
-EventLaptopA,노트북,노트북을 처음 클릭,,ConditionLaptapFirstClick,ResultLaptopScript/ResultLaptopLockActivation/Result_IncrementLaptopClick,
+EventLaptopA,노트북,노트북을 처음 클릭,,ConditionLaptapFirstClick,ResultLaptopScript/ResultLaptopLockActivation/Result_IncrementLaptopClick/ResultTimePass,
 EventLaptopA,노트북,비밀번호를 맞은 상태에서 한번 더 클릭,AND,ConditionLaptapCorrect/ConditionLaptapManyClick,ResultLaptopLockActivation/Result_IncrementLaptopClick/ResultLaptopLockOpen/ResultTimePass/ResultLaptopContentScript,
 EventLaptopA,노트북,비밀번호를 맞추지 않고 노트북 퍼즐을 나갔다가 다시 누르는 경우,AND,ConditionLaptapNotCorrect/ConditionLaptapManyClick,ResultLaptopLockActivation/Result_IncrementLaptopClick,
 EventLaptopB,노트북,노트북의 비밀번호를 맞음,,ConditionLaptapCorrect,ResultLaptopLockOpen/ResultLaptopMemo/ResultTimePass/ResultLaptopContentScript/Result_IsFinishedEventLaptopA,Result_IsFinished 추가
@@ -142,7 +143,17 @@ EventTutorialBlockingPanel,튜토리얼 블록 패널,사이드 2or3번 방에�
 EventTutorialBlockingPanel,튜토리얼 블록 패널,사이드 1번 방에서 튜토리얼 카펫 덮을 때 다른 곳 클릭,AND,ConditionTutorialPhase5/ConditionChairMoved/ConditionCarpetOpen/ConditionZeroPaperManyClick/ConditionCarpetManyClick/ConditionCurrentSide1/Condition_tutorial,Result_TutorialPhase5ForceSide1,
 EventTutorialBlockingPanel,튜토리얼 블록 패널,사이드 2or3번 방에서 튜토리얼 카펫 덮을 때 다른 곳 클릭,AND,ConditionTutorialPhase5/ConditionChairMoved/ConditionCarpetOpen/ConditionZeroPaperManyClick/ConditionCarpetManyClick/ConditionCurrentSide2Or3/Condition_tutorial,Result_TutorialPhase5Force,
 ,,,,,,
+,,,,,,방탈출2
+EventTinCaseTest,틴케이스 테스트용,,,,ResultTinCaseTest,
 ,,,,,,
+,,,,,,
+,,,,,,
+EventSewingBoxA,반짇고리,반짇고리를 처음 클릭,,ConditionSewingBoxFirstClick,Result_showSewingBoxImage/ResultSewingBoxScript/Result_IncrementSewingBoxClick/ResultTimePass,반짇고리 테스트 중
+EventSewingBoxA,반짇고리,반짇고리 퍼즐 맞추고 또 눌렀을 때,AND,ConditionSewingBoxManyClick/ConditionSewingBoxCorrect,Result_IncrementSewingBoxClick/ResultSewingBoxGetThreadAndNeedle/ResultSewingBoxGetThreadAndNeedleScript/ResultTimePass,반짇고리 테스트 중
+EventSewingBoxA,반짇고리,반짇고리 퍼즐 맞추지 않고 나갔다가 다시 들어왔을 때,AND,ConditionSewingBoxManyClick/ConditionSewingBoxNotCorrect,ResultSewingBoxSystemActivartion/Result_IncrementSewingBoxClick,반짇고리 테스트 중
+EventSewingBoxB,반짇고리,퍼즐의 구슬을 틀린 위치로 맞춤,,ConditionSewingBoxNotCorrect,ResultSewingBoxPuzzleFailedScript/ResultTimePass,반짇고리 테스트 중
+EventSewingBoxB,반짇고리,퍼즐의 구슬을 알맞은 위치로 맞춤,,ConditionSewingBoxCorrect,ResultSewingBoxGetThreadAndNeedle/ResultSewingBoxGetThreadAndNeedleScript/ResultSewingBoxGetThreadAndNeedleMemo/ResultTimePass/Result_IsFinishedEventSewingBoxA,반짇고리 테스트 중
+EventActivateSewingBox,반짇고리 퍼즐 활성화,반짇고리에 대한 설명이 끝나고 바로 퍼즐 활성화가 가능하도록 이벤트를 생성함. (dialogue에서 바로 result 실행은 불가능하므로),,,ResultSewingBoxSystemActivartion,반짇고리 테스트 중
 ,,,,,,
 EventFollowVilla,필연이 갇힌 빌라,빌라를 처음 클릭,,ConditionVillaClick,ResultVillaScript,여기부터 미행
 EventFollowBread,빵집,빵집을 클릭,,ConditionBreadClick,ResultBreadScript,
@@ -179,3 +190,23 @@ EventFollowMinigameEasy,미니게임,미행 내 이벤트 10회 발생시 난이
 EventFollowMinigameNomal,미니게임,미행 내 이벤트 20회 발생시  난이도 2 미니게임 ,,Condition20timesClick,ResultFollowMinigameNomal,
 EventFollowMinigameHard,미니게임,미행 내 이벤트 30회 혹은 그 이상 10단위 일 때 난이도 3 미니게임,,Condition30timesClick,ResultFollowMinigameHard,
 EventFollowEnd,미행 끝,미행이 끝남,,,ResultFollowEnd,
+,,,,,,
+,,,,,,
+,,,,,,
+EventFollow2Villa,빌라 ,빌라를 클릭,,ConditionVillaClick2,ResultVillaScript2,
+EventFollow2Bar,편의점 건물 바,바를 클릭,,ConditionBarClick2,ResultBarScript2,
+EventFollow2Bread,빵집,빵집을 클릭,,ConditionBreadClick2,ResultBreadScript2,
+EventFollow2BeerA,맥주 전문점,카페 건물 3층 맥주전문점을 클릭,,ConditionBeerAClick2,ResultBeerAScript2,
+EventFollow2Izakawa,이자카야,카페 건물  2층 이자카야를 클릭,,ConditionIzakawaClick2,ResultIzakayaScript2,
+EventFollow2Cafe,카페,카페를 클릭,,ConditionCafeClick2,ResultCafeScript2,
+EventFollow23FClothes,3층 옷가게를 클릭,옷가게를 클릭,,Condition3FClothesClick2,Result3FClothesScript2,
+EventFollow22FClothes,2층 옷가게를 클릭,옷가게를 클릭,,Condition2FClothesClick2,Result2FClothesScript2,
+EventFollow2DrinkA,술집,식당 건물 3층 술집을 클릭,,ConditionDrinkAClick2,ResultDrinkScript2,
+EventFollow2CocktailBar,칵테일바,식당 건물 2층 칵테일집을 클릭,,ConditionCocktailBarClick2,ResultCocktailBarScript2,
+EventFollow2Restaurant,식당,식당을 클릭,,ConditionRestaurantClick2,ResultRestaurantScript2,
+EventFollow2DrinkB,술집2,화장품 가게 3층을 술집 클릭,,ConditionDrinkBClick2,ResultDrinkScript2,
+EventFollow2MusicBar,뮤직바,뮤직바를 클릭,,ConditionMusicBarClick2,ResultMusicBarScript2,
+EventFollow2Cosemetic,화장품 가게,화장품 가게를 클릭,,ConditionCosemeticClick2,ResultCosemeticScript,
+EventFollow2DrinkC,술집 ,클럽 건물 3층 술집 클릭,,ConditionDrinkCClick2,ResultDrinkScript2,
+EventFollow2BeerB,생맥 전문점,생맥 전문점 클릭,,ConditionBeerBClick2,ResultBeerBScript2,
+EventFollow2Club,클럽,클럽,,ConditionClubClick2,ResultClubScript2,

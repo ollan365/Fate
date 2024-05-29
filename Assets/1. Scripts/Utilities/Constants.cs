@@ -60,6 +60,7 @@ public static class Constants
 
 
         // ========== 두번째 미행 ========== //
+        Villa2, Bar2, Bread2, BeerA, Izakawa2, Cafe2, Clothes_3F, Clothes_2F, DrinkA, CocktailBar2, Restaurant2, DrinkB, MusicBar2, Cosmetic2, DrinkC, BeerB, Club2,
 
 
         // ========== 기타 등등 ========== //
@@ -75,6 +76,7 @@ public static class Constants
         // 미행 오브젝트에 따라 event id 반환
         switch (objectName)
         {
+            // ===== 첫번째 미행 ===== //
             // 첫번째 배경
             case FollowObjectName.Villa:   return "EventFollowVilla";
             case FollowObjectName.Bread:   return "EventFollowBread";
@@ -98,7 +100,37 @@ public static class Constants
             case FollowObjectName.Club: return "EventFollowClub";
             case FollowObjectName.Beer: return "EventFollowPub";
             case FollowObjectName.Wreath: return "EventFollowWreath";
-            case FollowObjectName.Extra: return "EventFollowAngryPerson";
+
+
+
+            // ===== 두번째 미행 ===== //
+            // 첫번째 배경
+            case FollowObjectName.Villa2: return "EventFollow2Villa";
+            case FollowObjectName.Bar2: return "EventFollow2Bar";
+            case FollowObjectName.Bread2: return "EventFollow2Bread";
+            case FollowObjectName.BeerA: return "EventFollow2BeerA";
+            case FollowObjectName.Izakawa2: return "EventFollow2Izakawa";
+            case FollowObjectName.Cafe2: return "EventFollow2Cafe";
+            case FollowObjectName.Clothes_3F: return "EventFollow23FClothes";
+            case FollowObjectName.Clothes_2F: return "EventFollow22FClothes";
+            case FollowObjectName.DrinkA: return "EventFollow2DrinkA";
+            case FollowObjectName.CocktailBar2: return "EventFollow2CocktailBar";
+            case FollowObjectName.Restaurant2: return "EventFollow2Restaurant";
+            case FollowObjectName.DrinkB: return "EventFollow2DrinkB";
+            case FollowObjectName.MusicBar2: return "EventFollow2MusicBar";
+            case FollowObjectName.Cosmetic2: return "EventFollow2Cosemetic";
+            case FollowObjectName.DrinkC: return "EventFollow2DrinkC";
+            case FollowObjectName.BeerB: return "EventFollow2BeerB";
+            case FollowObjectName.Club2: return "EventFollow2Club";
+            default: return null;
+        }
+    }
+
+    public static string EventID(this FollowExtra extraName)
+    {
+        switch (extraName)
+        {
+            case FollowExtra.Angry: return "EventFollowAngryPerson";
 
             default: return null;
         }
@@ -109,6 +141,7 @@ public static class Constants
         // 미행 오브젝트에 따라 변수 이름 반환
         switch (objectName)
         {
+            // ===== 첫번째 미행 ===== //
             case FollowObjectName.Villa:   return "VillaClick";
             case FollowObjectName.Bread:   return "BreadClick";
             case FollowObjectName.Con:     return "ConClick";
@@ -130,7 +163,34 @@ public static class Constants
             case FollowObjectName.Club: return "ClubCliclk";
             case FollowObjectName.Beer: return "BeerClick";
             case FollowObjectName.Wreath: return "WreathClick";
-            case FollowObjectName.Extra: return "AngryClick";
+
+            // ===== 두번째 미행 ===== //
+            case FollowObjectName.Villa2: return "VillaClick2";
+            case FollowObjectName.Bar2: return "BarClick2";
+            case FollowObjectName.Bread2: return "BreadClick2";
+            case FollowObjectName.BeerA: return "BeerAClick2";
+            case FollowObjectName.Izakawa2: return "IzakawaClick2";
+            case FollowObjectName.Cafe2: return "CafeClick2";
+            case FollowObjectName.Clothes_3F: return "3FClothesClick2";
+            case FollowObjectName.Clothes_2F: return "2FClothesClick2";
+            case FollowObjectName.DrinkA: return "DrinkAClick2";
+            case FollowObjectName.CocktailBar2: return "CocktailBarClick2";
+            case FollowObjectName.Restaurant2: return "RestaurantClick2";
+            case FollowObjectName.DrinkB: return "DrinkBClick2";
+            case FollowObjectName.MusicBar2: return "MusicBarClick2";
+            case FollowObjectName.Cosmetic2: return "CosemeticClick2";
+            case FollowObjectName.DrinkC: return "DrinkCClick2";
+            case FollowObjectName.BeerB: return "BeerBClick2";
+            case FollowObjectName.Club2: return "ClubClick2";
+            default: return null;
+        }
+    }
+
+    public static string ClickVariable(this FollowExtra extraName)
+    {
+        switch (extraName)
+        {
+            case FollowExtra.Angry: return "AngryClick";
             default: return null;
         }
     }

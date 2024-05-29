@@ -24,7 +24,7 @@ public class FollowManager : MonoBehaviour
     // 특별한 오브젝트를 클릭했을 때 버튼 생성
     public GameObject eventButtonPrefab;
 
-    private FollowExtra extra;
+    private FollowExtra extra = FollowExtra.None;
 
     // 상태 변수
     public bool isTutorial = false; // 튜토리얼 중인지 아닌지
@@ -63,7 +63,7 @@ public class FollowManager : MonoBehaviour
             return;
         }
 
-        if (extraCanvas[Int(extra)].activeSelf) { EndExtraDialogue(); return; }
+        if (extra != FollowExtra.None) { EndExtraDialogue(); return; }
 
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1)
         {
@@ -94,6 +94,7 @@ public class FollowManager : MonoBehaviour
     }
     public void EndExtraDialogue()
     {
+        extra = FollowExtra.None;
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
         extraCanvas[Int(extra)].SetActive(false);
         blockingPanel.SetActive(true);

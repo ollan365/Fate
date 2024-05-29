@@ -29,6 +29,9 @@ public class SceneManager : MonoBehaviour
     }
     private IEnumerator ChangeScene(SceneType sceneType)
     {
+        // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
+        MemoManager.Instance.HideMemoButton(true);
+
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         int sceneIndex = -1, bgmIndex = -1;
@@ -53,7 +56,7 @@ public class SceneManager : MonoBehaviour
                 sceneType = SceneType.ROOM_2;
                 break;
             case SceneType.FOLLOW_2:
-                sceneIndex = 4;
+                sceneIndex = 3; // 병합 후 4로 바꾸기!
                 sceneType = SceneType.FOLLOW_2;
                 break;
         }
@@ -68,17 +71,18 @@ public class SceneManager : MonoBehaviour
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
                 MemoManager.Instance.isFollow = false;
-                MemoManager.Instance.MemoButtonChange();
                 DialogueManager.Instance.dialogueType = DialogueType.ROOM;
                 // RoomManager.Instance.currentSideIndex = roomSideIndex;
                 break;
             case SceneType.FOLLOW_1:
             case SceneType.FOLLOW_2:
                 MemoManager.Instance.isFollow = true;
-                MemoManager.Instance.MemoButtonChange();
                 DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
                 break;
         }
+
+        MemoManager.Instance.MemoButtonChange();
+        MemoManager.Instance.HideMemoButton(false);
 
         // 배경음과 페이드 효과
         SoundPlayer.Instance.ChangeBGM(bgmIndex, true);

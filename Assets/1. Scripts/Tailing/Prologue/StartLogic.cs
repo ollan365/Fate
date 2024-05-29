@@ -92,6 +92,8 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     {
         if (sceneNum == 1) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
         if (sceneNum == 2) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
+        if (sceneNum == 3) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_2);
+        if (sceneNum == 4) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_2);
     }
 
     public void SetName()
