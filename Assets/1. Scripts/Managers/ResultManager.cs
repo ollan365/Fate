@@ -563,6 +563,55 @@ public class ResultManager : MonoBehaviour
                 executableObjects["DeskShelf Unzoomed 2"].ExecuteAction();
                 break;
 
+
+            // 방탈출 2
+            case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
+                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
+
+                Debug.Log("반짇고리 상자 확대 이미지 표시");
+                break;
+
+            case "ResultSewingBoxScript":   // 반짇고리에 대한 설명
+                DialogueManager.Instance.StartDialogue("SewingBoxTestScript");
+
+                Debug.Log("반짇고리에 대한 설명");
+                break;
+
+            case "ResultSewingBoxSystemActivartion": // 반짇고리 퍼즐 시스템 활성화
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "sewingBox");
+                executableObjects["SewingBox"].ExecuteAction();
+
+                Debug.Log("반짇고리 퍼즐 시스템 활성화");
+                break;
+
+            case "ResultSewingBoxPuzzleFailedScript":   // 반짇고리 퍼즐 틀림에 대한 설명
+                //DialogueManager.Instance.StartDialogue("");
+
+                Debug.Log("반짇고리 퍼즐 틀림에 대한 설명");
+                break;
+
+            case "ResultSewingBoxGetThreadAndNeedle":   // 실과 바늘을 획득
+                //SoundPlayer.Instance.UISoundPlay(Sound_Key);
+                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
+
+                Debug.Log("실과 바늘을 획득");
+                break;
+
+            case "ResultSewingBoxGetThreadAndNeedleScript":   // 실과 바늘을 획득 후 스크립트
+                //DialogueManager.Instance.StartDialogue("");
+
+                Debug.Log("실과 바늘을 획득 후 스크립트");
+                break;
+
+            case "ResultSewingBoxGetThreadAndNeedleMemo":   // 실과 바늘 획득 후 메모
+                //MemoManager.Instance.AddMemo("R1Memo_003");
+
+                Debug.Log("실과 바늘 획득 후 메모");
+                break;
+
+
+
+            // 미행 1
             case "ResultVillaScript": // 빌라에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("Follow_002");
                 break;
