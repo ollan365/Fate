@@ -30,6 +30,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private GameObject clockGameObject;
     [SerializeField] private GameObject diaryGameObject;
     [SerializeField] private GameObject calendarGameObject;
+    [SerializeField] private GameObject tinCaseGameObject;
     [SerializeField] private GameObject sewingBoxGameObject;
 
     [Header("튜토리얼 강조 이미지들")]
@@ -73,6 +74,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             { "clock", clockGameObject },
             { "diary", diaryGameObject },
             { "calendar", calendarGameObject },
+            { "tinCase", tinCaseGameObject }
             {"sewingBox", sewingBoxGameObject},
         };
 

@@ -114,10 +114,6 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.DecrementVariable("ActionPoint");
                 SaveManager.Instance.SaveGameData();
                 break;
-            
-            case "ResultClueCompleted": // 조사 완료 스크립트
-                DialogueManager.Instance.StartDialogue("RoomEscape_008");
-                break;
 
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
@@ -148,8 +144,7 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.SetVariable("isInquiry",false);
                 DialogueManager.Instance.EndDialogue();
                 break;
-
-
+            
             // 휴식 시스템
             case "Result_restButton":
                 DialogueManager.Instance.EndDialogue();
@@ -488,6 +483,11 @@ public class ResultManager : MonoBehaviour
             
             case "Result_IncrementCalendarCluesFound": // 달력 관련 단서 찾은 수 1 증가
                 GameManager.Instance.IncrementVariable("CalendarCluesFound");
+                break;
+            
+            case "ResultTinCaseTest": // 틴케이스 테스트용
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "tinCase");
+                executableObjects["TinCase"].ExecuteAction();
                 break;
 
             case "ResultCalendarFBDScirpt": // 필연 생일에 대한 스크립트
