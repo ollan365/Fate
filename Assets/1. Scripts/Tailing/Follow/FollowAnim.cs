@@ -39,6 +39,7 @@ public class FollowAnim : MonoBehaviour
             backgroundPosition.position += moveVector;
             frontCanvasPosition.position += moveVector;
 
+            // 여기도 첫번째 미행에서만 적용됨 -> 옮길 수 있으면 옮기는 게 나을 거 같음
             if(backgroundPosition.position.x < -39)
             {
                 ChangeAnimStatus();
@@ -87,6 +88,7 @@ public class FollowAnim : MonoBehaviour
         }
     }
 
+    // === 첫번째 미행에서만 쓰인다 -> 옮길 수 있으면 옮기기
     public void ChangeAnimStatusOnEnd(int num)
     {
         if (num == 0)

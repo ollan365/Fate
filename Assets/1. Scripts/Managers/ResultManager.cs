@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 using static Constants;
 
@@ -108,7 +107,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_002": // 설명창 띄우기 - ### 추후 구현 필요 ###
-                SceneManager.LoadScene(1);
+                SceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
             
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
@@ -742,6 +741,66 @@ public class ResultManager : MonoBehaviour
 
             case "ResultFollowEnd": // 미행 끝
                 FollowManager.Instance.FollowEnd();
+                break;
+
+            case "ResultVillaScript2": // 미행2 빌라에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_001");
+                break;
+
+            case "ResultBarScript2": // 미행2 편의점 건물 3층 칵테일바 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_002");
+                break;
+
+            case "ResultBreadScript2": // 미행2 빵집 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_003");
+                break;
+
+            case "ResultBeerAScript2": // 미행2 카페 3층 맥주전문점 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_004");
+                break;
+
+            case "ResultIzakayaScript2": // 미행2 이자카야 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_005");
+                break;
+
+            case "ResultCafeScript2": // 미행2 카페 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_006");
+                break;
+
+            case "Result3FClothesScript2": // 미행2 3층 옷가게 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_007");
+                break;
+
+            case "Result2FClothesScript2": // 미행2 2층 옷가게 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_008");
+                break;
+
+            case "ResultDrinkScript2": // 미행2 술집 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_009");
+                break;
+
+            case "ResultCocktailBarScript2": // 미행2 칵테일바 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_010");
+                break;
+
+            case "ResultRestaurantScript2": // 미행2 식당 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_011");
+                break;
+
+            case "ResultMusicBarScript2": // 미행2 뮤직바 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_012");
+                break;
+
+            case "ResultCosemeticScript2": // 미행2 화장품 가게 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_013");
+                break;
+
+            case "ResultBeerBScript2": // 미행2 클럽 건물 맥주가게 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_014");
+                break;
+
+            case "ResultClubScript2": // 미행2 클럽 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_015");
                 break;
 
             default:
