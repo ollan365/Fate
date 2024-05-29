@@ -1,230 +1,238 @@
-Condition ID,Condition Description,Variable Name,Logic,Value,
-Condition_tutorial,튜토리얼 진행 중인 상태,isTutorial,==,TRUE,
-Condition_notTutorial,튜토리얼 진행 중이지 않은 상태,isTutorial,==,FALSE,
-,,,,,
-ConditionTutorialPhase1,튜토리얼 1 진행 중,TutorialPhase,==,1,
-ConditionTutorialPhase2,튜토리얼 2 진행 중,TutorialPhase,==,2,
-ConditionTutorialPhase3,튜토리얼 3 진행 중,TutorialPhase,==,3,
-ConditionTutorialPhase4,튜토리얼 4 진행 중,TutorialPhase,==,4,
-ConditionTutorialPhase5,튜토리얼 5 진행 중,TutorialPhase,==,5,
-,,,,,
-ConditionCurrentSide1,현재 사이드1번 방,currentSideIndex,==,0,
-ConditionCurrentSide2Or3,현재 사이드 2~3번 방,currentSideIndex,>,0,
-,,,,,
-ConditionBedTeddyFristClick,침대 위 곰인형을 처음 클릭 했을 때,DollsClick,==,0,
-ConditionBedTeddyManyClick,침대 위 곰인형을 한번 이상 클릭했을 때,DollsClick,>,0,
-,,,,,
-ConditionBlanketFirstClick,이불을 처음 클릭했을 때,BlanketsClick,==,0,
-ConditionBlanketManyClick,이불을 한번 이상 클릭했을 때,BlanketsClick,>,0,
-,,,,,
-ConditionDrinkAndMedicineFirstClick,술과 감기약을 처음 클릭했을 때,LiquorAndPillsClick,==,0,
-ConditionDrinkAndMedicineManyClick,술과 감기약을 한번 이상클릭했을 때,LiquorAndPillsClick,>,0,
-,,,,,
-ConditionStandLightFirstClick,책상 위 스탠드를 처음 클릭했을 때,LampClick,==,0,
-ConditionStandLightManyClick,책상 위 스탠드를 한번 이상클릭했을 때,LampClick,>,0,
-,,,,,
-ConditionBearStorageClosetyFirstClick,인형 수납장을 처음 클릭했을 때,ShelvesClick,==,0,
-ConditionBearStorageClosetyManyClick,인형 수납장을 여러 번 클릭했을 때,ShelvesClick,>,0,
-,,,,,
-ConditionPillowFirstClick,베개를 처음 클릭,PillowClick,==,0,
-ConditionPillowSecondClick,베개를 두번째 클릭,PillowClick,==,1,
-ConditionPillowManyClick,베개를 세번 이상 클릭,PillowClick,>,1,
-,,,,,
-ConditionDiaryFirstClick,다이어리를 처음 클릭,DiaryClick,==,0,
-ConditionDiaryPasswordCorrect,다이어리 비밀번호를 맞춘 상태,DiaryPasswordCorrect,==,TRUE,
-ConditionDiaryPasswordNotCorrect,다이어리 비밀번호를 맞추지 않은 상태,DiaryPasswordCorrect,==,FALSE,
-ConditionDiaryManyClick,다이어리를 한번 이상 클릭,DiaryClick,>,0,
-,,,,,
-ConditionClockFirstClick,고장난 시계를 처음 클릭,ClockClick,==,0,
-ConditionClockManyClick,고장난 시계를 한번 이상 클릭했을 때,ClockClick,>,0,
-ConditionClockCorrect,시계를 맞춘 상태. 즉 열쇠를 찾은 상태,ClockTimeCorrect,==,TRUE,
-ConditionClockNotCorrect,시계를 맞추지 않은 상태. 즉 열쇠를 찾지 못한 상태,ClockTimeCorrect,==,FALSE,
-,,,,,
-ConditionLaptapFirstClick,노트북을 처음 클릭,LaptopClick,==,0,
-ConditionLaptapCorrect,노트북의 비밀번호를 맞춤,LaptopPasswordCorrect,==,TRUE,
-ConditionLaptapNotCorrect,노트북의 비밀번호를 틀림,LaptopPasswordCorrect,==,FALSE,
-ConditionLaptapManyClick,노트북을 한번 이상 클릭,LaptopClick,>,0,
-,,,,,
-ConditionCarpetFirstClick,카펫을 클릭한 적 없는 상태,ClosedCarpetClick,==,0,
-ConditionCarpetClosed,카펫이 닫혀 있는 상태,CarpetClosed,==,TRUE,
-ConditionCarpetOpen,카펫이 열려 있는 상태,CarpetClosed,==,FALSE,
-ConditionCarpetManyClick,카펫을 한 번 이상 클릭한 상태,ClosedCarpetClick,>,0,
-ConditionChairMoved,의자가 옆으로 치워진 상태,ChairMoved,==,TRUE,
-ConditionChairNotMoved,의자가 옆으로 안 치워진 상태,ChairMoved,==,FALSE,
-CoditionZeroPaperFirstClick,자퇴서를 클릭한 적 없는 상태,PaperClick,==,0,
-ConditionZeroPaperManyClick,자퇴서를 한번 이상 클릭한 상태,PaperClick,>,0,
-,,,,,
-ConditionPosterFirstClick,포스터를 클릭한 적 없는 상태,PosterClick,==,0,
-ConditionPosterManyClick,포스터를 한번 이상 클릭한 상태,PosterClick,>,0,
-ConditionGetKnife,커터칼을 획득한 상태,HasKnife,==,TRUE,
-ConditionNotGetKnife,커터칼을 획득하지 않은 상태,HasKnife,==,FALSE,
-ConditionPosterOpened,포스터를 열람한 상태,PosterOpened,==,TRUE,
-ConditionNotPosterOpened,포스터를 열람하지 않은 상태,PosterOpened,==,FALSE,
-,,,,,
-ConditionClosetDoorsOpen,옷장 문이 열려 있는 상태,ClosetDoorsClosed,==,FALSE,
-ConditionFirstClosedClosetDoorsClick,닫힌 옷장 문을 클릭한 적 없는 상태,ClosedClosetDoorsClick,==,0,
-ConditionManyClosedClosetDoorsClick,닫힌 옷장 문을 한번 이상 클릭한 상태,ClosedClosetDoorsClick,>,0,
-ConditionClosetDoorsClosed,옷장 문이 닫혀 있는 상태,ClosetDoorsClosed,==,TRUE,
-ConditionClosetBagFirstClick,옷장 안에 가방을 클릭한 적 없는 상태,BagClick,==,0,
-ConditionClosetBagManyClick,옷장 안에 가방을 한번 이상 클릭한 상태,BagClick,>,0,
-,,,,,
-ConditionBoxFirstClick,옷장 위 상자를 클릭한 적 없는 상태,BoxClick,==,0,
-ConditionBoxManyClick,옷장 위 상자를 한번 이상 클릭한 상태,BoxClick,>,0,!!!!
-ConditionBoxOpen,옷장 위 상자를 열어 본 상태,BoxOpened,==,TRUE,
-ConditionBoxNotOpen,옷장 위 상자를 열어 보지 않은 상태,BoxOpened,==,FALSE,
-,,,,,
-ConditionCabinetDoorsOpen,서랍장 문이 열려 있는 상태,CabinetDoorsClosed,==,FALSE,
-ConditionCabinetDoorsClosed,서랍장 문이 닫혀 있는 상태,CabinetDoorsClosed,==,TRUE,
-ConditionCabinetDoorsFirstClick,닫힌 서람장 문을 클릭한 적 없는 상태,ClosedCabinetDoorsClick,==,0,
-ConditionCabinetDoorsManyClick,닫힌 서람장 문을 한번 이상 클릭한 상태,ClosedCabinetDoorsClick,>,0,
-,,,,,
-ConditionCalendarCluesNotFound,달력 관련 단서를 모두 보지 않은 상태,CalendarCluesFound,<,4,
-ConditionCalendarCluesFound,달력 관련 단서를 모두 본 상태,CalendarCluesFound,>=,4,
-ConditionFateBirthdayNotClicked,필연 생일 단서를 클릭한 적 없는 상태,FateBirthdayClick,==,0,
-ConditionFateBirthdayClicked,필연 생일 단서를 클릭한 적 있는 상태,FateBirthdayClick,>,0,
-ConditionAccidyBirthdayNotClicked,우연 생일 단서를 클릭한 적 없는 상태,AccidyBirthdayClick,==,0,
-ConditionAccidyBirthdayClicked,우연 생일 단서를 클릭한 적 있는 상태,AccidyBirthdayClick,>,0,
-ConditionSpecialDateANotClicked,1031 단서를 클릭한 적 없는 상태,SpecialDateAClick,==,0,
-ConditionSpecialDateAClicked,1031 단서를 클릭한 적 있는 상태,SpecialDateAClick,>,0,
-ConditionSpecialDateBNotClicked,1001 단서를 클릭한 적 없는 상태,SpecialDateBClick,==,0,
-ConditionSpecialDateBClicked,1001 단서를 클릭한 적 있는 상태,SpecialDateBClick,>,0,
-,,,,,
-ConditionShoppingBagFirstClick,쇼핑백을 처음 클릭,ShoppingBagClick,==,0,
-ConditionShoppingBagManyClick,쇼핑백을 한 번 이상 클릭,ShoppingBagClick,>,0,
-,,,,,
-ConditionNormalPosterFirstClick,침대 옆 일반 포스터 처음 클릭,NormalPosterClick,==,0,
-ConditionNormalPosterManyClick,침대 옆 일반 포스터 한 번 이상 클릭,NormalPosterClick,>,0,
-,,,,,
-ConditionStorageTeddyBearFirstClick,서랍장 내부 곰인형을 처음 클릭,StorageTeddyBearClick,==,0,
-ConditionStorageTeddyBearManyClick,서랍장 내부 곰인형을 한 번 이상 클릭,StorageTeddyBearClick,>,0,
-,,,,,
-ConditionInquiryOk,,isInquiry,==,TRUE,
-,,,,,
-ConditionVillaClick,빌라를 처음 클릭,VillaClick,>=,0,
-ConditionBreadClick,2층 빵집을클릭,BreadClick,>=,0,
-ConditionConClick,1층 편의점을 클릭,ConClick,>=,0,
-ConditionBarClick,3층 바를 클릭,BarClick,>=,0,
-ConditionIzakawaClick,이자카야를 클릭,IzakawaClick,>=,0,
-ConditionCatClick,고양이 클릭,CatClick,>=,0,
-ConditionCafeFirstClick,카페 처음 클릭,CafeClick,==,0,
-ConditionCafeManyClick,카페를 한번 이상  클릭,CafeClick,>,0,
-ConditionBagClue,가방 조사를 끝낸 상태,BagClue,==,TRUE,
-ConditionReceiptFirstClick,카페 영수증을 클릭,ReceiptClick,==,0,
-ConditionReceiptManyClick,카페 영수증을 한번 이상 클릭,ReceiptClick,>,0,
-ConditionLightFirstClick,신호등을 클릭,LightClick,>=,0,
-ConditionLightManyClick,신호등을 한번 이상 클릭,LightClick,>,0,
-,,,,,
-ConditionLatteFirstClick,음료를 처음 클릭,LatteClcik,==,0,
-ConditionLatteManyClick,음료를 한번 이상 클릭,LatteClcik,>,0,
-Condition1FClothesFirstClick,1층 옷가게를 처음 클릭,1FClothesClick,==,0,
-Condition1FClothesManyClick,1층 옷가게를 한 번 이상,1FClothesClick,>,0,
-Condition2FClothesFirstClick,2층 옷가게를 처음 클릭,2FClothesClick,==,0,
-Condition2FClothesManyClick,2층 옷가게를 한번 이상 클릭,2FClothesClick,>,0,
-ConditionConstructionFirstClick,공사장을 처음 클릭,ConstructionClick,==,0,
-ConditionConstructionManyClick,공사장을 여러 번 클릭,ConstructionClick,>,0,
-ConditionRestaurantClick,식당을 클릭,RestaurantClick,>=,0,
-ConditionCocktailBarClick,칵태일 바를 클릭,CocktailBarClick,>=,0,
-ConditionCosemeticClick,화장품 가게를 클릭,CosemeticClick,>=,0,
-ConditionMusicBarClick,뮤직바를 클릭,MusicBarClick,>=,0,
-ConditionClubClick,클럽을 클릭,ClubCliclk,>=,0,
-ConditionBeerClick,술집을 클릭,BeerClick,>=,0,
-ConditionWreathFirstClick,화환을 처음 클릭,WreathClick,==,0,
-ConditionWreathManyClick,화환을 한 번 이상 클릭,WreathClick,>,0,
-ConditionAngryFristClick,화난 사람을 처음 클릭,AngryClick,==,0,
-ConditionAngryManyClick,화난 사람을 한 번 이상 클릭,AngryClick,>,0,
-,,,,,
-Condition10timesClick,10번 클릭 ,EventClick,==,10,
-Condition20timesClick,20번 클릭,EventClick,==,20,
-Condition30timesClick,30번 혹은 그 이상,EventClick,==,30,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-T_Condition_001,현재 진행 상태 튜토리얼1 ,Tutorial_Now,==,1,
-T_Condition_002,현재 진행 상태 튜토리얼2,Tutorial_Now,==,2,
-T_Condition_003,현재 진행 상태 튜토리얼3,Tutorial_Now,==,3,
-T_Condition_004,2번으로 시점 이동해봄,Tutorial_RoomSide2_Look,==,TRUE,
-T_Condition_005,3번으로 시점 이동해봄,Tutorial_RoomSide3_Look,==,TRUE,
-T_Condition_006,사이드 2번 보고 와서 현재 사이드 1번에서 newSideIndex가 1이면 튜토2_A 스크립트 진행,RoomCurrentSideIndex,==,1,
-T_Condition_007,사이드 3번 보고 와서 현재 사이드 1번에서 newSideIndex가 2이면 튜토2_A 스크립트 진행,RoomCurrentSideIndex,==,2,
-T_Condition_008,현재 위치가 사이드 1번이면 튜토2_B스크립트 진행,RoomCurrentSideIndex,==,0,
-T_Condition_009,RoomManager의 isInvestigating 가져와서 true면 튜토4 출력,IsInvestigating,==,FALSE,
-T_Condition_010,,Tutorial_Now,<,4,
-T_Condition_011,카펫이 닫혀있는 상태,CarpetClosed,==,TRUE,
+Condition ID,Condition Description,Variable Name,Logic,Value
+Condition_tutorial,튜토리얼 진행 중인 상태,isTutorial,==,TRUE
+Condition_notTutorial,튜토리얼 진행 중이지 않은 상태,isTutorial,==,FALSE
+,,,,
+ConditionTutorialPhase1,튜토리얼 1 진행 중,TutorialPhase,==,1
+ConditionTutorialPhase2,튜토리얼 2 진행 중,TutorialPhase,==,2
+ConditionTutorialPhase3,튜토리얼 3 진행 중,TutorialPhase,==,3
+ConditionTutorialPhase4,튜토리얼 4 진행 중,TutorialPhase,==,4
+ConditionTutorialPhase5,튜토리얼 5 진행 중,TutorialPhase,==,5
+,,,,
+ConditionCurrentSide1,현재 사이드1번 방,currentSideIndex,==,0
+ConditionCurrentSide2Or3,현재 사이드 2~3번 방,currentSideIndex,>,0
+,,,,
+ConditionBedTeddyFristClick,침대 위 곰인형을 처음 클릭 했을 때,DollsClick,==,0
+ConditionBedTeddyManyClick,침대 위 곰인형을 한번 이상 클릭했을 때,DollsClick,>,0
+,,,,
+ConditionBlanketFirstClick,이불을 처음 클릭했을 때,BlanketsClick,==,0
+ConditionBlanketManyClick,이불을 한번 이상 클릭했을 때,BlanketsClick,>,0
+,,,,
+ConditionDrinkAndMedicineFirstClick,술과 감기약을 처음 클릭했을 때,LiquorAndPillsClick,==,0
+ConditionDrinkAndMedicineManyClick,술과 감기약을 한번 이상클릭했을 때,LiquorAndPillsClick,>,0
+,,,,
+ConditionStandLightFirstClick,책상 위 스탠드를 처음 클릭했을 때,LampClick,==,0
+ConditionStandLightManyClick,책상 위 스탠드를 한번 이상클릭했을 때,LampClick,>,0
+,,,,
+ConditionBearStorageClosetyFirstClick,인형 수납장을 처음 클릭했을 때,ShelvesClick,==,0
+ConditionBearStorageClosetyManyClick,인형 수납장을 여러 번 클릭했을 때,ShelvesClick,>,0
+,,,,
+ConditionPillowFirstClick,베개를 처음 클릭,PillowClick,==,0
+ConditionPillowSecondClick,베개를 두번째 클릭,PillowClick,==,1
+ConditionPillowManyClick,베개를 세번 이상 클릭,PillowClick,>,1
+,,,,
+ConditionDiaryFirstClick,다이어리를 처음 클릭,DiaryClick,==,0
+ConditionDiaryPasswordCorrect,다이어리 비밀번호를 맞춘 상태,DiaryPasswordCorrect,==,TRUE
+ConditionDiaryPasswordNotCorrect,다이어리 비밀번호를 맞추지 않은 상태,DiaryPasswordCorrect,==,FALSE
+ConditionDiaryManyClick,다이어리를 한번 이상 클릭,DiaryClick,>,0
+,,,,
+ConditionClockFirstClick,고장난 시계를 처음 클릭,ClockClick,==,0
+ConditionClockManyClick,고장난 시계를 한번 이상 클릭했을 때,ClockClick,>,0
+ConditionClockCorrect,시계를 맞춘 상태. 즉 열쇠를 찾은 상태,ClockTimeCorrect,==,TRUE
+ConditionClockNotCorrect,시계를 맞추지 않은 상태. 즉 열쇠를 찾지 못한 상태,ClockTimeCorrect,==,FALSE
+,,,,
+ConditionLaptapFirstClick,노트북을 처음 클릭,LaptopClick,==,0
+ConditionLaptapCorrect,노트북의 비밀번호를 맞춤,LaptopPasswordCorrect,==,TRUE
+ConditionLaptapNotCorrect,노트북의 비밀번호를 틀림,LaptopPasswordCorrect,==,FALSE
+ConditionLaptapManyClick,노트북을 한번 이상 클릭,LaptopClick,>,0
+,,,,
+ConditionCarpetFirstClick,카펫을 클릭한 적 없는 상태,ClosedCarpetClick,==,0
+ConditionCarpetClosed,카펫이 닫혀 있는 상태,CarpetClosed,==,TRUE
+ConditionCarpetOpen,카펫이 열려 있는 상태,CarpetClosed,==,FALSE
+ConditionCarpetManyClick,카펫을 한 번 이상 클릭한 상태,ClosedCarpetClick,>,0
+ConditionChairMoved,의자가 옆으로 치워진 상태,ChairMoved,==,TRUE
+ConditionChairNotMoved,의자가 옆으로 안 치워진 상태,ChairMoved,==,FALSE
+CoditionZeroPaperFirstClick,자퇴서를 클릭한 적 없는 상태,PaperClick,==,0
+ConditionZeroPaperManyClick,자퇴서를 한번 이상 클릭한 상태,PaperClick,>,0
+,,,,
+ConditionPosterFirstClick,포스터를 클릭한 적 없는 상태,PosterClick,==,0
+ConditionPosterManyClick,포스터를 한번 이상 클릭한 상태,PosterClick,>,0
+ConditionGetKnife,커터칼을 획득한 상태,HasKnife,==,TRUE
+ConditionNotGetKnife,커터칼을 획득하지 않은 상태,HasKnife,==,FALSE
+ConditionPosterOpened,포스터를 열람한 상태,PosterOpened,==,TRUE
+ConditionNotPosterOpened,포스터를 열람하지 않은 상태,PosterOpened,==,FALSE
+,,,,
+ConditionClosetDoorsOpen,옷장 문이 열려 있는 상태,ClosetDoorsClosed,==,FALSE
+ConditionFirstClosedClosetDoorsClick,닫힌 옷장 문을 클릭한 적 없는 상태,ClosedClosetDoorsClick,==,0
+ConditionManyClosedClosetDoorsClick,닫힌 옷장 문을 한번 이상 클릭한 상태,ClosedClosetDoorsClick,>,0
+ConditionClosetDoorsClosed,옷장 문이 닫혀 있는 상태,ClosetDoorsClosed,==,TRUE
+ConditionClosetBagFirstClick,옷장 안에 가방을 클릭한 적 없는 상태,BagClick,==,0
+ConditionClosetBagManyClick,옷장 안에 가방을 한번 이상 클릭한 상태,BagClick,>,0
+,,,,
+ConditionBoxFirstClick,옷장 위 상자를 클릭한 적 없는 상태,BoxClick,==,0
+ConditionBoxManyClick,옷장 위 상자를 한번 이상 클릭한 상태,BoxClick,>,0
+ConditionBoxOpen,옷장 위 상자를 열어 본 상태,BoxOpened,==,TRUE
+ConditionBoxNotOpen,옷장 위 상자를 열어 보지 않은 상태,BoxOpened,==,FALSE
+,,,,
+ConditionCabinetDoorsOpen,서랍장 문이 열려 있는 상태,CabinetDoorsClosed,==,FALSE
+ConditionCabinetDoorsClosed,서랍장 문이 닫혀 있는 상태,CabinetDoorsClosed,==,TRUE
+ConditionCabinetDoorsFirstClick,닫힌 서람장 문을 클릭한 적 없는 상태,ClosedCabinetDoorsClick,==,0
+ConditionCabinetDoorsManyClick,닫힌 서람장 문을 한번 이상 클릭한 상태,ClosedCabinetDoorsClick,>,0
+,,,,
+ConditionCalendarCluesNotFound,달력 관련 단서를 모두 보지 않은 상태,CalendarCluesFound,<,4
+ConditionCalendarCluesFound,달력 관련 단서를 모두 본 상태,CalendarCluesFound,>=,4
+ConditionFateBirthdayNotClicked,필연 생일 단서를 클릭한 적 없는 상태,FateBirthdayClick,==,0
+ConditionFateBirthdayClicked,필연 생일 단서를 클릭한 적 있는 상태,FateBirthdayClick,>,0
+ConditionAccidyBirthdayNotClicked,우연 생일 단서를 클릭한 적 없는 상태,AccidyBirthdayClick,==,0
+ConditionAccidyBirthdayClicked,우연 생일 단서를 클릭한 적 있는 상태,AccidyBirthdayClick,>,0
+ConditionSpecialDateANotClicked,1031 단서를 클릭한 적 없는 상태,SpecialDateAClick,==,0
+ConditionSpecialDateAClicked,1031 단서를 클릭한 적 있는 상태,SpecialDateAClick,>,0
+ConditionSpecialDateBNotClicked,1001 단서를 클릭한 적 없는 상태,SpecialDateBClick,==,0
+ConditionSpecialDateBClicked,1001 단서를 클릭한 적 있는 상태,SpecialDateBClick,>,0
+,,,,
+ConditionShoppingBagFirstClick,쇼핑백을 처음 클릭,ShoppingBagClick,==,0
+ConditionShoppingBagManyClick,쇼핑백을 한 번 이상 클릭,ShoppingBagClick,>,0
+,,,,
+ConditionNormalPosterFirstClick,침대 옆 일반 포스터 처음 클릭,NormalPosterClick,==,0
+ConditionNormalPosterManyClick,침대 옆 일반 포스터 한 번 이상 클릭,NormalPosterClick,>,0
+,,,,
+ConditionStorageTeddyBearFirstClick,서랍장 내부 곰인형을 처음 클릭,StorageTeddyBearClick,==,0
+ConditionStorageTeddyBearManyClick,서랍장 내부 곰인형을 한 번 이상 클릭,StorageTeddyBearClick,>,0
+,,,,
+ConditionInquiryOk,,isInquiry,==,TRUE
+,,,,
+,,,,
+,,,,
+,,,,
+ConditionSewingBoxFirstClick,반짇고리를 처음 클릭,SewingBoxClick,==,0
+ConditionSewingBoxManyClick,반짇고리를 한 번 이상 클릭,SewingBoxClick,>,0
+ConditionSewingBoxCorrect,반짇고리 퍼즐을 맞춘 상태. 즉 실과 바늘을 찾은 상태,SewingBoxCorrect,==,TRUE
+ConditionSewingBoxNotCorrect,반짇고리 퍼즐을 틀린 상태. 즉 실과 바늘을 찾지 못한 상태,SewingBoxCorrect,==,FALSE
+,,,,
+ConditionVillaClick,빌라를 처음 클릭,VillaClick,>=,0
+ConditionBreadClick,2층 빵집을클릭,BreadClick,>=,0
+ConditionConClick,1층 편의점을 클릭,ConClick,>=,0
+ConditionBarClick,3층 바를 클릭,BarClick,>=,0
+ConditionIzakawaClick,이자카야를 클릭,IzakawaClick,>=,0
+ConditionCatClick,고양이 클릭,CatClick,>=,0
+ConditionCafeFirstClick,카페 처음 클릭,CafeClick,==,0
+ConditionCafeManyClick,카페를 한번 이상  클릭,CafeClick,>,0
+ConditionBagClue,가방 조사를 끝낸 상태,BagClue,==,TRUE
+ConditionReceiptFirstClick,카페 영수증을 클릭,ReceiptClick,==,0
+ConditionReceiptManyClick,카페 영수증을 한번 이상 클릭,ReceiptClick,>,0
+ConditionLightFirstClick,신호등을 클릭,LightClick,>=,0
+ConditionLightManyClick,신호등을 한번 이상 클릭,LightClick,>,0
+,,,,
+ConditionLatteFirstClick,음료를 처음 클릭,LatteClcik,==,0
+ConditionLatteManyClick,음료를 한번 이상 클릭,LatteClcik,>,0
+Condition1FClothesFirstClick,1층 옷가게를 처음 클릭,1FClothesClick,==,0
+Condition1FClothesManyClick,1층 옷가게를 한 번 이상,1FClothesClick,>,0
+Condition2FClothesFirstClick,2층 옷가게를 처음 클릭,2FClothesClick,==,0
+Condition2FClothesManyClick,2층 옷가게를 한번 이상 클릭,2FClothesClick,>,0
+ConditionConstructionFirstClick,공사장을 처음 클릭,ConstructionClick,==,0
+ConditionConstructionManyClick,공사장을 여러 번 클릭,ConstructionClick,>,0
+ConditionRestaurantClick,식당을 클릭,RestaurantClick,>=,0
+ConditionCocktailBarClick,칵태일 바를 클릭,CocktailBarClick,>=,0
+ConditionCosemeticClick,화장품 가게를 클릭,CosemeticClick,>=,0
+ConditionMusicBarClick,뮤직바를 클릭,MusicBarClick,>=,0
+ConditionClubClick,클럽을 클릭,ClubCliclk,>=,0
+ConditionBeerClick,술집을 클릭,BeerClick,>=,0
+ConditionWreathFirstClick,화환을 처음 클릭,WreathClick,==,0
+ConditionWreathManyClick,화환을 한 번 이상 클릭,WreathClick,>,0
+ConditionAngryFristClick,화난 사람을 처음 클릭,AngryClick,==,0
+ConditionAngryManyClick,화난 사람을 한 번 이상 클릭,AngryClick,>,0
+,,,,
+Condition10timesClick,10번 클릭 ,EventClick,==,10
+Condition20timesClick,20번 클릭,EventClick,==,20
+Condition30timesClick,30번 혹은 그 이상,EventClick,==,30
+,,,,
+,,,,
+ConditionVillaClick2,미행 2 빌라를 클릭,VillaClick2,>=,0
+ConditionBarClick2,미행 2 편의점 건물 3층 바를 클릭,BarClick2,>=,0
+ConditionBreadClick2,미행2 빵집을 클릭,BreadClick2,>=,0
+ConditionBeerAClick2,미행2 카페 건물 3층 맥주전문점 클릭,BeerAClick2,>=,0
+ConditionIzakawaClick2,미행2 카페 건물 2층 이자카야 클릭,IzakawaClick2,>=,0
+ConditionCafeClick2,미행2 카페 건물 1층 카페 클릭,CafeClick2,>=,0
+Condition3FClothesClick2,미행2 옷가게 건물 3층 옷가게 클릭,3FClothesClick2,>=,0
+Condition2FClothesClick2,미행2 옷가게 건물 2층 옷가게 클릭,2FClothesClick2,>=,0
+ConditionDrinkAClick2,미행2 식당 건물 3층 술집을 클릭,DrinkAClick2,>=,0
+ConditionCocktailBarClick2,미행2 식당 건물 2층 칵테일바 클릭,CocktailBarClick2,>=,0
+ConditionRestaurantClick2,미행2 식당을 클릭,RestaurantClick2,>=,0
+ConditionDrinkBClick2,미행2 화장품가게 건물 3층 술집을 클릭,DrinkBClick2,>=,0
+ConditionMusicBarClick2,미행2 뮤직바를 클릭,MusicBarClick2,>=,0
+ConditionCosemeticClick2,마행2 화장품 가게클릭,CosemeticClick2,>=,0
+ConditionDrinkCClick2,미행2 클럽건물 3층 술집을 클릭,DrinkCClick2,>=,0
+ConditionBeerBClick2,미행2 클럽건물 2층 맥주 가게를 클릭,BeerBClick2,>=,0
+ConditionClubClick2,미행2 클럽을 클릭,ClubClick2,>=,0
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+T_Condition_001,현재 진행 상태 튜토리얼1 ,Tutorial_Now,==,1
+T_Condition_002,현재 진행 상태 튜토리얼2,Tutorial_Now,==,2
+T_Condition_003,현재 진행 상태 튜토리얼3,Tutorial_Now,==,3
+T_Condition_004,2번으로 시점 이동해봄,Tutorial_RoomSide2_Look,==,TRUE
+T_Condition_005,3번으로 시점 이동해봄,Tutorial_RoomSide3_Look,==,TRUE
+T_Condition_006,사이드 2번 보고 와서 현재 사이드 1번에서 newSideIndex가 1이면 튜토2_A 스크립트 진행,RoomCurrentSideIndex,==,1
+T_Condition_007,사이드 3번 보고 와서 현재 사이드 1번에서 newSideIndex가 2이면 튜토2_A 스크립트 진행,RoomCurrentSideIndex,==,2
+T_Condition_008,현재 위치가 사이드 1번이면 튜토2_B스크립트 진행,RoomCurrentSideIndex,==,0
+T_Condition_009,RoomManager의 isInvestigating 가져와서 true면 튜토4 출력,IsInvestigating,==,FALSE
+T_Condition_010,,Tutorial_Now,<,4
+T_Condition_011,카펫이 닫혀있는 상태,CarpetClosed,==,TRUE
