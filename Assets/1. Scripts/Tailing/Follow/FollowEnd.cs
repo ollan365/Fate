@@ -67,9 +67,6 @@ public class FollowEnd : MonoBehaviour
         SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, false);
         yield return new WaitForSeconds(2f);
 
-        // 게임 저장 (일단은 건너뜀 - 방탈출까지 하고 와야 오류 없이 저장됨)
-        // SaveManager.Instance.SaveGameData();
-
         // 미행 끝
         FollowManager.Instance.FollowFinishGameStart();
     }

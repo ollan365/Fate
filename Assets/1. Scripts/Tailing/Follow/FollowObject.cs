@@ -4,7 +4,8 @@ using static Constants;
 
 public class FollowObject : EventObject
 {
-    [SerializeField] private FirstFollowObject objectName;
+    [SerializeField] private FollowObjectName objectName;
+    [SerializeField] private FollowExtra extraName;
     [SerializeField] private bool isSpecial;
     [SerializeField] private Sprite specialSprite;
     [SerializeField] private float scaleValue;
@@ -19,15 +20,15 @@ public class FollowObject : EventObject
     private void OnMouseDown_Special()
     {
         // isSpecial = false; // 이후에 클릭할 시에는 바로 OnMouseDown_Normal()가 호출되도록 한다
+        
+        SoundPlayer.Instance.UISoundPlay(Sound_FollowSpecialObject);
 
-        if(objectName == FirstFollowObject.Angry)
+        if (objectName == FollowObjectName.Extra)
         {
-            FollowManager.Instance.ClickAngry();
+            FollowManager.Instance.ClickExtra(extraName);
             OnMouseDown_Normal();
             return;
         }
-
-        SoundPlayer.Instance.UISoundPlay(Sound_FollowSpecialObject);
 
         foreach (Transform child in FollowManager.Instance.blockingPanel.transform)
             Destroy(child.gameObject);
@@ -44,8 +45,16 @@ public class FollowObject : EventObject
     }
     public void OnMouseDown_Normal()
     {
-        eventId = objectName.EventID();
+        if (objectName != FollowObjectName.Extra)
+        {
+            eventId = objectName.EventID();
+            GameManager.Instance.IncrementVariable(objectName.ClickVariable());
+        }
+        else
+        {
+            eventId = extraName.EventID();
+            GameManager.Instance.IncrementVariable(extraName.ClickVariable());
+        }
         base.OnMouseDown();
-        GameManager.Instance.IncrementVariable(objectName.ClickVariable());
     }
 }
