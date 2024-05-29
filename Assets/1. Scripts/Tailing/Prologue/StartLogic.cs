@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
@@ -38,7 +37,8 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     }
     public void ExecuteAction()
     {
-        StartCoroutine(EndPrologue());
+        blockingPanel.SetActive(false);
+        SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
     }
     private IEnumerator RotateSecond()
     {
@@ -90,7 +90,10 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     }
     public void GoScene(int sceneNum)
     {
-        SceneManager.LoadScene(sceneNum);
+        if (sceneNum == 1) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
+        if (sceneNum == 2) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
+        if (sceneNum == 3) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_2);
+        if (sceneNum == 4) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_2);
     }
 
     public void SetName()
@@ -152,12 +155,5 @@ public class StartLogic : MonoBehaviour, IResultExecutable
 
         blockingPanel.SetActive(true);
         DialogueManager.Instance.StartDialogue("Prologue_002");
-    }
-    private IEnumerator EndPrologue()
-    {
-        blockingPanel.SetActive(false);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
-        yield return new WaitForSeconds(1);
-        GoScene(1); // Room 씬으로 이동
     }
 }

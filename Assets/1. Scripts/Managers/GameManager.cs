@@ -170,7 +170,19 @@ public class GameManager : MonoBehaviour
         variables["StorageTeddyBearClick"] = 0;
 
         // 달력
-        
+
+
+
+
+
+        // 두번째 방탈출
+
+
+        // 반짇고리
+        variables["SewingBoxClick"] = 0;
+        variables["SewingBoxCorrect"] = false;
+
+
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
         variables["VillaClick"] = 0;
@@ -214,6 +226,42 @@ public class GameManager : MonoBehaviour
         variables["WreathClick"] = 0;
         // 화난 사람
         variables["AngryClick"] = 0;
+
+        // 2 - 3. 이벤트 오브젝트 관련 변수들 - 두번째 미행
+        // 빌라
+        variables["VillaClick2"] = 0;
+        // 3층 바
+        variables["BarClick2"] = 0;
+        // 빵집
+        variables["BreadClick2"] = 0;
+        // 3층 맥주 전문점
+        variables["BeerAClick2"] = 0;
+        // 이자카야
+        variables["IzakawaClick2"] = 0;
+        // 카페
+        variables["CafeClick2"] = 0;
+        // 3층 옷가게
+        variables["3FClothesClick2"] = 0;
+        // 2층 옷가게
+        variables["2FClothesClick2"] = 0;
+        // 3층 술집
+        variables["DrinkAClick2"] = 0;
+        // 칵테일 바
+        variables["CocktailBarClick2"] = 0;
+        // 식당
+        variables["RestaurantClick2"] = 0;
+        // 3층 술집
+        variables["DrinkBClick2"] = 0;
+        // 뮤직바
+        variables["MusicBarClick2"] = 0;
+        // 화장품 가게
+        variables["CosemeticClick2"] = 0;
+        // 3층 술집
+        variables["DrinkCClick2"] = 0;
+        // 2층 맥주 가게
+        variables["BeerBClick2"] = 0;
+        // 클럽-
+        variables["ClubClick2"] = 0;
 
         if (isDebug) ShowVariables();
 
