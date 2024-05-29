@@ -170,7 +170,19 @@ public class GameManager : MonoBehaviour
         variables["StorageTeddyBearClick"] = 0;
 
         // 달력
-        
+
+
+
+
+
+        // 두번째 방탈출
+
+
+        // 반짇고리
+        variables["SewingBoxClick"] = 0;
+        variables["SewingBoxCorrect"] = false;
+
+
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
         variables["VillaClick"] = 0;
