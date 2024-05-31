@@ -12,12 +12,12 @@ public class MemoManager : MonoBehaviour
     [SerializeField] private GameObject[] memoButtons;
     [SerializeField] private GameObject closeButton;
 
-    private GameObject memoButton; // ÇöÀç »ç¿ë ÁßÀÎ ¸Ş¸ğ¹öÆ°
+    private GameObject memoButton; // í˜„ì¬ ì‚¬ìš© ì¤‘ì¸ ë©”ëª¨ë²„íŠ¼
 
-    // ¸ğµç ¸Ş¸ğ
+    // ëª¨ë“  ë©”ëª¨
     public Dictionary<string, string> allMemo = new();
 
-    // ÀúÀåµÈ ¸Ş¸ğ
+    // ì €ì¥ëœ ë©”ëª¨
     private List<string> savedMemoList = new();
     public List<string> SavedMemoList
     {
@@ -25,13 +25,13 @@ public class MemoManager : MonoBehaviour
         set => savedMemoList = value;
     }
 
-    // ¸Ş¸ğ ÇÁ¸®ÆÕ
+    // ë©”ëª¨ í”„ë¦¬íŒ¹
     [SerializeField] private GameObject memoTextPrefab;
 
-    // ¸Ş¸ğ°¡ ÀúÀåµÉ ½ºÅ©·Ñ
+    // ë©”ëª¨ê°€ ì €ì¥ë  ìŠ¤í¬ë¡¤
     public Transform scrollViewContent;
 
-    // ÇöÀç ¹ÌÇà ¾ÀÀÎÁö ¹æÅ»Ãâ ¾ÀÀÎÁö
+    // í˜„ì¬ ë¯¸í–‰ ì”¬ì¸ì§€ ë°©íƒˆì¶œ ì”¬ì¸ì§€
     public bool isFollow;
 
     void Awake()
@@ -50,7 +50,7 @@ public class MemoManager : MonoBehaviour
         memoButton = memoButtons[0];
     }
 
-    // ¸Ş¸ğ Ãß°¡ÇÏ±â
+    // ë©”ëª¨ ì¶”ê°€í•˜ê¸°
     public void AddMemo(string memoID)
     {
         string scriptID = allMemo[memoID];
@@ -61,13 +61,13 @@ public class MemoManager : MonoBehaviour
         savedMemoList.Add(DialogueManager.Instance.scripts[scriptID].GetScript());
     }
 
-    // ¸Ş¸ğÀå ¿­±â
+    // ë©”ëª¨ì¥ ì—´ê¸°
     public void OpenMemoPage()
     {
-        // ¸Ş¸ğÀåÀÌ ÄÑÁ®ÀÖÀ» ¶§´Â ¸Ş¸ğÀåÀ» ´İ°í, ÄÑÁ®ÀÖÀ» ¶§´Â ²ö´Ù
+        // ë©”ëª¨ì¥ì´ ì¼œì ¸ìˆì„ ë•ŒëŠ” ë©”ëª¨ì¥ì„ ë‹«ê³ , ì¼œì ¸ìˆì„ ë•ŒëŠ” ëˆë‹¤
         if (!memoPage.activeSelf)
         {
-            // ¸Ş¸ğÀåÀ» Ä×À» ¶§´Â ¹«Á¶°Ç ¸Ş¸ğÀåÀÌ ¼±¸íÇÏ°Ô º¸ÀÌ°Ô ÇÑ´Ù
+            // ë©”ëª¨ì¥ì„ ì¼°ì„ ë•ŒëŠ” ë¬´ì¡°ê±´ ë©”ëª¨ì¥ì´ ì„ ëª…í•˜ê²Œ ë³´ì´ê²Œ í•œë‹¤
             ColorBlock colors = memoButton.GetComponent<Button>().colors;
             colors.normalColor = new Color(1, 1, 1, 1);
             memoButton.GetComponent<Button>().colors = colors;
@@ -105,7 +105,7 @@ public class MemoManager : MonoBehaviour
     }
     public void HideMemoButton(bool flag)
     {
-        // ¸Ş¸ğ ¹öÆ°À» º¸ÀÌÁö ¾Ê°Ô or º¸ÀÌ°Ô ÇÒ ¼ö ÀÖÀ½
+        // ë©”ëª¨ ë²„íŠ¼ì„ ë³´ì´ì§€ ì•Šê²Œ or ë³´ì´ê²Œ í•  ìˆ˜ ìˆìŒ
         memoButton.SetActive(!flag);
     }
     public void MemoButtonChange()
@@ -113,7 +113,7 @@ public class MemoManager : MonoBehaviour
         if (!isFollow) memoButton = memoButtons[0];
         else memoButton = memoButtons[1];
     }
-    // memos.csv ÆÄÀÏ ÆÄ½Ì
+    // memos.csv íŒŒì¼ íŒŒì‹±
     public void ParseMemos()
     {
         string[] lines = memosCSV.text.Split('\n');

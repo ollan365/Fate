@@ -58,6 +58,7 @@ public class FollowManager : MonoBehaviour
         onMove = !followAnim.IsStop; // 원래 이동 중이었는지를 저장
         if (onMove) followAnim.ChangeAnimStatus(); // 이동 중이었다면 멈춘다
     }
+
     public void EndScript(bool changeCount)
     {
         if (isTutorial) // 튜토리얼 중에는 다르게 작동
