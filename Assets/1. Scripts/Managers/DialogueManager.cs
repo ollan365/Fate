@@ -188,7 +188,7 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
-        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_EXTRA || dialogueType == DialogueType.FOLLOW_THINKING)
+        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
             FollowManager.Instance.EndScript(true);
 
         isDialogueActive = false;
@@ -198,6 +198,10 @@ public class DialogueManager : MonoBehaviour
         {
             string queuedDialogueID = dialogueQueue.Dequeue();
             StartDialogue(queuedDialogueID);
+
+            if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
+                FollowManager.Instance.ClickObject();
+
             return;
         }
 

@@ -180,7 +180,7 @@ public class FollowAnim : MonoBehaviour
         string sentence;
         int currentDialogueLineIndex = 0;
 
-        while (true)
+        while (FollowManager.Instance.canClick)
         {
             DialogueManager.Instance.dialogues[dialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
             dialogueLine = DialogueManager.Instance.dialogues[dialogueID].Lines[currentDialogueLineIndex];
@@ -198,6 +198,13 @@ public class FollowAnim : MonoBehaviour
 
             foreach (char letter in sentence.ToCharArray())
             {
+                // 다른 물체가 클릭되었을 시
+                if (!FollowManager.Instance.canClick)
+                {
+                    FollowManager.Instance.extraDialogueText[speakerIndex].text = "";
+                    break;
+                }
+
                 FollowManager.Instance.extraDialogueText[speakerIndex].text += letter;
                 SoundPlayer.Instance.UISoundPlay(Sound_Typing); // 타자 소리 한번씩만
                 yield return new WaitForSeconds(0.1f);

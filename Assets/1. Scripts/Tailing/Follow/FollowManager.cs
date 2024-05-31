@@ -16,6 +16,8 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private GameObject moveAndStopButton;
     [SerializeField] private GameObject frontCanvas;
 
+    [SerializeField] private GameObject extraNextButton;
+    [SerializeField] private GameObject extraBlockingPanel;
     public GameObject[] extraCanvas;
     public TextMeshProUGUI[] extraDialogueText;
 
@@ -38,10 +40,14 @@ public class FollowManager : MonoBehaviour
         else Destroy(gameObject);
 
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) StartCoroutine(followTutorial.StartTutorial());
+        extraNextButton.GetComponent<Button>().onClick.AddListener(()
+            => DialogueManager.Instance.OnDialoguePanelClick());
     }
 
     public void ClickObject()
     {
+        if (isTutorial || isEnd) return;
+
         // 엑스트라 캐릭터의 대사가 출력되는 중이면 끈다
         foreach(GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
 
@@ -77,28 +83,36 @@ public class FollowManager : MonoBehaviour
         blockingPanel.SetActive(false); // 화면을 가리는 판넬을 끈다
         moveAndStopButton.SetActive(true); // 이동&정지 버튼을 다시 화면에 드러낸다
 
-        if (extra != FollowExtra.None) { EndExtraDialogue(); return; }
-
         if (onMove) followAnim.ChangeAnimStatus(); // 원래 이동 중이었다면 다시 이동하도록 만든다
+
+        if (extra != FollowExtra.None) { EndExtraDialogue(); return; }
     }
     public void ClickExtra(FollowExtra extra)
     {
         this.extra = extra;
 
+        extraNextButton.SetActive(true);
+        extraBlockingPanel.SetActive(true); // 일반적인 블로킹 판넬이 아닌 다른 걸 켠다
+        blockingPanel.SetActive(false);
+
+        extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+
         DialogueManager.Instance.dialogueCanvas[DialogueType.FOLLOW_EXTRA.ToInt()] = extraCanvas[Int(extra)];
         DialogueManager.Instance.scriptText[DialogueType.FOLLOW_EXTRA.ToInt()] = extraDialogueText[Int(extra)];
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW_EXTRA;
-
-        extraCanvas[Int(extra)].GetComponentInChildren<Button>().onClick.AddListener(()
-            => DialogueManager.Instance.OnDialoguePanelClick());
 
         extraCanvas[Int(extra)].SetActive(true);
     }
     public void EndExtraDialogue()
     {
+        extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+
+        extraNextButton.SetActive(false);
+        extraBlockingPanel.SetActive(false);
+        extraCanvas[Int(extra)].SetActive(false);
+
         extra = FollowExtra.None;
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
-        extraCanvas[Int(extra)].SetActive(false);
     }
     public void ClickCat()
     {
