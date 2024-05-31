@@ -16,8 +16,8 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private GameObject moveAndStopButton;
     [SerializeField] private GameObject frontCanvas;
 
-    [SerializeField] private GameObject[] extraCanvas;
-    [SerializeField] private TextMeshProUGUI[] extraDialogueText;
+    public GameObject[] extraCanvas;
+    public TextMeshProUGUI[] extraDialogueText;
 
     public GameObject blockingPanel;
 
@@ -42,6 +42,9 @@ public class FollowManager : MonoBehaviour
 
     public void ClickObject()
     {
+        // 엑스트라 캐릭터의 대사가 출력되는 중이면 끈다
+        foreach(GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
+
         canClick = false; // 다른 오브젝트를 누를 수 없게 만든다
         frontCanvas.SetActive(false); // 플레이어를 가리는 물체들이 있는 canvas를 꺼버린다
         blockingPanel.SetActive(true); // 화면을 어둡게 만든다
@@ -63,8 +66,6 @@ public class FollowManager : MonoBehaviour
             return;
         }
 
-        if (extra != FollowExtra.None) { EndExtraDialogue(); return; }
-
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1)
         {
             if (changeCount) miniGame.ClickCount++;
@@ -75,6 +76,8 @@ public class FollowManager : MonoBehaviour
         frontCanvas.SetActive(true); // 플레이어를 가리는 물체들이 있는 canvas를 켠다
         blockingPanel.SetActive(false); // 화면을 가리는 판넬을 끈다
         moveAndStopButton.SetActive(true); // 이동&정지 버튼을 다시 화면에 드러낸다
+
+        if (extra != FollowExtra.None) { EndExtraDialogue(); return; }
 
         if (onMove) followAnim.ChangeAnimStatus(); // 원래 이동 중이었다면 다시 이동하도록 만든다
     }
@@ -89,7 +92,6 @@ public class FollowManager : MonoBehaviour
         extraCanvas[Int(extra)].GetComponentInChildren<Button>().onClick.AddListener(()
             => DialogueManager.Instance.OnDialoguePanelClick());
 
-        blockingPanel.SetActive(false);
         extraCanvas[Int(extra)].SetActive(true);
     }
     public void EndExtraDialogue()
@@ -97,7 +99,6 @@ public class FollowManager : MonoBehaviour
         extra = FollowExtra.None;
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
         extraCanvas[Int(extra)].SetActive(false);
-        blockingPanel.SetActive(true);
     }
     public void ClickCat()
     {
@@ -128,11 +129,16 @@ public class FollowManager : MonoBehaviour
         {
             case FollowExtra.Angry: return 0;
             case FollowExtra.Employee: return 0;
-            case FollowExtra.RunAway: return 1;
-            case FollowExtra.Police: return 2;
-            case FollowExtra.Someone: return 3;
-            case FollowExtra.Smoker: return 4;
-            case FollowExtra.Clubber: return 5;
+            case FollowExtra.RunAway_1: return 1;
+            case FollowExtra.RunAway_2: return 2;
+            case FollowExtra.Police: return 3;
+            case FollowExtra.Someone: return 4;
+            case FollowExtra.Smoker_1: return 5;
+            case FollowExtra.Smoker_2: return 6;
+            case FollowExtra.Clubber_1: return 7;
+            case FollowExtra.Clubber_2: return 8;
+            case FollowExtra.Clubber_3: return 9;
+            case FollowExtra.Clubber_4: return 10;
             default: return -1;
         }
     }

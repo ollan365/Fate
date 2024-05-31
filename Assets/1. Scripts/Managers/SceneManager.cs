@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static Constants;
 
 public class SceneManager : MonoBehaviour
@@ -23,11 +21,11 @@ public class SceneManager : MonoBehaviour
         }
     }
 
-    public void LoadScene(SceneType sceneType)
+    public void LoadScene(SceneType loadSceneType)
     {
-        StartCoroutine(ChangeScene(sceneType));
+        StartCoroutine(ChangeScene(loadSceneType));
     }
-    private IEnumerator ChangeScene(SceneType sceneType)
+    private IEnumerator ChangeScene(SceneType loadSceneType)
     {
         // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
         MemoManager.Instance.HideMemoButton(true);
@@ -35,7 +33,7 @@ public class SceneManager : MonoBehaviour
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         int sceneIndex = -1, bgmIndex = -1;
-        switch (sceneType)
+        switch (loadSceneType)
         {
             case SceneType.START:
                 sceneIndex = 0;
@@ -53,10 +51,12 @@ public class SceneManager : MonoBehaviour
                 break;
             case SceneType.ROOM_2:
                 sceneIndex = 3;
+                bgmIndex = BGM_ROOM;
                 sceneType = SceneType.ROOM_2;
                 break;
             case SceneType.FOLLOW_2:
                 sceneIndex = 3; // 병합 후 4로 바꾸기!
+                bgmIndex = BGM_FOLLOW;
                 sceneType = SceneType.FOLLOW_2;
                 break;
         }

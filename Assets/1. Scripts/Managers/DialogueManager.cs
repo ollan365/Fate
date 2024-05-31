@@ -38,6 +38,7 @@ public class DialogueManager : MonoBehaviour
     public bool isDialogueActive = false;
     private bool isTyping = false;
     private bool isAuto = false;
+    private bool isFast = false;
     private string fullSentence;
     
     // Dialogue Queue
@@ -151,6 +152,9 @@ public class DialogueManager : MonoBehaviour
                     case "AUTO":
                         isAuto = true;
                         break;
+                    case "FAST":
+                        isFast = true;
+                        break;
                     case "TRUE":
                         string fateName = (string)GameManager.Instance.GetVariable("FateName");
                         sentence = sentence.Replace("{PlayerName}", fateName);
@@ -253,8 +257,8 @@ public class DialogueManager : MonoBehaviour
         bool isEffect = false;
         string effectText = "";
 
-        // AUTO 인 경우 두배의 속도로 타이핑 + 끝나면 자동으로 넘어감
-        if (isAuto) typeSpeed /= 1.75f;
+        // FAST 인 경우 두배의 속도로 타이핑 + 끝나면 자동으로 넘어감
+        if (isFast) typeSpeed /= 1.75f;
 
         foreach (char letter in sentence.ToCharArray())
         {
@@ -284,9 +288,13 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
         teddyBearIcons[dialogueType.ToInt()].SetActive(true);
 
-        if (isAuto)
+        if (isFast)
         {
             typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
+            isFast = false;
+        }
+        if (isAuto)
+        {
             isAuto = false;
             yield return new WaitForSeconds(0.25f);
             OnDialoguePanelClick(); // 자동으로 넘어감
