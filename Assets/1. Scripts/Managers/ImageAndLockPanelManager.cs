@@ -144,8 +144,8 @@ public class ImageAndLockPanelManager : MonoBehaviour
         if (isTrue)
         {
             Sprite rawSprite = imageDictionary[eventObjectName];
-            float maxHeight = 1050f;
-            float maxWidth = 1650f;
+            float maxHeight = 1200f;
+            float maxWidth = 1900f;
 
             float rawHeight = rawSprite.rect.height;
             float rawWidth = rawSprite.rect.width;
