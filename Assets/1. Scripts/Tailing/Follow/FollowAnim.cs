@@ -201,8 +201,24 @@ public class FollowAnim : MonoBehaviour
                 // 다른 물체가 클릭되었을 시
                 if (!FollowManager.Instance.canClick)
                 {
-                    FollowManager.Instance.extraDialogueText[speakerIndex].text = "";
-                    break;
+                    if (FollowManager.Instance.isEnd) // 미행이 끝났으면 즉시 종료
+                    {
+                        FollowManager.Instance.extraCanvas[speakerIndex].SetActive(false);
+                        break;
+                    }
+                    else
+                    {
+                        // 기존에 출력한 대사까지 저장 후 대화창을 비운다
+                        string saveText = FollowManager.Instance.extraDialogueText[speakerIndex].text;
+                        FollowManager.Instance.extraDialogueText[speakerIndex].text = "";
+
+                        // 다른 물체의 스크립트가 끝나기를 기다린다
+                        while (!FollowManager.Instance.canClick) yield return null;
+
+                        // 다른 물체의 스크립트가 끝나면 다시 이어서 출력
+                        FollowManager.Instance.extraCanvas[speakerIndex].SetActive(true);
+                        FollowManager.Instance.extraDialogueText[speakerIndex].text = saveText;
+                    }
                 }
 
                 FollowManager.Instance.extraDialogueText[speakerIndex].text += letter;

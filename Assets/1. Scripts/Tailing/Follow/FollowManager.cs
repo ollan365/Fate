@@ -30,7 +30,7 @@ public class FollowManager : MonoBehaviour
 
     // 상태 변수
     public bool isTutorial = false; // 튜토리얼 중인지 아닌지
-    private bool isEnd = false; // 현재 미행이 끝났는지 아닌지
+    public bool isEnd = false; // 현재 미행이 끝났는지 아닌지
     public bool canClick = true; // 현재 오브젝트를 누를 수 있는지
     private bool onMove; // 원래 이동 상태였는지
 
@@ -155,6 +155,25 @@ public class FollowManager : MonoBehaviour
             case FollowExtra.Clubber_3: return 9;
             case FollowExtra.Clubber_4: return 10;
             default: return -1;
+        }
+    }
+    public FollowExtra ToEnum(string extraName)
+    {
+        switch (extraName)
+        {
+            case "Angry": return FollowExtra.Angry;
+            case "Employee": return FollowExtra.Employee;
+            case "RunAway_1": return FollowExtra.RunAway_1;
+            case "RunAway_2": return FollowExtra.RunAway_2;
+            case "Police": return FollowExtra.Police;
+            case "Someone": return FollowExtra.Someone;
+            case "Smoker_1": return FollowExtra.Smoker_1;
+            case "Smoker_2": return FollowExtra.Smoker_2;
+            case "Clubber_1": return FollowExtra.Clubber_1;
+            case "Clubber_2": return FollowExtra.Clubber_2;
+            case "Clubber_3": return FollowExtra.Clubber_3;
+            case "Clubber_4": return FollowExtra.Clubber_4;
+            default: return FollowExtra.None;
         }
     }
 }

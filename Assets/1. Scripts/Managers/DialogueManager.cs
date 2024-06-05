@@ -119,15 +119,8 @@ public class DialogueManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // 화자가 DialogueC_004인지 아닌지로 속마음 UI 또는 그냥 UI로 대화창 변경
-        if (dialogueType == DialogueType.ROOM && dialogueLine.SpeakerID == "DialogueC_004")
-            dialogueType = DialogueType.ROOM_THINKING;
-        else if (dialogueType == DialogueType.FOLLOW && dialogueLine.SpeakerID == "DialogueC_004")
-            dialogueType = DialogueType.FOLLOW_THINKING;
-        else if (dialogueType == DialogueType.ROOM_THINKING && dialogueLine.SpeakerID != "DialogueC_004")
-            dialogueType = DialogueType.ROOM;
-        else if (dialogueType == DialogueType.FOLLOW_THINKING && dialogueLine.SpeakerID != "DialogueC_004")
-            dialogueType = DialogueType.FOLLOW;
+        // 화자에 따라 대화창 변경
+        ChangeDialogueCanvas(dialogueLine.SpeakerID);
 
         // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
         foreach (GameObject canvas in dialogueCanvas) canvas.SetActive(false);
@@ -184,7 +177,22 @@ public class DialogueManager : MonoBehaviour
         }
         
     }
-
+    private void ChangeDialogueCanvas(string speaker)
+    {
+        if (dialogueType == DialogueType.FOLLOW_EXTRA)
+        {
+            FollowManager.Instance.EndExtraDialogue();
+            FollowManager.Instance.ClickExtra(FollowManager.Instance.ToEnum(speaker));
+        }
+        else if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
+            dialogueType = DialogueType.ROOM_THINKING;
+        else if (dialogueType == DialogueType.FOLLOW && speaker == "DialogueC_004")
+            dialogueType = DialogueType.FOLLOW_THINKING;
+        else if (dialogueType == DialogueType.ROOM_THINKING && speaker != "DialogueC_004")
+            dialogueType = DialogueType.ROOM;
+        else if (dialogueType == DialogueType.FOLLOW_THINKING && speaker != "DialogueC_004")
+            dialogueType = DialogueType.FOLLOW;
+    }
     public void EndDialogue()
     {
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
