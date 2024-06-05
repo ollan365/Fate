@@ -38,6 +38,7 @@ public class DialogueManager : MonoBehaviour
     public bool isDialogueActive = false;
     private bool isTyping = false;
     private bool isAuto = false;
+    private bool isFast = false;
     private string fullSentence;
     
     // Dialogue Queue
@@ -118,15 +119,8 @@ public class DialogueManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // 화자가 DialogueC_004인지 아닌지로 속마음 UI 또는 그냥 UI로 대화창 변경
-        if (dialogueType == DialogueType.ROOM && dialogueLine.SpeakerID == "DialogueC_004")
-            dialogueType = DialogueType.ROOM_THINKING;
-        else if (dialogueType == DialogueType.FOLLOW && dialogueLine.SpeakerID == "DialogueC_004")
-            dialogueType = DialogueType.FOLLOW_THINKING;
-        else if (dialogueType == DialogueType.ROOM_THINKING && dialogueLine.SpeakerID != "DialogueC_004")
-            dialogueType = DialogueType.ROOM;
-        else if (dialogueType == DialogueType.FOLLOW_THINKING && dialogueLine.SpeakerID != "DialogueC_004")
-            dialogueType = DialogueType.FOLLOW;
+        // 화자에 따라 대화창 변경
+        ChangeDialogueCanvas(dialogueLine.SpeakerID);
 
         // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
         foreach (GameObject canvas in dialogueCanvas) canvas.SetActive(false);
@@ -150,6 +144,9 @@ public class DialogueManager : MonoBehaviour
                         break;
                     case "AUTO":
                         isAuto = true;
+                        break;
+                    case "FAST":
+                        isFast = true;
                         break;
                     case "TRUE":
                         string fateName = (string)GameManager.Instance.GetVariable("FateName");
@@ -180,11 +177,26 @@ public class DialogueManager : MonoBehaviour
         }
         
     }
-
+    private void ChangeDialogueCanvas(string speaker)
+    {
+        if (dialogueType == DialogueType.FOLLOW_EXTRA)
+        {
+            FollowManager.Instance.EndExtraDialogue();
+            FollowManager.Instance.ClickExtra(FollowManager.Instance.ToEnum(speaker));
+        }
+        else if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
+            dialogueType = DialogueType.ROOM_THINKING;
+        else if (dialogueType == DialogueType.FOLLOW && speaker == "DialogueC_004")
+            dialogueType = DialogueType.FOLLOW_THINKING;
+        else if (dialogueType == DialogueType.ROOM_THINKING && speaker != "DialogueC_004")
+            dialogueType = DialogueType.ROOM;
+        else if (dialogueType == DialogueType.FOLLOW_THINKING && speaker != "DialogueC_004")
+            dialogueType = DialogueType.FOLLOW;
+    }
     public void EndDialogue()
     {
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
-        if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_EXTRA || dialogueType == DialogueType.FOLLOW_THINKING)
+        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
             FollowManager.Instance.EndScript(true);
 
         isDialogueActive = false;
@@ -194,6 +206,10 @@ public class DialogueManager : MonoBehaviour
         {
             string queuedDialogueID = dialogueQueue.Dequeue();
             StartDialogue(queuedDialogueID);
+
+            if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
+                FollowManager.Instance.ClickObject();
+
             return;
         }
 
@@ -253,8 +269,8 @@ public class DialogueManager : MonoBehaviour
         bool isEffect = false;
         string effectText = "";
 
-        // AUTO 인 경우 두배의 속도로 타이핑 + 끝나면 자동으로 넘어감
-        if (isAuto) typeSpeed /= 1.75f;
+        // FAST 인 경우 두배의 속도로 타이핑 + 끝나면 자동으로 넘어감
+        if (isFast) typeSpeed /= 1.75f;
 
         foreach (char letter in sentence.ToCharArray())
         {
@@ -284,9 +300,13 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
         teddyBearIcons[dialogueType.ToInt()].SetActive(true);
 
-        if (isAuto)
+        if (isFast)
         {
             typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
+            isFast = false;
+        }
+        if (isAuto)
+        {
             isAuto = false;
             yield return new WaitForSeconds(0.25f);
             OnDialoguePanelClick(); // 자동으로 넘어감

@@ -69,7 +69,7 @@ public static class Constants
 
     public enum FollowExtra
     {
-        None, Angry, Employee, RunAway, Police, Someone, Smoker, Clubber
+        None, Angry, Employee, RunAway_1, RunAway_2, Police, Someone, Smoker_1, Smoker_2, Clubber_1, Clubber_2, Clubber_3, Clubber_4
     }
     public static string EventID(this FollowObjectName objectName)
     {
@@ -132,6 +132,18 @@ public static class Constants
         {
             case FollowExtra.Angry: return "EventFollowAngryPerson";
 
+            case FollowExtra.Employee: return "EventFollow2Villa";
+            case FollowExtra.RunAway_1: return "EventFollow2Bar";
+            case FollowExtra.RunAway_2: return "EventFollow2Bar";
+            case FollowExtra.Police: return "EventFollow2Bread";
+            case FollowExtra.Someone: return "EventFollow2BeerA";
+            case FollowExtra.Smoker_1: return "EventFollow2Izakawa";
+            case FollowExtra.Smoker_2: return "EventFollow2Izakawa";
+            case FollowExtra.Clubber_1: return "EventFollow2Cafe";
+            case FollowExtra.Clubber_2: return "EventFollow2Cafe";
+            case FollowExtra.Clubber_3: return "EventFollow2Cafe";
+            case FollowExtra.Clubber_4: return "EventFollow2Cafe";
+
             default: return null;
         }
     }
@@ -191,6 +203,18 @@ public static class Constants
         switch (extraName)
         {
             case FollowExtra.Angry: return "AngryClick";
+
+            case FollowExtra.Employee: return "VillaClick2";
+            case FollowExtra.RunAway_1: return "BarClick2";
+            case FollowExtra.RunAway_2: return "BarClick2";
+            case FollowExtra.Police: return "BreadClick2";
+            case FollowExtra.Someone: return "BeerAClick2";
+            case FollowExtra.Smoker_1: return "IzakawaClick2";
+            case FollowExtra.Smoker_2: return "IzakawaClick2";
+            case FollowExtra.Clubber_1: return "CafeClick2";
+            case FollowExtra.Clubber_2: return "CafeClick2";
+            case FollowExtra.Clubber_3: return "CafeClick2";
+            case FollowExtra.Clubber_4: return "CafeClick2";
             default: return null;
         }
     }
