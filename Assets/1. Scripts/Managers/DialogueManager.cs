@@ -126,7 +126,9 @@ public class DialogueManager : MonoBehaviour
         foreach (GameObject canvas in dialogueCanvas) canvas.SetActive(false);
         dialogueCanvas[dialogueType.ToInt()].SetActive(true);
 
-        speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
+        // 미행의 행인은 별도의 SpeakerID를 가짐
+        if(dialogueType != DialogueType.FOLLOW_EXTRA)
+            speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
 
         // 타자 효과 적용
         isTyping = true;
@@ -179,19 +181,31 @@ public class DialogueManager : MonoBehaviour
     }
     private void ChangeDialogueCanvas(string speaker)
     {
-        if (dialogueType == DialogueType.FOLLOW_EXTRA)
-        {
-            FollowManager.Instance.EndExtraDialogue();
-            FollowManager.Instance.ClickExtra(FollowManager.Instance.ToEnum(speaker));
-        }
-        else if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
+        // 방 대화창
+        if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
             dialogueType = DialogueType.ROOM_THINKING;
-        else if (dialogueType == DialogueType.FOLLOW && speaker == "DialogueC_004")
-            dialogueType = DialogueType.FOLLOW_THINKING;
         else if (dialogueType == DialogueType.ROOM_THINKING && speaker != "DialogueC_004")
             dialogueType = DialogueType.ROOM;
-        else if (dialogueType == DialogueType.FOLLOW_THINKING && speaker != "DialogueC_004")
-            dialogueType = DialogueType.FOLLOW;
+
+        // 미행 대화창
+        else if(dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING || dialogueType == DialogueType.FOLLOW_EXTRA)
+        {
+            if (speaker == "DialogueC_004")
+            {
+                FollowManager.Instance.EndExtraDialogue(false);
+                dialogueType = DialogueType.FOLLOW_THINKING;
+            }
+            else if (speaker == "DialogueC_002" || speaker == "DialogueC_003")
+            {
+                FollowManager.Instance.EndExtraDialogue(false);
+                dialogueType = DialogueType.FOLLOW;
+            }
+            else // 행인의 대사인 경우
+            {
+                FollowManager.Instance.EndExtraDialogue(false);
+                FollowManager.Instance.OpenExtraDialogue(FollowManager.Instance.ToEnum(speaker));
+            }
+        }
     }
     public void EndDialogue()
     {

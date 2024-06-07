@@ -260,8 +260,25 @@ public class GameManager : MonoBehaviour
         variables["DrinkCClick2"] = 0;
         // 2층 맥주 가게
         variables["BeerBClick2"] = 0;
-        // 클럽-
+        // 클럽
         variables["ClubClick2"] = 0;
+        // 신호등
+        variables["LightClick2"] = 0;
+        // 호객 행위 하는 사람
+        variables["SolicitationClick2"] = 0;
+        // 편의점
+        variables["ConClick2"] = 0;
+        // 가출 청소년
+        variables["TeenageClick2"] = 0;
+        // 1층 옷가게
+        variables["1FClothesClick2"] = 0;
+        // 경찰
+        variables["PoliceClick2"] = 0;
+        // 담패 피는 사람
+        variables["CigaretteClick2"] = 0;
+        // 클럽 가드
+        variables["GuardClick2"] = 0;
+
 
         if (isDebug) ShowVariables();
 

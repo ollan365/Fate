@@ -803,6 +803,70 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("Follow2_015");
                 break;
 
+            case "ResultLightScript2": // 미행2 신호등 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_016");
+                break;
+
+            case "ResultLightMemo2": // 미행2 신호등 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultSolicitationScript2": // 미행2 호객행위 스크립트 출력
+                DialogueManager.Instance.StartDialogue("Follow2_018");
+                break;
+
+            case "ResultSolicitationMemo2": // 미행2 호객행위 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultConScript2": // 미행2 편의점 스크립트 출력
+                DialogueManager.Instance.StartDialogue("Follow2_019");
+                break;
+
+            case "ResultConMemo2": // 미행2 편의점 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultTeenageScript2": // 미행2 가출 청소년 스크립트 출력
+                DialogueManager.Instance.StartDialogue("Follow2_021");
+                break;
+
+            case "ResultTeenageMemo2": // 미행2 가출 청소년 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "Result1FClothesScript2": // 미행2 가출 1층 옷가게 스크립트 출력
+                DialogueManager.Instance.StartDialogue("Follow2_022");
+                break;
+
+            case "Result1FClothesMemo2": // 미행2 가출 1층 옷가게 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultPoliceScript2": // 미행2 경찰 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_027");
+                break;
+
+            case "ResultPoliceMemo2": // 미행2 경찰 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultCigaretteScript2": // 미행2 담배피는 사람 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_028");
+                break;
+
+            case "ResultCigaretteMemo2": // 미행2 담배피는 사람 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultGuardScript2": // 미행2 클럽가드 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_029");
+                break;
+
+            case "ResultGuardMemo2": // 미행2 클럽가드 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
             default:
                 Debug.Log($"Result ID: {resultID} not found!");
                 break;
