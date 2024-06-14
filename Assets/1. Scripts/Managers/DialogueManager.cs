@@ -20,6 +20,7 @@ public class DialogueManager : MonoBehaviour
     public Image characterImage;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
+    public GameObject[] skipText;
     [Header("teddyBearIcons")]public GameObject[] teddyBearIcons;
     [Header("Blocking Panels")] public Image[] blockingPanels;
     
@@ -79,7 +80,10 @@ public class DialogueManager : MonoBehaviour
         }
 
         isDialogueActive = true;
-        
+
+        if (dialogues[dialogueID].Lines.Count > 1) // 대사가 2개 이상이라면 skip 버튼 활성화
+            foreach (GameObject skip in skipText) skip.SetActive(true);
+
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
@@ -146,6 +150,7 @@ public class DialogueManager : MonoBehaviour
                         break;
                     case "AUTO":
                         isAuto = true;
+                        foreach (GameObject skip in skipText) skip.SetActive(false);
                         break;
                     case "FAST":
                         isFast = true;
@@ -239,6 +244,23 @@ public class DialogueManager : MonoBehaviour
         
     }
     
+    public void SkipButtonClick()
+    {
+        StopAllCoroutines();
+
+        dialogues[currentDialogueID].SetCurrentLineIndex(dialogues[currentDialogueID].Lines.Count - 2);
+        StartCoroutine(SkipDialogue());
+    }
+    private IEnumerator SkipDialogue()
+    {
+        ProceedToNext();
+
+        while (!isTyping) yield return null;
+
+        CompleteSentence();
+        OnDialoguePanelClick();
+    }
+
     // ---------------------------------------------- Script methods ----------------------------------------------
     private void ProceedToNext()
     {
@@ -263,6 +285,10 @@ public class DialogueManager : MonoBehaviour
             {
                 EndDialogue();  // 더 이상 DialogueLine이 존재하지 않으면 대화 종료
                 return;
+            }
+            else if(currentDialogueLineIndex == dialogues[currentDialogueID].Lines.Count - 1)
+            {
+                foreach (GameObject skip in skipText) skip.SetActive(false); //  다이얼로그의 마지막 대사는 스킵 불가능
             }
             dialogues[currentDialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
             DialogueLine nextDialogueLine = dialogues[currentDialogueID].Lines[currentDialogueLineIndex]; 
@@ -324,6 +350,8 @@ public class DialogueManager : MonoBehaviour
             isAuto = false;
             yield return new WaitForSeconds(0.25f);
             OnDialoguePanelClick(); // 자동으로 넘어감
+
+            foreach (GameObject skip in skipText) skip.SetActive(true);
         }
     }
     

@@ -209,22 +209,14 @@ public class FollowAnim : MonoBehaviour
             yield return new WaitForSeconds(0.25f);
 
             // 대사가 끝난 후
-            string next = DialogueManager.Instance.dialogues[dialogueID].Lines[currentDialogueLineIndex].Next;
             FollowManager.Instance.extraDialogueText[speakerIndex].text = "";
             FollowManager.Instance.extraCanvas[speakerIndex].SetActive(false);
 
-            if (DialogueManager.Instance.dialogues.ContainsKey(next))  // Dialogue인 경우 -> 반복문 종료
-            {
-                ExtraAutoDialogue(next);
-                break;
-            }
-            else if (string.IsNullOrWhiteSpace(next))  // 빈칸인 경우 다음 줄(대사)로 이동
-            {
-                currentDialogueLineIndex++;
+            currentDialogueLineIndex++;
 
-                // 더 이상 DialogueLine이 존재하지 않으면 반복문 종료
-                if (currentDialogueLineIndex >= DialogueManager.Instance.dialogues[dialogueID].Lines.Count) break;
-            }
+            // 더 이상 DialogueLine이 존재하지 않으면 반복문 종료
+            if (currentDialogueLineIndex >= DialogueManager.Instance.dialogues[dialogueID].Lines.Count) break;
+            
         }
     }
     
