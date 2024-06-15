@@ -108,6 +108,9 @@ public class DialogueManager : MonoBehaviour
 
         isDialogueActive = true;
 
+        if (dialogues[dialogueID].Lines.Count > 1) // 대사가 2개 이상이라면 skip 버튼 활성화
+            foreach (GameObject skip in skipText) skip.SetActive(true);
+
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
@@ -266,7 +269,9 @@ public class DialogueManager : MonoBehaviour
     {
         int currentDialogueLineIndex = dialogues[currentDialogueID].CurrentLineIndex;
         string next = dialogues[currentDialogueID].Lines[currentDialogueLineIndex].Next;
-        
+
+        Debug.Log(next);
+
         if (EventManager.Instance.events.ContainsKey(next))  // Event인 경우
         {
             EndDialogue();

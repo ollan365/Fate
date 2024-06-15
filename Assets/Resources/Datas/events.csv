@@ -1,10 +1,19 @@
 Event ID,Event Name,Event Description,Logic,Conditions,Results,비고
 Event_girl,,우연의 성별을 여성으로 설정,,,Result_girl,임시 이름
 Event_boy,,우연의 성별을 남성으로 설정,,,Result_boy,임시 이름
+EventFirstPrologue,1회차 한정 스크립트,1회차 한정 스크립트 출력,,ConditionEnding_0,ResultPrologueLimit,
+EventFirstPrologue,1회차 한정 스크립트,1회차 한정 스크립트 스킵,,ConditionEnding_1,ResultCommonPrologueA,
+EventFirstQuestions,1회차 한정 질문,1회차 한정 이름 질문,,ConditionEnding_0,ResultPrologueQuestions,
+EventFirstQuestions,1회차 한정 질문,1회차 엔딩 이후 질문 스킵,,ConditionEnding_1,ResultCommonPrologueB,
 ,,,,,,
-Event_001,PrologueStart,눈을 뜸.,,,ResultCloseEyes,눈 깜빡이는 연출
+,,,,,,
+Event_001,PrologueStart,눈을 뜸.,,,ResultCloseEyes/ResultCommonPrologueA,눈 깜빡이는 연출
 Event_002,PrologueFinsh,잠들었다가 다시 눈을 뜸,,,ResultCloseEyes,눈 깜빡이는 연출
 Event_003,Explain,방 탈출에 대한 설명을 창으로 띄움.,,,ResultTimePass,
+,,,,,,
+Event_Name,,이름 설정 창 오픈,,,ResultName,나현 추가 (6/15)
+Event_Birth,,생일 설정 창 오픈,,,ResultBirth,나현 추가 (6/15)
+Event_PrologueEnd,,프롤로그 끝 (씬 이동),,,ResultPrologueEnd,나현 추가 (6/15)
 ,,,,,,
 Event_Inquiry,조사 선택지 버튼,,,ConditionInquiryOk,ResultInquiry,
 Event_InquiryYes,조사 선택지 예,,,,ResultInquiryYes,

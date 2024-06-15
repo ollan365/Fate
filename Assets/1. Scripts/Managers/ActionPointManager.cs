@@ -5,24 +5,24 @@ using UnityEngine;
 
 public class ActionPointManager : MonoBehaviour
 {
-    // �ൿ�¿� ���� ���ϴ� ��¥ �ؽ�Ʈ
+    // 행동력에 따라 변하는 날짜 텍스트
     [SerializeField] private TextMeshProUGUI NowDateText;
 
-    // ��¥ 10.02, 03, 04, 05, 06 
+    // 날짜 10.02, 03, 04, 05, 06 
 
     private void Start()
     {
-        // �̺�Ʈ ����
+        // 이벤트 구독
         GameManager.OnActionPointChanged += UpdateNowDate;
     }
 
     private void OnDestroy()
     {
-        // �̺�Ʈ ���� ����
+        // 이벤트 구독 해제
         GameManager.OnActionPointChanged -= UpdateNowDate;
     }
 
-    // �̺�Ʈ �ڵ鷯
+    // 이벤트 핸들러
     private void UpdateNowDate(int NowActionPoint)
     {
         if (NowActionPoint % 5 == 0)
@@ -31,5 +31,17 @@ public class ActionPointManager : MonoBehaviour
         }
         else
             return;
+    }
+
+    private void Ending(int NowActionPoint)
+    {
+        // 행동력을 모두 소모했을 시, 엔딩 시작
+        if(NowActionPoint == 0)
+        {
+            switch (SceneManager.Instance.CurrentScene) // 현재 씬에 따라 엔딩 호출
+            {
+                case Constants.SceneType.ROOM_1: DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01"); break;
+            }
+        }
     }
 }

@@ -66,6 +66,9 @@ public class GameManager : MonoBehaviour
     {
         // ------------------------- 변수 초기화 -------------------------
         // 1. 시스템 관련 변수들
+
+        variables["EndinngCollect"] = 0; // 본 엔딩의 개수
+
         variables["Language"] = 1;  // 시스템 언어
         
         variables["FateName"] = "필연";  // 필연 이름

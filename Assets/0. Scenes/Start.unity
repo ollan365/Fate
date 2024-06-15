@@ -3724,7 +3724,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &332283937
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8265,7 +8265,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &741761271
@@ -10179,17 +10179,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 843877249}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1266384659}
+        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
+        m_MethodName: NameSetting
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1163661015
 MonoBehaviour:
@@ -11560,7 +11560,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1249040063
@@ -11828,7 +11828,6 @@ MonoBehaviour:
   newStartPanel: {fileID: 641098082}
   noGameDataPanel: {fileID: 1276375400}
   start: {fileID: 187033254}
-  setting: {fileID: 1645823358}
   second: {fileID: 1974249464}
   soundSliders:
   - {fileID: 1714780388}
@@ -11836,6 +11835,8 @@ MonoBehaviour:
   soundValueTexts:
   - {fileID: 533414031}
   - {fileID: 526643324}
+  namePanel: {fileID: 332283936}
+  birthPanel: {fileID: 2133328744}
   nameInput: {fileID: 534261750}
   nameCheckQuestion: {fileID: 751582270}
   monthDropdown: {fileID: 65231508}
@@ -11843,7 +11844,7 @@ MonoBehaviour:
   blockingPanel: {fileID: 1422168784}
   background: {fileID: 2014379222}
   titleWithOutLogo: {fileID: 21300000, guid: 8ec1f7871589f844088d2fb07a13a6bb, type: 3}
-  room1Side1BackgroundSprite: {fileID: 21300000, guid: 8ec1f7871589f844088d2fb07a13a6bb, type: 3}
+  room1Side1BackgroundSprite: {fileID: 21300000, guid: f615a5a79bd794c58a59644ed71ec49f, type: 3}
 --- !u!1 &1276375400
 GameObject:
   m_ObjectHideFlags: 0
@@ -12706,7 +12707,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1332961498
@@ -15973,7 +15974,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1641452835
@@ -15999,7 +16000,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1645823359
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25083,7 +25084,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1266384659}
         m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
-        m_MethodName: SettingsComplete
+        m_MethodName: BirthSetting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -102,14 +102,44 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("Prologue_007");
                 break;
             
-            case "ResultCloseEyes": // 눈 뜨는 효과
-                executableObjects["StartLogic"].ExecuteAction();
+            case "ResultCloseEyes": // 눈 깜빡이는 효과
+                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
                 break;
-            
+
+            case "ResultPrologueLimit":
+                StartLogic.Instance.DarkBackground(true);
+                StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_000", 3));
+                break;
+
+            case "ResultCommonPrologueA":
+                StartLogic.Instance.DarkBackground(false);
+                StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_002", 3));
+                break;
+
+            case "ResultName": // 이름 입력창
+                Debug.Log("open");
+                StartLogic.Instance.OpenNamePanel();
+                break;
+
+            case "ResultBirth": // 생일 입력창
+                StartLogic.Instance.OpenBirthPanel();
+                break;
+
+            case "ResultPrologueQuestions":
+                DialogueManager.Instance.StartDialogue("Prologue_Name");
+                break;
+
+            case "ResultCommonPrologueB":
+                DialogueManager.Instance.StartDialogue("Prologue_008_C");
+                break;
+
             case "Result_002": // 설명창 띄우기 - ### 추후 구현 필요 ###
+                break;
+
+            case "ResultPrologueEnd":
                 SceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
-            
+
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
                 GameManager.Instance.DecrementVariable("ActionPoint");
                 SaveManager.Instance.SaveGameData();
