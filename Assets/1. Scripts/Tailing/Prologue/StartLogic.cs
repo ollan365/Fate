@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 
-public class StartLogic : MonoBehaviour, IResultExecutable
+public class StartLogic : MonoBehaviour
 {
+    public static StartLogic Instance { get; private set; }
+
     [Header("Start Page")]
     [SerializeField] private GameObject newStartPanel; // 처음부터를 눌렀을 때, 저장된 데이터가 있으면 켜지는 판넬
     [SerializeField] private GameObject noGameDataPanel; // 이어서를 눌렀을 때, 저장된 데이터가 없으면 켜지는 판넬
     [SerializeField] private GameObject start;
-    [SerializeField] private GameObject setting;
     [SerializeField] private GameObject second;
     [SerializeField] private Slider[] soundSliders;
     [SerializeField] private TextMeshProUGUI[] soundValueTexts;
@@ -18,27 +19,32 @@ public class StartLogic : MonoBehaviour, IResultExecutable
     public int Language { set => language = value; }
 
     [Header("Name, Gender, Birth Page")]
+    [SerializeField] private GameObject namePanel;
+    [SerializeField] private GameObject birthPanel;
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TextMeshProUGUI nameCheckQuestion;
     [SerializeField] private TMP_Dropdown monthDropdown, dayDropdown;
     private string fateName;
-    private int fateGender;
-    public int FateGender { set => fateGender = value; }
 
     [Header("Prologue")]
     [SerializeField] private GameObject blockingPanel;
     [SerializeField] private GameObject background;
     [SerializeField] private Sprite titleWithOutLogo, room1Side1BackgroundSprite;
-    
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable("StartLogic", this);
         StartCoroutine(RotateSecond());
-    }
-    public void ExecuteAction()
-    {
-        blockingPanel.SetActive(false);
-        SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
     }
     private IEnumerator RotateSecond()
     {
@@ -67,16 +73,14 @@ public class StartLogic : MonoBehaviour, IResultExecutable
         if (SaveManager.Instance.CheckGameData())
         {
             newStartPanel.SetActive(true);
+            Image backgroundImage = background.GetComponent<Image>();
+            backgroundImage.sprite = titleWithOutLogo;
         }
         else // 저장된 게임 데이터가 없는 경우
         {
             start.SetActive(false);
-            setting.SetActive(true);
+            StartCoroutine(StartPrologue());
         }
-
-        Image backgroundImage = background.GetComponent<Image>();
-        backgroundImage.sprite = titleWithOutLogo;
-        backgroundImage.color = new Color(255, 255, 255, 0.7f);
     }
     public void LoadGame()
     {
@@ -96,12 +100,54 @@ public class StartLogic : MonoBehaviour, IResultExecutable
         if (sceneNum == 4) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_2);
     }
 
+    // ========== 프롤로그 시작 ========== //
+    private IEnumerator StartPrologue()
+    {
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0, 0));
+        EventManager.Instance.CallEvent("EventFirstPrologue");
+        yield return new WaitForSeconds(1);
+
+        background.GetComponent<Image>().sprite = room1Side1BackgroundSprite; // Background 이미지 변경
+
+        blockingPanel.SetActive(true);
+    }
+
+    // ===== 배경 변경 ===== //
+    public void DarkBackground(bool open)
+    {
+        if (open) blockingPanel.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+        else StartCoroutine(DarkBackground());
+    }
+    private IEnumerator DarkBackground()
+    {
+        yield return new WaitForSeconds(1);
+        blockingPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
+    }
+
+    // ===== 이름 설정 ===== //
+    public void OpenNamePanel()
+    {
+        blockingPanel.SetActive(false);
+        namePanel.SetActive(true);
+    }
     public void SetName()
     {
         fateName = nameInput.text == "" ? "필연" : nameInput.text;
         nameCheckQuestion.text = $"\"{fateName}\"으로 확정하시겠습니까?";
     }
+    public void NameSetting()
+    {
+        DialogueManager.Instance.StartDialogue("Prologue_Birth");
+        blockingPanel.SetActive(true);
+    }
 
+    // ===== 생일 설정 ===== //
+    public void OpenBirthPanel()
+    {
+        blockingPanel.SetActive(false);
+        birthPanel.SetActive(true);
+        ChangeDayOption();
+    }
     public void ChangeDayOption()
     {
         List<TMP_Dropdown.OptionData> optionList = new();
@@ -126,34 +172,23 @@ public class StartLogic : MonoBehaviour, IResultExecutable
         dayDropdown.ClearOptions();
         dayDropdown.AddOptions(optionList);
     }
-    
-    // Background 이미지 변경 및 Fade Effect Image 활성화 메서드
+
+    public void BirthSetting()
+    {
+        DialogueManager.Instance.StartDialogue("Prologue_008_B");
+        blockingPanel.SetActive(true);
+        SettingsComplete();
+    }
+
+    // 필연 설정 완료
     public void SettingsComplete()
     {
-        SetVariable();
-        StartCoroutine(Prologue());
-    }
-    private void SetVariable()
-    {
-        if (language == 2 && fateGender == 1) language++;
-
         GameManager.Instance.SetVariable("Language", language);
         GameManager.Instance.SetVariable("FateName", fateName);
-        GameManager.Instance.SetVariable("FateGender", fateGender);  // 필연 성별 설정
-        
+        GameManager.Instance.SetVariable("FateGender", 0);  // 필연 성별 설정 (더 이상 선택 기능이 없어졌으므로 0으로 고정
+
         string birthday = ((monthDropdown.value + 1) * 100 + (dayDropdown.value + 1)).ToString();
         if (birthday.Length == 3) birthday = "0" + birthday;
         GameManager.Instance.SetVariable("FateBirthday", birthday);
-    }
-    private IEnumerator Prologue()
-    {
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 1, 0));
-        yield return new WaitForSeconds(1);
-        background.GetComponent<Image>().color = Color.white;
-        background.GetComponent<Image>().sprite = room1Side1BackgroundSprite; // Background 이미지 변경
-        yield return new WaitForSeconds(2);
-
-        blockingPanel.SetActive(true);
-        DialogueManager.Instance.StartDialogue("Prologue_002");
     }
 }

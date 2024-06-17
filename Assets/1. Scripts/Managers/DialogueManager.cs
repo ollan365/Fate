@@ -20,6 +20,7 @@ public class DialogueManager : MonoBehaviour
     public Image characterImage;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
+    public GameObject[] skipText;
     [Header("teddyBearIcons")]public GameObject[] teddyBearIcons;
     [Header("Blocking Panels")] public Image[] blockingPanels;
     
@@ -79,7 +80,10 @@ public class DialogueManager : MonoBehaviour
         }
 
         isDialogueActive = true;
-        
+
+        if (dialogues[dialogueID].Lines.Count > 1) // 대사가 2개 이상이라면 skip 버튼 활성화
+            foreach (GameObject skip in skipText) skip.SetActive(true);
+
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
@@ -104,6 +108,9 @@ public class DialogueManager : MonoBehaviour
 
         isDialogueActive = true;
 
+        if (dialogues[dialogueID].Lines.Count > 1) // 대사가 2개 이상이라면 skip 버튼 활성화
+            foreach (GameObject skip in skipText) skip.SetActive(true);
+
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
@@ -126,7 +133,9 @@ public class DialogueManager : MonoBehaviour
         foreach (GameObject canvas in dialogueCanvas) canvas.SetActive(false);
         dialogueCanvas[dialogueType.ToInt()].SetActive(true);
 
-        speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
+        // 미행의 행인은 별도의 SpeakerID를 가짐
+        if(dialogueType != DialogueType.FOLLOW_EXTRA)
+            speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
 
         // 타자 효과 적용
         isTyping = true;
@@ -144,6 +153,7 @@ public class DialogueManager : MonoBehaviour
                         break;
                     case "AUTO":
                         isAuto = true;
+                        foreach (GameObject skip in skipText) skip.SetActive(false);
                         break;
                     case "FAST":
                         isFast = true;
@@ -179,19 +189,31 @@ public class DialogueManager : MonoBehaviour
     }
     private void ChangeDialogueCanvas(string speaker)
     {
-        if (dialogueType == DialogueType.FOLLOW_EXTRA)
-        {
-            FollowManager.Instance.EndExtraDialogue();
-            FollowManager.Instance.ClickExtra(FollowManager.Instance.ToEnum(speaker));
-        }
-        else if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
+        // 방 대화창
+        if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
             dialogueType = DialogueType.ROOM_THINKING;
-        else if (dialogueType == DialogueType.FOLLOW && speaker == "DialogueC_004")
-            dialogueType = DialogueType.FOLLOW_THINKING;
         else if (dialogueType == DialogueType.ROOM_THINKING && speaker != "DialogueC_004")
             dialogueType = DialogueType.ROOM;
-        else if (dialogueType == DialogueType.FOLLOW_THINKING && speaker != "DialogueC_004")
-            dialogueType = DialogueType.FOLLOW;
+
+        // 미행 대화창
+        else if(dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING || dialogueType == DialogueType.FOLLOW_EXTRA)
+        {
+            if (speaker == "DialogueC_004")
+            {
+                FollowManager.Instance.EndExtraDialogue(false);
+                dialogueType = DialogueType.FOLLOW_THINKING;
+            }
+            else if (speaker == "DialogueC_002" || speaker == "DialogueC_003")
+            {
+                FollowManager.Instance.EndExtraDialogue(false);
+                dialogueType = DialogueType.FOLLOW;
+            }
+            else // 행인의 대사인 경우
+            {
+                FollowManager.Instance.EndExtraDialogue(false);
+                FollowManager.Instance.OpenExtraDialogue(FollowManager.Instance.ToEnum(speaker));
+            }
+        }
     }
     public void EndDialogue()
     {
@@ -225,12 +247,29 @@ public class DialogueManager : MonoBehaviour
         
     }
     
+    public void SkipButtonClick()
+    {
+        StopAllCoroutines();
+
+        dialogues[currentDialogueID].SetCurrentLineIndex(dialogues[currentDialogueID].Lines.Count - 2);
+        StartCoroutine(SkipDialogue());
+    }
+    private IEnumerator SkipDialogue()
+    {
+        ProceedToNext();
+
+        while (!isTyping) yield return null;
+
+        CompleteSentence();
+        OnDialoguePanelClick();
+    }
+
     // ---------------------------------------------- Script methods ----------------------------------------------
     private void ProceedToNext()
     {
         int currentDialogueLineIndex = dialogues[currentDialogueID].CurrentLineIndex;
         string next = dialogues[currentDialogueID].Lines[currentDialogueLineIndex].Next;
-        
+
         if (EventManager.Instance.events.ContainsKey(next))  // Event인 경우
         {
             EndDialogue();
@@ -249,6 +288,10 @@ public class DialogueManager : MonoBehaviour
             {
                 EndDialogue();  // 더 이상 DialogueLine이 존재하지 않으면 대화 종료
                 return;
+            }
+            else if(currentDialogueLineIndex == dialogues[currentDialogueID].Lines.Count - 1)
+            {
+                foreach (GameObject skip in skipText) skip.SetActive(false); //  다이얼로그의 마지막 대사는 스킵 불가능
             }
             dialogues[currentDialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
             DialogueLine nextDialogueLine = dialogues[currentDialogueID].Lines[currentDialogueLineIndex]; 
@@ -310,6 +353,8 @@ public class DialogueManager : MonoBehaviour
             isAuto = false;
             yield return new WaitForSeconds(0.25f);
             OnDialoguePanelClick(); // 자동으로 넘어감
+
+            foreach (GameObject skip in skipText) skip.SetActive(true);
         }
     }
     

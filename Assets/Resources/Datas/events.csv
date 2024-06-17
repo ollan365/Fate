@@ -1,10 +1,19 @@
 Event ID,Event Name,Event Description,Logic,Conditions,Results,비고
 Event_girl,,우연의 성별을 여성으로 설정,,,Result_girl,임시 이름
 Event_boy,,우연의 성별을 남성으로 설정,,,Result_boy,임시 이름
+EventFirstPrologue,1회차 한정 스크립트,1회차 한정 스크립트 출력,,ConditionEnding_0,ResultPrologueLimit,
+EventFirstPrologue,1회차 한정 스크립트,1회차 한정 스크립트 스킵,,ConditionEnding_1,ResultCommonPrologueA,
+EventFirstQuestions,1회차 한정 질문,1회차 한정 이름 질문,,ConditionEnding_0,ResultPrologueQuestions,
+EventFirstQuestions,1회차 한정 질문,1회차 엔딩 이후 질문 스킵,,ConditionEnding_1,ResultCommonPrologueB,
 ,,,,,,
-Event_001,PrologueStart,눈을 뜸.,,,ResultCloseEyes,눈 깜빡이는 연출
+,,,,,,
+Event_001,PrologueStart,눈을 뜸.,,,ResultCloseEyes/ResultCommonPrologueA,눈 깜빡이는 연출
 Event_002,PrologueFinsh,잠들었다가 다시 눈을 뜸,,,ResultCloseEyes,눈 깜빡이는 연출
 Event_003,Explain,방 탈출에 대한 설명을 창으로 띄움.,,,ResultTimePass,
+,,,,,,
+Event_Name,,이름 설정 창 오픈,,,ResultName,나현 추가 (6/15)
+Event_Birth,,생일 설정 창 오픈,,,ResultBirth,나현 추가 (6/15)
+Event_PrologueEnd,,프롤로그 끝 (씬 이동),,,ResultPrologueEnd,나현 추가 (6/15)
 ,,,,,,
 Event_Inquiry,조사 선택지 버튼,,,ConditionInquiryOk,ResultInquiry,
 Event_InquiryYes,조사 선택지 예,,,,ResultInquiryYes,
@@ -210,3 +219,19 @@ EventFollow2Cosemetic,화장품 가게,화장품 가게를 클릭,,ConditionCose
 EventFollow2DrinkC,술집 ,클럽 건물 3층 술집 클릭,,ConditionDrinkCClick2,ResultDrinkScript2,
 EventFollow2BeerB,생맥 전문점,생맥 전문점 클릭,,ConditionBeerBClick2,ResultBeerBScript2,
 EventFollow2Club,클럽,클럽,,ConditionClubClick2,ResultClubScript2,
+EventFollow2TrafficLight,신호등 ,신호등을 처음 클릭,,ConditionLightFirstClick2,ResultLightScript2,
+EventFollow2TrafficLight,신호등,신호등을 여러번,,ConditionLightManyClick2,ResultLightScript2/ResultLightMemo2,
+EventFollow2Solicitation,호객 행위,호객 하는 사람을 처음 클릭,,ConditionSolicitationFirstClick2,ResultSolicitationScript2/ResultSolicitationMemo2,
+EventFollow2Solicitation,호객 행위,호객 하는 사람을 여러번 클릭,,ConditionSolicitationManyClick2,ResultSolicitationScript2,
+EventFollow2Con,편의점,편의점을 처음 클릭,,ConditionConFirstClick2,ResultConScript2/ResultConMemo2,
+EventFollow2Con,편의점,편의점을 여러번 클릭,,ConditionConManyClick2,ResultConScript2,
+EventFollow2Teenage,가출 청소년,가출청소년을 처음 클릭,,ConditionTeenageFirstClick2,ResultTeenageScript2/ResultTeenageMemo2,
+EventFollow2Teenage,가출 청소년,가출 청소년을 여러번 클릭,,ConditionTeenageManyClick2,ResultTeenageScript2,
+EventFollow21FClothingStore,1층 옷가게,1층 옷가게를 처음 클릭,,Condition1FClothesFirstClick2,Result1FClothesScript2/Result1FClothesMemo2,
+EventFollow21FClothingStore,1층 옷가게,1층 옷가게를 여러번 클릭,,Condition1FClothesManyClick2,Result1FClothesScript2,
+EventFollow2Police,경찰,경찰을 처음 클릭,,ConditionPoliceFirstClick2,ResultPoliceScript2/ResultPoliceMemo2,
+EventFollow2Police,경찰,경찰을 여러번 클릭,,ConditionPoliceManyClick2,ResultPoliceScript2,
+EventFollow2Cigarette,담배피는 사람,담배피는 사람 처음 클릭,,ConditionCigaretteFirstClick2,ResultCigaretteScript2/ResultCigaretteMemo2,
+EventFollow2Cigarette,담배피는 사람,담배피는 사람 여러번 클릭,,ConditionCigaretteMemoClick2,ResultCigaretteScript2,
+EventFollow2Guard,클럽 가드,클럽 가드를 처음 클릭,,ConditionGuardFirstClick2,ResultGuardScript2/ResultGuardMemo2,
+EventFollow2Guard,클럽 가드,클럽 가드를 여러번 클릭,,ConditionGuardManyClick2,ResultGuardScript2,
