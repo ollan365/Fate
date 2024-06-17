@@ -146,6 +146,7 @@ public class StartLogic : MonoBehaviour
     {
         blockingPanel.SetActive(false);
         birthPanel.SetActive(true);
+        ChangeDayOption();
     }
     public void ChangeDayOption()
     {

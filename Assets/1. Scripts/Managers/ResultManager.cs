@@ -117,7 +117,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultName": // 이름 입력창
-                Debug.Log("open");
                 StartLogic.Instance.OpenNamePanel();
                 break;
 

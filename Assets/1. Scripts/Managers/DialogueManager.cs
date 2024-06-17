@@ -270,8 +270,6 @@ public class DialogueManager : MonoBehaviour
         int currentDialogueLineIndex = dialogues[currentDialogueID].CurrentLineIndex;
         string next = dialogues[currentDialogueID].Lines[currentDialogueLineIndex].Next;
 
-        Debug.Log(next);
-
         if (EventManager.Instance.events.ContainsKey(next))  // Event인 경우
         {
             EndDialogue();

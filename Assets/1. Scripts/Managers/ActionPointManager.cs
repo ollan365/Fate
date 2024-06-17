@@ -14,12 +14,14 @@ public class ActionPointManager : MonoBehaviour
     {
         // 이벤트 구독
         GameManager.OnActionPointChanged += UpdateNowDate;
+        GameManager.OnActionPointChanged += Ending;
     }
 
     private void OnDestroy()
     {
         // 이벤트 구독 해제
         GameManager.OnActionPointChanged -= UpdateNowDate;
+        GameManager.OnActionPointChanged -= Ending;
     }
 
     // 이벤트 핸들러
@@ -40,7 +42,10 @@ public class ActionPointManager : MonoBehaviour
         {
             switch (SceneManager.Instance.CurrentScene) // 현재 씬에 따라 엔딩 호출
             {
-                case Constants.SceneType.ROOM_1: DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01"); break;
+                case Constants.SceneType.ROOM_1:
+                    // DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01");
+                    SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
+                    break;
             }
         }
     }
