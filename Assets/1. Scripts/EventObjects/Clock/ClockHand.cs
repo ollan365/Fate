@@ -26,7 +26,7 @@ public class ClockHand : MonoBehaviour
         correctMinute = (int)GameManager.Instance.GetVariable("ClockPasswordMinute");
         correctHour = (int)GameManager.Instance.GetVariable("ClockPasswordHour");
     }
-    
+
     private void Update()
     {
         bool isImageActive = imageAndLockPanelManager.isImageActive;

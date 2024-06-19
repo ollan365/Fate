@@ -16178,8 +16178,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 287d84ecd29df6e49a3ef328855b41a9, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -16206,8 +16206,9 @@ GameObject:
   - component: {fileID: 2502100532293926506}
   - component: {fileID: 6944034999655190603}
   - component: {fileID: 4037215797782290535}
+  - component: {fileID: 6944034999655190604}
   m_Layer: 6
-  m_Name: sewing box
+  m_Name: sewing box Test Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16221,6 +16222,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5950264667991412863}
     m_Modifications:
+    - target: {fileID: 449665008422503137, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: imageAndLockPanelManager
+      value: 
+      objectReference: {fileID: 370811677}
+    - target: {fileID: 468068182429537225, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 514512487}
     - target: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -16252,6 +16261,18 @@ PrefabInstance:
     - target: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
       propertyPath: m_SizeDelta.y
       value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16301,10 +16322,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962113637084438494, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 514512487}
+    - target: {fileID: 2631851930270188838, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 514512487}
+    - target: {fileID: 4168039432326750179, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5915332182126867903, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 514512487}
+    - target: {fileID: 6180903456332174341, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 514512487}
     - target: {fileID: 8122899949158248505, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
       propertyPath: sewingBoxA
       value: 
       objectReference: {fileID: 4037215797782290535}
+    - target: {fileID: 8287235083233822680, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: imageAndLockPanelManager
+      value: 
+      objectReference: {fileID: 370811677}
+    - target: {fileID: 9076698064078644934, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 514512487}
     - target: {fileID: 9078790170950206418, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
       propertyPath: m_Name
       value: Sewing Box Puzzle
@@ -16314,7 +16367,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1973223999410367664, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
@@ -16350,8 +16404,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 308.99994, y: -346.36}
-  m_SizeDelta: {x: 138.68, y: 145.13}
+  m_AnchoredPosition: {x: 293.67978, y: -312.0199}
+  m_SizeDelta: {x: 149.23, y: 148.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5873348790850172845
 GameObject:
@@ -16453,6 +16507,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6944034999655190604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3154884941438771290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20135711072b9c04b94167fc70f7aa16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AlphaThreshold: 0.1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
