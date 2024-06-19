@@ -90,9 +90,9 @@ public class SaveData
         get => ToDictionary(variablesToJson);
     }
 
-    public List<string> savedMemoList; // Memo 저장
+    public List<string>[] savedMemoList; // Memo 저장
 
-    public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, List<string> memo)
+    public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, List<string>[] memo)
     {
         sceneType = type;
         lastSideIndex = currentSideIndex;

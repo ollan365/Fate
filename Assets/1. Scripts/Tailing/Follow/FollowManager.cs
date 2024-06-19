@@ -86,9 +86,9 @@ public class FollowManager : MonoBehaviour
 
         if (onMove) followAnim.ChangeAnimStatus(); // 원래 이동 중이었다면 다시 이동하도록 만든다
 
-        if (extra != FollowExtra.None) { EndExtraDialogue(); return; }
+        EndExtraDialogue(true);
     }
-    public void ClickExtra(FollowExtra extra)
+    public void OpenExtraDialogue(FollowExtra extra)
     {
         this.extra = extra;
 
@@ -104,8 +104,10 @@ public class FollowManager : MonoBehaviour
 
         extraCanvas[Int(extra)].SetActive(true);
     }
-    public void EndExtraDialogue()
+    public void EndExtraDialogue(bool dialogueEnd)
     {
+        if (extra == FollowExtra.None) return;
+
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
 
         extraNextButton.SetActive(false);
@@ -113,7 +115,8 @@ public class FollowManager : MonoBehaviour
         extraCanvas[Int(extra)].SetActive(false);
 
         extra = FollowExtra.None;
-        DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
+
+        if(!dialogueEnd) blockingPanel.SetActive(true); // 아직 다른 대사가 출력되는 중
     }
     public void ClickCat()
     {
@@ -162,10 +165,10 @@ public class FollowManager : MonoBehaviour
         switch (extraName)
         {
             case "Angry": return FollowExtra.Angry;
-            case "Employee": return FollowExtra.Employee;
-            case "RunAway_1": return FollowExtra.RunAway_1;
-            case "RunAway_2": return FollowExtra.RunAway_2;
-            case "Police": return FollowExtra.Police;
+            case "The_Solicitation": return FollowExtra.Employee;
+            case "Teenage_A": return FollowExtra.RunAway_1;
+            case "Teenage_B": return FollowExtra.RunAway_2;
+            case "The_police": return FollowExtra.Police;
             case "Someone": return FollowExtra.Someone;
             case "Smoker_1": return FollowExtra.Smoker_1;
             case "Smoker_2": return FollowExtra.Smoker_2;

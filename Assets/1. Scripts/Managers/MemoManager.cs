@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static Constants;
 
 public class MemoManager : MonoBehaviour
 {
@@ -18,8 +19,8 @@ public class MemoManager : MonoBehaviour
     public Dictionary<string, string> allMemo = new();
 
     // 저장된 메모
-    private List<string> savedMemoList = new();
-    public List<string> SavedMemoList
+    private List<string>[] savedMemoList = new List<string>[4]; // 저장된 메모 전체
+    public List<string>[] SavedMemoList
     {
         get => savedMemoList;
         set => savedMemoList = value;
@@ -47,18 +48,49 @@ public class MemoManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        for (int i = 0; i < 4; i++) savedMemoList[i] = new List<string>();
+
         memoButton = memoButtons[0];
+    }
+
+    // 현재 씬에 따라 메모의 개수를 파악 -> 현재 씬에 해당하는 메모의 개수에 따라 엔딩 선택지 해금 여부 결정
+    public bool UnlockNextScene()
+    {
+        switch (SceneManager.Instance.CurrentScene)
+        {
+            case SceneType.ROOM_1:
+                if (savedMemoList[0].Count >= 8) return true;
+                else return false;
+            case SceneType.FOLLOW_1:
+                if (savedMemoList[1].Count >= 8) return true;
+                else return false;
+            case SceneType.FOLLOW_2:
+                if (savedMemoList[2].Count >= 8 && savedMemoList[3].Count >= 8) return true;
+                else return false;
+            default: return false;
+        }
     }
 
     // 메모 추가하기
     public void AddMemo(string memoID)
     {
         string scriptID = allMemo[memoID];
-        foreach(string savedMemo in savedMemoList)
+
+        // 현재 씬에 따라 메모가 저장되는 곳이 달라짐
+        int index = 0;
+        switch(SceneManager.Instance.CurrentScene)
+        {
+            case SceneType.ROOM_1: index = 0; break;
+            case SceneType.FOLLOW_1: index = 1; break;
+            case SceneType.ROOM_2: index = 2; break;
+            case SceneType.FOLLOW_2: index = 3; break;
+        }
+        // 이미 저장된 메모면 return
+        foreach(string savedMemo in savedMemoList[index])
         {
             if (scriptID == savedMemo) return;
         }
-        savedMemoList.Add(DialogueManager.Instance.scripts[scriptID].GetScript());
+        savedMemoList[index].Add(DialogueManager.Instance.scripts[scriptID].GetScript());
     }
 
     // 메모장 열기
@@ -72,10 +104,13 @@ public class MemoManager : MonoBehaviour
             colors.normalColor = new Color(1, 1, 1, 1);
             memoButton.GetComponent<Button>().colors = colors;
 
-            foreach (string memo in savedMemoList)
+            for (int i = 0; i < 4; i++)
             {
-                GameObject memoTextObject = Instantiate(memoTextPrefab, scrollViewContent);
-                memoTextObject.GetComponent<TextMeshProUGUI>().text = memo;
+                foreach (string memo in savedMemoList[i])
+                {
+                    GameObject memoTextObject = Instantiate(memoTextPrefab, scrollViewContent);
+                    memoTextObject.GetComponent<TextMeshProUGUI>().text = memo;
+                }
             }
 
             if (isFollow) FollowManager.Instance.ClickObject();

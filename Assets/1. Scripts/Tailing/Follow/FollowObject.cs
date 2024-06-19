@@ -23,13 +23,6 @@ public class FollowObject : EventObject
         
         SoundPlayer.Instance.UISoundPlay(Sound_FollowSpecialObject);
 
-        if (objectName == FollowObjectName.Extra)
-        {
-            FollowManager.Instance.ClickExtra(extraName);
-            OnMouseDown_Normal();
-            return;
-        }
-
         foreach (Transform child in FollowManager.Instance.blockingPanel.transform)
             Destroy(child.gameObject);
 

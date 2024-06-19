@@ -102,14 +102,43 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("Prologue_007");
                 break;
             
-            case "ResultCloseEyes": // 눈 뜨는 효과
-                executableObjects["StartLogic"].ExecuteAction();
+            case "ResultCloseEyes": // 눈 깜빡이는 효과
+                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
                 break;
-            
+
+            case "ResultPrologueLimit":
+                StartLogic.Instance.DarkBackground(true);
+                StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_000", 3));
+                break;
+
+            case "ResultCommonPrologueA":
+                StartLogic.Instance.DarkBackground(false);
+                StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_002", 3));
+                break;
+
+            case "ResultName": // 이름 입력창
+                StartLogic.Instance.OpenNamePanel();
+                break;
+
+            case "ResultBirth": // 생일 입력창
+                StartLogic.Instance.OpenBirthPanel();
+                break;
+
+            case "ResultPrologueQuestions":
+                DialogueManager.Instance.StartDialogue("Prologue_Name");
+                break;
+
+            case "ResultCommonPrologueB":
+                DialogueManager.Instance.StartDialogue("Prologue_008_C");
+                break;
+
             case "Result_002": // 설명창 띄우기 - ### 추후 구현 필요 ###
+                break;
+
+            case "ResultPrologueEnd":
                 SceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
-            
+
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
                 GameManager.Instance.DecrementVariable("ActionPoint");
                 SaveManager.Instance.SaveGameData();
@@ -801,6 +830,70 @@ public class ResultManager : MonoBehaviour
 
             case "ResultClubScript2": // 미행2 클럽 스크립트
                 DialogueManager.Instance.StartDialogue("Follow2_015");
+                break;
+
+            case "ResultLightScript2": // 미행2 신호등 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_016");
+                break;
+
+            case "ResultLightMemo2": // 미행2 신호등 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultSolicitationScript2": // 미행2 호객행위 스크립트 출력
+                DialogueManager.Instance.StartDialogue("Follow2_018");
+                break;
+
+            case "ResultSolicitationMemo2": // 미행2 호객행위 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultConScript2": // 미행2 편의점 스크립트 출력
+                DialogueManager.Instance.StartDialogue("Follow2_019");
+                break;
+
+            case "ResultConMemo2": // 미행2 편의점 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultTeenageScript2": // 미행2 가출 청소년 스크립트 출력
+                DialogueManager.Instance.StartDialogue("Follow2_021");
+                break;
+
+            case "ResultTeenageMemo2": // 미행2 가출 청소년 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "Result1FClothesScript2": // 미행2 가출 1층 옷가게 스크립트 출력
+                DialogueManager.Instance.StartDialogue("Follow2_022");
+                break;
+
+            case "Result1FClothesMemo2": // 미행2 가출 1층 옷가게 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultPoliceScript2": // 미행2 경찰 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_027");
+                break;
+
+            case "ResultPoliceMemo2": // 미행2 경찰 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultCigaretteScript2": // 미행2 담배피는 사람 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_028");
+                break;
+
+            case "ResultCigaretteMemo2": // 미행2 담배피는 사람 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultGuardScript2": // 미행2 클럽가드 스크립트
+                DialogueManager.Instance.StartDialogue("Follow2_029");
+                break;
+
+            case "ResultGuardMemo2": // 미행2 클럽가드 메모 -> 아직 스크립트 없음
+                // MemoManager.Instance.AddMemo("F1Memo_008");
                 break;
 
             default:

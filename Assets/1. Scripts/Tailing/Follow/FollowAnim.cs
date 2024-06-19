@@ -99,12 +99,12 @@ public class FollowAnim : MonoBehaviour
         {
             switch ((int)backgroundPosition.position.x)
             {
-                case 0: ExtraAutoDialogue("Follow2_001"); break;
-                case -4: ExtraAutoDialogue("Follow2_002"); break;
-                case -12: ExtraAutoDialogue("Follow2_003"); break;
-                case -19: ExtraAutoDialogue("Follow2_004"); break;
-                case -22: ExtraAutoDialogue("Follow2_005"); break;
-                case -31: ExtraAutoDialogue("Follow2_006"); break;
+                case 0: ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
+                case -4: ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
+                // case -12: ExtraAutoDialogue("Follow2_003"); break; // 경찰
+                // case -19: ExtraAutoDialogue("Follow2_004"); break; // 그냥 행인
+                // case -22: ExtraAutoDialogue("Follow2_005"); break; // 담배
+                // case -31: ExtraAutoDialogue("Follow2_006"); break; // 클럽 가드
             }
         }
     }
@@ -159,39 +159,19 @@ public class FollowAnim : MonoBehaviour
 
         alreadyType.Add(dialogueID);
 
-        // 테스트용
-        int speakerIndex = 0;
-        switch (dialogueID)
-        {
-            case "Follow2_001": speakerIndex = 0; break;
-            case "Follow2_002": speakerIndex = 1; break;
-            case "Follow2_003": speakerIndex = 3; break;
-            case "Follow2_004": speakerIndex = 4; break;
-            case "Follow2_005": speakerIndex = 5; break;
-            case "Follow2_006": speakerIndex = 7; break;
-        }
-        // 테스트용
-
-        StartCoroutine(TypeSentence(dialogueID, speakerIndex));
+        StartCoroutine(TypeSentence(dialogueID));
     }
-    private IEnumerator TypeSentence(string dialogueID, int speakerIndex)
+    private IEnumerator TypeSentence(string dialogueID)
     {
-        DialogueLine dialogueLine;
-        string sentence;
         int currentDialogueLineIndex = 0;
 
         while (FollowManager.Instance.canClick)
         {
             DialogueManager.Instance.dialogues[dialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
-            dialogueLine = DialogueManager.Instance.dialogues[dialogueID].Lines[currentDialogueLineIndex];
-            sentence = DialogueManager.Instance.scripts[dialogueLine.ScriptID].GetScript();
-
-            // 스피커가 누구인지 확인 본래는 여기서 speakerIndex 구해야함 -> 테스트를 위해 막아둠
-            //switch (DialogueManager.Instance.scripts[dialogueLine.SpeakerID].GetScript())
-            //{
-            //    case "EMPLOYEE": speaker = FollowExtra.Employee; break; // 화자에 따라 다른 캔버스가 켜지도록 만들면 될듯
-            //}
-
+            DialogueLine dialogueLine = DialogueManager.Instance.dialogues[dialogueID].Lines[currentDialogueLineIndex];
+            string sentence = DialogueManager.Instance.scripts[dialogueLine.ScriptID].GetScript();
+            int speakerIndex = FollowManager.Instance.Int(FollowManager.Instance.ToEnum(dialogueLine.SpeakerID));
+            
             // 대사가 출력된 판넬과 텍스트 받아오기
             FollowManager.Instance.extraCanvas[speakerIndex].SetActive(true);
             FollowManager.Instance.extraDialogueText[speakerIndex].text = "";
@@ -229,24 +209,14 @@ public class FollowAnim : MonoBehaviour
             yield return new WaitForSeconds(0.25f);
 
             // 대사가 끝난 후
-            string next = DialogueManager.Instance.dialogues[dialogueID].Lines[currentDialogueLineIndex].Next;
+            FollowManager.Instance.extraDialogueText[speakerIndex].text = "";
+            FollowManager.Instance.extraCanvas[speakerIndex].SetActive(false);
 
-            if (DialogueManager.Instance.dialogues.ContainsKey(next))  // Dialogue인 경우 -> 반복문 종료
-            {
-                FollowManager.Instance.extraCanvas[speakerIndex].SetActive(false);
-                ExtraAutoDialogue(next);
-                break;
-            }
-            else if (string.IsNullOrWhiteSpace(next))  // 빈칸인 경우 다음 줄(대사)로 이동
-            {
-                currentDialogueLineIndex++;
+            currentDialogueLineIndex++;
 
-                if (currentDialogueLineIndex >= DialogueManager.Instance.dialogues[dialogueID].Lines.Count)
-                {
-                    FollowManager.Instance.extraCanvas[speakerIndex].SetActive(false);
-                    break; // 더 이상 DialogueLine이 존재하지 않으면 반복문 종료
-                }
-            }
+            // 더 이상 DialogueLine이 존재하지 않으면 반복문 종료
+            if (currentDialogueLineIndex >= DialogueManager.Instance.dialogues[dialogueID].Lines.Count) break;
+            
         }
     }
     

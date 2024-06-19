@@ -61,6 +61,7 @@ public static class Constants
 
         // ========== 두번째 미행 ========== //
         Villa2, Bar2, Bread2, BeerA, Izakawa2, Cafe2, Clothes_3F, Clothes_2F, DrinkA, CocktailBar2, Restaurant2, DrinkB, MusicBar2, Cosmetic2, DrinkC, BeerB, Club2,
+        Light2, Con2, Clothes_1F,
 
 
         // ========== 기타 등등 ========== //
@@ -100,6 +101,9 @@ public static class Constants
             case FollowObjectName.Club: return "EventFollowClub";
             case FollowObjectName.Beer: return "EventFollowPub";
             case FollowObjectName.Wreath: return "EventFollowWreath";
+            case FollowObjectName.Light2: return "EventFollow2TrafficLight";
+            case FollowObjectName.Con2: return "EventFollow2Con";
+            case FollowObjectName.Clothes_1F: return "EventFollow21FClothingStore";
 
 
 
@@ -132,17 +136,17 @@ public static class Constants
         {
             case FollowExtra.Angry: return "EventFollowAngryPerson";
 
-            case FollowExtra.Employee: return "EventFollow2Villa";
-            case FollowExtra.RunAway_1: return "EventFollow2Bar";
-            case FollowExtra.RunAway_2: return "EventFollow2Bar";
-            case FollowExtra.Police: return "EventFollow2Bread";
-            case FollowExtra.Someone: return "EventFollow2BeerA";
-            case FollowExtra.Smoker_1: return "EventFollow2Izakawa";
-            case FollowExtra.Smoker_2: return "EventFollow2Izakawa";
-            case FollowExtra.Clubber_1: return "EventFollow2Cafe";
-            case FollowExtra.Clubber_2: return "EventFollow2Cafe";
-            case FollowExtra.Clubber_3: return "EventFollow2Cafe";
-            case FollowExtra.Clubber_4: return "EventFollow2Cafe";
+            case FollowExtra.Employee: return "EventFollow2Solicitation";
+            case FollowExtra.RunAway_1: return "EventFollow2Teenage";
+            case FollowExtra.RunAway_2: return "EventFollow2Teenage";
+            case FollowExtra.Police: return "EventFollow2Police";
+            // case FollowExtra.Someone: return "EventFollow2BeerA";
+            case FollowExtra.Smoker_1: return "EventFollow2Cigarette";
+            case FollowExtra.Smoker_2: return "EventFollow2Cigarette";
+            case FollowExtra.Clubber_1: return "EventFollow2Guard";
+            case FollowExtra.Clubber_2: return "EventFollow2Guard";
+            case FollowExtra.Clubber_3: return "EventFollow2Guard";
+            case FollowExtra.Clubber_4: return "EventFollow2Guard";
 
             default: return null;
         }
@@ -194,6 +198,9 @@ public static class Constants
             case FollowObjectName.DrinkC: return "DrinkCClick2";
             case FollowObjectName.BeerB: return "BeerBClick2";
             case FollowObjectName.Club2: return "ClubClick2";
+            case FollowObjectName.Light2: return "LightClick2";
+            case FollowObjectName.Con2: return "ConClick2";
+            case FollowObjectName.Clothes_1F: return "1FClothesClick2";
             default: return null;
         }
     }
@@ -204,17 +211,17 @@ public static class Constants
         {
             case FollowExtra.Angry: return "AngryClick";
 
-            case FollowExtra.Employee: return "VillaClick2";
-            case FollowExtra.RunAway_1: return "BarClick2";
-            case FollowExtra.RunAway_2: return "BarClick2";
-            case FollowExtra.Police: return "BreadClick2";
-            case FollowExtra.Someone: return "BeerAClick2";
-            case FollowExtra.Smoker_1: return "IzakawaClick2";
-            case FollowExtra.Smoker_2: return "IzakawaClick2";
-            case FollowExtra.Clubber_1: return "CafeClick2";
-            case FollowExtra.Clubber_2: return "CafeClick2";
-            case FollowExtra.Clubber_3: return "CafeClick2";
-            case FollowExtra.Clubber_4: return "CafeClick2";
+            case FollowExtra.Employee: return "SolicitationClick2";
+            case FollowExtra.RunAway_1: return "TeenageClick2";
+            case FollowExtra.RunAway_2: return "TeenageClick2";
+            case FollowExtra.Police: return "PoliceClick2";
+            // case FollowExtra.Someone: return "BeerAClick2";
+            case FollowExtra.Smoker_1: return "CigaretteClick2";
+            case FollowExtra.Smoker_2: return "CigaretteClick2";
+            case FollowExtra.Clubber_1: return "GuardClick2";
+            case FollowExtra.Clubber_2: return "GuardClick2";
+            case FollowExtra.Clubber_3: return "GuardClick2";
+            case FollowExtra.Clubber_4: return "GuardClick2";
             default: return null;
         }
     }
