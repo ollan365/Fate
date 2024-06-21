@@ -51,11 +51,11 @@ public class SceneManager : MonoBehaviour
                 break;
             case SceneType.ROOM_2:
                 sceneIndex = 3;
-                bgmIndex = BGM_ROOM;
+                bgmIndex = BGM_ROOM2;
                 sceneType = SceneType.ROOM_2;
                 break;
             case SceneType.FOLLOW_2:
-                sceneIndex = 3; // 병합 후 4로 바꾸기!
+                sceneIndex = 4;
                 bgmIndex = BGM_FOLLOW;
                 sceneType = SceneType.FOLLOW_2;
                 break;

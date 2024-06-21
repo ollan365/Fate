@@ -134,8 +134,12 @@ public class DialogueManager : MonoBehaviour
         dialogueCanvas[dialogueType.ToInt()].SetActive(true);
 
         // 미행의 행인은 별도의 SpeakerID를 가짐
-        if(dialogueType != DialogueType.FOLLOW_EXTRA)
-            speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
+        if (dialogueType != DialogueType.FOLLOW_EXTRA)
+        {
+            if (dialogueLine.SpeakerID == "DialogueC_003")
+                speakerText.text = GameManager.Instance.GetVariable("FateName").ToString();
+            else speakerText.text = scripts[dialogueLine.SpeakerID].GetScript();
+        }
 
         // 타자 효과 적용
         isTyping = true;

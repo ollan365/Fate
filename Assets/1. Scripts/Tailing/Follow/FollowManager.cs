@@ -150,13 +150,10 @@ public class FollowManager : MonoBehaviour
             case FollowExtra.RunAway_1: return 1;
             case FollowExtra.RunAway_2: return 2;
             case FollowExtra.Police: return 3;
-            case FollowExtra.Someone: return 4;
-            case FollowExtra.Smoker_1: return 5;
-            case FollowExtra.Smoker_2: return 6;
-            case FollowExtra.Clubber_1: return 7;
-            case FollowExtra.Clubber_2: return 8;
-            case FollowExtra.Clubber_3: return 9;
-            case FollowExtra.Clubber_4: return 10;
+            case FollowExtra.Smoker_1: return 4;
+            case FollowExtra.Smoker_2: return 5;
+            case FollowExtra.Clubber_1: return 6;
+            case FollowExtra.Clubber_2: return 7;
             default: return -1;
         }
     }
@@ -169,13 +166,10 @@ public class FollowManager : MonoBehaviour
             case "Teenage_A": return FollowExtra.RunAway_1;
             case "Teenage_B": return FollowExtra.RunAway_2;
             case "The_police": return FollowExtra.Police;
-            case "Someone": return FollowExtra.Someone;
             case "Smoker_1": return FollowExtra.Smoker_1;
             case "Smoker_2": return FollowExtra.Smoker_2;
             case "Clubber_1": return FollowExtra.Clubber_1;
             case "Clubber_2": return FollowExtra.Clubber_2;
-            case "Clubber_3": return FollowExtra.Clubber_3;
-            case "Clubber_4": return FollowExtra.Clubber_4;
             default: return FollowExtra.None;
         }
     }
