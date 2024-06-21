@@ -88,7 +88,7 @@ public class DialogueManager : MonoBehaviour
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
         DisplayDialogueLine(initialDialogueLine);
-        
+
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
     }
 
@@ -242,7 +242,10 @@ public class DialogueManager : MonoBehaviour
             {
                 RoomManager.Instance.imageAndLockPanelManager.OnExitButtonClick();
             }
-            RoomManager.Instance.SetButtons(); 
+            RoomManager.Instance.SetButtons();
+
+            // 조사하는 대화창 끝나면 하트가 0일 시 5개 다 채움
+            ActionPointManager.Instance.HeartSetAllCharge();
         }
         
     }

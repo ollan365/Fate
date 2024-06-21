@@ -144,6 +144,15 @@ public class ResultManager : MonoBehaviour
                 SaveManager.Instance.SaveGameData();
                 break;
 
+
+            //case "ResultRoomFirstDayAnswer":
+            //    ActionPointManager.Instance.isFirstDayAnswer = true;
+            //    DialogueManager.Instance.EndDialogue();
+
+            //    DialogueManager.Instance.StartDialogue("RoomEscapeS_002");
+            //    break;
+
+
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
                 //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
