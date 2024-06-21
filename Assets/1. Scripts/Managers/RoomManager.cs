@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEditor.SceneManagement;
 
 public class RoomManager : MonoBehaviour
 {
@@ -66,8 +67,9 @@ public class RoomManager : MonoBehaviour
         
         SetButtons();
 
-        // 첫 대사 출력 후 튜토리얼 1페이즈 시작
-        if (!GameManager.Instance.skipTutorial) DialogueManager.Instance.StartDialogue("Prologue_015");
+
+        // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
+        if (!GameManager.Instance.skipTutorial && EditorSceneManager.GetActiveScene().name == "Room1") DialogueManager.Instance.StartDialogue("Prologue_015");
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1

@@ -11,8 +11,11 @@ public class TinCase : EventObject, IResultExecutable
         ResultManager.Instance.RegisterExecutable("TinCase", this);
     }
     
+
     public new void OnMouseDown()
     {
+        bool isBusy = GameManager.Instance.GetIsBusy();
+        if (isBusy) return;
         base.OnMouseDown();
     }
 
