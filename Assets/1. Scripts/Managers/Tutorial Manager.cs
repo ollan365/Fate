@@ -69,6 +69,7 @@ public class TutorialManager : MonoBehaviour
             case 5:
                 DialogueManager.Instance.StartDialogue("Tutorial_004");
                 EndTutorial();
+                Debug.Log("튜토리얼끝");
                 break;
         }
         

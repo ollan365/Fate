@@ -366,6 +366,8 @@ public class GameManager : MonoBehaviour
         List<string> keysToShow = new List<string>(new string[]
         {
          //   "FateBirthday"
+         "isTutorial",
+         "TutorialPhase"
 
         });
         
