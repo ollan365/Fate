@@ -137,6 +137,7 @@ public class StartLogic : MonoBehaviour
     }
     public void NameSetting()
     {
+        GameManager.Instance.SetVariable("FateName", fateName);
         DialogueManager.Instance.StartDialogue("Prologue_Birth");
         blockingPanel.SetActive(true);
     }
@@ -184,7 +185,6 @@ public class StartLogic : MonoBehaviour
     public void SettingsComplete()
     {
         GameManager.Instance.SetVariable("Language", language);
-        GameManager.Instance.SetVariable("FateName", fateName);
         GameManager.Instance.SetVariable("FateGender", 0);  // 필연 성별 설정 (더 이상 선택 기능이 없어졌으므로 0으로 고정
 
         string birthday = ((monthDropdown.value + 1) * 100 + (dayDropdown.value + 1)).ToString();

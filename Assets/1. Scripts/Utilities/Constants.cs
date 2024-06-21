@@ -24,7 +24,7 @@ public static class Constants
     // 사운드 종류
     // 1. 배경음
     public const int
-        BGM_ROOM = 0, BGM_FOLLOW = 1, BGM_MINIGAME = 2, BGM_FINISHGAME = 3;
+        BGM_ROOM = 0, BGM_FOLLOW = 1, BGM_MINIGAME = 2, BGM_FINISHGAME = 3, BGM_ROOM2 = 4;
 
     // 2. 방탈출 오브젝트들
     public const int
@@ -70,7 +70,7 @@ public static class Constants
 
     public enum FollowExtra
     {
-        None, Angry, Employee, RunAway_1, RunAway_2, Police, Someone, Smoker_1, Smoker_2, Clubber_1, Clubber_2, Clubber_3, Clubber_4
+        None, Angry, Employee, RunAway_1, RunAway_2, Police, Smoker_1, Smoker_2, Clubber_1, Clubber_2
     }
     public static string EventID(this FollowObjectName objectName)
     {
@@ -140,13 +140,10 @@ public static class Constants
             case FollowExtra.RunAway_1: return "EventFollow2Teenage";
             case FollowExtra.RunAway_2: return "EventFollow2Teenage";
             case FollowExtra.Police: return "EventFollow2Police";
-            // case FollowExtra.Someone: return "EventFollow2BeerA";
             case FollowExtra.Smoker_1: return "EventFollow2Cigarette";
             case FollowExtra.Smoker_2: return "EventFollow2Cigarette";
             case FollowExtra.Clubber_1: return "EventFollow2Guard";
             case FollowExtra.Clubber_2: return "EventFollow2Guard";
-            case FollowExtra.Clubber_3: return "EventFollow2Guard";
-            case FollowExtra.Clubber_4: return "EventFollow2Guard";
 
             default: return null;
         }
@@ -215,13 +212,10 @@ public static class Constants
             case FollowExtra.RunAway_1: return "TeenageClick2";
             case FollowExtra.RunAway_2: return "TeenageClick2";
             case FollowExtra.Police: return "PoliceClick2";
-            // case FollowExtra.Someone: return "BeerAClick2";
             case FollowExtra.Smoker_1: return "CigaretteClick2";
             case FollowExtra.Smoker_2: return "CigaretteClick2";
             case FollowExtra.Clubber_1: return "GuardClick2";
             case FollowExtra.Clubber_2: return "GuardClick2";
-            case FollowExtra.Clubber_3: return "GuardClick2";
-            case FollowExtra.Clubber_4: return "GuardClick2";
             default: return null;
         }
     }
