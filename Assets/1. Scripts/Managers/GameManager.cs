@@ -174,15 +174,41 @@ public class GameManager : MonoBehaviour
         // 달력
 
 
-
-
-
         // 두번째 방탈출
-
 
         // 반짇고리
         variables["SewingBoxClick"] = 0;
         variables["SewingBoxCorrect"] = false;
+
+        // 침대 위 곰인형
+        variables["BedTeddyClick2"] = 0;
+
+        // 책상 위 스탠드
+        variables["LampClick2"] = 0;
+
+        // 책상 위 책 무더기
+        variables["UpDeskBookClick2"] = 0;
+
+        // 책상 밑 평범한 책
+        variables["UnderDeskBookClick2"] = 0;
+
+        // 책장 위 무너진 책들
+        variables["ShelfBookClick2"] = 0;
+
+        // 책장 위 곰인형들
+        variables["ShelfTeddyBearClick2"] = 0;
+
+        // 책장 위 깨진 시계
+        variables["ClockClick2"] = 0;
+
+        // 벽에 있는 평범한 포스터들
+        variables["NormalPosterClick2"] = 0;
+
+        // 옷장 위에 있는 상자
+        variables["ClosetBoxClick2"] = 0;
+
+        // 옷장 밑에 있는 사진들
+        variables["UnderPhotoClick2"] = 0;
 
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
@@ -366,8 +392,6 @@ public class GameManager : MonoBehaviour
         List<string> keysToShow = new List<string>(new string[]
         {
          //   "FateBirthday"
-         "isTutorial",
-         "TutorialPhase"
 
         });
         
