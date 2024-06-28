@@ -646,7 +646,10 @@ public class ResultManager : MonoBehaviour
                 Debug.Log("실과 바늘 획득 후 메모");
                 break;
 
-
+            case "ResultEndRoom1": // Room1 끝
+                SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
+                break;
+                
 
             // 미행 1
             case "ResultVillaScript": // 빌라에 대한 스크립트

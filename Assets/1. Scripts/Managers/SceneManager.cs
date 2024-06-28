@@ -30,6 +30,10 @@ public class SceneManager : MonoBehaviour
         // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
         MemoManager.Instance.HideMemoButton(true);
 
+        // 대사 출력 중이면 기다리기
+        while (DialogueManager.Instance.isDialogueActive)
+            yield return null;
+
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         int sceneIndex = -1, bgmIndex = -1;
@@ -60,6 +64,7 @@ public class SceneManager : MonoBehaviour
                 sceneType = SceneType.FOLLOW_2;
                 break;
         }
+
         yield return new WaitForSeconds(1f);
 
         // 씬 로드
@@ -87,6 +92,9 @@ public class SceneManager : MonoBehaviour
         // 배경음과 페이드 효과
         SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+
+        // 엔딩 로직이 끝났음을 알리기
+        if (ActionPointManager.Instance) ActionPointManager.Instance.isEnding = false;
     }
 }
 

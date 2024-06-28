@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Random = System.Random;
+using static Constants;
 
 public class ActionPointManager : MonoBehaviour
 {
     public static ActionPointManager Instance { get; private set; }
+
     void Awake()
     {
         if (Instance == null)
@@ -25,18 +27,20 @@ public class ActionPointManager : MonoBehaviour
     public int heartCount = 5; // 하루 하트 개수
     private int NowActionPoint;
 
+    public bool isEnding = false;
+
+    public int standardEndingActionPoint;
+
     private void Start()
     {
         // 이벤트 구독
         GameManager.OnActionPointChanged += UpdateNowHeartState;
-        GameManager.OnActionPointChanged += Ending;
     }
 
     private void OnDestroy()
     {
         // 이벤트 구독 해제
         GameManager.OnActionPointChanged -= UpdateNowHeartState;
-        GameManager.OnActionPointChanged -= Ending;
     }
 
     // 이벤트 핸들러
@@ -134,18 +138,38 @@ public class ActionPointManager : MonoBehaviour
     //}
 
 
-    private void Ending(int NowActionPoint)
+    public void CheckEnding()
     {
+        if (isEnding || NowActionPoint  > standardEndingActionPoint) return;
+
         // 행동력을 모두 소모했을 시, 엔딩 시작
-        if(NowActionPoint == 0)
+        if (SceneManager.Instance.CurrentScene == SceneType.ROOM_1)
         {
-            switch (SceneManager.Instance.CurrentScene) // 현재 씬에 따라 엔딩 호출
-            {
-                case Constants.SceneType.ROOM_1:
-                    // DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01");
-                    SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
-                    break;
-            }
+            isEnding = true;
+            StartCoroutine(StartEnding());
         }
+    }
+
+    private IEnumerator StartEnding()
+    {
+        // 대사 출력 중이면 기다리기
+        while (DialogueManager.Instance.isDialogueActive)
+            yield return null;
+        yield return new WaitForSeconds(2f);
+
+        // 메모 & 좌측 상단의 하트 & 다른 것 상호작용 막아야 함 (여쭤보기)
+        MemoManager.Instance.HideMemoButton(true);
+
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
+        yield return new WaitForSeconds(1f);
+
+        // 여기서 방 배경을 전환 + 화면 어둡게 해야 함 (여쭤보기)
+
+        yield return new WaitForSeconds(2.5f);
+
+        if (MemoManager.Instance.UnlockNextScene()) // 메모의 개수가 충분할 때
+            DialogueManager.Instance.StartDialogue("FollowTutorial_001");
+        else
+            DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01");
     }
 }

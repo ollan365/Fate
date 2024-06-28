@@ -59,7 +59,7 @@ public class MemoManager : MonoBehaviour
         switch (SceneManager.Instance.CurrentScene)
         {
             case SceneType.ROOM_1:
-                if (savedMemoList[0].Count >= 8) return true;
+                if (savedMemoList[0].Count > 8) return true;
                 else return false;
             case SceneType.FOLLOW_1:
                 if (savedMemoList[1].Count >= 8) return true;
