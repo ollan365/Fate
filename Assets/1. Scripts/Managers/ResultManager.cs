@@ -647,6 +647,14 @@ public class ResultManager : MonoBehaviour
                 executableObjects["ClosetUnder Unzoomed 2"].ExecuteAction();
                 break;
 
+            case "Result_showZoomedMedicine": // 약 확대 화면으로 전환
+                executableObjects["Medicine Unzoomed 1"].ExecuteAction();
+                break;
+
+            case "Result_showZoomedShoppingBags": // 쇼핑백 확대 화면으로 전환
+                executableObjects["ShoppingBags Unzoomed 3"].ExecuteAction();
+                break;
+
             case "ResultBedTeddy2Script": // 침대 위 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_001");
                 break;
