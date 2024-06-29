@@ -164,4 +164,18 @@ public class MemoManager : MonoBehaviour
             allMemo[memoID] = scriptID;
         }
     }
+
+
+
+    // 테스트용
+    public void TestEnding(bool unlock)
+    {
+        if (unlock)
+            foreach (List<string> list in savedMemoList)
+            {
+                for (int i = 0; i < 9; i++) list.Add(i.ToString());
+            }
+
+        SceneManager.Instance.LoadScene(SceneType.ENDING);
+    }
 }

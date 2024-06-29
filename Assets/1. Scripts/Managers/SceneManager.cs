@@ -63,6 +63,9 @@ public class SceneManager : MonoBehaviour
                 bgmIndex = BGM_FOLLOW;
                 sceneType = SceneType.FOLLOW_2;
                 break;
+            case SceneType.ENDING:
+                sceneIndex = 5;
+                break;
         }
 
         yield return new WaitForSeconds(1f);
@@ -88,11 +91,14 @@ public class SceneManager : MonoBehaviour
         }
 
         MemoManager.Instance.MemoButtonChange();
-        if(sceneType != SceneType.START) MemoManager.Instance.HideMemoButton(false);
+        if(sceneType != SceneType.START && loadSceneType != SceneType.ENDING) MemoManager.Instance.HideMemoButton(false);
 
         // 배경음과 페이드 효과
-        if (sceneType != SceneType.START) SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+        if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING)
+        {
+            SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
+            StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+        }
 
         // 엔딩 로직이 끝났음을 알리기
         if (ActionPointManager.Instance) ActionPointManager.Instance.isEnding = false;

@@ -250,8 +250,6 @@ public class DialogueManager : MonoBehaviour
 
             // 조사하는 대화창 끝나면 하트가 0일 시 5개 다 채움
             ActionPointManager.Instance.HeartSetAllCharge();
-
-            ActionPointManager.Instance.CheckEnding();
         }
         
     }
@@ -420,11 +418,9 @@ public class DialogueManager : MonoBehaviour
                     switch (effects[i])
                     {
                         case "END":
-                            // 배경이 어두워지게 바꿔야 함
+                            choiceButton.onClick.AddListener(() => EndingManager.Instance.ChoiceEnding());
                             break;
                         case "LOCK":
-                            if (MemoManager.Instance.UnlockNextScene()) break; // 메모(중요 단서)의 개수가 충분하면 선택지 잠금 X
-
                             choiceButton.onClick.RemoveAllListeners();
                             break;
                     }
