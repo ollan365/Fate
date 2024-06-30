@@ -138,11 +138,12 @@ public class MemoManager : MonoBehaviour
             }
         }
     }
-    public void HideMemoButton(bool flag)
+
+    public void SetMemoButton(bool isTrue)
     {
-        // 메모 버튼을 보이지 않게 or 보이게 할 수 있음
-        memoButton.SetActive(!flag);
+        memoButton.SetActive(isTrue);
     }
+    
     public void MemoButtonChange()
     {
         if (!isFollow) memoButton = memoButtons[0];

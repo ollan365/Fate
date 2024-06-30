@@ -18,16 +18,17 @@ public class PageFlip : MonoBehaviour
     public Sprite[] bookPages;
     public bool interactable = true;
     public bool pageDragging;
+    public bool autoFlipping = false;
 
     public bool enableShadowEffect = true;
 
-    //represent the index of the sprite shown in the right page
+    // represent the index of the sprite shown in the right page
     public int currentPage;
     public int TotalPageCount => bookPages.Length;
 
-    private Vector3 EdgeBottomLeft { get; set; }
+    public Vector3 EdgeBottomLeft { get; set; }
 
-    private Vector3 EdgeBottomRight { get; set; }
+    public Vector3 EdgeBottomRight { get; set; }
 
     public Image clippingPlane;
     public Image nextPageClip;
@@ -54,10 +55,13 @@ public class PageFlip : MonoBehaviour
     private Vector3 f;
 
     //current flip mode
-    private FlipMode mode;
+    public FlipMode mode;
 
     [SerializeField] private DiaryManager diaryManager;
 
+    [SerializeField] private GameObject flipLeftButton;
+    [SerializeField] private GameObject flipRightButton;
+    
     private void Start()
     {
         if (!canvas) canvas = GetComponentInParent<Canvas>();
@@ -90,7 +94,7 @@ public class PageFlip : MonoBehaviour
 
     private void Update()
     {
-        if (pageDragging && interactable)
+        if (pageDragging && interactable && !autoFlipping)
         {
             f = Vector3.Lerp(f, TransformPoint(Input.mousePosition), Time.deltaTime * 10);
             if (mode == FlipMode.RightToLeft) UpdateBookRtlToPoint(f);
@@ -146,7 +150,7 @@ public class PageFlip : MonoBehaviour
         }
     }
 
-    private void UpdateBookLtrToPoint(Vector3 followLocation)
+    public void UpdateBookLtrToPoint(Vector3 followLocation)
     {
         mode = FlipMode.LeftToRight;
         f = followLocation;
@@ -186,7 +190,7 @@ public class PageFlip : MonoBehaviour
         shadowLtr.rectTransform.SetParent(left.rectTransform, true);
     }
 
-    private void UpdateBookRtlToPoint(Vector3 followLocation)
+    public void UpdateBookRtlToPoint(Vector3 followLocation)
     {
         mode = FlipMode.RightToLeft;
         f = followLocation;
@@ -269,7 +273,7 @@ public class PageFlip : MonoBehaviour
         return calcCPosition;
     }
 
-    private void DragRightPageToPoint(Vector3 point)
+    public void DragRightPageToPoint(Vector3 point)
     {
         if (currentPage >= bookPages.Length) return;
         pageDragging = true;
@@ -307,7 +311,7 @@ public class PageFlip : MonoBehaviour
         if (interactable) DragRightPageToPoint(TransformPoint(Input.mousePosition));
     }
 
-    private void DragLeftPageToPoint(Vector3 point)
+    public void DragLeftPageToPoint(Vector3 point)
     {
         if (currentPage <= 0) return;
         pageDragging = true;
@@ -351,7 +355,7 @@ public class PageFlip : MonoBehaviour
         if (interactable) ReleasePage();
     }
 
-    private void ReleasePage()
+    public void ReleasePage()
     {
         if (!pageDragging) return;
         pageDragging = false;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
     
-    [Header("시점들")][SerializeField] private List<GameObject> sides;  // 시점들
+    [Header("시점들")][SerializeField] public List<GameObject> sides;  // 시점들
     private GameObject currentView;  // 현재 뷰
     public int currentSideIndex = 0;  // 현재 시점 인덱스
     
@@ -32,7 +33,10 @@ public class RoomManager : MonoBehaviour
     // 튜토리얼 매니저
     public TutorialManager tutorialManager;
 
-
+    // ************************* temporary members for action points *************************
+    [SerializeField] GameObject heartParent;
+    [SerializeField] TextMeshProUGUI dayText;
+    
     void Awake()
     {
         if (Instance == null)
@@ -67,8 +71,11 @@ public class RoomManager : MonoBehaviour
         
         SetButtons();
 
+        GameManager.Instance.heartParent = heartParent;
+        GameManager.Instance.dayText = dayText;
+        GameManager.Instance.CreateHearts();  // create hearts on room start
 
-        // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
+        // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만) - 겜메에서 현재 씬 이름 저장하고 가져오는 방식으로 변경 필요
         if (!GameManager.Instance.skipTutorial && EditorSceneManager.GetActiveScene().name == "Room1") DialogueManager.Instance.StartDialogue("Prologue_015");
     }
 
@@ -114,6 +121,19 @@ public class RoomManager : MonoBehaviour
             SetButtons();
         }
     }
+    
+    // exit to root: turn off all the panels and zoom out to the root view
+    public void ExitToRoot()
+    {
+        while (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
+        if (isZoomed)
+        {
+            SetCurrentView(sides[currentSideIndex]);
+            isZoomed = false;
+        }
+        
+        SetButtons();
+    }
 
     // ######################################## setters ########################################
     public void SetIsInvestigating(bool isTrue)
@@ -157,14 +177,16 @@ public class RoomManager : MonoBehaviour
         if (currentSideIndex == 1) moveButtonRight.gameObject.SetActive(false);
         else if (currentSideIndex == 2) moveButtonLeft.gameObject.SetActive(false);
     }
-
+    
     public void SetButtons()
     {
         bool isInvestigatingOrZoomed = isInvestigating || isZoomed;
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
         
         SetExitButton(isInvestigatingOrZoomed && !isDialogueActive);
-        SetMoveButtons(!(isInvestigatingOrZoomed || isDialogueActive));
+        SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive);
+        MemoManager.Instance.SetMemoButton(!isDialogueActive);
+        
     }
 
     //[SerializeField] private GameObject restButton;

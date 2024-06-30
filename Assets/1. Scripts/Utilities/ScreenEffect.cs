@@ -84,9 +84,10 @@ public class ScreenEffect : MonoBehaviour
     {
         RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
         // 원래 위치 (목적지)
-        Vector3 originPosition = screenRectTransform.localPosition;
+        var localPosition = screenRectTransform.localPosition;
+        Vector3 originPosition = localPosition;
         // 출발 지점
-        Vector3 startPosition = screenRectTransform.localPosition + direction * distance;
+        Vector3 startPosition = localPosition + direction * distance;
         screen.GetComponent<RectTransform>().localPosition = startPosition;
 
         float elapsedTime = 0f;

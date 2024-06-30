@@ -140,28 +140,19 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
-                GameManager.Instance.DecrementVariable("ActionPoint");
+                GameManager.Instance.DecrementActionPoint();
                 SaveManager.Instance.SaveGameData();
                 break;
-
-
-            //case "ResultRoomFirstDayAnswer":
-            //    ActionPointManager.Instance.isFirstDayAnswer = true;
-            //    DialogueManager.Instance.EndDialogue();
-
-            //    DialogueManager.Instance.StartDialogue("RoomEscapeS_002");
-            //    break;
-
 
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
                 //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
                 //    +" : "+ EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
-                if (!EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()))
+                if (!EventObjectManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
                     DialogueManager.Instance.EndDialogue();
 
-                    EventManager.Instance.CallEvent(GameManager.Instance.getCurrentInquiryObjectId());
+                    EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                     GameManager.Instance.SetVariable("isInquiry", false);
                 }
                 else
@@ -174,7 +165,7 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.SetVariable("isInquiry", true);
                 DialogueManager.Instance.EndDialogue();
 
-                EventManager.Instance.CallEvent(GameManager.Instance.getCurrentInquiryObjectId());
+                EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                 GameManager.Instance.SetVariable("isInquiry", false);
                 break;
 
@@ -212,7 +203,7 @@ public class ResultManager : MonoBehaviour
             case "ResultBlanketCheck": // 조사하기 버튼 누르면 침대 조사할 수 있게 함
                 DialogueManager.Instance.EndDialogue();
                 GameManager.Instance.SetVariable("isInquiry", true);
-                GameManager.Instance.setCurrentInquiryObjectId("EventBlanket");
+                GameManager.Instance.SetCurrentInquiryObjectId("EventBlanket");
                 EventManager.Instance.CallEvent("Event_Inquiry");
                 break;
                 
