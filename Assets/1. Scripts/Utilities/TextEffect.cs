@@ -8,30 +8,30 @@ public class TextEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 	[System.Serializable]
 	private class OnClickEvent : UnityEvent { }
 
-	// Text UI¸¦ Å¬¸¯ÇßÀ» ¶§ È£ÃâÇÏ°í ½ÍÀº ÇÔ¼ö¸¦ µî·Ï ÇÒ ¼ö ÀÖ½À´Ï´Ù
+	// Text UIë¥¼ í´ë¦­í–ˆì„ ë•Œ í˜¸ì¶œí•˜ê³  ì‹¶ì€ í•¨ìˆ˜ë¥¼ ë“±ë¡ í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤
 	[SerializeField] private OnClickEvent onClickEvent;
 
-	// »ö»óÀÌ ¹Ù²î°í, ÅÍÄ¡°¡ µÇ´Â TextMeshProGUI
+	// ìƒ‰ìƒì´ ë°”ë€Œê³ , í„°ì¹˜ê°€ ë˜ëŠ” TextMeshProGUI
 	private TextMeshProUGUI text;
 
 	private void Awake()
 	{
-		text = GetComponent<TextMeshProUGUI>();
+		text = GetComponentInChildren<TextMeshProUGUI>();
 	}
 
-	// ¸¶¿ì½º¸¦ ¿Ã·ÈÀ» ¶§ ±Û¾¾°¡ BoldÃ¼·Î ¹Ù²ò´Ï´Ù
+	// ë§ˆìš°ìŠ¤ë¥¼ ì˜¬ë ¸ì„ ë•Œ ê¸€ì”¨ê°€ Boldì²´ë¡œ ë°”ë€ë‹ˆë‹¤
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		text.fontStyle = FontStyles.Bold;
 	}
 
-	// ¸¶¿ì½º¸¦ ¶ÃÀ» ¶§ ¶§ ±Û¾¾°¡ NormalÃ¼·Î ¹Ù²ò´Ï´Ù
+	// ë§ˆìš°ìŠ¤ë¥¼ ë—ì„ ë•Œ ë•Œ ê¸€ì”¨ê°€ Normalì²´ë¡œ ë°”ë€ë‹ˆë‹¤
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		text.fontStyle = FontStyles.Normal;
 	}
 
-	// Å¬¸¯ÇßÀ» ¶§ µî·ÏµÈ ÇÔ¼öµéÀ» È£ÃâÇÕ´Ï´Ù
+	// í´ë¦­í–ˆì„ ë•Œ ë“±ë¡ëœ í•¨ìˆ˜ë“¤ì„ í˜¸ì¶œí•©ë‹ˆë‹¤
 	public void OnPointerClick(PointerEventData eventData)
 	{
 		onClickEvent?.Invoke();

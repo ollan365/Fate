@@ -637,6 +637,10 @@ public class ResultManager : MonoBehaviour
                 Debug.Log("실과 바늘 획득 후 메모");
                 break;
 
+            case "ResultEndRoom1": // Room1 끝
+                SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
+                break;
+                
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
                 executableObjects["Box Unzoomed 2"].ExecuteAction();
                 break;
@@ -692,7 +696,6 @@ public class ResultManager : MonoBehaviour
             case "ResultUnderPhoto2Script": // 옷장 아래 사진에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_010");
                 break;
-
 
             // 미행 1
             case "ResultVillaScript": // 빌라에 대한 스크립트

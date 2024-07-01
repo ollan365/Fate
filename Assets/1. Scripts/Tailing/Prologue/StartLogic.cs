@@ -29,7 +29,7 @@ public class StartLogic : MonoBehaviour
     [Header("Prologue")]
     [SerializeField] private GameObject blockingPanel;
     [SerializeField] private GameObject background;
-    [SerializeField] private Sprite titleWithOutLogo, room1Side1BackgroundSprite;
+    [SerializeField] private Sprite titleWithLogo, titleWithOutLogo, room1Side1BackgroundSprite;
 
     private void Awake()
     {
@@ -81,6 +81,11 @@ public class StartLogic : MonoBehaviour
             start.SetActive(false);
             StartCoroutine(StartPrologue());
         }
+    }
+    public void OriginBackground()
+    {
+        Image backgroundImage = background.GetComponent<Image>();
+        backgroundImage.sprite = titleWithLogo;
     }
     public void LoadGame()
     {

@@ -1,7 +1,7 @@
 public static class Constants
 {
     // 씬의 종류
-    public enum SceneType { START, ROOM_1, FOLLOW_1, ROOM_2, FOLLOW_2 }
+    public enum SceneType { START, ROOM_1, FOLLOW_1, ROOM_2, FOLLOW_2, ENDING }
 
     // 대화창의 종류
     public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, FOLLOW_TUTORIAL }

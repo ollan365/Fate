@@ -31,6 +31,10 @@ public class SceneManager : MonoBehaviour
         // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
         MemoManager.Instance.SetMemoButton(false);
 
+        // 대사 출력 중이면 기다리기
+        while (DialogueManager.Instance.isDialogueActive)
+            yield return null;
+
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         int sceneIndex = -1, bgmIndex = -1;
@@ -60,7 +64,11 @@ public class SceneManager : MonoBehaviour
                 bgmIndex = BGM_FOLLOW;
                 sceneType = SceneType.FOLLOW_2;
                 break;
+            case SceneType.ENDING:
+                sceneIndex = 5;
+                break;
         }
+
         yield return new WaitForSeconds(1f);
 
         // 씬 로드
@@ -69,6 +77,7 @@ public class SceneManager : MonoBehaviour
         // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
         switch (sceneType)
         {
+            case SceneType.START:
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
                 MemoManager.Instance.isFollow = false;
@@ -83,11 +92,18 @@ public class SceneManager : MonoBehaviour
         }
 
         MemoManager.Instance.MemoButtonChange();
+        
+        if(sceneType != SceneType.START && loadSceneType != SceneType.ENDING) MemoManager.Instance.HideMemoButton(false);
+        
         MemoManager.Instance.SetMemoButton(true);
 
         // 배경음과 페이드 효과
-        SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
+        if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING) SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
+
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+
+        // 엔딩 로직이 끝났음을 알리기
+        if (ActionPointManager.Instance) ActionPointManager.Instance.isEnding = false;
     }
 }
 

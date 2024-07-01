@@ -401,10 +401,28 @@ public class DialogueManager : MonoBehaviour
         {
             var choiceButton = Instantiate(choicePrefab, choicesContainer[dialogueType.ToInt()]).GetComponent<Button>();
             var choiceText = choiceButton.GetComponentInChildren<TextMeshProUGUI>();
-            
+
             // 언어마다 다르게 불러오도록 변경 필요
             choiceText.text = scripts[choiceLine.ScriptID].GetScript();
             choiceButton.onClick.AddListener(() => OnChoiceSelected(choiceLine.Next));
+
+            // 만약 잠김 선택지(엔딩)라면 잠김으로 뜨도록 표시
+            if (scripts[choiceLine.ScriptID].Placeholder.Length > 0)
+            {
+                string[] effects = scripts[choiceLine.ScriptID].Placeholder.Split('/');
+                for (int i = 0; i < effects.Length; i++)
+                {
+                    switch (effects[i])
+                    {
+                        case "END":
+                            choiceButton.onClick.AddListener(() => EndingManager.Instance.ChoiceEnding());
+                            break;
+                        case "LOCK":
+                            choiceButton.onClick.RemoveAllListeners();
+                            break;
+                    }
+                }
+            }
         }
     }
 
