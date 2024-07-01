@@ -92,18 +92,13 @@ public class SceneManager : MonoBehaviour
         }
 
         MemoManager.Instance.MemoButtonChange();
-        
-        if(sceneType != SceneType.START && loadSceneType != SceneType.ENDING) MemoManager.Instance.HideMemoButton(false);
-        
-        MemoManager.Instance.SetMemoButton(true);
+
+        if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING) MemoManager.Instance.SetMemoButton(true);
 
         // 배경음과 페이드 효과
         if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING) SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
-
-        // 엔딩 로직이 끝났음을 알리기
-        if (ActionPointManager.Instance) ActionPointManager.Instance.isEnding = false;
     }
 }
 
