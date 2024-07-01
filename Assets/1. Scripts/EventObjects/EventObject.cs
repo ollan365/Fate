@@ -20,13 +20,13 @@ public class EventObject : MonoBehaviour
             if (isInquiry && !skipInquiry)
             {
                 GameManager.Instance.SetVariable("isInquiry", true);
-                GameManager.Instance.setCurrentInquiryObjectId(eventId);
+                GameManager.Instance.SetCurrentInquiryObjectId(eventId);
                 EventManager.Instance.CallEvent("Event_Inquiry");
             }
             else
             {
                 GameManager.Instance.SetVariable("isInquiry", false);
-                GameManager.Instance.setCurrentInquiryObjectId(null);
+                GameManager.Instance.SetCurrentInquiryObjectId(null);
                 EventManager.Instance.CallEvent(eventId);
             }
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,19 +24,21 @@ public class GameManager : MonoBehaviour
     public bool skipTutorial = false;
     public bool skipInquiry = false;
 
-    // 행동력 변수 변경될 때 호출될 이벤트
-    public delegate void ActionPointChangedEventHandler(int newActionPointValue);
-    public static event ActionPointChangedEventHandler OnActionPointChanged;
-
     // 조사시스템 테스트
     private string currentInquiryObjectId = "";
+    
+    // ************************* temporary members for action points *************************
+    public GameObject heartPrefab;
+    public GameObject heartParent;
+    public TextMeshProUGUI dayText;
+    public int actionPointsPerDay = 5;
 
-    public void setCurrentInquiryObjectId(string objectId)
+    public void SetCurrentInquiryObjectId(string objectId)
     {
         currentInquiryObjectId = objectId;
     }
 
-    public string getCurrentInquiryObjectId()
+    public string GetCurrentInquiryObjectId()
     {
         if (currentInquiryObjectId == null)
         {
@@ -173,16 +176,41 @@ public class GameManager : MonoBehaviour
 
         // 달력
 
-
-
-
-
         // 두번째 방탈출
-
 
         // 반짇고리
         variables["SewingBoxClick"] = 0;
         variables["SewingBoxCorrect"] = false;
+
+        // 침대 위 곰인형
+        variables["BedTeddyClick2"] = 0;
+
+        // 책상 위 스탠드
+        variables["LampClick2"] = 0;
+
+        // 책상 위 책 무더기
+        variables["UpDeskBookClick2"] = 0;
+
+        // 책상 밑 평범한 책
+        variables["UnderDeskBookClick2"] = 0;
+
+        // 책장 위 무너진 책들
+        variables["ShelfBookClick2"] = 0;
+
+        // 책장 위 곰인형들
+        variables["ShelfTeddyBearClick2"] = 0;
+
+        // 책장 위 깨진 시계
+        variables["ClockClick2"] = 0;
+
+        // 벽에 있는 평범한 포스터들
+        variables["NormalPosterClick2"] = 0;
+
+        // 옷장 위에 있는 상자
+        variables["ClosetBoxClick2"] = 0;
+
+        // 옷장 밑에 있는 사진들
+        variables["UnderPhotoClick2"] = 0;
 
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
@@ -281,7 +309,6 @@ public class GameManager : MonoBehaviour
         // 클럽 가드
         variables["GuardClick2"] = 0;
 
-
         if (isDebug) ShowVariables();
 
     }
@@ -328,10 +355,6 @@ public class GameManager : MonoBehaviour
         cnt--;
         SetVariable(variableName, cnt);
 
-        // 행동력 감소 시 행동력 감소함을 이벤트로 알림
-        if (variableName == "ActionPoint")
-            OnActionPointChanged?.Invoke(cnt);
-
         if (isDebug) ShowVariables();
     }
 
@@ -340,10 +363,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt -= count;
         SetVariable(variableName, cnt);
-
-        // 행동력 감소 시 행동력 감소함을 이벤트로 알림
-        if (variableName == "ActionPoint")
-            OnActionPointChanged?.Invoke(cnt);
 
         if (isDebug) ShowVariables();
     }
@@ -366,9 +385,9 @@ public class GameManager : MonoBehaviour
         List<string> keysToShow = new List<string>(new string[]
         {
          //   "FateBirthday"
-         "isTutorial",
-         "TutorialPhase"
-
+         // "isTutorial",
+         // "TutorialPhase"
+         "ActionPoint"
         });
         
         foreach (var item in variables)
@@ -387,4 +406,65 @@ public class GameManager : MonoBehaviour
 
         return isBusy;
     }
+    
+    // ************************* temporary methods for action points *************************
+    // create 5 hearts on screen on room start
+    public void CreateHearts()
+    {
+        int actionPoint = (int)GetVariable("ActionPoint");
+        // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
+        int heartCount = actionPoint % actionPointsPerDay;
+        if (heartCount == 0) heartCount = actionPointsPerDay;
+        for (int i = 0; i < heartCount; i++) 
+        {
+            // create heart on screen by creating instances of heart prefab under heart parent
+            Instantiate(heartPrefab, heartParent.transform);
+        }
+        
+        // change Day text on screen
+        dayText.text = $"Day {actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay}";
+    }
+    
+    public void DecrementActionPoint()
+    {
+        DecrementVariable("ActionPoint");
+        int actionPoint = (int)GetVariable("ActionPoint");
+        // pop heart on screen
+        GameObject heart = heartParent.transform.GetChild(actionPoint % actionPointsPerDay).gameObject;
+        // animate heart by triggering "break" animation
+        heart.GetComponent<Animator>().SetTrigger("Break");
+        
+        // deactivate heart after animation
+        StartCoroutine(DeactivateHeart(heart));
+        
+        if (actionPoint % actionPointsPerDay == 0)
+        {
+            // if all action points are used, load "Follow 1" scene
+            if (actionPoint == 0)
+            {
+                SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
+                return;
+            }
+            
+            ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
+
+            // refill hearts on screen after 2 seconds
+            StartCoroutine(RefillHearts());
+        }
+    }
+    
+    private IEnumerator DeactivateHeart(GameObject heart)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Destroy(heart);
+    }
+    
+    private IEnumerator RefillHearts()
+    {
+        yield return new WaitForSeconds(2f);
+        CreateHearts();
+        // turn off all ImageAndLockPanel objects and zoom out
+        RoomManager.Instance.ExitToRoot();
+    }
+    
 }

@@ -17,6 +17,7 @@ public class TutorialManager : MonoBehaviour
     
     public void SetSeenSides(int seenSideIndex)
     {
+        if (GameManager.Instance.skipTutorial) return;
         switch (currentPhase)
         {
             case 1:
@@ -81,15 +82,13 @@ public class TutorialManager : MonoBehaviour
         currentPhase++;
         GameManager.Instance.SetVariable("TutorialPhase", currentPhase);
     }
-
-
     
     private void EndTutorial()
     {
         GameManager.Instance.SetVariable("isTutorial", false);
         RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
 
-        MemoManager.Instance.HideMemoButton(false);
+        MemoManager.Instance.SetMemoButton(true);
         //// 휴식 버튼도 보이게 함
         //RoomManager.Instance.HideRestButton(false);
     }

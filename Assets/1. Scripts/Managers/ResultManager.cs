@@ -140,28 +140,19 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
-                GameManager.Instance.DecrementVariable("ActionPoint");
+                GameManager.Instance.DecrementActionPoint();
                 SaveManager.Instance.SaveGameData();
                 break;
-
-
-            //case "ResultRoomFirstDayAnswer":
-            //    ActionPointManager.Instance.isFirstDayAnswer = true;
-            //    DialogueManager.Instance.EndDialogue();
-
-            //    DialogueManager.Instance.StartDialogue("RoomEscapeS_002");
-            //    break;
-
 
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
                 //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
                 //    +" : "+ EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
-                if (!EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()))
+                if (!EventObjectManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
                     DialogueManager.Instance.EndDialogue();
 
-                    EventManager.Instance.CallEvent(GameManager.Instance.getCurrentInquiryObjectId());
+                    EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                     GameManager.Instance.SetVariable("isInquiry", false);
                 }
                 else
@@ -174,7 +165,7 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.SetVariable("isInquiry", true);
                 DialogueManager.Instance.EndDialogue();
 
-                EventManager.Instance.CallEvent(GameManager.Instance.getCurrentInquiryObjectId());
+                EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                 GameManager.Instance.SetVariable("isInquiry", false);
                 break;
 
@@ -212,7 +203,7 @@ public class ResultManager : MonoBehaviour
             case "ResultBlanketCheck": // 조사하기 버튼 누르면 침대 조사할 수 있게 함
                 DialogueManager.Instance.EndDialogue();
                 GameManager.Instance.SetVariable("isInquiry", true);
-                GameManager.Instance.setCurrentInquiryObjectId("EventBlanket");
+                GameManager.Instance.SetCurrentInquiryObjectId("EventBlanket");
                 EventManager.Instance.CallEvent("Event_Inquiry");
                 break;
                 
@@ -650,6 +641,61 @@ public class ResultManager : MonoBehaviour
                 SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
                 break;
                 
+            case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
+                executableObjects["Box Unzoomed 2"].ExecuteAction();
+                break;
+
+            case "Result_showZoomedClosetUnder": // 옷장 아래 영역 확대 화면으로 전환
+                executableObjects["ClosetUnder Unzoomed 2"].ExecuteAction();
+                break;
+
+            case "Result_showZoomedMedicine": // 약 확대 화면으로 전환
+                executableObjects["Medicine Unzoomed 1"].ExecuteAction();
+                break;
+
+            case "Result_showZoomedShoppingBags": // 쇼핑백 확대 화면으로 전환
+                executableObjects["ShoppingBags Unzoomed 3"].ExecuteAction();
+                break;
+
+            case "ResultBedTeddy2Script": // 침대 위 곰인형에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_001");
+                break;
+
+            case "ResultStandLight2Script": // 스탠드에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_002");
+                break;
+
+            case "ResultUpDeskBook2Script": // 책상 위 책 무더기에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_003");
+                break;
+
+            case "ResultUnderDeskBook2Script": // 책상 아래 책에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_004");
+                break;
+
+            case "ResultShelfBook2Script": // 책장 위 책에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_005");
+                break;
+
+            case "ResultShelfTeddyBear2Script": // 책장 위 곰인형에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_006");
+                break;
+
+            case "ResultClock2Script": // 책장 위 시계에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_007");
+                break;
+
+            case "ResultNormalPoster2Script": // 평범한 포스터에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_008");
+                break;
+
+            case "ResultClosetBox2Script": // 옷장 위 상자에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_009");
+                break;
+
+            case "ResultUnderPhoto2Script": // 옷장 아래 사진에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_010");
+                break;
 
             // 미행 1
             case "ResultVillaScript": // 빌라에 대한 스크립트

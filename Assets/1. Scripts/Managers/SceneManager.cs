@@ -8,6 +8,7 @@ public class SceneManager : MonoBehaviour
     private SceneType sceneType;
     public SceneType CurrentScene { get => sceneType; }
     public int roomSideIndex = 0;
+    
     void Awake()
     {
         if (Instance == null)
@@ -28,7 +29,7 @@ public class SceneManager : MonoBehaviour
     private IEnumerator ChangeScene(SceneType loadSceneType)
     {
         // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
-        MemoManager.Instance.HideMemoButton(true);
+        MemoManager.Instance.SetMemoButton(false);
 
         // 대사 출력 중이면 기다리기
         while (DialogueManager.Instance.isDialogueActive)
@@ -91,7 +92,10 @@ public class SceneManager : MonoBehaviour
         }
 
         MemoManager.Instance.MemoButtonChange();
+        
         if(sceneType != SceneType.START && loadSceneType != SceneType.ENDING) MemoManager.Instance.HideMemoButton(false);
+        
+        MemoManager.Instance.SetMemoButton(true);
 
         // 배경음과 페이드 효과
         if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING) SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
