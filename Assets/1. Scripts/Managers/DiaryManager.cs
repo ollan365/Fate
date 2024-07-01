@@ -16,6 +16,9 @@ public class DiaryManager : MonoBehaviour
 {
     public static MemoManager Instance { get; private set; }
     private TextAsset diaryPagesCSV;
+    
+    [SerializeField] private GameObject flipLeftButton;
+    [SerializeField] private GameObject flipRightButton;
 
     private Dictionary<string, string> diaryPages = new Dictionary<string, string>();
     [SerializeField] private TextMeshProUGUI leftPage;
@@ -65,6 +68,9 @@ public class DiaryManager : MonoBehaviour
     {
         DisplayPage(PageType.Left, currentPage);
         DisplayPage(PageType.Right, currentPage + 1);
+        
+        flipLeftButton.SetActive(currentPage > 0);
+        flipRightButton.SetActive(currentPage < diaryPages.Count - 1);
     }
 
     public void ParseDiaryPages()

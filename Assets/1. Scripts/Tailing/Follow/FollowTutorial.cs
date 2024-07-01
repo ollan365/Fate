@@ -33,7 +33,7 @@ public class FollowTutorial : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         // 메모 버튼을 화면에서 사라지게 한다
-        MemoManager.Instance.HideMemoButton(true);
+        MemoManager.Instance.SetMemoButton(false);
         highlightPanel.SetActive(false);
 
         blockingPanel.SetActive(true);
@@ -133,7 +133,7 @@ public class FollowTutorial : MonoBehaviour
         followTutorialCanvas.SetActive(false);
         blockingPanel.SetActive(false);
 
-        MemoManager.Instance.HideMemoButton(false);
+        MemoManager.Instance.SetMemoButton(true);
         FollowManager.Instance.isTutorial = false;
         FollowManager.Instance.canClick = true;
         frontCanvas.SetActive(true);

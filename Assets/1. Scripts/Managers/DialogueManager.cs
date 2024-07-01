@@ -247,9 +247,6 @@ public class DialogueManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.OnExitButtonClick();
             }
             RoomManager.Instance.SetButtons();
-
-            // 조사하는 대화창 끝나면 하트가 0일 시 5개 다 채움
-            ActionPointManager.Instance.HeartSetAllCharge();
         }
         
     }

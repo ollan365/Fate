@@ -127,7 +127,7 @@ public class FollowManager : MonoBehaviour
         isEnd = true;
         canClick = false;
         moveAndStopButton.SetActive(false);
-        MemoManager.Instance.HideMemoButton(true);
+        MemoManager.Instance.SetMemoButton(false);
 
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) StartCoroutine(followEnd.EndFollow());
     }
