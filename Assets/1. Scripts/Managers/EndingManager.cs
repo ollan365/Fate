@@ -29,22 +29,6 @@ public class EndingManager : MonoBehaviour
 
     public void StartEnding()
     {
-        if (SceneManager.Instance.CurrentScene == SceneType.ROOM_1)
-        {
-            StartCoroutine(StartEndingCoroutine());
-        }
-    }
-
-    private IEnumerator StartEndingCoroutine()
-    {
-        // 대사 출력 중이면 기다리기
-        while (DialogueManager.Instance.isDialogueActive)
-            yield return null;
-        yield return new WaitForSeconds(2f);
-
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
-        yield return new WaitForSeconds(1f);
-        
         // 배경 바꾸기
         switch (SceneManager.Instance.CurrentScene)
         {
