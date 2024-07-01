@@ -8221,8 +8221,9 @@ GameObject:
   - component: {fileID: 1017343367}
   - component: {fileID: 1017343366}
   - component: {fileID: 1017343369}
+  - component: {fileID: 1017343370}
   m_Layer: 6
-  m_Name: blankets
+  m_Name: Bed(blankets)
   m_TagString: InquiryObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8291,8 +8292,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1017343369}
-        m_TargetAssemblyTypeName: Blankets, Assembly-CSharp
+      - m_Target: {fileID: 1017343370}
+        m_TargetAssemblyTypeName: Bed, Assembly-CSharp
         m_MethodName: OnMouseDown
         m_Mode: 1
         m_Arguments:
@@ -8356,6 +8357,21 @@ MonoBehaviour:
   eventId: EventBlanket
   sideNum: 3
   isInquiry: 1
+--- !u!114 &1017343370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017343364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2cb0380caeb9254896ad70b08f33429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: EventBed
+  sideNum: 1
+  isInquiry: 0
 --- !u!1 &1024176503
 GameObject:
   m_ObjectHideFlags: 0

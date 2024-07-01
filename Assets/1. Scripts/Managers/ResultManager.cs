@@ -637,6 +637,61 @@ public class ResultManager : MonoBehaviour
                 Debug.Log("실과 바늘 획득 후 메모");
                 break;
 
+            case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
+                executableObjects["Box Unzoomed 2"].ExecuteAction();
+                break;
+
+            case "Result_showZoomedClosetUnder": // 옷장 아래 영역 확대 화면으로 전환
+                executableObjects["ClosetUnder Unzoomed 2"].ExecuteAction();
+                break;
+
+            case "Result_showZoomedMedicine": // 약 확대 화면으로 전환
+                executableObjects["Medicine Unzoomed 1"].ExecuteAction();
+                break;
+
+            case "Result_showZoomedShoppingBags": // 쇼핑백 확대 화면으로 전환
+                executableObjects["ShoppingBags Unzoomed 3"].ExecuteAction();
+                break;
+
+            case "ResultBedTeddy2Script": // 침대 위 곰인형에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_001");
+                break;
+
+            case "ResultStandLight2Script": // 스탠드에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_002");
+                break;
+
+            case "ResultUpDeskBook2Script": // 책상 위 책 무더기에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_003");
+                break;
+
+            case "ResultUnderDeskBook2Script": // 책상 아래 책에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_004");
+                break;
+
+            case "ResultShelfBook2Script": // 책장 위 책에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_005");
+                break;
+
+            case "ResultShelfTeddyBear2Script": // 책장 위 곰인형에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_006");
+                break;
+
+            case "ResultClock2Script": // 책장 위 시계에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_007");
+                break;
+
+            case "ResultNormalPoster2Script": // 평범한 포스터에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_008");
+                break;
+
+            case "ResultClosetBox2Script": // 옷장 위 상자에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_009");
+                break;
+
+            case "ResultUnderPhoto2Script": // 옷장 아래 사진에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_010");
+                break;
 
 
             // 미행 1
