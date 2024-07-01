@@ -69,7 +69,11 @@ public class RoomManager : MonoBehaviour
 
 
         // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
-        if (!GameManager.Instance.skipTutorial && EditorSceneManager.GetActiveScene().name == "Room1") DialogueManager.Instance.StartDialogue("Prologue_015");
+        if (EditorSceneManager.GetActiveScene().name == "Room1")
+        {
+            if(!GameManager.Instance.skipTutorial)
+                DialogueManager.Instance.StartDialogue("Prologue_015");
+        }
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
@@ -89,7 +93,11 @@ public class RoomManager : MonoBehaviour
         SetMoveButtons(true);
 
         // 튜토리얼 1 페이즈 관련
-        tutorialManager.SetSeenSides(newSideIndex);
+        if (EditorSceneManager.GetActiveScene().name == "Room1")
+        {
+            if(!GameManager.Instance.skipTutorial)
+                tutorialManager.SetSeenSides(newSideIndex);
+        }
     }
 
     public void OnExitButtonClick()
