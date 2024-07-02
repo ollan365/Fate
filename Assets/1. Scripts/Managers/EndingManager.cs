@@ -40,6 +40,11 @@ public class EndingManager : MonoBehaviour
         }
         blockingPanel.SetActive(true);
     }
+    public void EndEnding()
+    {
+        GameManager.Instance.IncrementVariable("EndingCollect");
+        SaveManager.Instance.InitGameData();
+    }
     private IEnumerator Ending_Room1()
     {
         yield return new WaitForSeconds(2.5f);

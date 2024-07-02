@@ -12,6 +12,7 @@ public class SaveManager : MonoBehaviour
     private string GameDataFileName = "GameData.json";
 
     // --- 저장용 클래스 변수 --- //
+    private SaveData initData;
     public SaveData data;
 
     void Awake()
@@ -26,11 +27,33 @@ public class SaveManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    public bool CheckGameData()
+    public void SaveInitGameData()
     {
-        if (!File.Exists(Application.persistentDataPath + "/" + GameDataFileName)) return false;
-        else return true;
+        initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
+    }
+    public void InitGameData()
+    {
+        // 엔딩을 본 개수를 제외하고 저장된 데이터 초기화하여 저장
+        initData.endingCollectCount = (int)GameManager.Instance.GetVariable("EndingCollect");
+
+        string ToJsonData = JsonUtility.ToJson(initData, true);
+        string filePath = Application.persistentDataPath + "/" + GameDataFileName;
+
+        File.WriteAllText(filePath, ToJsonData);
+
+        LoadGameData();
+    }
+    public int CheckGameData()
+    {
+        string filePath = Application.persistentDataPath + "/" + GameDataFileName;
+
+        if (!File.Exists(filePath)) return -1; // 저장된 게임 데이터 없음
+
+        string FromJsonData = File.ReadAllText(filePath);
+        data = JsonUtility.FromJson<SaveData>(FromJsonData);
+
+        if (data.sceneType == SceneType.START) return 0; // 시작 씬에서 종료된 경우 (엔딩 직후)
+        else return 1;
     }
     // 불러오기
     public void LoadGameData()
@@ -46,6 +69,7 @@ public class SaveManager : MonoBehaviour
         // 저장된 내용 로드
         SceneManager.Instance.roomSideIndex = data.lastSideIndex;
         GameManager.Instance.Variables = data.variables;
+        GameManager.Instance.SetVariable("EndingCollect", data.endingCollectCount);
         MemoManager.Instance.SavedMemoList = data.savedMemoList;
 
         // 게임 데이터에 따른 씬으로 이동
@@ -81,6 +105,8 @@ public class SaveManager : MonoBehaviour
 [System.Serializable]
 public class SaveData
 {
+    public int endingCollectCount; // 엔딩의 개수
+
     public SceneType sceneType; // 어느 씬에서 끝났는지
     public int lastSideIndex;
     public string variablesToJson; //  Dictionary<string, string> 을 json 형태로 저장
@@ -93,6 +119,8 @@ public class SaveData
 
     public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, List<string>[] memo)
     {
+        endingCollectCount = (int)GameManager.Instance.GetVariable("EndingCollect");
+
         sceneType = type;
         lastSideIndex = currentSideIndex;
         variablesToJson = ToJson(variables);
