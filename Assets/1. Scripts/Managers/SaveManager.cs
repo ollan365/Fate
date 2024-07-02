@@ -114,8 +114,11 @@ public class SaveData
     {
         get => ToDictionary(variablesToJson);
     }
-
-    public List<string>[] savedMemoList; // Memo 저장
+    public string memoToJson;
+    public List<string>[] savedMemoList // Memo 저장
+    {
+        get => ToListArray(memoToJson);
+    }
 
     public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, List<string>[] memo)
     {
@@ -124,7 +127,7 @@ public class SaveData
         sceneType = type;
         lastSideIndex = currentSideIndex;
         variablesToJson = ToJson(variables);
-        savedMemoList = memo;
+        memoToJson = ToJson(memo);
     }
 
     private string ToJson(Dictionary<string, object> dictionary)
@@ -158,10 +161,18 @@ public class SaveData
 
         return JsonConvert.SerializeObject(stringVariables, Formatting.Indented);
     }
+    private string ToJson(List<string>[] array)
+    {
+        return JsonConvert.SerializeObject(array, Formatting.Indented);
+    }
+    private List<string>[] ToListArray(string json)
+    {
+        return JsonConvert.DeserializeObject<List<string>[]>(json);
+    }
     private Dictionary<string, object> ToDictionary(string json)
     {
         // JSON 문자열을 Dictionary<string, string>으로 역직렬화
-        Dictionary<string, string> stringVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(variablesToJson);
+        Dictionary<string, string> stringVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 
         // Dictionary<string, object>을 생성하여 변환된 값들을 추가
         Dictionary<string, object> objectVariables = new();

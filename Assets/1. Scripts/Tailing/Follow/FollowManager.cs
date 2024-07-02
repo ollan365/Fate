@@ -135,11 +135,6 @@ public class FollowManager : MonoBehaviour
     {
         StartCoroutine(followFinishMiniGame.FinishGameStart(miniGame.heartCount));
     }
-    public void FollowEnd()
-    {
-        // 저장도 해야함
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) SceneManager.Instance.LoadScene(SceneType.ROOM_2);
-    }
 
     public int Int(FollowExtra extraType)
     {

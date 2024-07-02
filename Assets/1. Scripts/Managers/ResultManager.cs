@@ -831,7 +831,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultFollowEnd": // 미행 끝
-                FollowManager.Instance.FollowEnd();
+                SceneManager.Instance.LoadScene(SceneType.ENDING);
                 break;
 
             case "ResultVillaScript2": // 미행2 빌라에 대한 스크립트
