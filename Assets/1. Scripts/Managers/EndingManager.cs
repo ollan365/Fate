@@ -29,6 +29,9 @@ public class EndingManager : MonoBehaviour
 
     public void StartEnding()
     {
+        MemoManager.Instance.isFollow = false;
+        DialogueManager.Instance.dialogueType = DialogueType.ROOM;
+
         // 배경 바꾸기
         switch (SceneManager.Instance.CurrentScene)
         {
@@ -37,8 +40,19 @@ public class EndingManager : MonoBehaviour
                 background.color = Color.white;
                 StartCoroutine(Ending_Room1());
                 break;
+            case SceneType.FOLLOW_1:
+                StartCoroutine(Ending_Follow1());
+                break;
+            case SceneType.ROOM_2:
+                StartCoroutine(Ending_Room2());
+                break;
         }
         blockingPanel.SetActive(true);
+    }
+    public void EndEnding()
+    {
+        GameManager.Instance.IncrementVariable("EndingCollect");
+        SaveManager.Instance.InitGameData();
     }
     private IEnumerator Ending_Room1()
     {
@@ -48,6 +62,24 @@ public class EndingManager : MonoBehaviour
             DialogueManager.Instance.StartDialogue("FollowTutorial_001");
         else
             DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01");
+    }
+    private IEnumerator Ending_Follow1()
+    {
+        yield return new WaitForSeconds(2.5f);
+
+        if (MemoManager.Instance.UnlockNextScene()) // 메모의 개수가 충분할 때
+            SceneManager.Instance.LoadScene(SceneType.ROOM_2);
+        else
+            DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
+    }
+    private IEnumerator Ending_Room2()
+    {
+        yield return new WaitForSeconds(2.5f);
+
+        if (MemoManager.Instance.UnlockNextScene()) // 메모의 개수가 충분할 때
+            SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
+        else
+            SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
     }
     public void ChoiceEnding()
     {

@@ -101,7 +101,11 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("Prologue_007");
                 break;
-            
+
+            case "ResultReturn":
+                EndingManager.Instance.EndEnding();
+                break;
+
             case "ResultCloseEyes": // 눈 깜빡이는 효과
                 StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
                 break;
@@ -827,7 +831,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultFollowEnd": // 미행 끝
-                FollowManager.Instance.FollowEnd();
+                SceneManager.Instance.LoadScene(SceneType.ENDING);
                 break;
 
             case "ResultVillaScript2": // 미행2 빌라에 대한 스크립트

@@ -442,7 +442,7 @@ public class GameManager : MonoBehaviour
             // if all action points are used, load "Follow 1" scene
             if (actionPoint == 0)
             {
-                SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
+                SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
                 return;
             }
             

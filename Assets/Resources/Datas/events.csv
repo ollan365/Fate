@@ -6,6 +6,7 @@ EventFirstPrologue,1회차 한정 스크립트,1회차 한정 스크립트 스�
 EventFirstQuestions,1회차 한정 질문,1회차 한정 이름 질문,,ConditionEnding_0,ResultPrologueQuestions,
 EventFirstQuestions,1회차 한정 질문,1회차 엔딩 이후 질문 스킵,,ConditionEnding_1,ResultCommonPrologueB,
 ,,,,,,
+EventDeath,,,,,ResultReturn,나현 추가
 ,,,,,,
 Event_001,PrologueStart,눈을 뜸.,,,ResultCloseEyes/ResultCommonPrologueA,눈 깜빡이는 연출
 Event_002,PrologueFinsh,잠들었다가 다시 눈을 뜸,,,ResultCloseEyes,눈 깜빡이는 연출
@@ -102,7 +103,7 @@ EventClosetBox,옷장 위 상자,상자를 열어보지 않고 열쇠 있는 상
 EventStorageZoom,확대 안 된 서랍장,확대 되지 않은 상태에서 서랍장을 클릭,,,ResultCabinetZoom,30일 추가
 EventStorageClosed,닫힌 서랍장 문,닫힌 서랍장 문을 처음 클릭,AND,ConditionCabinetDoorsClosed/ConditionCabinetDoorsFirstClick,ResultTimePass/ResultCabinetDoorsOpen/ResultCabinetDoorsOpenScript/Result_IncrementClosedCabinetDoorsClick/Result_InverseCabinetDoorsClosed,
 EventStorageClosed,닫힌 서랍장 문,닫힌 서랍장 문을 다시 클릭,AND,ConditionCabinetDoorsClosed/ConditionCabinetDoorsManyClick,ResultCabinetDoorsOpen/Result_IncrementClosedCabinetDoorsClick/Result_InverseCabinetDoorsClosed,
-EventStorageOpen,열린 서랍장 문,열린 서랍장 문을 클릭,,ConditionCabinetDoorsOpen,ResultTimePass/ResultCabinetDoorsClosed/Result_InverseCabinetDoorsClosed,
+EventStorageOpen,열린 서랍장 문,열린 서랍장 문을 클릭,,ConditionCabinetDoorsOpen,ResultCabinetDoorsClosed/Result_InverseCabinetDoorsClosed,
 ,,,,,,
 EventCalendar,서랍장 내 달력,달력 관련 이벤트를 모두 보지 않은 상태에서 달력을 클릭,,ConditionCalendarCluesNotFound,ResultTimePass/ResultCalendarOpen,
 EventCalendar,서랍장 내 달력,달력 관련 이벤트를 모두 본 상태에서 달력을 클릭,,ConditionCalendarCluesFound,ResultClueCompleted,
@@ -196,12 +197,21 @@ EventUnderPhoto2,옷장 밑 널부러진 사진,옷장 밑 사진들을 처음 �
 EventUnderPhoto2,옷장 밑 널부러진 사진,옷장 밑 사진들을 처음 누름,,ConditionUnderPhoto2FristClick,ResultUnderPhoto2Script/ResultTimePass,
 ,,,,,,
 EventBoxZoom,,확대 되지 않은 상태에서 옷장 위 상자를 클릭,,,Result_showZoomedBox,
-,,,,,,
 EventClosetUnderZoom,,확대 되지 않은 상태에서 옷장 아래 영역을 클릭,,,Result_showZoomedClosetUnder,
-,,,,,,
 EventMedicineZoom,,확대 되지 않은 상태에서 약을 클릭,,,Result_showZoomedMedicine,
-,,,,,,
 EventShoppingBagsZoom,,확대 되지 않은 상태에서 쇼핑백을 클릭,,,Result_showZoomedShoppingBags,
+,,,,,,
+EventWardrobeUpClosed,닫힌 옷장 서랍장 위칸,닫힌 옷장 서랍장 위칸을 처음 클릭,AND,ConditionWardrobeUpDrawersClosed/ConditionWardrobeUpDrawersFirstClick,ResultWardrobeUpDrawersOpen/ResultWardrobeUpDrawersOpenScript/Result_IncrementClosedWardrobeUpDrawersClick/Result_InverseWardrobeUpDrawersClosed,
+EventWardrobeUpClosed,닫힌 옷장 서랍장 위칸,닫힌 옷장 서랍장 위칸을 다시 클릭,AND,ConditionWardrobeUpDrawersClosed/ConditionWardrobeUpDrawersManyClick,ResultWardrobeUpDrawersOpen/Result_IncrementClosedWardrobeUpDrawersClick/Result_InverseWardrobeUpDrawersClosed,
+EventWardrobeUpOpen,열린 옷장 서랍장 위칸,열린 옷장 서랍장 위칸을 클릭,,ConditionWardrobeUpDrawersOpen,ResultWardrobeUpDrawersClosed/Result_InverseWardrobeUpDrawersClosed,
+,,,,,,
+EventWardrobeDownClosed,닫힌 옷장 서랍장 아래칸,닫힌 옷장 서랍장 아래칸을 처음 클릭,AND,ConditionWardrobeDownDrawersClosed/ConditionWardrobeDownDrawersFirstClick,ResultWardrobeDownDrawersOpen/ResultWardrobeDownDrawersOpenScript/Result_IncrementClosedWardrobeDownDrawersClick/Result_InverseWardrobeDownDrawersClosed,
+EventWardrobeDownClosed,닫힌 옷장 서랍장 아래칸,닫힌 옷장 서랍장 아래칸을 다시 클릭,AND,ConditionWardrobeDownDrawersClosed/ConditionWardrobeDownDrawersManyClick,ResultWardrobeDownDrawersOpen/Result_IncrementClosedWardrobeDownDrawersClick/Result_InverseWardrobeDownDrawersClosed,
+EventWardrobeDownOpen,열린 옷장 서랍장 아래칸,열린 옷장 서랍장 아래칸을 클릭,,ConditionWardrobeDownDrawersOpen,ResultWardrobeDownDrawersClosed/Result_InverseWardrobeDownDrawersClosed,
+,,,,,,
+EventWardrobeUpClothes,위칸 옷더미 테스트,테스트용,,,ResultWardrobeUpClothes2Script,테스트
+EventDreamDiary,위칸 꿈일기 테스트,테스트용,,,ResultDreamDiary2Script,테스트
+EventWardrobeDownClothes,아래칸 옷더미 테스트,테스트용,,,ResultWardrobeUnderClothes2Script,테스트
 ,,,,,,
 EventEndRoom1,,,,,ResultEndRoom1,
 EventFollowVilla,필연이 갇힌 빌라,빌라를 처음 클릭,,ConditionVillaClick,ResultVillaScript,여기부터 미행
