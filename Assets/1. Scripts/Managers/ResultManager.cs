@@ -697,6 +697,49 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape2_010");
                 break;
 
+
+            case "ResultWardrobeUpDrawersOpenScript": // 옷장 서랍장 위칸이 열리는 스크립트
+                //DialogueManager.Instance.StartDialogue("RoomEscape_026");
+                break;
+
+            case "ResultWardrobeUpDrawersOpen": // 옷장 서랍장 위칸이 열림
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
+                executableObjects["ClosedWardrobeUpDrawers"].ExecuteAction();
+                break;
+
+            case "ResultWardrobeUpDrawersClosed": // 옷장 서랍장 위칸이 닫힘
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
+                executableObjects["OpenWardrobeUpDrawers"].ExecuteAction();
+                break;
+
+            case "ResultWardrobeDownDrawersOpenScript": // 옷장 서랍장 아래칸이 열리는 스크립트
+                //DialogueManager.Instance.StartDialogue("RoomEscape_026");
+                break;
+
+            case "ResultWardrobeDownDrawersOpen": // 옷장 서랍장 아래칸이 열림
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
+                executableObjects["ClosedWardrobeDownDrawers"].ExecuteAction();
+                break;
+
+            case "ResultWardrobeDownDrawersClosed": // 옷장 서랍장 아래칸이 닫힘
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
+                executableObjects["OpenWardrobeDownDrawers"].ExecuteAction();
+                break;
+
+            //테스트용
+            case "ResultWardrobeUpClothes2Script": // 옷장 서랍장 위칸 옷더미 조사 스크립트 테스트용
+                Debug.Log("위칸 옷더미 조사");
+                break;
+
+            case "ResultDreamDiary2Script": // 옷장 서랍장 위칸 꿈일기 조사 스크립트 테스트용
+                Debug.Log("꿈일기 조사");
+                break;
+
+            case "ResultWardrobeUnderClothes2Script": // 옷장 서랍장 아래칸 옷더미 조사 스크립트 테스트용
+                Debug.Log("아래칸 옷더미 조사");
+                break;
+
+
             // 미행 1
             case "ResultVillaScript": // 빌라에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("Follow_002");

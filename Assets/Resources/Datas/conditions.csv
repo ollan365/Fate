@@ -131,10 +131,20 @@ ConditionClosetBox2ManyClick,방탈출2 옷장 위 박스를 다시 클릭,Close
 ConditionUnderPhoto2FristClick,방탈출2 옷장 밑 사진 처음 클릭,UnderPhotoClick2,==,0
 ConditionUnderPhoto2ManyClick,방탈출2 옷장 밑 사진 처음 클릭,UnderPhotoClick2,>,0
 ,,,,
+ConditionWardrobeUpDrawersOpen,방탈출2 옷장 서랍장 위칸이 열려 있는 상태,WardrobeUpDrawersClosed,==,FALSE
+ConditionWardrobeUpDrawersClosed,방탈출2 옷장 서랍장 위칸이 닫혀 있는 상태,WardrobeUpDrawersClosed,==,TRUE
+ConditionWardrobeUpDrawersFirstClick,방탈출2 닫힌 옷장 서랍장 위칸을 클릭한 적 없는 상태,ClosedWardrobeUpDrawersClick,==,0
+ConditionWardrobeUpDrawersManyClick,방탈출2 닫힌 옷장 서랍장 위칸을 한번 이상 클릭한 상태,ClosedWardrobeUpDrawersClick,>,0
+ConditionWardrobeDownDrawersOpen,방탈출2 옷장 서랍장 아래칸이 열려 있는 상태,WardrobeDownDrawersClosed,==,FALSE
+ConditionWardrobeDownDrawersClosed,방탈출2 옷장 서랍장 아래칸이 닫혀 있는 상태,WardrobeDownDrawersClosed,==,TRUE
+ConditionWardrobeDownDrawersFirstClick,방탈출2 닫힌 옷장 서랍장 아래칸을 클릭한 적 없는 상태,ClosedWardrobeDownDrawersClick,==,0
+ConditionWardrobeDownDrawersManyClick,방탈출2 닫힌 옷장 서랍장 아래칸을 한번 이상 클릭한 상태,ClosedWardrobeDownDrawersClick,>,0
+,,,,
 ConditionSewingBoxFirstClick,반짇고리를 처음 클릭,SewingBoxClick,==,0
 ConditionSewingBoxManyClick,반짇고리를 한 번 이상 클릭,SewingBoxClick,>,0
 ConditionSewingBoxCorrect,반짇고리 퍼즐을 맞춘 상태. 즉 실과 바늘을 찾은 상태,SewingBoxCorrect,==,TRUE
 ConditionSewingBoxNotCorrect,반짇고리 퍼즐을 틀린 상태. 즉 실과 바늘을 찾지 못한 상태,SewingBoxCorrect,==,FALSE
+,,,,
 ,,,,
 ConditionVillaClick,빌라를 처음 클릭,VillaClick,>=,0
 ConditionBreadClick,2층 빵집을클릭,BreadClick,>=,0
