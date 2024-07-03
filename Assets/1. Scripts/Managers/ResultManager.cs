@@ -595,6 +595,10 @@ public class ResultManager : MonoBehaviour
                 executableObjects["DeskShelf Unzoomed 2"].ExecuteAction();
                 break;
 
+            case "ResultEndRoom1": // Room1 끝
+                SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
+                break;
+
 
             // 방탈출 2
             case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
@@ -604,9 +608,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxScript":   // 반짇고리에 대한 설명
-                DialogueManager.Instance.StartDialogue("SewingBoxTestScript");
-
-                Debug.Log("반짇고리에 대한 설명");
+                DialogueManager.Instance.StartDialogue("RoomEscape2_018");
                 break;
 
             case "ResultSewingBoxSystemActivartion": // 반짇고리 퍼즐 시스템 활성화
@@ -630,19 +632,13 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedleScript":   // 실과 바늘을 획득 후 스크립트
-                //DialogueManager.Instance.StartDialogue("");
-
-                Debug.Log("실과 바늘을 획득 후 스크립트");
+                DialogueManager.Instance.StartDialogue("RoomEscape2_019");
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedleMemo":   // 실과 바늘 획득 후 메모
                 //MemoManager.Instance.AddMemo("R1Memo_003");
 
                 Debug.Log("실과 바늘 획득 후 메모");
-                break;
-
-            case "ResultEndRoom1": // Room1 끝
-                SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
                 break;
                 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
@@ -693,6 +689,9 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape2_008");
                 break;
 
+                // 별 모양 스티커에 대한 설명
+            //DialogueManager.Instance.StartDialogue("RoomEscape2_017");
+
             case "ResultClosetBox2Script": // 옷장 위 상자에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_009");
                 break;
@@ -700,6 +699,49 @@ public class ResultManager : MonoBehaviour
             case "ResultUnderPhoto2Script": // 옷장 아래 사진에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_010");
                 break;
+
+
+            case "ResultWardrobeUpDrawersOpenScript": // 옷장 서랍장 위칸이 열리는 스크립트
+                //DialogueManager.Instance.StartDialogue("RoomEscape_026");
+                break;
+
+            case "ResultWardrobeUpDrawersOpen": // 옷장 서랍장 위칸이 열림
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
+                executableObjects["ClosedWardrobeUpDrawers"].ExecuteAction();
+                break;
+
+            case "ResultWardrobeUpDrawersClosed": // 옷장 서랍장 위칸이 닫힘
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
+                executableObjects["OpenWardrobeUpDrawers"].ExecuteAction();
+                break;
+
+            case "ResultWardrobeDownDrawersOpenScript": // 옷장 서랍장 아래칸이 열리는 스크립트
+                //DialogueManager.Instance.StartDialogue("RoomEscape_026");
+                break;
+
+            case "ResultWardrobeDownDrawersOpen": // 옷장 서랍장 아래칸이 열림
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
+                executableObjects["ClosedWardrobeDownDrawers"].ExecuteAction();
+                break;
+
+            case "ResultWardrobeDownDrawersClosed": // 옷장 서랍장 아래칸이 닫힘
+                SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
+                executableObjects["OpenWardrobeDownDrawers"].ExecuteAction();
+                break;
+
+            //테스트용
+            case "ResultWardrobeUpClothes2Script": // 옷장 서랍장 위칸 옷더미 조사 스크립트 테스트용
+                Debug.Log("위칸 옷더미 조사");
+                break;
+
+            case "ResultDreamDiary2Script": // 옷장 서랍장 위칸 꿈일기 조사 스크립트 테스트용
+                Debug.Log("꿈일기 조사");
+                break;
+
+            case "ResultWardrobeUnderClothes2Script": // 옷장 서랍장 아래칸 옷더미 조사 스크립트 테스트용
+                Debug.Log("아래칸 옷더미 조사");
+                break;
+
 
             // 미행 1
             case "ResultVillaScript": // 빌라에 대한 스크립트

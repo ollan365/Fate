@@ -212,6 +212,13 @@ public class GameManager : MonoBehaviour
         // 옷장 밑에 있는 사진들
         variables["UnderPhotoClick2"] = 0;
 
+        // 옷장 서랍장
+        // 위칸
+        variables["WardrobeUpDrawersClosed"] = true;
+        variables["ClosedWardrobeUpDrawersClick"] = 0;
+        // 아래칸
+        variables["WardrobeDownDrawersClosed"] = true;
+        variables["ClosedWardrobeDownDrawersClick"] = 0;
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
