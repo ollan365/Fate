@@ -57,10 +57,10 @@ public class StartLogic : MonoBehaviour
                 float angle = Mathf.Lerp(0, 360, t / 60);
                 second.transform.rotation = Quaternion.Euler(0, 0, -angle);
 
-                if (background.GetComponent<Image>().sprite == titleWithOutLogo) // 다른 판넬(옵션 등)이 켜지면 투명해지도록 만든다
-                    second.GetComponent<Image>().color = new Color(1, 1, 1, 0);
-                else
+                if (background.GetComponent<Image>().sprite == titleWithLogo)
                     second.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                else // 다른 판넬(옵션 등)이 켜지면 투명해지도록 만든다
+                    second.GetComponent<Image>().color = new Color(1, 1, 1, 0);
 
                 yield return null; // 한 프레임 기다림
             }
