@@ -591,6 +591,10 @@ public class ResultManager : MonoBehaviour
                 executableObjects["DeskShelf Unzoomed 2"].ExecuteAction();
                 break;
 
+            case "ResultEndRoom1": // Room1 끝
+                SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
+                break;
+
 
             // 방탈출 2
             case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
@@ -600,9 +604,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxScript":   // 반짇고리에 대한 설명
-                DialogueManager.Instance.StartDialogue("SewingBoxTestScript");
-
-                Debug.Log("반짇고리에 대한 설명");
+                DialogueManager.Instance.StartDialogue("RoomEscape2_018");
                 break;
 
             case "ResultSewingBoxSystemActivartion": // 반짇고리 퍼즐 시스템 활성화
@@ -626,19 +628,13 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedleScript":   // 실과 바늘을 획득 후 스크립트
-                //DialogueManager.Instance.StartDialogue("");
-
-                Debug.Log("실과 바늘을 획득 후 스크립트");
+                DialogueManager.Instance.StartDialogue("RoomEscape2_019");
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedleMemo":   // 실과 바늘 획득 후 메모
                 //MemoManager.Instance.AddMemo("R1Memo_003");
 
                 Debug.Log("실과 바늘 획득 후 메모");
-                break;
-
-            case "ResultEndRoom1": // Room1 끝
-                SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
                 break;
                 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
@@ -688,6 +684,9 @@ public class ResultManager : MonoBehaviour
             case "ResultNormalPoster2Script": // 평범한 포스터에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_008");
                 break;
+
+                // 별 모양 스티커에 대한 설명
+            //DialogueManager.Instance.StartDialogue("RoomEscape2_017");
 
             case "ResultClosetBox2Script": // 옷장 위 상자에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_009");
