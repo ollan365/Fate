@@ -517,11 +517,6 @@ public class ResultManager : MonoBehaviour
             case "Result_IncrementCalendarCluesFound": // 달력 관련 단서 찾은 수 1 증가
                 GameManager.Instance.IncrementVariable("CalendarCluesFound");
                 break;
-            
-            case "ResultTinCaseTest": // 틴케이스 테스트용
-                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "tinCase");
-                executableObjects["TinCase"].ExecuteAction();
-                break;
 
             case "ResultCalendarFBDScirpt": // 필연 생일에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_027");
@@ -601,10 +596,14 @@ public class ResultManager : MonoBehaviour
 
 
             // 방탈출 2
-            case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
-                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
 
-                Debug.Log("반짇고리 상자 확대 이미지 표시");
+            case "ResultTinCaseTest": // 틴케이스 테스트용
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "tinCase");
+                executableObjects["TinCase"].ExecuteAction();
+                break;
+
+            case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
                 break;
 
             case "ResultSewingBoxScript":   // 반짇고리에 대한 설명
@@ -614,8 +613,6 @@ public class ResultManager : MonoBehaviour
             case "ResultSewingBoxSystemActivartion": // 반짇고리 퍼즐 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "sewingBox");
                 executableObjects["SewingBox"].ExecuteAction();
-
-                Debug.Log("반짇고리 퍼즐 시스템 활성화");
                 break;
 
             case "ResultSewingBoxPuzzleFailedScript":   // 반짇고리 퍼즐 틀림에 대한 설명
@@ -625,8 +622,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedle":   // 실과 바늘을 획득
-                //SoundPlayer.Instance.UISoundPlay(Sound_Key);
-                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
+                SoundPlayer.Instance.UISoundPlay(Sound_Key);
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
 
                 Debug.Log("실과 바늘을 획득");
                 break;
@@ -689,15 +686,60 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape2_008");
                 break;
 
-                // 별 모양 스티커에 대한 설명
-            //DialogueManager.Instance.StartDialogue("RoomEscape2_017");
-
             case "ResultClosetBox2Script": // 옷장 위 상자에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_009");
                 break;
 
             case "ResultUnderPhoto2Script": // 옷장 아래 사진에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_010");
+                break;
+
+            case "ResultHospitalFlyer2Script": // 방탈출2 병원 전단지  스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_011");
+                break;
+
+            case "ResultHospitalFlyer2Memo": // 방탈출2 병원 전단지 메모
+
+                break;
+
+            case "ResultHospitalFlyer2Zoom": // 방탈출2 병원 전단지 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "hospitalPrint");
+                break;
+
+            case "ResultPoster2Script": // 방탈출2 바다 포스터 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_012");
+                break;
+
+            case "ResultPoster2Memo": // 방탈출2 바다 포스터 메모
+
+                break;
+
+            case "ResultPoster2Zoom": // 방탈출2 바다 포스터 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster2");
+                break;
+
+            case "ResultStarSticker2Script": // 방탈출2 별 스티커 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_017");
+                break;
+
+            case "ResultStarSticker2Memo": // 방탈출2 별 스티커 메모
+
+                break;
+
+            case "ResultStarSticker2Zoom": // 방탈출2 별 스티커 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "starSticker");
+                break;
+
+            case "ResultShoppingBag2Script": // 방탈출2 쇼핑백 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_022");
+                break;
+
+            case "ResultShoppingBag2Memo": // 방탈출2 쇼핑백 메모
+
+                break;
+
+            case "ResultShoppingBag2Zoom": // 방탈출2 쇼핑백 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "shoppingBag2");
                 break;
 
 

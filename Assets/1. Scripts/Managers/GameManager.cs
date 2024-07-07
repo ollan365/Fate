@@ -212,6 +212,19 @@ public class GameManager : MonoBehaviour
         // 옷장 밑에 있는 사진들
         variables["UnderPhotoClick2"] = 0;
 
+        // 병원 전단지
+        variables["HospitalFlyerClick2"] = 0;
+
+        // 바다 포스터
+        variables["PosterClick2"] = 0;
+
+        // 별 스티커
+        variables["StarStickerClick2"] = 0;
+
+        // 쇼핑백
+        variables["ShoppingBagClick2"] = 0;
+
+
         // 옷장 서랍장
         // 위칸
         variables["WardrobeUpDrawersClosed"] = true;

@@ -14,7 +14,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     private Image objectImageImageComponent;
     private RectTransform objectImageRectTransform;
 
-    [Header("이벤트 오브젝트 확대 이미지")]
+    [Header("방탈출1 이벤트 오브젝트 확대 이미지")]
     [SerializeField] private Sprite amuletImage;
     [SerializeField] private Sprite clockImage;
     [SerializeField] private Sprite keysImage;
@@ -24,6 +24,15 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private Sprite letterOfResignationImage;
     [SerializeField] private Sprite photoInsideBoxImage;
     [SerializeField] private Sprite cafePintInBagImage;
+
+    [Header("방탈출2 이벤트 오브젝트 확대 이미지")]
+    [SerializeField] private Sprite tinCaseImage;
+    [SerializeField] private Sprite sewingBoxImage;
+    [SerializeField] private Sprite hospitalPrintImage;
+    [SerializeField] private Sprite poster2Image;
+    [SerializeField] private Sprite starStickerImage;
+    [SerializeField] private Sprite shoppingBag2Image;
+
 
     [Header("잠금 장치들")]
     [SerializeField] private GameObject laptopGameObject;
@@ -57,6 +66,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
         imageDictionary = new Dictionary<string, Sprite>()  // imageDictionary 초기화
         {
+            // 방탈출1 확대 이미지
             {"amulet", amuletImage},
             {"clock", clockImage},
             {"keys", keysImage },
@@ -66,6 +76,13 @@ public class ImageAndLockPanelManager : MonoBehaviour
             {"letterOfResignation", letterOfResignationImage},
             {"photoInsideBox", photoInsideBoxImage},
             {"cafePintInBagImage", cafePintInBagImage},
+            // 방탈출2 확대 이미지
+            {"tinCase", tinCaseImage},
+            {"sewingBox", sewingBoxImage},
+            {"hospitalPrint", hospitalPrintImage},
+            {"poster2", poster2Image},
+            {"starSticker", starStickerImage},
+            {"shoppingBag2", shoppingBag2Image},
         };
 
         lockObjectDictionary = new Dictionary<string, GameObject>()
