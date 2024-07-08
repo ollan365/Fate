@@ -872,8 +872,8 @@ public class ResultManager : MonoBehaviour
                 MemoManager.Instance.AddMemo("F1Memo_010");
                 break;
 
-            case "ResultFollowEnd": // 미행 끝
-                SceneManager.Instance.LoadScene(SceneType.ENDING);
+            case "ResultFollowEnd": // 미행 끝 (메모 개수 충분)
+                SceneManager.Instance.LoadScene(SceneType.ROOM_2);
                 break;
 
             case "ResultVillaScript2": // 미행2 빌라에 대한 스크립트

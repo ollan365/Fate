@@ -122,14 +122,19 @@ public class FollowManager : MonoBehaviour
     {
         SoundPlayer.Instance.UISoundPlay(Sound_Cat);
     }
-    public void FollowEndLogicStart()
+    public void FollowEndLogicStart(bool isDayMiniGame)
     {
         isEnd = true;
         canClick = false;
         moveAndStopButton.SetActive(false);
         MemoManager.Instance.SetMemoButton(false);
 
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) StartCoroutine(followEnd.EndFollow());
+        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1)
+        {
+            followAnim.moveSpeed *= -1.5f;
+
+            StartCoroutine(followEnd.EndFollow(isDayMiniGame));
+        }
     }
     public void FollowFinishGameStart()
     {

@@ -39,16 +39,16 @@ public class FollowFinishMiniGame : MonoBehaviour
 
     public IEnumerator FinishGameStart(int heartCount)
     {
-        // º¯¼ö
+        // ë³€ìˆ˜
         this.heartCount = heartCount;
         for (int i = 0; i < heartCount; i++) heartAnimator[i].gameObject.SetActive(true);
 
-        // ¿ì¿¬ÀÇ ¼ºº°¿¡ µû¶ó ´Ù¸¥ ÀÌ¹ÌÁö
+        // ìš°ì—°ì˜ ì„±ë³„ì— ë”°ë¼ ë‹¤ë¥¸ ì´ë¯¸ì§€
         if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)  accidyEnd.GetComponent<Image>().sprite = accidySprite[0];
         else accidyEnd.GetComponent<Image>().sprite = accidySprite[1];
         accidyEnd.GetComponent<Image>().SetNativeSize();
 
-        // ÆäÀÌµå ¾Æ¿ô°ú ÀÎÀ» ÇÏ¸ç ¹ÌÇà Äµ¹ö½º¸¦ ²ô°í ¿£µå °ÔÀÓ Äµ¹ö½º¸¦ ÄÒ´Ù
+        // í˜ì´ë“œ ì•„ì›ƒê³¼ ì¸ì„ í•˜ë©° ë¯¸í–‰ ìº”ë²„ìŠ¤ë¥¼ ë„ê³  ì—”ë“œ ê²Œì„ ìº”ë²„ìŠ¤ë¥¼ ì¼ ë‹¤
         followUICanvas.SetActive(false);
         followCanvas.SetActive(false);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 0.2f, false, 0, 0));
@@ -57,7 +57,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         finishGameCanvas.SetActive(true);
         finishGameObjects.SetActive(true);
 
-        // Æ©Åä¸®¾ó Äµ¹ö½º¸¦ ²ø ¶§±îÁö ±â´Ù¸°´Ù
+        // íŠœí† ë¦¬ì–¼ ìº”ë²„ìŠ¤ë¥¼ ëŒ ë•Œê¹Œì§€ ê¸°ë‹¤ë¦°ë‹¤
         while (tutorialCanvas.activeSelf) yield return new WaitForFixedUpdate();
 
         StartCoroutine(BackgroundMove());
@@ -66,7 +66,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
         while (!isGameOver && currentTime < gamePlayTime)
         {
-            int obstructionCount = Random.Range(1, 3); // Àå¾Ö¹°Àº 1°³ ¶Ç´Â 2°³
+            int obstructionCount = Random.Range(1, 3); // ì¥ì• ë¬¼ì€ 1ê°œ ë˜ëŠ” 2ê°œ
             int spawnPosition = Random.Range(0, 3);
 
             for (int i = 0; i < obstructionCount; i++)
@@ -77,22 +77,29 @@ public class FollowFinishMiniGame : MonoBehaviour
                 obstruction.GetComponent<Obstruction>().followFinishMiniGame = this;
             }
 
-            float randomTimn = Random.Range(2f, 3f); // ·£´ı °£°İÀ¸·Î Àå¾Ö¹° »ı¼º
+            float randomTimn = Random.Range(2f, 3f); // ëœë¤ ê°„ê²©ìœ¼ë¡œ ì¥ì• ë¬¼ ìƒì„±
             yield return new WaitForSeconds(randomTimn);
             currentTime += randomTimn;
         }
 
         isGameOver = true;
 
-        // ¹Ì´Ï °ÔÀÓ ³¡ (ÆäÀÌµå ÀÎ¾Æ¿ô)
+        // ë©”ëª¨ì˜ ê°œìˆ˜ê°€ ë¶€ì¡±í•  ë•Œ
+        if (!MemoManager.Instance.UnlockNextScene())
+        {
+            SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+            yield break;
+        }
+
+        //ë©”ëª¨ì˜ ê°œìˆ˜ê°€ ì¶©ë¶„í•  ë•Œ
+        // ë¯¸ë‹ˆ ê²Œì„ ë (í˜ì´ë“œ ì¸ì•„ì›ƒ)
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
         yield return new WaitForSeconds(0.2f);
         finishGameObjects.SetActive(false);
         finishGameEndCanvas.SetActive(true);
         yield return new WaitForSeconds(0.4f);
 
-        // ÇÊ¿¬ÀÌ ¾ÕÀ¸·Î °É¾î³ª¿È
-        // fateEnd.GetComponentInChildren<ParticleSystem>().Play();
+        // í•„ì—°ì´ ì•ìœ¼ë¡œ ê±¸ì–´ë‚˜ì˜´
         while (true)
         {
             fateEnd.transform.position += Vector3.up * Time.deltaTime * 5;
@@ -103,11 +110,9 @@ public class FollowFinishMiniGame : MonoBehaviour
             }
             yield return null;
         }
-        // fateEnd.GetComponentInChildren<ParticleSystem>().Stop();
-
         yield return new WaitForSeconds(1.5f);
 
-        // ¿ì¿¬ÀÌ ¾ÕÀ¸·Î °É¾î³ª¿È
+        // ìš°ì—°ì´ ì•ìœ¼ë¡œ ê±¸ì–´ë‚˜ì˜´
         while (true)
         {
             accidyEnd.transform.position += Vector3.up * Time.deltaTime;
@@ -122,9 +127,9 @@ public class FollowFinishMiniGame : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM;
         blockingPanel.SetActive(true);
-        DialogueManager.Instance.StartDialogue("Follow1Final_003"); // ¿ì¿¬ÀÇ ´ë»ç Ãâ·Â
+        DialogueManager.Instance.StartDialogue("Follow1Final_003"); // ìš°ì—°ì˜ ëŒ€ì‚¬ ì¶œë ¥
     }
-    public IEnumerator BackgroundMove() // ¹è°æ ¿òÁ÷ÀÌ±â (¹Ì¿Ï¼º)
+    public IEnumerator BackgroundMove() // ë°°ê²½ ì›€ì§ì´ê¸° (ë¯¸ì™„ì„±)
     {
         // fate.GetComponentInChildren<ParticleSystem>().Play();
         while (!isGameOver)
@@ -146,14 +151,14 @@ public class FollowFinishMiniGame : MonoBehaviour
     {
         heartCount--;
 
-        // È­¸éÀÌ ºÓ¾îÁö´Â ¾Ö´Ï¸ŞÀÌ¼Ç
+        // í™”ë©´ì´ ë¶‰ì–´ì§€ëŠ” ì• ë‹ˆë©”ì´ì…˜
         ScreenEffect.Instance.coverPanel.color = Color.red;
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
 
-        if (heartCount <= 0) isGameOver = true; // °ÔÀÓ ¿À¹ö
-        else StartCoroutine(PlayerInvincible()); // ¾ÆÁ÷ »ı¸íÀÌ ³²¾ÆÀÖÀ¸¸é ¹«Àû ½Ã°£
+        if (heartCount <= 0) isGameOver = true; // ê²Œì„ ì˜¤ë²„
+        else StartCoroutine(PlayerInvincible()); // ì•„ì§ ìƒëª…ì´ ë‚¨ì•„ìˆìœ¼ë©´ ë¬´ì  ì‹œê°„
 
-        // ÇÏÆ®°¡ ÅÍÁö´Â ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+        // í•˜íŠ¸ê°€ í„°ì§€ëŠ” ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
         heartAnimator[heartCount].SetTrigger("Break");
         yield return new WaitForSeconds(0.5f);
         heartAnimator[heartCount].gameObject.SetActive(false);

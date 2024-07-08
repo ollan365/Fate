@@ -28,7 +28,7 @@ public class FollowDayMiniGame : MonoBehaviour
     [SerializeField] private Sprite[] tutorialAccidySprites;
 
     [Header("Variables")]
-    // ¹°Ã¼ Å¬¸¯ È½¼ö
+    // ë¬¼ì²´ í´ë¦­ íšŸìˆ˜
     private float clickCount;
     public float ClickCount
     {
@@ -41,7 +41,7 @@ public class FollowDayMiniGame : MonoBehaviour
 
             for (int i = 0; i < 3; i++) clear[i] = true;
 
-            switch (ClickCount / 5) // ÀÌ¹ÌÁö ¹Ù²î´Â ½Ã°£À» °í·ÁÇÏ¿© 0.5f¾¿ ÁÙÀÓ
+            switch (ClickCount / 5) // ì´ë¯¸ì§€ ë°”ë€ŒëŠ” ì‹œê°„ì„ ê³ ë ¤í•˜ì—¬ 0.5fì”© ì¤„ì„
             {
                 case 1:
                     difficulty = 3f;
@@ -51,7 +51,7 @@ public class FollowDayMiniGame : MonoBehaviour
 
                     tutorialObject.SetActive(true);
 
-                    // Å¬¸®¾î ÇØ¾ßÇÏ´Â °Í
+                    // í´ë¦¬ì–´ í•´ì•¼í•˜ëŠ” ê²ƒ
                     clear[ToInt(Place.MEMO)] = false;
                     break;
                 case 2:
@@ -60,7 +60,7 @@ public class FollowDayMiniGame : MonoBehaviour
                     buttons[ToInt(Place.FIRST)].gameObject.SetActive(true);
                     buttonImages[ToInt(Place.FIRST)].gameObject.SetActive(true);
 
-                    // Å¬¸®¾î ÇØ¾ßÇÏ´Â °Í
+                    // í´ë¦¬ì–´ í•´ì•¼í•˜ëŠ” ê²ƒ
                     clear[ToInt(Place.MEMO)] = false;
                     clear[ToInt(Place.FIRST)] = false;
                     break;
@@ -70,7 +70,7 @@ public class FollowDayMiniGame : MonoBehaviour
                     buttons[ToInt(Place.THIRD)].gameObject.SetActive(true);
                     buttonImages[ToInt(Place.THIRD)].gameObject.SetActive(true);
 
-                    // Å¬¸®¾î ÇØ¾ßÇÏ´Â °Í
+                    // í´ë¦¬ì–´ í•´ì•¼í•˜ëŠ” ê²ƒ
                     clear[ToInt(Place.MEMO)] = false;
                     clear[ToInt(Place.FIRST)] = false;
                     clear[ToInt(Place.THIRD)] = false;
@@ -81,15 +81,15 @@ public class FollowDayMiniGame : MonoBehaviour
         }
     }
 
-    // »óÅÂº¯¼ö
-    public int heartCount = 3; // ¸ñ¼û °³¼ö
-    private bool isGameOver; // °ÔÀÓ ¿À¹ö µÇ¾ú´Â°¡
-    private bool[] clear; // °ÔÀÌÁö¸¦ ´Ù Ã¤¿ü´Â°¡
-    private bool accidyBack; // ¿ì¿¬ÀÌ µÚ¸¦ º¸°í ÀÖ´Â°¡
+    // ìƒíƒœë³€ìˆ˜
+    public int heartCount = 3; // ëª©ìˆ¨ ê°œìˆ˜
+    private bool isGameOver; // ê²Œì„ ì˜¤ë²„ ë˜ì—ˆëŠ”ê°€
+    private bool[] clear; // ê²Œì´ì§€ë¥¼ ë‹¤ ì±„ì› ëŠ”ê°€
+    private bool accidyBack; // ìš°ì—°ì´ ë’¤ë¥¼ ë³´ê³  ìˆëŠ”ê°€
     private bool canClick;
-    private float difficulty = 0; // ³­ÀÌµµ
+    private float difficulty = 0; // ë‚œì´ë„
     public enum Place { WALL, FIRST, MEMO, THIRD }
-    [SerializeField] private Place currentPlace; // ÀÎ½ºÆåÅÍ¿¡¼­ È®ÀÎ
+    [SerializeField] private Place currentPlace; // ì¸ìŠ¤í™í„°ì—ì„œ í™•ì¸
     private int ToInt(Place place)
     {
         switch (place)
@@ -105,7 +105,7 @@ public class FollowDayMiniGame : MonoBehaviour
     {
         clear = new bool[3];
 
-        // ¿ì¿¬ÀÇ ¼ºº°¿¡ µû¶ó ´Ù¸¥ ÀÌ¹ÌÁö
+        // ìš°ì—°ì˜ ì„±ë³„ì— ë”°ë¼ ë‹¤ë¥¸ ì´ë¯¸ì§€
         if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)
         {
             accidyFrontSprite = accidyGirlFront;
@@ -124,20 +124,20 @@ public class FollowDayMiniGame : MonoBehaviour
     }
     private IEnumerator StartMiniGame()
     {
-        // º¯¼öµé ÃÊ±âÈ­
+        // ë³€ìˆ˜ë“¤ ì´ˆê¸°í™”
         isGameOver = false;
         accidyBack = false;
         foreach (Slider s in gaugeSliders) s.value = 0;
         currentPlace = Place.WALL;
 
-        // ÇÊ¿¬ÀÌ À§Ä¡ ÃÊ±âÈ­
+        // í•„ì—°ì´ ìœ„ì¹˜ ì´ˆê¸°í™”
         foreach (Image i in fatePositions) i.color = new Color(1, 1, 1, 0);
         fatePositions[ToInt(Place.WALL)].color = new Color(1, 1, 1, 1);
 
-        // ¸Ş¸ğ ¹öÆ° ¾ø¾Ö±â
+        // ë©”ëª¨ ë²„íŠ¼ ì—†ì• ê¸°
         MemoManager.Instance.SetMemoButton(false);
 
-        // ÆäÀÌµå ¾Æ¿ô°ú ÀÎÀ» ÇÏ¸ç ¹ÌÇà Äµ¹ö½º¸¦ ²ô°í ¹Ì´Ï °ÔÀÓ Äµ¹ö½º¸¦ ÄÒ´Ù + ºê±İÀ» ¹Ù²Û´Ù
+        // í˜ì´ë“œ ì•„ì›ƒê³¼ ì¸ì„ í•˜ë©° ë¯¸í–‰ ìº”ë²„ìŠ¤ë¥¼ ë„ê³  ë¯¸ë‹ˆ ê²Œì„ ìº”ë²„ìŠ¤ë¥¼ ì¼ ë‹¤ + ë¸Œê¸ˆì„ ë°”ê¾¼ë‹¤
         followUICanvas.SetActive(false);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
         SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, false);
@@ -145,26 +145,26 @@ public class FollowDayMiniGame : MonoBehaviour
         followCanvas.SetActive(false);
         miniGameCanvas.SetActive(true);
         SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME, true);
-        yield return new WaitForSeconds(0.4f); // ÆäÀÌµå ÀÎ ¾Æ¿ô ³¡
+        yield return new WaitForSeconds(0.4f); // í˜ì´ë“œ ì¸ ì•„ì›ƒ ë
 
-        while (tutorialObject.activeSelf) yield return new WaitForFixedUpdate(); // Æ©Åä¸®¾ó Äµ¹ö½º°¡ ÄÑÁ® ÀÖ´Ù¸é ´ë±â
+        while (tutorialObject.activeSelf) yield return new WaitForFixedUpdate(); // íŠœí† ë¦¬ì–¼ ìº”ë²„ìŠ¤ê°€ ì¼œì ¸ ìˆë‹¤ë©´ ëŒ€ê¸°
 
-        // ¿ì¿¬ÀÇ ¿òÁ÷ÀÓ ½ÃÀÛ
+        // ìš°ì—°ì˜ ì›€ì§ì„ ì‹œì‘
         StartCoroutine(AccidyLogic());
 
-        // ¹öÆ°µé È°¼ºÈ­
+        // ë²„íŠ¼ë“¤ í™œì„±í™”
         canClick = true;
 
-        // ¸ÂÀº µÚ¿¡´Â ÇÑµ¿¾È ¹«Àû
+        // ë§ì€ ë’¤ì—ëŠ” í•œë™ì•ˆ ë¬´ì 
         bool onHit = false;
 
-        // °ÔÀÓ ¿À¹ö or °ÔÀÓ Å¬¸®¾î±îÁö ¹İº¹
+        // ê²Œì„ ì˜¤ë²„ or ê²Œì„ í´ë¦¬ì–´ê¹Œì§€ ë°˜ë³µ
         while (!isGameOver)
         {
-            // °ÔÀÓ Å¬¸®¾î
+            // ê²Œì„ í´ë¦¬ì–´
             if (clear[ToInt(Place.MEMO)] && clear[ToInt(Place.FIRST)] && clear[ToInt(Place.THIRD)]) break;
 
-            // ÇÊ¿¬ÀÌ ¿òÁ÷¿´°í ¿ì¿¬ÀÌ µÚ¸¦ µ¹¾Æº» »óÅÂ°¡ ÁßÃ¸µÇ¸é ÇÏÆ® ÇÏ³ª °¨¼Ò
+            // í•„ì—°ì´ ì›€ì§ì˜€ê³  ìš°ì—°ì´ ë’¤ë¥¼ ëŒì•„ë³¸ ìƒíƒœê°€ ì¤‘ì²©ë˜ë©´ í•˜íŠ¸ í•˜ë‚˜ ê°ì†Œ
             if (currentPlace != Place.WALL && accidyBack && !onHit)
             {
                 onHit = true;
@@ -174,16 +174,16 @@ public class FollowDayMiniGame : MonoBehaviour
                 {
                     isGameOver = true;
                 }
-                else // Ã¼·ÂÀ» 1 ±ğ°í ´Ù½Ã º®ÂÊÀ¸·Î µ¹¾Æ°£´Ù
+                else // ì²´ë ¥ì„ 1 ê¹ê³  ë‹¤ì‹œ ë²½ìª½ìœ¼ë¡œ ëŒì•„ê°„ë‹¤
                 {
-                    accidyBack = false; // ÇÑ´ë ¸Â¾ÒÀ¸¸é ´õ ÀÌ»ó Ã¼·ÂÀÌ ±ğÀÌÁö ¾Êµµ·Ï ÇÑ´Ù
+                    accidyBack = false; // í•œëŒ€ ë§ì•˜ìœ¼ë©´ ë” ì´ìƒ ì²´ë ¥ì´ ê¹ì´ì§€ ì•Šë„ë¡ í•œë‹¤
                     StartCoroutine(FateMove(Place.WALL));
                 }
 
-                // ÇÏÆ®°¡ ÅÍÁö´Â ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+                // í•˜íŠ¸ê°€ í„°ì§€ëŠ” ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
                 heartAnimator[heartCount].SetTrigger("Break");
 
-                // È­¸éÀÌ ºÓ¾îÁö´Â ¾Ö´Ï¸ŞÀÌ¼Ç
+                // í™”ë©´ì´ ë¶‰ì–´ì§€ëŠ” ì• ë‹ˆë©”ì´ì…˜
                 ScreenEffect.Instance.coverPanel.color = Color.red;
                 StartCoroutine(ScreenEffect.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
                 yield return new WaitForSeconds(0.5f);
@@ -196,17 +196,21 @@ public class FollowDayMiniGame : MonoBehaviour
             yield return null;
         }
 
-        if (isGameOver) // °ÔÀÓ ¿À¹ö
+        // ê²Œì„ ì˜¤ë²„ì´ê³  ë©”ëª¨ì˜ ê°œìˆ˜ ì¶©ë¶„í•  ë•Œ
+        if (isGameOver && MemoManager.Instance.UnlockNextScene())
         {
-            yield return new WaitForSeconds(0.5f);
-
             DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM;
             blockingPanel.SetActive(true);
-            DialogueManager.Instance.StartDialogue("Follow1Final_003"); // ¿ì¿¬ÀÇ ´ë»ç Ãâ·Â
+            DialogueManager.Instance.StartDialogue("Follow1Final_003"); // ìš°ì—°ì˜ ëŒ€ì‚¬ ì¶œë ¥
+            yield break;
         }
-        else // °ÔÀÓ Å¬¸®¾î
+        // ê²Œì„ ì˜¤ë²„ì´ê³  ë©”ëª¨ì˜ ê°œìˆ˜ê°€ ë¶ˆì¶©ë¶„ or ê²Œì„ í´ë¦¬ì–´
+        else
         {
-            isGameOver = true; // ´Ù¸¥ ÄÚ·çÆ¾µéÀÌ ¸ØÃßµµ·Ï ¼³Á¤
+            bool followEnd = false;
+            if (isGameOver) followEnd = true;
+
+            isGameOver = true; // ë‹¤ë¥¸ ì½”ë£¨í‹´ë“¤ì´ ë©ˆì¶”ë„ë¡ ì„¤ì •
 
             MemoManager.Instance.SetMemoButton(true);
 
@@ -216,8 +220,10 @@ public class FollowDayMiniGame : MonoBehaviour
             miniGameCanvas.SetActive(false);
             followCanvas.SetActive(true);
             SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, true);
-            yield return new WaitForSeconds(0.4f); // ÆäÀÌµå ÀÎ ¾Æ¿ô ³¡
+            yield return new WaitForSeconds(0.4f); // í˜ì´ë“œ ì¸ ì•„ì›ƒ ë
             followUICanvas.SetActive(true);
+
+            if (followEnd) FollowManager.Instance.FollowEndLogicStart(true);
         }
     }
 
@@ -234,26 +240,26 @@ public class FollowDayMiniGame : MonoBehaviour
             case 2: place = Place.THIRD; break;
         }
 
-        if (currentPlace == place && currentPlace != Place.WALL) // ÇöÀç Àå¼Ò¿Í Å¬¸¯ÇÑ °÷ÀÌ °°À» ??
+        if (currentPlace == place && currentPlace != Place.WALL) // í˜„ì¬ ì¥ì†Œì™€ í´ë¦­í•œ ê³³ì´ ê°™ì„ ??
         {
             gaugeSliders[ToInt(place)].value += 0.015f;
 
             if(gaugeSliders[ToInt(place)].value == 1) clear[ToInt(place)] = true;
         }
-        else if(currentPlace != place) // ÇÊ¿¬ÀÌ ¼û¾îÀÖ´Â »óÅÂ or ¼ûÀ¸·¯ °¥¶§
+        else if(currentPlace != place) // í•„ì—°ì´ ìˆ¨ì–´ìˆëŠ” ìƒíƒœ or ìˆ¨ìœ¼ëŸ¬ ê°ˆë•Œ
         {
             StartCoroutine(FateMove(place));
         }
     }
     private IEnumerator FateMove(Place place)
     {
-        canClick = false; // ¾Ö´Ï¸ŞÀÌ¼Ç ³¡³¯ ¶§±îÁö ¹öÆ° ºñÈ°¼ºÈ­
+        canClick = false; // ì• ë‹ˆë©”ì´ì…˜ ëë‚  ë•Œê¹Œì§€ ë²„íŠ¼ ë¹„í™œì„±í™”
 
-        // ÇÊ¿¬ÀÇ À§Ä¡°¡ ¹Ù²î´Â ¾Ö´Ï¸ŞÀÌ¼Ç
+        // í•„ì—°ì˜ ìœ„ì¹˜ê°€ ë°”ë€ŒëŠ” ì• ë‹ˆë©”ì´ì…˜
         StartCoroutine(ScreenEffect.Instance.OnFade(fatePositions[ToInt(currentPlace)], 1, 0, 0.2f, false, 0, 0));
         yield return new WaitForSeconds(0.2f);
 
-        // ÇÊ¿¬ÀÇ »óÅÂ¸¦ ÀÌµ¿ÇÑ À§Ä¡·Î º¯°æ
+        // í•„ì—°ì˜ ìƒíƒœë¥¼ ì´ë™í•œ ìœ„ì¹˜ë¡œ ë³€ê²½
         currentPlace = place;
 
         StartCoroutine(ScreenEffect.Instance.OnFade(fatePositions[ToInt(place)], 0, 1, 0.2f, false, 0, 0));
@@ -266,7 +272,7 @@ public class FollowDayMiniGame : MonoBehaviour
         Animator accidyAnimator = accidy.GetComponent<Animator>();
         accidyAnimator.SetBool("isMove", true);
 
-        // 3ÃÊ¿¡¼­ 6ÃÊ »çÀÌ ·£´ıÇÑ ½Ã°£ µ¿¾È ¿ì¿¬ÀÌ ¿òÁ÷ÀÓ
+        // 3ì´ˆì—ì„œ 6ì´ˆ ì‚¬ì´ ëœë¤í•œ ì‹œê°„ ë™ì•ˆ ìš°ì—°ì´ ì›€ì§ì„
         float moveTime = Random.Range(2.5f, 5.5f), currentTime = 0;
         while (!isGameOver)
         {
@@ -274,36 +280,36 @@ public class FollowDayMiniGame : MonoBehaviour
 
             if(currentTime > moveTime)
             {
-                // ¿ì¿¬ÀÇ ¿òÁ÷ÀÓÀ» ¸ØÃã (³­ÀÌµµ¿¡ µû¶ó ¿ì¿¬ÀÌ °¡¸¸È÷ ÀÖ´Â ½Ã°£À» ´Ù¸£°Ô Àû¿ë)
+                // ìš°ì—°ì˜ ì›€ì§ì„ì„ ë©ˆì¶¤ (ë‚œì´ë„ì— ë”°ë¼ ìš°ì—°ì´ ê°€ë§Œíˆ ìˆëŠ” ì‹œê°„ì„ ë‹¤ë¥´ê²Œ ì ìš©)
                 accidyAnimator.SetBool("isMove", false);
                 yield return new WaitForSeconds(difficulty);
 
-                // ¿ì¿¬ÀÇ ¸ğ½ÀÀÌ ¹Ù²î´Â ¾Ö´Ï¸ŞÀÌ¼Ç
+                // ìš°ì—°ì˜ ëª¨ìŠµì´ ë°”ë€ŒëŠ” ì• ë‹ˆë©”ì´ì…˜
                 StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
                 yield return new WaitForSeconds(0.2f);
                 accidy.sprite = accidyBackSprite;
                 accidy.SetNativeSize();
                 yield return new WaitForSeconds(0.2f);
 
-                // ¿ì¿¬ÀÌ µÚ¸¦ µ¹¾Æº» »óÅÂ (1ÃÊ °£ À¯Áö)
+                // ìš°ì—°ì´ ë’¤ë¥¼ ëŒì•„ë³¸ ìƒíƒœ (1ì´ˆ ê°„ ìœ ì§€)
                 accidyBack = true;
                 yield return new WaitForSeconds(2);
                 accidyBack = false;
 
                 if (isGameOver) break;
 
-                // ´Ù½Ã ¾ÕÀ» º¸´Â ¾Ö´Ï¸ŞÀÌ¼Ç
+                // ë‹¤ì‹œ ì•ì„ ë³´ëŠ” ì• ë‹ˆë©”ì´ì…˜
                 StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
                 yield return new WaitForSeconds(0.2f);
                 accidy.sprite = accidyFrontSprite;
                 accidy.SetNativeSize();
                 yield return new WaitForSeconds(0.2f);
 
-                // º¯¼öµé ÃÊ±âÈ­
+                // ë³€ìˆ˜ë“¤ ì´ˆê¸°í™”
                 currentTime = 0;
                 moveTime = Random.Range(2.5f, 5.5f);
 
-                // ´Ù½Ã ¿ì¿¬ÀÌ ¿òÁ÷ÀÌ´Â ¾Ö´Ï¸ŞÀÌ¼Ç ½ÃÀÛ
+                // ë‹¤ì‹œ ìš°ì—°ì´ ì›€ì§ì´ëŠ” ì• ë‹ˆë©”ì´ì…˜ ì‹œì‘
                 accidyAnimator.SetBool("isMove", true);
             }
             yield return null;
