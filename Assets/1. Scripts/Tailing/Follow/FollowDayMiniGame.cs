@@ -130,9 +130,11 @@ public class FollowDayMiniGame : MonoBehaviour
         foreach (Slider s in gaugeSliders) s.value = 0;
         currentPlace = Place.WALL;
 
-        // 필연이 위치 초기화
+        // 필연이, 우연이 위치와 이미지 초기화
         foreach (Image i in fatePositions) i.color = new Color(1, 1, 1, 0);
         fatePositions[ToInt(Place.WALL)].color = new Color(1, 1, 1, 1);
+        accidy.sprite = accidyFrontSprite;
+        accidy.SetNativeSize();
 
         // 메모 버튼 없애기
         MemoManager.Instance.SetMemoButton(false);
@@ -242,7 +244,7 @@ public class FollowDayMiniGame : MonoBehaviour
 
         if (currentPlace == place && currentPlace != Place.WALL) // 현재 장소와 클릭한 곳이 같을 ??
         {
-            gaugeSliders[ToInt(place)].value += 0.015f;
+            gaugeSliders[ToInt(place)].value += 0.045f / difficulty;
 
             if(gaugeSliders[ToInt(place)].value == 1) clear[ToInt(place)] = true;
         }

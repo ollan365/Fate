@@ -9,7 +9,7 @@ public class Obstruction : MonoBehaviour
     void Update()
     {
         transform.position += Vector3.down * Time.deltaTime * 5;
-        if(followFinishMiniGame.isGameOver || transform.position.y < -20) Destroy(gameObject);
+        if(followFinishMiniGame.isGameOver || transform.position.y < -30) Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -6,7 +6,6 @@ public class ScreenEffect : MonoBehaviour
 {
     public static ScreenEffect Instance { get; private set; }
     public Image coverPanel;
-    private bool isFading = false;
     void Awake()
     {
         if (Instance == null)
@@ -43,9 +42,6 @@ public class ScreenEffect : MonoBehaviour
     // </summary>
     public IEnumerator OnFade(Image fadeObject, float start, float end, float fadeTime, bool blink, float waitingTime, float changeFadeTime)
     {
-        if (isFading) yield break;
-        isFading = true;
-
         if (fadeObject == null) fadeObject = coverPanel;
 
         if (!fadeObject.gameObject.activeSelf) fadeObject.gameObject.SetActive(true);
@@ -67,8 +63,6 @@ public class ScreenEffect : MonoBehaviour
         }
         newColor.a = end;
         fadeObject.color = newColor;
-
-        isFading = false;
 
         // 곧바로 다시 어두워지거나 밝아지게 하고 싶을 때
         if (blink)

@@ -49,13 +49,15 @@ public class FollowFinishMiniGame : MonoBehaviour
         accidyEnd.GetComponent<Image>().SetNativeSize();
 
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1.5f, true, 0.5f, -1));
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, false);
+        yield return new WaitForSeconds(1.5f);
         followUICanvas.SetActive(false);
         followCanvas.SetActive(false);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 0.2f, false, 0, 0));
-        yield return new WaitForSeconds(0.2f);
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FINISHGAME, true);
         finishGameCanvas.SetActive(true);
         finishGameObjects.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FINISHGAME, true);
 
         // 튜토리얼 캔버스를 끌 때까지 기다린다
         while (tutorialCanvas.activeSelf) yield return new WaitForFixedUpdate();
@@ -83,6 +85,10 @@ public class FollowFinishMiniGame : MonoBehaviour
         }
 
         isGameOver = true;
+        yield return new WaitForSeconds(0.5f);
+        
+        foreach(Animator a in heartAnimator) a.gameObject.SetActive(false);
+        ScreenEffect.Instance.coverPanel.color = Color.black;
 
         // 메모의 개수가 부족할 때
         if (!MemoManager.Instance.UnlockNextScene())
@@ -129,9 +135,8 @@ public class FollowFinishMiniGame : MonoBehaviour
         blockingPanel.SetActive(true);
         DialogueManager.Instance.StartDialogue("Follow1Final_003"); // 우연의 대사 출력
     }
-    public IEnumerator BackgroundMove() // 배경 움직이기 (미완성)
+    public IEnumerator BackgroundMove()
     {
-        // fate.GetComponentInChildren<ParticleSystem>().Play();
         while (!isGameOver)
         {
             foreach (Transform t in backgrounds)
@@ -145,7 +150,6 @@ public class FollowFinishMiniGame : MonoBehaviour
             }
             yield return null;
         }
-        // fate.GetComponentInChildren<ParticleSystem>().Stop();
     }
     public IEnumerator OnHit()
     {
