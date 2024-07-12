@@ -28,6 +28,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [Header("방탈출2 이벤트 오브젝트 확대 이미지")]
     [SerializeField] private Sprite tinCaseImage;
     [SerializeField] private Sprite sewingBoxImage;
+    [SerializeField] private Sprite threadImage;
     [SerializeField] private Sprite hospitalPrintImage;
     [SerializeField] private Sprite poster2Image;
     [SerializeField] private Sprite starStickerImage;
@@ -79,6 +80,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             // 방탈출2 확대 이미지
             {"tinCase", tinCaseImage},
             {"sewingBox", sewingBoxImage},
+            {"thread", threadImage},
             {"hospitalPrint", hospitalPrintImage},
             {"poster2", poster2Image},
             {"starSticker", starStickerImage},

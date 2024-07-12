@@ -155,16 +155,19 @@ EventTutorialBlockingPanel,튜토리얼 블록 패널,사이드 2or3번 방에�
 ,,,,,,
 ,,,,,,
 ,,,,,,방탈출2
-EventTinCaseTest,틴케이스 테스트용,,,,ResultTinCaseTest,
+EventTinCaseA,틴케이스,틴케이스를 처음 클릭,,ConditionTinCaseFirstClick,Result_showTinCaseImage/ResultTinCaseScript/Result_IncrementTinCaseClick/ResultTimePass,
+EventTinCaseA,틴케이스,틴케이스 비밀번호 맞추고 또 눌렀을 때,AND,ConditionTinCaseManyClick/ConditionTinCaseCorrect,Result_IncrementTinCaseClick/ResultTinCaseGetTicket/ResultTinCaseGetTicketScript/ResultTimePass,
+EventTinCaseA,틴케이스,틴케이스 비밀번호 맞추지 않고 나갔다가 다시 들어왔을 때,AND,ConditionTinCaseManyClick/ConditionTinCaseNotCorrect,ResultTinCaseSystemActivartion/Result_IncrementTinCaseClick,
+EventTinCaseB,틴케이스,틴케이스 비밀번호를 틀림,,ConditionTinCaseNotCorrect,ResultTinCaseFailedScript/ResultTimePass,
+EventTinCaseB,틴케이스,틴케이스 비밀번호를 맞춤,,ConditionTinCaseCorrect,ResultTinCaseGetTicket/ResultTinCaseGetTicketScript/ResultTinCaseGetTicketMemo/ResultTimePass/Result_IsFinishedEventTinCaseA,
+EventActivateTinCase,틴케이스 퍼즐 활성화,틴케이스에 대한 설명이 끝나고 바로 퍼즐 활성화가 가능하도록 이벤트를 생성함. (dialogue에서 바로 result 실행은 불가능하므로),,,ResultTinCaseSystemActivartion,
 ,,,,,,
-,,,,,,
-,,,,,,
-EventSewingBoxA,반짇고리,반짇고리를 처음 클릭,,ConditionSewingBoxFirstClick,Result_showSewingBoxImage/ResultSewingBoxScript/Result_IncrementSewingBoxClick/ResultTimePass,반짇고리 테스트 중
-EventSewingBoxA,반짇고리,반짇고리 퍼즐 맞추고 또 눌렀을 때,AND,ConditionSewingBoxManyClick/ConditionSewingBoxCorrect,Result_IncrementSewingBoxClick/ResultSewingBoxGetThreadAndNeedle/ResultSewingBoxGetThreadAndNeedleScript/ResultTimePass,반짇고리 테스트 중
-EventSewingBoxA,반짇고리,반짇고리 퍼즐 맞추지 않고 나갔다가 다시 들어왔을 때,AND,ConditionSewingBoxManyClick/ConditionSewingBoxNotCorrect,ResultSewingBoxSystemActivartion/Result_IncrementSewingBoxClick,반짇고리 테스트 중
-EventSewingBoxB,반짇고리,퍼즐의 구슬을 틀린 위치로 맞춤,,ConditionSewingBoxNotCorrect,ResultSewingBoxPuzzleFailedScript/ResultTimePass,반짇고리 테스트 중
-EventSewingBoxB,반짇고리,퍼즐의 구슬을 알맞은 위치로 맞춤,,ConditionSewingBoxCorrect,ResultSewingBoxGetThreadAndNeedle/ResultSewingBoxGetThreadAndNeedleScript/ResultSewingBoxGetThreadAndNeedleMemo/ResultTimePass/Result_IsFinishedEventSewingBoxA,반짇고리 테스트 중
-EventActivateSewingBox,반짇고리 퍼즐 활성화,반짇고리에 대한 설명이 끝나고 바로 퍼즐 활성화가 가능하도록 이벤트를 생성함. (dialogue에서 바로 result 실행은 불가능하므로),,,ResultSewingBoxSystemActivartion,반짇고리 테스트 중
+EventSewingBoxA,반짇고리,반짇고리를 처음 클릭,,ConditionSewingBoxFirstClick,Result_showSewingBoxImage/ResultSewingBoxScript/Result_IncrementSewingBoxClick/ResultTimePass,
+EventSewingBoxA,반짇고리,반짇고리 퍼즐 맞추고 또 눌렀을 때,AND,ConditionSewingBoxManyClick/ConditionSewingBoxCorrect,Result_IncrementSewingBoxClick/ResultSewingBoxGetThreadAndNeedle/ResultSewingBoxGetThreadAndNeedleScript/ResultTimePass,
+EventSewingBoxA,반짇고리,반짇고리 퍼즐 맞추지 않고 나갔다가 다시 들어왔을 때,AND,ConditionSewingBoxManyClick/ConditionSewingBoxNotCorrect,ResultSewingBoxSystemActivartion/Result_IncrementSewingBoxClick,
+EventSewingBoxB,반짇고리,퍼즐의 구슬을 틀린 위치로 맞춤,,ConditionSewingBoxNotCorrect,ResultSewingBoxPuzzleFailedScript/ResultTimePass,
+EventSewingBoxB,반짇고리,퍼즐의 구슬을 알맞은 위치로 맞춤,,ConditionSewingBoxCorrect,ResultSewingBoxGetThreadAndNeedle/ResultSewingBoxGetThreadAndNeedleScript/ResultSewingBoxGetThreadAndNeedleMemo/ResultTimePass/Result_IsFinishedEventSewingBoxA,
+EventActivateSewingBox,반짇고리 퍼즐 활성화,반짇고리에 대한 설명이 끝나고 바로 퍼즐 활성화가 가능하도록 이벤트를 생성함. (dialogue에서 바로 result 실행은 불가능하므로),,,ResultSewingBoxSystemActivartion,
 ,,,,,,
 EventTeddyBear2,침대 위 곰인형,침대 위 곰인형을 처음 클릭,,ConditionBedTeddy2FristClick,ResultBedTeddy2Script/ResultTimePass/Result_IsFinishedEventTeddyBear2/Result_IncrementBedTeddyClick2,
 EventTeddyBear2,침대 위 곰인형,침대 위 곰인형을 다시 클릭,,ConditionBedTeddy2ManyClick,ResultBedTeddy2Script/ResultTimePass/Result_IncrementBedTeddyClick2,

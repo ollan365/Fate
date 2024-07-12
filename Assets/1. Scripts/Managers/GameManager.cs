@@ -178,6 +178,10 @@ public class GameManager : MonoBehaviour
 
         // 두번째 방탈출
 
+        // 틴 케이스
+        variables["TinCaseClick"] = 0;
+        variables["TinCaseCorrect"] = false;
+
         // 반짇고리
         variables["SewingBoxClick"] = 0;
         variables["SewingBoxCorrect"] = false;

@@ -597,10 +597,42 @@ public class ResultManager : MonoBehaviour
 
             // 방탈출 2
 
-            case "ResultTinCaseTest": // 틴케이스 테스트용
+            case "Result_showTinCaseImage": // 틴케이스 확대 이미지 표시
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "tinCase");
+                break;
+
+            case "ResultTinCaseScript": // 틴케이스에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_020");
+                break;
+
+            case "ResultTinCaseSystemActivartion": // 틴케이스 비밀번호 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "tinCase");
                 executableObjects["TinCase"].ExecuteAction();
                 break;
+
+            case "ResultTinCaseFailedScript": // 틴케이스 비밀번호 틀림에 대한 설명
+                //DialogueManager.Instance.StartDialogue("RoomEscape2_020");
+
+                Debug.Log("틴케이스 비밀번호 틀림에 대한 설명");
+                break;
+
+            case "ResultTinCaseGetTicket": // 티켓을 획득
+                SoundPlayer.Instance.UISoundPlay(Sound_Key);
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
+
+                Debug.Log("티켓을 획득");
+                break;
+
+            case "ResultTinCaseGetTicketScript": // 티켓을 획득 후 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_021");
+                break;
+
+            case "ResultTinCaseGetTicketMemo": // 티켓 획득 후 메모
+                //MemoManager.Instance.AddMemo("R1Memo_003");
+
+                Debug.Log("티켓 획득 후 메모");
+                break;
+
 
             case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
@@ -623,7 +655,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultSewingBoxGetThreadAndNeedle":   // 실과 바늘을 획득
                 SoundPlayer.Instance.UISoundPlay(Sound_Key);
-                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "thread");
 
                 Debug.Log("실과 바늘을 획득");
                 break;

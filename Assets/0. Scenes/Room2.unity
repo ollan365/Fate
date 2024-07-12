@@ -5254,8 +5254,9 @@ MonoBehaviour:
   letterOfResignationImage: {fileID: 21300000, guid: 28a0585caf18da64b8a62e9410cac47d, type: 3}
   photoInsideBoxImage: {fileID: 21300000, guid: cc713c41a0c3a034cb5e7390a19c5ac6, type: 3}
   cafePintInBagImage: {fileID: 21300000, guid: 48ab8cab66f5785449a47f00af77506e, type: 3}
-  tinCaseImage: {fileID: 21300000, guid: 25e27493b57f1fa48b286b7167b3361e, type: 3}
+  tinCaseImage: {fileID: 21300000, guid: e19385a99ef599b40a10c2c3f13e7954, type: 3}
   sewingBoxImage: {fileID: 21300000, guid: 35aefd6c1fd506c44bfd094ff93aaaf9, type: 3}
+  threadImage: {fileID: 21300000, guid: 835c9e96c2c27b743b54f6d0cfcb47d0, type: 3}
   hospitalPrintImage: {fileID: 21300000, guid: 3ec877ce310994a47b9df03bd756d708, type: 3}
   poster2Image: {fileID: 21300000, guid: 6ce7f39a24eab734f9122654327d4249, type: 3}
   starStickerImage: {fileID: 21300000, guid: 208aec0346810de4d85a933aa1011be2, type: 3}
@@ -7553,7 +7554,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c3972e8241b544fe5815da38deaf619c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ca05d64020470bc4f98b0899db400c2b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -20135,6 +20136,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tin Case Lock
       objectReference: {fileID: 0}
+    - target: {fileID: 1560727693215609619, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
+      propertyPath: tinCaseA
+      value: 
+      objectReference: {fileID: 2092855088}
     - target: {fileID: 2047968521869727311, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -21123,9 +21128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac3d394703624803967dbb4c6f8239c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventId: EventTinCaseTest
+  eventId: EventTinCaseA
   sideNum: 0
-  isInquiry: 0
+  isInquiry: 1
   tinCaseLock: {fileID: 1015460112}
 --- !u!212 &2092855090
 SpriteRenderer:
@@ -21675,6 +21680,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5013755621623988149, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8122899949158248505, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
