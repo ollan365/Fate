@@ -617,7 +617,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTinCaseGetTicket": // 티켓을 획득
-                SoundPlayer.Instance.UISoundPlay(Sound_Key);
+                SoundPlayer.Instance.UISoundPlay(Sound_TincaseOpen); // 틴케이스 열리는 소리
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
 
                 Debug.Log("티켓을 획득");
@@ -654,8 +654,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedle":   // 실과 바늘을 획득
-                SoundPlayer.Instance.UISoundPlay(Sound_Key);
-                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "thread");
+                SoundPlayer.Instance.UISoundPlay(Sound_SewingBoxOpen); // 반짇고리 상자 열리는 소리
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "thread");  
 
                 Debug.Log("실과 바늘을 획득");
                 break;
@@ -669,7 +669,34 @@ public class ResultManager : MonoBehaviour
 
                 Debug.Log("실과 바늘 획득 후 메모");
                 break;
-                
+
+            case "ResultBrokenTeddyBear2NoThreadAndNeedleScript": // 실바늘 없을때 곰인형에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_013");
+                Debug.Log("실바늘 없을때 곰인형에 대한 설명");
+                break;
+
+            case "ResultBrokenTeddyBear2YesThreadAndNeedleScript": // 실바늘 있을때 곰인형에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_023");
+                break;
+
+            case "ResultFixTeddyBear": // 망가진 곰인형을 고침
+                Debug.Log("ResultFixTeddyBear executed");
+                executableObjects["BrokenTeddyBear0"].ExecuteAction();
+                executableObjects["BrokenTeddyBear1"].ExecuteAction();
+                executableObjects["BrokenTeddyBear3"].ExecuteAction();
+                break;
+
+            case "ResultBrokenTeddyBear2Yes": // 선택지 약을 먹음
+                DialogueManager.Instance.EndDialogue();
+                DialogueManager.Instance.StartDialogue("RoomEscape2_024");
+                break;
+
+            case "ResultBrokenTeddyBear2No": // 선택지 약을 먹음
+                DialogueManager.Instance.EndDialogue();
+                DialogueManager.Instance.StartDialogue("RoomEscape2_025");
+                break;
+
+
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
                 executableObjects["Box Unzoomed 2"].ExecuteAction();
                 break;
@@ -727,6 +754,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultHospitalFlyer2Script": // 방탈출2 병원 전단지  스크립트
+                SoundPlayer.Instance.UISoundPlay(Sound_GrabPaper);
                 DialogueManager.Instance.StartDialogue("RoomEscape2_011");
                 break;
 

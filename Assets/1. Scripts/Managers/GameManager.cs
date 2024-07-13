@@ -237,6 +237,14 @@ public class GameManager : MonoBehaviour
         variables["WardrobeDownDrawersClosed"] = true;
         variables["ClosedWardrobeDownDrawersClick"] = 0;
 
+        // 망가진 곰인형
+        variables["BrokenTeddyBearClick"] = 0;
+        variables["TeddyBearFixed"] = false;
+
+        // 실과 바늘
+        variables["GetThreadAndNeedle"] = false;
+
+
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
         variables["VillaClick"] = 0;
@@ -411,7 +419,8 @@ public class GameManager : MonoBehaviour
          //   "FateBirthday"
          // "isTutorial",
          // "TutorialPhase"
-         "ActionPoint"
+         "ActionPoint",
+         "BrokenTeddyBearClick"
         });
         
         foreach (var item in variables)
