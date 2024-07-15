@@ -277,7 +277,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultDrinkAndMedicinMemo": // 술과 감기약에 대한 메모 작성
-                MemoManager.Instance.AddMemo("R1Memo_012");
+                MemoManager.Instance.RevealMemo("R1Memo_012");
                 break;
 
             case "ResultStandLightScript": // 책상 위 스탠드에 대한 설명
@@ -298,7 +298,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "ResultPillowAmuletMemo": // 부적에 대한 메모 작성
-                MemoManager.Instance.AddMemo("R1Memo_001");
+                MemoManager.Instance.RevealMemo("R1Memo_001");
                 break;
 
             case "ResultDiaryScript": // 다이어리에 대한 설명
@@ -315,7 +315,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "ResultDiaryMemo": // 다이어리에 대한 메모가 작성됨
-                MemoManager.Instance.AddMemo("R1Memo_002");
+                MemoManager.Instance.RevealMemo("R1Memo_002");
                 break;
             
             case "ResultDiaryContentScript": // 다이어리에 대한 스크립트
@@ -350,7 +350,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClockGetKeyMemo": // 열쇠 획득 후 메모
-                MemoManager.Instance.AddMemo("R1Memo_003");
+                MemoManager.Instance.RevealMemo("R1Memo_003");
                 break;
 
             case "ResultChairMoved": // 의자가 옆으로 이동함
@@ -376,7 +376,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLaptopMemo": // 노트북에 대한 설명이 메모에 기록됨
-                MemoManager.Instance.AddMemo("R1Memo_004");
+                MemoManager.Instance.RevealMemo("R1Memo_004");
                 break;
 
             case "ResultLaptopContentScript": // 노트북에 대한 스크립트 출력
@@ -403,7 +403,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCarpetDropOutLetterMemo": // 종이에 대한 메모
-                MemoManager.Instance.AddMemo("R1Memo_013");
+                MemoManager.Instance.RevealMemo("R1Memo_013");
                 break;
 
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
@@ -423,7 +423,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCutterKnifeDisappear": // 커터칼 사라짐
-                Debug.Log("ResultCutterKnifeDisappear executed");
+                // Debug.Log("ResultCutterKnifeDisappear executed");
                 executableObjects["Knife0"].ExecuteAction();
                 executableObjects["Knife1"].ExecuteAction();
                 break;
@@ -435,7 +435,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPosterMemo": // 포스터에 대한 메모
-                MemoManager.Instance.AddMemo("R1Memo_005");
+                MemoManager.Instance.RevealMemo("R1Memo_005");
                 break;
 
             case "ResultClosetDoorsOpen": // 옷장 문이 열림
@@ -458,7 +458,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClosetBagMemo": // 옷장 속 가방 내에 전단지에 대한 메모
-                MemoManager.Instance.AddMemo("R1Memo_006");
+                MemoManager.Instance.RevealMemo("R1Memo_006");
                 break;
 
             case "ResultClosetBoxWithoutKeyScript": // 옷장 위 상자에 대한 설명(열쇠X 상태 일 때)
@@ -480,7 +480,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClosetBoxMemo": // 상자 안 사진들에 대한 메모
-                MemoManager.Instance.AddMemo("R1Memo_011");
+                MemoManager.Instance.RevealMemo("R1Memo_011");
                 break;
 
             case "ResultShoppingBagScript": // 쇼핑백에 대한 스크립트
@@ -540,19 +540,19 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCalendarFBDMemo": // 필연 생일 메모
-                MemoManager.Instance.AddMemo("R1Memo_007");
+                MemoManager.Instance.RevealMemo("R1Memo_007");
                 break;
 
             case "ResultCalendarABDMemo": // 우연 생일 메모
-                MemoManager.Instance.AddMemo("R1Memo_010");
+                MemoManager.Instance.RevealMemo("R1Memo_010");
                 break;
 
             case "ResultCalendar1031Memo": // 10월 31일 메모
-                MemoManager.Instance.AddMemo("R1Memo_008");
+                MemoManager.Instance.RevealMemo("R1Memo_008");
                 break;
 
             case "ResultCalendar1001Memo": // 10월 1일 메모
-                MemoManager.Instance.AddMemo("R1Memo_009");
+                MemoManager.Instance.RevealMemo("R1Memo_009");
                 break;
             
             case "Result_IncrementFateBirthday":  // 필연 클릭 횟수 1 증가
@@ -773,11 +773,12 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCafeMemo1": // 카페에 대한 메모 1
-                MemoManager.Instance.AddMemo("F1Memo_001");
+                Debug.Log("카페에 대한 메모 1");
+                MemoManager.Instance.RevealMemo("F1Memo_001");
                 break;
 
             case "ResultCafeMemo2": // 카페에 대한 메모 2
-                MemoManager.Instance.AddMemo("F1Memo_002");
+                MemoManager.Instance.RevealMemo("F1Memo_002");
                 break;
 
             case "ResultReceiptScript": // 영수증에 대한 스크립트
@@ -785,7 +786,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultReceiptMemo": // 영수증에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_003");
+                MemoManager.Instance.RevealMemo("F1Memo_003");
                 break;
 
             case "ResultLightScript": // 신호등에 대한 스크립트
@@ -793,7 +794,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLightMemo": // 신호등에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_004");
+                MemoManager.Instance.RevealMemo("F1Memo_004");
                 break;
 
             case "ResultLatteScript": // 음료에 대한 스크립트
@@ -801,7 +802,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLatteMemo": // 음료에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_005");
+                MemoManager.Instance.RevealMemo("F1Memo_005");
                 break;
 
             case "Result1FClothesScript": // 1층 옷가게에 대한 스크립트
@@ -809,7 +810,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result1FClothesMemo": // 1층 옷가게에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_006");
+                MemoManager.Instance.RevealMemo("F1Memo_006");
                 break;
 
             case "Result2FClothesScript": // 2층 옷가게에 대한 스크립트
@@ -817,7 +818,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result2FClothesMemo": // 2층 옷가게에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_007");
+                MemoManager.Instance.RevealMemo("F1Memo_007");
                 break;
 
             case "ResultConstructionScript": // 공사장에 대한 스크립트
@@ -825,7 +826,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultConstructionMemo": // 공사장에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultRestaurantScript": // 식당에 대한 스크립트
@@ -861,7 +862,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultAngryMemo": // 화난 사람에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_009");
+                MemoManager.Instance.RevealMemo("F1Memo_009");
                 break;
 
             case "ResultWreathScript": // 쓰러진 화환에 스크립트
@@ -869,7 +870,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultWreathMemo": // 쓰러진 화환에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_010");
+                MemoManager.Instance.RevealMemo("F1Memo_010");
                 break;
 
             case "ResultFollowEnd": // 미행 끝

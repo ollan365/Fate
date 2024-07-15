@@ -86,6 +86,8 @@ public class GameManager : MonoBehaviour
 
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
+        variables["RefillHeartsOrEndDay"] = false;
+
         // 2 - 0. 튜토리얼 관련 변수들 - 첫번째 방탈출
         variables["isTutorial"] = false;
         variables["TutorialPhase"] = 0;
@@ -408,8 +410,9 @@ public class GameManager : MonoBehaviour
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
         bool isInvestigating = RoomManager.Instance.isInvestigating;
         bool isTutorialPhase1 = (int)variables["TutorialPhase"] == 1;
+        bool isMemoOpen = MemoManager.Instance.isMemoOpen;
 
-        bool isBusy = isDialogueActive || isInvestigating || isTutorialPhase1;
+        bool isBusy = isDialogueActive || isInvestigating || isTutorialPhase1 || isMemoOpen;
 
         return isBusy;
     }
@@ -446,19 +449,29 @@ public class GameManager : MonoBehaviour
         
         if (actionPoint % actionPointsPerDay == 0)
         {
-            // if all action points are used, load "Follow 1" scene
-            if (actionPoint == 0)
-            {
-                SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
-                return;
-            }
-            
-            ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
-
-            // refill hearts on screen after 2 seconds
-            StartCoroutine(RefillHearts());
+            bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
+            if (!isDialogueActive) RefillHeartsOrEndDay();
+            else SetVariable("RefillHeartsOrEndDay", true);
         }
     }
+    
+    public void RefillHeartsOrEndDay()
+    {
+        // if all action points are used, load "Follow 1" scene
+        int actionPoint = (int)GetVariable("ActionPoint");
+        if (actionPoint == 0)
+        {
+            SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+            return;
+        }
+            
+        ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
+
+        // refill hearts on screen after 2 seconds
+        StartCoroutine(RefillHearts());
+        
+        SetVariable("RefillHeartsOrEndDay", false);
+    } 
     
     private IEnumerator DeactivateHeart(GameObject heart)
     {
