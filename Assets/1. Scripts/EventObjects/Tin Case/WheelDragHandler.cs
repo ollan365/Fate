@@ -22,9 +22,11 @@ public class WheelDragHandler : MonoBehaviour
             lastMousePosition = Input.mousePosition;
             accumulatedDeltaY = 0;
             isDragging = true;
+            SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_TincaseScroll, true);
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_TincaseScroll, false);
             isDragging = false;
         }
         else if (Input.GetMouseButton(0) && isDragging)
