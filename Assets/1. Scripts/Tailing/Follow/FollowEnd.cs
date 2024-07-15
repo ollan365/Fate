@@ -11,7 +11,7 @@ public class FollowEnd : MonoBehaviour
     {
         mainCam = Camera.main;
     }
-    public IEnumerator EndFollow()
+    public IEnumerator EndFollow(bool isDayMiniGame)
     {
         // 필연으로 줌인
         StartCoroutine(ZoomIn(Position.Fate));
@@ -60,15 +60,13 @@ public class FollowEnd : MonoBehaviour
         // 카메라 원래대로
         StartCoroutine(ZoomIn(Position.ZoomOut));
 
-        // 화난 사람 앞쪽 까지 가면서 페이드 아웃
+        // 페이드 아웃
         FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(2);
         yield return new WaitForSeconds(1f);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 2, false, 0, 0));
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, false);
-        yield return new WaitForSeconds(2f);
 
         // 미행 끝
-        FollowManager.Instance.FollowFinishGameStart();
+        if (!isDayMiniGame) FollowManager.Instance.FollowFinishGameStart();
+        else SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 
     private IEnumerator ZoomIn(Position type)

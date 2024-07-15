@@ -38,16 +38,12 @@ public class FollowObject : EventObject
     }
     public void OnMouseDown_Normal()
     {
-        if (objectName != FollowObjectName.Extra)
-        {
-            eventId = objectName.EventID();
-            GameManager.Instance.IncrementVariable(objectName.ClickVariable());
-        }
-        else
-        {
-            eventId = extraName.EventID();
-            GameManager.Instance.IncrementVariable(extraName.ClickVariable());
-        }
+        if (objectName != FollowObjectName.Extra) eventId = objectName.EventID();
+        else eventId = extraName.EventID();
+
         base.OnMouseDown();
+        
+        if (objectName != FollowObjectName.Extra) GameManager.Instance.IncrementVariable(objectName.ClickVariable());
+        else GameManager.Instance.IncrementVariable(extraName.ClickVariable());
     }
 }

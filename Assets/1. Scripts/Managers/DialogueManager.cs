@@ -223,7 +223,10 @@ public class DialogueManager : MonoBehaviour
     {
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
-            if (FollowManager.Instance) FollowManager.Instance.EndScript(true);
+        {
+            if (FollowManager.Instance && dialogueType != DialogueType.FOLLOW_EXTRA) FollowManager.Instance.EndScript(true);
+            else if (FollowManager.Instance && dialogueType == DialogueType.FOLLOW_EXTRA) FollowManager.Instance.EndScript(false);
+        }
 
         isDialogueActive = false;
         dialogueCanvas[dialogueType.ToInt()].SetActive(false);
@@ -270,6 +273,13 @@ public class DialogueManager : MonoBehaviour
         while (!isTyping) yield return null;
 
         CompleteSentence();
+        if (isFast)
+        {
+            typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
+            isFast = false;
+        }
+        if (isAuto) isAuto = false;
+
         OnDialoguePanelClick();
     }
 

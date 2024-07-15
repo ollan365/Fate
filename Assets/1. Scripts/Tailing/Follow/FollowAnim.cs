@@ -9,7 +9,7 @@ public class FollowAnim : MonoBehaviour
 {
     [SerializeField] private Transform backgroundPosition;
     [SerializeField] private Transform frontCanvasPosition;
-    [SerializeField] private float moveSpeed;
+    [SerializeField] public float moveSpeed;
 
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
@@ -21,6 +21,7 @@ public class FollowAnim : MonoBehaviour
     private bool isStop = true; // 현재 이동 중인지를 나타내는 변수
     public bool IsStop { get => isStop; }
     private float moveTime = 0;
+    
 
     private void Start()
     {
@@ -88,11 +89,9 @@ public class FollowAnim : MonoBehaviour
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 && backgroundPosition.position.x < -39)
         {
             ChangeAnimStatus();
-            FollowManager.Instance.FollowEndLogicStart();
-
-            // 다음 배경 이동 시에는 반대 방향으로 1.5배 속도
-            moveSpeed *= -1.5f;
+            FollowManager.Instance.FollowEndLogicStart(false);
         }
+
 
         // 두번째 미행
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
@@ -101,10 +100,6 @@ public class FollowAnim : MonoBehaviour
             {
                 case 0: ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
                 case -4: ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
-                // case -12: ExtraAutoDialogue("Follow2_003"); break; // 경찰
-                // case -19: ExtraAutoDialogue("Follow2_004"); break; // 그냥 행인
-                // case -22: ExtraAutoDialogue("Follow2_005"); break; // 담배
-                // case -31: ExtraAutoDialogue("Follow2_006"); break; // 클럽 가드
             }
         }
     }

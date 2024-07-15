@@ -41,8 +41,6 @@ public class SaveManager : MonoBehaviour
         string filePath = Application.persistentDataPath + "/" + GameDataFileName;
 
         File.WriteAllText(filePath, ToJsonData);
-
-        LoadGameData();
     }
     public int CheckGameData()
     {
@@ -53,7 +51,7 @@ public class SaveManager : MonoBehaviour
         string FromJsonData = File.ReadAllText(filePath);
         data = JsonUtility.FromJson<SaveData>(FromJsonData);
 
-        if (data.sceneType == SceneType.START) return 0; // 시작 씬에서 종료된 경우 (엔딩 직후)
+        if (data.sceneType == SceneType.START && data.lastEnding != EndingType.NONE) return 0; // 저장된 게임 데이터가 있고, 시작 씬에서 종료된 경우 (엔딩 직후)
         else return 1;
     }
     // 불러오기
@@ -106,7 +104,8 @@ public class SaveManager : MonoBehaviour
 [System.Serializable]
 public class SaveData
 {
-    public int endingCollectCount; // 엔딩의 개수
+    public int endingCollectCount;
+    public EndingType lastEnding; // 마지막으로 본 엔딩
 
     public SceneType sceneType; // 어느 씬에서 끝났는지
     public int lastSideIndex;

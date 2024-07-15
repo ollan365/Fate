@@ -19,26 +19,26 @@ public class ScreenEffect : MonoBehaviour
         }
     }
 
-    // ÈŞ½Ä ½Ã½ºÅÛ¿¡¼­ ´«±ôºı
+    // íœ´ì‹ ì‹œìŠ¤í…œì—ì„œ ëˆˆê¹œë¹¡
     public void RestButtonEffect()
     {
         StartCoroutine(OnFade(null, 0, 1, 2, true, 0.5f, +0.45f));
     }
 
-    // ¹æ¿¡¼­ ÀÌµ¿ ¹öÆ° ´­·¶À» ¶§
+    // ë°©ì—ì„œ ì´ë™ ë²„íŠ¼ ëˆŒë €ì„ ë•Œ
     public void MoveButtonEffect(GameObject screen, Vector3 direction)
     {
         StartCoroutine(OnMoveUI(screen, direction, 100, 0.5f));
         StartCoroutine(OnFade(null, 0, 1, 0, true, 0.2f, +0.25f));
     }
 
-    // <summary> º¯¼ö ¼³¸í
-    // fadeObject´Â fade È¿°ú¸¦ Àû¿ëÇÒ ¹°Ã¼ (nullÀ» ÁÖ¸é È­¸é ÀüÃ¼)
-    // start = 1, end = 0 ÀÌ¸é ¹à¾ÆÁü start = 0, end = 1ÀÌ¸é ¾îµÎ¿öÁü
-    // fateTimeÀº ¹à¾ÆÁü(¶Ç´Â ¾îµÎ¿öÁü)¿¡ °É¸®´Â ½Ã°£
-    // blink°¡ trueÀÌ¸é ¾îµÎ¿öÁ³´Ù°¡ ¹à¾ÆÁü
-    // waitingTimeÀº blink°¡ trueÀÏ ¶§ ¾îµÎ¿öÁ® ÀÖ´Â ½Ã°£
-    // changeFadeTimeÀº ´Ù½Ã ¹à¾ÆÁú ¶§ °É¸®´Â ½Ã°£À» Á¶Á¤ÇÏ°í ½ÍÀ¸¸é ¾²´Â º¯¼ö
+    // <summary> ë³€ìˆ˜ ì„¤ëª…
+    // fadeObjectëŠ” fade íš¨ê³¼ë¥¼ ì ìš©í•  ë¬¼ì²´ (nullì„ ì£¼ë©´ í™”ë©´ ì „ì²´)
+    // start = 1, end = 0 ì´ë©´ ë°ì•„ì§ start = 0, end = 1ì´ë©´ ì–´ë‘ì›Œì§
+    // fateTimeì€ ë°ì•„ì§(ë˜ëŠ” ì–´ë‘ì›Œì§)ì— ê±¸ë¦¬ëŠ” ì‹œê°„
+    // blinkê°€ trueì´ë©´ ì–´ë‘ì›Œì¡Œë‹¤ê°€ ë°ì•„ì§
+    // waitingTimeì€ blinkê°€ trueì¼ ë•Œ ì–´ë‘ì›Œì ¸ ìˆëŠ” ì‹œê°„
+    // changeFadeTimeì€ ë‹¤ì‹œ ë°ì•„ì§ˆ ë•Œ ê±¸ë¦¬ëŠ” ì‹œê°„ì„ ì¡°ì •í•˜ê³  ì‹¶ìœ¼ë©´ ì“°ëŠ” ë³€ìˆ˜
     // </summary>
     public IEnumerator OnFade(Image fadeObject, float start, float end, float fadeTime, bool blink, float waitingTime, float changeFadeTime)
     {
@@ -64,29 +64,29 @@ public class ScreenEffect : MonoBehaviour
         newColor.a = end;
         fadeObject.color = newColor;
 
-        // °ğ¹Ù·Î ´Ù½Ã ¾îµÎ¿öÁö°Å³ª ¹à¾ÆÁö°Ô ÇÏ°í ½ÍÀ» ¶§
+        // ê³§ë°”ë¡œ ë‹¤ì‹œ ì–´ë‘ì›Œì§€ê±°ë‚˜ ë°ì•„ì§€ê²Œ í•˜ê³  ì‹¶ì„ ë•Œ
         if (blink)
         {
             yield return new WaitForSeconds(waitingTime);
             StartCoroutine(OnFade(fadeObject, end, start, fadeTime + changeFadeTime, false, 0, 0));
         }
 
-        // Åõ¸íÇØÁ³À¸¸é ²ö´Ù
+        // íˆ¬ëª…í•´ì¡Œìœ¼ë©´ ëˆë‹¤
         if (fadeObject == coverPanel && end == 0) fadeObject.gameObject.SetActive(false);
     }
 
-    // <summary> º¯¼ö ¼³¸í
-    // È­¸é ÀÌµ¿ÇÒ ¶§ »ç¿ëÇÏ±â À§ÇØ ¸¸µç °Å¶ó µ¿ÀÛÀÌ Á¶±İ Æ¯ÀÌÇÕ´Ï´Ù...
-    // screenÀÇ ÇöÀç À§Ä¡°¡ ¸ñÀûÁö·Î ¼³Á¤ÀÌ µÇ°í,
-    // Ãâ¹ßÁöÁ¡Àº ÇöÀç À§Ä¡(¸ñÀûÁö)¿¡¼­ direction ¹æÇâÀ¸·Î distance ¸¸Å­ ÀÌµ¿ÇÑ °÷ÀÌ µË´Ï´Ù
+    // <summary> ë³€ìˆ˜ ì„¤ëª…
+    // í™”ë©´ ì´ë™í•  ë•Œ ì‚¬ìš©í•˜ê¸° ìœ„í•´ ë§Œë“  ê±°ë¼ ë™ì‘ì´ ì¡°ê¸ˆ íŠ¹ì´í•©ë‹ˆë‹¤...
+    // screenì˜ í˜„ì¬ ìœ„ì¹˜ê°€ ëª©ì ì§€ë¡œ ì„¤ì •ì´ ë˜ê³ ,
+    // ì¶œë°œì§€ì ì€ í˜„ì¬ ìœ„ì¹˜(ëª©ì ì§€)ì—ì„œ direction ë°©í–¥ìœ¼ë¡œ distance ë§Œí¼ ì´ë™í•œ ê³³ì´ ë©ë‹ˆë‹¤
     // </summary>
     public IEnumerator OnMoveUI(GameObject screen, Vector3 direction, float distance, float time)
     {
         RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
-        // ¿ø·¡ À§Ä¡ (¸ñÀûÁö)
+        // ì›ë˜ ìœ„ì¹˜ (ëª©ì ì§€)
         var localPosition = screenRectTransform.localPosition;
         Vector3 originPosition = localPosition;
-        // Ãâ¹ß ÁöÁ¡
+        // ì¶œë°œ ì§€ì 
         Vector3 startPosition = localPosition + direction * distance;
         screen.GetComponent<RectTransform>().localPosition = startPosition;
 
@@ -101,7 +101,7 @@ public class ScreenEffect : MonoBehaviour
             yield return null;
         }
 
-        // ¿ø·¡ À§Ä¡·Î ¼³Á¤
+        // ì›ë˜ ìœ„ì¹˜ë¡œ ì„¤ì •
         screen.GetComponent<RectTransform>().localPosition = originPosition;
     }
 }

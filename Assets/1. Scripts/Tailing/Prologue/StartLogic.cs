@@ -15,10 +15,11 @@ public class StartLogic : MonoBehaviour
     [SerializeField] private GameObject second;
     [SerializeField] private Slider[] soundSliders;
     [SerializeField] private TextMeshProUGUI[] soundValueTexts;
+    [SerializeField] private GameObject buttons;
     private int language = 1;
     public int Language { set => language = value; }
 
-    [Header("Name, Gender, Birth Page")]
+    [Header("Name, Birth Page")]
     [SerializeField] private GameObject namePanel;
     [SerializeField] private GameObject birthPanel;
     [SerializeField] private TMP_InputField nameInput;
@@ -45,6 +46,9 @@ public class StartLogic : MonoBehaviour
     private void Start()
     {
         StartCoroutine(RotateSecond());
+
+        if (GameManager.Instance.GetVariable("EndingCollect") != null && SaveManager.Instance.CheckGameData() == 0)
+        { LoadGame(); }
     }
     private IEnumerator RotateSecond()
     {
@@ -94,8 +98,8 @@ public class StartLogic : MonoBehaviour
         SaveManager.Instance.SaveInitGameData();
 
         // 1: 다른 씬에서 저장된 게임 데이터 존재 0: 엔딩 후 종료 -1: 저장된 데이터 없음
-        if (SaveManager.Instance.CheckGameData() == 1) SaveManager.Instance.LoadGameData();
-        else if (SaveManager.Instance.CheckGameData() == 0) StartCoroutine(StartPrologue());
+        if (SaveManager.Instance.CheckGameData() == 1) { SaveManager.Instance.LoadGameData(); buttons.SetActive(false); }
+        else if (SaveManager.Instance.CheckGameData() == 0) { StartCoroutine(StartPrologue()); buttons.SetActive(false); }
         else noGameDataPanel.SetActive(true);
     }
     public void ChangeSoundValue(int index)
@@ -117,6 +121,7 @@ public class StartLogic : MonoBehaviour
     private IEnumerator StartPrologue()
     {
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0, 0));
+
         EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);
 

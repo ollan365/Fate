@@ -20,6 +20,9 @@ public static class Constants
         }
     }
 
+    public enum EndingType { NONE, BAD_A, BAD_B, TRUE, HIDDEN }
+
+
     public enum SoundType { BGM, LOOP, SOUND_EFFECT }
     // 사운드 종류
     // 1. 배경음

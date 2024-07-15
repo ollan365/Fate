@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
         // 1. 시스템 관련 변수들
 
         variables["EndingCollect"] = 0; // 본 엔딩의 개수
+        variables["LastEnding"] = "NONE";
 
         variables["Language"] = 1;  // 시스템 언어
         
