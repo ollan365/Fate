@@ -1,62 +1,41 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.UI;
 
-public enum PageType
+public class DiaryManager : PageContentsManager
 {
-    Left,
-    Right,
-    Back,
-    Front
-}
-
-public class DiaryManager : MonoBehaviour
-{
-    public static MemoManager Instance { get; private set; }
-    private TextAsset diaryPagesCSV;
-    
-    [SerializeField] private GameObject flipLeftButton;
-    [SerializeField] private GameObject flipRightButton;
-
-    private Dictionary<string, string> diaryPages = new Dictionary<string, string>();
-    [SerializeField] private TextMeshProUGUI leftPage;
-    [SerializeField] private TextMeshProUGUI rightPage;
-    [SerializeField] private TextMeshProUGUI backPage;
-    [SerializeField] private TextMeshProUGUI frontPage;
-
     private void Awake()
     {
-        diaryPagesCSV = Resources.Load<TextAsset>("Datas/diary");
-        ParseDiaryPages();
+        ParsePageContents();
     }
 
-    private void DisplayPage(PageType pageType, int pageNum)
+    public override void DisplayPage(PageType pageType, int pageNum)
     {
         string diaryID = $"Diary_{pageNum.ToString().PadLeft(3, '0')}";
 
         switch (pageType)
         {
             case PageType.Left:
-                leftPage.text = pageNum == 0 ? "" : diaryPages[diaryID];
+                leftPage.text = pageNum == 0 ? "" : PagesDictionary[diaryID];
                 break;
             
             case PageType.Right:
-                rightPage.text = pageNum > diaryPages.Count ? "" : diaryPages[diaryID];
+                rightPage.text = pageNum > PagesDictionary.Count ? "" : PagesDictionary[diaryID];
                 break;
             
             case PageType.Back:
-                backPage.text = diaryPages[diaryID];
+                backPage.text = PagesDictionary[diaryID];
                 break;
             
             case PageType.Front:
-                frontPage.text = diaryPages[diaryID];
+                frontPage.text = PagesDictionary[diaryID];
                 break;
         }
     }
 
-    public void DisplayPagesDynamic(int currentPage)
+    public override void DisplayPagesDynamic(int currentPage)
     {
         DisplayPage(PageType.Left, currentPage);
         DisplayPage(PageType.Right, currentPage + 3);
@@ -64,18 +43,19 @@ public class DiaryManager : MonoBehaviour
         DisplayPage(PageType.Front, currentPage + 2);
     }
     
-    public void DisplayPagesStatic(int currentPage)
+    public override void DisplayPagesStatic(int currentPage)
     {
         DisplayPage(PageType.Left, currentPage);
         DisplayPage(PageType.Right, currentPage + 1);
         
         flipLeftButton.SetActive(currentPage > 0);
-        flipRightButton.SetActive(currentPage < diaryPages.Count - 1);
+        flipRightButton.SetActive(currentPage < PagesDictionary.Count - 1);
     }
 
-    public void ParseDiaryPages()
+    public override void ParsePageContents()
     {
-        string[] lines = diaryPagesCSV.text.Split('\n');
+        TextAsset diaryCsv = Resources.Load<TextAsset>("Datas/diary");
+        string[] lines = diaryCsv.text.Split('\n');
 
         string previousDiaryPageID = "";
         
@@ -91,8 +71,8 @@ public class DiaryManager : MonoBehaviour
             
             string scriptID = fields[2].Trim();
             string script = DialogueManager.Instance.scripts[scriptID].GetScript();
-            if (diaryPages.ContainsKey(diaryPageID)) diaryPages[diaryPageID] += "\n\n" + script;
-            else diaryPages.Add(diaryPageID, script);
+            if (PagesDictionary.ContainsKey(diaryPageID)) PagesDictionary[diaryPageID] += "\n\n" + script;
+            else PagesDictionary.Add(diaryPageID, script);
         }
     }
 }

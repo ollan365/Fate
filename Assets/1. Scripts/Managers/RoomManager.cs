@@ -117,25 +117,26 @@ public class RoomManager : MonoBehaviour
 
     public void OnExitButtonClick()
     {
-        if (isInvestigating)
+        bool isMemoOpen = MemoManager.Instance.isMemoOpen;
+        if (isMemoOpen)
+        {
+            MemoManager.Instance.SetMemoContents(false);
+        }
+        else if (isInvestigating)
         {
             imageAndLockPanelManager.OnExitButtonClick();
             
-            SetButtons();
-            
-            return;
         }
-        
-        if (isZoomed)
+        else if (isZoomed)
         {
             // 화면 전환 효과
             ScreenEffect.Instance.MoveButtonEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0));
 
             SetCurrentView(sides[currentSideIndex]);
             isZoomed = false;
-            
-            SetButtons();
         }
+
+        SetButtons();
     }
     
     // exit to root: turn off all the panels and zoom out to the root view
@@ -179,7 +180,7 @@ public class RoomManager : MonoBehaviour
     }
     
     // 나가기 버튼 필요 시, 보이게 함 (ResultManager에서 호출하게 함)
-    public void SetExitButton(bool isTrue)
+    private void SetExitButton(bool isTrue)
     {
         exitButton.gameObject.SetActive(isTrue);
     }
@@ -198,11 +199,12 @@ public class RoomManager : MonoBehaviour
     {
         bool isInvestigatingOrZoomed = isInvestigating || isZoomed;
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
+        bool isMemoOpen = MemoManager.Instance.isMemoOpen;
+        // Debug.Log($"isMemoOpen: {isMemoOpen}");
         
-        SetExitButton(isInvestigatingOrZoomed && !isDialogueActive);
-        SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive);
-        MemoManager.Instance.SetMemoButton(!isDialogueActive);
-        
+        SetExitButton((isInvestigatingOrZoomed || isMemoOpen) && !isDialogueActive);
+        SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
+        MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 
     //[SerializeField] private GameObject restButton;

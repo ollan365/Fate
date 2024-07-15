@@ -1,46 +1,34 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using static Constants;
 
-public class MemoManager : MonoBehaviour
+public class MemoManager : PageContentsManager
 {
-    public static MemoManager Instance { get; private set; }
-    public TextAsset memosCSV;
-
-    [SerializeField] private GameObject memoPage;
+    [SerializeField] private GameObject memoContents;
+    [SerializeField] private PageFlip memoPages;
     [SerializeField] private GameObject[] memoButtons;
-    [SerializeField] private GameObject closeButton;
-
     private GameObject memoButton; // 현재 사용 중인 메모버튼
+    
+    public static MemoManager Instance { get; private set; }
+    public bool isMemoOpen = false;
+    public bool isFollow;  // 현재 미행 씬인지 방탈출 씬인지
 
     // 모든 메모
-    public Dictionary<string, string> allMemo = new();
+    private readonly Dictionary<string, string> memoScripts = new Dictionary<string, string>();  // memoScripts[memoID] = scriptID
 
     // 저장된 메모
-    private List<string>[] savedMemoList = new List<string>[4]; // 저장된 메모 전체
-    public List<string>[] SavedMemoList
-    {
-        get => savedMemoList;
-        set => savedMemoList = value;
-    }
+    // create a list of lists to store the memos
+    public List<List<string[]>> SavedMemoList { get; set; } = new List<List<string[]>>(); // SavedMemoList[sceneIndex][memoIndex] = [memoID, memoContent]
 
-    // 메모 프리팹
-    [SerializeField] private GameObject memoTextPrefab;
+    private List<List<string>> RevealedMemoList { get; set; } = new List<List<string>>();  // RevealedMemoList[sceneIndex][memoIndex] = memoID
 
-    // 메모가 저장될 스크롤
-    public Transform scrollViewContent;
-
-    // 현재 미행 씬인지 방탈출 씬인지
-    public bool isFollow;
-
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            ParseMemos();
+            ParsePageContents();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -48,9 +36,64 @@ public class MemoManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        for (int i = 0; i < 4; i++) savedMemoList[i] = new List<string>();
+        // Initialize the lists with the correct size
+        for (var i = 0; i < 4; i++)
+        {
+            SavedMemoList.Add(new List<string[]>());
+            RevealedMemoList.Add(new List<string>());
+        }
 
-        memoButton = memoButtons[0];
+        var currentSceneIndex = GetCurrentSceneIndex();
+        memoButton = memoButtons[currentSceneIndex];
+        
+        LoadMemos();
+    }
+    
+    // memos.csv 파일 파싱
+    public override void ParsePageContents()
+    {
+        var memoCsv = Resources.Load<TextAsset>("Datas/memos");
+        var lines = memoCsv.text.Split('\n');
+        for (var i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+
+            var fields = lines[i].Split(',');
+
+            var memoID = fields[0].Trim();
+            var scriptID = fields[2].Trim();
+            
+            memoScripts[memoID] = scriptID;
+        }
+    }
+
+    private void LoadMemos()
+    {
+        foreach (var memoID in memoScripts.Keys)
+        {
+            var memoType = memoID.Substring(0, 2);
+            var scriptID = memoScripts[memoID];
+            var sceneIndex = 0;
+
+            switch (memoType)
+            {
+                case "R1":
+                    sceneIndex = 0;
+                    break;
+                case "F1":
+                    sceneIndex = 1;
+                    break;
+                case "R2":
+                    sceneIndex = 2;
+                    break;
+                case "F2":
+                    sceneIndex = 3;
+                    break;
+            }
+            
+            string[] memo = {memoID, "가려진 메모"};
+            SavedMemoList[sceneIndex].Add(memo);
+        }
     }
 
     // 현재 씬에 따라 메모의 개수를 파악 -> 현재 씬에 해당하는 메모의 개수에 따라 엔딩 선택지 해금 여부 결정
@@ -59,124 +102,123 @@ public class MemoManager : MonoBehaviour
         switch (SceneManager.Instance.CurrentScene)
         {
             case SceneType.ROOM_1:
-                if (savedMemoList[0].Count > 8) return true;
-                else return false;
+                return SavedMemoList[0].Count > 8;
             case SceneType.FOLLOW_1:
-                if (savedMemoList[1].Count >= 8) return true;
-                else return false;
+                return SavedMemoList[1].Count >= 8;
             case SceneType.FOLLOW_2:
-                if (savedMemoList[2].Count >= 8 && savedMemoList[3].Count >= 8) return true;
-                else return false;
+                return SavedMemoList[2].Count >= 8 && SavedMemoList[3].Count >= 8;
             default: return false;
         }
     }
 
     // 메모 추가하기
-    public void AddMemo(string memoID)
+    public void RevealMemo(string memoID)
     {
-        string scriptID = allMemo[memoID];
+        Debug.Log(memoID);
+        
+        var scriptID = memoScripts[memoID];
 
         // 현재 씬에 따라 메모가 저장되는 곳이 달라짐
-        int index = 0;
-        switch(SceneManager.Instance.CurrentScene)
+        int currentSceneIndex = GetCurrentSceneIndex();
+        
+        // 이미 저장된 메모면 return
+        if (RevealedMemoList[currentSceneIndex].Contains(scriptID)) return;
+        
+        RevealedMemoList[currentSceneIndex].Add(scriptID);
+        
+        for (var i = 0; i < SavedMemoList[currentSceneIndex].Count; i++)
+        {
+            if (SavedMemoList[currentSceneIndex][i][0] != memoID) continue;
+            string script = DialogueManager.Instance.scripts[scriptID].GetScript();
+            SavedMemoList[currentSceneIndex][i][1] = script;
+            break;
+        }
+        
+        Debug.Log($"Revealed {scriptID}");
+    }
+
+    private static int GetCurrentSceneIndex()
+    {
+        var index = 0;
+        switch (SceneManager.Instance.CurrentScene)
         {
             case SceneType.ROOM_1: index = 0; break;
             case SceneType.FOLLOW_1: index = 1; break;
             case SceneType.ROOM_2: index = 2; break;
             case SceneType.FOLLOW_2: index = 3; break;
         }
-        // 이미 저장된 메모면 return
-        foreach(string savedMemo in savedMemoList[index])
-        {
-            if (scriptID == savedMemo) return;
-        }
-        savedMemoList[index].Add(DialogueManager.Instance.scripts[scriptID].GetScript());
+
+        return index;
     }
-
-    // 메모장 열기
-    public void OpenMemoPage()
-    {
-        // 메모장이 켜져있을 때는 메모장을 닫고, 켜져있을 때는 끈다
-        if (!memoPage.activeSelf)
-        {
-            // 메모장을 켰을 때는 무조건 메모장이 선명하게 보이게 한다
-            ColorBlock colors = memoButton.GetComponent<Button>().colors;
-            colors.normalColor = new Color(1, 1, 1, 1);
-            memoButton.GetComponent<Button>().colors = colors;
-
-            for (int i = 0; i < 4; i++)
-            {
-                foreach (string memo in savedMemoList[i])
-                {
-                    GameObject memoTextObject = Instantiate(memoTextPrefab, scrollViewContent);
-                    memoTextObject.GetComponent<TextMeshProUGUI>().text = memo;
-                }
-            }
-
-            if (isFollow) FollowManager.Instance.ClickObject();
-
-            memoPage.SetActive(true);
-            closeButton.SetActive(true);
-        }
-        else if (memoPage.activeSelf)
-        {
-            if (isFollow)
-            {
-                FollowManager.Instance.EndScript(false);
-
-                ColorBlock colors = memoButton.GetComponent<Button>().colors;
-                colors.normalColor = new Color(1, 1, 1, 0.5f);
-                memoButton.GetComponent<Button>().colors = colors;
-            }
-
-            memoPage.SetActive(false);
-            closeButton.SetActive(false);
-
-            foreach (Transform child in scrollViewContent)
-            {
-                Destroy(child.gameObject);
-            }
-        }
-    }
-
+    
     public void SetMemoButton(bool isTrue)
     {
         memoButton.SetActive(isTrue);
     }
     
-    public void MemoButtonChange()
+    public void ChangeMemoButton()
     {
-        if (!isFollow) memoButton = memoButtons[0];
-        else memoButton = memoButtons[1];
+        memoButton = memoButtons[isFollow ? 1 : 0];
     }
-    // memos.csv 파일 파싱
-    public void ParseMemos()
+
+    public void SetMemoContents(bool isTrue)
     {
-        string[] lines = memosCSV.text.Split('\n');
-        for (int i = 1; i < lines.Length; i++)
+        memoContents.SetActive(isTrue);
+        isMemoOpen = isTrue;
+        SetMemoButton(!isTrue);
+
+        if (isTrue)
         {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            var currentSceneIndex = GetCurrentSceneIndex();
+            memoPages.totalPageCount = SavedMemoList[currentSceneIndex].Count;
 
-            string[] fields = lines[i].Split(',');
-
-            string memoID = fields[0].Trim();
-            string scriptID = fields[2].Trim();
-            
-            allMemo[memoID] = scriptID;
+            if (currentSceneIndex is 0 or 2)
+            {
+                RoomManager.Instance.SetButtons();
+            }
         }
     }
-
-
-
-    // 테스트용
-    public void TestEnding(bool unlock)
+    
+    public override void DisplayPage(PageType pageType, int pageNum)
     {
-        if (unlock)
-            foreach (List<string> list in savedMemoList)
-            {
-                for (int i = 0; i < 9; i++) list.Add(i.ToString());
-            }
-
-        SceneManager.Instance.LoadScene(SceneType.ENDING);
+        var currentSceneIndex = GetCurrentSceneIndex();
+        
+        switch (pageType)
+        {
+            case PageType.Left:
+                leftPage.text = pageNum == 0 ? "" : SavedMemoList[currentSceneIndex][pageNum - 1][1];
+                break;
+            
+            case PageType.Right:
+                rightPage.text = pageNum > SavedMemoList[currentSceneIndex].Count ? "" : SavedMemoList[currentSceneIndex][pageNum - 1][1];
+                break;
+            
+            case PageType.Back:
+                backPage.text = SavedMemoList[currentSceneIndex][pageNum - 1][1];
+                break;
+            
+            case PageType.Front:
+                frontPage.text = SavedMemoList[currentSceneIndex][pageNum - 1][1];
+                break;
+        }
+    }
+    
+    public override void DisplayPagesDynamic(int currentPage)
+    {
+        DisplayPage(PageType.Left, currentPage);
+        DisplayPage(PageType.Right, currentPage + 3);
+        DisplayPage(PageType.Back, currentPage + 1);
+        DisplayPage(PageType.Front, currentPage + 2);
+    }
+    
+    public override void DisplayPagesStatic(int currentPage)
+    {
+        DisplayPage(PageType.Left, currentPage);
+        DisplayPage(PageType.Right, currentPage + 1);
+        
+        flipLeftButton.SetActive(currentPage > 0);
+        
+        int currentSceneIndex = GetCurrentSceneIndex();
+        flipRightButton.SetActive(currentPage < SavedMemoList[currentSceneIndex].Count - 1);
     }
 }

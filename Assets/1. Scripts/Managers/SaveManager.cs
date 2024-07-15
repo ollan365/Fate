@@ -31,6 +31,7 @@ public class SaveManager : MonoBehaviour
     {
         initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
     }
+    
     public void InitGameData()
     {
         // 엔딩을 본 개수를 제외하고 저장된 데이터 초기화하여 저장
@@ -70,7 +71,7 @@ public class SaveManager : MonoBehaviour
         SceneManager.Instance.roomSideIndex = data.lastSideIndex;
         GameManager.Instance.Variables = data.variables;
         GameManager.Instance.SetVariable("EndingCollect", data.endingCollectCount);
-        MemoManager.Instance.SavedMemoList = data.savedMemoList;
+        MemoManager.Instance.SavedMemoList = data.SavedMemoList;
 
         // 게임 데이터에 따른 씬으로 이동
         SceneManager.Instance.LoadScene(data.sceneType);
@@ -80,9 +81,9 @@ public class SaveManager : MonoBehaviour
     public void SaveGameData()
     {
         // 저장할 데이터 생성 (방이면 RoomManager에 접근하여 현재 화면의 인덱스도 저장)
-        if (SceneManager.Instance.CurrentScene == SceneType.ROOM_1 || SceneManager.Instance.CurrentScene == SceneType.ROOM_2)
-            data = new(SceneManager.Instance.CurrentScene, RoomManager.Instance.currentSideIndex, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
-        else data = new(SceneManager.Instance.CurrentScene, 1, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
+        var currentSideIndex = SceneManager.Instance.CurrentScene == SceneType.ROOM_1 || SceneManager.Instance.CurrentScene == SceneType.ROOM_2
+        ? RoomManager.Instance.currentSideIndex : 1;
+        data = new(SceneManager.Instance.CurrentScene, currentSideIndex, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList);
 
         // 클래스를 Json 형식으로 전환 (true : 가독성 좋게 작성)
         string ToJsonData = JsonUtility.ToJson(data, true);
@@ -115,19 +116,16 @@ public class SaveData
         get => ToDictionary(variablesToJson);
     }
     public string memoToJson;
-    public List<string>[] savedMemoList // Memo 저장
-    {
-        get => ToListArray(memoToJson);
-    }
+    public List<List<string[]>> SavedMemoList => ToListArray(memoToJson); // Memo 저장
 
-    public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, List<string>[] memo)
+    public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, List<List<string[]>> memo)
     {
         endingCollectCount = (int)GameManager.Instance.GetVariable("EndingCollect");
 
         sceneType = type;
         lastSideIndex = currentSideIndex;
         variablesToJson = ToJson(variables);
-        memoToJson = ToJson(memo);
+        // memoToJson = ToJson(memo);
     }
 
     private string ToJson(Dictionary<string, object> dictionary)
@@ -165,9 +163,9 @@ public class SaveData
     {
         return JsonConvert.SerializeObject(array, Formatting.Indented);
     }
-    private List<string>[] ToListArray(string json)
+    private List<List<string[]>> ToListArray(string json)
     {
-        return JsonConvert.DeserializeObject<List<string>[]>(json);
+        return JsonConvert.DeserializeObject<List<List<string[]>>>(json);
     }
     private Dictionary<string, object> ToDictionary(string json)
     {
