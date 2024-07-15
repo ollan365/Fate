@@ -268,6 +268,13 @@ public class DialogueManager : MonoBehaviour
         while (!isTyping) yield return null;
 
         CompleteSentence();
+        if (isFast)
+        {
+            typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
+            isFast = false;
+        }
+        if (isAuto) isAuto = false;
+
         OnDialoguePanelClick();
     }
 

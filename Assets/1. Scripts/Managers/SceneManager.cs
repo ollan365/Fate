@@ -98,6 +98,7 @@ public class SceneManager : MonoBehaviour
             MemoManager.Instance.SetMemoButton(true);
             SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
         }
+
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
 }

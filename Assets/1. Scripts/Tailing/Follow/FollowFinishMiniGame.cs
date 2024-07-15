@@ -85,9 +85,10 @@ public class FollowFinishMiniGame : MonoBehaviour
         }
 
         isGameOver = true;
+
         yield return new WaitForSeconds(0.5f);
-        
-        foreach(Animator a in heartAnimator) a.gameObject.SetActive(false);
+
+        foreach (Animator a in heartAnimator) a.gameObject.SetActive(false);
         ScreenEffect.Instance.coverPanel.color = Color.black;
 
         // 메모의 개수가 부족할 때
@@ -164,7 +165,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
         // 하트가 터지는 애니메이션 재생
         heartAnimator[heartCount].SetTrigger("Break");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         heartAnimator[heartCount].gameObject.SetActive(false);
 
         ScreenEffect.Instance.coverPanel.color = Color.black;

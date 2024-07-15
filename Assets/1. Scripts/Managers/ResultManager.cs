@@ -102,10 +102,6 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("Prologue_007");
                 break;
 
-            case "ResultReturn":
-                EndingManager.Instance.EndEnding();
-                break;
-
             case "ResultCloseEyes": // 눈 깜빡이는 효과
                 StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
                 break;
@@ -998,6 +994,18 @@ public class ResultManager : MonoBehaviour
 
             case "ResultGuardMemo2": // 미행2 클럽가드 메모 -> 아직 스크립트 없음
                 // MemoManager.Instance.AddMemo("F1Memo_008");
+                break;
+
+            case "ResultBadA_End":
+                EndingManager.Instance.EndEnding(EndingType.BAD_A);
+                break;
+
+            case "ResultBadB_End":
+                EndingManager.Instance.EndEnding(EndingType.BAD_B);
+                break;
+
+            case "ResultTrue_End":
+                EndingManager.Instance.EndEnding(EndingType.TRUE);
                 break;
 
             default:
