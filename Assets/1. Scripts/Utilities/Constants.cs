@@ -30,7 +30,8 @@ public static class Constants
     public const int
         Sound_CarpetOpen = 0, Sound_CarpetClose = 1, Sound_ClosetOpen = 2, Sound_ClosetClose = 3,
         Sound_StorageOpen = 4, Sound_StorageClose = 5, Sound_Key = 6, Sound_LockerKeyMovement = 7, Sound_LockerUnlock = 9,
-        Sound_DiaryUnlock = 10, Sound_LaptopBoot = 11, Sound_Poster = 12, Sound_ChairMovement = 13, Sound_GrabPaper = 23;
+        Sound_DiaryUnlock = 10, Sound_LaptopBoot = 11, Sound_Poster = 12, Sound_ChairMovement = 13, Sound_GrabPaper = 23,
+        Sound_TincaseOpen = 24, Sound_SewingBoxBall = 25, Sound_SewingBoxOpen = 26;
 
     // 3. 미행
     public const int
@@ -38,7 +39,7 @@ public static class Constants
 
     // 4. 루프 (반복 되어야 하는 것)
     public const int
-        Sound_FootStep_Fate = 0, Sound_FootStep_Accidy = 1, Sound_ClockMovement = 2;
+        Sound_FootStep_Fate = 0, Sound_FootStep_Accidy = 1, Sound_ClockMovement = 2, Sound_TincaseScroll = 3;
 
     // 5. 그 외
     public const int

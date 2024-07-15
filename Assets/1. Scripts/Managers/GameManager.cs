@@ -178,6 +178,10 @@ public class GameManager : MonoBehaviour
 
         // 두번째 방탈출
 
+        // 틴 케이스
+        variables["TinCaseClick"] = 0;
+        variables["TinCaseCorrect"] = false;
+
         // 반짇고리
         variables["SewingBoxClick"] = 0;
         variables["SewingBoxCorrect"] = false;
@@ -212,6 +216,19 @@ public class GameManager : MonoBehaviour
         // 옷장 밑에 있는 사진들
         variables["UnderPhotoClick2"] = 0;
 
+        // 병원 전단지
+        variables["HospitalFlyerClick2"] = 0;
+
+        // 바다 포스터
+        variables["PosterClick2"] = 0;
+
+        // 별 스티커
+        variables["StarStickerClick2"] = 0;
+
+        // 쇼핑백
+        variables["ShoppingBagClick2"] = 0;
+
+
         // 옷장 서랍장
         // 위칸
         variables["WardrobeUpDrawersClosed"] = true;
@@ -219,6 +236,14 @@ public class GameManager : MonoBehaviour
         // 아래칸
         variables["WardrobeDownDrawersClosed"] = true;
         variables["ClosedWardrobeDownDrawersClick"] = 0;
+
+        // 망가진 곰인형
+        variables["BrokenTeddyBearClick"] = 0;
+        variables["TeddyBearFixed"] = false;
+
+        // 실과 바늘
+        variables["GetThreadAndNeedle"] = false;
+
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
@@ -396,7 +421,7 @@ public class GameManager : MonoBehaviour
          // "TutorialPhase"
          "ActionPoint"
         });
-        
+
         foreach (var item in variables)
         {
             if (keysToShow.Contains(item.Key)) variablesText.text += $"{item.Key}: {item.Value}\n";
@@ -434,6 +459,9 @@ public class GameManager : MonoBehaviour
     
     public void DecrementActionPoint()
     {
+        if ((bool)GetVariable("TeddyBearFixed"))
+            actionPointsPerDay = 7;
+
         DecrementVariable("ActionPoint");
         int actionPoint = (int)GetVariable("ActionPoint");
         // pop heart on screen
@@ -454,6 +482,14 @@ public class GameManager : MonoBehaviour
             }
             
             ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
+
+            //// 곰인형에서 나온 기력 보충제 먹었을 경우 매일 2개의 추가 액션 포인트가 생김
+            //if ((bool)GetVariable("TeddyBearFixed"))
+            //{
+            //    IncrementVariable("ActionPoint");
+            //    IncrementVariable("ActionPoint");
+            //    Debug.Log("현재 ActionPoint : " + (int)GetVariable("ActionPoint"));
+            //}
 
             // refill hearts on screen after 2 seconds
             StartCoroutine(RefillHearts());

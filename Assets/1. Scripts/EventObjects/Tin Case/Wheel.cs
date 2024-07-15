@@ -33,7 +33,7 @@ public class Wheel : MonoBehaviour
         currentNumber += angle > 0 ? 1 : -1;
         currentNumber = (currentNumber + 10) % 10;
         
-        tinCaseLock.CheckAnswer();
+        //tinCaseLock.CheckAnswer();
 
         isRotating = false;
     }

@@ -1,4 +1,4 @@
-Condition ID,Condition Description,Variable Name,Logic,Value
+Condition ID,Condition Description,Variable Name,Logic,0
 Condition_tutorial,튜토리얼 진행 중인 상태,isTutorial,==,TRUE
 Condition_notTutorial,튜토리얼 진행 중이지 않은 상태,isTutorial,==,FALSE
 ,,,,
@@ -129,7 +129,19 @@ ConditionClosetBox2FristClick,방탈출2 옷장 위 박스를 처음 클릭,Clos
 ConditionClosetBox2ManyClick,방탈출2 옷장 위 박스를 다시 클릭,ClosetBoxClick2,>,0
 ,,,,
 ConditionUnderPhoto2FristClick,방탈출2 옷장 밑 사진 처음 클릭,UnderPhotoClick2,==,0
-ConditionUnderPhoto2ManyClick,방탈출2 옷장 밑 사진 처음 클릭,UnderPhotoClick2,>,0
+ConditionUnderPhoto2ManyClick,방탈출2 옷장 밑 사진 다시 클릭,UnderPhotoClick2,>,0
+,,,,
+ConditionHospitalFlyer2FristClick,방탈출2 병원 전단지를 처음 클릭,HospitalFlyerClick2,==,0
+ConditionHospitalFlyer2ManyClick,방탈출2 병원 전단지를 다시 클릭,HospitalFlyerClick2,>,0
+,,,,
+ConditionPoster2FristClick,방탈출2 바다 포스터를 처음 클릭,PosterClick2,==,0
+ConditionPoster2ManyClick,방탈출2 바다 포스터를 다시 클릭,PosterClick2,>,0
+,,,,
+ConditionStarSticker2FristClick,방탈출2 별 스티커 처음 클릭,StarStickerClick2,==,0
+ConditionStarSticker2ManyClick,방탈출2 별 스티커 다시 클릭,StarStickerClick2,>,0
+,,,,
+ConditionShoppingBag2FristClick,방탈출2 쇼핑백 처음 클릭,ShoppingBagClick2,==,0
+ConditionShoppingBag2ManyClick,방탈출2 쇼핑백 다시 클릭,ShoppingBagClick2,>,0
 ,,,,
 ConditionWardrobeUpDrawersOpen,방탈출2 옷장 서랍장 위칸이 열려 있는 상태,WardrobeUpDrawersClosed,==,FALSE
 ConditionWardrobeUpDrawersClosed,방탈출2 옷장 서랍장 위칸이 닫혀 있는 상태,WardrobeUpDrawersClosed,==,TRUE
@@ -145,6 +157,23 @@ ConditionSewingBoxManyClick,반짇고리를 한 번 이상 클릭,SewingBoxClick
 ConditionSewingBoxCorrect,반짇고리 퍼즐을 맞춘 상태. 즉 실과 바늘을 찾은 상태,SewingBoxCorrect,==,TRUE
 ConditionSewingBoxNotCorrect,반짇고리 퍼즐을 틀린 상태. 즉 실과 바늘을 찾지 못한 상태,SewingBoxCorrect,==,FALSE
 ,,,,
+ConditionBrokenTeddyBear2FirstClick,방탈출2 찢어진 곰도리 처음 클릭,BrokenTeddyBearClick,==,0
+ConditionBrokenTeddyBear2ManyClick,방탈출2 찢어진 곰도리 여러 번 클릭,BrokenTeddyBearClick,>,0
+ConditionBrokenTeddyBear2Click,찢어진 곰도리 클릭,BrokenTeddyBearClick,>=,0
+ConditionHasThreadAndNeedle,실과 바늘을 가지고 있을 떄,GetThreadAndNeedle,==,TRUE
+ConditionHasNotThreadAndNeedle,실과 바늘이 없을 떄,GetThreadAndNeedle,==,FALSE
+ConditionTeddyBear2Fixed,곰인형을 고친 상태,TeddyBearFixed,==,TRUE
+ConditionNotTeddyBear2Fixed,곰인형을 고치지 않은 상태,TeddyBearFixed,==,FALSE
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+ConditionTinCaseFirstClick,틴케이스를 처음 클릭,TinCaseClick,==,0
+ConditionTinCaseManyClick,틴케이스를 한 번 이상 클릭,TinCaseClick,>,0
+ConditionTinCaseCorrect,틴케이스 비밀번호를 맞춘 상태. 즉 티켓을 찾은 상태,TinCaseCorrect,==,TRUE
+ConditionTinCaseNotCorrect,틴케이스 비밀번호를 틀린 상태. 즉 티켓을 찾지 못한 상태,TinCaseCorrect,==,FALSE
 ,,,,
 ConditionVillaClick,빌라를 처음 클릭,VillaClick,>=,0
 ConditionBreadClick,2층 빵집을클릭,BreadClick,>=,0
@@ -157,7 +186,7 @@ ConditionCafeManyClick,카페를 한번 이상  클릭,CafeClick,>,0
 ConditionBagClue,가방 조사를 끝낸 상태,BagClue,==,TRUE
 ConditionReceiptFirstClick,카페 영수증을 클릭,ReceiptClick,==,0
 ConditionReceiptManyClick,카페 영수증을 한번 이상 클릭,ReceiptClick,>,0
-ConditionLightFirstClick,신호등을 클릭,LightClick,>=,0
+ConditionLightFirstClick,신호등을 처음 클릭,LightClick,==,0
 ConditionLightManyClick,신호등을 한번 이상 클릭,LightClick,>,0
 ,,,,
 ConditionLatteFirstClick,음료를 처음 클릭,LatteClcik,==,0
@@ -222,9 +251,10 @@ ConditionGuardManyClick2,미행2 클럽 가드 여러번 클릭,GuardClick2,>,0
 ConditionEnding_0,엔딩을 아예 보지 않은 상태,EndingCollect,==,0
 ConditionEnding_1,엔딩을 하나 이상을 본 상태,EndingCollect,>,0
 ,,,,
-,,,,
-,,,,
-,,,,
+ConditionEnding_BadA,BadA 엔딩을 하나 이상,BadACollect,==,TRUE
+ConditionEnding_BadB,BadB 엔딩을 하나 이상,BadBCollect,==,TRUE
+ConditionEnding_True,True 엔딩을 하나 이상,TrueCollect,==,TRUE
+ConditionEnding_Hidden,Hidden 엔딩을 하나 이상,HiddenCollect,==,TRUE
 ,,,,
 ,,,,
 ,,,,

@@ -104,6 +104,7 @@ public class SewingBoxBead : MonoBehaviour, IDragHandler, IEndDragHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         canDrag = false;
+        SoundPlayer.Instance.UISoundPlay(Constants.Sound_SewingBoxBall);
 
         RectTransform newParent = null;
         newParentIndex = -1;
