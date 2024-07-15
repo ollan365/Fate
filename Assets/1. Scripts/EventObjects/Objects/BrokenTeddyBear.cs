@@ -14,7 +14,6 @@ public class BrokenTeddyBear : EventObject, IResultExecutable
     public new void OnMouseDown()
     {
         base.OnMouseDown();
-        Debug.Log("¸Á°¡Áø °õÀÎÇü Å¬¸¯µÊ");
     }
 
     public void ExecuteAction()

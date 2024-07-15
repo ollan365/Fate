@@ -684,14 +684,20 @@ public class ResultManager : MonoBehaviour
                 executableObjects["BrokenTeddyBear0"].ExecuteAction();
                 executableObjects["BrokenTeddyBear1"].ExecuteAction();
                 executableObjects["BrokenTeddyBear3"].ExecuteAction();
+                GameManager.Instance.SetVariable("TeddyBearFixed", true);
                 break;
 
             case "ResultBrokenTeddyBear2Yes": // 선택지 약을 먹음
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_024");
+                // 매일 하루마다 2개의 추가 액션포인트 생김..
+                //// 바로 먹은 날에 2개의 추가 액션포인트
+                //GameManager.Instance.IncrementVariable("ActionPoint");
+                //GameManager.Instance.IncrementVariable("ActionPoint");
+
                 break;
 
-            case "ResultBrokenTeddyBear2No": // 선택지 약을 먹음
+            case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
                 break;

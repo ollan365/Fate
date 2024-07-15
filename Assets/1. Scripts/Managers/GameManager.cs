@@ -419,10 +419,9 @@ public class GameManager : MonoBehaviour
          //   "FateBirthday"
          // "isTutorial",
          // "TutorialPhase"
-         "ActionPoint",
-         "BrokenTeddyBearClick"
+         "ActionPoint"
         });
-        
+
         foreach (var item in variables)
         {
             if (keysToShow.Contains(item.Key)) variablesText.text += $"{item.Key}: {item.Value}\n";
@@ -460,6 +459,9 @@ public class GameManager : MonoBehaviour
     
     public void DecrementActionPoint()
     {
+        if ((bool)GetVariable("TeddyBearFixed"))
+            actionPointsPerDay = 7;
+
         DecrementVariable("ActionPoint");
         int actionPoint = (int)GetVariable("ActionPoint");
         // pop heart on screen
@@ -480,6 +482,14 @@ public class GameManager : MonoBehaviour
             }
             
             ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
+
+            //// 곰인형에서 나온 기력 보충제 먹었을 경우 매일 2개의 추가 액션 포인트가 생김
+            //if ((bool)GetVariable("TeddyBearFixed"))
+            //{
+            //    IncrementVariable("ActionPoint");
+            //    IncrementVariable("ActionPoint");
+            //    Debug.Log("현재 ActionPoint : " + (int)GetVariable("ActionPoint"));
+            //}
 
             // refill hearts on screen after 2 seconds
             StartCoroutine(RefillHearts());
