@@ -241,17 +241,22 @@ public class DialogueManager : MonoBehaviour
 
             return;
         }
-
-        if (RoomManager.Instance) 
+        
+        var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
+        if (refillHeartsOrEndDay)
         {
-            // 튜토리얼 중 다른 곳 클릭하면 나오는 강조 이미지가 해당 "ㅁㅁ를 조사해보자" 스크립트 다 끝나면 자동으로 강조 이미지 꺼지게 함.
-            if ((bool)GameManager.Instance.GetVariable("isTutorial") && RoomManager.Instance.imageAndLockPanelManager.GetIsTutorialObjectActive())
-            {
-                RoomManager.Instance.imageAndLockPanelManager.OnExitButtonClick();
-            }
-            RoomManager.Instance.SetButtons();
+            GameManager.Instance.RefillHeartsOrEndDay();
         }
         
+
+        if (!RoomManager.Instance) return;
+        // 튜토리얼 중 다른 곳 클릭하면 나오는 강조 이미지가 해당 "ㅁㅁ를 조사해보자" 스크립트 다 끝나면 자동으로 강조 이미지 꺼지게 함.
+        if ((bool)GameManager.Instance.GetVariable("isTutorial") && RoomManager.Instance.imageAndLockPanelManager.GetIsTutorialObjectActive())
+        {
+            RoomManager.Instance.imageAndLockPanelManager.OnExitButtonClick();
+        }
+        RoomManager.Instance.SetButtons();
+
     }
     
     public void SkipButtonClick()

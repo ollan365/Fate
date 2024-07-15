@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Doors : EventObject, IResultExecutable
 {
@@ -22,6 +23,8 @@ public class Doors : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
+        if (closedOrOpen == "Open" && EventSystem.current.IsPointerOverGameObject()) return;
+        
         bool isBusy = GameManager.Instance.GetIsBusy();
         if (isBusy) return;
         

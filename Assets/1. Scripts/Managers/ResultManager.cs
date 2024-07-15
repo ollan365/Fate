@@ -273,7 +273,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultDrinkAndMedicinMemo": // 술과 감기약에 대한 메모 작성
-                MemoManager.Instance.AddMemo("R1Memo_012");
+                MemoManager.Instance.RevealMemo("R1Memo_012");
                 break;
 
             case "ResultStandLightScript": // 책상 위 스탠드에 대한 설명
@@ -294,7 +294,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "ResultPillowAmuletMemo": // 부적에 대한 메모 작성
-                MemoManager.Instance.AddMemo("R1Memo_001");
+                MemoManager.Instance.RevealMemo("R1Memo_001");
                 break;
 
             case "ResultDiaryScript": // 다이어리에 대한 설명
@@ -311,7 +311,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "ResultDiaryMemo": // 다이어리에 대한 메모가 작성됨
-                MemoManager.Instance.AddMemo("R1Memo_002");
+                MemoManager.Instance.RevealMemo("R1Memo_002");
                 break;
             
             case "ResultDiaryContentScript": // 다이어리에 대한 스크립트
@@ -346,7 +346,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClockGetKeyMemo": // 열쇠 획득 후 메모
-                MemoManager.Instance.AddMemo("R1Memo_003");
+                MemoManager.Instance.RevealMemo("R1Memo_003");
                 break;
 
             case "ResultChairMoved": // 의자가 옆으로 이동함
@@ -372,7 +372,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLaptopMemo": // 노트북에 대한 설명이 메모에 기록됨
-                MemoManager.Instance.AddMemo("R1Memo_004");
+                MemoManager.Instance.RevealMemo("R1Memo_004");
                 break;
 
             case "ResultLaptopContentScript": // 노트북에 대한 스크립트 출력
@@ -399,7 +399,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCarpetDropOutLetterMemo": // 종이에 대한 메모
-                MemoManager.Instance.AddMemo("R1Memo_013");
+                MemoManager.Instance.RevealMemo("R1Memo_013");
                 break;
 
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
@@ -419,7 +419,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCutterKnifeDisappear": // 커터칼 사라짐
-                Debug.Log("ResultCutterKnifeDisappear executed");
+                // Debug.Log("ResultCutterKnifeDisappear executed");
                 executableObjects["Knife0"].ExecuteAction();
                 executableObjects["Knife1"].ExecuteAction();
                 break;
@@ -431,7 +431,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPosterMemo": // 포스터에 대한 메모
-                MemoManager.Instance.AddMemo("R1Memo_005");
+                MemoManager.Instance.RevealMemo("R1Memo_005");
                 break;
 
             case "ResultClosetDoorsOpen": // 옷장 문이 열림
@@ -454,7 +454,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClosetBagMemo": // 옷장 속 가방 내에 전단지에 대한 메모
-                MemoManager.Instance.AddMemo("R1Memo_006");
+                MemoManager.Instance.RevealMemo("R1Memo_006");
                 break;
 
             case "ResultClosetBoxWithoutKeyScript": // 옷장 위 상자에 대한 설명(열쇠X 상태 일 때)
@@ -476,7 +476,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClosetBoxMemo": // 상자 안 사진들에 대한 메모
-                MemoManager.Instance.AddMemo("R1Memo_011");
+                MemoManager.Instance.RevealMemo("R1Memo_011");
                 break;
 
             case "ResultShoppingBagScript": // 쇼핑백에 대한 스크립트
@@ -513,11 +513,6 @@ public class ResultManager : MonoBehaviour
             case "Result_IncrementCalendarCluesFound": // 달력 관련 단서 찾은 수 1 증가
                 GameManager.Instance.IncrementVariable("CalendarCluesFound");
                 break;
-            
-            case "ResultTinCaseTest": // 틴케이스 테스트용
-                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "tinCase");
-                executableObjects["TinCase"].ExecuteAction();
-                break;
 
             case "ResultCalendarFBDScirpt": // 필연 생일에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape_027");
@@ -536,19 +531,19 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCalendarFBDMemo": // 필연 생일 메모
-                MemoManager.Instance.AddMemo("R1Memo_007");
+                MemoManager.Instance.RevealMemo("R1Memo_007");
                 break;
 
             case "ResultCalendarABDMemo": // 우연 생일 메모
-                MemoManager.Instance.AddMemo("R1Memo_010");
+                MemoManager.Instance.RevealMemo("R1Memo_010");
                 break;
 
             case "ResultCalendar1031Memo": // 10월 31일 메모
-                MemoManager.Instance.AddMemo("R1Memo_008");
+                MemoManager.Instance.RevealMemo("R1Memo_008");
                 break;
 
             case "ResultCalendar1001Memo": // 10월 1일 메모
-                MemoManager.Instance.AddMemo("R1Memo_009");
+                MemoManager.Instance.RevealMemo("R1Memo_009");
                 break;
             
             case "Result_IncrementFateBirthday":  // 필연 클릭 횟수 1 증가
@@ -597,10 +592,46 @@ public class ResultManager : MonoBehaviour
 
 
             // 방탈출 2
-            case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
-                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
 
-                Debug.Log("반짇고리 상자 확대 이미지 표시");
+            case "Result_showTinCaseImage": // 틴케이스 확대 이미지 표시
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "tinCase");
+                break;
+
+            case "ResultTinCaseScript": // 틴케이스에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_020");
+                break;
+
+            case "ResultTinCaseSystemActivartion": // 틴케이스 비밀번호 시스템 활성화
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "tinCase");
+                executableObjects["TinCase"].ExecuteAction();
+                break;
+
+            case "ResultTinCaseFailedScript": // 틴케이스 비밀번호 틀림에 대한 설명
+                //DialogueManager.Instance.StartDialogue("RoomEscape2_020");
+
+                Debug.Log("틴케이스 비밀번호 틀림에 대한 설명");
+                break;
+
+            case "ResultTinCaseGetTicket": // 티켓을 획득
+                SoundPlayer.Instance.UISoundPlay(Sound_TincaseOpen); // 틴케이스 열리는 소리
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
+
+                Debug.Log("티켓을 획득");
+                break;
+
+            case "ResultTinCaseGetTicketScript": // 티켓을 획득 후 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_021");
+                break;
+
+            case "ResultTinCaseGetTicketMemo": // 티켓 획득 후 메모
+                //MemoManager.Instance.AddMemo("R1Memo_003");
+
+                Debug.Log("티켓 획득 후 메모");
+                break;
+
+
+            case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
                 break;
 
             case "ResultSewingBoxScript":   // 반짇고리에 대한 설명
@@ -610,8 +641,6 @@ public class ResultManager : MonoBehaviour
             case "ResultSewingBoxSystemActivartion": // 반짇고리 퍼즐 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "sewingBox");
                 executableObjects["SewingBox"].ExecuteAction();
-
-                Debug.Log("반짇고리 퍼즐 시스템 활성화");
                 break;
 
             case "ResultSewingBoxPuzzleFailedScript":   // 반짇고리 퍼즐 틀림에 대한 설명
@@ -621,8 +650,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedle":   // 실과 바늘을 획득
-                //SoundPlayer.Instance.UISoundPlay(Sound_Key);
-                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
+                SoundPlayer.Instance.UISoundPlay(Sound_SewingBoxOpen); // 반짇고리 상자 열리는 소리
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "thread");  
 
                 Debug.Log("실과 바늘을 획득");
                 break;
@@ -636,7 +665,40 @@ public class ResultManager : MonoBehaviour
 
                 Debug.Log("실과 바늘 획득 후 메모");
                 break;
-                
+
+            case "ResultBrokenTeddyBear2NoThreadAndNeedleScript": // 실바늘 없을때 곰인형에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_013");
+                Debug.Log("실바늘 없을때 곰인형에 대한 설명");
+                break;
+
+            case "ResultBrokenTeddyBear2YesThreadAndNeedleScript": // 실바늘 있을때 곰인형에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_023");
+                break;
+
+            case "ResultFixTeddyBear": // 망가진 곰인형을 고침
+                Debug.Log("ResultFixTeddyBear executed");
+                executableObjects["BrokenTeddyBear0"].ExecuteAction();
+                executableObjects["BrokenTeddyBear1"].ExecuteAction();
+                executableObjects["BrokenTeddyBear3"].ExecuteAction();
+                GameManager.Instance.SetVariable("TeddyBearFixed", true);
+                break;
+
+            case "ResultBrokenTeddyBear2Yes": // 선택지 약을 먹음
+                DialogueManager.Instance.EndDialogue();
+                DialogueManager.Instance.StartDialogue("RoomEscape2_024");
+                // 매일 하루마다 2개의 추가 액션포인트 생김..
+                //// 바로 먹은 날에 2개의 추가 액션포인트
+                //GameManager.Instance.IncrementVariable("ActionPoint");
+                //GameManager.Instance.IncrementVariable("ActionPoint");
+
+                break;
+
+            case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
+                DialogueManager.Instance.EndDialogue();
+                DialogueManager.Instance.StartDialogue("RoomEscape2_025");
+                break;
+
+
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
                 executableObjects["Box Unzoomed 2"].ExecuteAction();
                 break;
@@ -685,15 +747,61 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape2_008");
                 break;
 
-                // 별 모양 스티커에 대한 설명
-            //DialogueManager.Instance.StartDialogue("RoomEscape2_017");
-
             case "ResultClosetBox2Script": // 옷장 위 상자에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_009");
                 break;
 
             case "ResultUnderPhoto2Script": // 옷장 아래 사진에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_010");
+                break;
+
+            case "ResultHospitalFlyer2Script": // 방탈출2 병원 전단지  스크립트
+                SoundPlayer.Instance.UISoundPlay(Sound_GrabPaper);
+                DialogueManager.Instance.StartDialogue("RoomEscape2_011");
+                break;
+
+            case "ResultHospitalFlyer2Memo": // 방탈출2 병원 전단지 메모
+
+                break;
+
+            case "ResultHospitalFlyer2Zoom": // 방탈출2 병원 전단지 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "hospitalPrint");
+                break;
+
+            case "ResultPoster2Script": // 방탈출2 바다 포스터 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_012");
+                break;
+
+            case "ResultPoster2Memo": // 방탈출2 바다 포스터 메모
+
+                break;
+
+            case "ResultPoster2Zoom": // 방탈출2 바다 포스터 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster2");
+                break;
+
+            case "ResultStarSticker2Script": // 방탈출2 별 스티커 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_017");
+                break;
+
+            case "ResultStarSticker2Memo": // 방탈출2 별 스티커 메모
+
+                break;
+
+            case "ResultStarSticker2Zoom": // 방탈출2 별 스티커 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "starSticker");
+                break;
+
+            case "ResultShoppingBag2Script": // 방탈출2 쇼핑백 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_022");
+                break;
+
+            case "ResultShoppingBag2Memo": // 방탈출2 쇼핑백 메모
+
+                break;
+
+            case "ResultShoppingBag2Zoom": // 방탈출2 쇼핑백 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "shoppingBag2");
                 break;
 
 
@@ -769,11 +877,12 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCafeMemo1": // 카페에 대한 메모 1
-                MemoManager.Instance.AddMemo("F1Memo_001");
+                Debug.Log("카페에 대한 메모 1");
+                MemoManager.Instance.RevealMemo("F1Memo_001");
                 break;
 
             case "ResultCafeMemo2": // 카페에 대한 메모 2
-                MemoManager.Instance.AddMemo("F1Memo_002");
+                MemoManager.Instance.RevealMemo("F1Memo_002");
                 break;
 
             case "ResultReceiptScript": // 영수증에 대한 스크립트
@@ -781,7 +890,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultReceiptMemo": // 영수증에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_003");
+                MemoManager.Instance.RevealMemo("F1Memo_003");
                 break;
 
             case "ResultLightScript": // 신호등에 대한 스크립트
@@ -789,7 +898,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLightMemo": // 신호등에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_004");
+                MemoManager.Instance.RevealMemo("F1Memo_004");
                 break;
 
             case "ResultLatteScript": // 음료에 대한 스크립트
@@ -797,7 +906,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLatteMemo": // 음료에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_005");
+                MemoManager.Instance.RevealMemo("F1Memo_005");
                 break;
 
             case "Result1FClothesScript": // 1층 옷가게에 대한 스크립트
@@ -805,7 +914,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result1FClothesMemo": // 1층 옷가게에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_006");
+                MemoManager.Instance.RevealMemo("F1Memo_006");
                 break;
 
             case "Result2FClothesScript": // 2층 옷가게에 대한 스크립트
@@ -813,7 +922,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result2FClothesMemo": // 2층 옷가게에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_007");
+                MemoManager.Instance.RevealMemo("F1Memo_007");
                 break;
 
             case "ResultConstructionScript": // 공사장에 대한 스크립트
@@ -821,7 +930,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultConstructionMemo": // 공사장에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultRestaurantScript": // 식당에 대한 스크립트
@@ -857,7 +966,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultAngryMemo": // 화난 사람에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_009");
+                MemoManager.Instance.RevealMemo("F1Memo_009");
                 break;
 
             case "ResultWreathScript": // 쓰러진 화환에 스크립트
@@ -865,7 +974,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultWreathMemo": // 쓰러진 화환에 대한 메모
-                MemoManager.Instance.AddMemo("F1Memo_010");
+                MemoManager.Instance.RevealMemo("F1Memo_010");
                 break;
 
             case "ResultFollowEnd": // 미행 끝 (메모 개수 충분)

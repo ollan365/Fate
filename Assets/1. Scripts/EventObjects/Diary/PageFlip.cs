@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public enum FlipMode
@@ -12,24 +13,29 @@ public enum FlipMode
 
 public class PageFlip : MonoBehaviour
 {
+    [Header("PageTextManager")]
+    [SerializeField] private PageContentsManager pageContentsManager;
+    
+    [Header("Canvas and Panel")]
     public Canvas canvas;
     [SerializeField] private RectTransform bookPanel;
-    public Sprite background;
-    public Sprite[] bookPages;
-    public bool interactable = true;
-    public bool pageDragging;
-    public bool autoFlipping = false;
+    
+    [Header("Page Sprites")]
+    public Sprite backPage;
+    public Sprite leftPage;
+    public Sprite rightPage;
+    
+    private bool interactable = true;
+    private bool pageDragging;
+    private bool autoFlipping = false;
+    private bool enableShadowEffect = true;
 
-    public bool enableShadowEffect = true;
-
+    [Header("Current and Total Page Count")]
     // represent the index of the sprite shown in the right page
     public int currentPage;
-    public int TotalPageCount => bookPages.Length;
+    public int totalPageCount;
 
-    public Vector3 EdgeBottomLeft { get; set; }
-
-    public Vector3 EdgeBottomRight { get; set; }
-
+    [Header("Essential GameObjects - Do not change")]
     public Image clippingPlane;
     public Image nextPageClip;
     public Image shadow;
@@ -38,7 +44,7 @@ public class PageFlip : MonoBehaviour
     public Image leftNext;
     public Image right;
     public Image rightNext;
-    public UnityEvent onFlip;
+    private UnityEvent onFlip;
 
     private float radius1, radius2;
 
@@ -57,10 +63,9 @@ public class PageFlip : MonoBehaviour
     //current flip mode
     public FlipMode mode;
 
-    [SerializeField] private DiaryManager diaryManager;
+    public Vector3 EdgeBottomLeft { get; private set; }
 
-    [SerializeField] private GameObject flipLeftButton;
-    [SerializeField] private GameObject flipRightButton;
+    public Vector3 EdgeBottomRight { get; private set; }
     
     private void Start()
     {
@@ -89,7 +94,7 @@ public class PageFlip : MonoBehaviour
         shadowLtr.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
         shadowLtr.rectTransform.pivot = new Vector2(0, pageWidth / 2 / shadowPageHeight);
 
-        diaryManager.DisplayPagesStatic(currentPage);
+        pageContentsManager.DisplayPagesStatic(currentPage);
     }
 
     private void Update()
@@ -275,7 +280,7 @@ public class PageFlip : MonoBehaviour
 
     public void DragRightPageToPoint(Vector3 point)
     {
-        if (currentPage >= bookPages.Length) return;
+        if (currentPage >= totalPageCount - 1) return;
         pageDragging = true;
         mode = FlipMode.RightToLeft;
         f = point;
@@ -288,22 +293,22 @@ public class PageFlip : MonoBehaviour
         var transform1 = left.transform;
         transform1.position = rightNext.transform.position;
         transform1.eulerAngles = Vector3.zero;
-        left.sprite = currentPage < bookPages.Length ? bookPages[currentPage] : background;
+        left.sprite = currentPage < totalPageCount ? rightPage : backPage;
         left.transform.SetAsFirstSibling();
 
         right.gameObject.SetActive(true);
         var transform2 = right.transform;
         transform2.position = rightNext.transform.position;
         transform2.eulerAngles = Vector3.zero;
-        right.sprite = currentPage < bookPages.Length - 1 ? bookPages[currentPage + 1] : background;
+        right.sprite = currentPage < totalPageCount - 1 ? leftPage : backPage;
 
-        rightNext.sprite = currentPage < bookPages.Length - 2 ? bookPages[currentPage + 2] : background;
+        // rightNext.sprite = currentPage < totalPageCount - 2 ? rightPage : backPage;
 
         leftNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) shadow.gameObject.SetActive(true);
         UpdateBookRtlToPoint(f);
 
-        diaryManager.DisplayPagesDynamic(currentPage);
+        pageContentsManager.DisplayPagesDynamic(currentPage);
     }
 
     public void OnMouseDragRightPage()
@@ -325,7 +330,7 @@ public class PageFlip : MonoBehaviour
         var transform1 = right.transform;
         var position = leftNext.transform.position;
         transform1.position = position;
-        right.sprite = bookPages[currentPage - 1];
+        right.sprite = leftPage;
         transform1.eulerAngles = Vector3.zero;
         right.transform.SetAsFirstSibling();
 
@@ -334,15 +339,15 @@ public class PageFlip : MonoBehaviour
         var transform2 = left.transform;
         transform2.position = position;
         transform2.eulerAngles = Vector3.zero;
-        left.sprite = currentPage >= 2 ? bookPages[currentPage - 2] : background;
+        left.sprite = currentPage >= 2 ? rightPage : backPage;
 
-        leftNext.sprite = currentPage >= 3 ? bookPages[currentPage - 3] : background;
+        leftNext.sprite = currentPage >= 3 ? leftPage : backPage;
 
         rightNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) shadowLtr.gameObject.SetActive(true);
         UpdateBookLtrToPoint(f);
 
-        diaryManager.DisplayPagesDynamic(currentPage - 2);
+        pageContentsManager.DisplayPagesDynamic(currentPage - 2);
     }
 
     public void OnMouseDragLeftPage()
@@ -370,8 +375,8 @@ public class PageFlip : MonoBehaviour
 
     private void UpdateSprites()
     {
-        leftNext.sprite = currentPage > 0 && currentPage <= bookPages.Length ? bookPages[currentPage - 1] : background;
-        rightNext.sprite = currentPage >= 0 && currentPage < bookPages.Length ? bookPages[currentPage] : background;
+        leftNext.sprite = 0 < currentPage && currentPage <= totalPageCount ? leftPage : backPage;
+        // rightNext.sprite = rightPage;
     }
 
     private void TweenForward()
@@ -396,7 +401,7 @@ public class PageFlip : MonoBehaviour
         shadowLtr.gameObject.SetActive(false);
         onFlip?.Invoke();
 
-        diaryManager.DisplayPagesStatic(currentPage);
+        pageContentsManager.DisplayPagesStatic(currentPage);
     }
 
     private void TweenBack()
@@ -429,7 +434,7 @@ public class PageFlip : MonoBehaviour
                 }
             ));
 
-        diaryManager.DisplayPagesStatic(currentPage);
+        pageContentsManager.DisplayPagesStatic(currentPage);
     }
 
     private IEnumerator TweenTo(Vector3 to, float duration, Action onFinish)

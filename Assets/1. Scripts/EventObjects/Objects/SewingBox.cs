@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SewingBox : EventObject, IResultExecutable
 {
-    // 로그인 페이지 켜지면 시점 이동 안 되니까..시점 이동 제한
     [SerializeField]
     private GameObject SewingBoxPuzzle;
 
