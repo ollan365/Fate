@@ -21,7 +21,7 @@ public class MemoManager : PageContentsManager
     // create a list of lists to store the memos
     public List<List<string[]>> SavedMemoList { get; set; } = new List<List<string[]>>(); // SavedMemoList[sceneIndex][memoIndex] = [memoID, memoContent]
 
-    private List<List<string>> RevealedMemoList { get; set; } = new List<List<string>>();  // RevealedMemoList[sceneIndex][memoIndex] = memoID
+    public List<List<string>> RevealedMemoList { get; set; } = new List<List<string>>();  // RevealedMemoList[sceneIndex][memoIndex] = memoID
 
     private void Awake()
     {
@@ -102,11 +102,11 @@ public class MemoManager : PageContentsManager
         switch (SceneManager.Instance.CurrentScene)
         {
             case SceneType.ROOM_1:
-                return SavedMemoList[0].Count > 8;
+                return RevealedMemoList[0].Count > 8;
             case SceneType.FOLLOW_1:
-                return SavedMemoList[1].Count >= 8;
+                return RevealedMemoList[1].Count >= 8;
             case SceneType.FOLLOW_2:
-                return SavedMemoList[2].Count >= 8 && SavedMemoList[3].Count >= 8;
+                return RevealedMemoList[2].Count >= 8 && RevealedMemoList[3].Count >= 8;
             default: return false;
         }
     }

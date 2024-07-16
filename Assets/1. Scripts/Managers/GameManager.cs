@@ -68,10 +68,6 @@ public class GameManager : MonoBehaviour
     {
         // ------------------------- 변수 초기화 -------------------------
         // 1. 시스템 관련 변수들
-
-        variables["EndingCollect"] = 0; // 본 엔딩의 개수
-        variables["LastEnding"] = "NONE";
-
         variables["Language"] = 1;  // 시스템 언어
         
         variables["FateName"] = "필연";  // 필연 이름
@@ -344,6 +340,16 @@ public class GameManager : MonoBehaviour
         // 클럽 가드
         variables["GuardClick2"] = 0;
 
+        // 3. 엔딩 관련 변수들
+        variables["EndingCollect"] = 0; // 본 엔딩의 개수
+        variables["LastEnding"] = "NONE"; // 마지막으로 본 엔딩
+        variables["BadACollect"] = 0; // 배드A 엔딩을 본 횟수
+        variables["BadBCollect"] = 0; // 배드B 엔딩을 본 횟수
+        variables["TrueCollect"] = 0; // 트루 엔딩을 본 횟수
+        variables["HiddenCollect"] = 0; // 히든 엔딩을 본 횟수
+        variables["BadEndingCollect"] = 0; // 배드 엔딩을 본 횟수
+
+
         if (isDebug) ShowVariables();
 
     }
@@ -504,6 +510,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(RefillHearts());
 
         }
+        SaveManager.Instance.SaveGameData();
     }
     
     public void RefillHeartsOrEndDay()

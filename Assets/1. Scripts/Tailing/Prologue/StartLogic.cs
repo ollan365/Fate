@@ -42,13 +42,14 @@ public class StartLogic : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (SaveManager.Instance && SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd
+            && GameManager.Instance && GameManager.Instance.GetVariable("BadEndingCollect") != null)
+            LoadGame(true);
     }
     private void Start()
     {
         StartCoroutine(RotateSecond());
-
-        if (GameManager.Instance.GetVariable("EndingCollect") != null && SaveManager.Instance.CheckGameData() == 0)
-        { LoadGame(); }
     }
     private IEnumerator RotateSecond()
     {
@@ -74,7 +75,7 @@ public class StartLogic : MonoBehaviour
     }
     public void StartNewGame()
     {
-        if (SaveManager.Instance.CheckGameData() == -1) // 저장된 게임 데이터가 없는 경우
+        if (!SaveManager.Instance.CheckGameData()) // 저장된 게임 데이터가 없는 경우
         {
             SaveManager.Instance.SaveInitGameData();
 
@@ -93,13 +94,12 @@ public class StartLogic : MonoBehaviour
         Image backgroundImage = background.GetComponent<Image>();
         backgroundImage.sprite = titleWithLogo;
     }
-    public void LoadGame()
+    public void LoadGame(bool loadPrologue)
     {
         SaveManager.Instance.SaveInitGameData();
 
-        // 1: 다른 씬에서 저장된 게임 데이터 존재 0: 엔딩 후 종료 -1: 저장된 데이터 없음
-        if (SaveManager.Instance.CheckGameData() == 1) { SaveManager.Instance.LoadGameData(); buttons.SetActive(false); }
-        else if (SaveManager.Instance.CheckGameData() == 0) { StartCoroutine(StartPrologue()); buttons.SetActive(false); }
+        if(loadPrologue || (SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd)) { StartCoroutine(StartPrologue()); buttons.SetActive(false); }
+        else if (SaveManager.Instance.CheckGameData()) { SaveManager.Instance.LoadGameData(); buttons.SetActive(false); }
         else noGameDataPanel.SetActive(true);
     }
     public void ChangeSoundValue(int index)
