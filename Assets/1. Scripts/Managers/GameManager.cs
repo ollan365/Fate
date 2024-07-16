@@ -482,27 +482,6 @@ public class GameManager : MonoBehaviour
             bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
             if (!isDialogueActive) RefillHeartsOrEndDay();
             else SetVariable("RefillHeartsOrEndDay", true);
-
-            // if all action points are used, load "Follow 1" scene
-            if (actionPoint == 0)
-            {
-                SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
-                return;
-            }
-            
-            ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
-
-            //// 곰인형에서 나온 기력 보충제 먹었을 경우 매일 2개의 추가 액션 포인트가 생김
-            //if ((bool)GetVariable("TeddyBearFixed"))
-            //{
-            //    IncrementVariable("ActionPoint");
-            //    IncrementVariable("ActionPoint");
-            //    Debug.Log("현재 ActionPoint : " + (int)GetVariable("ActionPoint"));
-            //}
-
-            // refill hearts on screen after 2 seconds
-            StartCoroutine(RefillHearts());
-
         }
     }
     
