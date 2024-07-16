@@ -38,7 +38,7 @@ public class SaveManager : MonoBehaviour
         initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList, MemoManager.Instance.RevealedMemoList);
 
         if (EndingData == null) return;
-        GameManager.Instance.SetVariable("EndingCollect", EndingData.endingCollectCount);
+        GameManager.Instance.SetVariable("EndingCollect", EndingData.allEndingCollectCount);
         GameManager.Instance.SetVariable("LastEnding", EndingData.lastEnding.ToString());
         GameManager.Instance.SetVariable("BadACollect", EndingData.endingCollectCount[0]);
         GameManager.Instance.SetVariable("BadBCollect", EndingData.endingCollectCount[1]);
@@ -55,7 +55,7 @@ public class SaveManager : MonoBehaviour
     }
     public void SaveEndingData(EndingType ending)
     {
-        EndingData.AddEnding(ending);
+        if(ending != EndingType.NONE) EndingData.AddEnding(ending);
 
         string ToJsonData = JsonUtility.ToJson(EndingData, true);
         string filePath = Application.persistentDataPath + "/" + EndingDataFileName;
@@ -170,7 +170,6 @@ public class SaveData
 
             stringVariables.Add(key, stringValue);
         }
-
         return JsonConvert.SerializeObject(stringVariables, Formatting.Indented);
     }
     private string ToJson(List<List<string[]>> array)
