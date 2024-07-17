@@ -156,11 +156,6 @@ ConditionSewingBoxFirstClick,반짇고리를 처음 클릭,SewingBoxClick,==,0
 ConditionSewingBoxManyClick,반짇고리를 한 번 이상 클릭,SewingBoxClick,>,0
 ConditionSewingBoxCorrect,반짇고리 퍼즐을 맞춘 상태. 즉 실과 바늘을 찾은 상태,SewingBoxCorrect,==,TRUE
 ConditionSewingBoxNotCorrect,반짇고리 퍼즐을 틀린 상태. 즉 실과 바늘을 찾지 못한 상태,SewingBoxCorrect,==,FALSE
-ConditionBrokenTeddyBear2FirstClick,방탈출2 찢어진 곰도리 처음 클릭,BrokenTeddyBearClick,==,0
-ConditionBrokenTeddyBear2ManyClick,방탈출2 찢어진 곰도리 여러 번 클릭,BrokenTeddyBearClick,>,0
-ConditionBrokenTeddyBear2Click,찢어진 곰도리 클릭,BrokenTeddyBearClick,>=,0
-ConditionHasThreadAndNeedle2,실과 바늘을 가지고 있을 떄,GetThreadAndNeedle,==,TRUE
-ConditionHasThreadAndNeedle2,실과 바늘이 없을 떄,GetThreadAndNeedle,==,FALSE
 ,,,,
 ConditionBrokenTeddyBear2FirstClick,방탈출2 찢어진 곰도리 처음 클릭,BrokenTeddyBearClick,==,0
 ConditionBrokenTeddyBear2ManyClick,방탈출2 찢어진 곰도리 여러 번 클릭,BrokenTeddyBearClick,>,0
@@ -170,21 +165,10 @@ ConditionHasNotThreadAndNeedle,실과 바늘이 없을 떄,GetThreadAndNeedle,==
 ConditionTeddyBear2Fixed,곰인형을 고친 상태,TeddyBearFixed,==,TRUE
 ConditionNotTeddyBear2Fixed,곰인형을 고치지 않은 상태,TeddyBearFixed,==,FALSE
 ,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-ConditionTinCaseFirstClick,틴케이스를 처음 클릭,TinCaseClick,==,0
-ConditionTinCaseManyClick,틴케이스를 한 번 이상 클릭,TinCaseClick,>,0
-ConditionTinCaseCorrect,틴케이스 비밀번호를 맞춘 상태. 즉 티켓을 찾은 상태,TinCaseCorrect,==,TRUE
-ConditionTinCaseNotCorrect,틴케이스 비밀번호를 틀린 상태. 즉 티켓을 찾지 못한 상태,TinCaseCorrect,==,FALSE
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
+ConditionDiary2FirstClick,다이어리를 처음 클릭,Diary2Click,==,0
+ConditionDiary2PasswordCorrect,다이어리 비밀번호를 맞춘 상태,Diary2PasswordCorrect,==,TRUE
+ConditionDiary2PasswordNotCorrect,다이어리 비밀번호를 맞추지 않은 상태,Diary2PasswordCorrect,==,FALSE
+ConditionDiary2ManyClick,다이어리를 한번 이상 클릭,Diary2Click,>,0
 ,,,,
 ConditionTinCaseFirstClick,틴케이스를 처음 클릭,TinCaseClick,==,0
 ConditionTinCaseManyClick,틴케이스를 한 번 이상 클릭,TinCaseClick,>,0
@@ -267,17 +251,17 @@ ConditionGuardManyClick2,미행2 클럽 가드 여러번 클릭,GuardClick2,>,0
 ConditionEnding_0,엔딩을 아예 보지 않은 상태,EndingCollect,==,0
 ConditionEnding_1,엔딩을 하나 이상을 본 상태,EndingCollect,>,0
 ,,,,
-ConditionEnding_BadA,BadA 엔딩을 하나 이상,BadACollect,==,TRUE
-ConditionEnding_BadB,BadB 엔딩을 하나 이상,BadBCollect,==,TRUE
-ConditionEnding_True,True 엔딩을 하나 이상,TrueCollect,==,TRUE
-ConditionEnding_Hidden,Hidden 엔딩을 하나 이상,HiddenCollect,==,TRUE
+ConditionEnding_BadA,BadA 엔딩을 하나 이상,BadACollect,>,0
+ConditionEnding_BadB,BadB 엔딩을 하나 이상,BadBCollect,>,0
+ConditionEnding_True,True 엔딩을 하나 이상,TrueCollect,>,0
+ConditionEnding_Hidden,Hidden 엔딩을 하나 이상,HiddenCollect,>,0
 ,,,,
+ConditionLastEnding_BadA,마지막으로 끝난 엔딩이 BadA,LastEnding,==,BadA
+ConditionLastEnding_BadB,마지막으로 끝난 엔딩이 BadB,LastEnding,==,BadB
+ConditionLastEnding_True,마지막으로 끝난 엔딩이 True,LastEnding,==,TrueEnding
+ConditionLastEnding_Hidden,마지막으로 끝난 엔딩이 Hidden,LastEnding,==,Hidden
 ,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
+ConditionBadEndingCollect,배드 엔딩을 본 횟수가 n회 이상,BadEndingCollect,>,10
 ,,,,
 ,,,,
 ,,,,
