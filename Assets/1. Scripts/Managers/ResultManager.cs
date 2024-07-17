@@ -90,13 +90,13 @@ public class ResultManager : MonoBehaviour
 
             case string temp when temp.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
                 variableName = temp.Substring("Result_isFinished".Length);
-                EventObjectManager.Instance.SetEventFinished(variableName);
+                GameManager.Instance.SetEventFinished(variableName);
                 break;
 
             case string temp when temp.StartsWith("Result_IsUnFinished"):  
                 // EventObject의 isFinished를 false로 (포스터 커터칼 있는채로 다시 조사하면 처음 조사 스크립트 나와야 해서 추가됨)
                 variableName = temp.Substring("Result_IsUnFinished".Length);
-                EventObjectManager.Instance.SetEventUnFinished(variableName);
+                GameManager.Instance.SetEventUnFinished(variableName);
                 break;
 
             case "Result_girl":  // 우연의 성별을 여자로 설정
@@ -157,7 +157,7 @@ public class ResultManager : MonoBehaviour
             case "ResultInquiry": // 조사 선택 묻기
                 //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
                 //    +" : "+ EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
-                if (!EventObjectManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
+                if (!GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
                     DialogueManager.Instance.EndDialogue();
 
@@ -700,11 +700,11 @@ public class ResultManager : MonoBehaviour
             case "ResultBrokenTeddyBear2Yes": // 선택지 약을 먹음
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_024");
-                // 매일 하루마다 2개의 추가 액션포인트 생김..
-                //// 바로 먹은 날에 2개의 추가 액션포인트
-                //GameManager.Instance.IncrementVariable("ActionPoint");
-                //GameManager.Instance.IncrementVariable("ActionPoint");
+                break;
 
+            case "ResultEatEnergySupplement":
+                GameManager.Instance.EatEnergySupplement();
+                //GameManager.Instance.actionPointsPerDay = 7;
                 break;
 
             case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
@@ -712,6 +712,31 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
                 break;
 
+            case "ResultDiary2Script": // 다이어리에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape2_014");
+                break;
+
+            case "ResultDiary2LockActivation": // 다이어리 잠금 장치 활성화됨
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "diary2");
+                executableObjects["Diary2"].ExecuteAction();
+                break;
+
+            case "ResultDiary2LockOpen": // 다이어리가 열림
+                executableObjects["Diary2Lock"].ExecuteAction();
+                break;
+
+            case "ResultDiary2Memo": // 다이어리에 대한 메모가 작성됨
+                //MemoManager.Instance.RevealMemo("R1Memo_002");
+                break;
+
+            case "ResultDiary2ContentScript": // 다이어리에 대한 스크립트
+                //DialogueManager.Instance.StartDialogue("RoomEscape_010");
+                break;
+
+            case "ResultDiary2LockFailedScript": // 다이어리 비밀번호를 틀렸다는 스크립트
+                SoundPlayer.Instance.UISoundPlay(Sound_DiaryUnlock);
+                DialogueManager.Instance.StartDialogue("RoomEscape_011");
+                break;
 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
                 executableObjects["Box Unzoomed 2"].ExecuteAction();
