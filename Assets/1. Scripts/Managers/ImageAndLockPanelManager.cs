@@ -42,6 +42,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private GameObject calendarGameObject;
     [SerializeField] private GameObject tinCaseGameObject;
     [SerializeField] private GameObject sewingBoxGameObject;
+    [SerializeField] private GameObject diary2GameObject;
 
     [Header("튜토리얼 강조 이미지들")]
     [SerializeField] private GameObject LeftMoveButton;
@@ -95,6 +96,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             { "calendar", calendarGameObject },
             { "tinCase", tinCaseGameObject },
             {"sewingBox", sewingBoxGameObject},
+            { "diary2", diary2GameObject },
         };
 
         TutorialimageDictionary = new Dictionary<string, GameObject>()

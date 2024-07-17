@@ -9,6 +9,7 @@ public class MemoManager : PageContentsManager
     [SerializeField] private PageFlip memoPages;
     [SerializeField] private GameObject[] memoButtons;
     private GameObject memoButton; // 현재 사용 중인 메모버튼
+    [SerializeField] private GameObject exitButton;
     
     public static MemoManager Instance { get; private set; }
     public bool isMemoOpen = false;
@@ -96,9 +97,15 @@ public class MemoManager : PageContentsManager
         }
     }
 
+    public void OnExit()
+    {
+        SetMemoContents(false);
+    }
+
     // 현재 씬에 따라 메모의 개수를 파악 -> 현재 씬에 해당하는 메모의 개수에 따라 엔딩 선택지 해금 여부 결정
     public bool UnlockNextScene()
     {
+        bool ret = false;
         switch (SceneManager.Instance.CurrentScene)
         {
             case SceneType.ROOM_1:
@@ -109,12 +116,16 @@ public class MemoManager : PageContentsManager
                 return RevealedMemoList[2].Count >= 8 && RevealedMemoList[3].Count >= 8;
             default: return false;
         }
+        
+        // Debug.Log(ret);
+
+        return ret;
     }
 
     // 메모 추가하기
     public void RevealMemo(string memoID)
     {
-        Debug.Log(memoID);
+        // Debug.Log(memoID);
         
         var scriptID = memoScripts[memoID];
 
@@ -134,7 +145,7 @@ public class MemoManager : PageContentsManager
             break;
         }
         
-        Debug.Log($"Revealed {scriptID}");
+        // Debug.Log($"Revealed {scriptID}");
     }
 
     private static int GetCurrentSceneIndex()
@@ -151,9 +162,14 @@ public class MemoManager : PageContentsManager
         return index;
     }
     
-    public void SetMemoButton(bool isTrue)
+    public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton=false)
     {
-        memoButton.SetActive(isTrue);
+        // Debug.Log($"showMemoIcon: {showMemoIcon}, showMemoExitButton: {showMemoExitButton}");
+        memoButton.SetActive(showMemoIcon);
+        exitButton.SetActive(showMemoExitButton);
+
+        var currentSceneIndex = GetCurrentSceneIndex();
+        if (RoomManager.Instance && currentSceneIndex is 0 or 2) RoomManager.Instance.SetButtons();
     }
     
     public void ChangeMemoButton()
@@ -165,18 +181,16 @@ public class MemoManager : PageContentsManager
     {
         memoContents.SetActive(isTrue);
         isMemoOpen = isTrue;
-        SetMemoButton(!isTrue);
+        SetMemoButtons(!isTrue, isTrue);
 
-        if (isTrue)
-        {
-            var currentSceneIndex = GetCurrentSceneIndex();
-            memoPages.totalPageCount = SavedMemoList[currentSceneIndex].Count;
+        if (!isTrue) return;
+        
+        var currentSceneIndex = GetCurrentSceneIndex();
+        memoPages.totalPageCount = SavedMemoList[currentSceneIndex].Count;
+        var currentPage = memoPages.currentPage;
+        DisplayPagesStatic(currentPage);
 
-            if (currentSceneIndex is 0 or 2)
-            {
-                RoomManager.Instance.SetButtons();
-            }
-        }
+        if (currentSceneIndex is 0 or 2) RoomManager.Instance.SetButtons();  // 방탈출 씬인 경우 버튼 설정 필요
     }
     
     public override void DisplayPage(PageType pageType, int pageNum)

@@ -1723,7 +1723,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2836812870833492585
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1904,23 +1904,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4446b7192d8bf914ebaf797b64fe8b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pageContentsManager: {fileID: 0}
   canvas: {fileID: 0}
   bookPanel: {fileID: 2374610890144393280}
-  background: {fileID: 21300000, guid: c7e4be861a46448b7b7689c11a928750, type: 3}
-  bookPages:
-  - {fileID: 21300000, guid: c8c5d324ddda84cbea8ee30d14e29c7c, type: 3}
-  - {fileID: 21300000, guid: c7e4be861a46448b7b7689c11a928750, type: 3}
-  - {fileID: 21300000, guid: c8c5d324ddda84cbea8ee30d14e29c7c, type: 3}
-  - {fileID: 21300000, guid: c7e4be861a46448b7b7689c11a928750, type: 3}
-  - {fileID: 21300000, guid: c8c5d324ddda84cbea8ee30d14e29c7c, type: 3}
-  - {fileID: 21300000, guid: c7e4be861a46448b7b7689c11a928750, type: 3}
-  - {fileID: 21300000, guid: c8c5d324ddda84cbea8ee30d14e29c7c, type: 3}
-  - {fileID: 21300000, guid: c7e4be861a46448b7b7689c11a928750, type: 3}
-  interactable: 1
-  pageDragging: 0
-  autoFlipping: 0
-  enableShadowEffect: 1
+  backPage: {fileID: 0}
+  leftPage: {fileID: 0}
+  rightPage: {fileID: 0}
   currentPage: 0
+  totalPageCount: 0
   clippingPlane: {fileID: 2883074054485301939}
   nextPageClip: {fileID: 3310801237004300322}
   shadow: {fileID: 6650471252269456531}
@@ -1929,13 +1920,7 @@ MonoBehaviour:
   leftNext: {fileID: 1690831203106013248}
   right: {fileID: 4995313850569733978}
   rightNext: {fileID: 7387890683706702721}
-  onFlip:
-    m_PersistentCalls:
-      m_Calls: []
   mode: 0
-  diaryManager: {fileID: 0}
-  flipLeftButton: {fileID: 0}
-  flipRightButton: {fileID: 0}
 --- !u!114 &6852400870571900685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1948,6 +1933,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d498fc4a0aaf24519a97279ceaf7b725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PageFlipTime: 0.2
-  ControlledBook: {fileID: 3389570640511174528}
-  AnimationFramesCount: 60
+  pageFlipTime: 0.2
+  controlledBook: {fileID: 0}
+  animationFramesCount: 80

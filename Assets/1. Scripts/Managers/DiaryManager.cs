@@ -13,7 +13,18 @@ public class DiaryManager : PageContentsManager
 
     public override void DisplayPage(PageType pageType, int pageNum)
     {
-        string diaryID = $"Diary_{pageNum.ToString().PadLeft(3, '0')}";
+        string diaryID;
+        if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect"))
+        {
+            // 방탈출2 다이어리를 열었다면
+            diaryID = $"Diary2_{pageNum.ToString().PadLeft(3, '0')}";
+        }
+        else
+        {
+            diaryID = $"Diary_{pageNum.ToString().PadLeft(3, '0')}";
+        }
+
+        
 
         switch (pageType)
         {
@@ -33,6 +44,15 @@ public class DiaryManager : PageContentsManager
                 frontPage.text = PagesDictionary[diaryID];
                 break;
         }
+
+        // 방탈출2 관련
+        if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect")
+            && pageNum == 2)
+        {
+            // 다이어리 내용 끝까지인 2페이지 확인하면 다이어리 내용 확인 스크립트 출력됨
+            DialogueManager.Instance.StartDialogue("RoomEscape2_016");
+        }
+
     }
 
     public override void DisplayPagesDynamic(int currentPage)

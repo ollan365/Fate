@@ -137,7 +137,7 @@ public class FollowDayMiniGame : MonoBehaviour
         accidy.SetNativeSize();
 
         // 메모 버튼 없애기
-        MemoManager.Instance.SetMemoButton(false);
+        MemoManager.Instance.SetMemoButtons(false);
 
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 미니 게임 캔버스를 켠다 + 브금을 바꾼다
         followUICanvas.SetActive(false);
@@ -214,7 +214,7 @@ public class FollowDayMiniGame : MonoBehaviour
 
             isGameOver = true; // 다른 코루틴들이 멈추도록 설정
 
-            MemoManager.Instance.SetMemoButton(true);
+            MemoManager.Instance.SetMemoButtons(true);
 
             StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
             SoundPlayer.Instance.ChangeBGM(Constants.BGM_MINIGAME, false);
