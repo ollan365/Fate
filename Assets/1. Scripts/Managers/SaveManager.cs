@@ -14,7 +14,7 @@ public class SaveManager : MonoBehaviour
 
     // --- 저장용 클래스 변수 --- //
     private SaveData initData;
-    public SaveData data;
+    [SerializeField] private SaveData data;
     public EndingData EndingData { get; private set; }
 
     void Awake()

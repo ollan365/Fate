@@ -53,7 +53,7 @@ public class EndingManager : MonoBehaviour
     {
         SaveManager.Instance.InitGameData();
         SaveManager.Instance.SaveEndingData(endingType);
-        SceneManager.Instance.LoadScene(SceneType.START);
+        SaveManager.Instance.LoadGameData();
     }
     private IEnumerator Ending_Room1()
     {
