@@ -579,7 +579,8 @@ public class GameManager : MonoBehaviour
             ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
 
             // refill hearts on screen after 2 seconds
-            StartCoroutine(RefillHearts());
+            // 병합 후 에러 발생해서 일단 주석 처리!!!
+            // StartCoroutine(RefillHearts());
 
         }
         SaveManager.Instance.SaveGameData();

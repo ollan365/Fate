@@ -10,7 +10,7 @@ public class EventObject : MonoBehaviour
 
     [SerializeField] protected bool isInquiry = false;
 
-    //protected bool isFinished = false;
+    protected bool isFinished = false;
 
     protected void OnMouseDown()
     {
@@ -36,7 +36,8 @@ public class EventObject : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.AddEventObject(this);
+        // 병합 후 에러 발생해서 일단 주석 처리!!!
+        // EventObjectManager.Instance.AddEventObject(this);
     }
 
     public string GetEventId()
@@ -60,13 +61,13 @@ public class EventObject : MonoBehaviour
     }
 
 
-    //public bool GetIsFinished()
-    //{
-    //    return isFinished;
-    //}
+    public bool GetIsFinished()
+    {
+        return isFinished;
+    }
 
-    //public void SetIsFinished(bool isFinished)
-    //{
-    //    this.isFinished = isFinished;
-    //}
+    public void SetIsFinished(bool isFinished)
+    {
+        this.isFinished = isFinished;
+    }
 }

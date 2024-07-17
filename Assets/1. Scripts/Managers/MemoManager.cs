@@ -105,7 +105,6 @@ public class MemoManager : PageContentsManager
     // 현재 씬에 따라 메모의 개수를 파악 -> 현재 씬에 해당하는 메모의 개수에 따라 엔딩 선택지 해금 여부 결정
     public bool UnlockNextScene()
     {
-        bool ret = false;
         switch (SceneManager.Instance.CurrentScene)
         {
             case SceneType.ROOM_1:
@@ -116,10 +115,6 @@ public class MemoManager : PageContentsManager
                 return RevealedMemoList[2].Count >= 8 && RevealedMemoList[3].Count >= 8;
             default: return false;
         }
-        
-        // Debug.Log(ret);
-
-        return ret;
     }
 
     // 메모 추가하기
