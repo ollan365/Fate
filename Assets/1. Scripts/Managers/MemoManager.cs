@@ -114,7 +114,7 @@ public class MemoManager : PageContentsManager
     // 메모 추가하기
     public void RevealMemo(string memoID)
     {
-        Debug.Log(memoID);
+        // Debug.Log(memoID);
         
         var scriptID = memoScripts[memoID];
 
@@ -134,7 +134,7 @@ public class MemoManager : PageContentsManager
             break;
         }
         
-        Debug.Log($"Revealed {scriptID}");
+        // Debug.Log($"Revealed {scriptID}");
     }
 
     private static int GetCurrentSceneIndex()

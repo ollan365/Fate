@@ -258,6 +258,11 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("TutorialForce_005");
                 break;
 
+            case "Result_DayPass":  // fade in/out 후 대사 출력
+                const float totalTime = 3f;
+                StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
+                break;
 
             case "ResultTeddyBearScript": // 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_001");

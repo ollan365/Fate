@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using Random = Unity.Mathematics.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -463,8 +465,7 @@ public class GameManager : MonoBehaviour
     
     public void DecrementActionPoint()
     {
-        if ((bool)GetVariable("TeddyBearFixed"))
-            actionPointsPerDay = 7;
+        if ((bool)GetVariable("TeddyBearFixed")) actionPointsPerDay = 7;
 
         DecrementVariable("ActionPoint");
         int actionPoint = (int)GetVariable("ActionPoint");
@@ -478,7 +479,6 @@ public class GameManager : MonoBehaviour
         
         if (actionPoint % actionPointsPerDay == 0)
         {
-
             bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
             if (!isDialogueActive) RefillHeartsOrEndDay();
             else SetVariable("RefillHeartsOrEndDay", true);
@@ -494,24 +494,28 @@ public class GameManager : MonoBehaviour
             SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
             return;
         }
-            
-        ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
 
-        // refill hearts on screen after 2 seconds
-        StartCoroutine(RefillHearts());
-        
+        const float totalTime = 3f;
+        StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
+
+        var random = new Random((uint)System.DateTime.Now.Ticks);  // choose a random dialogue ID
+        string[] randomDialogueIDs = { "RoomEscapeS_001", "RoomEscapeS_003" };
+        var randomDialogueID = randomDialogueIDs[random.NextInt(0, 2)];
+        StartCoroutine(DialogueManager.Instance.StartDialogue(randomDialogueID, totalTime));
+
+        StartCoroutine(RefillHearts(totalTime/2));
         SetVariable("RefillHeartsOrEndDay", false);
     } 
     
-    private IEnumerator DeactivateHeart(GameObject heart)
+    private static IEnumerator DeactivateHeart(Object heart)
     {
         yield return new WaitForSeconds(0.5f);
         Destroy(heart);
     }
     
-    private IEnumerator RefillHearts()
+    private IEnumerator RefillHearts(float totalTime)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(totalTime);
         CreateHearts();
         // turn off all ImageAndLockPanel objects and zoom out
         RoomManager.Instance.ExitToRoot();
