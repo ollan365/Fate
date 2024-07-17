@@ -29,7 +29,7 @@ public class SceneManager : MonoBehaviour
     private IEnumerator ChangeScene(SceneType loadSceneType)
     {
         // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
-        MemoManager.Instance.SetMemoButton(false);
+        MemoManager.Instance.SetMemoButtons(false);
 
         // 대사 출력 중이면 기다리기
         while (DialogueManager.Instance.isDialogueActive)
@@ -95,7 +95,7 @@ public class SceneManager : MonoBehaviour
 
         if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING)
         {
-            MemoManager.Instance.SetMemoButton(true);
+            MemoManager.Instance.SetMemoButtons(true);
             SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
         }
 

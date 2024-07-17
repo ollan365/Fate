@@ -882,7 +882,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCafeMemo1": // 카페에 대한 메모 1
-                Debug.Log("카페에 대한 메모 1");
                 MemoManager.Instance.RevealMemo("F1Memo_001");
                 break;
 

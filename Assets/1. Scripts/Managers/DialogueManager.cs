@@ -90,6 +90,7 @@ public class DialogueManager : MonoBehaviour
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+        MemoManager.Instance.SetMemoButtons(false);
     }
 
     // 대사 출력을 second초 후에 출력을 시작함. (휴식 시스템에서 눈 깜빡이는 5초 후에 출력되게 함)
@@ -243,19 +244,19 @@ public class DialogueManager : MonoBehaviour
         }
         
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
-        if (refillHeartsOrEndDay)
-        {
-            GameManager.Instance.RefillHeartsOrEndDay();
-        }
-        
+        if (refillHeartsOrEndDay) GameManager.Instance.RefillHeartsOrEndDay();
 
+        MemoManager.Instance.SetMemoButtons(true);
+        
         if (!RoomManager.Instance) return;
+        
         // 튜토리얼 중 다른 곳 클릭하면 나오는 강조 이미지가 해당 "ㅁㅁ를 조사해보자" 스크립트 다 끝나면 자동으로 강조 이미지 꺼지게 함.
         if ((bool)GameManager.Instance.GetVariable("isTutorial") && RoomManager.Instance.imageAndLockPanelManager.GetIsTutorialObjectActive())
         {
             RoomManager.Instance.imageAndLockPanelManager.OnExitButtonClick();
         }
         RoomManager.Instance.SetButtons();
+        
 
     }
     
@@ -266,6 +267,7 @@ public class DialogueManager : MonoBehaviour
         dialogues[currentDialogueID].SetCurrentLineIndex(dialogues[currentDialogueID].Lines.Count - 2);
         StartCoroutine(SkipDialogue());
     }
+    
     private IEnumerator SkipDialogue()
     {
         ProceedToNext();

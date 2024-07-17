@@ -117,16 +117,7 @@ public class RoomManager : MonoBehaviour
 
     public void OnExitButtonClick()
     {
-        bool isMemoOpen = MemoManager.Instance.isMemoOpen;
-        if (isMemoOpen)
-        {
-            MemoManager.Instance.SetMemoContents(false);
-        }
-        else if (isInvestigating)
-        {
-            imageAndLockPanelManager.OnExitButtonClick();
-            
-        }
+        if (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
         else if (isZoomed)
         {
             // 화면 전환 효과
@@ -200,17 +191,9 @@ public class RoomManager : MonoBehaviour
         bool isInvestigatingOrZoomed = isInvestigating || isZoomed;
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
         bool isMemoOpen = MemoManager.Instance.isMemoOpen;
-        // Debug.Log($"isMemoOpen: {isMemoOpen}");
         
-        SetExitButton((isInvestigatingOrZoomed || isMemoOpen) && !isDialogueActive);
+        SetExitButton(isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
-        MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
+        // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
-
-    //[SerializeField] private GameObject restButton;
-    //public void HideRestButton(bool flag)
-    //{
-    //    // 휴식 버튼을 보이지 않게 or 보이게 할 수 있음
-    //    restButton.SetActive(!flag);
-    //}
 }
