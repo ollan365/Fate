@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ScreenEffect : MonoBehaviour
 {
@@ -25,6 +26,13 @@ public class ScreenEffect : MonoBehaviour
         StartCoroutine(OnFade(null, 0, 1, 2, true, 0.5f, +0.45f));
     }
 
+    public IEnumerator DayPass(float totalTime)
+    {
+        StartCoroutine(OnFade(null, 0, 1, totalTime/2));
+        yield return new WaitForSeconds(totalTime/2);
+        StartCoroutine(OnFade(null, 1, 0, totalTime/2));
+    }
+
     // 방에서 이동 버튼 눌렀을 때
     public void MoveButtonEffect(GameObject screen, Vector3 direction)
     {
@@ -35,12 +43,12 @@ public class ScreenEffect : MonoBehaviour
     // <summary> 변수 설명
     // fadeObject는 fade 효과를 적용할 물체 (null을 주면 화면 전체)
     // start = 1, end = 0 이면 밝아짐 start = 0, end = 1이면 어두워짐
-    // fateTime은 밝아짐(또는 어두워짐)에 걸리는 시간
+    // fadeTime은 밝아짐(또는 어두워짐)에 걸리는 시간
     // blink가 true이면 어두워졌다가 밝아짐
     // waitingTime은 blink가 true일 때 어두워져 있는 시간
     // changeFadeTime은 다시 밝아질 때 걸리는 시간을 조정하고 싶으면 쓰는 변수
     // </summary>
-    public IEnumerator OnFade(Image fadeObject, float start, float end, float fadeTime, bool blink, float waitingTime, float changeFadeTime)
+    public IEnumerator OnFade(Image fadeObject, float start, float end, float fadeTime, bool blink=false, float waitingTime=0f, float changeFadeTime=0f)
     {
         if (fadeObject == null) fadeObject = coverPanel;
 

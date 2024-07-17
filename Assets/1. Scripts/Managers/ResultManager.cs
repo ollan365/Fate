@@ -17,10 +17,19 @@ public class ResultManager : MonoBehaviour
     
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
+        // Debug.Log($"registered {objectName}");
+        
         if (!executableObjects.ContainsKey(objectName))
         {
             executableObjects[objectName] = executable;
         }
+    }
+
+    public void InitializeExecutableObjects()
+    {
+        // Debug.Log("############### unregistered all executable objects ###############");
+
+        executableObjects = new Dictionary<string, IResultExecutable>();
     }
 
     void Awake()
@@ -258,6 +267,11 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("TutorialForce_005");
                 break;
 
+            case "Result_DayPass":  // fade in/out 후 대사 출력
+                const float totalTime = 3f;
+                StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
+                break;
 
             case "ResultTeddyBearScript": // 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_001");
@@ -902,7 +916,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCafeMemo1": // 카페에 대한 메모 1
-                Debug.Log("카페에 대한 메모 1");
                 MemoManager.Instance.RevealMemo("F1Memo_001");
                 break;
 
