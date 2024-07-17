@@ -33,6 +33,14 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI dayText;
     public int actionPointsPerDay = 5;
 
+    // 행동력 감소로 터질 하트 자리
+    // (회복제 먹어서 actionPointsPerDay를 7로 바꾸게 되면 action point이 22였을 경우 7의 나머지가 다르게 나오기 때문에 따로 만들게 됨)
+    public int presentHeartIndex = 5;
+    // 만일 action point가 4개나 5개 있는 상태에서 회복제 먹고 하트가 바로 2개 늘어가게 되면 5개 상한선에서 짤리기 때문에 
+    // isEatenEnergySupplement이 true면 CreateHearts의 heartCount = presentHeartIndex + 2로 하여
+    // 하트 5개일 경우 회복제 먹고 바로 7개로 늘어나게 함.
+    private bool isEatenEnergySupplement = false;
+
     public void SetCurrentInquiryObjectId(string objectId)
     {
         currentInquiryObjectId = objectId;
@@ -247,6 +255,13 @@ public class GameManager : MonoBehaviour
         // 실과 바늘
         variables["GetThreadAndNeedle"] = false;
 
+        // 책장 다이어리
+        variables["Diary2Click"] = 0;
+        variables["Diary2PasswordCorrect"] = false;
+
+        variables["Diary2PresentPageNumber"] = 0;
+        variables["IsCheckedDiary2Contents"] = false;
+
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
@@ -383,7 +398,16 @@ public class GameManager : MonoBehaviour
     
         if (isDebug) ShowVariables();
     }
-    
+
+    public void IncrementVariable(string variableName, int count)
+    {
+        int cnt = (int)GetVariable(variableName);
+        cnt += count;
+        SetVariable(variableName, cnt);
+
+        if (isDebug) ShowVariables();
+    }
+
     public void DecrementVariable(string variableName)
     {
         int cnt = (int)GetVariable(variableName);
@@ -442,34 +466,88 @@ public class GameManager : MonoBehaviour
 
         return isBusy;
     }
-    
+
     // ************************* temporary methods for action points *************************
     // create 5 hearts on screen on room start
+
+    private bool isControllHearCount = false;
     public void CreateHearts()
     {
+        int dayNum = 0;
         int actionPoint = (int)GetVariable("ActionPoint");
         // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
         int heartCount = actionPoint % actionPointsPerDay;
-        if (heartCount == 0) heartCount = actionPointsPerDay;
+
+
+        if (isEatenEnergySupplement)
+        {
+            heartCount = presentHeartIndex + 2;
+        }
+
+        if (heartCount == 0)
+        {
+            if ((bool)GetVariable("TeddyBearFixed"))
+            {
+                actionPointsPerDay = 7;
+
+                // 회복제 먹으면 하루에 하트 5개였던 것이 7개로 늘어남
+                heartCount = 7;
+
+                if ((actionPoint == 20|| actionPoint == 15||actionPoint == 10|| actionPoint == 5)&& !isControllHearCount)
+                {
+                    float controlledPoint = actionPoint * 1.4f;
+
+                    //Debug.Log("controlledPoint : " + controlledPoint);
+
+                    actionPoint = (int)controlledPoint;
+
+                    SetVariable("ActionPoint", actionPoint);
+
+                    isControllHearCount = true;
+                }
+                
+                //Debug.Log("약 먹고 다음날 포인트 : "+GetVariable("ActionPoint"));
+
+                // 그리고 현재 하트 인덱스도 5였던 것을 7로 초기화.
+                presentHeartIndex = 7;
+            }
+            else
+            {
+                heartCount = actionPointsPerDay;
+                presentHeartIndex = 5;
+            }
+        }
+
+        //Debug.Log("heartCount : " + heartCount);
+
         for (int i = 0; i < heartCount; i++) 
         {
             // create heart on screen by creating instances of heart prefab under heart parent
             Instantiate(heartPrefab, heartParent.transform);
         }
-        
+
         // change Day text on screen
-        dayText.text = $"Day {actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay}";
+        //dayText.text = $"Day {actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay}";
+        dayNum = (dayNum < (5 - (actionPoint - 1) / actionPointsPerDay)) ? 5 - (actionPoint - 1) / actionPointsPerDay : dayNum;
+
+        dayText.text = $"Day {dayNum}";
+
+        if (isEatenEnergySupplement)
+        {
+            isEatenEnergySupplement = false;
+            //actionPointsPerDay = 7;
+        }
     }
-    
+
     public void DecrementActionPoint()
     {
-        if ((bool)GetVariable("TeddyBearFixed"))
-            actionPointsPerDay = 7;
-
         DecrementVariable("ActionPoint");
         int actionPoint = (int)GetVariable("ActionPoint");
         // pop heart on screen
-        GameObject heart = heartParent.transform.GetChild(actionPoint % actionPointsPerDay).gameObject;
+
+        //GameObject heart = heartParent.transform.GetChild(actionPoint % actionPointsPerDay).gameObject;
+        GameObject heart = heartParent.transform.GetChild(--presentHeartIndex).gameObject;
+
         // animate heart by triggering "break" animation
         heart.GetComponent<Animator>().SetTrigger("Break");
         
@@ -491,14 +569,6 @@ public class GameManager : MonoBehaviour
             }
             
             ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
-
-            //// 곰인형에서 나온 기력 보충제 먹었을 경우 매일 2개의 추가 액션 포인트가 생김
-            //if ((bool)GetVariable("TeddyBearFixed"))
-            //{
-            //    IncrementVariable("ActionPoint");
-            //    IncrementVariable("ActionPoint");
-            //    Debug.Log("현재 ActionPoint : " + (int)GetVariable("ActionPoint"));
-            //}
 
             // refill hearts on screen after 2 seconds
             StartCoroutine(RefillHearts());
@@ -538,4 +608,24 @@ public class GameManager : MonoBehaviour
         RoomManager.Instance.ExitToRoot();
     }
     
+    // 곰인형 속 기력 보충제 먹으면 스크립트 끝나면 바로 하트 2개 회복됨.
+    public void EatEnergySupplement()
+    {
+        // 일단 현재 보이는 하트 지우고
+        foreach (Transform child in heartParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // 하트 +2개 추가하고
+        // 하트 다시 만들게 해서 하트가 2개 더 채워진 것처럼 보이게 함.
+
+        isEatenEnergySupplement = true;
+
+        IncrementVariable("ActionPoint", 2);
+        CreateHearts();
+
+        presentHeartIndex += 2;
+    }
+
 }
