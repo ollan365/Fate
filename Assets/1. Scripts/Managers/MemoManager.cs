@@ -105,16 +105,24 @@ public class MemoManager : PageContentsManager
     // 현재 씬에 따라 메모의 개수를 파악 -> 현재 씬에 해당하는 메모의 개수에 따라 엔딩 선택지 해금 여부 결정
     public bool UnlockNextScene()
     {
+        bool ret = false;
         switch (SceneManager.Instance.CurrentScene)
         {
             case SceneType.ROOM_1:
-                return SavedMemoList[0].Count > 8;
+                ret = RevealedMemoList[0].Count > 8;
+                break;
             case SceneType.FOLLOW_1:
-                return SavedMemoList[1].Count >= 8;
+                ret = RevealedMemoList[1].Count >= 8;
+                break;
             case SceneType.FOLLOW_2:
-                return SavedMemoList[2].Count >= 8 && SavedMemoList[3].Count >= 8;
+                ret = RevealedMemoList[2].Count >= 8 && RevealedMemoList[3].Count >= 8;
+                break;
             default: return false;
         }
+        
+        // Debug.Log(ret);
+
+        return ret;
     }
 
     // 메모 추가하기

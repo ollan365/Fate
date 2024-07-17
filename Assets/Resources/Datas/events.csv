@@ -19,40 +19,41 @@ Event_InquiryYes,조사 선택지 예,,,,ResultInquiryYes,
 Event_InquiryNo,조사 선택지 아니오,,,,ResultInquiryNo,
 ,,,,,,
 ,,,,,,
-EventTeddyBear,곰인형,침대 위 곰인형을 처음 클릭,,ConditionBedTeddyFristClick,ResultTeddyBearScript/ResultTimePass/Result_IncrementDollsClick/Result_IsFinishedEventTeddyBear,Result_IsFinished 추가
-EventTeddyBear,곰인형,침대 위 곰인형을 다시 클릭,,ConditionBedTeddyManyClick,ResultTeddyBearScript/ResultTimePass/Result_IncrementDollsClick,
+EventTeddyBear,곰인형,침대 위 곰인형을 처음 클릭,,ConditionBedTeddyFristClick,ResultTeddyBearScript/Result_IncrementDollsClick/Result_IsFinishedEventTeddyBear/ResultTimePass,Result_IsFinished 추가
+EventTeddyBear,곰인형,침대 위 곰인형을 다시 클릭,,ConditionBedTeddyManyClick,ResultTeddyBearScript/Result_IncrementDollsClick/ResultTimePass,
 ,,,,,,
 EventBlanketCheck,이불 조사시스템 활성화,,,,ResultBlanketCheck,
-EventBlanket,이불,이불을 클릭,,ConditionBlanketFirstClick,ResultBlanketScript/ResultTimePass/Result_IncrementBlanketsClick/Result_IsFinishedEventBlanket,Result_IsFinished 추가
-EventBlanket,이불,이불을 한번 이상 클릭,,ConditionBlanketManyClick,ResultBlanketScript/ResultTimePass/Result_IncrementBlanketsClick,
+EventBlanket,이불,이불을 클릭,,ConditionBlanketFirstClick,ResultBlanketScript/Result_IncrementBlanketsClick/Result_IsFinishedEventBlanket/ResultTimePass,Result_IsFinished 추가
+EventBlanket,이불,이불을 한번 이상 클릭,,ConditionBlanketManyClick,ResultBlanketScript/Result_IncrementBlanketsClick/ResultTimePass,
 ,,,,,,
-EventDrinkAndMedicine,술+감기약,술과 감기약을 다시 클릭,,ConditionDrinkAndMedicineManyClick,ResultDrinkAndMedicineScript/ResultTimePass/Result_IncrementLiquorAndPillsClick,
-EventDrinkAndMedicine,술+감기약,술과 감기약을 클릭,,ConditionDrinkAndMedicineFirstClick,ResultDrinkAndMedicineScript/ResultTimePass/Result_IncrementLiquorAndPillsClick/Result_IsFinishedEventDrinkAndMedicine/ResultDrinkAndMedicinMemo,Result_IsFinished 추가
+EventDrinkAndMedicine,술+감기약,술과 감기약을 다시 클릭,,ConditionDrinkAndMedicineManyClick,ResultDrinkAndMedicineScript/Result_IncrementLiquorAndPillsClick/ResultTimePass,
+EventDrinkAndMedicine,술+감기약,술과 감기약을 클릭,,ConditionDrinkAndMedicineFirstClick,ResultDrinkAndMedicineScript/Result_IncrementLiquorAndPillsClick/Result_IsFinishedEventDrinkAndMedicine/ResultDrinkAndMedicinMemo/ResultTimePass,Result_IsFinished 추가
+EventDrinkAndMedicine,,,,ConditionDrinkAndMedicineManyClick,ResultAAA/ResultDrinkAndMedicineScript/Result_IncrementLiquorAndPillsClick/ResultTimePass,
 ,,,,,,
-EventStandLight,스탠드,책상 위 스탠드를 클릭,,ConditionStandLightFirstClick, ResultStandLightScript/ResultTimePass/Result_IncrementLampClick/Result_IsFinishedEventStandLight,Result_IsFinished 추가
-EventStandLight,스탠드,책상 위 스탠드를 두 번 이상 클릭,,ConditionStandLightManyClick,ResultStandLightScript/ResultTimePass/Result_IncrementLampClick,
+EventStandLight,스탠드,책상 위 스탠드를 클릭,,ConditionStandLightFirstClick, ResultStandLightScript/Result_IncrementLampClick/Result_IsFinishedEventStandLight/ResultTimePass,Result_IsFinished 추가
+EventStandLight,스탠드,책상 위 스탠드를 두 번 이상 클릭,,ConditionStandLightManyClick,ResultStandLightScript/Result_IncrementLampClick/ResultTimePass,
 ,,,,,,
-EventBearStorageCloset,인형 수납장,수납장을 클릭,,ConditionBearStorageClosetyFirstClick,ResultBearStorageClosetyScript/ResultTimePass/Result_IncrementShelvesClick/Result_IsFinishedEventBearStorageCloset,Result_IsFinished 추가
-EventBearStorageCloset,인형 수납장,수납장을 두 번 이상 클릭,,ConditionBearStorageClosetyManyClick,ResultBearStorageClosetyScript/ResultTimePass/Result_IncrementShelvesClick,
+EventBearStorageCloset,인형 수납장,수납장을 클릭,,ConditionBearStorageClosetyFirstClick,ResultBearStorageClosetyScript/Result_IncrementShelvesClick/Result_IsFinishedEventBearStorageCloset/ResultTimePass,Result_IsFinished 추가
+EventBearStorageCloset,인형 수납장,수납장을 두 번 이상 클릭,,ConditionBearStorageClosetyManyClick,ResultBearStorageClosetyScript/Result_IncrementShelvesClick/ResultTimePass,
 ,,,,,,
 EventPillowZoom,,확대 되지 않은 상태에서 배게나 침대 위 인형을 클릭,,,Result_showZoomedPillow,4월19일 추가
 ,,,,,,
 EventPillow,침대 위 베개,베개를 클릭(1/2),,ConditionPillowFirstClick,Result_IncrementPillowClick/ResultPillowScript/ResultTimePass,
-EventPillow,침대 위 베개,베개를 클릭(2/2),,ConditionPillowSecondClick,Result_IncrementPillowClick/ResultPillowAmuletScript/ResultTimePass/ResultPillowAmuletMemo/Result_IsFinishedEventPillow,Result_IsFinished 추가
+EventPillow,침대 위 베개,베개를 클릭(2/2),,ConditionPillowSecondClick,Result_IncrementPillowClick/ResultPillowAmuletScript/ResultPillowAmuletMemo/Result_IsFinishedEventPillow/ResultTimePass,Result_IsFinished 추가
 EventPillow,침대 위 베개,베개를 그 이상 클릭,,ConditionPillowManyClick,Result_IncrementPillowClick/ResultPillowAmuletScript/ResultTimePass,
 ,,,,,,
 EventDeskShelfZoom,확대 안 된 책상 위 선반,확대 되지 않은 상태에서 선반에 있는 오브젝트들(다이어리와 시계)을 클릭,,,Result_showZoomedDeskShelf,4월19일 추가
 ,,,,,,
 EventDiaryA,다이어리,다이어리를 처음 클릭,,ConditionDiaryFirstClick,ResultDiaryScript/ResultDiaryLockActivation/Result_IncrementDiaryClick/ResultTimePass,
-EventDiaryA,다이어리,비밀번호를 맞은 상태에서 한번 더 클릭,AND,ConditionDiaryManyClick/ConditionDiaryPasswordCorrect,ResultDiaryLockActivation/Result_IncrementDiaryClick/ResultDiaryLockOpen/ResultDiaryContentScript/ResultTimePass/ResultDiaryMemo/Result_IsFinishedEventDiaryA,
+EventDiaryA,다이어리,비밀번호를 맞은 상태에서 한번 더 클릭,AND,ConditionDiaryManyClick/ConditionDiaryPasswordCorrect,ResultDiaryLockActivation/Result_IncrementDiaryClick/ResultDiaryLockOpen/ResultDiaryContentScript/ResultDiaryMemo/Result_IsFinishedEventDiaryA/ResultTimePass,
 EventDiaryA,다이어리,비밀번호를 맞추지 않고 다이어리 퍼즐을 나갔다가 다시 누르는 경우,AND,ConditionDiaryManyClick/ConditionDiaryPasswordNotCorrect,ResultDiaryLockActivation/Result_IncrementDiaryClick,
-EventDiaryB,다이어리,다이어리의 비밀번호를 맞음,,ConditionDiaryPasswordCorrect,ResultDiaryLockOpen/ResultDiaryContentScript/ResultTimePass/ResultDiaryMemo/Result_IsFinishedEventDiaryA,Result_IsFinished 추가
+EventDiaryB,다이어리,다이어리의 비밀번호를 맞음,,ConditionDiaryPasswordCorrect,ResultDiaryLockOpen/ResultDiaryContentScript/ResultDiaryMemo/Result_IsFinishedEventDiaryA/ResultTimePass,Result_IsFinished 추가
 EventDiaryB,다이어리,다이어리의 비밀번호를 틀림,,ConditionDiaryPasswordNotCorrect,ResultDiaryLockFailedScript/ResultTimePass,
 ,,,,,,
 EventClockA,시계,시계를 처음 클릭,,ConditionClockFirstClick,Result_showClockImage/ResultClockScript/Result_IncrementClockClick/ResultTimePass,
 EventClockA,시계,시계의 시간을 맞추고 또 눌렀을 때,AND,ConditionClockManyClick/ConditionClockCorrect,Result_IncrementClockClick/ResultClockGetKey/ResultClockGetKeyScript/ResultTimePass,
 EventClockA,시계,시계의 시간을 맞추지 않고 나갔다가 다시 들어왔을 때,AND,ConditionClockManyClick/ConditionClockNotCorrect,ResultClockSystemActivartion/Result_IncrementClockClick,
-EventClockB,시계,시계를 알맞은 시간으로 맞춤,,ConditionClockCorrect,ResultClockGetKey/ResultClockGetKeyScript/ResultClockGetKeyMemo/ResultTimePass/Result_IsFinishedEventClockA/Result_IsUnFinishedEventClosetBox,Result_IsFinished 추가(EventClockA) Result_IsUnFinished 추가(EventClosetBox)
+EventClockB,시계,시계를 알맞은 시간으로 맞춤,,ConditionClockCorrect,ResultClockGetKey/ResultClockGetKeyScript/ResultClockGetKeyMemo/Result_IsFinishedEventClockA/Result_IsUnFinishedEventClosetBox/ResultTimePass,Result_IsFinished 추가(EventClockA) Result_IsUnFinished 추가(EventClosetBox)
 EventClockB,시계,시계를 틀린 시간으로 맞춤,,ConditionClockNotCorrect,ResultTimePass,
 EventActivateClock,시계 잠금장치 활성화,시계에 대한 설명이 끝나고 바로 시계 잠금장치 활성화가 가능하도록 이벤트를 생성함. (dialogue에서 바로 result 실행은 불가능하므로),,,ResultClockSystemActivartion,
 ,,,,,,
@@ -61,9 +62,9 @@ EventChair,책상 앞에 의자,의자를 클릭. 의자가 움직이는 것도 
 EventDeskZoom,확대 안 된 책상,확대 되지 않은 상태에서 책상 위에 있는 오브젝트들(노트북/커터칼/스탠드조명)을 클릭,,,Result_showZoomedDesk,4월 19일 추가
 ,,,,,,
 EventLaptopA,노트북,노트북을 처음 클릭,,ConditionLaptapFirstClick,ResultLaptopScript/ResultLaptopLockActivation/Result_IncrementLaptopClick/ResultTimePass,
-EventLaptopA,노트북,비밀번호를 맞은 상태에서 한번 더 클릭,AND,ConditionLaptapCorrect/ConditionLaptapManyClick,ResultLaptopLockActivation/Result_IncrementLaptopClick/ResultLaptopLockOpen/ResultTimePass/ResultLaptopContentScript,
+EventLaptopA,노트북,비밀번호를 맞은 상태에서 한번 더 클릭,AND,ConditionLaptapCorrect/ConditionLaptapManyClick,ResultLaptopLockActivation/Result_IncrementLaptopClick/ResultLaptopLockOpen/ResultLaptopContentScript/ResultTimePass,
 EventLaptopA,노트북,비밀번호를 맞추지 않고 노트북 퍼즐을 나갔다가 다시 누르는 경우,AND,ConditionLaptapNotCorrect/ConditionLaptapManyClick,ResultLaptopLockActivation/Result_IncrementLaptopClick,
-EventLaptopB,노트북,노트북의 비밀번호를 맞음,,ConditionLaptapCorrect,ResultLaptopLockOpen/ResultLaptopMemo/ResultTimePass/ResultLaptopContentScript/Result_IsFinishedEventLaptopA,Result_IsFinished 추가
+EventLaptopB,노트북,노트북의 비밀번호를 맞음,,ConditionLaptapCorrect,ResultLaptopLockOpen/ResultLaptopMemo/ResultLaptopContentScript/Result_IsFinishedEventLaptopA/ResultTimePass,Result_IsFinished 추가
 EventLaptopB,노트북,노트북의 비밀번호를 틀림,,ConditionLaptapNotCorrect,ResultLaptopLockFailedScript/ResultTimePass,
 ,,,,,,
 EventCarpetClosed,닫힌 카펫,의자 이동한 상태에서 닫힌 카펫을 처음 클릭 + 튜토리얼O,AND,ConditionChairMoved/ConditionCarpetFirstClick/ConditionCarpetClosed/Condition_tutorial,ResultCarpetOpen/Result_nextTutorialPhase,
@@ -73,24 +74,24 @@ EventCarpetClosed,닫힌 카펫,의자 이동한 상태에서 자퇴서 조사 �
 EventCarpetOpen,열린 카펫,자퇴서 본 상태에서 열린 카펫을 클릭 + 튜토리얼O,AND,ConditionCarpetOpen/Condition_tutorial/ConditionZeroPaperManyClick,ResultCarpetClosed/Result_nextTutorialPhase,새로 추가(나은)
 EventCarpetOpen,열린 카펫,자퇴서 안 본 상태에서 열린 카펫을 클릭 + 튜토리얼O,AND,ConditionCarpetOpen/Condition_tutorial/CoditionZeroPaperFirstClick,ResultCarpetClosed,새로 추가(나은)
 EventCarpetOpen,열린 카펫,열린 카펫을 클릭 + 튜토리얼X,AND,ConditionCarpetOpen/Condition_notTutorial,ResultCarpetClosed,새로 추가(나은)
-EventCarpetLetterOfResignation,카펫(종이),자퇴서 처음 클릭,,CoditionZeroPaperFirstClick,ResultCarpetDropOutLetterZoom/ResultTimePass/ResultCarpetDropOutLetterScript/Result_nextTutorialPhase/Result_IncrementPaperClick/ResultCarpetDropOutLetterMemo/Result_IsFinishedEventCarpetLetterOfResignation,Result_IsFinished 추가
-EventCarpetLetterOfResignation,카펫(종이),자퇴서 다시 클릭,,ConditionZeroPaperManyClick,ResultCarpetDropOutLetterZoom/ResultTimePass/ResultCarpetDropOutLetterScript/Result_IncrementPaperClick/ResultCarpetDropOutLetterMemo/Result_IsFinishedEventCarpetLetterOfResignation/Result_IncrementPaperClick,
+EventCarpetLetterOfResignation,카펫(종이),자퇴서 처음 클릭,,CoditionZeroPaperFirstClick,ResultCarpetDropOutLetterZoom/ResultCarpetDropOutLetterScript/Result_nextTutorialPhase/Result_IncrementPaperClick/ResultCarpetDropOutLetterMemo/Result_IsFinishedEventCarpetLetterOfResignation/ResultTimePass,Result_IsFinished 추가
+EventCarpetLetterOfResignation,카펫(종이),자퇴서 다시 클릭,,ConditionZeroPaperManyClick,ResultCarpetDropOutLetterZoom/ResultCarpetDropOutLetterScript/Result_IncrementPaperClick/ResultCarpetDropOutLetterMemo/Result_IsFinishedEventCarpetLetterOfResignation/Result_IncrementPaperClick/ResultTimePass,
 EventTutorialNext,,dialogues탭의 다이얼로그 Tutorial_003_B 출력 다 끝나면 next에 EventTutorialNext를 넣어서 바로 다음 튜토리얼페이즈로 넘어갈 수 있게 함,,,Result_nextTutorialPhase,
 ,,,,,,
-EventKnife,커터칼,커터칼 획득,,,ResultCutterKnifeScript/ResultCutterKnifeDisappear/ResultTimePass/Result_InverseHasKnife/Result_IsUnFinishedEventPoster,Result_IsUnFinished 추가
+EventKnife,커터칼,커터칼 획득,,,ResultCutterKnifeScript/ResultCutterKnifeDisappear/Result_InverseHasKnife/Result_IsUnFinishedEventPoster/ResultTimePass,Result_IsUnFinished 추가
 ,,,,,,
-EventPoster,포스터,포스터를 열람한 상태에서 포스터 다시 클릭,,ConditionPosterOpened,ResultPosterWithKnifeScript/ResultTimePass/Result_IncrementPosterClick,새로 추가(나은)
-EventPoster,포스터,커터칼 없는 상태에서 포스터 다시 클릭,AND,ConditionPosterManyClick/ConditionNotGetKnife,ResultPosterScript/ResultTimePass/Result_IncrementPosterClick,새로 추가(나은)
-EventPoster,포스터,커터칼 있는 상태에서 포스터 처음 클릭,AND,ConditionPosterFirstClick/ConditionGetKnife/ConditionNotPosterOpened,ResultPosterScript/ResultPosterWithKnifeScript/ResultPosterMemo/ResultTimePass/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster,Result_IsFinished 추가
-EventPoster,포스터,포스터를 처음 클릭,,ConditionPosterFirstClick,ResultPosterScript/ResultTimePass/Result_IncrementPosterClick/Result_IsFinishedEventPoster,Result_IsFinished 추가
-EventPoster,포스터,포스터를 열람하지 않고 커터칼 있는 상태에서 포스터 클릭,AND,ConditionGetKnife/ConditionNotPosterOpened,ResultPosterWithKnifeScript/ResultPosterMemo/ResultTimePass/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster,Result_IsFinished 추가
+EventPoster,포스터,포스터를 열람한 상태에서 포스터 다시 클릭,,ConditionPosterOpened,ResultPosterWithKnifeScript/Result_IncrementPosterClick/ResultTimePass,새로 추가(나은)
+EventPoster,포스터,커터칼 없는 상태에서 포스터 다시 클릭,AND,ConditionPosterManyClick/ConditionNotGetKnife,ResultPosterScript/Result_IncrementPosterClick/ResultTimePass,새로 추가(나은)
+EventPoster,포스터,커터칼 있는 상태에서 포스터 처음 클릭,AND,ConditionPosterFirstClick/ConditionGetKnife/ConditionNotPosterOpened,ResultPosterScript/ResultPosterWithKnifeScript/ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
+EventPoster,포스터,포스터를 처음 클릭,,ConditionPosterFirstClick,ResultPosterScript/Result_IncrementPosterClick/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
+EventPoster,포스터,포스터를 열람하지 않고 커터칼 있는 상태에서 포스터 클릭,AND,ConditionGetKnife/ConditionNotPosterOpened,ResultPosterWithKnifeScript/ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
 ,,,,,,
 EventClosetZoom,확대 안 된 옷장,확대 되지 않은 상태에서 옷장을 클릭,,,ResultClosetZoom,30일 추가
-EventClosetClosed,닫힌 옷장 문,닫힌 옷장 문을 처음 클릭,AND,ConditionFirstClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/ResultCloseFirstClickScript/ResultTimePass/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,새로 추가(나은)
+EventClosetClosed,닫힌 옷장 문,닫힌 옷장 문을 처음 클릭,AND,ConditionFirstClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/ResultCloseFirstClickScript/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed/ResultTimePass,새로 추가(나은)
 EventClosetClosed,닫힌 옷장 문,가방 조사 후 닫힌 문을 클릭,,ConditionClosetBagManyClick,ResultClosetDoorsOpen/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,새로 추가(나은)
 EventClosetClosed,닫힌 옷장 문,가방 조사 안 한 상태에서 닫힌 옷장 문 다시 클릭,AND,ConditionClosetBagFirstClick/ConditionManyClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,
 EventClosetOpen,열린 옷장 문,열린 옷장 문을 클릭,,ConditionClosetDoorsOpen,ResultClosetDoorsClosed/Result_InverseClosetDoorsClosed,새로 추가(나은)
-EventClosetBag,옷장 안 가방,가방을 처음 클릭,,ConditionClosetBagFirstClick,ResultTimePass/ResultClosetBagScript/ResultClosetBagMemo/Result_IncrementBagClick/Result_IsFinishedEventClosetBag,Result_IsFinished 추가
+EventClosetBag,옷장 안 가방,가방을 처음 클릭,,ConditionClosetBagFirstClick,ResultClosetBagScript/ResultClosetBagMemo/Result_IncrementBagClick/Result_IsFinishedEventClosetBag/ResultTimePass,Result_IsFinished 추가
 EventClosetBag,옷장 안 가방,가방을 다시 클릭,,ConditionClosetBagManyClick,ResultTimePass/ResultClosetBagScript/Result_IncrementBagClick,새로 추가(나은)
 ,,,,,,
 EventClosetBox,옷장 위 상자,상자를 열어본 상태에서 상자 다시 클릭,,ConditionBoxOpen,ResultTimePass/ResultClosetBoxScript/ResultClosetBoxSound/ResultClosetBoxPicturesUI/Result_IncrementBoxClick,새로 추가(나은)

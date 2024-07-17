@@ -47,10 +47,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("currentInquiryObjectId is NULL!");
             return null;
         }
-        else
-        {
-            return currentInquiryObjectId;
-        }
+        else return currentInquiryObjectId;
     }
 
     void Awake()
@@ -248,7 +245,6 @@ public class GameManager : MonoBehaviour
 
         // 실과 바늘
         variables["GetThreadAndNeedle"] = false;
-
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라

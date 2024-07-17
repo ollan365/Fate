@@ -17,10 +17,19 @@ public class ResultManager : MonoBehaviour
     
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
+        // Debug.Log($"registered {objectName}");
+        
         if (!executableObjects.ContainsKey(objectName))
         {
             executableObjects[objectName] = executable;
         }
+    }
+
+    public void InitializeExecutableObjects()
+    {
+        // Debug.Log("############### unregistered all executable objects ###############");
+
+        executableObjects = new Dictionary<string, IResultExecutable>();
     }
 
     void Awake()

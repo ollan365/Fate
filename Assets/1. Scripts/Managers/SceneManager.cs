@@ -26,6 +26,7 @@ public class SceneManager : MonoBehaviour
     {
         StartCoroutine(ChangeScene(loadSceneType));
     }
+    
     private IEnumerator ChangeScene(SceneType loadSceneType)
     {
         // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다

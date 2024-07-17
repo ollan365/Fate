@@ -47,6 +47,8 @@ public class RoomManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        ResultManager.Instance.InitializeExecutableObjects();
     }
     
     void Start()
@@ -141,6 +143,11 @@ public class RoomManager : MonoBehaviour
         }
         
         SetButtons();
+    }
+
+    public void EmptyActionPoint()
+    {
+        GameManager.Instance.SetVariable("ActionPoint", 1);
     }
 
     // ######################################## setters ########################################
