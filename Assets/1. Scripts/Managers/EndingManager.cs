@@ -51,20 +51,9 @@ public class EndingManager : MonoBehaviour
     }
     public void EndEnding(EndingType endingType)
     {
-        GameManager.Instance.IncrementVariable("EndingCollect");
-
-        switch (endingType)
-        {
-            case EndingType.BAD_A:
-            case EndingType.BAD_B:
-                SaveManager.Instance.InitGameData();
-                SaveManager.Instance.LoadGameData();
-                break;
-
-            case EndingType.TRUE:
-            case EndingType.HIDDEN:
-                break;
-        }
+        SaveManager.Instance.InitGameData();
+        SaveManager.Instance.SaveEndingData(endingType);
+        SaveManager.Instance.LoadGameData();
     }
     private IEnumerator Ending_Room1()
     {

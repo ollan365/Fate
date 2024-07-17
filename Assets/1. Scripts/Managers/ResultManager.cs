@@ -145,12 +145,16 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPrologueEnd":
+                if (SaveManager.Instance.EndingData != null)
+                {
+                    SaveManager.Instance.EndingData.isEndingLogicEnd = true;
+                    SaveManager.Instance.SaveEndingData(EndingType.NONE);
+                }
                 SceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
 
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
                 GameManager.Instance.DecrementActionPoint();
-                SaveManager.Instance.SaveGameData();
                 break;
 
             // 조사 시스템
@@ -195,7 +199,6 @@ public class ResultManager : MonoBehaviour
                 ScreenEffect.Instance.RestButtonEffect();
                 // 행동력 5감소
                 GameManager.Instance.DecrementVariable("ActionPoint", 5);
-                SaveManager.Instance.SaveGameData();
                 // 대사 출력 지연 시킴
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", 5f));
                 break;
