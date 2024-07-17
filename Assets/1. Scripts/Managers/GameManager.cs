@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour
     // 하트 5개일 경우 회복제 먹고 바로 7개로 늘어나게 함.
     private bool isEatenEnergySupplement = false;
 
+    // 중복조사 관련 딕셔너리
+    private Dictionary<string, bool> eventObjectsStatusDict = new Dictionary<string, bool>();
+
     public void SetCurrentInquiryObjectId(string objectId)
     {
         currentInquiryObjectId = objectId;
@@ -628,4 +631,42 @@ public class GameManager : MonoBehaviour
         presentHeartIndex += 2;
     }
 
+
+    // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮겼을 경우 작동이 잘 되는지 테스트
+
+    public void AddEventObject(EventObject eventObject)
+    {
+        if (!eventObjectsStatusDict.ContainsKey(eventObject.GetEventId()))
+        {
+            eventObjectsStatusDict.Add(eventObject.GetEventId(), false);
+        }
+    }
+
+    public void SetEventFinished(string eventId)
+    {
+        if (eventObjectsStatusDict.ContainsKey(eventId))
+        {
+            eventObjectsStatusDict[eventId] = true;
+        }
+    }
+
+    public void SetEventUnFinished(string eventId)
+    {
+        if (eventObjectsStatusDict.ContainsKey(eventId))
+        {
+            eventObjectsStatusDict[eventId] = false;
+        }
+    }
+
+    public bool GetEventStatus(string eventId)
+    {
+        if (eventObjectsStatusDict.ContainsKey(eventId))
+        {
+            return eventObjectsStatusDict[eventId];
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

@@ -81,13 +81,13 @@ public class ResultManager : MonoBehaviour
 
             case string temp when temp.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
                 variableName = temp.Substring("Result_isFinished".Length);
-                EventObjectManager.Instance.SetEventFinished(variableName);
+                GameManager.Instance.SetEventFinished(variableName);
                 break;
 
             case string temp when temp.StartsWith("Result_IsUnFinished"):  
                 // EventObject의 isFinished를 false로 (포스터 커터칼 있는채로 다시 조사하면 처음 조사 스크립트 나와야 해서 추가됨)
                 variableName = temp.Substring("Result_IsUnFinished".Length);
-                EventObjectManager.Instance.SetEventUnFinished(variableName);
+                GameManager.Instance.SetEventUnFinished(variableName);
                 break;
 
             case "Result_girl":  // 우연의 성별을 여자로 설정
@@ -148,7 +148,7 @@ public class ResultManager : MonoBehaviour
             case "ResultInquiry": // 조사 선택 묻기
                 //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
                 //    +" : "+ EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
-                if (!EventObjectManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
+                if (!GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
                     DialogueManager.Instance.EndDialogue();
 
