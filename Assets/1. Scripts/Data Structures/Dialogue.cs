@@ -14,9 +14,9 @@ public class Dialogue
         Lines = new List<DialogueLine>();
     }
 
-    public void AddLine(string speakerID, string scriptID, string imageID, string backgroundID, string soundID, string next)
+    public void AddLine(string speakerID, string scriptID, string imageID, string eventID, string next)
     {
-        Lines.Add(new DialogueLine(speakerID, scriptID, imageID, backgroundID, soundID, next));
+        Lines.Add(new DialogueLine(speakerID, scriptID, imageID, eventID, next));
     }
 
     public void SetCurrentLineIndex(int currentLineIndex)
