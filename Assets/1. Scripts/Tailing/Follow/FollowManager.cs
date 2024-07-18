@@ -40,8 +40,7 @@ public class FollowManager : MonoBehaviour
         else Destroy(gameObject);
 
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) StartCoroutine(followTutorial.StartTutorial());
-        extraNextButton.GetComponent<Button>().onClick.AddListener(()
-            => DialogueManager.Instance.OnDialoguePanelClick());
+        extraNextButton.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
     }
 
     public void ClickObject()

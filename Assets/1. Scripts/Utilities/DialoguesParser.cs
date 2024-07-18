@@ -45,7 +45,7 @@ public class DialoguesParser : MonoBehaviour
             string scriptID = fields[2].Trim();
             string imageID = fields[3].Trim();
             string eventID = fields[4].Trim();
-            string next = fields[5].Trim();
+            string next = fields[6].Trim();
 
             if (!dialogues.ContainsKey(dialogueID))
             {
