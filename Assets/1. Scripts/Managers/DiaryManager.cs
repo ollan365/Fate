@@ -14,7 +14,9 @@ public class DiaryManager : PageContentsManager
     
     [SerializeField] private PageFlip diaryPages;
     [SerializeField] private string diaryType;
-    
+
+    private int presentPageNum;
+
     private void Awake()
     {
         ParsePageContents();
@@ -37,6 +39,7 @@ public class DiaryManager : PageContentsManager
                 break;
         }
     }
+    
     
     public override void DisplayPage(PageType pageType, int pageNum)
     {
@@ -67,6 +70,8 @@ public class DiaryManager : PageContentsManager
         string pageText = currentPages[diaryID];
 
         SetPageText(pageType, pageText);
+
+        presentPageNum = pageNum;
     }
 
     private void SetPageText(PageType pageType, string text)
@@ -129,6 +134,14 @@ public class DiaryManager : PageContentsManager
         bool flipRightButtonOn = currentPage < totalPageCount - 1;
         // Debug.Log($"flipRightButtonOn: {flipRightButtonOn}\n\tcurrentPage: {currentPage}\n\ttotalPageCount: {totalPageCount}");
         flipRightButton.SetActive(flipRightButtonOn);
+
+        // 방탈출2 다이어리 관련
+        if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect")
+            && presentPageNum == 2 && diaryType == "Diary2")
+        {
+            // 다이어리 내용 끝까지인 2페이지 확인하면 다이어리 내용 확인 스크립트 출력됨
+            DialogueManager.Instance.StartDialogue("RoomEscape2_016");
+        }
     }
 
     public override void ParsePageContents()

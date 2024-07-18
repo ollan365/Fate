@@ -480,7 +480,6 @@ public class GameManager : MonoBehaviour
     private bool isControlHeartCount = false;
     public void CreateHearts()
     {
-        int dayNum = 0;
         int actionPoint = (int)GetVariable("ActionPoint");
         // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
         int heartCount = actionPoint % actionPointsPerDay;
@@ -488,6 +487,27 @@ public class GameManager : MonoBehaviour
         if (isEatenEnergySupplement)
         {
             heartCount = presentHeartIndex + 2;
+            actionPointsPerDay = 7;
+
+            // actionPoint가 4, 9와 같은 heartCount가 4나 5인 상태에서 회복제 먹었을 때 최대 7개는 되기에
+            // 하트 최대 7개 일 때의 actionPoint로 보정하여 DayNum도 보정되어 올바르게 나오게 함.
+            if (actionPoint == 4 || actionPoint == 5)
+            {
+                actionPoint += 2;
+            }
+            else if (actionPoint == 9 || actionPoint == 10)
+            {
+                actionPoint += 4;
+            }
+            else if (actionPoint == 14 || actionPoint == 15)
+            {
+                actionPoint += 6;
+            }
+            else if (actionPoint == 19 || actionPoint == 20)
+            {
+                actionPoint += 8;
+            }
+            SetVariable("ActionPoint",actionPoint);
         }
 
         if (heartCount == 0)
@@ -496,14 +516,12 @@ public class GameManager : MonoBehaviour
             {
                 actionPointsPerDay = 7;
 
-                // 회복제 먹으면 하루에 하트 5개였던 것이 7개로 늘어남
+                // 회복제 먹으면 하루에 하트 최대 5개였던 것이 7개로 늘어남
                 heartCount = 7;
 
                 if ((actionPoint == 20|| actionPoint == 15||actionPoint == 10|| actionPoint == 5)&& !isControlHeartCount)
                 {
                     float controlledPoint = actionPoint * 1.4f;
-
-                    //Debug.Log("controlledPoint : " + controlledPoint);
 
                     actionPoint = (int)controlledPoint;
 
@@ -511,8 +529,6 @@ public class GameManager : MonoBehaviour
 
                     isControlHeartCount = true;
                 }
-                
-                //Debug.Log("약 먹고 다음날 포인트 : "+GetVariable("ActionPoint"));
 
                 // 그리고 현재 하트 인덱스도 5였던 것을 7로 초기화.
                 presentHeartIndex = 7;
@@ -540,7 +556,6 @@ public class GameManager : MonoBehaviour
         if (isEatenEnergySupplement)
         {
             isEatenEnergySupplement = false;
-            //actionPointsPerDay = 7;
         }
     }
 
@@ -621,13 +636,13 @@ public class GameManager : MonoBehaviour
 
         isEatenEnergySupplement = true;
 
-        IncrementVariable("ActionPoint", 2);
+        //IncrementVariable("ActionPoint", 2);
         CreateHearts();
 
         presentHeartIndex += 2;
     }
 
-    // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮겼을 경우 작동이 잘 되는지 테스트
+    // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮김
 
     public void AddEventObject(EventObject eventObject)
     {
