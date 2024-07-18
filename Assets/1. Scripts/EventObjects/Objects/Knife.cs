@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Knife : EventObject, IResultExecutable
 {
-    private void Awake()
+    private void Start()
     {
         ResultManager.Instance.RegisterExecutable($"Knife{sideNum}", this);
     }
@@ -28,6 +28,7 @@ public class Knife : EventObject, IResultExecutable
     private void OnEnable()
     {
         bool hasKnife = (bool)GameManager.Instance.GetVariable("HasKnife");
+        //Debug.Log("hasKnife : " + hasKnife);
         if (hasKnife) gameObject.SetActive(false);
     }
 }
