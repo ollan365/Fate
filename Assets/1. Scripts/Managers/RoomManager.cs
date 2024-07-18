@@ -189,8 +189,15 @@ public class RoomManager : MonoBehaviour
         moveButtonLeft.gameObject.SetActive(isTrue);
         moveButtonRight.gameObject.SetActive(isTrue);
         
-        if (currentSideIndex == 1) moveButtonRight.gameObject.SetActive(false);
-        else if (currentSideIndex == 2) moveButtonLeft.gameObject.SetActive(false);
+        switch (currentSideIndex)
+        {
+            case 1:
+                moveButtonRight.gameObject.SetActive(false);
+                break;
+            case 2:
+                moveButtonLeft.gameObject.SetActive(false);
+                break;
+        }
     }
     
     public void SetButtons()

@@ -23,9 +23,8 @@ public class Doors : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
-        if (closedOrOpen == "Open" && EventSystem.current.IsPointerOverGameObject()) return;
-        
         bool isBusy = GameManager.Instance.GetIsBusy();
+        // Debug.Log($"isBusy: {isBusy}");
         if (isBusy) return;
         
         base.OnMouseDown();
