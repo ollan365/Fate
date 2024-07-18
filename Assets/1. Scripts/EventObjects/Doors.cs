@@ -10,7 +10,7 @@ public class Doors : EventObject, IResultExecutable
     public string parentObjectName;  // 옷장, 수남장 등 부모 오브젝트 이름
     private string closedOrOpen;
 
-    private void Awake()
+    private void Start()
     {
         closedOrOpen = isClosedDoors ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Doors", this);

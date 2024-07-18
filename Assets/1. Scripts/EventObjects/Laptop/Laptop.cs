@@ -8,7 +8,7 @@ public class Laptop : EventObject, IResultExecutable
     [SerializeField]
     private GameObject laptopLock;
 
-    private void Awake()
+    private void Start()
     {
         ResultManager.Instance.RegisterExecutable("Laptop", this);
     }

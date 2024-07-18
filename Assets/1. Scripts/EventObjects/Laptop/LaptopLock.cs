@@ -23,7 +23,7 @@ public class LaptopLock : EventObject, IResultExecutable
 
     [SerializeField] private Laptop laptopA;
 
-    private void Awake()
+    private void Start()
     {
         imageComponent = GetComponent<Image>();
 

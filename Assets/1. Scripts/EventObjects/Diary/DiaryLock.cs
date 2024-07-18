@@ -16,11 +16,11 @@ public class DiaryLock : EventObject, IResultExecutable
     [SerializeField] private string diaryLockExecutableName;
     [SerializeField] private DiaryManager diaryManager;
 
-    private void Awake()
+    private void Start()
     {
         ResultManager.Instance.RegisterExecutable(diaryLockExecutableName, this);
     }
-    
+
     public void ExecuteAction()
     {
         ShowDiaryContent();
