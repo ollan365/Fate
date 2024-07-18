@@ -17,11 +17,12 @@ public class ResultManager : MonoBehaviour
     
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
-        // Debug.Log($"registered {objectName}");
+        //Debug.Log($"registered {objectName}");
         
         if (!executableObjects.ContainsKey(objectName))
         {
             executableObjects[objectName] = executable;
+            Debug.Log($"registered {objectName}");
         }
     }
 
@@ -91,6 +92,8 @@ public class ResultManager : MonoBehaviour
             case string temp when temp.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
                 variableName = temp.Substring("Result_isFinished".Length);
                 GameManager.Instance.SetEventFinished(variableName);
+                //Debug.Log(variableName + " : "+ GameManager.Instance.GetEventStatus(variableName)
+                //    + " GameManager.Instance.GetCurrentInquiryObjectId() : "+ GameManager.Instance.GetCurrentInquiryObjectId());
                 break;
 
             case string temp when temp.StartsWith("Result_IsUnFinished"):  
@@ -170,6 +173,7 @@ public class ResultManager : MonoBehaviour
                 }
                 else
                 {
+                    //Debug.Log("중복조사 발생");
                     DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry2");
                 }
                 break;
@@ -436,7 +440,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCutterKnifeDisappear": // 커터칼 사라짐
-                // Debug.Log("ResultCutterKnifeDisappear executed");
+                //Debug.Log("ResultCutterKnifeDisappear executed");
                 executableObjects["Knife0"].ExecuteAction();
                 executableObjects["Knife1"].ExecuteAction();
                 break;

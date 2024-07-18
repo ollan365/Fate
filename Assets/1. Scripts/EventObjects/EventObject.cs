@@ -36,8 +36,7 @@ public class EventObject : MonoBehaviour
 
     private void Start()
     {
-        // 병합 후 에러 발생해서 일단 주석 처리!!!
-        // EventObjectManager.Instance.AddEventObject(this);
+        GameManager.Instance.AddEventObject(this);
     }
 
     public string GetEventId()
