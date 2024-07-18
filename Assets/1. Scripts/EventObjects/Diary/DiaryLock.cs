@@ -9,17 +9,16 @@ public class DiaryLock : EventObject, IResultExecutable
 {
     private string passwordInput = "";
 
-    [SerializeField]
-    private GameObject diaryContent;
-    [SerializeField]
-    private TextMeshProUGUI passwordText;
+    [SerializeField] private GameObject diaryContent;
+    [SerializeField] private TextMeshProUGUI passwordText;
 
-    [SerializeField]
-    private Diary diaryA;
+    [SerializeField] private Diary diaryA;
+    [SerializeField] private string diaryLockExecutableName;
+    [SerializeField] private DiaryManager diaryManager;
 
     private void Awake()
     {
-        ResultManager.Instance.RegisterExecutable("DiaryLock", this);
+        ResultManager.Instance.RegisterExecutable(diaryLockExecutableName, this);
     }
     
     public void ExecuteAction()
@@ -30,6 +29,7 @@ public class DiaryLock : EventObject, IResultExecutable
     // 다이어리 내용 보여짐
     private void ShowDiaryContent()
     {
+        diaryManager.SetTotalPages();
         diaryContent.SetActive(true);
         gameObject.SetActive(false);
     }
@@ -54,10 +54,14 @@ public class DiaryLock : EventObject, IResultExecutable
     {
         yield return new WaitForSeconds(0.2f);
         string correctPassword = (string)GameManager.Instance.GetVariable("FateBirthday");  // 다이어리 비밀번호 = 필연 생일
-        GameManager.Instance.SetVariable("DiaryPasswordCorrect", passwordInput == correctPassword);
+        
+        // Debug.Log($"correctPassword: {correctPassword}\npasswordInput: {passwordInput}");
+        
+        string variableName = diaryLockExecutableName == "DiaryLock" ? "DiaryPasswordCorrect" : "Diary2PasswordCorrect";
+        GameManager.Instance.SetVariable(variableName, passwordInput == correctPassword);
+        
         // 다이어리 비번 맞춘 이후에 다이어리 다시 클릭하면 조사창 패스된거 다시 조사창 나오게 함.
-        if ((bool)GameManager.Instance.GetVariable("DiaryPasswordCorrect"))
-            diaryA.SetIsInquiry(true);
+        if ((bool)GameManager.Instance.GetVariable(variableName)) diaryA.SetIsInquiry(true);
 
         OnMouseDown();
         yield return new WaitForSeconds(0.3f);

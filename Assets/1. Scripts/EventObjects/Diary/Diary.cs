@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Diary : EventObject, IResultExecutable
 {
-    [SerializeField]
-    private GameObject diaryLock;
+    [SerializeField] private GameObject diaryLock;
+    [SerializeField] private string diaryExecutableName;
 
     private void Awake()
     {
-        ResultManager.Instance.RegisterExecutable("Diary", this);
+        ResultManager.Instance.RegisterExecutable(diaryExecutableName, this);
     }
     
     public new void OnMouseDown()

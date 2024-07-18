@@ -477,14 +477,13 @@ public class GameManager : MonoBehaviour
     // ************************* temporary methods for action points *************************
     // create 5 hearts on screen on room start
 
-    private bool isControllHearCount = false;
+    private bool isControlHeartCount = false;
     public void CreateHearts()
     {
         int dayNum = 0;
         int actionPoint = (int)GetVariable("ActionPoint");
         // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
         int heartCount = actionPoint % actionPointsPerDay;
-
 
         if (isEatenEnergySupplement)
         {
@@ -500,7 +499,7 @@ public class GameManager : MonoBehaviour
                 // 회복제 먹으면 하루에 하트 5개였던 것이 7개로 늘어남
                 heartCount = 7;
 
-                if ((actionPoint == 20|| actionPoint == 15||actionPoint == 10|| actionPoint == 5)&& !isControllHearCount)
+                if ((actionPoint == 20|| actionPoint == 15||actionPoint == 10|| actionPoint == 5)&& !isControlHeartCount)
                 {
                     float controlledPoint = actionPoint * 1.4f;
 
@@ -510,7 +509,7 @@ public class GameManager : MonoBehaviour
 
                     SetVariable("ActionPoint", actionPoint);
 
-                    isControllHearCount = true;
+                    isControlHeartCount = true;
                 }
                 
                 //Debug.Log("약 먹고 다음날 포인트 : "+GetVariable("ActionPoint"));
@@ -641,7 +640,6 @@ public class GameManager : MonoBehaviour
 
         presentHeartIndex += 2;
     }
-
 
     // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮겼을 경우 작동이 잘 되는지 테스트
 

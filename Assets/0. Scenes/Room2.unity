@@ -325,7 +325,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -1619,7 +1619,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 78613631}
-        m_TargetAssemblyTypeName: Diary2, Assembly-CSharp
+        m_TargetAssemblyTypeName: Diary, Assembly-CSharp
         m_MethodName: OnMouseDown
         m_Mode: 1
         m_Arguments:
@@ -1690,13 +1690,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 78613624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c26bcf696a873094bb323790984c3f02, type: 3}
+  m_Script: {fileID: 11500000, guid: c5247e53bbce3a545addd0a1328a984c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   eventId: EventDiary2A
   sideNum: 1
   isInquiry: 1
   diaryLock: {fileID: 1700588274}
+  diaryExecutableName: Diary2
 --- !u!1 &94312722
 GameObject:
   m_ObjectHideFlags: 0
@@ -2536,7 +2537,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -3881,7 +3882,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -7512,7 +7513,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -7800,7 +7801,7 @@ PrefabInstance:
     - target: {fileID: 3389570640511174528, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: canvas
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1418986091}
     - target: {fileID: 3389570640511174528, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: backPage
       value: 
@@ -7837,6 +7838,10 @@ PrefabInstance:
       propertyPath: animationFramesCount
       value: 80
       objectReference: {fileID: 0}
+    - target: {fileID: 7387890683706702721, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 60885b8206f054884845508c6b442ace, type: 3}
     - target: {fileID: 8598353913274070045, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: m_Name
       value: Diary Contents
@@ -8170,7 +8175,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -8390,7 +8395,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -8940,7 +8945,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -10331,6 +10336,9 @@ MonoBehaviour:
   rightPage: {fileID: 638661642}
   backPage: {fileID: 638661645}
   frontPage: {fileID: 638661643}
+  totalPageCount: 0
+  diaryPages: {fileID: 638661641}
+  diaryType: Diary2
 --- !u!4 &922364973
 Transform:
   m_ObjectHideFlags: 0
@@ -14978,7 +14986,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -16054,7 +16062,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -16186,7 +16194,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -17916,7 +17924,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1700588274}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4218a4ce5a1196945a21dc0e49f74405, type: 3}
+  m_Script: {fileID: 11500000, guid: edd625015df71e44292dce1dbb3cfbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   eventId: EventDiary2B
@@ -17925,6 +17933,8 @@ MonoBehaviour:
   diaryContent: {fileID: 638661647}
   passwordText: {fileID: 1117613218}
   diaryA: {fileID: 78613631}
+  diaryLockExecutableName: Diary2Lock
+  diaryManager: {fileID: 922364972}
 --- !u!1 &1705609170
 GameObject:
   m_ObjectHideFlags: 0
@@ -19412,7 +19422,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:
@@ -20154,7 +20164,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1700588279}
-        m_TargetAssemblyTypeName: Diary2Lock, Assembly-CSharp
+        m_TargetAssemblyTypeName: DiaryLock, Assembly-CSharp
         m_MethodName: InputNumber
         m_Mode: 5
         m_Arguments:

@@ -1419,6 +1419,7 @@ MonoBehaviour:
   sideNum: 1
   isInquiry: 1
   diaryLock: {fileID: 665616727}
+  diaryExecutableName: Diary
 --- !u!114 &78613627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4052,6 +4053,9 @@ MonoBehaviour:
   rightPage: {fileID: 2009221966}
   backPage: {fileID: 1024511221}
   frontPage: {fileID: 1224090862}
+  totalPageCount: 0
+  diaryPages: {fileID: 1529167068}
+  diaryType: Diary1
 --- !u!1 &388148821
 GameObject:
   m_ObjectHideFlags: 0
@@ -5939,6 +5943,8 @@ MonoBehaviour:
   diaryContent: {fileID: 1529167069}
   passwordText: {fileID: 898558688}
   diaryA: {fileID: 78613626}
+  diaryLockExecutableName: DiaryLock
+  diaryManager: {fileID: 379759202}
 --- !u!1 &674966301
 GameObject:
   m_ObjectHideFlags: 0
@@ -12637,9 +12643,17 @@ PrefabInstance:
       propertyPath: animationFramesCount
       value: 80
       objectReference: {fileID: 0}
+    - target: {fileID: 7387890683706702721, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 60885b8206f054884845508c6b442ace, type: 3}
     - target: {fileID: 8598353913274070045, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: m_Name
       value: Diary Contents
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598353913274070045, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
