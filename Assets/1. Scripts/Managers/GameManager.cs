@@ -533,9 +533,8 @@ public class GameManager : MonoBehaviour
         }
 
         // change Day text on screen
-        //dayText.text = $"Day {actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay}";
-        dayNum = (dayNum < (5 - (actionPoint - 1) / actionPointsPerDay)) ? 5 - (actionPoint - 1) / actionPointsPerDay : dayNum;
-
+        int newDayNum = actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay;
+        if (dayNum < newDayNum) dayNum = newDayNum;
         dayText.text = $"Day {dayNum}";
 
         if (isEatenEnergySupplement)
@@ -567,21 +566,8 @@ public class GameManager : MonoBehaviour
             bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
             if (!isDialogueActive) RefillHeartsOrEndDay();
             else SetVariable("RefillHeartsOrEndDay", true);
-
-            // if all action points are used, load "Follow 1" scene
-            if (actionPoint == 0)
-            {
-                SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
-                return;
-            }
-            
-            ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
-
-            // refill hearts on screen after 2 seconds
-            // 병합 후 에러 발생해서 일단 주석 처리!!!
-            // StartCoroutine(RefillHearts());
-
         }
+        
         SaveManager.Instance.SaveGameData();
     }
     
@@ -669,13 +655,6 @@ public class GameManager : MonoBehaviour
 
     public bool GetEventStatus(string eventId)
     {
-        if (eventObjectsStatusDict.ContainsKey(eventId))
-        {
-            return eventObjectsStatusDict[eventId];
-        }
-        else
-        {
-            return false;
-        }
+        return eventObjectsStatusDict.ContainsKey(eventId) && eventObjectsStatusDict[eventId];
     }
 }

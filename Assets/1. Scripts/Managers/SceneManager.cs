@@ -92,7 +92,7 @@ public class SceneManager : MonoBehaviour
                 break;
         }
 
-        MemoManager.Instance.ChangeMemoButton();
+        // MemoManager.Instance.ChangeMemoButton();
 
         if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING)
         {

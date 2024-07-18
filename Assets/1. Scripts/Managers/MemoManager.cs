@@ -7,8 +7,7 @@ public class MemoManager : PageContentsManager
 {
     [SerializeField] private GameObject memoContents;
     [SerializeField] private PageFlip memoPages;
-    [SerializeField] private GameObject[] memoButtons;
-    private GameObject memoButton; // 현재 사용 중인 메모버튼
+    [SerializeField] private GameObject memoButton;
     [SerializeField] private GameObject exitButton;
     
     public static MemoManager Instance { get; private set; }
@@ -45,7 +44,6 @@ public class MemoManager : PageContentsManager
         }
 
         var currentSceneIndex = GetCurrentSceneIndex();
-        memoButton = memoButtons[currentSceneIndex];
         
         LoadMemos();
     }
@@ -167,11 +165,6 @@ public class MemoManager : PageContentsManager
         if (RoomManager.Instance && currentSceneIndex is 0 or 2) RoomManager.Instance.SetButtons();
     }
     
-    public void ChangeMemoButton()
-    {
-        memoButton = memoButtons[isFollow ? 1 : 0];
-    }
-
     public void SetMemoContents(bool isTrue)
     {
         memoContents.SetActive(isTrue);

@@ -27,7 +27,7 @@ public class FollowTutorial : MonoBehaviour
         moveButton.SetActive(false);
 
          // 튜토리얼 캔버스를 할당
-         followTutorialCanvas = DialogueManager.Instance.dialogueCanvas[Constants.DialogueType.FOLLOW_TUTORIAL.ToInt()].transform.parent.gameObject;
+         followTutorialCanvas = DialogueManager.Instance.dialogueSet[Constants.DialogueType.FOLLOW_TUTORIAL.ToInt()].transform.parent.gameObject;
         
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         yield return new WaitForSeconds(1.5f);

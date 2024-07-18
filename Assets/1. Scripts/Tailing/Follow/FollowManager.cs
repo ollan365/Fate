@@ -98,7 +98,7 @@ public class FollowManager : MonoBehaviour
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
 
-        DialogueManager.Instance.dialogueCanvas[DialogueType.FOLLOW_EXTRA.ToInt()] = extraCanvas[Int(extra)];
+        DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_EXTRA.ToInt()] = extraCanvas[Int(extra)];
         DialogueManager.Instance.scriptText[DialogueType.FOLLOW_EXTRA.ToInt()] = extraDialogueText[Int(extra)];
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW_EXTRA;
 
