@@ -35,7 +35,7 @@ public class SaveManager : MonoBehaviour
     }
     public void SaveInitGameData()
     {
-        initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, MemoManager.Instance.SavedMemoList, MemoManager.Instance.RevealedMemoList);
+        initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, GameManager.Instance.eventObjectsStatusDict, MemoManager.Instance.SavedMemoList, MemoManager.Instance.RevealedMemoList);
 
         if (EndingData == null) return;
         GameManager.Instance.SetVariable("EndingCollect", EndingData.allEndingCollectCount);
@@ -80,6 +80,7 @@ public class SaveManager : MonoBehaviour
         // 저장된 내용 로드
         SceneManager.Instance.roomSideIndex = data.lastSideIndex;
         GameManager.Instance.Variables = data.Variables;
+        GameManager.Instance.eventObjectsStatusDict = data.EventObjectStatusDictionary;
         MemoManager.Instance.SavedMemoList = data.SavedMemoList;
         MemoManager.Instance.RevealedMemoList = data.RevealedMemoList;
 
@@ -97,6 +98,7 @@ public class SaveManager : MonoBehaviour
         data = new(SceneManager.Instance.CurrentScene,
             currentSideIndex,
             GameManager.Instance.Variables,
+            GameManager.Instance.eventObjectsStatusDict,
             MemoManager.Instance.SavedMemoList,
             MemoManager.Instance.RevealedMemoList);
 
@@ -126,18 +128,21 @@ public class SaveData
     public int lastSideIndex;
 
     public string variablesToJson;
+    public string eventObjectStatusToJson;
     public string savedMemo;
     public string revealedMemo;
 
     public Dictionary<string, object> Variables => ToDictionary(variablesToJson); // 게임 매니저의 변수들
+    public Dictionary<string, bool> EventObjectStatusDictionary => ToBoolDictionary(eventObjectStatusToJson); // 게임 매니저의 변수들
     public List<List<string[]>> SavedMemoList => ToArrayList(savedMemo);
     public List<List<string>> RevealedMemoList => ToList(revealedMemo);
 
-    public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, List<List<string[]>> savedMemoList, List<List<string>> revealedMemoList)
+    public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, Dictionary<string, bool>  eventObejctStatusDictionary, List<List<string[]>> savedMemoList, List<List<string>> revealedMemoList)
     {
         sceneType = type;
         lastSideIndex = currentSideIndex;
         variablesToJson = ToJson(variables);
+        eventObjectStatusToJson = ToJson(eventObejctStatusDictionary);
         savedMemo = ToJson(savedMemoList);
         revealedMemo = ToJson(revealedMemoList);
     }
@@ -171,6 +176,10 @@ public class SaveData
             stringVariables.Add(key, stringValue);
         }
         return JsonConvert.SerializeObject(stringVariables, Formatting.Indented);
+    }
+    private string ToJson(Dictionary<string, bool> dictionary)
+    {
+        return JsonConvert.SerializeObject(dictionary, Formatting.Indented);
     }
     private string ToJson(List<List<string[]>> array)
     {
@@ -216,6 +225,10 @@ public class SaveData
         }
 
         return objectVariables;
+    }
+    private Dictionary<string, bool> ToBoolDictionary(string json)
+    {
+        return JsonConvert.DeserializeObject<Dictionary<string, bool>>(json); ;
     }
 }
 public class EndingData

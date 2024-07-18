@@ -32,16 +32,17 @@ public class FollowManager : MonoBehaviour
     public bool isTutorial = false; // 튜토리얼 중인지 아닌지
     public bool isEnd = false; // 현재 미행이 끝났는지 아닌지
     public bool canClick = true; // 현재 오브젝트를 누를 수 있는지
-    private bool onMove; // 원래 이동 상태였는지
+    public bool onMove; // 원래 이동 상태였는지
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        return;
+
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) StartCoroutine(followTutorial.StartTutorial());
-        extraNextButton.GetComponent<Button>().onClick.AddListener(()
-            => DialogueManager.Instance.OnDialoguePanelClick());
+        extraNextButton.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
     }
 
     public void ClickObject()
