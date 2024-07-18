@@ -7,5 +7,9 @@ public class MemoButton : MonoBehaviour
     public void OnMouseDown()
     {
         MemoManager.Instance.SetMemoContents(true);
+
+        if (FollowManager.Instance && !FollowManager.Instance.followAnim.IsStop)
+            FollowManager.Instance.ClickObject();
+        
     }
 }

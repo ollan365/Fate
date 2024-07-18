@@ -98,6 +98,8 @@ public class MemoManager : PageContentsManager
     public void OnExit()
     {
         SetMemoContents(false);
+
+        if (FollowManager.Instance) FollowManager.Instance.EndScript(false);
     }
 
     // 현재 씬에 따라 메모의 개수를 파악 -> 현재 씬에 해당하는 메모의 개수에 따라 엔딩 선택지 해금 여부 결정

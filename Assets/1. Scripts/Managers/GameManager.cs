@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     private bool isEatenEnergySupplement = false;
 
     // 중복조사 관련 딕셔너리
-    private Dictionary<string, bool> eventObjectsStatusDict = new Dictionary<string, bool>();
+    public Dictionary<string, bool> eventObjectsStatusDict = new Dictionary<string, bool>();
 
     public void SetCurrentInquiryObjectId(string objectId)
     {
