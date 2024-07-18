@@ -9,9 +9,7 @@ public class MemoButton : MonoBehaviour
         MemoManager.Instance.SetMemoContents(true);
 
         if (FollowManager.Instance && !FollowManager.Instance.followAnim.IsStop)
-        {
-            FollowManager.Instance.onMove = true;
-            FollowManager.Instance.followAnim.ChangeAnimStatus();
-        }
+            FollowManager.Instance.ClickObject();
+        
     }
 }
