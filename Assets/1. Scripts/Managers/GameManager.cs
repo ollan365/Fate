@@ -257,8 +257,8 @@ public class GameManager : MonoBehaviour
         variables["Diary2Click"] = 0;
         variables["Diary2PasswordCorrect"] = false;
 
-        variables["Diary2PresentPageNumber"] = 0;
-        variables["IsCheckedDiary2Contents"] = false;
+        // 선반 위의 약
+        variables["Medicine2Click"] = 0;
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라

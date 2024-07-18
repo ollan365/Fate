@@ -33,7 +33,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private Sprite poster2Image;
     [SerializeField] private Sprite starStickerImage;
     [SerializeField] private Sprite shoppingBag2Image;
-
+    [SerializeField] private Sprite medicine2Image;
 
     [Header("잠금 장치들")]
     [SerializeField] private GameObject laptopGameObject;
@@ -86,6 +86,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             {"poster2", poster2Image},
             {"starSticker", starStickerImage},
             {"shoppingBag2", shoppingBag2Image},
+            {"medicine2", medicine2Image},
         };
 
         lockObjectDictionary = new Dictionary<string, GameObject>()

@@ -7,11 +7,11 @@ public class Diary : EventObject, IResultExecutable
     [SerializeField] private GameObject diaryLock;
     [SerializeField] private string diaryExecutableName;
 
-    private void Awake()
+    private void Start()
     {
         ResultManager.Instance.RegisterExecutable(diaryExecutableName, this);
     }
-    
+
     public new void OnMouseDown()
     {
         base.OnMouseDown();

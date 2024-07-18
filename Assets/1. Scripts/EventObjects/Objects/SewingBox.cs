@@ -7,7 +7,7 @@ public class SewingBox : EventObject, IResultExecutable
     [SerializeField]
     private GameObject SewingBoxPuzzle;
 
-    private void Awake()
+    private void Start()
     {
         ResultManager.Instance.RegisterExecutable("SewingBox", this);
     }

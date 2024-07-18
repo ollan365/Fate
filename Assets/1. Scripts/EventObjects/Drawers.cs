@@ -9,7 +9,7 @@ public class Drawers : EventObject, IResultExecutable
     public string parentObjectName;  // 방탈출2 옷장 서랍장. 부모 오브젝트 이름
     private string closedOrOpen;
 
-    private void Awake()
+    private void Start()
     {
         closedOrOpen = isClosedDrawers ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Drawers", this);

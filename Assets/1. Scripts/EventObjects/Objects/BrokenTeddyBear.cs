@@ -6,7 +6,7 @@ public class BrokenTeddyBear : EventObject, IResultExecutable
 {
     public GameObject FixedTeddyBear;
 
-    private void Awake()
+    private void Start()
     {
         ResultManager.Instance.RegisterExecutable($"BrokenTeddyBear{sideNum}", this);
     }

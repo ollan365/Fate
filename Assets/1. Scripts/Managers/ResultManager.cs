@@ -22,7 +22,6 @@ public class ResultManager : MonoBehaviour
         if (!executableObjects.ContainsKey(objectName))
         {
             executableObjects[objectName] = executable;
-            Debug.Log($"registered {objectName}");
         }
     }
 
@@ -92,8 +91,6 @@ public class ResultManager : MonoBehaviour
             case string temp when temp.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
                 variableName = temp.Substring("Result_isFinished".Length);
                 GameManager.Instance.SetEventFinished(variableName);
-                //Debug.Log(variableName + " : "+ GameManager.Instance.GetEventStatus(variableName)
-                //    + " GameManager.Instance.GetCurrentInquiryObjectId() : "+ GameManager.Instance.GetCurrentInquiryObjectId());
                 break;
 
             case string temp when temp.StartsWith("Result_IsUnFinished"):  
@@ -697,7 +694,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultFixTeddyBear": // 망가진 곰인형을 고침
-                Debug.Log("ResultFixTeddyBear executed");
+                //Debug.Log("ResultFixTeddyBear executed");
                 executableObjects["BrokenTeddyBear0"].ExecuteAction();
                 executableObjects["BrokenTeddyBear1"].ExecuteAction();
                 executableObjects["BrokenTeddyBear3"].ExecuteAction();
@@ -799,6 +796,18 @@ public class ResultManager : MonoBehaviour
 
             case "ResultUnderPhoto2Script": // 옷장 아래 사진에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_010");
+                break;
+
+            case "ResultMedicine2Script": // 선반 위 약 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_026");
+                break;
+
+            case "ResultMedicine2Memo": // 선반 위 약 메모
+                //MemoManager.Instance.RevealMemo("");
+                break;
+
+            case "ResultMedicine2Zoom": // 선반 위 약 확대UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "medicine2");
                 break;
 
             case "ResultHospitalFlyer2Script": // 방탈출2 병원 전단지  스크립트

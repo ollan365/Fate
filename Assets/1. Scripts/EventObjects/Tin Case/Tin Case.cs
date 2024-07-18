@@ -6,7 +6,7 @@ public class TinCase : EventObject, IResultExecutable
 {
     [SerializeField] private GameObject tinCaseLock;
     
-    private void Awake()
+    private void Start()
     {
         ResultManager.Instance.RegisterExecutable("TinCase", this);
     }

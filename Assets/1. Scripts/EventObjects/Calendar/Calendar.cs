@@ -7,7 +7,7 @@ public class Calendar : EventObject, IResultExecutable
     [SerializeField]
     private GameObject calendarPanel;
 
-    private void Awake()
+    private void Start()
     {
         ResultManager.Instance.RegisterExecutable("Calendar", this);
     }
