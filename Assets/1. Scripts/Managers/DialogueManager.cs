@@ -180,6 +180,15 @@ public class DialogueManager : MonoBehaviour
             currentBackgroundImage.sprite = Resources.Load<Sprite>("Background Images/" + backgroundID);
             currentBackgroundImage.color = new Color(1, 1, 1, 1);
         }
+        
+        // 사운드 효과 재생
+        if (!string.IsNullOrWhiteSpace(dialogueLine.SoundID))
+        {
+            var soundID = "Sound_" + dialogueLine.SoundID;
+            // access the soundID from Constants.cs with the soundID from the csv file
+            var soundNum = (int)typeof(Constants).GetField(soundID).GetValue(null);
+            SoundPlayer.Instance.UISoundPlay(soundNum);
+        }
 
         // 화자 이미지 표시
         var imageID = dialogueLine.ImageID;
@@ -235,6 +244,9 @@ public class DialogueManager : MonoBehaviour
             else if (FollowManager.Instance && dialogueType == DialogueType.FOLLOW_EXTRA) FollowManager.Instance.EndScript(false);
         }
 
+        // 재생하고 있던 사운드 멈춤
+        // 추가 부탁드립니다
+        
         isDialogueActive = false;
         dialogueSet[dialogueType.ToInt()].SetActive(false);
         characterImage.gameObject.SetActive(false);

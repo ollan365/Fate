@@ -43,8 +43,6 @@ public class MemoManager : PageContentsManager
             RevealedMemoList.Add(new List<string>());
         }
 
-        var currentSceneIndex = GetCurrentSceneIndex();
-        
         LoadMemos();
     }
     
@@ -90,7 +88,7 @@ public class MemoManager : PageContentsManager
                     break;
             }
             
-            string[] memo = {memoID, "가려진 메모"};
+            string[] memo = { memoID, "가려진 메모" };
             SavedMemoList[sceneIndex].Add(memo);
         }
     }
@@ -113,34 +111,32 @@ public class MemoManager : PageContentsManager
                 return RevealedMemoList[1].Count >= 8;
             case SceneType.FOLLOW_2:
                 return RevealedMemoList[2].Count >= 8 && RevealedMemoList[3].Count >= 8;
-            default: return false;
+            default:
+                return false;
         }
     }
 
     // 메모 추가하기
     public void RevealMemo(string memoID)
     {
-        // Debug.Log(memoID);
-        
         var scriptID = memoScripts[memoID];
 
-        // 현재 씬에 따라 메모가 저장되는 곳이 달라짐
         int currentSceneIndex = GetCurrentSceneIndex();
         
-        // 이미 저장된 메모면 return
-        if (RevealedMemoList[currentSceneIndex].Contains(scriptID)) return;
-        
-        RevealedMemoList[currentSceneIndex].Add(scriptID);
-        
-        for (var i = 0; i < SavedMemoList[currentSceneIndex].Count; i++)
+        for (int i = 0; i <= currentSceneIndex; i++)
         {
-            if (SavedMemoList[currentSceneIndex][i][0] != memoID) continue;
-            string script = DialogueManager.Instance.scripts[scriptID].GetScript();
-            SavedMemoList[currentSceneIndex][i][1] = script;
-            break;
+            if (RevealedMemoList[i].Contains(scriptID)) continue;
+            
+            RevealedMemoList[i].Add(scriptID);
+
+            for (var j = 0; j < SavedMemoList[i].Count; j++)
+            {
+                if (SavedMemoList[i][j][0] != memoID) continue;
+                string script = DialogueManager.Instance.scripts[scriptID].GetScript();
+                SavedMemoList[i][j][1] = script;
+                break;
+            }
         }
-        
-        // Debug.Log($"Revealed {scriptID}");
     }
 
     private static int GetCurrentSceneIndex()
@@ -148,18 +144,25 @@ public class MemoManager : PageContentsManager
         var index = 0;
         switch (SceneManager.Instance.CurrentScene)
         {
-            case SceneType.ROOM_1: index = 0; break;
-            case SceneType.FOLLOW_1: index = 1; break;
-            case SceneType.ROOM_2: index = 2; break;
-            case SceneType.FOLLOW_2: index = 3; break;
+            case SceneType.ROOM_1:
+                index = 0;
+                break;
+            case SceneType.FOLLOW_1:
+                index = 1;
+                break;
+            case SceneType.ROOM_2:
+                index = 2;
+                break;
+            case SceneType.FOLLOW_2:
+                index = 3;
+                break;
         }
 
         return index;
     }
     
-    public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton=false)
+    public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false)
     {
-        // Debug.Log($"showMemoIcon: {showMemoIcon}, showMemoExitButton: {showMemoExitButton}");
         memoButton.SetActive(showMemoIcon);
         exitButton.SetActive(showMemoExitButton);
 
@@ -174,35 +177,63 @@ public class MemoManager : PageContentsManager
         SetMemoButtons(!isTrue, isTrue);
 
         if (!isTrue) return;
-        
-        var currentSceneIndex = GetCurrentSceneIndex();
-        memoPages.totalPageCount = SavedMemoList[currentSceneIndex].Count;
+
+        var allMemos = GetAggregatedMemos();
+
+        memoPages.totalPageCount = allMemos.Count;
         var currentPage = memoPages.currentPage;
         DisplayPagesStatic(currentPage);
+    }
 
-        if (currentSceneIndex is 0 or 2) RoomManager.Instance.SetButtons();  // 방탈출 씬인 경우 버튼 설정 필요
+    public void SetMemoCurrentPage()
+    {
+        var currentSceneIndex = GetCurrentSceneIndex();
+
+        // Calculate the starting page index for the current scene
+        int startingPageIndex = 1;
+        for (int i = 0; i < currentSceneIndex; i++) startingPageIndex += SavedMemoList[i].Count;
+
+        // currentPage는 짝수만 가능
+        if (startingPageIndex % 2 != 0) startingPageIndex -= 1;
+        
+        // Set the current page to the starting page of the current scene
+        memoPages.currentPage = startingPageIndex;
+    }
+
+
+    private List<string[]> GetAggregatedMemos()
+    {
+        var currentSceneIndex = GetCurrentSceneIndex();
+        var allMemos = new List<string[]>();
+
+        for (int i = 0; i <= currentSceneIndex; i++)
+        {
+            allMemos.AddRange(SavedMemoList[i]);
+        }
+
+        return allMemos;
     }
     
     public override void DisplayPage(PageType pageType, int pageNum)
     {
-        var currentSceneIndex = GetCurrentSceneIndex();
+        var allMemos = GetAggregatedMemos();
         
         switch (pageType)
         {
             case PageType.Left:
-                leftPage.text = pageNum == 0 ? "" : SavedMemoList[currentSceneIndex][pageNum - 1][1];
+                leftPage.text = pageNum == 0 ? "" : allMemos[pageNum - 1][1];
                 break;
             
             case PageType.Right:
-                rightPage.text = pageNum > SavedMemoList[currentSceneIndex].Count ? "" : SavedMemoList[currentSceneIndex][pageNum - 1][1];
+                rightPage.text = pageNum > allMemos.Count ? "" : allMemos[pageNum - 1][1];
                 break;
             
             case PageType.Back:
-                backPage.text = SavedMemoList[currentSceneIndex][pageNum - 1][1];
+                backPage.text = allMemos[pageNum - 1][1];
                 break;
             
             case PageType.Front:
-                frontPage.text = SavedMemoList[currentSceneIndex][pageNum - 1][1];
+                frontPage.text = allMemos[pageNum - 1][1];
                 break;
         }
     }
@@ -222,7 +253,7 @@ public class MemoManager : PageContentsManager
         
         flipLeftButton.SetActive(currentPage > 0);
         
-        int currentSceneIndex = GetCurrentSceneIndex();
-        flipRightButton.SetActive(currentPage < SavedMemoList[currentSceneIndex].Count - 1);
+        var allMemos = GetAggregatedMemos();
+        flipRightButton.SetActive(currentPage < allMemos.Count - 1);
     }
 }

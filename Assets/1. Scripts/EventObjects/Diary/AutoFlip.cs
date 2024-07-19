@@ -14,13 +14,29 @@ public class AutoFlip : MonoBehaviour {
     }
 
     public void FlipRightPage() {
+        Debug.Log("flip right page");
+        
         if (isFlipping || controlledBook.currentPage >= controlledBook.totalPageCount - 1) return;
         StartCoroutine(FlipPage(FlipMode.RightToLeft));
     }
 
     public void FlipLeftPage() {
+        Debug.Log("flip left page");
+        
         if (isFlipping || controlledBook.currentPage <= 0) return;
         StartCoroutine(FlipPage(FlipMode.LeftToRight));
+    }
+
+    public void FlipToPage(int pageNum)
+    {
+        Debug.Log($"flip to page {pageNum}");
+        
+        if (isFlipping || pageNum < 0 || pageNum >= controlledBook.totalPageCount) return;
+        while (controlledBook.currentPage != pageNum)
+        {
+            if (controlledBook.currentPage < pageNum) FlipRightPage();
+            else FlipLeftPage();
+        }
     }
 
     private IEnumerator FlipPage(FlipMode flipMode) {
