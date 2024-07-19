@@ -100,6 +100,7 @@ public class FollowAnim : MonoBehaviour
             {
                 case 0: ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
                 case -4: ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
+                case -39: SceneManager.Instance.LoadScene(SceneType.ENDING); break;
             }
         }
     }

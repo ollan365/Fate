@@ -26,7 +26,7 @@ public static class Constants
     // 사운드 종류
     // 1. 배경음
     public const int
-        BGM_ROOM = 0, BGM_FOLLOW = 1, BGM_MINIGAME = 2, BGM_FINISHGAME = 3, BGM_ROOM2 = 4;
+        BGM_OPENING = 0, BGM_ROOM1 = 1, BGM_FOLLOW1 = 2, BGM_MINIGAME = 3, BGM_FINISHGAME = 4, BGM_ROOM2 = 5, BGM_HIDDEN =6;
 
     // 2. 방탈출 오브젝트들
     public const int

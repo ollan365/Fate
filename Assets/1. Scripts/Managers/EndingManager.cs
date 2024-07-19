@@ -43,8 +43,8 @@ public class EndingManager : MonoBehaviour
             case SceneType.FOLLOW_1:
                 StartCoroutine(Ending_Follow1());
                 break;
-            case SceneType.ROOM_2:
-                StartCoroutine(Ending_Room2());
+            case SceneType.FOLLOW_2:
+                StartCoroutine(Ending_Follow2());
                 break;
         }
         blockingPanel.SetActive(true);
@@ -73,14 +73,16 @@ public class EndingManager : MonoBehaviour
         else
             DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
     }
-    private IEnumerator Ending_Room2()
+    private IEnumerator Ending_Follow2()
     {
         yield return new WaitForSeconds(2.5f);
-
-        if (MemoManager.Instance.UnlockNextScene()) // 메모의 개수가 충분할 때
-            SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
+        
+        if (MemoManager.Instance.UnlockNextScene() && MemoManager.Instance.UnlockNextScene(true))
+            DialogueManager.Instance.StartDialogue("HiddenEnding_00");
+        else if(MemoManager.Instance.UnlockNextScene() || MemoManager.Instance.UnlockNextScene(true))
+            DialogueManager.Instance.StartDialogue("TrueEnding_01");
         else
-            SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
+            DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
     }
     public void ChoiceEnding()
     {

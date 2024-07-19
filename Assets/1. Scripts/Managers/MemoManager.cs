@@ -101,8 +101,10 @@ public class MemoManager : PageContentsManager
     }
 
     // 현재 씬에 따라 메모의 개수를 파악 -> 현재 씬에 해당하는 메모의 개수에 따라 엔딩 선택지 해금 여부 결정
-    public bool UnlockNextScene()
+    public bool UnlockNextScene(bool room2 = false)
     {
+        if (room2) return RevealedMemoList[2].Count >= 8;
+
         switch (SceneManager.Instance.CurrentScene)
         {
             case SceneType.ROOM_1:
@@ -110,9 +112,8 @@ public class MemoManager : PageContentsManager
             case SceneType.FOLLOW_1:
                 return RevealedMemoList[1].Count >= 8;
             case SceneType.FOLLOW_2:
-                return RevealedMemoList[2].Count >= 8 && RevealedMemoList[3].Count >= 8;
-            default:
-                return false;
+                return RevealedMemoList[3].Count >= 8;
+            default: return false;
         }
     }
 
@@ -255,5 +256,28 @@ public class MemoManager : PageContentsManager
         
         var allMemos = GetAggregatedMemos();
         flipRightButton.SetActive(currentPage < allMemos.Count - 1);
+    }
+
+
+    // 엔딩 테스트를 위한 임시 함수들
+    public void TestEnding(bool unlock)
+    {
+        if (unlock) // 메모를 일정 개수 이상 모았을 때
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                RevealedMemoList[2].Add(i.ToString());
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                RevealedMemoList[GetCurrentSceneIndex()].Add(i.ToString());
+            }
+            SceneManager.Instance.LoadScene(SceneType.ENDING);
+        }
+        else
+        {
+            SceneManager.Instance.LoadScene(SceneType.ENDING);
+        }
     }
 }
