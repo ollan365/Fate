@@ -32,6 +32,14 @@ public class ResultManager : MonoBehaviour
         executableObjects = new Dictionary<string, IResultExecutable>();
     }
 
+    public void executableObjectsKeyCheck(string objectName)
+    {
+        if (executableObjects.ContainsKey(objectName))
+            Debug.Log(objectName + " key exists");
+        else
+            Debug.Log(objectName + " key does not exists");
+    }
+
     void Awake()
     {
         if (Instance == null)
@@ -206,12 +214,9 @@ public class ResultManager : MonoBehaviour
 
             case "Result_restYes": // 휴식에서 예 버튼
                 DialogueManager.Instance.EndDialogue();
-                // 눈깜빡
-                ScreenEffect.Instance.RestButtonEffect();
-                // 행동력 5감소
-                GameManager.Instance.DecrementVariable("ActionPoint", 5);
-                // 대사 출력 지연 시킴
-                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", 5f));
+                // 휴식취함(다음날로 넘어가는 만큼 행동력 감소, 날짜와 하트 업데이트)
+                // fade in, fade out 이후 휴식 대사 출력되고 우연 랜덤 대사 출력됨
+                StartCoroutine(GameManager.Instance.TakeRest());
                 break;
 
             case "Result_restNo": // 휴식에서 아니오 버튼
@@ -286,7 +291,17 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
                 break;
-
+            
+            case "Result_FadeOut":  // fade out
+                float fadeOutTime = 3f; 
+                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, fadeOutTime));
+                break;
+            
+            case "Result_FadeIn":  // fade out
+                float fadeInTime = 3f;
+                StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, fadeInTime));
+                break;
+            
             case "ResultTeddyBearScript": // 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_001");
                 break;
@@ -642,9 +657,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultTinCaseGetTicket": // 티켓을 획득
                 SoundPlayer.Instance.UISoundPlay(Sound_TincaseOpen); // 틴케이스 열리는 소리
-                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
-
-                Debug.Log("티켓을 획득");
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "ticket");
                 break;
 
             case "ResultTinCaseGetTicketScript": // 티켓을 획득 후 스크립트
@@ -680,8 +693,6 @@ public class ResultManager : MonoBehaviour
             case "ResultSewingBoxGetThreadAndNeedle":   // 실과 바늘을 획득
                 SoundPlayer.Instance.UISoundPlay(Sound_SewingBoxOpen); // 반짇고리 상자 열리는 소리
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "thread");  
-
-                Debug.Log("실과 바늘을 획득");
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedleScript":   // 실과 바늘을 획득 후 스크립트
@@ -696,7 +707,6 @@ public class ResultManager : MonoBehaviour
 
             case "ResultBrokenTeddyBear2NoThreadAndNeedleScript": // 실바늘 없을때 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape2_013");
-                Debug.Log("실바늘 없을때 곰인형에 대한 설명");
                 break;
 
             case "ResultBrokenTeddyBear2YesThreadAndNeedleScript": // 실바늘 있을때 곰인형에 대한 설명
@@ -752,6 +762,7 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape_011");
                 break;
 
+            // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
                 executableObjects["Box Unzoomed 2"].ExecuteAction();
                 break;
@@ -760,8 +771,9 @@ public class ResultManager : MonoBehaviour
                 executableObjects["ClosetUnder Unzoomed 2"].ExecuteAction();
                 break;
 
-            case "Result_showZoomedMedicine": // 약 확대 화면으로 전환
-                executableObjects["Medicine Unzoomed 1"].ExecuteAction();
+            case "Result_showZoomedMedicine2": // 약 확대 화면으로 전환
+                executableObjects["Medicine2 Unzoomed 1"].ExecuteAction();
+                executableObjects["Medicine2 Unzoomed 3"].ExecuteAction();
                 break;
 
             case "Result_showZoomedShoppingBags": // 쇼핑백 확대 화면으로 전환

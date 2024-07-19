@@ -549,7 +549,8 @@ public class GameManager : MonoBehaviour
         }
 
         // change Day text on screen
-        dayText.text = $"Day {actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay}";
+        // 회복제 먹으면 하루 최대 하트가 7개로 늘어나서 ActionPointsPerDay가 7로 바뀌기 때문에 밑의 수식의 5는 고정입니다
+        dayText.text = $"Day {5 - (actionPoint - 1) / actionPointsPerDay}";
 
         if (isEatenEnergySupplement)
         {
@@ -595,7 +596,11 @@ public class GameManager : MonoBehaviour
         }
 
         const float totalTime = 3f;
-        StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
+
+        // 휴식일 시 이미 앞에서 fade in/out effect가 나왔기에
+        // isTakingRest가 false인 자연히 actionPoint가 줄어들어서 진행될 경우에만 fade in/out effect 실행되게 함
+        if (!isTakingRest)
+            StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
 
         var random = new Random((uint)System.DateTime.Now.Ticks);  // choose a random dialogue ID
         string[] randomDialogueIDs = { "RoomEscapeS_001", "RoomEscapeS_003" };
@@ -638,6 +643,49 @@ public class GameManager : MonoBehaviour
         CreateHearts();
 
         presentHeartIndex += 2;
+    }
+
+    // 침대에서 휴식하면 행동력 강제로 다음날로 넘어감
+    // Day1에 하트 4개 남아있어도 Day2로 넘어가고 actionPointsPerDay 만큼 채워짐
+    private bool isTakingRest = false;
+    public IEnumerator TakeRest()
+    {
+        isTakingRest = true;
+
+        ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
+
+        // 휴식 대사 출력. 
+        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", 4f));
+
+        // 화면 어두워진 동안에 하트 개수 업데이트하기 위해 지연시킴
+        yield return new WaitForSeconds(1f);
+
+        // 하트 수 업데이트를 위해 현재 보이는 하트 다 지움
+        foreach (Transform child in heartParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        int actionPoint = (int)GetVariable("ActionPoint");
+        int heartCount = actionPoint % actionPointsPerDay;
+        if (heartCount == 0) heartCount = 5;
+
+        actionPoint -= heartCount;
+
+        SetVariable("ActionPoint", actionPoint);
+
+        presentHeartIndex = actionPointsPerDay;
+
+        if (actionPoint % actionPointsPerDay == 0)
+        {
+            bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
+            if (!isDialogueActive) RefillHeartsOrEndDay();
+            else SetVariable("RefillHeartsOrEndDay", true);
+        }
+
+        SaveManager.Instance.SaveGameData();
+
+        isTakingRest = false;
     }
 
     // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮김

@@ -22,7 +22,6 @@ public static class Constants
 
     public enum EndingType { NONE, BAD_A, BAD_B, TRUE, HIDDEN }
 
-
     public enum SoundType { BGM, LOOP, SOUND_EFFECT }
     // 사운드 종류
     // 1. 배경음
@@ -47,11 +46,12 @@ public static class Constants
     // 5. 그 외
     public const int
         Sound_Typing = -1, Sound_Click = 20, Sound_Correct = 21, Sound_Wrong = 22;
+
+    public const int
+        Sound_AccidentSound = 27, Sound_Run2_1 = 28;
         
 
     // 시계 부분
-
-
 
     // -------------- 미행 관련 변수들 -------------- //
     public enum FollowObjectName

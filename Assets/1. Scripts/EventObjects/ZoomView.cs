@@ -14,7 +14,7 @@ public class ZoomView : EventObject, IResultExecutable
     {
         base.OnMouseDown();
     }
-    
+
     public void ExecuteAction()
     {
         //Debug.Log($"{name} {sideNum}" + " 줌 켜기");
