@@ -140,6 +140,7 @@ public class FollowDayMiniGame : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(false);
 
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 미니 게임 캔버스를 켠다 + 브금을 바꾼다
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
         followUICanvas.SetActive(false);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
         yield return new WaitForSeconds(0.2f);
@@ -216,6 +217,7 @@ public class FollowDayMiniGame : MonoBehaviour
 
             MemoManager.Instance.SetMemoButtons(true);
 
+            SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
             StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
             yield return new WaitForSeconds(0.2f);
             miniGameCanvas.SetActive(false);

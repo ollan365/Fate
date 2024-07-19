@@ -4,7 +4,7 @@ public static class Constants
     public enum SceneType { START, ROOM_1, FOLLOW_1, ROOM_2, FOLLOW_2, ENDING }
 
     // 대화창의 종류
-    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, FOLLOW_TUTORIAL }
+    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, FOLLOW_TUTORIAL, CENTER }
     public static int ToInt(this DialogueType dialogueType)
     {
         // 다이얼로그 타입에 따라 다른 숫자 반환
@@ -16,6 +16,7 @@ public static class Constants
             case DialogueType.FOLLOW_THINKING: return 3;
             case DialogueType.FOLLOW_EXTRA: return 4;
             case DialogueType.FOLLOW_TUTORIAL: return 5;
+            case DialogueType.CENTER: return 6;
             default: return 0;
         }
     }
@@ -26,7 +27,8 @@ public static class Constants
     // 사운드 종류
     // 1. 배경음
     public const int
-        BGM_OPENING = 0, BGM_ROOM1 = 1, BGM_FOLLOW1 = 2, BGM_MINIGAME = 3, BGM_FINISHGAME = 4, BGM_ROOM2 = 5, BGM_HIDDEN =6;
+        BGM_STOP = -1, BGM_OPENING = 0, BGM_ROOM1 = 1, BGM_FOLLOW1 = 2, BGM_MINIGAME = 3, BGM_FINISHGAME = 4, BGM_ROOM2 = 5,
+        BGM_BAD = 6, BGM_TRUE = 7, BGM_HIDDEN = 8;
 
     // 2. 방탈출 오브젝트들
     public const int
