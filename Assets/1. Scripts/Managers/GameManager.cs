@@ -549,9 +549,7 @@ public class GameManager : MonoBehaviour
         }
 
         // change Day text on screen
-        int newDayNum = actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay;
-        if (dayNum < newDayNum) dayNum = newDayNum;
-        dayText.text = $"Day {dayNum}";
+        dayText.text = $"Day {actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay}";
 
         if (isEatenEnergySupplement)
         {
