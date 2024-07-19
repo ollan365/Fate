@@ -50,14 +50,14 @@ public class FollowFinishMiniGame : MonoBehaviour
 
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1.5f, true, 0.5f, -1));
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FOLLOW, false);
         yield return new WaitForSeconds(1.5f);
         followUICanvas.SetActive(false);
         followCanvas.SetActive(false);
         finishGameCanvas.SetActive(true);
         finishGameObjects.SetActive(true);
+        MemoManager.Instance.SetMemoButtons(false);
         yield return new WaitForSeconds(0.5f);
-        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FINISHGAME, true);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_FINISHGAME);
 
         // 튜토리얼 캔버스를 끌 때까지 기다린다
         while (tutorialCanvas.activeSelf) yield return new WaitForFixedUpdate();
@@ -86,9 +86,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
         isGameOver = true;
 
-        yield return new WaitForSeconds(0.5f);
-
-        foreach (Animator a in heartAnimator) a.gameObject.SetActive(false);
+        // foreach (Animator a in heartAnimator) a.gameObject.SetActive(false);
         ScreenEffect.Instance.coverPanel.color = Color.black;
 
         // 메모의 개수가 부족할 때
