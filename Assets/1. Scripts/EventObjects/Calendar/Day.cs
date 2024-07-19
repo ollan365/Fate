@@ -10,6 +10,20 @@ public class Day : MonoBehaviour
     private bool sameSpecialDate = false;
     private string date;
     
+    [Header("Special Dates")]
+    [SerializeField] private string specialDate1 = "1013";
+    [SerializeField] private string specialDate2 = "1102";
+    
+    [Header("Special Date Image Gameobjects")]
+    [SerializeField] private GameObject specialDateImage1;  // over
+    [SerializeField] private GameObject specialDateImage2;  // under
+    
+    [Header("Special Date Sprites")]
+    public Sprite birthDayCakeSprite;  // 필연 생일
+    public Sprite successSprite;  // 성공 (specialDate1)
+    public Sprite ruinedBirthDayCakeSprite;  // 우연 생일
+    public Sprite ruinedCircleSprite;  // 검은 동그라미 (specialDate2)
+
     void Start()
     {
         CheckSpecialDate();
@@ -17,32 +31,70 @@ public class Day : MonoBehaviour
 
     private void CheckSpecialDate()
     {
-        string day = GetComponentInChildren<TextMeshProUGUI>().text.PadLeft(2, '0');
-        int month = (int)GameManager.Instance.GetVariable("CalendarMonth");
-        string monthString = month.ToString().PadLeft(2, '0');
+        var day = GetComponentInChildren<TextMeshProUGUI>().text.PadLeft(2, '0');
+        var month = (int)GameManager.Instance.GetVariable("CalendarMonth");
+        var monthString = month.ToString().PadLeft(2, '0');
 
         date = monthString + day;
 
-        string fateBirthday = (string)GameManager.Instance.GetVariable("FateBirthday");
-        string accidyBirthday = (string)GameManager.Instance.GetVariable("AccidyBirthday");
+        var fateBirthday = (string)GameManager.Instance.GetVariable("FateBirthday");
+        var accidyBirthday = (string)GameManager.Instance.GetVariable("AccidyBirthday");
         
         specialDates.Add("FateBirthday", fateBirthday);
         specialDates.Add("AccidyBirthday", accidyBirthday);
-        specialDates.Add("1031", "1031");
-        specialDates.Add("1001", "1001");
+        specialDates.Add(specialDate2, specialDate2);
+        specialDates.Add(specialDate1, specialDate1);
 
         if (specialDates["FateBirthday"] == specialDates["AccidyBirthday"] ||
-            specialDates["FateBirthday"] == "1031" ||
-            specialDates["FateBirthday"] == "1001")
+            specialDates["FateBirthday"] == specialDate2 ||
+            specialDates["FateBirthday"] == specialDate2)
         {
             sameSpecialDate = true;
         }
 
-        if (specialDates.ContainsValue(date))
+        var specialDateImage1Image = specialDateImage1.GetComponent<Image>();
+        var specialDateImage2Image = specialDateImage2.GetComponent<Image>();
+        
+        if (date == specialDates["FateBirthday"])
         {
-            GetComponent<Image>().color = Color.green;
+            specialDateImage1Image.sprite = birthDayCakeSprite;
+            specialDateImage1Image.color = new Color(1,1,1,1);
+            // Debug.Log($"{date}: fate birthday");
+        }
+        else
+        {
+            specialDateImage1Image.sprite = null;
+            specialDateImage1Image.color = new Color(0, 0, 0, 0);
         }
 
+        specialDateImage2Image.color = new Color(1, 1, 1, 1);
+        if (date == specialDate1)
+        {
+            specialDateImage2Image.sprite = successSprite;
+            // Debug.Log($"{date}: specialDate1");
+        }
+        else if (date == specialDate2)
+        {
+            specialDateImage2Image.sprite = ruinedCircleSprite;
+            // Debug.Log($"{date}: specialDate2");
+        }
+        else if (date == specialDates["AccidyBirthday"])
+        {
+            specialDateImage2Image.sprite = ruinedBirthDayCakeSprite;
+            // Debug.Log($"{date}: Accidy Birthday");
+        }
+        else
+        {
+            specialDateImage2Image.sprite = null;
+            specialDateImage2Image.color = new Color(0, 0, 0, 0);
+        }
+
+        var heightScale = 1f;
+        if (date.StartsWith("03") || date.StartsWith("06")) heightScale = 0.8f;
+        specialDateImage1.GetComponent<RectTransform>().localScale = new Vector3(1, heightScale, 1);
+        specialDateImage2.GetComponent<RectTransform>().localScale = new Vector3(1, heightScale, 1);
+
+        // Debug.Log($"special dates: {specialDates["FateBirthday"]}, {specialDates["AccidyBirthday"]}, {specialDate1}, {specialDate2}");
     }
 
     public void OnMouseDown()
@@ -57,13 +109,13 @@ public class Day : MonoBehaviour
         {
             eventID = specialDates["FateBirthday"] == specialDates["AccidyBirthday"] ? "EventCalendarSameBirthdays" : "EventCalendarBirthdayAccidy";
         }
-        if (date == "1031")
+        if (date == specialDate2)
         {
-            eventID = specialDates["FateBirthday"] == "1031" ? "EventCalendarSameAsSpecialDateA" : "EventCalendarSpecialDateA"; 
+            eventID = specialDates["FateBirthday"] == specialDate2 ? "EventCalendarSameAsSpecialDateA" : "EventCalendarSpecialDateA"; 
         }
-        if (date == "1001")
+        if (date == specialDate1)
         {
-            eventID = specialDates["FateBirthday"] == "1001" ? "EventCalendarSameAsSpecialDateB" : "EventCalendarSpecialDateB"; 
+            eventID = specialDates["FateBirthday"] == specialDate1 ? "EventCalendarSameAsSpecialDateB" : "EventCalendarSpecialDateB"; 
         }
 
         if (string.IsNullOrEmpty(eventID)) return;
