@@ -303,7 +303,7 @@ public class MemoManager : PageContentsManager
             unseenMemoPages.Remove(pageNum);
             UpdateNotification();
             
-            Debug.Log($"Marked page {pageNum} as read");
+            // Debug.Log($"Marked page {pageNum} as read");
         }
     }
 
