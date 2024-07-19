@@ -23,7 +23,7 @@ public class ScreenEffect : MonoBehaviour
     // 휴식 시스템에서 눈깜빡
     public void RestButtonEffect()
     {
-        StartCoroutine(OnFade(null, 0, 1, 2, true, 0.5f, +0.45f));
+        StartCoroutine(OnFade(null, 0, 1, 2, true, 0.5f, +0.5f));
     }
 
     public IEnumerator DayPass(float totalTime)
