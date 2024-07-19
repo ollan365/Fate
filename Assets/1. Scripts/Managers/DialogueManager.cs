@@ -129,18 +129,6 @@ public class DialogueManager : MonoBehaviour
         // 화자에 따라 대화창 변경
         ChangeDialogueCanvas(dialogueLine.SpeakerID);
 
-        // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
-        foreach (GameObject canvas in dialogueSet) canvas.SetActive(false);
-        dialogueSet[dialogueType.ToInt()].SetActive(true);
-
-        // 미행의 행인은 별도의 SpeakerID를 가짐
-        if (dialogueType != DialogueType.FOLLOW_EXTRA)
-        {
-            speakerText.text = dialogueLine.SpeakerID == "DialogueC_003" 
-                ? GameManager.Instance.GetVariable("FateName").ToString() 
-                : scripts[dialogueLine.SpeakerID].GetScript();
-        }
-
         // 타자 효과 적용
         isTyping = true;
         var sentence = scripts[dialogueLine.ScriptID].GetScript();
@@ -166,9 +154,25 @@ public class DialogueManager : MonoBehaviour
                         var fateName = (string)GameManager.Instance.GetVariable("FateName");
                         sentence = sentence.Replace("{PlayerName}", fateName);
                         break;
+                    case "CENTER":
+                        dialogueType = DialogueType.CENTER;
+                        break;
                 }
             }
         }
+
+        // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
+        foreach (GameObject canvas in dialogueSet) if (canvas != null) canvas.SetActive(false);
+        dialogueSet[dialogueType.ToInt()].SetActive(true);
+
+        // 미행의 행인은 별도의 SpeakerID를 가짐
+        if (dialogueType != DialogueType.FOLLOW_EXTRA)
+        {
+            speakerText.text = dialogueLine.SpeakerID == "DialogueC_003" 
+                ? GameManager.Instance.GetVariable("FateName").ToString() 
+                : scripts[dialogueLine.SpeakerID].GetScript();
+        }
+
         StartCoroutine(TypeSentence(sentence));
 
         // 배경화면 표시

@@ -587,9 +587,6 @@ public class GameManager : MonoBehaviour
     
     public void RefillHeartsOrEndDay()
     {
-        // turn off all ImageAndLockPanel objects and zoom out
-        RoomManager.Instance.ExitToRoot();
-
         // if all action points are used, load "Follow 1" scene
         int actionPoint = (int)GetVariable("ActionPoint");
         if (actionPoint == 0)
@@ -597,80 +594,22 @@ public class GameManager : MonoBehaviour
             SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
             return;
         }
-        // 귀가 스크립트 출력
-        var randomHomeComing = new Random((uint)System.DateTime.Now.Ticks);  // choose a random dialogue ID
 
-        int nowDayNum = 5 - ((int)GetVariable("ActionPoint") - 1) / actionPointsPerDay;
-        var HomeComingDialogueID = "";
-        switch (nowDayNum)
-        {
-            case 2:
-                //랜덤대사 1일차 귀가
-                string[] random1HomeComingDialogueIDs = { "RoomEscapeS_001", "RoomEscapeS_003" };
-                HomeComingDialogueID = random1HomeComingDialogueIDs[randomHomeComing.NextInt(0, 2)];
-                break;
-
-            case 3:
-                //특정대사 2일차 귀가
-                HomeComingDialogueID = "RoomEscapeS_005";
-                break;
-
-            case 4:
-                //특정대사 3일차 귀가
-                HomeComingDialogueID = "RoomEscapeS_008";
-                break;
-
-            case 5:
-                //랜덤대사 4일차 귀가
-                string[] random2HomeComingDialogueIDs = { "RoomEscapeS_012", "RoomEscapeS_013" };
-                HomeComingDialogueID = random2HomeComingDialogueIDs[randomHomeComing.NextInt(0, 2)];
-                break;
-
-            default:
-                break;
-        }
-        DialogueManager.Instance.StartDialogue(HomeComingDialogueID);
-        // 귀가 스크립트 이후 끝나면 Next의 EventDayPassEffect로 fade in/out 이펙트 나옴
-
+        const float totalTime = 3f;
 
         // 휴식일 시 이미 앞에서 fade in/out effect가 나왔기에
         // isTakingRest가 false인 자연히 actionPoint가 줄어들어서 진행될 경우에만 fade in/out effect 실행되게 함
-    } 
+        if (!isTakingRest)
+            StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
 
-    public void nextMorningDay()
-    {
-        int nowDayNum = 5 - ((int)GetVariable("ActionPoint") - 1) / actionPointsPerDay;
+        var random = new Random((uint)System.DateTime.Now.Ticks);  // choose a random dialogue ID
+        string[] randomDialogueIDs = { "RoomEscapeS_001", "RoomEscapeS_003" };
+        var randomDialogueID = randomDialogueIDs[random.NextInt(0, 2)];
+        StartCoroutine(DialogueManager.Instance.StartDialogue(randomDialogueID, totalTime));
 
-        // 다음날이 되고(fade in/out effect 실행) 아침 스크립트 출력
-        const float totalTime = 3f;
-
-        var MorningDialogueID = "";
-
-        switch (nowDayNum)
-        {
-            case 2:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_004";
-                break;
-
-            case 3: case 4:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_015";
-                break;
-
-            case 5:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_014";
-                break;
-        }
-        StartCoroutine(DialogueManager.Instance.StartDialogue(MorningDialogueID, totalTime));
-
-        // 여기서 하트 생성 및 다음날로 날짜 업데이트
-        StartCoroutine(RefillHearts(totalTime / 2));
+        StartCoroutine(RefillHearts(totalTime/2));
         SetVariable("RefillHeartsOrEndDay", false);
-    }
-
-
+    } 
     
     private static IEnumerator DeactivateHeart(Object heart)
     {
@@ -708,15 +647,19 @@ public class GameManager : MonoBehaviour
 
     // 침대에서 휴식하면 행동력 강제로 다음날로 넘어감
     // Day1에 하트 4개 남아있어도 Day2로 넘어가고 actionPointsPerDay 만큼 채워짐
+    private bool isTakingRest = false;
     public IEnumerator TakeRest()
     {
-        float time = 3f;
-        StartCoroutine(ScreenEffect.Instance.DayPass(time));   // fade in/out effect
+        isTakingRest = true;
+
+        ScreenEffect.Instance.RestButtonEffect();  // fade in/out effect
 
         // 휴식 대사 출력. 
-        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", time));
+        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", 4f));
 
-        yield return new WaitForSeconds(time / 2);
+        // 화면 어두워진 동안에 하트 개수 업데이트하기 위해 지연시킴
+        yield return new WaitForSeconds(1f);
+
         // 하트 수 업데이트를 위해 현재 보이는 하트 다 지움
         foreach (Transform child in heartParent.transform)
         {
@@ -735,13 +678,14 @@ public class GameManager : MonoBehaviour
 
         if (actionPoint % actionPointsPerDay == 0)
         {
-            yield return new WaitForSeconds(time*2);
             bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
             if (!isDialogueActive) RefillHeartsOrEndDay();
             else SetVariable("RefillHeartsOrEndDay", true);
         }
 
         SaveManager.Instance.SaveGameData();
+
+        isTakingRest = false;
     }
 
     // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮김

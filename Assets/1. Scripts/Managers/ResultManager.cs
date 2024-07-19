@@ -226,7 +226,7 @@ public class ResultManager : MonoBehaviour
             case "Result_DayPassEffect":  // fade in/out
                 StartCoroutine(ScreenEffect.Instance.DayPass(3f));  // fade in/out effect
                 // 아침 대사 출력함
-                GameManager.Instance.nextMorningDay();
+                // GameManager.Instance.nextMorningDay();
                 break;
 
             // 침대 시스템

@@ -49,6 +49,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         accidyEnd.GetComponent<Image>().SetNativeSize();
 
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1.5f, true, 0.5f, -1));
         yield return new WaitForSeconds(1.5f);
         followUICanvas.SetActive(false);

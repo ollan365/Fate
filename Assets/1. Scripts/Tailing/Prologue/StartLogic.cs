@@ -142,7 +142,7 @@ public class StartLogic : MonoBehaviour
     private IEnumerator DarkBackground()
     {
         yield return new WaitForSeconds(1);
-        SoundPlayer.Instance.ChangeBGM(-1);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
         blockingPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
     }
 
