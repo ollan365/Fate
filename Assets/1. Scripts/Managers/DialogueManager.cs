@@ -18,7 +18,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI speakerText;
     public TextMeshProUGUI[] scriptText;
     public Image[] backgroundImages;
-    public Image characterImage;
+    public Image[] characterImage;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
@@ -129,18 +129,6 @@ public class DialogueManager : MonoBehaviour
         // 화자에 따라 대화창 변경
         ChangeDialogueCanvas(dialogueLine.SpeakerID);
 
-        // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
-        foreach (GameObject canvas in dialogueSet) canvas.SetActive(false);
-        dialogueSet[dialogueType.ToInt()].SetActive(true);
-
-        // 미행의 행인은 별도의 SpeakerID를 가짐
-        if (dialogueType != DialogueType.FOLLOW_EXTRA)
-        {
-            speakerText.text = dialogueLine.SpeakerID == "DialogueC_003" 
-                ? GameManager.Instance.GetVariable("FateName").ToString() 
-                : scripts[dialogueLine.SpeakerID].GetScript();
-        }
-
         // 타자 효과 적용
         isTyping = true;
         var sentence = scripts[dialogueLine.ScriptID].GetScript();
@@ -166,9 +154,25 @@ public class DialogueManager : MonoBehaviour
                         var fateName = (string)GameManager.Instance.GetVariable("FateName");
                         sentence = sentence.Replace("{PlayerName}", fateName);
                         break;
+                    case "CENTER":
+                        dialogueType = DialogueType.CENTER;
+                        break;
                 }
             }
         }
+
+        // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
+        foreach (GameObject canvas in dialogueSet) if (canvas != null) canvas.SetActive(false);
+        dialogueSet[dialogueType.ToInt()].SetActive(true);
+
+        // 미행의 행인은 별도의 SpeakerID를 가짐
+        if (dialogueType != DialogueType.FOLLOW_EXTRA)
+        {
+            speakerText.text = dialogueLine.SpeakerID == "DialogueC_003" 
+                ? GameManager.Instance.GetVariable("FateName").ToString() 
+                : scripts[dialogueLine.SpeakerID].GetScript();
+        }
+
         StartCoroutine(TypeSentence(sentence));
 
         // 배경화면 표시
@@ -192,21 +196,28 @@ public class DialogueManager : MonoBehaviour
 
         // 화자 이미지 표시
         var imageID = dialogueLine.ImageID;
-        if (string.IsNullOrWhiteSpace(imageID)) characterImage.color = new Color(1, 1, 1, 0);
+        if (string.IsNullOrWhiteSpace(imageID)) foreach(Image characterImage in characterImage) characterImage.color = new Color(1, 1, 1, 0);
         else
         {
             var accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
             var characterSprite = Resources.Load<Sprite>(imagePaths[imageID].GetPath(accidyGender));
             var yOffset = (accidyGender == 0) ? -195 : -150;
 
-            characterImage.color = new Color(1, 1, 1, 1);
-            characterImage.sprite = characterSprite;
-            characterImage.SetNativeSize();
-            characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
-            characterImage.gameObject.SetActive(true);
+            foreach (Image characterImage in characterImage)
+            {
+                characterImage.color = new Color(1, 1, 1, 1);
+                characterImage.sprite = characterSprite;
+                characterImage.SetNativeSize();
+                characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
+                characterImage.gameObject.SetActive(true);
+            }
+
+            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterImage[1].gameObject.SetActive(false);
+            else characterImage[1].color = new Color(0, 0, 0, 0.8f);
         }
         
     }
+    
     private void ChangeDialogueCanvas(string speaker)
     {
         // 방 대화창
@@ -249,7 +260,8 @@ public class DialogueManager : MonoBehaviour
         
         isDialogueActive = false;
         dialogueSet[dialogueType.ToInt()].SetActive(false);
-        characterImage.gameObject.SetActive(false);
+        foreach (Image characterImage in characterImage)
+            characterImage.gameObject.SetActive(false);
         if (dialogueQueue.Count > 0)  // 큐에 다이얼로그가 들어있으면 다시 대화 시작
         {
             string queuedDialogueID = dialogueQueue.Dequeue();
@@ -449,6 +461,7 @@ public class DialogueManager : MonoBehaviour
                         choiceButton.onClick.AddListener(() => EndingManager.Instance.ChoiceEnding());
                         break;
                     case "LOCK":
+                        choiceText.text = "<color=#101010>" + scripts[choiceLine.ScriptID].GetScript() + "</color>";
                         choiceButton.onClick.RemoveAllListeners();
                         break;
                 }
