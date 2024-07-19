@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PageFlip))]
@@ -9,19 +11,21 @@ public class AutoFlip : MonoBehaviour {
     public int animationFramesCount = 80; // Number of frames for the flip animation
     bool isFlipping = false; // Flag to control flip status
 
-    void Start () {
+    private int currentPage;
+
+    private void Start () {
         if (!controlledBook) controlledBook = GetComponent<PageFlip>();
     }
 
     public void FlipRightPage() {
-        Debug.Log("flip right page");
+        // Debug.Log("flip right page");
         
         if (isFlipping || controlledBook.currentPage >= controlledBook.totalPageCount - 1) return;
         StartCoroutine(FlipPage(FlipMode.RightToLeft));
     }
 
     public void FlipLeftPage() {
-        Debug.Log("flip left page");
+        // Debug.Log("flip left page");
         
         if (isFlipping || controlledBook.currentPage <= 0) return;
         StartCoroutine(FlipPage(FlipMode.LeftToRight));
@@ -29,13 +33,33 @@ public class AutoFlip : MonoBehaviour {
 
     public void FlipToPage(int pageNum)
     {
-        Debug.Log($"flip to page {pageNum}");
+        if (pageNum % 2 != 0)
+        {
+            Debug.LogWarning("pageNum should be even!.");
+            return;
+        }
+        
+        // Debug.Log($"flip to page {pageNum}");
         
         if (isFlipping || pageNum < 0 || pageNum >= controlledBook.totalPageCount) return;
-        while (controlledBook.currentPage != pageNum)
+        StartCoroutine(FlipToPageCoroutine(pageNum));
+    }
+
+    private IEnumerator FlipToPageCoroutine(int pageNum)
+    {
+        currentPage = controlledBook.currentPage;
+        while (currentPage != pageNum)
         {
-            if (controlledBook.currentPage < pageNum) FlipRightPage();
-            else FlipLeftPage();
+            // Debug.Log($"current page: {currentPage}, target page: {pageNum}");
+            
+            if (currentPage < pageNum)
+            {
+                yield return StartCoroutine(FlipPage(FlipMode.RightToLeft));
+            }
+            else if (currentPage > pageNum)
+            {
+                yield return StartCoroutine(FlipPage(FlipMode.LeftToRight));
+            }
         }
     }
 
@@ -66,5 +90,8 @@ public class AutoFlip : MonoBehaviour {
         }
         controlledBook.ReleasePage();
         isFlipping = false;
+        
+        if (flipMode == FlipMode.RightToLeft) currentPage += 2;
+        else currentPage -= 2;
     }
 }

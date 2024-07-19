@@ -50,7 +50,7 @@ public static class Constants
         Sound_Typing = -1, Sound_Click = 20, Sound_Correct = 21, Sound_Wrong = 22;
 
     public const int
-        Sound_AccidentSound = 27, Sound_Run2_1 = 28;
+        Sound_AccidentSound = 27, Sound_Run2_1 = 28, Sound_9_1_LockerKeyMovement = 29;
         
 
     // 시계 부분
