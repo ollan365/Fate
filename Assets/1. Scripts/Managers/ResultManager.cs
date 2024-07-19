@@ -292,16 +292,6 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
                 break;
             
-            case "Result_FadeOut":  // fade out
-                float fadeOutTime = 3f; 
-                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, fadeOutTime));
-                break;
-            
-            case "Result_FadeIn":  // fade out
-                float fadeInTime = 3f;
-                StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, fadeInTime));
-                break;
-            
             case "ResultTeddyBearScript": // 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_001");
                 break;
