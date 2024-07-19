@@ -43,16 +43,17 @@ public class SceneManager : MonoBehaviour
         {
             case SceneType.START:
                 sceneIndex = 0;
+                bgmIndex = BGM_OPENING;
                 sceneType = SceneType.START;
                 break;
             case SceneType.ROOM_1:
                 sceneIndex = 1;
-                bgmIndex = BGM_ROOM;
+                bgmIndex = BGM_ROOM1;
                 sceneType = SceneType.ROOM_1;
                 break;
             case SceneType.FOLLOW_1:
                 sceneIndex = 2;
-                bgmIndex = BGM_FOLLOW;
+                bgmIndex = BGM_FOLLOW1;
                 sceneType = SceneType.FOLLOW_1;
                 break;
             case SceneType.ROOM_2:
@@ -62,11 +63,12 @@ public class SceneManager : MonoBehaviour
                 break;
             case SceneType.FOLLOW_2:
                 sceneIndex = 4;
-                bgmIndex = BGM_FOLLOW;
+                bgmIndex = BGM_FOLLOW1;
                 sceneType = SceneType.FOLLOW_2;
                 break;
             case SceneType.ENDING:
                 sceneIndex = 5;
+                bgmIndex = BGM_HIDDEN;
                 break;
         }
 
@@ -97,9 +99,9 @@ public class SceneManager : MonoBehaviour
         if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING)
         {
             MemoManager.Instance.SetMemoButtons(true);
-            SoundPlayer.Instance.ChangeBGM(bgmIndex, true);
         }
 
+        SoundPlayer.Instance.ChangeBGM(bgmIndex);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
 }
