@@ -95,7 +95,7 @@ public class SceneManager : MonoBehaviour
         }
 
         // MemoManager.Instance.ChangeMemoButton();
-        MemoManager.Instance.SetMemoCurrentPage();
+        MemoManager.Instance.SetMemoCurrentPageAndFlags();
 
         if (sceneType == SceneType.START)
         {

@@ -25,6 +25,8 @@ public class FollowTutorial : MonoBehaviour
         FollowManager.Instance.canClick = false;
         frontCanvas.SetActive(false);
         moveButton.SetActive(false);
+        
+        MemoManager.Instance.SetMemoButtons(false);
 
          // 튜토리얼 캔버스를 할당
          followTutorialCanvas = DialogueManager.Instance.dialogueSet[Constants.DialogueType.FOLLOW_TUTORIAL.ToInt()].transform.parent.gameObject;
@@ -138,5 +140,7 @@ public class FollowTutorial : MonoBehaviour
         FollowManager.Instance.canClick = true;
         frontCanvas.SetActive(true);
         moveButton.SetActive(true);
+        
+        MemoManager.Instance.SetMemoButtons(true);
     }
 }

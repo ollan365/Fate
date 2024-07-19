@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static Constants;
 
 public class MemoManager : PageContentsManager
@@ -9,10 +11,14 @@ public class MemoManager : PageContentsManager
     [SerializeField] private PageFlip memoPages;
     [SerializeField] private GameObject memoButton;
     [SerializeField] private GameObject exitButton;
-    
+    [SerializeField] private List<Button> flags;
+    [SerializeField] private GameObject notificationImage;
+    [SerializeField] private GameObject leftButtonNotificationImage;
+    [SerializeField] private GameObject rightButtonNotificationImage;
+
     public static MemoManager Instance { get; private set; }
     public bool isMemoOpen = false;
-    public bool isFollow;  // 현재 미행 씬인지 방탈출 씬인지
+    public bool isFollow = false;
 
     // 모든 메모
     private readonly Dictionary<string, string> memoScripts = new Dictionary<string, string>();  // memoScripts[memoID] = scriptID
@@ -20,8 +26,8 @@ public class MemoManager : PageContentsManager
     // 저장된 메모
     // create a list of lists to store the memos
     public List<List<string[]>> SavedMemoList { get; set; } = new List<List<string[]>>(); // SavedMemoList[sceneIndex][memoIndex] = [memoID, memoContent]
-
     public List<List<string>> RevealedMemoList { get; set; } = new List<List<string>>();  // RevealedMemoList[sceneIndex][memoIndex] = memoID
+    private List<int> unseenMemoPages = new List<int>(); // List to track page numbers of unseen memos
 
     private void Awake()
     {
@@ -44,6 +50,7 @@ public class MemoManager : PageContentsManager
         }
 
         LoadMemos();
+        UpdateNotification();
     }
     
     // memos.csv 파일 파싱
@@ -135,9 +142,19 @@ public class MemoManager : PageContentsManager
                 if (SavedMemoList[i][j][0] != memoID) continue;
                 string script = DialogueManager.Instance.scripts[scriptID].GetScript();
                 SavedMemoList[i][j][1] = script;
+                
+                // Calculate the page number and add it to the unseen memo pages
+                int pageNum = CalculateFirstPageNumber(i) + j;
+                if (!unseenMemoPages.Contains(pageNum))
+                {
+                    unseenMemoPages.Add(pageNum);
+                    // Debug.Log($"Added page {pageNum} to unseen memo pages");
+                }
                 break;
             }
         }
+        
+        UpdateNotification();
     }
 
     private static int GetCurrentSceneIndex()
@@ -186,31 +203,47 @@ public class MemoManager : PageContentsManager
         DisplayPagesStatic(currentPage);
     }
 
-    public void SetMemoCurrentPage()
+    public void SetMemoCurrentPageAndFlags()
+    {
+        SetMemoCurrentPage();
+        SetFlags();
+    }
+    
+    private void SetMemoCurrentPage()
     {
         var currentSceneIndex = GetCurrentSceneIndex();
 
         // Calculate the starting page index for the current scene
-        int startingPageIndex = 1;
-        for (int i = 0; i < currentSceneIndex; i++) startingPageIndex += SavedMemoList[i].Count;
-
-        // currentPage는 짝수만 가능
-        if (startingPageIndex % 2 != 0) startingPageIndex -= 1;
+        int startingPageIndex = CalculateFirstPageNumber(currentSceneIndex);
+        if (startingPageIndex % 2 != 0) startingPageIndex -= 1; // Ensure the page number is even
         
-        // Set the current page to the starting page of the current scene
-        memoPages.currentPage = startingPageIndex;
+        memoPages.currentPage = startingPageIndex;  // Set the current page to the starting page of the current scene
     }
 
+    private void SetFlags()
+    {
+        var currentSceneIndex = GetCurrentSceneIndex();
+
+        for (var i = 0; i <= currentSceneIndex; i++) flags[i].gameObject.SetActive(true);
+        for (var i = currentSceneIndex + 1; i < flags.Count; i++) flags[i].gameObject.SetActive(false);
+    }
+    
+    private int CalculateFirstPageNumber(int sceneIndex)
+    {
+        int startingPageIndex = 1; // Start from page 1
+        for (int i = 0; i < sceneIndex; i++) startingPageIndex += SavedMemoList[i].Count;
+
+        // if (startingPageIndex % 2 != 0) startingPageIndex -= 1; // Ensure the page number is even
+
+        return startingPageIndex;
+    }
 
     private List<string[]> GetAggregatedMemos()
     {
         var currentSceneIndex = GetCurrentSceneIndex();
         var allMemos = new List<string[]>();
 
-        for (int i = 0; i <= currentSceneIndex; i++)
-        {
-            allMemos.AddRange(SavedMemoList[i]);
-        }
+        for (int i = 0; i <= currentSceneIndex; i++) allMemos.AddRange(SavedMemoList[i]);
 
         return allMemos;
     }
@@ -241,6 +274,8 @@ public class MemoManager : PageContentsManager
     
     public override void DisplayPagesDynamic(int currentPage)
     {
+        MarkPageAsRead(currentPage);
+        MarkPageAsRead(currentPage + 1);
         DisplayPage(PageType.Left, currentPage);
         DisplayPage(PageType.Right, currentPage + 3);
         DisplayPage(PageType.Back, currentPage + 1);
@@ -249,6 +284,8 @@ public class MemoManager : PageContentsManager
     
     public override void DisplayPagesStatic(int currentPage)
     {
+        MarkPageAsRead(currentPage);
+        MarkPageAsRead(currentPage + 1);
         DisplayPage(PageType.Left, currentPage);
         DisplayPage(PageType.Right, currentPage + 1);
         
@@ -256,8 +293,39 @@ public class MemoManager : PageContentsManager
         
         var allMemos = GetAggregatedMemos();
         flipRightButton.SetActive(currentPage < allMemos.Count - 1);
+        UpdateNotification();
     }
 
+    private void MarkPageAsRead(int pageNum)
+    {
+        if (unseenMemoPages.Contains(pageNum))
+        {
+            unseenMemoPages.Remove(pageNum);
+            UpdateNotification();
+            
+            Debug.Log($"Marked page {pageNum} as read");
+        }
+    }
+
+    private void UpdateNotification()
+    {
+        notificationImage.SetActive(unseenMemoPages.Count > 0);
+
+        int currentPage = memoPages.currentPage;
+
+        foreach (var pageNum in unseenMemoPages)
+        {
+            // Debug.Log($"Unseen Memo Page: {pageNum}");
+        }
+        
+        bool hasUnreadLeft = unseenMemoPages.Exists(pageNum => pageNum < currentPage);
+        bool hasUnreadRight = unseenMemoPages.Exists(pageNum => pageNum > currentPage + 1);
+
+        // Debug.Log($"Current Page: {currentPage}, Has Unread Left: {hasUnreadLeft}, Has Unread Right: {hasUnreadRight}");
+        
+        leftButtonNotificationImage.SetActive(hasUnreadLeft);
+        rightButtonNotificationImage.SetActive(hasUnreadRight);
+    }
 
     // 엔딩 테스트를 위한 임시 함수들
     public void TestEnding(bool unlock)
