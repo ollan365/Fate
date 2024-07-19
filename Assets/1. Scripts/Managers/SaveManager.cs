@@ -35,7 +35,8 @@ public class SaveManager : MonoBehaviour
     }
     public void SaveInitGameData()
     {
-        initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, GameManager.Instance.eventObjectsStatusDict, MemoManager.Instance.SavedMemoList, MemoManager.Instance.RevealedMemoList);
+        if (initData == null)
+            initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, GameManager.Instance.eventObjectsStatusDict, MemoManager.Instance.SavedMemoList, MemoManager.Instance.RevealedMemoList);
 
         if (EndingData == null) return;
         GameManager.Instance.SetVariable("EndingCollect", EndingData.allEndingCollectCount);
@@ -117,6 +118,7 @@ public class SaveManager : MonoBehaviour
         if (File.Exists(filePath)) File.Delete(filePath);
 
         EndingData.Init();
+        SaveEndingData(EndingType.NONE);
     }
 }
 
@@ -275,13 +277,5 @@ public class EndingData
         badEndingColloectCount = 0;
         endingCollectCount = new int[4] { 0, 0, 0, 0 };
         lastEnding = EndingType.NONE;
-
-        GameManager.Instance.SetVariable("EndingCollect", allEndingCollectCount);
-        GameManager.Instance.SetVariable("LastEnding", lastEnding.ToString());
-        GameManager.Instance.SetVariable("BadACollect", endingCollectCount[0]);
-        GameManager.Instance.SetVariable("BadBCollect", endingCollectCount[1]);
-        GameManager.Instance.SetVariable("TrueCollect", endingCollectCount[2]);
-        GameManager.Instance.SetVariable("HiddenCollect", endingCollectCount[3]);
-        GameManager.Instance.SetVariable("BadEndingCollect", badEndingColloectCount);
     }
 }
