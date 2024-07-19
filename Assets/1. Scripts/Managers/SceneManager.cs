@@ -26,7 +26,7 @@ public class SceneManager : MonoBehaviour
     {
         StartCoroutine(ChangeScene(loadSceneType));
     }
-    
+
     private IEnumerator ChangeScene(SceneType loadSceneType)
     {
         // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
@@ -96,11 +96,18 @@ public class SceneManager : MonoBehaviour
 
         // MemoManager.Instance.ChangeMemoButton();
 
-        if (sceneType != SceneType.START && loadSceneType != SceneType.ENDING)
+        if (sceneType == SceneType.START)
         {
-            MemoManager.Instance.SetMemoButtons(true);
+            SoundPlayer.Instance.ChangeBGM(bgmIndex);
+            yield break;
+        }
+        if (loadSceneType == SceneType.ENDING)
+        {
+            StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+            yield break;
         }
 
+        MemoManager.Instance.SetMemoButtons(true);
         SoundPlayer.Instance.ChangeBGM(bgmIndex);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }

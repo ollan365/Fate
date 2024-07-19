@@ -46,6 +46,7 @@ public class StartLogic : MonoBehaviour
         if (SaveManager.Instance && SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd
             && GameManager.Instance && GameManager.Instance.GetVariable("BadEndingCollect") != null)
             LoadGame(true);
+        else if(ScreenEffect.Instance) StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 0.1f, false, 0, 0));
     }
     private void Start()
     {
@@ -120,12 +121,14 @@ public class StartLogic : MonoBehaviour
     // ========== 프롤로그 시작 ========== //
     private IEnumerator StartPrologue()
     {
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0, 0));
+        if (!ScreenEffect.Instance.coverPanel.gameObject.activeSelf)
+            StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);
 
         background.GetComponent<Image>().sprite = room1Side1BackgroundSprite; // Background 이미지 변경
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
 
         blockingPanel.SetActive(true);
     }
@@ -139,6 +142,7 @@ public class StartLogic : MonoBehaviour
     private IEnumerator DarkBackground()
     {
         yield return new WaitForSeconds(1);
+        SoundPlayer.Instance.ChangeBGM(-1);
         blockingPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
     }
 

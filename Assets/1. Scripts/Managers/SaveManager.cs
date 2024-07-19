@@ -116,8 +116,7 @@ public class SaveManager : MonoBehaviour
         string filePath = Application.persistentDataPath + "/" + GameDataFileName;
         if (File.Exists(filePath)) File.Delete(filePath);
 
-        filePath = Application.persistentDataPath + "/" + EndingDataFileName;
-        if (File.Exists(filePath)) File.Delete(filePath);
+        EndingData.Init();
     }
 }
 
@@ -268,5 +267,21 @@ public class EndingData
                 endingCollectCount[3]++;
                 break;
         }
+    }
+    public void Init()
+    {
+        isEndingLogicEnd = true;
+        allEndingCollectCount = 0;
+        badEndingColloectCount = 0;
+        endingCollectCount = new int[4] { 0, 0, 0, 0 };
+        lastEnding = EndingType.NONE;
+
+        GameManager.Instance.SetVariable("EndingCollect", allEndingCollectCount);
+        GameManager.Instance.SetVariable("LastEnding", lastEnding.ToString());
+        GameManager.Instance.SetVariable("BadACollect", endingCollectCount[0]);
+        GameManager.Instance.SetVariable("BadBCollect", endingCollectCount[1]);
+        GameManager.Instance.SetVariable("TrueCollect", endingCollectCount[2]);
+        GameManager.Instance.SetVariable("HiddenCollect", endingCollectCount[3]);
+        GameManager.Instance.SetVariable("BadEndingCollect", badEndingColloectCount);
     }
 }

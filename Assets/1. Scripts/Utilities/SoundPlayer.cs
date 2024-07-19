@@ -52,6 +52,7 @@ public class SoundPlayer : MonoBehaviour
     }
     public void ChangeBGM(int bgm)
     {
+        if (bgm == -1) { bgmPlayer.Stop(); return; }
         StartCoroutine(ChangeBGMFade(bgm));
     }
     private IEnumerator ChangeBGMFade(int bgm)
@@ -123,6 +124,23 @@ public class SoundPlayer : MonoBehaviour
 
         // 다음 효과음 Player로 넘긴다
         UISoundPlayerCursor = (UISoundPlayerCursor + 1) % UISoundPlayer.Length;
+    }
+
+
+    // -1을 넣으면 모든 효과음 종료 (타이핑, 루프 효과음, 배경음 제외)
+    public void UISoundStop(int num)
+    {
+        if (num == Sound_Typing)
+        {
+            typingSoundPlayer.Stop();
+            return;
+        }
+
+        foreach (AudioSource audio in UISoundPlayer)
+        {
+            if (num == -1) { audio.Stop(); continue; }
+            if (audio.clip == UISoundClip[num]) audio.Stop();
+        }
     }
     private float SoundPosition()
     {

@@ -9,6 +9,8 @@ EventFirstQuestions,1회차 한정 질문,1회차 엔딩 이후 질문 스킵,,C
 Event_001,PrologueStart,눈을 뜸.,,,ResultCloseEyes/ResultCommonPrologueA,눈 깜빡이는 연출
 Event_002,PrologueFinsh,잠들었다가 다시 눈을 뜸,,,ResultCloseEyes,눈 깜빡이는 연출
 Event_003,Explain,방 탈출에 대한 설명을 창으로 띄움.,,,ResultTimePass,
+Event_004,FadeOut,다이얼로그에서 페이드 아웃,,,Result_FadeOut,
+Event_005,FadeIn,다이얼로그에서 페이드 인,,,Result_FadeIn,
 ,,,,,,
 Event_Name,,이름 설정 창 오픈,,,ResultName,나현 추가 (6/15)
 Event_Birth,,생일 설정 창 오픈,,,ResultBirth,나현 추가 (6/15)
@@ -231,7 +233,7 @@ EventMedicine2,선반 위에 약,선반 위에 약을 다시 누름,,ConditionMe
 ,,,,,,
 EventBoxZoom,,확대 되지 않은 상태에서 옷장 위 상자를 클릭,,,Result_showZoomedBox,
 EventClosetUnderZoom,,확대 되지 않은 상태에서 옷장 아래 영역을 클릭,,,Result_showZoomedClosetUnder,
-EventMedicineZoom,,확대 되지 않은 상태에서 약을 클릭,,,Result_showZoomedMedicine,
+EventMedicine2Zoom,,확대 되지 않은 상태에서 약을 클릭,,,Result_showZoomedMedicine2,
 EventShoppingBagsZoom,,확대 되지 않은 상태에서 쇼핑백을 클릭,,,Result_showZoomedShoppingBags,
 ,,,,,,
 EventWardrobeUpClosed,닫힌 옷장 서랍장 위칸,닫힌 옷장 서랍장 위칸을 처음 클릭,AND,ConditionWardrobeUpDrawersClosed/ConditionWardrobeUpDrawersFirstClick,ResultWardrobeUpDrawersOpen/ResultWardrobeUpDrawersOpenScript/Result_IncrementClosedWardrobeUpDrawersClick/Result_InverseWardrobeUpDrawersClosed/ResultTimePass,
@@ -323,3 +325,4 @@ EventFollow2Guard,클럽 가드,클럽 가드를 여러번 클릭,,ConditionGuar
 EventBadA_End,,,,,ResultBadA_End,
 EventBadB_End,,,,,ResultBadB_End,
 EventTrue_End,,,,,ResultTrue_End,
+EventHidden_End,,,,,ResultHidden_End,
