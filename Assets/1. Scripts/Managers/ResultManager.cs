@@ -223,6 +223,12 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.EndDialogue();
                 break;
 
+            case "Result_DayPassEffect":  // fade in/out
+                StartCoroutine(ScreenEffect.Instance.DayPass(3f));  // fade in/out effect
+                // 아침 대사 출력함
+                GameManager.Instance.nextMorningDay();
+                break;
+
             // 침대 시스템
             case "ResultBedChoice": // 침대 선택지 나오게 함
                 DialogueManager.Instance.StartDialogue("RoomEscape_BedClick");

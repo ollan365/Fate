@@ -11,6 +11,7 @@ public class FollowTutorial : MonoBehaviour
     [SerializeField] private GameObject highlightPanel;
     [SerializeField] private GameObject blockingPanel;
     [SerializeField] private GameObject moveButton;
+    [SerializeField] private Sprite moveButtonSprite, stopButtonSprite;
     [SerializeField] private Image arrow;
     [SerializeField] private TextMeshProUGUI startText;
 
@@ -86,9 +87,9 @@ public class FollowTutorial : MonoBehaviour
             moveButtonClickCount++;
 
             if (FollowManager.Instance.followAnim.IsStop)
-                followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "이동";
+                followTutorialCanvas.GetComponentInChildren<Button>().GetComponent<Image>().sprite = moveButtonSprite;
             else
-                followTutorialCanvas.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().text = "멈춤";
+                followTutorialCanvas.GetComponentInChildren<Button>().GetComponent<Image>().sprite = stopButtonSprite;
         });
         followTutorialCanvas.GetComponentInChildren<Button>().interactable = true;
 

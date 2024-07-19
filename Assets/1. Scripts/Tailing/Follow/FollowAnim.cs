@@ -14,10 +14,12 @@ public class FollowAnim : MonoBehaviour
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
 
-    [SerializeField] private Animator fate, accidyBoy, accidyGirl;
+    [SerializeField] private Animator fate;
+    [SerializeField] private Animator[] accidyBoy, accidyGirl;
     private Animator accidy;
 
-    [SerializeField] private TextMeshProUGUI stopButtonText; // 이동&멈춤 버튼의 글씨
+    [SerializeField] private Image stopButtonImage; // 이동&멈춤 버튼의 이미지
+    [SerializeField] private Sprite moveSprite, stopSprite;
     private bool isStop = true; // 현재 이동 중인지를 나타내는 변수
     public bool IsStop { get => isStop; }
     private float moveTime = 0;
@@ -25,7 +27,7 @@ public class FollowAnim : MonoBehaviour
 
     private void Start()
     {
-        SetCharcter();
+        SetCharcter(0);
         StartCoroutine(ChangeBeaconSprite());
     }
     private void Update()
@@ -54,17 +56,19 @@ public class FollowAnim : MonoBehaviour
         SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, !isStop);
         SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, !isStop);
 
-        if (isStop) stopButtonText.text = "이동";
-        else stopButtonText.text = "정지";
+        if (isStop) stopButtonImage.sprite = moveSprite;
+        else stopButtonImage.sprite = stopSprite;
 
         fate.SetBool("Walking", !isStop);
         accidy.SetBool("Walking", !isStop);
     }
-    public void SetCharcter()
+    public void SetCharcter(int index)
     {
+        if (accidy != null) accidy.gameObject.SetActive(false);
+
         // 우연의 성별에 따라 다른 애니메이터 작동
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidyGirl;
-        else accidy = accidyBoy;
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidyGirl[index];
+        else accidy = accidyBoy[index];
 
         fate.gameObject.SetActive(true);
         accidy.gameObject.SetActive(true);
@@ -85,9 +89,9 @@ public class FollowAnim : MonoBehaviour
 
     private void CheckPosition()
     {
-        // 첫번째 미행
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 && backgroundPosition.position.x < -39)
+        if (backgroundPosition.position.x < -39)
         {
+            SetCharcter(1);
             ChangeAnimStatus();
             FollowManager.Instance.FollowEndLogicStart(false);
         }
@@ -100,7 +104,6 @@ public class FollowAnim : MonoBehaviour
             {
                 case 0: ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
                 case -4: ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
-                case -39: SceneManager.Instance.LoadScene(SceneType.ENDING); break;
             }
         }
     }

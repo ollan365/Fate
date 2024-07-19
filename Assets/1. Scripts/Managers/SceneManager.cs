@@ -36,6 +36,7 @@ public class SceneManager : MonoBehaviour
         while (DialogueManager.Instance.isDialogueActive)
             yield return null;
 
+        SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         int sceneIndex = -1, bgmIndex = -1;
@@ -45,30 +46,34 @@ public class SceneManager : MonoBehaviour
                 sceneIndex = 0;
                 bgmIndex = BGM_OPENING;
                 sceneType = SceneType.START;
+                ScreenEffect.Instance.TextOnFade("Prologue");
                 break;
             case SceneType.ROOM_1:
                 sceneIndex = 1;
                 bgmIndex = BGM_ROOM1;
                 sceneType = SceneType.ROOM_1;
+                ScreenEffect.Instance.TextOnFade("Chapter I");
                 break;
             case SceneType.FOLLOW_1:
                 sceneIndex = 2;
                 bgmIndex = BGM_FOLLOW1;
                 sceneType = SceneType.FOLLOW_1;
+                ScreenEffect.Instance.TextOnFade("Chapter II");
                 break;
             case SceneType.ROOM_2:
                 sceneIndex = 3;
                 bgmIndex = BGM_ROOM2;
                 sceneType = SceneType.ROOM_2;
+                ScreenEffect.Instance.TextOnFade("Chapter III");
                 break;
             case SceneType.FOLLOW_2:
                 sceneIndex = 4;
                 bgmIndex = BGM_FOLLOW1;
                 sceneType = SceneType.FOLLOW_2;
+                ScreenEffect.Instance.TextOnFade("Chapter IV");
                 break;
             case SceneType.ENDING:
                 sceneIndex = 5;
-                bgmIndex = BGM_HIDDEN;
                 break;
         }
 

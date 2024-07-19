@@ -2,11 +2,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class ScreenEffect : MonoBehaviour
 {
     public static ScreenEffect Instance { get; private set; }
     public Image coverPanel;
+    [SerializeField] private TextMeshProUGUI coverText;
     void Awake()
     {
         if (Instance == null)
@@ -67,6 +69,8 @@ public class ScreenEffect : MonoBehaviour
             newColor.a = Mathf.Lerp(start, end, percent);
             fadeObject.color = newColor;
 
+            coverText.color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
+
             yield return null;
         }
         newColor.a = end;
@@ -80,9 +84,18 @@ public class ScreenEffect : MonoBehaviour
         }
 
         // 투명해졌으면 끈다
-        if (fadeObject == coverPanel && end == 0) fadeObject.gameObject.SetActive(false);
+        if (fadeObject == coverPanel && end == 0)
+        {
+            fadeObject.gameObject.SetActive(false);
+            coverText.gameObject.SetActive(false);
+        }
     }
 
+    public void TextOnFade(string text)
+    {
+        coverText.gameObject.SetActive(true);
+        coverText.text = text;
+    }
     // <summary> 변수 설명
     // 화면 이동할 때 사용하기 위해 만든 거라 동작이 조금 특이합니다...
     // screen의 현재 위치가 목적지로 설정이 되고,

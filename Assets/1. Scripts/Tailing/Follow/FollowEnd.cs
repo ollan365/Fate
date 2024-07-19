@@ -65,7 +65,7 @@ public class FollowEnd : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // 미행 끝
-        if (!isDayMiniGame) FollowManager.Instance.FollowFinishGameStart();
+        if (!isDayMiniGame && SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_1) FollowManager.Instance.FollowFinishGameStart();
         else SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 

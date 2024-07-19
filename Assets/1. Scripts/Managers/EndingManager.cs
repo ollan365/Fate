@@ -62,7 +62,10 @@ public class EndingManager : MonoBehaviour
         if (MemoManager.Instance.UnlockNextScene()) // 메모의 개수가 충분할 때
             DialogueManager.Instance.StartDialogue("FollowTutorial_001");
         else
+        {
+            SoundPlayer.Instance.ChangeBGM(BGM_BAD);
             DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01");
+        }
     }
     private IEnumerator Ending_Follow1()
     {
@@ -71,18 +74,30 @@ public class EndingManager : MonoBehaviour
         if (MemoManager.Instance.UnlockNextScene()) // 메모의 개수가 충분할 때
             SceneManager.Instance.LoadScene(SceneType.ROOM_2);
         else
+        {
+            SoundPlayer.Instance.ChangeBGM(BGM_BAD);
             DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
+        }
     }
     private IEnumerator Ending_Follow2()
     {
         yield return new WaitForSeconds(2.5f);
-        
+
         if (MemoManager.Instance.UnlockNextScene() && MemoManager.Instance.UnlockNextScene(true))
+        {
+            SoundPlayer.Instance.ChangeBGM(BGM_HIDDEN);
             DialogueManager.Instance.StartDialogue("HiddenEnding_00");
-        else if(MemoManager.Instance.UnlockNextScene() || MemoManager.Instance.UnlockNextScene(true))
+        }
+        else if (MemoManager.Instance.UnlockNextScene() || MemoManager.Instance.UnlockNextScene(true))
+        {
+            SoundPlayer.Instance.ChangeBGM(BGM_TRUE);
             DialogueManager.Instance.StartDialogue("TrueEnding_01");
+        }
         else
+        {
+            SoundPlayer.Instance.ChangeBGM(BGM_BAD);
             DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
+        }
     }
     public void ChoiceEnding()
     {
