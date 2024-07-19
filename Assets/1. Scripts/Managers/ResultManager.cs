@@ -152,16 +152,6 @@ public class ResultManager : MonoBehaviour
             case "Result_002": // 설명창 띄우기 - ### 추후 구현 필요 ###
                 break;
 
-            case "Result_FadeOut":  // fade out
-                float fadeOutTime = 3f;
-                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, fadeOutTime));
-                break;
-
-            case "Result_FadeIn":  // fade out
-                float fadeInTime = 3f;
-                StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, fadeInTime));
-                break;
-
             case "ResultPrologueEnd":
                 if (SaveManager.Instance.EndingData != null)
                 {
