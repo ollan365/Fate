@@ -771,6 +771,7 @@ public class ResultManager : MonoBehaviour
 
             case "Result_showZoomedMedicine2": // 약 확대 화면으로 전환
                 executableObjects["Medicine2 Unzoomed 1"].ExecuteAction();
+                executableObjects["Medicine2 Unzoomed 3"].ExecuteAction();
                 break;
 
             case "Result_showZoomedShoppingBags": // 쇼핑백 확대 화면으로 전환
