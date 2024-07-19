@@ -32,6 +32,14 @@ public class ResultManager : MonoBehaviour
         executableObjects = new Dictionary<string, IResultExecutable>();
     }
 
+    public void executableObjectsKeyCheck(string objectName)
+    {
+        if (executableObjects.ContainsKey(objectName))
+            Debug.Log(objectName + " key exists");
+        else
+            Debug.Log(objectName + " key does not exists");
+    }
+
     void Awake()
     {
         if (Instance == null)
@@ -752,6 +760,7 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("RoomEscape_011");
                 break;
 
+            // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
                 executableObjects["Box Unzoomed 2"].ExecuteAction();
                 break;
@@ -760,8 +769,8 @@ public class ResultManager : MonoBehaviour
                 executableObjects["ClosetUnder Unzoomed 2"].ExecuteAction();
                 break;
 
-            case "Result_showZoomedMedicine": // 약 확대 화면으로 전환
-                executableObjects["Medicine Unzoomed 1"].ExecuteAction();
+            case "Result_showZoomedMedicine2": // 약 확대 화면으로 전환
+                executableObjects["Medicine2 Unzoomed 1"].ExecuteAction();
                 break;
 
             case "Result_showZoomedShoppingBags": // 쇼핑백 확대 화면으로 전환
