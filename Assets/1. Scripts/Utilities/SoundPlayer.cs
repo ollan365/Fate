@@ -7,20 +7,20 @@ public class SoundPlayer : MonoBehaviour
     public static SoundPlayer Instance { get; private set; }
 
     [Header("Audio Source")]
-    [SerializeField] private AudioSource bgmPlayer; // ¹è°æÀ½ ÇÃ·¹ÀÌ¾î
-    [SerializeField] private AudioSource typingSoundPlayer; // Å¸ÀÌÇÎ È¿°úÀ½ ÇÃ·¹ÀÌ¾î (¹İº¹)
-    [SerializeField] private AudioSource[] UISoundLoopPlayer; // UI È¿°úÀ½ ÇÃ·¹ÀÌ¾î (¹İº¹)
-    [SerializeField] private AudioSource[] UISoundPlayer; // UI È¿°úÀ½ ÇÃ·¹ÀÌ¾îµé
+    [SerializeField] private AudioSource bgmPlayer; // ë°°ê²½ìŒ í”Œë ˆì´ì–´
+    [SerializeField] private AudioSource typingSoundPlayer; // íƒ€ì´í•‘ íš¨ê³¼ìŒ í”Œë ˆì´ì–´ (ë°˜ë³µ)
+    [SerializeField] private AudioSource[] UISoundLoopPlayer; // UI íš¨ê³¼ìŒ í”Œë ˆì´ì–´ (ë°˜ë³µ)
+    [SerializeField] private AudioSource[] UISoundPlayer; // UI íš¨ê³¼ìŒ í”Œë ˆì´ì–´ë“¤
 
     [Header("AudioClip")]
-    [SerializeField] private AudioClip[] bgmClip; // ¹è°æÀ½µé
-    [SerializeField] private AudioClip[] UISoundClip; // UI È¿°úÀ½µé
-    [SerializeField] private AudioClip[] UISoundClip_LOOP; // UI È¿°úÀ½µé
+    [SerializeField] private AudioClip[] bgmClip; // ë°°ê²½ìŒë“¤
+    [SerializeField] private AudioClip[] UISoundClip; // UI íš¨ê³¼ìŒë“¤
+    [SerializeField] private AudioClip[] UISoundClip_LOOP; // UI íš¨ê³¼ìŒë“¤
 
     // Volume
     private float bgmVolume = 0.5f;
 
-    // µ¿½Ã¿¡ ¿©·¯ UI È¿°úÀ½µéÀÌ ÇÃ·¹ÀÌ µÉ ¼öµµ ÀÖÀ¸¹Ç·Î ¿©·¯ ÇÃ·¹ÀÌ¾î¸¦ µÎ°í ¼øÂ÷ÀûÀ¸·Î ½ÇÇàÇÏ±â À§ÇÑ º¯¼ö
+    // ë™ì‹œì— ì—¬ëŸ¬ UI íš¨ê³¼ìŒë“¤ì´ í”Œë ˆì´ ë  ìˆ˜ë„ ìˆìœ¼ë¯€ë¡œ ì—¬ëŸ¬ í”Œë ˆì´ì–´ë¥¼ ë‘ê³  ìˆœì°¨ì ìœ¼ë¡œ ì‹¤í–‰í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
     private int UISoundPlayerCursor;
     void Awake()
     {
@@ -36,7 +36,7 @@ public class SoundPlayer : MonoBehaviour
     }
     private void Update()
     {
-        // ¸¶¿ì½º Å¬¸¯ ½Ã È¿°úÀ½ ¹ß»ı
+        // ë§ˆìš°ìŠ¤ í´ë¦­ ì‹œ íš¨ê³¼ìŒ ë°œìƒ
         if (Input.GetMouseButtonDown(0))
             UISoundPlay(Sound_Click);
     }
@@ -50,48 +50,30 @@ public class SoundPlayer : MonoBehaviour
         foreach (AudioSource audio in UISoundLoopPlayer) audio.volume = soundEffectVolume;
         foreach (AudioSource audio in UISoundPlayer) audio.volume = soundEffectVolume;
     }
-    public void ChangeBGM(int bgm, bool play)
+    public void ChangeBGM(int bgm)
     {
-        StartCoroutine(ChangeBGMFade(bgm, play));
+        if (bgm == -1) { bgmPlayer.Stop(); return; }
+        StartCoroutine(ChangeBGMFade(bgm));
     }
-    private IEnumerator ChangeBGMFade (int bgm, bool play)
+    private IEnumerator ChangeBGMFade(int bgm)
     {
         float fadeDuration = 2f;
         float currentTime = 0f;
 
-        if (!play)
+        // ìƒˆë¡œìš´ BGM ì„¤ì • ë° ì¬ìƒ
+        bgmPlayer.clip = bgmClip[bgm];
+        bgmPlayer.Play();
+
+        // ë³¼ë¥¨ì„ ë‹¤ì‹œ í‚¤ìš°ê¸°
+        while (currentTime < fadeDuration)
         {
-            // º¼·ıÀ» ÁÙÀÌ±â
-            while (currentTime < fadeDuration)
-            {
-                currentTime += Time.deltaTime;
-                bgmPlayer.volume = Mathf.Lerp(bgmVolume, 0, currentTime / fadeDuration);
-                yield return null;
-            }
-
-            // ÇöÀç º¼·ıÀ» 0À¸·Î ¼³Á¤
-            bgmPlayer.volume = 0;
-            bgmPlayer.Stop();
+            currentTime += Time.deltaTime;
+            bgmPlayer.volume = Mathf.Lerp(0, bgmVolume, currentTime / fadeDuration);
+            yield return null;
         }
-        if (play)
-        {
-            // »õ·Î¿î BGM ¼³Á¤ ¹× Àç»ı
-            bgmPlayer.clip = bgmClip[bgm];
-            bgmPlayer.Play();
 
-            currentTime = 0f; // currentTime ÃÊ±âÈ­
-
-            // º¼·ıÀ» ´Ù½Ã Å°¿ì±â
-            while (currentTime < fadeDuration)
-            {
-                currentTime += Time.deltaTime;
-                bgmPlayer.volume = Mathf.Lerp(0, bgmVolume, currentTime / fadeDuration);
-                yield return null;
-            }
-
-            // ÃÖÁ¾ º¼·ı ¼³Á¤
-            bgmPlayer.volume = bgmVolume;
-        }
+        // ìµœì¢… ë³¼ë¥¨ ì„¤ì •
+        bgmPlayer.volume = bgmVolume;
     }
 
     public void UISoundPlay_LOOP(int num, bool play)
@@ -120,28 +102,45 @@ public class SoundPlayer : MonoBehaviour
     }
     public void UISoundPlay(int num)
     {
-        // Å¸ÀÌÇÎÀÎ °æ¿ì
+        // íƒ€ì´í•‘ì¸ ê²½ìš°
         if (num == Sound_Typing)
         {
             typingSoundPlayer.Play();
             return;
         }
 
-        // À½¾ÇÀÌ ¿©·¯°³ÀÎ °æ¿ì ·£´ıÀ¸·Î Àç»ı
+        // ìŒì•…ì´ ì—¬ëŸ¬ê°œì¸ ê²½ìš° ëœë¤ìœ¼ë¡œ ì¬ìƒ
         if (num == Sound_LockerKeyMovement || num == Sound_ChairMovement)
             num = Random.Range(num, num + 2);
         
-        // Àç»ıÇÒ È¿°úÀ½ º¯°æ
+        // ì¬ìƒí•  íš¨ê³¼ìŒ ë³€ê²½
         UISoundPlayer[UISoundPlayerCursor].clip = UISoundClip[num];
 
-        // ÀÏºÎ È¿°úÀ½ÀÇ °æ¿ì À½¾ÇÀÌ Àç»ıµÇ´Â À§Ä¡¸¦ ¹Ù²Û´Ù
+        // ì¼ë¶€ íš¨ê³¼ìŒì˜ ê²½ìš° ìŒì•…ì´ ì¬ìƒë˜ëŠ” ìœ„ì¹˜ë¥¼ ë°”ê¾¼ë‹¤
         UISoundPlayer[UISoundPlayerCursor].panStereo = SoundPosition();
 
-        // À½¾Ç Àç»ı
+        // ìŒì•… ì¬ìƒ
         UISoundPlayer[UISoundPlayerCursor].Play();
 
-        // ´ÙÀ½ È¿°úÀ½ Player·Î ³Ñ±ä´Ù
+        // ë‹¤ìŒ íš¨ê³¼ìŒ Playerë¡œ ë„˜ê¸´ë‹¤
         UISoundPlayerCursor = (UISoundPlayerCursor + 1) % UISoundPlayer.Length;
+    }
+
+
+    // -1ì„ ë„£ìœ¼ë©´ ëª¨ë“  íš¨ê³¼ìŒ ì¢…ë£Œ (íƒ€ì´í•‘, ë£¨í”„ íš¨ê³¼ìŒ, ë°°ê²½ìŒ ì œì™¸)
+    public void UISoundStop(int num)
+    {
+        if (num == Sound_Typing)
+        {
+            typingSoundPlayer.Stop();
+            return;
+        }
+
+        foreach (AudioSource audio in UISoundPlayer)
+        {
+            if (num == -1) { audio.Stop(); continue; }
+            if (audio.clip == UISoundClip[num]) audio.Stop();
+        }
     }
     private float SoundPosition()
     {

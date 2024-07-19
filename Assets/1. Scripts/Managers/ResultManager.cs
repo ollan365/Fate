@@ -115,6 +115,16 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
                 break;
 
+            case "Result_FadeOut":  // fade out
+                float fadeOutTime = 3f;
+                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, fadeOutTime));
+                break;
+
+            case "Result_FadeIn":  // fade out
+                float fadeInTime = 3f;
+                StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, fadeInTime));
+                break;
+
             case "ResultPrologueLimit":
                 StartLogic.Instance.DarkBackground(true);
                 StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_000", 3));
@@ -1170,6 +1180,11 @@ public class ResultManager : MonoBehaviour
             case "ResultTrue_End":
                 EndingManager.Instance.EndEnding(EndingType.TRUE);
                 break;
+
+            case "ResultHidden_End":
+                EndingManager.Instance.EndEnding(EndingType.HIDDEN);
+                break;
+
 
             default:
                 Debug.Log($"Result ID: {resultID} not found!");
