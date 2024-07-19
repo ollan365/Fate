@@ -18,7 +18,8 @@ public class FollowAnim : MonoBehaviour
     [SerializeField] private Animator[] accidyBoy, accidyGirl;
     private Animator accidy;
 
-    [SerializeField] private TextMeshProUGUI stopButtonText; // 이동&멈춤 버튼의 글씨
+    [SerializeField] private Image stopButtonImage; // 이동&멈춤 버튼의 이미지
+    [SerializeField] private Sprite moveSprite, stopSprite;
     private bool isStop = true; // 현재 이동 중인지를 나타내는 변수
     public bool IsStop { get => isStop; }
     private float moveTime = 0;
@@ -55,8 +56,8 @@ public class FollowAnim : MonoBehaviour
         SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, !isStop);
         SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, !isStop);
 
-        if (isStop) stopButtonText.text = "이동";
-        else stopButtonText.text = "정지";
+        if (isStop) stopButtonImage.sprite = moveSprite;
+        else stopButtonImage.sprite = stopSprite;
 
         fate.SetBool("Walking", !isStop);
         accidy.SetBool("Walking", !isStop);
