@@ -549,7 +549,8 @@ public class GameManager : MonoBehaviour
         }
 
         // change Day text on screen
-        dayText.text = $"Day {actionPointsPerDay - (actionPoint - 1) / actionPointsPerDay}";
+        // 회복제 먹으면 하루 최대 하트가 7개로 늘어나서 ActionPointsPerDay가 7로 바뀌기 때문에 밑의 수식의 5는 고정입니다
+        dayText.text = $"Day {5 - (actionPoint - 1) / actionPointsPerDay}";
 
         if (isEatenEnergySupplement)
         {
