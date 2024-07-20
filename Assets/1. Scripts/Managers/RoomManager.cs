@@ -23,6 +23,8 @@ public class RoomManager : MonoBehaviour
 
     // 나가기 버튼
     [Header("나가기 버튼")] [SerializeField] private Button exitButton;
+    
+    [Header("행동력 하트 패널")] [SerializeField] private GameObject actionPointsPanel;
 
     // 이벤트 오브젝트 패널 매니저
     public ImageAndLockPanelManager imageAndLockPanelManager;
@@ -208,6 +210,7 @@ public class RoomManager : MonoBehaviour
         
         SetExitButton(isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
+        actionPointsPanel.SetActive(!isDialogueActive);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 }
