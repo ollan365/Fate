@@ -172,13 +172,13 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
-                GameManager.Instance.DecrementActionPoint();
+                RoomManager.Instance.actionPointManager.DecrementActionPoint();
                 break;
 
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
                 //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
-                //    +" : "+ EventObjectManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
+                //    +" : "+ GameManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
                 if (!GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
                     DialogueManager.Instance.EndDialogue();
@@ -216,17 +216,22 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.EndDialogue();
                 // 휴식취함(다음날로 넘어가는 만큼 행동력 감소, 날짜와 하트 업데이트)
                 // fade in, fade out 이후 휴식 대사 출력되고 우연 랜덤 대사 출력됨
-                StartCoroutine(GameManager.Instance.TakeRest());
+                StartCoroutine(RoomManager.Instance.actionPointManager.TakeRest());
                 break;
 
             case "Result_restNo": // 휴식에서 아니오 버튼
                 DialogueManager.Instance.EndDialogue();
                 break;
 
-            case "Result_DayPassEffect":  // fade in/out
-                StartCoroutine(ScreenEffect.Instance.DayPass(3f));  // fade in/out effect
-                // 아침 대사 출력함
-                GameManager.Instance.nextMorningDay();
+            case "Result_StartHomecoming":
+                // 휴식 대사 스크립트 끝난 다음 귀가 대사 스크립트 출력되게 RefillHeartsOrEndDay 호출.
+                DialogueManager.Instance.EndDialogue();
+                RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
+                break;
+
+            case "Result_NextMorningDay":    // 휴식 대사 스크립트 마지막인 Next에서 호출됨.
+                // fade in/out effect 실행 후 아침 대사 출력하는 메소드 호출
+                RoomManager.Instance.actionPointManager.nextMorningDay();
                 break;
 
             // 침대 시스템
@@ -723,7 +728,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultEatEnergySupplement":
-                GameManager.Instance.EatEnergySupplement();
+                RoomManager.Instance.actionPointManager.EatEnergySupplement();
                 //GameManager.Instance.actionPointsPerDay = 7;
                 break;
 
