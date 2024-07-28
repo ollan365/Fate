@@ -26,6 +26,8 @@ public class MemoManager : PageContentsManager
     public static MemoManager Instance { get; private set; }
     public bool isMemoOpen = false;
     public bool isFollow = false;
+    private bool wantToHideMemoButton = false;
+    public bool HideMemoButton { set => wantToHideMemoButton = value; }
 
     // 모든 메모
     private readonly Dictionary<string, string> memoScripts = new Dictionary<string, string>();  // memoScripts[memoID] = scriptID
@@ -188,6 +190,8 @@ public class MemoManager : PageContentsManager
     
     public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false)
     {
+        if (showMemoIcon && wantToHideMemoButton) return;
+
         memoButton.SetActive(showMemoIcon);
         exitButton.SetActive(showMemoExitButton);
 

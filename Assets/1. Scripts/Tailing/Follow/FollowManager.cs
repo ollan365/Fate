@@ -129,6 +129,8 @@ public class FollowManager : MonoBehaviour
         isEnd = true;
         canClick = false;
         moveAndStopButton.SetActive(false);
+
+        MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
         followAnim.moveSpeed *= -1.5f;

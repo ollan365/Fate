@@ -26,7 +26,9 @@ public class FollowTutorial : MonoBehaviour
         FollowManager.Instance.canClick = false;
         frontCanvas.SetActive(false);
         moveButton.SetActive(false);
-        
+
+        // 튜토리얼 중에 메모 버튼이 켜지지 않도록 설정
+        MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
          // 튜토리얼 캔버스를 할당
@@ -136,7 +138,9 @@ public class FollowTutorial : MonoBehaviour
         followTutorialCanvas.SetActive(false);
         blockingPanel.SetActive(false);
 
+        MemoManager.Instance.HideMemoButton = false;
         MemoManager.Instance.SetMemoButtons(true);
+
         FollowManager.Instance.isTutorial = false;
         FollowManager.Instance.canClick = true;
         frontCanvas.SetActive(true);
