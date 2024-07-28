@@ -89,8 +89,6 @@ public class TutorialManager : MonoBehaviour
         RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
 
         MemoManager.Instance.SetMemoButtons(true);
-        //// 휴식 버튼도 보이게 함
-        //RoomManager.Instance.HideRestButton(false);
     }
     
 }

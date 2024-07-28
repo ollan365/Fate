@@ -26,22 +26,8 @@ public class GameManager : MonoBehaviour
     public bool skipTutorial = false;
     public bool skipInquiry = false;
 
-    // 조사시스템 테스트
+    // 조사 시스템에서 현재 조사하고 있는 오브젝트의 evnetId를 저장함
     private string currentInquiryObjectId = "";
-    
-    // ************************* temporary members for action points *************************
-    public GameObject heartPrefab;
-    public GameObject heartParent;
-    public TextMeshProUGUI dayText;
-    public int actionPointsPerDay = 5;
-
-    // 행동력 감소로 터질 하트 자리
-    // (회복제 먹어서 actionPointsPerDay를 7로 바꾸게 되면 action point이 22였을 경우 7의 나머지가 다르게 나오기 때문에 따로 만들게 됨)
-    public int presentHeartIndex = 5;
-    // 만일 action point가 4개나 5개 있는 상태에서 회복제 먹고 하트가 바로 2개 늘어가게 되면 5개 상한선에서 짤리기 때문에 
-    // isEatenEnergySupplement이 true면 CreateHearts의 heartCount = presentHeartIndex + 2로 하여
-    // 하트 5개일 경우 회복제 먹고 바로 7개로 늘어나게 함.
-    private bool isEatenEnergySupplement = false;
 
     // 중복조사 관련 딕셔너리
     public Dictionary<string, bool> eventObjectsStatusDict = new Dictionary<string, bool>();
@@ -86,14 +72,27 @@ public class GameManager : MonoBehaviour
         
         variables["AccidyGender"] = 0;  // 우연 성별 {0: 여자, 1: 남자}
         variables["AccidyBirthday"] = "0616";  // 우연 생일
-        
-        variables["ActionPoint"] = 25;  // 행동력 
 
         variables["isInquiry"] = false; // 조사 시스템에서 예 누르면 true되고 계속 조사 가능.
 
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
         variables["RefillHeartsOrEndDay"] = false;
+
+        // 1 - 1. 방탈출 ActionPoint 관련 변수들
+        variables["ActionPoint"] = 25;  // 행동력 
+
+        variables["ActionPointsPerDay"] = 5;
+
+        //variables["PresentHeartIndex"] = 4;
+        variables["PresentHeartIndex"] = (int)GetVariable("ActionPointsPerDay") - 1; // 행동력 감소로 터질 하트 자리
+        // presentHeartIndex가 쓰이는 곳은 배열이기에 0부터 시작해서 5 - 1 한 값으로 초기화.
+
+        variables["IsEatenEnergySupplement"] = false;   // 회복제 먹은 상태 변수
+
+        variables["NowDayNum"] = 1; // 현재 날짜
+
+        variables["MaxDayNum"] = 5; // 방탈출에서 지내는 최대 날짜수
 
         // 2 - 0. 튜토리얼 관련 변수들 - 첫번째 방탈출
         variables["isTutorial"] = false;
@@ -102,13 +101,13 @@ public class GameManager : MonoBehaviour
         // 2 - 1. 이벤트 오브젝트 관련 변수들 - 첫번째 방탈출
         // 침대 위 곰인형
         variables["DollsClick"] = 0;
-        
+
         // 이불
         variables["BlanketsClick"] = 0;
-        
+
         // 술과 감기약
         variables["LiquorAndPillsClick"] = 0;
-        
+
         // 스탠드
         variables["LampClick"] = 0;
 
@@ -472,276 +471,6 @@ public class GameManager : MonoBehaviour
         bool isBusy = isDialogueActive || isInvestigating || isTutorialPhase1 || isMemoOpen;
 
         return isBusy;
-    }
-
-    // ************************* temporary methods for action points *************************
-    // create 5 hearts on screen on room start
-
-    private bool isControlHeartCount = false;
-    public void CreateHearts()
-    {
-        int actionPoint = (int)GetVariable("ActionPoint");
-        // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
-        int heartCount = actionPoint % actionPointsPerDay;
-
-        if (isEatenEnergySupplement)
-        {
-            heartCount = presentHeartIndex + 2;
-            actionPointsPerDay = 7;
-
-            // actionPoint가 4, 9와 같은 heartCount가 4나 5인 상태에서 회복제 먹었을 때 최대 7개는 되기에
-            // 하트 최대 7개 일 때의 actionPoint로 보정하여 DayNum도 보정되어 올바르게 나오게 함.
-            if (actionPoint == 4 || actionPoint == 5)
-            {
-                actionPoint += 2;
-            }
-            else if (actionPoint == 9 || actionPoint == 10)
-            {
-                actionPoint += 4;
-            }
-            else if (actionPoint == 14 || actionPoint == 15)
-            {
-                actionPoint += 6;
-            }
-            else if (actionPoint == 19 || actionPoint == 20)
-            {
-                actionPoint += 8;
-            }
-            SetVariable("ActionPoint",actionPoint);
-        }
-
-        if (heartCount == 0)
-        {
-            if ((bool)GetVariable("TeddyBearFixed"))
-            {
-                actionPointsPerDay = 7;
-
-                // 회복제 먹으면 하루에 하트 최대 5개였던 것이 7개로 늘어남
-                heartCount = 7;
-
-                if ((actionPoint == 20|| actionPoint == 15||actionPoint == 10|| actionPoint == 5)&& !isControlHeartCount)
-                {
-                    float controlledPoint = actionPoint * 1.4f;
-
-                    actionPoint = (int)controlledPoint;
-
-                    SetVariable("ActionPoint", actionPoint);
-
-                    isControlHeartCount = true;
-                }
-
-                // 그리고 현재 하트 인덱스도 5였던 것을 7로 초기화.
-                presentHeartIndex = 7;
-            }
-            else
-            {
-                heartCount = actionPointsPerDay;
-                presentHeartIndex = 5;
-            }
-        }
-
-        //Debug.Log("heartCount : " + heartCount);
-
-        for (int i = 0; i < heartCount; i++) 
-        {
-            // create heart on screen by creating instances of heart prefab under heart parent
-            Instantiate(heartPrefab, heartParent.transform);
-        }
-
-        // change Day text on screen
-        // 회복제 먹으면 하루 최대 하트가 7개로 늘어나서 ActionPointsPerDay가 7로 바뀌기 때문에 밑의 수식의 5는 고정입니다
-        dayText.text = $"Day {5 - (actionPoint - 1) / actionPointsPerDay}";
-
-        if (isEatenEnergySupplement)
-        {
-            isEatenEnergySupplement = false;
-        }
-    }
-
-    public void DecrementActionPoint()
-    {
-        if ((bool)GetVariable("TeddyBearFixed")) actionPointsPerDay = 7;
-
-        DecrementVariable("ActionPoint");
-        int actionPoint = (int)GetVariable("ActionPoint");
-        // pop heart on screen
-
-        //GameObject heart = heartParent.transform.GetChild(actionPoint % actionPointsPerDay).gameObject;
-        GameObject heart = heartParent.transform.GetChild(--presentHeartIndex).gameObject;
-
-        // animate heart by triggering "break" animation
-        heart.GetComponent<Animator>().SetTrigger("Break");
-        
-        // deactivate heart after animation
-        StartCoroutine(DeactivateHeart(heart));
-        
-        if (actionPoint % actionPointsPerDay == 0)
-        {
-            bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
-            if (!isDialogueActive) RefillHeartsOrEndDay();
-            else SetVariable("RefillHeartsOrEndDay", true);
-        }
-        
-        SaveManager.Instance.SaveGameData();
-    }
-    
-    public void RefillHeartsOrEndDay()
-    {
-        // turn off all ImageAndLockPanel objects and zoom out
-        RoomManager.Instance.ExitToRoot();
-
-        // if all action points are used, load "Follow 1" scene
-        int actionPoint = (int)GetVariable("ActionPoint");
-        if (actionPoint == 0)
-        {
-            SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
-            return;
-        }
-        // 귀가 스크립트 출력
-        var randomHomeComing = new Random((uint)System.DateTime.Now.Ticks);  // choose a random dialogue ID
-
-        int nowDayNum = 5 - ((int)GetVariable("ActionPoint") - 1) / actionPointsPerDay;
-        var HomeComingDialogueID = "";
-        switch (nowDayNum)
-        {
-            case 2:
-                //랜덤대사 1일차 귀가
-                string[] random1HomeComingDialogueIDs = { "RoomEscapeS_001", "RoomEscapeS_003" };
-                HomeComingDialogueID = random1HomeComingDialogueIDs[randomHomeComing.NextInt(0, 2)];
-                break;
-
-            case 3:
-                //특정대사 2일차 귀가
-                HomeComingDialogueID = "RoomEscapeS_005";
-                break;
-
-            case 4:
-                //특정대사 3일차 귀가
-                HomeComingDialogueID = "RoomEscapeS_008";
-                break;
-
-            case 5:
-                //랜덤대사 4일차 귀가
-                string[] random2HomeComingDialogueIDs = { "RoomEscapeS_012", "RoomEscapeS_013" };
-                HomeComingDialogueID = random2HomeComingDialogueIDs[randomHomeComing.NextInt(0, 2)];
-                break;
-
-            default:
-                break;
-        }
-        DialogueManager.Instance.StartDialogue(HomeComingDialogueID);
-        // 귀가 스크립트 이후 끝나면 Next의 EventDayPassEffect로 fade in/out 이펙트 나옴
-
-
-        // 휴식일 시 이미 앞에서 fade in/out effect가 나왔기에
-        // isTakingRest가 false인 자연히 actionPoint가 줄어들어서 진행될 경우에만 fade in/out effect 실행되게 함
-    } 
-
-    public void nextMorningDay()
-    {
-        int nowDayNum = 5 - ((int)GetVariable("ActionPoint") - 1) / actionPointsPerDay;
-
-        // 다음날이 되고(fade in/out effect 실행) 아침 스크립트 출력
-        const float totalTime = 3f;
-
-        var MorningDialogueID = "";
-
-        switch (nowDayNum)
-        {
-            case 2:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_004";
-                break;
-
-            case 3: case 4:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_015";
-                break;
-
-            case 5:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_014";
-                break;
-        }
-        StartCoroutine(DialogueManager.Instance.StartDialogue(MorningDialogueID, totalTime));
-
-        // 여기서 하트 생성 및 다음날로 날짜 업데이트
-        StartCoroutine(RefillHearts(totalTime / 2));
-        SetVariable("RefillHeartsOrEndDay", false);
-    }
-
-
-    
-    private static IEnumerator DeactivateHeart(Object heart)
-    {
-        yield return new WaitForSeconds(0.5f);
-        Destroy(heart);
-    }
-    
-    private IEnumerator RefillHearts(float totalTime)
-    {
-        yield return new WaitForSeconds(totalTime);
-        CreateHearts();
-        // turn off all ImageAndLockPanel objects and zoom out
-        RoomManager.Instance.ExitToRoot();
-    }
-    
-    // 곰인형 속 기력 보충제 먹으면 스크립트 끝나면 바로 하트 2개 회복됨.
-    public void EatEnergySupplement()
-    {
-        // 일단 현재 보이는 하트 지우고
-        foreach (Transform child in heartParent.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // 하트 +2개 추가하고
-        // 하트 다시 만들게 해서 하트가 2개 더 채워진 것처럼 보이게 함.
-
-        isEatenEnergySupplement = true;
-
-        //IncrementVariable("ActionPoint", 2);
-        CreateHearts();
-
-        presentHeartIndex += 2;
-    }
-
-    // 침대에서 휴식하면 행동력 강제로 다음날로 넘어감
-    // Day1에 하트 4개 남아있어도 Day2로 넘어가고 actionPointsPerDay 만큼 채워짐
-    public IEnumerator TakeRest()
-    {
-        float time = 3f;
-        StartCoroutine(ScreenEffect.Instance.DayPass(time));   // fade in/out effect
-
-        // 휴식 대사 출력. 
-        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", time));
-
-        yield return new WaitForSeconds(time / 2);
-        // 하트 수 업데이트를 위해 현재 보이는 하트 다 지움
-        foreach (Transform child in heartParent.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        int actionPoint = (int)GetVariable("ActionPoint");
-        int heartCount = actionPoint % actionPointsPerDay;
-        if (heartCount == 0) heartCount = 5;
-
-        actionPoint -= heartCount;
-
-        SetVariable("ActionPoint", actionPoint);
-
-        presentHeartIndex = actionPointsPerDay;
-
-        if (actionPoint % actionPointsPerDay == 0)
-        {
-            yield return new WaitForSeconds(time*2);
-            bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
-            if (!isDialogueActive) RefillHeartsOrEndDay();
-            else SetVariable("RefillHeartsOrEndDay", true);
-        }
-
-        SaveManager.Instance.SaveGameData();
     }
 
     // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮김

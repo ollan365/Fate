@@ -10,8 +10,6 @@ public class EventObject : MonoBehaviour
 
     [SerializeField] protected bool isInquiry = false;
 
-    protected bool isFinished = false;
-
     protected void OnMouseDown()
     {
         if (!string.IsNullOrEmpty(eventId) && EventManager.Instance)
@@ -29,12 +27,10 @@ public class EventObject : MonoBehaviour
                 GameManager.Instance.SetCurrentInquiryObjectId(null);
                 EventManager.Instance.CallEvent(eventId);
             }
-
-            //Debug.Log("현재 inquiryObjectId : " + GameManager.Instance.getCurrentInquiryObjectId());
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         GameManager.Instance.AddEventObject(this);
     }
@@ -57,16 +53,5 @@ public class EventObject : MonoBehaviour
     public void SetIsInquiry(bool isInquiry)
     {
         this.isInquiry = isInquiry;
-    }
-
-
-    public bool GetIsFinished()
-    {
-        return isFinished;
-    }
-
-    public void SetIsFinished(bool isFinished)
-    {
-        this.isFinished = isFinished;
     }
 }

@@ -12373,6 +12373,7 @@ MonoBehaviour:
   imageAndLockPanelManager: {fileID: 370811677}
   isInvestigating: 0
   tutorialManager: {fileID: 1180950097}
+  actionPointManager: {fileID: 1738100055}
   heartParent: {fileID: 1918956779}
   dayText: {fileID: 390733968}
 --- !u!4 &1149435151
@@ -18249,6 +18250,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AlphaThreshold: 0.1
+--- !u!1 &1738100053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1738100054}
+  - component: {fileID: 1738100055}
+  m_Layer: 0
+  m_Name: ActionPoint Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1738100054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738100053}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1738100055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738100053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 813b619385a8b4640b236cc31997fbd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heartPrefab: {fileID: 6969201055948651551, guid: 070edf69f3ac742a3962b3ba4cfaf5e1, type: 3}
+  heartParent: {fileID: 0}
+  dayText: {fileID: 0}
+  MaxDayNum: 5
+  actionPointsPerDay: 0
+  presentHeartIndex: 0
 --- !u!1 &1750352252
 GameObject:
   m_ObjectHideFlags: 0
@@ -21771,6 +21822,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1149435151}
+  - {fileID: 1738100054}
   - {fileID: 207145865}
   - {fileID: 1418986092}
   - {fileID: 519420032}

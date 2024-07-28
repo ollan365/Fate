@@ -33,6 +33,9 @@ public class RoomManager : MonoBehaviour
     // 튜토리얼 매니저
     public TutorialManager tutorialManager;
 
+    // 액션포인트 매니저
+    public ActionPointManager actionPointManager;
+
     // ************************* temporary members for action points *************************
     [SerializeField] GameObject heartParent;
     [SerializeField] TextMeshProUGUI dayText;
@@ -73,9 +76,9 @@ public class RoomManager : MonoBehaviour
         
         SetButtons();
 
-        GameManager.Instance.heartParent = heartParent;
-        GameManager.Instance.dayText = dayText;
-        GameManager.Instance.CreateHearts();  // create hearts on room start
+        actionPointManager.heartParent = heartParent;
+        actionPointManager.dayText = dayText;
+        actionPointManager.CreateHearts();  // create hearts on room start
 
         // 아래는 뭘 살려야할지 모르겠어서 두개 모두 살려뒀습니다
         // 참고로 SceneManager.Instance.CurrentScene == SceneType.ROOM_1이 true 이면 현재 씬이 Room1 입니당...!
