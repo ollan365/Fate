@@ -113,7 +113,9 @@ public class SceneManager : MonoBehaviour
             yield break;
         }
 
+        MemoManager.Instance.HideMemoButton = false;
         MemoManager.Instance.SetMemoButtons(true);
+
         SoundPlayer.Instance.ChangeBGM(bgmIndex);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }

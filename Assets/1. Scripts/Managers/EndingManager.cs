@@ -29,6 +29,7 @@ public class EndingManager : MonoBehaviour
 
     public void StartEnding()
     {
+        MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.isFollow = false;
         DialogueManager.Instance.dialogueType = DialogueType.ROOM;
 

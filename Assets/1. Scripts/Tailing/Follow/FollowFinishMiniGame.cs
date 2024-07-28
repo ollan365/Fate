@@ -30,6 +30,7 @@ public class FollowFinishMiniGame : MonoBehaviour
     [SerializeField] private float moveTime;
     [SerializeField] private float invincibleTime;
     public bool isGameOver = false;
+    private bool isMove = false;
     private int heartCount;
 
     [Header("Background")]
@@ -87,7 +88,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
         isGameOver = true;
 
-        // foreach (Animator a in heartAnimator) a.gameObject.SetActive(false);
+        foreach (Animator a in heartAnimator) a.gameObject.SetActive(false);
         ScreenEffect.Instance.coverPanel.color = Color.black;
 
         // 메모의 개수가 부족할 때
@@ -205,6 +206,8 @@ public class FollowFinishMiniGame : MonoBehaviour
 
     public void OnClickMoveButton(int index)
     {
+        if (isMove) return;
+        isMove = true;
         StartCoroutine(Move(index));
     }
     private IEnumerator Move(int index)
@@ -221,5 +224,6 @@ public class FollowFinishMiniGame : MonoBehaviour
         }
 
         fate.transform.position = targetPosition;
+        isMove = false;
     }
 }

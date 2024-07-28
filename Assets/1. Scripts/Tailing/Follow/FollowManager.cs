@@ -39,8 +39,10 @@ public class FollowManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) StartCoroutine(followTutorial.StartTutorial());
         extraNextButton.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
+        
+        if (GameManager.Instance.skipTutorial) return;
+        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) StartCoroutine(followTutorial.StartTutorial());
     }
 
     public void ClickObject()
@@ -127,6 +129,8 @@ public class FollowManager : MonoBehaviour
         isEnd = true;
         canClick = false;
         moveAndStopButton.SetActive(false);
+
+        MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
         followAnim.moveSpeed *= -1.5f;

@@ -124,6 +124,9 @@ public class StartLogic : MonoBehaviour
         if (!ScreenEffect.Instance.coverPanel.gameObject.activeSelf)
             StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
+        // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
+        MemoManager.Instance.HideMemoButton = true;
+
         EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);
 
