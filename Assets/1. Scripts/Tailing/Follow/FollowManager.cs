@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using TMPro;
 using static Constants;
 public class FollowManager : MonoBehaviour
@@ -7,87 +8,112 @@ public class FollowManager : MonoBehaviour
     // FollowManager를 싱글턴으로 생성
     public static FollowManager Instance { get; private set; }
 
+    [Header("UI")]
+    public Slider memoGaugeSlider;
+    [SerializeField] private Slider doubtGaugeSlider;
+    [SerializeField] private GameObject accidyDialogueBox;
+    [SerializeField] private GameObject frontCanvas;
+    public GameObject blockingPanel;
+    public GameObject eventButtonPrefab; // 특별한 오브젝트를 클릭했을 때 버튼 생성
+
+    [Header("Character")]
+    [SerializeField] private GameObject fate;
+    [SerializeField] private GameObject accidyGirl, accidyBoy;
+    private GameObject accidy;
+
+    [Header("Another Follow Manager")]
     [SerializeField] private FollowTutorial followTutorial;
-    [SerializeField] private FollowDayMiniGame miniGame;
     [SerializeField] private FollowEnd followEnd;
-    [SerializeField] private FollowFinishMiniGame followFinishMiniGame;
     public FollowAnim followAnim;
 
-    [SerializeField] private GameObject moveAndStopButton;
-    [SerializeField] private GameObject frontCanvas;
-
+    [Header("Extra")]
     [SerializeField] private GameObject extraNextButton;
     [SerializeField] private GameObject extraBlockingPanel;
     public GameObject[] extraCanvas;
     public TextMeshProUGUI[] extraDialogueText;
-
-    public GameObject blockingPanel;
-
-    // 특별한 오브젝트를 클릭했을 때 버튼 생성
-    public GameObject eventButtonPrefab;
-
     private FollowExtra extra = FollowExtra.None;
 
-    // 상태 변수
-    public bool isTutorial = false; // 튜토리얼 중인지 아닌지
-    public bool isEnd = false; // 현재 미행이 끝났는지 아닌지
-    public bool canClick = true; // 현재 오브젝트를 누를 수 있는지
-    private bool onMove; // 원래 이동 상태였는지
+    [Header("Variables")]
+    public float totalFollowSpecialObjectCount = 10;
+    private AccidyStatus accidyStatus = AccidyStatus.GREEN;
+    public bool IsTutorial { set; get; } // 튜토리얼 중인지 아닌지
+    public bool IsEnd { set; get; } // 현재 미행이 끝났는지 아닌지
+    public bool IsDialogueOpen { set; get; } // 현재 대화창이 열려있는지
+    private bool fateHide = false; // 필연이 뒤를 보고 있는가
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        extraNextButton.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
-        
-        if (GameManager.Instance.skipTutorial) return;
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) StartCoroutine(followTutorial.StartTutorial());
-    }
+        IsTutorial = false;
+        IsEnd = false;
+        IsDialogueOpen = false;
 
-    public void ClickObject()
+        extraNextButton.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
+
+        followAnim.SetCharcter(0);
+        if (GameManager.Instance.skipTutorial) { followAnim.ChangeAnimStatusToStop(false); return; }
+        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) { StartCoroutine(followTutorial.StartTutorial()); }
+    }
+    private void Start()
     {
-        if (isTutorial || isEnd) return;
+        // 우연의 성별에 따라 다른 이미지
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)
+        {
+            accidy = accidyGirl;
+        }
+        else
+        {
+            accidy = accidyBoy;
+        }
+        StartCoroutine(StartGame());
+    }
+    void Update()
+    {
+        // 스페이스바를 눌렀을 때
+        if (!IsEnd && Input.GetKeyDown(KeyCode.Space)) FateHide(true);
+
+        // 스페이스바를 뗐을 때
+        if (!IsEnd && Input.GetKeyUp(KeyCode.Space)) FateHide(false);
+    }
+    public bool ClickObject()
+    {
+        if (IsTutorial || IsEnd || IsDialogueOpen || fateHide || accidyStatus == AccidyStatus.RED) return false;
 
         // 엑스트라 캐릭터의 대사가 출력되는 중이면 끈다
         foreach(GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
 
-        canClick = false; // 다른 오브젝트를 누를 수 없게 만든다
+        followAnim.ChangeAnimStatusToStop(true);
+        IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
         frontCanvas.SetActive(false); // 플레이어를 가리는 물체들이 있는 canvas를 꺼버린다
         blockingPanel.SetActive(true); // 화면을 어둡게 만든다
-        moveAndStopButton.SetActive(false); // 이동&정지 버튼을 누를 수 없도록 화면에서 없앤다
-        onMove = !followAnim.IsStop; // 원래 이동 중이었는지를 저장
-        if (onMove) followAnim.ChangeAnimStatus(); // 이동 중이었다면 멈춘다
+
+        return true;
     }
 
-    public void EndScript(bool changeCount)
+    public void EndScript()
     {
-        if (isTutorial) // 튜토리얼 중에는 다르게 작동
+        if (IsTutorial) // 튜토리얼 중에는 다르게 작동
         {
             frontCanvas.SetActive(true);
             followTutorial.NextStep();
             return;
         }
-        else if (isEnd)
+        else if (IsEnd)
         {
             blockingPanel.SetActive(false);
             return;
         }
 
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1)
-        {
-            if (changeCount) miniGame.ClickCount++;
-            if (miniGame.ClickCount % 5 == 0) onMove = false; // 미니 게임이 끝나고 오면 움직이지 않도록 만든다
-        }
 
-        canClick = true; // 다른 오브젝트를 누를 수 있게 만든다
+        IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
         frontCanvas.SetActive(true); // 플레이어를 가리는 물체들이 있는 canvas를 켠다
         blockingPanel.SetActive(false); // 화면을 가리는 판넬을 끈다
-        moveAndStopButton.SetActive(true); // 이동&정지 버튼을 다시 화면에 드러낸다
-
-        if (onMove) followAnim.ChangeAnimStatus(); // 원래 이동 중이었다면 다시 이동하도록 만든다
 
         EndExtraDialogue(true);
+
+        followAnim.ChangeAnimStatusToStop(false);
     }
     public void OpenExtraDialogue(FollowExtra extra)
     {
@@ -124,23 +150,145 @@ public class FollowManager : MonoBehaviour
         SoundPlayer.Instance.UISoundPlay(Sound_Cat);
     }
 
-    public void FollowEndLogicStart(bool isDayMiniGame)
+    public void FollowEndLogicStart()
     {
-        isEnd = true;
-        canClick = false;
-        moveAndStopButton.SetActive(false);
+        followAnim.ChangeAnimStatusToStop(true);
+        followAnim.SetCharcter(1);
+        fate.GetComponent<Animator>().SetBool("Ending", true);
+
+        IsEnd = true;
 
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
         followAnim.moveSpeed *= -1.5f;
 
-        StartCoroutine(followEnd.EndFollow(isDayMiniGame));
-
+        StartCoroutine(followEnd.EndFollow());
     }
-    public void FollowFinishGameStart()
+
+    // ========== 미행 게임 ========== //
+    private IEnumerator StartGame()
     {
-        StartCoroutine(followFinishMiniGame.FinishGameStart(miniGame.heartCount));
+        // 우연의 움직임, 우연의 말풍선 애니메이션 시작
+        StartCoroutine(AccidyLogic());
+        StartCoroutine(AccidyDialogueBoxLogic());
+
+        // 미행이 끝날 때까지 반복
+        while (!IsEnd)
+        {
+            // 필연이 움직였고 우연이 뒤를 돌아본 상태가 중첩되면 의심 게이지 증가
+            if (!fateHide && accidyStatus == AccidyStatus.RED)
+            {
+                doubtGaugeSlider.value += 0.01f;
+                if (doubtGaugeSlider.value == 1)
+                {
+                    FollowEndLogicStart();
+                }
+            }
+            yield return null;
+        }
+    }
+
+    private void FateHide(bool hide)
+    {
+        fateHide = hide;
+        fate.GetComponent<Animator>().SetBool("Hide", hide);
+        followAnim.ChangeAnimStatusToStop(hide);
+    }
+
+    private IEnumerator AccidyLogic()
+    {
+        Animator accidyAnimator = accidy.GetComponent<Animator>();
+
+        // 3초에서 6초 사이 랜덤한 시간 동안 우연이 움직임
+        AccidyAction nextAccidyAction = AccidyAction.Stop;
+        float waitingTimeForNextAction = WaitingTimeForNextAccidyAction(nextAccidyAction), currentTime = 0;
+        while (!IsEnd)
+        {
+            while (IsDialogueOpen) { yield return null; } // 대화창이 열려있음
+            if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
+
+            Debug.Log(nextAccidyAction);
+
+            switch (nextAccidyAction)
+            {
+                case AccidyAction.Move:
+                    followAnim.ChangeAnimStatusToStop(false);
+                    nextAccidyAction = AccidyAction.Stop;
+                    break;
+
+                case AccidyAction.Stop: // 우연의 움직임을 멈춤
+                    followAnim.ChangeAnimStatusToStop(true);
+                    accidyStatus = AccidyStatus.YELLOW;
+                    nextAccidyAction = AccidyAction.Turn;
+                    break;
+
+                case AccidyAction.Turn:
+                    accidyAnimator.SetTrigger("Turn");
+                    nextAccidyAction = AccidyAction.Inverse_Stop;
+                    break;
+
+                case AccidyAction.Inverse_Stop:
+                    accidyStatus = AccidyStatus.RED;
+                    nextAccidyAction = AccidyAction.Inverse_Turn;
+                    break;
+
+                case AccidyAction.Inverse_Turn:
+                    accidyStatus = AccidyStatus.GREEN;
+                    accidyAnimator.SetTrigger("Turn");
+                    nextAccidyAction = AccidyAction.Move;
+                    break;
+            }
+
+            currentTime = 0;
+            waitingTimeForNextAction = WaitingTimeForNextAccidyAction(nextAccidyAction);
+            yield return null;
+        }
+    }
+
+    private IEnumerator AccidyDialogueBoxLogic()
+    {
+        TMP_Text text = accidyDialogueBox.GetComponentInChildren<TextMeshProUGUI>();
+        float currentTime = 0;
+        while (!IsEnd)
+        {
+            while (IsDialogueOpen) { yield return null; } // 대화창이 열려있음
+
+            if (accidyStatus == AccidyStatus.RED) { text.text = "  ?  "; currentTime = 0; }
+            if (accidyStatus == AccidyStatus.YELLOW) text.text = "...?";
+            else
+            {
+                currentTime += Time.deltaTime;
+                if (currentTime > 1)
+                {
+                    if (text.text.Length < 3) text.text += ".";
+                    else text.text = "";
+
+                    currentTime = 0;
+                }
+            }
+            yield return null;
+        }
+        accidyDialogueBox.SetActive(false);
+    }
+
+
+
+    // ================================================================================== //
+    private enum AccidyStatus { RED, YELLOW, GREEN } // 빨강: 우연이 보고 있음, 노랑: 우연이 보기 직전, 초록: 우연이 안 봄
+    private enum AccidyAction { Move, Stop, Turn, Inverse_Stop, Inverse_Turn }
+    private float WaitingTimeForNextAccidyAction(AccidyAction nextAction)
+    {
+        switch (nextAction)
+        {
+            case AccidyAction.Move: return 0.5f;
+            case AccidyAction.Stop: return Random.Range(2.5f, 5.5f);
+            case AccidyAction.Turn: return 1;
+            case AccidyAction.Inverse_Stop: return 0.5f;
+            case AccidyAction.Inverse_Turn: return 2;
+
+            default: return 0;
+        }
     }
 
     public int Int(FollowExtra extraType)

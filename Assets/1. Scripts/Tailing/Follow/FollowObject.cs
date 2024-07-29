@@ -11,15 +11,17 @@ public class FollowObject : EventObject
     [SerializeField] private float scaleValue;
     public new void OnMouseDown()
     {
-        if (!FollowManager.Instance.canClick) return; // 상호작용 할 수 없는 상태면 리턴
-        FollowManager.Instance.ClickObject();
+        if (!FollowManager.Instance.ClickObject()) return; // 상호작용 할 수 없는 상태면 리턴
 
         if (isSpecial) OnMouseDown_Special();
         else OnMouseDown_Normal();
     }
     private void OnMouseDown_Special()
     {
-        // isSpecial = false; // 이후에 클릭할 시에는 바로 OnMouseDown_Normal()가 호출되도록 한다
+        isSpecial = false; // 이후에 클릭할 시에는 바로 OnMouseDown_Normal()가 호출되도록 한다
+
+        FollowManager.Instance.memoGaugeSlider.value += 1 / FollowManager.Instance.totalFollowSpecialObjectCount;
+        Debug.Log(FollowManager.Instance.memoGaugeSlider.value);
         
         SoundPlayer.Instance.UISoundPlay(Sound_FollowSpecialObject);
 

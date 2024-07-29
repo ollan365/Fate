@@ -16,14 +16,12 @@ public class FollowTutorial : MonoBehaviour
     [SerializeField] private TextMeshProUGUI startText;
 
     private int moveButtonClickCount = 0; // 이동 버튼을 누른 횟수
-    private GameObject followTutorialCanvas;
     private int tutorialStep = 0;
 
     public IEnumerator StartTutorial()
     {
         // 다른 물체를 누를 수 없도록 만든다
-        FollowManager.Instance.isTutorial = true;
-        FollowManager.Instance.canClick = false;
+        FollowManager.Instance.IsTutorial = true;
         frontCanvas.SetActive(false);
         moveButton.SetActive(false);
 
@@ -31,9 +29,6 @@ public class FollowTutorial : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
-         // 튜토리얼 캔버스를 할당
-         followTutorialCanvas = DialogueManager.Instance.dialogueSet[Constants.DialogueType.FOLLOW_TUTORIAL.ToInt()].transform.parent.gameObject;
-        
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         yield return new WaitForSeconds(1.5f);
 
@@ -75,28 +70,14 @@ public class FollowTutorial : MonoBehaviour
         highlightPanel.SetActive(true);
 
         // 다른 물체를 누를 수 있도록 만든다
-        FollowManager.Instance.canClick = true;
+        // FollowManager.Instance.canClick = true;
     }
 
     // 이동 버튼 설명
     private void MoveButtonTutorial()
     {
-        // 이동 버튼 활성화
-        followTutorialCanvas.SetActive(true);
-        followTutorialCanvas.GetComponentInChildren<Button>().onClick.AddListener(() => followAnim.ChangeAnimStatus());
-        followTutorialCanvas.GetComponentInChildren<Button>().onClick.AddListener(() =>
-        {
-            moveButtonClickCount++;
-
-            if (FollowManager.Instance.followAnim.IsStop)
-                followTutorialCanvas.GetComponentInChildren<Button>().GetComponent<Image>().sprite = moveButtonSprite;
-            else
-                followTutorialCanvas.GetComponentInChildren<Button>().GetComponent<Image>().sprite = stopButtonSprite;
-        });
-        followTutorialCanvas.GetComponentInChildren<Button>().interactable = true;
-
         // 다른 물체를 누를 수 없도록 만든다
-        FollowManager.Instance.canClick = false;
+        // FollowManager.Instance.canClick = false;
 
         // 이동 버튼에 대한 설명
         blockingPanel.SetActive(true);
@@ -135,14 +116,13 @@ public class FollowTutorial : MonoBehaviour
         startText.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
 
-        followTutorialCanvas.SetActive(false);
         blockingPanel.SetActive(false);
 
         MemoManager.Instance.HideMemoButton = false;
         MemoManager.Instance.SetMemoButtons(true);
 
-        FollowManager.Instance.isTutorial = false;
-        FollowManager.Instance.canClick = true;
+        FollowManager.Instance.IsTutorial = false;
+        // FollowManager.Instance.canClick = true;
         frontCanvas.SetActive(true);
         moveButton.SetActive(true);
         

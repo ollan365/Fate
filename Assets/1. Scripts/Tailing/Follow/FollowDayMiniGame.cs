@@ -226,7 +226,7 @@ public class FollowDayMiniGame : MonoBehaviour
             yield return new WaitForSeconds(0.4f); // 페이드 인 아웃 끝
             followUICanvas.SetActive(true);
 
-            if (followEnd) FollowManager.Instance.FollowEndLogicStart(true);
+            // if (followEnd) FollowManager.Instance.FollowEndLogicStart(true);
         }
     }
 

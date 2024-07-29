@@ -18,8 +18,6 @@ public class FollowAnim : MonoBehaviour
     [SerializeField] private Animator[] accidyBoy, accidyGirl;
     private Animator accidy;
 
-    [SerializeField] private Image stopButtonImage; // 이동&멈춤 버튼의 이미지
-    [SerializeField] private Sprite moveSprite, stopSprite;
     private bool isStop = true; // 현재 이동 중인지를 나타내는 변수
     public bool IsStop { get => isStop; }
     private float moveTime = 0;
@@ -27,14 +25,13 @@ public class FollowAnim : MonoBehaviour
 
     private void Start()
     {
-        SetCharcter(0);
         StartCoroutine(ChangeBeaconSprite());
     }
     private void Update()
     {
         if (!isStop) // 배경 이동
         {
-            if (FollowManager.Instance.isTutorial)
+            if (FollowManager.Instance.IsTutorial)
             {
                 moveTime += Time.deltaTime;
                 if (moveTime > 2) return;
@@ -47,20 +44,21 @@ public class FollowAnim : MonoBehaviour
             CheckPosition();
         }
     }
-    public void ChangeAnimStatus()
+    public void ChangeAnimStatusToStop(bool stop)
     {
+        // 대화 중이거나, 만약 필연이 뒤돌아 있는 상태에서 다시 움직이려는 등의 상황에선 적용하지 않음
+        if (FollowManager.Instance.IsDialogueOpen || (fate.GetBool("Hide") && !stop)) return;
+
         // 이동을 멈춤 or 시작
-        isStop = !isStop;
+        isStop = stop;
 
         // 이동 중에는 발자국 소리
         SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, !isStop);
         SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, !isStop);
 
-        if (isStop) stopButtonImage.sprite = moveSprite;
-        else stopButtonImage.sprite = stopSprite;
-
-        fate.SetBool("Walking", !isStop);
+        // 애니메이션 변경
         accidy.SetBool("Walking", !isStop);
+        fate.SetBool("Walking", !isStop);
     }
     public void SetCharcter(int index)
     {
@@ -91,9 +89,8 @@ public class FollowAnim : MonoBehaviour
     {
         if (backgroundPosition.position.x < -39)
         {
-            SetCharcter(1);
-            ChangeAnimStatus();
-            FollowManager.Instance.FollowEndLogicStart(false);
+            ChangeAnimStatusToStop(true);
+            FollowManager.Instance.FollowEndLogicStart();
         }
 
 
@@ -108,12 +105,12 @@ public class FollowAnim : MonoBehaviour
         }
     }
 
-    // === 첫번째 미행 === //
+    // === 미행이 끝났을 때 === //
     public void ChangeAnimStatusOnEnd(int num)
     {
         if (num == 0)
         {
-            accidy.SetBool("Back", true);
+            accidy.SetTrigger("Turn");
         }
         else if (num == 1)
         {
@@ -164,7 +161,7 @@ public class FollowAnim : MonoBehaviour
     {
         int currentDialogueLineIndex = 0;
 
-        while (FollowManager.Instance.canClick)
+        while (!FollowManager.Instance.IsEnd)
         {
             DialogueManager.Instance.dialogues[dialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
             DialogueLine dialogueLine = DialogueManager.Instance.dialogues[dialogueID].Lines[currentDialogueLineIndex];
@@ -178,9 +175,9 @@ public class FollowAnim : MonoBehaviour
             foreach (char letter in sentence.ToCharArray())
             {
                 // 다른 물체가 클릭되었을 시
-                if (!FollowManager.Instance.canClick)
+                if (FollowManager.Instance.IsDialogueOpen)
                 {
-                    if (FollowManager.Instance.isEnd) // 미행이 끝났으면 즉시 종료
+                    if (FollowManager.Instance.IsEnd) // 미행이 끝났으면 즉시 종료
                     {
                         FollowManager.Instance.extraCanvas[speakerIndex].SetActive(false);
                         break;
@@ -192,7 +189,7 @@ public class FollowAnim : MonoBehaviour
                         FollowManager.Instance.extraDialogueText[speakerIndex].text = "";
 
                         // 다른 물체의 스크립트가 끝나기를 기다린다
-                        while (!FollowManager.Instance.canClick) yield return null;
+                        while (!FollowManager.Instance.IsDialogueOpen) yield return null;
 
                         // 다른 물체의 스크립트가 끝나면 다시 이어서 출력
                         FollowManager.Instance.extraCanvas[speakerIndex].SetActive(true);
