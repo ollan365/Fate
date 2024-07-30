@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using static Constants;
 
-public class FollowObject : EventObject
+public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private FollowObjectName objectName;
     [SerializeField] private FollowExtra extraName;
@@ -16,17 +17,29 @@ public class FollowObject : EventObject
         if (isSpecial) OnMouseDown_Special();
         else OnMouseDown_Normal();
     }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (FollowManager.Instance.CanClick) CursorManager.Instance.ChangeCursorImage(CursorImage.Glass);
+        else CursorManager.Instance.ChangeCursorImage(CursorImage.X);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        CursorManager.Instance.ChangeCursorImage(CursorImage.Normal);
+    }
+
     private void OnMouseDown_Special()
     {
         isSpecial = false; // 이후에 클릭할 시에는 바로 OnMouseDown_Normal()가 호출되도록 한다
 
         FollowManager.Instance.memoGaugeSlider.value += 1 / FollowManager.Instance.totalFollowSpecialObjectCount;
-        Debug.Log(FollowManager.Instance.memoGaugeSlider.value);
         
         SoundPlayer.Instance.UISoundPlay(Sound_FollowSpecialObject);
 
         foreach (Transform child in FollowManager.Instance.blockingPanel.transform)
             Destroy(child.gameObject);
+
+        if (objectName == FollowObjectName.Extra) { OnMouseDown_Normal(); return; }
 
         var eventButton = Instantiate(FollowManager.Instance.eventButtonPrefab, FollowManager.Instance.blockingPanel.transform).GetComponent<Button>();
 

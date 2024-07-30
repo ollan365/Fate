@@ -46,8 +46,15 @@ public class FollowAnim : MonoBehaviour
     }
     public void ChangeAnimStatusToStop(bool stop)
     {
-        // 대화 중이거나, 만약 필연이 뒤돌아 있는 상태에서 다시 움직이려는 등의 상황에선 적용하지 않음
-        if (FollowManager.Instance.IsDialogueOpen || (fate.GetBool("Hide") && !stop)) return;
+        // 대화 중이거나, 만약 필연 또는 우연이 뒤돌아 있으면 다시 이동하지 않음
+        if (!stop)
+        {
+            if (FollowManager.Instance.IsDialogueOpen
+                || FollowManager.Instance.IsFateHide
+                || FollowManager.Instance.NowAccidyStatus != FollowManager.AccidyStatus.GREEN)
+
+                return;
+        }
 
         // 이동을 멈춤 or 시작
         isStop = stop;

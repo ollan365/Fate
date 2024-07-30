@@ -9,8 +9,10 @@ public class FollowManager : MonoBehaviour
     public static FollowManager Instance { get; private set; }
 
     [Header("UI")]
+    [SerializeField] private GameObject UICanvas;
     public Slider memoGaugeSlider;
-    [SerializeField] private Slider doubtGaugeSlider;
+    [SerializeField] private Slider[] doubtGaugeSliders;
+    [SerializeField] private Image[] overHeadDoubtGaugeSliderImages;
     [SerializeField] private GameObject accidyDialogueBox;
     [SerializeField] private GameObject frontCanvas;
     public GameObject blockingPanel;
@@ -20,6 +22,8 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private GameObject fate;
     [SerializeField] private GameObject accidyGirl, accidyBoy;
     private GameObject accidy;
+    [SerializeField] private float accidyAnimatorSpeed;
+    [SerializeField] private float fateAnimatorSpeed;
 
     [Header("Another Follow Manager")]
     [SerializeField] private FollowTutorial followTutorial;
@@ -34,12 +38,14 @@ public class FollowManager : MonoBehaviour
     private FollowExtra extra = FollowExtra.None;
 
     [Header("Variables")]
-    public float totalFollowSpecialObjectCount = 10;
+    public float totalFollowSpecialObjectCount = 9;
     private AccidyStatus accidyStatus = AccidyStatus.GREEN;
+    public AccidyStatus NowAccidyStatus { get => accidyStatus; }
+    public bool CanClick { get { return !IsFateHide && accidyStatus != AccidyStatus.RED; } }
     public bool IsTutorial { set; get; } // 튜토리얼 중인지 아닌지
     public bool IsEnd { set; get; } // 현재 미행이 끝났는지 아닌지
     public bool IsDialogueOpen { set; get; } // 현재 대화창이 열려있는지
-    private bool fateHide = false; // 필연이 뒤를 보고 있는가
+    public bool IsFateHide { set; get; } // 필연이 뒤를 보고 있는가
 
     void Awake()
     {
@@ -49,6 +55,7 @@ public class FollowManager : MonoBehaviour
         IsTutorial = false;
         IsEnd = false;
         IsDialogueOpen = false;
+        IsFateHide = false;
 
         extraNextButton.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
 
@@ -59,14 +66,9 @@ public class FollowManager : MonoBehaviour
     private void Start()
     {
         // 우연의 성별에 따라 다른 이미지
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)
-        {
-            accidy = accidyGirl;
-        }
-        else
-        {
-            accidy = accidyBoy;
-        }
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)accidy = accidyGirl;
+        else  accidy = accidyBoy;
+        
         StartCoroutine(StartGame());
     }
     void Update()
@@ -79,15 +81,22 @@ public class FollowManager : MonoBehaviour
     }
     public bool ClickObject()
     {
-        if (IsTutorial || IsEnd || IsDialogueOpen || fateHide || accidyStatus == AccidyStatus.RED) return false;
+        if (IsTutorial || IsEnd || IsDialogueOpen || IsFateHide || accidyStatus == AccidyStatus.RED) return false;
 
         // 엑스트라 캐릭터의 대사가 출력되는 중이면 끈다
         foreach(GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
 
-        followAnim.ChangeAnimStatusToStop(true);
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
         frontCanvas.SetActive(false); // 플레이어를 가리는 물체들이 있는 canvas를 꺼버린다
         blockingPanel.SetActive(true); // 화면을 어둡게 만든다
+
+        accidyAnimatorSpeed = accidy.GetComponent<Animator>().speed;
+        fateAnimatorSpeed = accidy.GetComponent<Animator>().speed;
+
+        accidy.GetComponent<Animator>().speed = 0;
+        fate.GetComponent<Animator>().speed = 0;
+
+        followAnim.ChangeAnimStatusToStop(true);
 
         return true;
     }
@@ -106,12 +115,14 @@ public class FollowManager : MonoBehaviour
             return;
         }
 
-
         IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
         frontCanvas.SetActive(true); // 플레이어를 가리는 물체들이 있는 canvas를 켠다
         blockingPanel.SetActive(false); // 화면을 가리는 판넬을 끈다
 
         EndExtraDialogue(true);
+
+        accidy.GetComponent<Animator>().speed = accidyAnimatorSpeed;
+        fate.GetComponent<Animator>().speed = fateAnimatorSpeed;
 
         followAnim.ChangeAnimStatusToStop(false);
     }
@@ -152,12 +163,13 @@ public class FollowManager : MonoBehaviour
 
     public void FollowEndLogicStart()
     {
+        IsEnd = true;
+
         followAnim.ChangeAnimStatusToStop(true);
         followAnim.SetCharcter(1);
         fate.GetComponent<Animator>().SetBool("Ending", true);
 
-        IsEnd = true;
-
+        UICanvas.SetActive(false);
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
@@ -177,23 +189,37 @@ public class FollowManager : MonoBehaviour
         while (!IsEnd)
         {
             // 필연이 움직였고 우연이 뒤를 돌아본 상태가 중첩되면 의심 게이지 증가
-            if (!fateHide && accidyStatus == AccidyStatus.RED)
+            if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
-                doubtGaugeSlider.value += 0.01f;
-                if (doubtGaugeSlider.value == 1)
-                {
-                    FollowEndLogicStart();
-                }
+                ChangeGaugeAlpha(Time.deltaTime * 3);
+                doubtGaugeSliders[0].value += 0.001f;
+                doubtGaugeSliders[1].value = doubtGaugeSliders[0].value;
+                if (doubtGaugeSliders[0].value == 1) FollowEndLogicStart();
             }
+            else ChangeGaugeAlpha(-Time.deltaTime);
+
             yield return null;
         }
     }
 
+    private void ChangeGaugeAlpha(float value)
+    {
+        Color color = overHeadDoubtGaugeSliderImages[0].color;
+        color.a = Mathf.Clamp(color.a + value, 0, 1);
+        foreach (Image image in overHeadDoubtGaugeSliderImages) image.color = color;
+    }
+
     private void FateHide(bool hide)
     {
-        fateHide = hide;
+        IsFateHide = hide;
         fate.GetComponent<Animator>().SetBool("Hide", hide);
+
         followAnim.ChangeAnimStatusToStop(hide);
+
+        if (hide && CursorManager.Instance.CurrentCursor == CursorImage.Glass)
+            CursorManager.Instance.ChangeCursorImage(CursorImage.X);
+        if (!hide && CursorManager.Instance.CurrentCursor == CursorImage.X)
+            CursorManager.Instance.ChangeCursorImage(CursorImage.Glass);
     }
 
     private IEnumerator AccidyLogic()
@@ -205,14 +231,14 @@ public class FollowManager : MonoBehaviour
         float waitingTimeForNextAction = WaitingTimeForNextAccidyAction(nextAccidyAction), currentTime = 0;
         while (!IsEnd)
         {
-            while (IsDialogueOpen) { yield return null; } // 대화창이 열려있음
+            while (IsDialogueOpen) { yield return null; continue; } // 대화창이 열려있음
             if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
-
-            Debug.Log(nextAccidyAction);
 
             switch (nextAccidyAction)
             {
                 case AccidyAction.Move:
+                    accidyStatus = AccidyStatus.GREEN;
+                    if (CursorManager.Instance.CurrentCursor == CursorImage.X) CursorManager.Instance.ChangeCursorImage(CursorImage.Glass);
                     followAnim.ChangeAnimStatusToStop(false);
                     nextAccidyAction = AccidyAction.Stop;
                     break;
@@ -224,17 +250,17 @@ public class FollowManager : MonoBehaviour
                     break;
 
                 case AccidyAction.Turn:
+                    accidyStatus = AccidyStatus.RED;
+                    if (CursorManager.Instance.CurrentCursor == CursorImage.Glass) CursorManager.Instance.ChangeCursorImage(CursorImage.X);
                     accidyAnimator.SetTrigger("Turn");
                     nextAccidyAction = AccidyAction.Inverse_Stop;
                     break;
 
                 case AccidyAction.Inverse_Stop:
-                    accidyStatus = AccidyStatus.RED;
                     nextAccidyAction = AccidyAction.Inverse_Turn;
                     break;
 
                 case AccidyAction.Inverse_Turn:
-                    accidyStatus = AccidyStatus.GREEN;
                     accidyAnimator.SetTrigger("Turn");
                     nextAccidyAction = AccidyAction.Move;
                     break;
@@ -254,8 +280,9 @@ public class FollowManager : MonoBehaviour
         {
             while (IsDialogueOpen) { yield return null; } // 대화창이 열려있음
 
-            if (accidyStatus == AccidyStatus.RED) { text.text = "  ?  "; currentTime = 0; }
-            if (accidyStatus == AccidyStatus.YELLOW) text.text = "...?";
+            if (accidyStatus == AccidyStatus.RED && IsFateHide) { text.text = "  ?  "; currentTime = 0; }
+            else if (accidyStatus == AccidyStatus.RED && !IsFateHide) { text.text = "  !  "; currentTime = 0; }
+            else if (accidyStatus == AccidyStatus.YELLOW) text.text = "...?";
             else
             {
                 currentTime += Time.deltaTime;
@@ -275,7 +302,7 @@ public class FollowManager : MonoBehaviour
 
 
     // ================================================================================== //
-    private enum AccidyStatus { RED, YELLOW, GREEN } // 빨강: 우연이 보고 있음, 노랑: 우연이 보기 직전, 초록: 우연이 안 봄
+    public enum AccidyStatus { RED, YELLOW, GREEN } // 빨강: 우연이 보고 있음, 노랑: 우연이 보기 직전, 초록: 우연이 안 봄
     private enum AccidyAction { Move, Stop, Turn, Inverse_Stop, Inverse_Turn }
     private float WaitingTimeForNextAccidyAction(AccidyAction nextAction)
     {
@@ -283,7 +310,7 @@ public class FollowManager : MonoBehaviour
         {
             case AccidyAction.Move: return 0.5f;
             case AccidyAction.Stop: return Random.Range(2.5f, 5.5f);
-            case AccidyAction.Turn: return 1;
+            case AccidyAction.Turn: return 0.5f;
             case AccidyAction.Inverse_Stop: return 0.5f;
             case AccidyAction.Inverse_Turn: return 2;
 

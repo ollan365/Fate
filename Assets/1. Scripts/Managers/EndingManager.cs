@@ -12,6 +12,13 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private Image background;
     [SerializeField] private GameObject blockingPanel;
     [SerializeField] private Sprite background_room1;
+    [SerializeField] private Sprite background_follow1;
+
+    [Header("미행 1 엔딩")]
+    [SerializeField] private GameObject fate;
+    [SerializeField] private GameObject[] accidys;
+    private GameObject accidy;
+
 
     void Awake()
     {
@@ -32,6 +39,7 @@ public class EndingManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.isFollow = false;
         DialogueManager.Instance.dialogueType = DialogueType.ROOM;
+        blockingPanel.SetActive(true);
 
         // 배경 바꾸기
         switch (SceneManager.Instance.CurrentScene)
@@ -42,13 +50,18 @@ public class EndingManager : MonoBehaviour
                 StartCoroutine(Ending_Room1());
                 break;
             case SceneType.FOLLOW_1:
+                if (MemoManager.Instance.UnlockNextScene())
+                {
+                    blockingPanel.SetActive(false);
+                    background.sprite = background_follow1;
+                    background.color = Color.white;
+                }
                 StartCoroutine(Ending_Follow1());
                 break;
             case SceneType.FOLLOW_2:
                 StartCoroutine(Ending_Follow2());
                 break;
         }
-        blockingPanel.SetActive(true);
     }
     public void EndEnding(EndingType endingType)
     {
@@ -72,8 +85,41 @@ public class EndingManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2.5f);
 
-        if (MemoManager.Instance.UnlockNextScene()) // 메모의 개수가 충분할 때
-            SceneManager.Instance.LoadScene(SceneType.ROOM_2);
+        if (MemoManager.Instance.UnlockNextScene())
+        {
+            if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidys[0];
+            else accidy = accidys[1];
+
+            // 필연이 앞으로 걸어나옴
+            while (true)
+            {
+                fate.transform.position += Vector3.up * Time.deltaTime * 5;
+                if (fate.transform.position.y >= 2.3f)
+                {
+                    fate.transform.position = new(fate.transform.position.x, 2.3f, fate.transform.position.z);
+                    break;
+                }
+                yield return null;
+            }
+            yield return new WaitForSeconds(1.5f);
+
+            // 우연이 앞으로 걸어나옴
+            while (true)
+            {
+                accidy.transform.position += Vector3.up * Time.deltaTime;
+                if (accidy.transform.position.y >= 0)
+                {
+                    accidy.transform.position = new(accidy.transform.position.x, 0, accidy.transform.position.z);
+                    break;
+                }
+                yield return null;
+            }
+            yield return new WaitForSeconds(0.5f);
+
+            // 우연의 대사 시작
+            blockingPanel.SetActive(true);
+            DialogueManager.Instance.StartDialogue("Follow1Final_003");
+        }
         else
         {
             SoundPlayer.Instance.ChangeBGM(BGM_BAD);

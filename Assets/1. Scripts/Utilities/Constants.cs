@@ -3,6 +3,9 @@ public static class Constants
     // 씬의 종류
     public enum SceneType { START, ROOM_1, FOLLOW_1, ROOM_2, FOLLOW_2, ENDING }
 
+    // 커서의 종류
+    public enum CursorImage { Normal, Glass, X }
+
     // 대화창의 종류
     public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, FOLLOW_TUTORIAL, CENTER }
     public static int ToInt(this DialogueType dialogueType)

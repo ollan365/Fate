@@ -98,6 +98,10 @@ public class FollowFinishMiniGame : MonoBehaviour
             yield break;
         }
 
+        StartCoroutine(EndLogic());
+    }
+    public IEnumerator EndLogic()
+    {
         //메모의 개수가 충분할 때
         // 미니 게임 끝 (페이드 인아웃)
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
