@@ -4,7 +4,9 @@ using static Constants;
 public class CursorManager : MonoBehaviour
 {
     public static CursorManager Instance { get; private set; }
-    public CursorImage CurrentCursor { get; private set; }
+    // 커서의 종류
+    private enum CursorImage { Normal, Glass, X }
+    private CursorImage CurrentCursor { get; set; }
 
     [SerializeField] private Texture2D[] cursorTextures;
     void Awake()
@@ -15,7 +17,15 @@ public class CursorManager : MonoBehaviour
         CurrentCursor = CursorImage.Normal;
     }
 
-    public void ChangeCursorImage(CursorImage image)
+    public void ChangeCursorInFollow(bool toNormal = false)
+    {
+        if (toNormal) ChangeCursorImage(CursorImage.Normal);
+        else if (FollowManager.Instance.CanClick) ChangeCursorImage(CursorImage.Glass);
+        else ChangeCursorImage(CursorImage.X);
+
+    }
+
+    private void ChangeCursorImage(CursorImage image)
     {
         Texture2D cursorImage = null;
         switch (image)

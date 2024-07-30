@@ -19,13 +19,12 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (FollowManager.Instance.CanClick) CursorManager.Instance.ChangeCursorImage(CursorImage.Glass);
-        else CursorManager.Instance.ChangeCursorImage(CursorImage.X);
+        CursorManager.Instance.ChangeCursorInFollow();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        CursorManager.Instance.ChangeCursorImage(CursorImage.Normal);
+        CursorManager.Instance.ChangeCursorInFollow(true);
     }
 
     private void OnMouseDown_Special()

@@ -216,10 +216,7 @@ public class FollowManager : MonoBehaviour
 
         followAnim.ChangeAnimStatusToStop(hide);
 
-        if (hide && CursorManager.Instance.CurrentCursor == CursorImage.Glass)
-            CursorManager.Instance.ChangeCursorImage(CursorImage.X);
-        if (!hide && CursorManager.Instance.CurrentCursor == CursorImage.X)
-            CursorManager.Instance.ChangeCursorImage(CursorImage.Glass);
+        CursorManager.Instance.ChangeCursorInFollow();
     }
 
     private IEnumerator AccidyLogic()
@@ -237,8 +234,6 @@ public class FollowManager : MonoBehaviour
             switch (nextAccidyAction)
             {
                 case AccidyAction.Move:
-                    accidyStatus = AccidyStatus.GREEN;
-                    if (CursorManager.Instance.CurrentCursor == CursorImage.X) CursorManager.Instance.ChangeCursorImage(CursorImage.Glass);
                     followAnim.ChangeAnimStatusToStop(false);
                     nextAccidyAction = AccidyAction.Stop;
                     break;
@@ -251,7 +246,7 @@ public class FollowManager : MonoBehaviour
 
                 case AccidyAction.Turn:
                     accidyStatus = AccidyStatus.RED;
-                    if (CursorManager.Instance.CurrentCursor == CursorImage.Glass) CursorManager.Instance.ChangeCursorImage(CursorImage.X);
+                    CursorManager.Instance.ChangeCursorInFollow();
                     accidyAnimator.SetTrigger("Turn");
                     nextAccidyAction = AccidyAction.Inverse_Stop;
                     break;
@@ -261,6 +256,8 @@ public class FollowManager : MonoBehaviour
                     break;
 
                 case AccidyAction.Inverse_Turn:
+                    accidyStatus = AccidyStatus.GREEN;
+                    CursorManager.Instance.ChangeCursorInFollow();
                     accidyAnimator.SetTrigger("Turn");
                     nextAccidyAction = AccidyAction.Move;
                     break;
