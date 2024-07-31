@@ -38,7 +38,7 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
         foreach (Transform child in FollowManager.Instance.blockingPanel.transform)
             Destroy(child.gameObject);
 
-        if (objectName == FollowObjectName.Extra) { OnMouseDown_Normal(); return; }
+        if (objectName == FollowObjectName.Extra || FollowManager.Instance.IsTutorial) { OnMouseDown_Normal(); return; }
 
         var eventButton = Instantiate(FollowManager.Instance.eventButtonPrefab, FollowManager.Instance.blockingPanel.transform).GetComponent<Button>();
 

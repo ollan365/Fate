@@ -38,7 +38,7 @@ public class FollowManager : MonoBehaviour
     private FollowExtra extra = FollowExtra.None;
 
     [Header("Variables")]
-    public float totalFollowSpecialObjectCount = 9;
+    public float totalFollowSpecialObjectCount = 10;
     private AccidyStatus accidyStatus = AccidyStatus.GREEN;
     public AccidyStatus NowAccidyStatus { get => accidyStatus; }
     public bool CanClick { get { return !IsFateHide && accidyStatus != AccidyStatus.RED; } }
@@ -59,29 +59,26 @@ public class FollowManager : MonoBehaviour
 
         extraNextButton.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
 
+        // 우연의 성별에 따라 다른 이미지
         followAnim.SetCharcter(0);
-        if (GameManager.Instance.skipTutorial) { followAnim.ChangeAnimStatusToStop(false); return; }
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidyGirl;
+        else accidy = accidyBoy;
+
+        if (GameManager.Instance.skipTutorial) { followAnim.ChangeAnimStatusToStop(false); StartCoroutine(StartGame()); return; }
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) { StartCoroutine(followTutorial.StartTutorial()); }
     }
-    private void Start()
-    {
-        // 우연의 성별에 따라 다른 이미지
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)accidy = accidyGirl;
-        else  accidy = accidyBoy;
-        
-        StartCoroutine(StartGame());
-    }
+
     void Update()
     {
         // 스페이스바를 눌렀을 때
-        if (!IsEnd && Input.GetKeyDown(KeyCode.Space)) FateHide(true);
+        if (!IsEnd && !IsTutorial && Input.GetKeyDown(KeyCode.Space)) FateHide(true);
 
         // 스페이스바를 뗐을 때
-        if (!IsEnd && Input.GetKeyUp(KeyCode.Space)) FateHide(false);
+        if (!IsEnd && !IsTutorial && Input.GetKeyUp(KeyCode.Space)) FateHide(false);
     }
     public bool ClickObject()
     {
-        if (IsTutorial || IsEnd || IsDialogueOpen || IsFateHide || accidyStatus == AccidyStatus.RED) return false;
+        if (IsEnd || IsDialogueOpen || IsFateHide || accidyStatus == AccidyStatus.RED) return false;
 
         // 엑스트라 캐릭터의 대사가 출력되는 중이면 끈다
         foreach(GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
@@ -103,6 +100,9 @@ public class FollowManager : MonoBehaviour
 
     public void EndScript()
     {
+        accidy.GetComponent<Animator>().speed = accidyAnimatorSpeed;
+        fate.GetComponent<Animator>().speed = fateAnimatorSpeed;
+
         if (IsTutorial) // 튜토리얼 중에는 다르게 작동
         {
             frontCanvas.SetActive(true);
@@ -120,9 +120,6 @@ public class FollowManager : MonoBehaviour
         blockingPanel.SetActive(false); // 화면을 가리는 판넬을 끈다
 
         EndExtraDialogue(true);
-
-        accidy.GetComponent<Animator>().speed = accidyAnimatorSpeed;
-        fate.GetComponent<Animator>().speed = fateAnimatorSpeed;
 
         followAnim.ChangeAnimStatusToStop(false);
     }
@@ -179,7 +176,7 @@ public class FollowManager : MonoBehaviour
     }
 
     // ========== 미행 게임 ========== //
-    private IEnumerator StartGame()
+    public IEnumerator StartGame()
     {
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
         StartCoroutine(AccidyLogic());
