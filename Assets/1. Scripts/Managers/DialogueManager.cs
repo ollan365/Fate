@@ -242,7 +242,7 @@ public class DialogueManager : MonoBehaviour
             else // 행인의 대사인 경우
             {
                 FollowManager.Instance.EndExtraDialogue(false);
-                FollowManager.Instance.OpenExtraDialogue(FollowManager.Instance.ToEnum(speaker));
+                FollowManager.Instance.OpenExtraDialogue(speaker);
             }
         }
     }

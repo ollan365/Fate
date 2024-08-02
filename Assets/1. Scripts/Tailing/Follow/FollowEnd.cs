@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FollowEnd : MonoBehaviour
 {
+    private Animator Accidy { get => FollowManager.Instance.Accidy; }
+    private Animator Fate { get => FollowManager.Instance.Fate; }
     private Camera mainCam;
     private float zoomTime = 1.5f;
     private enum Position { Fate, Accidy, ZoomOut }
@@ -40,7 +42,7 @@ public class FollowEnd : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         // 우연이 뒤돌아봄
-        FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(0);
+        ChangeAnimStatusOnEnd(0);
         SoundPlayer.Instance.UISoundPlay(Constants.Sound_TurnAround);
         yield return new WaitForSeconds(0.5f);
 
@@ -50,10 +52,10 @@ public class FollowEnd : MonoBehaviour
 
         // 뒷걸음질 3번 후 뒤돌아서 1.5배속 달리기
         SoundPlayer.Instance.UISoundPlay(Constants.Sound_FollowEnd);
-        FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(1);
+        ChangeAnimStatusOnEnd(1);
         for (int i = 0; i < 3; i++)
         {
-            StartCoroutine(FollowManager.Instance.followAnim.MoveFate());
+            StartCoroutine(MoveFate());
             yield return new WaitForSeconds(1f);
         }
 
@@ -61,7 +63,7 @@ public class FollowEnd : MonoBehaviour
         StartCoroutine(ZoomIn(Position.ZoomOut));
 
         // 페이드 아웃
-        FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(2);
+        ChangeAnimStatusOnEnd(2);
         yield return new WaitForSeconds(1f);
 
         // 미행 끝
@@ -106,5 +108,42 @@ public class FollowEnd : MonoBehaviour
         // 변경이 완료된 후 최종 목표값으로 설정
         mainCam.transform.position = targetPosition;
         mainCam.orthographicSize = targetSize;
+    }
+
+    // === 미행이 끝났을 때 === //
+    public void ChangeAnimStatusOnEnd(int num)
+    {
+        if (num == 0)
+        {
+            Accidy.SetTrigger("Turn");
+        }
+        else if (num == 1)
+        {
+            Fate.speed = 0.6f;
+            Fate.SetBool("Walking", true);
+        }
+        else if (num == 2)
+        {
+            Fate.SetBool("Walking", false);
+            Fate.SetTrigger("Turn");
+        }
+    }
+    public IEnumerator MoveFate()
+    {
+        Accidy.gameObject.SetActive(false); // 꺼두지 않으면 카메라 원상 복귀 때 화면에 잡힘
+
+        Vector3 originPosition = Fate.transform.position;
+        Vector3 targetPosition = originPosition + new Vector3(-0.3f, 0, 0);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 1.2f)
+        {
+            Fate.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / 1.2f);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Fate.transform.position = targetPosition;
     }
 }

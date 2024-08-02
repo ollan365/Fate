@@ -5,8 +5,6 @@ using System.Collections;
 
 public class FollowTutorial : MonoBehaviour
 {
-    [SerializeField] private FollowAnim followAnim;
-
     [SerializeField] private GameObject frontCanvas;
     [SerializeField] private GameObject highlightPanel;
     [SerializeField] private GameObject blockingPanel;
@@ -171,7 +169,6 @@ public class FollowTutorial : MonoBehaviour
         accidyDialogueBox[1].SetActive(false);
         accidy.SetActive(false);
 
-        followAnim.ChangeAnimStatusToStop(false);
-        StartCoroutine(FollowManager.Instance.StartGame());
+        FollowManager.Instance.StartFollow();
     }
 }
