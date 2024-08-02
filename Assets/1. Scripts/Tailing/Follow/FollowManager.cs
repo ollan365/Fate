@@ -18,7 +18,7 @@ public class FollowManager : MonoBehaviour
 
     [Header("Character")]
     [SerializeField] private Animator fate;
-    [SerializeField] private Animator[] accidyGirl, accidyBoy;
+    [SerializeField] private Animator accidyGirl, accidyBoy;
     private Animator accidy;
     public Animator Accidy { get => accidy; }
     public Animator Fate { get => fate; }
@@ -66,11 +66,13 @@ public class FollowManager : MonoBehaviour
         if (accidy != null) accidy.gameObject.SetActive(false);
 
         // 우연의 성별에 따라 다른 애니메이터 작동
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidyGirl[index];
-        else accidy = accidyBoy[index];
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidyGirl;
+        else accidy = accidyBoy;
 
-        fate.gameObject.SetActive(true);
         accidy.gameObject.SetActive(true);
+
+        if (index == 0) accidy.transform.SetAsFirstSibling();
+        if (index == 1) accidy.transform.SetAsLastSibling();
     }
 
     // ==================== 미행 다이얼로그 ==================== //
@@ -170,7 +172,7 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
-        followGameManager.moveSpeed *= -1.5f;
+        followGameManager.backgroundMoveSpeed *= -1.5f;
 
         StartCoroutine(followEnd.EndFollow());
     }

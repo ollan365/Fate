@@ -13,8 +13,10 @@ public class FollowGameManager : MonoBehaviour
 
     [SerializeField] private Transform backgroundPosition;
     [SerializeField] private Transform frontCanvasPosition;
-    public float moveSpeed;
+    public float backgroundMoveSpeed;
+    public float fateMoveSpeed;
     private float tutorialMoveTime = 0;
+    public bool StopBackground { get; set; }
 
     private AccidyStatus accidyStatus = AccidyStatus.GREEN;
     public AccidyStatus NowAccidyStatus { get => accidyStatus; }
@@ -26,17 +28,12 @@ public class FollowGameManager : MonoBehaviour
     private bool IsEnd { get; set; }
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
     public bool IsFateHide { get; private set; }
-
+    private bool IsFateMove { get; set; }
     void Update()
     {
-        // 배경 이동
-        if (!IsFateHide && accidyStatus == AccidyStatus.GREEN && !IsDialogueOpen) MoveBackground();
+        if (!StopBackground) MoveBackground();
 
-        // 스페이스바를 눌렀을 때
-        if (!IsEnd && !IsTutorial && Input.GetKeyDown(KeyCode.Space)) FateHide(true);
-
-        // 스페이스바를 뗐을 때
-        if (!IsEnd && !IsTutorial && Input.GetKeyUp(KeyCode.Space)) FateHide(false);
+        if (!IsEnd && !IsTutorial && !IsDialogueOpen) MoveFate();
     }
     private void MoveBackground()
     {
@@ -46,27 +43,53 @@ public class FollowGameManager : MonoBehaviour
             if (tutorialMoveTime > 2) return;
         }
 
-        Vector3 moveVector = Vector3.left * moveSpeed * Time.deltaTime;
+        Vector3 moveVector = Vector3.left * backgroundMoveSpeed * Time.deltaTime;
+        Fate.transform.position += moveVector;
         backgroundPosition.position += moveVector;
         frontCanvasPosition.position += moveVector;
 
         FollowManager.Instance.CheckPosition(backgroundPosition.position);
+    }
+    private void MoveFate()
+    {
+        if(Input.GetKeyDown(KeyCode.Space)) FateHide(true);
+
+        if (!IsFateHide)
+        {
+            IsFateMove = false;
+            if (Input.GetKey(KeyCode.A))
+            {
+                Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
+                Fate.SetBool("Right", false);
+                IsFateMove = true;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                Fate.transform.Translate(Vector3.right * fateMoveSpeed * Time.deltaTime);
+                Fate.SetBool("Right", true);
+                IsFateMove = true;
+            }
+            SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, IsFateMove);
+            Fate.SetBool("Walking", IsFateMove);
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space)) FateHide(false);
     }
     public void ChangeAnimStatusToStop(bool stop)
     {
         // 대화 중이거나, 만약 필연 또는 우연이 뒤돌아 있으면 다시 이동하지 않음
         if (!stop)
         {
-            if (IsDialogueOpen || IsFateHide || accidyStatus != AccidyStatus.GREEN) return;
+            if (IsDialogueOpen || accidyStatus != AccidyStatus.GREEN) return;
         }
+
+        StopBackground = stop;
 
         // 이동 중에는 발자국 소리
         SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, !stop);
-        SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, !stop);
 
         // 애니메이션 변경
         Accidy.SetBool("Walking", !stop);
-        Fate.SetBool("Walking", !stop);
     }
     public void StartGame()
     {
@@ -76,6 +99,9 @@ public class FollowGameManager : MonoBehaviour
     }
     private IEnumerator StartGameLogic()
     {
+        StopBackground = false;
+        IsFateMove = false;
+
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
         StartCoroutine(AccidyLogic());
         StartCoroutine(AccidyDialogueBoxLogic());
@@ -108,8 +134,6 @@ public class FollowGameManager : MonoBehaviour
     {
         IsFateHide = hide;
         Fate.SetBool("Hide", hide);
-
-        ChangeAnimStatusToStop(hide);
 
         CursorManager.Instance.ChangeCursorInFollow();
     }
