@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FollowEnd : MonoBehaviour
 {
+    [SerializeField] private FollowGameManager followGameManager;
+    [SerializeField] private GameObject frontCanvas;
     private Animator Accidy { get => FollowManager.Instance.Accidy; }
     private Animator Fate { get => FollowManager.Instance.Fate; }
     private Camera mainCam;
@@ -21,11 +23,13 @@ public class FollowEnd : MonoBehaviour
 
         // 스크립트 "Follow1Fianal" 출력 + 느낌표
         FollowManager.Instance.blockingPanel.SetActive(true);
+        frontCanvas.SetActive(false);
         DialogueManager.Instance.StartDialogue("Follow1Final_001");
 
         // 스크립트가 끝날 때까지 대기
         while (FollowManager.Instance.blockingPanel.activeSelf)
             yield return null;
+        frontCanvas.SetActive(true);
         yield return new WaitForSeconds(0.5f);
 
         // 우연으로 줌인
@@ -34,15 +38,17 @@ public class FollowEnd : MonoBehaviour
 
         // 우연 대사 출력
         FollowManager.Instance.blockingPanel.SetActive(true);
+        frontCanvas.SetActive(false);
         DialogueManager.Instance.StartDialogue("Follow1Final_002");
 
         // 스크립트가 끝날 때까지 대기
         while (FollowManager.Instance.blockingPanel.activeSelf)
             yield return null;
+        frontCanvas.SetActive(true);
         yield return new WaitForSeconds(0.5f);
 
         // 우연이 뒤돌아봄
-        ChangeAnimStatusOnEnd(0);
+        Accidy.SetBool("Back", true);
         SoundPlayer.Instance.UISoundPlay(Constants.Sound_TurnAround);
         yield return new WaitForSeconds(0.5f);
 
@@ -52,7 +58,8 @@ public class FollowEnd : MonoBehaviour
 
         // 뒷걸음질 3번 후 뒤돌아서 1.5배속 달리기
         SoundPlayer.Instance.UISoundPlay(Constants.Sound_FollowEnd);
-        ChangeAnimStatusOnEnd(1);
+        Fate.speed = 0.6f;
+        Fate.SetBool("Walking", true);
         for (int i = 0; i < 3; i++)
         {
             StartCoroutine(MoveFate());
@@ -63,7 +70,9 @@ public class FollowEnd : MonoBehaviour
         StartCoroutine(ZoomIn(Position.ZoomOut));
 
         // 페이드 아웃
-        ChangeAnimStatusOnEnd(2);
+        Fate.SetBool("Walking", false);
+        Fate.SetTrigger("Turn");
+        followGameManager.ChangeAnimStatusToStop(false);
         yield return new WaitForSeconds(1f);
 
         // 미행 끝
@@ -81,7 +90,7 @@ public class FollowEnd : MonoBehaviour
         switch (type)
         {
             case Position.Fate:
-                targetPosition = new(0, -2, -10);
+                targetPosition = new(Fate.transform.position.x, -2, -10);
                 targetSize = 3;
                 break;
 
@@ -111,23 +120,6 @@ public class FollowEnd : MonoBehaviour
     }
 
     // === 미행이 끝났을 때 === //
-    public void ChangeAnimStatusOnEnd(int num)
-    {
-        if (num == 0)
-        {
-            Accidy.SetTrigger("Turn");
-        }
-        else if (num == 1)
-        {
-            Fate.speed = 0.6f;
-            Fate.SetBool("Walking", true);
-        }
-        else if (num == 2)
-        {
-            Fate.SetBool("Walking", false);
-            Fate.SetTrigger("Turn");
-        }
-    }
     public IEnumerator MoveFate()
     {
         Accidy.gameObject.SetActive(false); // 꺼두지 않으면 카메라 원상 복귀 때 화면에 잡힘

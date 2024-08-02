@@ -9,7 +9,7 @@ public class FollowManager : MonoBehaviour
     public static FollowManager Instance { get; private set; }
 
     [Header("UI")]
-    [SerializeField] private GameObject UICanvas;
+    [SerializeField] private GameObject[] UI_OffAtEnd;
     public GameObject blockingPanel;
     public GameObject eventButtonPrefab; // 특별한 오브젝트를 클릭했을 때 버튼 생성
     [SerializeField] private Image beaconImage;
@@ -71,8 +71,8 @@ public class FollowManager : MonoBehaviour
 
         accidy.gameObject.SetActive(true);
 
-        if (index == 0) accidy.transform.SetAsFirstSibling();
-        if (index == 1) accidy.transform.SetAsLastSibling();
+        if (index == 0) accidy.transform.parent.SetAsFirstSibling();
+        if (index == 1) accidy.transform.parent.SetAsLastSibling();
     }
 
     // ==================== 미행 다이얼로그 ==================== //
@@ -80,11 +80,11 @@ public class FollowManager : MonoBehaviour
     {
         if (IsEnd || IsDialogueOpen || !CanClick) return false;
 
-        accidyAnimatorSpeed = Accidy.GetComponent<Animator>().speed;
-        fateAnimatorSpeed = Fate.GetComponent<Animator>().speed;
+        accidyAnimatorSpeed = Accidy.speed;
+        fateAnimatorSpeed = Fate.speed;
 
-        Accidy.GetComponent<Animator>().speed = 0;
-        Fate.GetComponent<Animator>().speed = 0;
+        Accidy.speed = 0;
+        Fate.speed = 0;
 
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
         followDialogueManager.ClickObject();
@@ -94,8 +94,8 @@ public class FollowManager : MonoBehaviour
     }
     public void EndScript()
     {
-        Accidy.GetComponent<Animator>().speed = accidyAnimatorSpeed;
-        Fate.GetComponent<Animator>().speed = fateAnimatorSpeed;
+        Accidy.speed = accidyAnimatorSpeed;
+        Fate.speed = fateAnimatorSpeed;
 
         IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
 
@@ -146,7 +146,6 @@ public class FollowManager : MonoBehaviour
     {
         if (position.x < -39)
         {
-            followGameManager.ChangeAnimStatusToStop(true);
             FollowEndLogicStart();
         }
 
@@ -165,10 +164,18 @@ public class FollowManager : MonoBehaviour
         IsEnd = true;
 
         followGameManager.ChangeAnimStatusToStop(true);
+        followDialogueManager.ChangeFollowDialogueToOrigin();
         SetCharcter(1);
-        fate.GetComponent<Animator>().SetBool("Ending", true);
 
-        UICanvas.SetActive(false);
+        // 필연과 우연의 방향 조정
+        Fate.SetBool("Hide", false);
+        Fate.SetBool("Right", true);
+        Fate.SetBool("Walking", false);
+        Accidy.SetBool("Walking", false);
+        Accidy.SetBool("Back", false);
+
+        foreach(GameObject ui in UI_OffAtEnd) ui.SetActive(false);
+
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 

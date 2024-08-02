@@ -13,6 +13,8 @@ public class FollowDialogueManager : MonoBehaviour
     [SerializeField] private GameObject[] fateDialogueSet;
     [SerializeField] private GameObject[] fateDialogueNextPanel;
     [SerializeField] private TextMeshProUGUI[] fateDialogueText;
+    private GameObject[] followOriginDialogueSet = new GameObject[2];
+    private TextMeshProUGUI[] followOriginDialogueText = new TextMeshProUGUI[2];
     [SerializeField] private GameObject extraNextButton;
     [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private GameObject[] extraCanvas;
@@ -25,6 +27,11 @@ public class FollowDialogueManager : MonoBehaviour
 
     private void Awake()
     {
+        followOriginDialogueSet[0] = DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW.ToInt()];
+        followOriginDialogueText[0] = DialogueManager.Instance.scriptText[DialogueType.FOLLOW.ToInt()];
+        followOriginDialogueSet[1] = DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_THINKING.ToInt()];
+        followOriginDialogueText[1] = DialogueManager.Instance.scriptText[DialogueType.FOLLOW_THINKING.ToInt()];
+
         DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW.ToInt()] = fateDialogueSet[0];
         DialogueManager.Instance.scriptText[DialogueType.FOLLOW.ToInt()] = fateDialogueText[0];
         DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_THINKING.ToInt()] = fateDialogueSet[1];
@@ -153,7 +160,13 @@ public class FollowDialogueManager : MonoBehaviour
         }
     }
 
-
+    public void ChangeFollowDialogueToOrigin()
+    {
+        DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW.ToInt()] = followOriginDialogueSet[0];
+        DialogueManager.Instance.scriptText[DialogueType.FOLLOW.ToInt()] = followOriginDialogueText[0];
+        DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_THINKING.ToInt()] = followOriginDialogueSet[1];
+        DialogueManager.Instance.scriptText[DialogueType.FOLLOW_THINKING.ToInt()] = followOriginDialogueText[1];
+    }
 
     public int Int(FollowExtra extraType)
     {

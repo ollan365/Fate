@@ -25,7 +25,7 @@ public class FollowGameManager : MonoBehaviour
     private Animator Accidy { get => FollowManager.Instance.Accidy; }
 
     private bool IsTutorial { get => FollowManager.Instance.IsTutorial; }
-    private bool IsEnd { get; set; }
+    private bool IsEnd { get => FollowManager.Instance.IsEnd; }
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
     public bool IsFateHide { get; private set; }
     private bool IsFateMove { get; set; }
@@ -44,11 +44,11 @@ public class FollowGameManager : MonoBehaviour
         }
 
         Vector3 moveVector = Vector3.left * backgroundMoveSpeed * Time.deltaTime;
-        Fate.transform.position += moveVector;
+        if (!IsEnd) Fate.transform.position += moveVector;
         backgroundPosition.position += moveVector;
         frontCanvasPosition.position += moveVector;
 
-        FollowManager.Instance.CheckPosition(backgroundPosition.position);
+        if (!IsEnd) FollowManager.Instance.CheckPosition(backgroundPosition.position);
     }
     private void MoveFate()
     {
@@ -78,7 +78,7 @@ public class FollowGameManager : MonoBehaviour
     public void ChangeAnimStatusToStop(bool stop)
     {
         // 대화 중이거나, 만약 필연 또는 우연이 뒤돌아 있으면 다시 이동하지 않음
-        if (!stop)
+        if (!stop && !IsEnd)
         {
             if (IsDialogueOpen || accidyStatus != AccidyStatus.GREEN) return;
         }
@@ -145,7 +145,7 @@ public class FollowGameManager : MonoBehaviour
         float waitingTimeForNextAction = WaitingTimeForNextAccidyAction(nextAccidyAction), currentTime = 0;
         while (!IsEnd)
         {
-            while (IsDialogueOpen) { yield return null; continue; } // 대화창이 열려있음
+            while (IsDialogueOpen || (!IsFateHide && accidyStatus == AccidyStatus.RED)) { yield return null; continue; } // 대화창이 열려있음
             if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
 
             switch (nextAccidyAction)
@@ -164,7 +164,7 @@ public class FollowGameManager : MonoBehaviour
                 case AccidyAction.Turn:
                     accidyStatus = AccidyStatus.RED;
                     CursorManager.Instance.ChangeCursorInFollow();
-                    Accidy.SetTrigger("Turn");
+                    Accidy.SetBool("Back", true);
                     nextAccidyAction = AccidyAction.Inverse_Stop;
                     break;
 
@@ -175,7 +175,7 @@ public class FollowGameManager : MonoBehaviour
                 case AccidyAction.Inverse_Turn:
                     accidyStatus = AccidyStatus.GREEN;
                     CursorManager.Instance.ChangeCursorInFollow();
-                    Accidy.SetTrigger("Turn");
+                    Accidy.SetBool("Back", false);
                     nextAccidyAction = AccidyAction.Move;
                     break;
             }
