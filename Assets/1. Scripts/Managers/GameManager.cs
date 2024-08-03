@@ -72,13 +72,15 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        variables["Language"] = 1;  // 시스템 언어
     }
     
     void Start()
     {
         // ------------------------- 변수 초기화 -------------------------
         // 1. 시스템 관련 변수들
-        variables["Language"] = 1;  // 시스템 언어
+        // variables["Language"] = 1;  // 시스템 언어
         
         variables["FateName"] = "필연";  // 필연 이름
         variables["FateGender"] = 0;  // 필연 성별 {0: 여자, 1: 남자}

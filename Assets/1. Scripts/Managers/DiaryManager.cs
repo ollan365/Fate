@@ -135,11 +135,11 @@ public class DiaryManager : PageContentsManager
         // Debug.Log($"flipRightButtonOn: {flipRightButtonOn}\n\tcurrentPage: {currentPage}\n\ttotalPageCount: {totalPageCount}");
         flipRightButton.SetActive(flipRightButtonOn);
 
-        // 방탈출2 다이어리 관련
+        // ?????2 ????? ????
         if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect")
             && presentPageNum == 2 && diaryType == "Diary2")
         {
-            // 다이어리 내용 끝까지인 2페이지 확인하면 다이어리 내용 확인 스크립트 출력됨
+            // ????? ???? ???????? 2?????? ?????? ????? ???? ??? ?????? ????
             DialogueManager.Instance.StartDialogue("RoomEscape2_016");
         }
     }

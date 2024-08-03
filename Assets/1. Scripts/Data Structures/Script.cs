@@ -19,7 +19,9 @@ public class Script
     
     public string GetScript()
     {
-        switch (GameManager.Instance.GetVariable("Language"))
+        int languageInt = (int)GameManager.Instance.GetVariable("Language");
+        
+        switch (languageInt)
         {
             case 0: return TextFormat(EngScript);
             case 1: return TextFormat(KorScript);
