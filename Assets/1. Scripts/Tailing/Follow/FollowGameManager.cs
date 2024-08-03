@@ -45,6 +45,7 @@ public class FollowGameManager : MonoBehaviour
 
         Vector3 moveVector = Vector3.left * backgroundMoveSpeed * Time.deltaTime;
         if (!IsEnd) Fate.transform.position += moveVector;
+        else Accidy.transform.position += moveVector;
         backgroundPosition.position += moveVector;
         frontCanvasPosition.position += moveVector;
 
@@ -159,6 +160,7 @@ public class FollowGameManager : MonoBehaviour
                     ChangeAnimStatusToStop(true);
                     accidyStatus = AccidyStatus.YELLOW;
                     nextAccidyAction = AccidyAction.Turn;
+                    SoundPlayer.Instance.ChangeBGM(BGM_STOP);
                     break;
 
                 case AccidyAction.Turn:
@@ -166,6 +168,7 @@ public class FollowGameManager : MonoBehaviour
                     CursorManager.Instance.ChangeCursorInFollow();
                     Accidy.SetBool("Back", true);
                     nextAccidyAction = AccidyAction.Inverse_Stop;
+                    StartCoroutine(CameraMove());
                     break;
 
                 case AccidyAction.Inverse_Stop:
@@ -177,6 +180,7 @@ public class FollowGameManager : MonoBehaviour
                     CursorManager.Instance.ChangeCursorInFollow();
                     Accidy.SetBool("Back", false);
                     nextAccidyAction = AccidyAction.Move;
+                    SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
                     break;
             }
 
@@ -212,7 +216,38 @@ public class FollowGameManager : MonoBehaviour
         }
         accidyDialogueBox.SetActive(false);
     }
+    private IEnumerator CameraMove()
+    {
+        Vector3 originPosition = Camera.main.transform.position;
+        float originSize = Camera.main.orthographicSize;
 
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 1.5f)
+        {
+            float targetSize = Mathf.Clamp((8 - Fate.transform.position.x) / 3, 3, 5);
+            Vector3 targetPosition = new((Fate.transform.position.x + 8) / 2, targetSize - 5, -10);
+
+            Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / 1.5f);
+            Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / 1.5f);
+                        
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        while (!IsEnd && accidyStatus != AccidyStatus.GREEN)
+        {
+            float targetSize = Mathf.Clamp((8 - Fate.transform.position.x) / 3, 3, 5);
+            Vector3 targetPosition = new((Fate.transform.position.x + 8) / 2, targetSize - 5, -10);
+
+            Camera.main.transform.position = targetPosition;
+            Camera.main.orthographicSize = targetSize;
+
+            yield return null;
+        }
+
+        if(!IsEnd) FollowManager.Instance.Zoom(FollowManager.Position.ZoomOut);
+    }
 
     public enum AccidyStatus { RED, YELLOW, GREEN } // 빨강: 우연이 보고 있음, 노랑: 우연이 보기 직전, 초록: 우연이 안 봄
     private enum AccidyAction { Move, Stop, Turn, Inverse_Stop, Inverse_Turn }

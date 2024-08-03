@@ -3586,7 +3586,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 1.9, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -13794,8 +13794,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1174265926}
-  - component: {fileID: 1174265928}
-  - component: {fileID: 1174265927}
   m_Layer: 5
   m_Name: Fate Canvas
   m_TagString: Untagged
@@ -13823,48 +13821,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 1545}
-  m_SizeDelta: {x: 7680.37, y: 4320.18}
+  m_SizeDelta: {x: 15000, y: 4320.18}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1174265927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1174265925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!223 &1174265928
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1174265925}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
 --- !u!1 &1192386613
 GameObject:
   m_ObjectHideFlags: 0
@@ -15679,7 +15637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18374,7 +18332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18761,8 +18719,8 @@ MonoBehaviour:
   followEnd: {fileID: 1830803162}
   followDialogueManager: {fileID: 1830803165}
   followGameManager: {fileID: 1830803166}
-  accidyAnimatorSpeed: 0
-  fateAnimatorSpeed: 0
+  accidyAnimatorSpeed: 1
+  fateAnimatorSpeed: 1
   totalFollowSpecialObjectCount: 9
 --- !u!114 &1830803161
 MonoBehaviour:
@@ -18801,7 +18759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followGameManager: {fileID: 1830803166}
-  frontCanvas: {fileID: 962461526}
+  frontCanvas: {fileID: 623925379}
 --- !u!114 &1830803164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18829,7 +18787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4b1fbc45b29e904f87402b51fd67062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontCanvas: {fileID: 962461526}
+  frontCanvas: {fileID: 623925379}
   fateDialogueSet:
   - {fileID: 660779734}
   - {fileID: 1939002032}
