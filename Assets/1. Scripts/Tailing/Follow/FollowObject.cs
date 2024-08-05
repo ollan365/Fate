@@ -14,6 +14,8 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
     {
         if (!FollowManager.Instance.ClickObject()) return; // 상호작용 할 수 없는 상태면 리턴
 
+        FollowManager.Instance.ClickCount++;
+
         if (isSpecial) OnMouseDown_Special();
         else OnMouseDown_Normal();
     }

@@ -39,6 +39,7 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private float fateAnimatorSpeed;
     public float totalFollowSpecialObjectCount = 10;
     
+    public int ClickCount { get; set; }
     public bool CanClick { get { return !followGameManager.IsFateHide && followGameManager.NowAccidyStatus != FollowGameManager.AccidyStatus.RED; } }
     public bool IsTutorial { set; get; } // 튜토리얼 중인지 아닌지
     public bool IsEnd { set; get; } // 현재 미행이 끝났는지 아닌지
@@ -52,6 +53,7 @@ public class FollowManager : MonoBehaviour
         IsTutorial = false;
         IsEnd = false;
         IsDialogueOpen = false;
+        ClickCount = 0;
         mainCam = Camera.main;
         SetCharcter(0);
 
@@ -202,6 +204,11 @@ public class FollowManager : MonoBehaviour
     public void CheckPosition(Vector3 position)
     {
         if (position.x < -39)
+        {
+            FollowEndLogicStart();
+        }
+
+        if(Fate.transform.position.x < -10)
         {
             FollowEndLogicStart();
         }

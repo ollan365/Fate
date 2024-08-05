@@ -11,10 +11,13 @@ public class FollowGameManager : MonoBehaviour
     [SerializeField] private Image[] overHeadDoubtGaugeSliderImages;
     [SerializeField] private GameObject accidyDialogueBox;
 
+    [SerializeField] private Q_Vignette_Single vignette;
+
     [SerializeField] private Transform backgroundPosition;
     [SerializeField] private Transform frontCanvasPosition;
     public float backgroundMoveSpeed;
     public float fateMoveSpeed;
+    public int clickCountLimit;
     private float tutorialMoveTime = 0;
     public bool StopBackground { get; set; }
 
@@ -94,18 +97,18 @@ public class FollowGameManager : MonoBehaviour
     }
     public void StartGame()
     {
-        IsFateHide = false;
-
         StartCoroutine(StartGameLogic());
     }
     private IEnumerator StartGameLogic()
     {
         StopBackground = false;
         IsFateMove = false;
+        IsFateHide = false;
 
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
         StartCoroutine(AccidyLogic());
         StartCoroutine(AccidyDialogueBoxLogic());
+        StartCoroutine(Warning());
 
         // 미행이 끝날 때까지 반복
         while (!IsEnd)
@@ -114,7 +117,7 @@ public class FollowGameManager : MonoBehaviour
             if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
                 ChangeGaugeAlpha(Time.deltaTime * 3);
-                doubtGaugeSliders[0].value += 0.001f;
+                doubtGaugeSliders[0].value += Mathf.Max(Fate.transform.position.x, 1) * 0.002f;
                 doubtGaugeSliders[1].value = doubtGaugeSliders[0].value;
                 if (doubtGaugeSliders[0].value == 1) FollowManager.Instance.FollowEndLogicStart();
             }
@@ -147,7 +150,9 @@ public class FollowGameManager : MonoBehaviour
         while (!IsEnd)
         {
             while (IsDialogueOpen || (!IsFateHide && accidyStatus == AccidyStatus.RED)) { yield return null; continue; } // 대화창이 열려있음
-            if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
+
+            if(nextAccidyAction == AccidyAction.Stop && FollowManager.Instance.ClickCount >= clickCountLimit) { FollowManager.Instance.ClickCount = 0; } // 우연이 걷고 있을 때 클릭을 다섯번 이상하면 우연이가 바로 뒤돌아 봄
+            else if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
 
             switch (nextAccidyAction)
             {
@@ -169,6 +174,7 @@ public class FollowGameManager : MonoBehaviour
                     Accidy.SetBool("Back", true);
                     nextAccidyAction = AccidyAction.Inverse_Stop;
                     StartCoroutine(CameraMove());
+                    FollowManager.Instance.ClickCount = 0;
                     break;
 
                 case AccidyAction.Inverse_Stop:
@@ -247,6 +253,55 @@ public class FollowGameManager : MonoBehaviour
         }
 
         if(!IsEnd) FollowManager.Instance.Zoom(FollowManager.Position.ZoomOut);
+    }
+    private IEnumerator Warning()
+    {
+        while (!IsEnd)
+        {
+            while (!IsEnd && Fate.transform.position.x > -8 && accidyStatus != AccidyStatus.RED && Fate.transform.position.x < 1)
+                yield return null;
+
+            float start = 0, end = 1, fadeTime = 1;
+            float current = 0, percent = 0;
+
+            while (!IsEnd && (Fate.transform.position.x <= -8 || accidyStatus == AccidyStatus.RED || Fate.transform.position.x >= 1))
+            {
+                while (!IsEnd && percent < 1 && fadeTime != 0)
+                {
+                    current += Time.deltaTime;
+                    percent = current / fadeTime;
+
+                    vignette.mainColor.a = Mathf.Lerp(start, end, percent);
+
+                    yield return null;
+                }
+
+                while (!IsEnd && !IsFateHide && accidyStatus == AccidyStatus.RED)
+                {
+                    vignette.mainColor.a = 1;
+                    yield return null;
+                }
+
+                vignette.mainColor.a = end;
+                end = start;
+                start = vignette.mainColor.a;
+
+                current = 0;
+                percent = 0;
+            }
+
+            while (percent < 1 && fadeTime != 0)
+            {
+                current += Time.deltaTime * 2;
+                percent = current / fadeTime;
+
+                vignette.mainColor.a = Mathf.Lerp(vignette.mainColor.a, 0, percent);
+
+                yield return null;
+            }
+        }
+
+        vignette.mainColor.a = 0;
     }
 
     public enum AccidyStatus { RED, YELLOW, GREEN } // 빨강: 우연이 보고 있음, 노랑: 우연이 보기 직전, 초록: 우연이 안 봄
