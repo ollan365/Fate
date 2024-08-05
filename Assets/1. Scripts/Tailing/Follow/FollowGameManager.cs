@@ -19,6 +19,7 @@ public class FollowGameManager : MonoBehaviour
     public float fateMoveSpeed;
     public int clickCountLimit;
     private float tutorialMoveTime = 0;
+    public float Distance { get => Accidy.transform.position.x - Fate.transform.position.x; }
     public bool StopBackground { get; set; }
 
     private AccidyStatus accidyStatus = AccidyStatus.GREEN;
@@ -47,12 +48,10 @@ public class FollowGameManager : MonoBehaviour
         }
 
         Vector3 moveVector = Vector3.left * backgroundMoveSpeed * Time.deltaTime;
-        if (!IsEnd) Fate.transform.position += moveVector;
-        else Accidy.transform.position += moveVector;
-        backgroundPosition.position += moveVector;
-        frontCanvasPosition.position += moveVector;
+        Accidy.transform.position -= moveVector;
+        accidyDialogueBox.transform.position -= moveVector;
 
-        if (!IsEnd) FollowManager.Instance.CheckPosition(backgroundPosition.position);
+        // if (!IsEnd) FollowManager.Instance.CheckPosition(Fate.transform.position);
     }
     private void MoveFate()
     {
@@ -78,6 +77,8 @@ public class FollowGameManager : MonoBehaviour
         }
 
         if (Input.GetKeyUp(KeyCode.Space)) FateHide(false);
+
+        Camera.main.transform.position = new(Fate.transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
     }
     public void ChangeAnimStatusToStop(bool stop)
     {
@@ -117,7 +118,7 @@ public class FollowGameManager : MonoBehaviour
             if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
                 ChangeGaugeAlpha(Time.deltaTime * 3);
-                doubtGaugeSliders[0].value += Mathf.Max(Fate.transform.position.x, 1) * 0.002f;
+                doubtGaugeSliders[0].value += 0.001f;
                 doubtGaugeSliders[1].value = doubtGaugeSliders[0].value;
                 if (doubtGaugeSliders[0].value == 1) FollowManager.Instance.FollowEndLogicStart();
             }
@@ -231,8 +232,8 @@ public class FollowGameManager : MonoBehaviour
 
         while (elapsedTime < 1.5f)
         {
-            float targetSize = Mathf.Clamp((8 - Fate.transform.position.x) / 3, 3, 5);
-            Vector3 targetPosition = new((Fate.transform.position.x + 8) / 2, targetSize - 5, -10);
+            float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
+            Vector3 targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
 
             Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / 1.5f);
             Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / 1.5f);
@@ -243,8 +244,8 @@ public class FollowGameManager : MonoBehaviour
 
         while (!IsEnd && accidyStatus != AccidyStatus.GREEN)
         {
-            float targetSize = Mathf.Clamp((8 - Fate.transform.position.x) / 3, 3, 5);
-            Vector3 targetPosition = new((Fate.transform.position.x + 8) / 2, targetSize - 5, -10);
+            float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
+            Vector3 targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
 
             Camera.main.transform.position = targetPosition;
             Camera.main.orthographicSize = targetSize;
@@ -258,13 +259,13 @@ public class FollowGameManager : MonoBehaviour
     {
         while (!IsEnd)
         {
-            while (!IsEnd && Fate.transform.position.x > -8 && accidyStatus != AccidyStatus.RED && Fate.transform.position.x < 1)
+            while (!IsEnd && accidyStatus != AccidyStatus.RED && Distance > 1 && Distance < 9)
                 yield return null;
 
             float start = 0, end = 1, fadeTime = 1;
             float current = 0, percent = 0;
 
-            while (!IsEnd && (Fate.transform.position.x <= -8 || accidyStatus == AccidyStatus.RED || Fate.transform.position.x >= 1))
+            while (!IsEnd && (Distance <= 2 || accidyStatus == AccidyStatus.RED || Distance >= 9))
             {
                 while (!IsEnd && percent < 1 && fadeTime != 0)
                 {

@@ -159,36 +159,40 @@ public class FollowManager : MonoBehaviour
     }
     private IEnumerator ZoomIn(Position type)
     {
-        Vector3 originPosition = mainCam.transform.position;
-        float originSize = mainCam.orthographicSize;
-
-        Vector3 targetPosition = new(0, 0, -10);
+        Vector3 targetPosition = new(Fate.transform.position.x, 0, -10);
         float targetSize = 5;
 
-        switch (type)
-        {
-            case Position.Fate:
-                targetPosition = new(Fate.transform.position.x, -2, -10);
-                targetSize = 3;
-                break;
-
-            case Position.Accidy:
-                targetPosition = new(8, -2, -10);
-                targetSize = 3;
-                break;
-
-            case Position.Middle:
-                targetSize = Mathf.Clamp((8 - Fate.transform.position.x) / 3, 3, 5);
-                targetPosition = new((Fate.transform.position.x + 8) / 2, targetSize - 5, -10);
-                break;
-
-            default: break;
-        }
+        Vector3 originPosition = mainCam.transform.position;
+        float originSize = mainCam.orthographicSize;
 
         float elapsedTime = 0f;
 
         while (elapsedTime < zoomTime)
         {
+
+            switch (type)
+            {
+                case Position.Fate:
+                    targetPosition = new(Fate.transform.position.x, -2, -10);
+                    targetSize = 3;
+                    break;
+
+                case Position.Accidy:
+                    targetPosition = new(Accidy.transform.position.x, -2, -10);
+                    targetSize = 3;
+                    break;
+
+                case Position.Middle:
+                    targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
+                    targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
+                    break;
+
+                case Position.ZoomOut:
+                    targetPosition = new(Fate.transform.position.x, 0, -10);
+                    targetSize = 5;
+                    break;
+            }
+
             // 보간하여 카메라 위치와 크기를 변경
             mainCam.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
             mainCam.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
@@ -198,17 +202,16 @@ public class FollowManager : MonoBehaviour
         }
 
         // 변경이 완료된 후 최종 목표값으로 설정
-        mainCam.transform.position = targetPosition;
         mainCam.orthographicSize = targetSize;
     }
     public void CheckPosition(Vector3 position)
     {
-        if (position.x < -39)
+        if (Accidy.transform.position.x > 39)
         {
             FollowEndLogicStart();
         }
 
-        if(Fate.transform.position.x < -10)
+        if(followGameManager.Distance > 9 || followGameManager.Distance < 1)
         {
             FollowEndLogicStart();
         }
