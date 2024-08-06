@@ -10,15 +10,11 @@ public class FollowDialogueManager : MonoBehaviour
     [SerializeField] private GameObject frontCanvas;
 
     [Header("Dialogue")]
-    [SerializeField] private GameObject[] fateDialogueSet;
-    [SerializeField] private GameObject[] fateDialogueNextPanel;
-    [SerializeField] private TextMeshProUGUI[] fateDialogueText;
-    private GameObject[] followOriginDialogueSet = new GameObject[2];
-    private TextMeshProUGUI[] followOriginDialogueText = new TextMeshProUGUI[2];
-    [SerializeField] private GameObject extraNextButton;
     [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private GameObject[] extraCanvas;
     [SerializeField] private TextMeshProUGUI[] extraDialogueText;
+    [SerializeField] private GameObject specialObjectButton;
+    [SerializeField] private Image specialObjectButtonImage;
     private FollowExtra extra = FollowExtra.None;
 
     private GameObject BlockingPanel { get => FollowManager.Instance.blockingPanel; }
@@ -27,19 +23,7 @@ public class FollowDialogueManager : MonoBehaviour
 
     private void Awake()
     {
-        followOriginDialogueSet[0] = DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW.ToInt()];
-        followOriginDialogueText[0] = DialogueManager.Instance.scriptText[DialogueType.FOLLOW.ToInt()];
-        followOriginDialogueSet[1] = DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_THINKING.ToInt()];
-        followOriginDialogueText[1] = DialogueManager.Instance.scriptText[DialogueType.FOLLOW_THINKING.ToInt()];
-
-        DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW.ToInt()] = fateDialogueSet[0];
-        DialogueManager.Instance.scriptText[DialogueType.FOLLOW.ToInt()] = fateDialogueText[0];
-        DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_THINKING.ToInt()] = fateDialogueSet[1];
-        DialogueManager.Instance.scriptText[DialogueType.FOLLOW_THINKING.ToInt()] = fateDialogueText[1];
-
-        fateDialogueNextPanel[0].GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
-        fateDialogueNextPanel[1].GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
-        extraNextButton.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
+        extraBlockingPanel.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
     }
     public bool ClickObject()
     {
@@ -62,7 +46,6 @@ public class FollowDialogueManager : MonoBehaviour
     {
         extra = ToEnum(extraName);
 
-        extraNextButton.SetActive(true);
         extraBlockingPanel.SetActive(true); // 일반적인 블로킹 판넬이 아닌 다른 걸 켠다
         BlockingPanel.SetActive(false);
 
@@ -80,7 +63,6 @@ public class FollowDialogueManager : MonoBehaviour
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
 
-        extraNextButton.SetActive(false);
         extraBlockingPanel.SetActive(false);
         extraCanvas[Int(extra)].SetActive(false);
 
@@ -88,7 +70,17 @@ public class FollowDialogueManager : MonoBehaviour
 
         if (!dialogueEnd) BlockingPanel.SetActive(true); // 아직 다른 대사가 출력되는 중
     }
+    public void ClickSpecialObject(FollowObject followObject)
+    {
+        specialObjectButton.SetActive(true);
+        specialObjectButtonImage.sprite = followObject.specialSprite;
+        specialObjectButtonImage.SetNativeSize();
+        specialObjectButtonImage.GetComponent<RectTransform>().localScale = new Vector3(followObject.scaleValue, followObject.scaleValue, followObject.scaleValue);
 
+        specialObjectButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        specialObjectButton.GetComponent<Button>().onClick.AddListener(() => followObject.OnMouseDown_Normal());
+        specialObjectButton.GetComponent<Button>().onClick.AddListener(() => specialObjectButton.SetActive(false));
+    }
     // ========== 엑스트라 자동 대화창 ========== //
     private List<string> alreadyType = new();
 
@@ -158,14 +150,6 @@ public class FollowDialogueManager : MonoBehaviour
             if (currentDialogueLineIndex >= DialogueManager.Instance.dialogues[dialogueID].Lines.Count) break;
 
         }
-    }
-
-    public void ChangeFollowDialogueToOrigin()
-    {
-        DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW.ToInt()] = followOriginDialogueSet[0];
-        DialogueManager.Instance.scriptText[DialogueType.FOLLOW.ToInt()] = followOriginDialogueText[0];
-        DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_THINKING.ToInt()] = followOriginDialogueSet[1];
-        DialogueManager.Instance.scriptText[DialogueType.FOLLOW_THINKING.ToInt()] = followOriginDialogueText[1];
     }
 
     public int Int(FollowExtra extraType)

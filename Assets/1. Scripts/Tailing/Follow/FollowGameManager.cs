@@ -13,14 +13,12 @@ public class FollowGameManager : MonoBehaviour
 
     [SerializeField] private Q_Vignette_Single vignette;
 
-    [SerializeField] private Transform backgroundPosition;
-    [SerializeField] private Transform frontCanvasPosition;
-    public float backgroundMoveSpeed;
-    public float fateMoveSpeed;
-    public int clickCountLimit;
+    [SerializeField] private float accidyMoveSpeed;
+    [SerializeField] float fateMoveSpeed;
+    [SerializeField] int clickCountLimit;
     private float tutorialMoveTime = 0;
     public float Distance { get => Accidy.transform.position.x - Fate.transform.position.x; }
-    public bool StopBackground { get; set; }
+    public bool StopAccidy { get; set; }
 
     private AccidyStatus accidyStatus = AccidyStatus.GREEN;
     public AccidyStatus NowAccidyStatus { get => accidyStatus; }
@@ -28,30 +26,29 @@ public class FollowGameManager : MonoBehaviour
     private Animator Fate { get => FollowManager.Instance.Fate; }
     private Animator Accidy { get => FollowManager.Instance.Accidy; }
 
-    private bool IsTutorial { get => FollowManager.Instance.IsTutorial; }
     private bool IsEnd { get => FollowManager.Instance.IsEnd; }
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
     public bool IsFateHide { get; private set; }
     private bool IsFateMove { get; set; }
     void Update()
     {
-        if (!StopBackground) MoveBackground();
+        if (!StopAccidy) MoveAccidy();
 
-        if (!IsEnd && !IsTutorial && !IsDialogueOpen) MoveFate();
+        if (!IsEnd && !FollowManager.Instance.IsTutorial && !IsDialogueOpen) MoveFate();
     }
-    private void MoveBackground()
+    private void MoveAccidy()
     {
         if (FollowManager.Instance.IsTutorial)
         {
-            tutorialMoveTime += Time.deltaTime;
-            if (tutorialMoveTime > 2) return;
+            tutorialMoveTime -= Time.deltaTime;
+            if (tutorialMoveTime < 0) return;
         }
 
-        Vector3 moveVector = Vector3.left * backgroundMoveSpeed * Time.deltaTime;
+        Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
         accidyDialogueBox.transform.position -= moveVector;
 
-        // if (!IsEnd) FollowManager.Instance.CheckPosition(Fate.transform.position);
+        if (!IsEnd) FollowManager.Instance.CheckPosition(Fate.transform.position);
     }
     private void MoveFate()
     {
@@ -77,8 +74,6 @@ public class FollowGameManager : MonoBehaviour
         }
 
         if (Input.GetKeyUp(KeyCode.Space)) FateHide(false);
-
-        Camera.main.transform.position = new(Fate.transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
     }
     public void ChangeAnimStatusToStop(bool stop)
     {
@@ -88,7 +83,7 @@ public class FollowGameManager : MonoBehaviour
             if (IsDialogueOpen || accidyStatus != AccidyStatus.GREEN) return;
         }
 
-        StopBackground = stop;
+        StopAccidy = stop;
 
         // 이동 중에는 발자국 소리
         SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, !stop);
@@ -102,7 +97,7 @@ public class FollowGameManager : MonoBehaviour
     }
     private IEnumerator StartGameLogic()
     {
-        StopBackground = false;
+        StopAccidy = false;
         IsFateMove = false;
         IsFateHide = false;
 
@@ -110,6 +105,7 @@ public class FollowGameManager : MonoBehaviour
         StartCoroutine(AccidyLogic());
         StartCoroutine(AccidyDialogueBoxLogic());
         StartCoroutine(Warning());
+        StartCoroutine(CameraMove());
 
         // 미행이 끝날 때까지 반복
         while (!IsEnd)
@@ -174,8 +170,6 @@ public class FollowGameManager : MonoBehaviour
                     CursorManager.Instance.ChangeCursorInFollow();
                     Accidy.SetBool("Back", true);
                     nextAccidyAction = AccidyAction.Inverse_Stop;
-                    StartCoroutine(CameraMove());
-                    FollowManager.Instance.ClickCount = 0;
                     break;
 
                 case AccidyAction.Inverse_Stop:
@@ -225,61 +219,75 @@ public class FollowGameManager : MonoBehaviour
     }
     private IEnumerator CameraMove()
     {
-        Vector3 originPosition = Camera.main.transform.position;
-        float originSize = Camera.main.orthographicSize;
-
-        float elapsedTime = 0f;
-
-        while (elapsedTime < 1.5f)
+        while (!IsEnd)
         {
-            float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
-            Vector3 targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
+            while(!IsEnd && accidyStatus != AccidyStatus.RED)
+            {
+                Camera.main.transform.position = new(Fate.transform.position.x, 0, -10);
+                yield return null;
+            }
 
-            Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / 1.5f);
-            Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / 1.5f);
-                        
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            Vector3 originPosition = Camera.main.transform.position;
+            float originSize = Camera.main.orthographicSize;
+
+            float elapsedTime = 0f, zoomTime = 1.5f;
+
+            while (!IsEnd && elapsedTime < zoomTime)
+            {
+                float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
+                Vector3 targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
+
+                Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
+                Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            while (!IsEnd && accidyStatus == AccidyStatus.RED)
+            {
+                float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
+                Vector3 targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
+
+                Camera.main.transform.position = targetPosition;
+                Camera.main.orthographicSize = targetSize;
+
+                yield return null;
+            }
+
+            if (!IsEnd) yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.ZoomOut));
         }
-
-        while (!IsEnd && accidyStatus != AccidyStatus.GREEN)
-        {
-            float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
-            Vector3 targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
-
-            Camera.main.transform.position = targetPosition;
-            Camera.main.orthographicSize = targetSize;
-
-            yield return null;
-        }
-
-        if(!IsEnd) FollowManager.Instance.Zoom(FollowManager.Position.ZoomOut);
     }
     private IEnumerator Warning()
     {
         while (!IsEnd)
         {
-            while (!IsEnd && accidyStatus != AccidyStatus.RED && Distance > 1 && Distance < 9)
+            while (!IsEnd && (accidyStatus != AccidyStatus.RED && Distance > 6 && Distance < 9 || IsDialogueOpen))
                 yield return null;
 
             float start = 0, end = 1, fadeTime = 1;
             float current = 0, percent = 0;
 
-            while (!IsEnd && (Distance <= 2 || accidyStatus == AccidyStatus.RED || Distance >= 9))
+            while (!IsEnd && (Distance <= 6 || accidyStatus == AccidyStatus.RED || Distance >= 9) && !IsDialogueOpen)
             {
-                while (!IsEnd && percent < 1 && fadeTime != 0)
+                while (percent < 1 && fadeTime != 0)
                 {
                     current += Time.deltaTime;
                     percent = current / fadeTime;
 
                     vignette.mainColor.a = Mathf.Lerp(start, end, percent);
 
+                    if (IsEnd || IsDialogueOpen) break;
+
                     yield return null;
                 }
 
-                while (!IsEnd && !IsFateHide && accidyStatus == AccidyStatus.RED)
+                while (!IsFateHide && accidyStatus == AccidyStatus.RED)
                 {
                     vignette.mainColor.a = 1;
+
+                    if (IsEnd || IsDialogueOpen) break;
+
                     yield return null;
                 }
 
@@ -312,7 +320,7 @@ public class FollowGameManager : MonoBehaviour
         switch (nextAction)
         {
             case AccidyAction.Move: return 0.5f;
-            case AccidyAction.Stop: return Random.Range(2.5f, 5.5f);
+            case AccidyAction.Stop: return Random.Range(5.5f, 7.5f);
             case AccidyAction.Turn: return 0.5f;
             case AccidyAction.Inverse_Stop: return 0.5f;
             case AccidyAction.Inverse_Turn: return 2;

@@ -11,7 +11,6 @@ public class FollowManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject[] UI_OffAtEnd;
     public GameObject blockingPanel;
-    public GameObject eventButtonPrefab; // 특별한 오브젝트를 클릭했을 때 버튼 생성
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
     public Slider memoGaugeSlider;
@@ -32,7 +31,7 @@ public class FollowManager : MonoBehaviour
     [Header("Zoom")]
     private Camera mainCam;
     private float zoomTime = 1.5f;
-    public enum Position { Fate, Accidy, Middle, ZoomOut }
+    public enum Position { Fate, Accidy, ZoomOut }
 
     [Header("Variables")]
     [SerializeField] private float accidyAnimatorSpeed;
@@ -132,7 +131,10 @@ public class FollowManager : MonoBehaviour
     {
         followDialogueManager.EndExtraDialogue(dialogueEnd);
     }
-
+    public void ClickSpecialObject(FollowObject followObject)
+    {
+        followDialogueManager.ClickSpecialObject(followObject);
+    }
 
     // ==================== 미행 ==================== //
 
@@ -169,7 +171,6 @@ public class FollowManager : MonoBehaviour
 
         while (elapsedTime < zoomTime)
         {
-
             switch (type)
             {
                 case Position.Fate:
@@ -180,11 +181,6 @@ public class FollowManager : MonoBehaviour
                 case Position.Accidy:
                     targetPosition = new(Accidy.transform.position.x, -2, -10);
                     targetSize = 3;
-                    break;
-
-                case Position.Middle:
-                    targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
-                    targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
                     break;
 
                 case Position.ZoomOut:
@@ -206,12 +202,12 @@ public class FollowManager : MonoBehaviour
     }
     public void CheckPosition(Vector3 position)
     {
-        if (Accidy.transform.position.x > 39)
+        if (Accidy.transform.position.x > 49)
         {
             FollowEndLogicStart();
         }
 
-        if(followGameManager.Distance > 9 || followGameManager.Distance < 1)
+        if(followGameManager.Distance > 11 || followGameManager.Distance < 4)
         {
             FollowEndLogicStart();
         }
@@ -231,7 +227,6 @@ public class FollowManager : MonoBehaviour
         IsEnd = true;
 
         followGameManager.ChangeAnimStatusToStop(true);
-        followDialogueManager.ChangeFollowDialogueToOrigin();
 
         // 필연과 우연의 방향 조정
         Fate.SetBool("Hide", false);
@@ -244,8 +239,6 @@ public class FollowManager : MonoBehaviour
 
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
-
-        followGameManager.backgroundMoveSpeed *= -1.5f;
 
         StartCoroutine(followEnd.EndFollow());
     }
