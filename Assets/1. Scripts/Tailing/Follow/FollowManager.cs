@@ -125,11 +125,13 @@ public class FollowManager : MonoBehaviour
     }
     public void OpenExtraDialogue(string extraName)
     {
+        IsDialogueOpen = true;
         followDialogueManager.OpenExtraDialogue(extraName);
     }
     public void EndExtraDialogue(bool dialogueEnd)
     {
         followDialogueManager.EndExtraDialogue(dialogueEnd);
+        IsDialogueOpen = !dialogueEnd;
     }
     public void ClickSpecialObject(FollowObject followObject)
     {
@@ -200,7 +202,7 @@ public class FollowManager : MonoBehaviour
         // 변경이 완료된 후 최종 목표값으로 설정
         mainCam.orthographicSize = targetSize;
     }
-    public void CheckPosition(Vector3 position)
+    public void CheckPosition()
     {
         if (Accidy.transform.position.x > 49)
         {
@@ -215,10 +217,10 @@ public class FollowManager : MonoBehaviour
         // 두번째 미행
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
         {
-            switch ((int)position.x)
+            switch ((int)Accidy.transform.position.x)
             {
-                case 0: followDialogueManager.ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
-                case -4: followDialogueManager.ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
+                case 8: followDialogueManager.ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
+                case 12: followDialogueManager.ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
             }
         }
     }

@@ -48,7 +48,7 @@ public class FollowGameManager : MonoBehaviour
         Accidy.transform.position -= moveVector;
         accidyDialogueBox.transform.position -= moveVector;
 
-        if (!IsEnd) FollowManager.Instance.CheckPosition(Fate.transform.position);
+        if (!IsEnd) FollowManager.Instance.CheckPosition();
     }
     private void MoveFate()
     {

@@ -123,9 +123,10 @@ public class FollowDialogueManager : MonoBehaviour
                         // 기존에 출력한 대사까지 저장 후 대화창을 비운다
                         string saveText = extraDialogueText[speakerIndex].text;
                         extraDialogueText[speakerIndex].text = "";
+                        extraCanvas[speakerIndex].SetActive(false);
 
                         // 다른 물체의 스크립트가 끝나기를 기다린다
-                        while (!IsDialogueOpen) yield return null;
+                        while (IsDialogueOpen) yield return null;
 
                         // 다른 물체의 스크립트가 끝나면 다시 이어서 출력
                         extraCanvas[speakerIndex].SetActive(true);

@@ -61,6 +61,11 @@ public class FollowEnd : MonoBehaviour
         // 뒤돌아서 1.5배속 달리기
         Fate.SetBool("Walking", false);
         Fate.SetTrigger("Turn");
+        yield return new WaitForSeconds(0.3f);
+
+        // 미행 끝
+        SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+
         float runTime = FollowManager.Instance.Zoom(FollowManager.Position.ZoomOut) + 0.5f;
         while (runTime > 0)
         {
@@ -69,8 +74,6 @@ public class FollowEnd : MonoBehaviour
             yield return null;
         }
 
-        // 미행 끝
-        SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 
     
