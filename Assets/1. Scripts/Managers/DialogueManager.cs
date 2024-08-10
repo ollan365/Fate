@@ -251,7 +251,7 @@ public class DialogueManager : MonoBehaviour
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
         {
-            FollowManager.Instance.EndScript();
+            if (FollowManager.Instance) FollowManager.Instance.EndScript();
         }
 
         // 재생하고 있던 사운드 멈춤
@@ -267,7 +267,7 @@ public class DialogueManager : MonoBehaviour
             StartDialogue(queuedDialogueID);
 
             if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
-                FollowManager.Instance.ClickObject();
+                if (FollowManager.Instance) FollowManager.Instance.ClickObject();
 
             return;
         }

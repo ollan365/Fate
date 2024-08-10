@@ -14,6 +14,12 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private Sprite background_room1;
     [SerializeField] private Sprite background_follow1;
 
+    [Header("시계")]
+    [SerializeField] private GameObject clock;
+    [SerializeField] private Transform hourHand;
+    [SerializeField] private Transform minuteHand;
+    [SerializeField] private float acceleration;
+
     [Header("미행 1 엔딩")]
     [SerializeField] private GameObject fate;
     [SerializeField] private GameObject[] accidys;
@@ -67,7 +73,45 @@ public class EndingManager : MonoBehaviour
     {
         SaveManager.Instance.InitGameData();
         SaveManager.Instance.SaveEndingData(endingType);
-        SaveManager.Instance.LoadGameData();
+        StartCoroutine(DelayLoadScene());
+    }
+    public void TestClock()
+    {
+        StartCoroutine(DelayLoadScene(true));
+    }
+    private IEnumerator DelayLoadScene(bool isTest = false)
+    {
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1f, true, 1, 0.5f));
+        yield return new WaitForSeconds(1);
+
+        StartCoroutine(InverseClock());
+        yield return new WaitForSeconds(7.5f);
+
+        if (!isTest) SaveManager.Instance.LoadGameData();
+        if (isTest) SceneManager.Instance.LoadScene(SceneType.START);
+    }
+    private IEnumerator InverseClock()
+    {
+        int hour = 0; float speed = 0;
+        clock.SetActive(true);
+        while (true)
+        {
+            for (float t = 0; t < 60f; t += Time.deltaTime * speed)
+            {
+                float minuteAngle = Mathf.Lerp(0, 360, t / 60);
+                minuteHand.rotation = Quaternion.Euler(0, 0, 180 + minuteAngle);
+
+                float hourAngle = (hour % 12) * 30f + (minuteAngle / 12f);
+                hourHand.rotation = Quaternion.Euler(0, 0, 180 + hourAngle);
+
+                speed += acceleration;
+                yield return null;
+            }
+
+            minuteHand.rotation = Quaternion.Euler(0, 0, 180);
+            hourHand.rotation = Quaternion.Euler(0, 0, 180 + hour % 12 * 30f);
+            hour++;
+        }
     }
     private IEnumerator Ending_Room1()
     {
