@@ -18,7 +18,9 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private GameObject clock;
     [SerializeField] private Transform hourHand;
     [SerializeField] private Transform minuteHand;
-    [SerializeField] private float acceleration;
+    [SerializeField] private float waitingTime;
+    [SerializeField] private float value;
+    [SerializeField] private bool isTesting;
 
     [Header("미행 1 엔딩")]
     [SerializeField] private GameObject fate;
@@ -36,6 +38,8 @@ public class EndingManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (isTesting) ScreenEffect.Instance.coverPanel.gameObject.SetActive(false);
 
         StartEnding();
     }
@@ -81,36 +85,36 @@ public class EndingManager : MonoBehaviour
     }
     private IEnumerator DelayLoadScene(bool isTest = false)
     {
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1f, true, 1, 0.5f));
-        yield return new WaitForSeconds(1);
-
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.5f, true, 0, 0.5f));
+        yield return new WaitForSeconds(0.5f);
+        clock.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
         StartCoroutine(InverseClock());
-        yield return new WaitForSeconds(7.5f);
+        yield return new WaitForSeconds(8f);
 
         if (!isTest) SaveManager.Instance.LoadGameData();
-        if (isTest) SceneManager.Instance.LoadScene(SceneType.START);
+        if (isTest) SceneManager.Instance.LoadScene(SceneType.ENDING);
     }
     private IEnumerator InverseClock()
     {
-        int hour = 0; float speed = 0;
-        clock.SetActive(true);
+        float acceleration = 0.1f;
+        float minuteAngle = 0, hourAngle = 0;
+        waitingTime = 1;
+
         while (true)
         {
-            for (float t = 0; t < 60f; t += Time.deltaTime * speed)
-            {
-                float minuteAngle = Mathf.Lerp(0, 360, t / 60);
-                minuteHand.rotation = Quaternion.Euler(0, 0, 180 + minuteAngle);
+            minuteAngle += 6;
+            minuteHand.rotation = Quaternion.Euler(0, 0, 180 + minuteAngle);
 
-                float hourAngle = (hour % 12) * 30f + (minuteAngle / 12f);
-                hourHand.rotation = Quaternion.Euler(0, 0, 180 + hourAngle);
+            hourAngle += 0.5f;
+            hourHand.rotation = Quaternion.Euler(0, 0, 180 + hourAngle);
 
-                speed += acceleration;
-                yield return null;
-            }
+            waitingTime = Mathf.Max(Time.deltaTime, waitingTime - acceleration);
 
-            minuteHand.rotation = Quaternion.Euler(0, 0, 180);
-            hourHand.rotation = Quaternion.Euler(0, 0, 180 + hour % 12 * 30f);
-            hour++;
+            if (waitingTime < 0.15f) acceleration = value;
+            else acceleration = Mathf.Max(0.04f, acceleration - 0.007f);
+
+            yield return new WaitForSeconds(waitingTime);
         }
     }
     private IEnumerator Ending_Room1()
