@@ -47,6 +47,7 @@ public class TutorialManager : MonoBehaviour
 
     public void ProceedToNextPhase()
     {
+        if (GameManager.Instance.skipTutorial) return;
         switch (currentPhase)
         {
             case 1:

@@ -177,8 +177,8 @@ public class ResultManager : MonoBehaviour
 
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
-                //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.getCurrentInquiryObjectId() 
-                //    +" : "+ GameManager.Instance.GetEventStatus(GameManager.Instance.getCurrentInquiryObjectId()));
+                //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.GetCurrentInquiryObjectId()
+                //    +" : "+ GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()));
                 if (!GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
                     DialogueManager.Instance.EndDialogue();
@@ -374,7 +374,7 @@ public class ResultManager : MonoBehaviour
             case "ResultClockScript": // 시계에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_012");
                 break;
-            
+
             case "ResultClockSystemActivartion": // 시계 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "clock");
                 executableObjects["Clock"].ExecuteAction();
@@ -606,6 +606,11 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.IncrementVariable("SpecialDateBClick");
                 break;
 
+            case "ResultClueCompleted": // 달력 조사 다 완료함
+
+                break;
+
+
             case "ResultClosetZoom": // 옷장 확대 화면으로 전환
                 executableObjects["Closet Unzoomed 2"].ExecuteAction();
                 break;
@@ -723,18 +728,20 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultBrokenTeddyBear2Yes": // 선택지 약을 먹음
+                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_024");
                 break;
 
             case "ResultEatEnergySupplement":
                 RoomManager.Instance.actionPointManager.EatEnergySupplement();
-                //GameManager.Instance.actionPointsPerDay = 7;
                 break;
 
             case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
+                RoomManager.Instance.actionPointManager.SetChoosingBrokenBearChoice(true);
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
+                RoomManager.Instance.actionPointManager.SetChoosingBrokenBearChoice(false);
                 break;
 
             case "ResultDiary2Script": // 다이어리에 대한 설명
@@ -882,6 +889,26 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "shoppingBag2");
                 break;
 
+            case "ResultClosetKey2Script": // 옷장 안 열쇠 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_028");
+                break;
+
+            case "ResultClosetBag2Script": // 옷장 안 가방 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_029");
+                break;
+
+            case "ResultClosetNamecard2Script": // 옷장 안 명함 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_030");
+                break;
+
+            case "ResultClosetClothAndBag2Script": // 옷장 안 정리 안 된 옷 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_031");
+                break;
+
+            case "ResultUnderClosetClothes2Script": // 옷장 아래 정리 안 된 옷 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_033");
+                break;
+
 
             case "ResultWardrobeUpDrawersOpenScript": // 옷장 서랍장 위칸이 열리는 스크립트
                 //DialogueManager.Instance.StartDialogue("RoomEscape_026");
@@ -922,6 +949,22 @@ public class ResultManager : MonoBehaviour
 
             case "ResultWardrobeUnderClothes2Script": // 옷장 서랍장 아래칸 옷더미 조사 스크립트 테스트용
                 Debug.Log("아래칸 옷더미 조사");
+                break;
+
+            case "Result_showBook2CoverImage": // 떨어진 책 한권 표지 확대 UI
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "book2Cover");
+                Debug.Log("떨어진 책 한권 표지 확대 UI");
+                break;
+
+            case "ResultBook2Script": // 떨어진 책 한권 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_015");
+                Debug.Log(" 떨어진 책 한권 스크립트");
+                break;
+
+            case "ResultBook2SystemActivartion": // 떨어진 책 읽기
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "book2");
+                executableObjects["Book2"].ExecuteAction();
+                Debug.Log("  떨어진 책 읽기");
                 break;
 
 

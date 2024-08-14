@@ -33,7 +33,7 @@ public class DiaryManager : PageContentsManager
             case "Diary2":
                 diaryPages.totalPageCount = diary2Pages.Count;
                 break;
-            
+
             case "Room2Book":
                 diaryPages.totalPageCount = room2BookPages.Count;
                 break;

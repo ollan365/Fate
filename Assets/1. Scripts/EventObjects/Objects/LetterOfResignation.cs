@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LetterOfResignation : EventObject
 {
-    private void Awake()
+    private void Start()
     {
         GetComponent<BoxCollider2D>().enabled = false;
     }
