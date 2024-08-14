@@ -236,6 +236,15 @@ public class GameManager : MonoBehaviour
         // 쇼핑백
         variables["ShoppingBagClick2"] = 0;
 
+        // 옷장
+        // 옷장 안 열쇠
+        variables["ClosetKey2Click"] = 0;
+        // 옷장 안 가방
+        variables["ClosetBag2Click"] = 0;
+        // 옷장 안 명함
+        variables["Namecard2Click"] = 0;
+        // 옷장 안 정리 안 된 옷과 쇼핑백
+        variables["ClosetClothAndBag2Click"] = 0;
 
         // 옷장 서랍장
         // 위칸
@@ -244,6 +253,8 @@ public class GameManager : MonoBehaviour
         // 아래칸
         variables["WardrobeDownDrawersClosed"] = true;
         variables["ClosedWardrobeDownDrawersClick"] = 0;
+        // 옷장 밑 수납장 속 헝클어진 옷
+        variables["UnderClosetClothes2Click"] = 0;
 
         // 망가진 곰인형
         variables["BrokenTeddyBearClick"] = 0;
@@ -258,6 +269,10 @@ public class GameManager : MonoBehaviour
 
         // 선반 위의 약
         variables["Medicine2Click"] = 0;
+
+        // 화려한 꿈관련 책
+        variables["Book2Click"] = 0;
+
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 빌라
@@ -488,6 +503,10 @@ public class GameManager : MonoBehaviour
         if (eventObjectsStatusDict.ContainsKey(eventId))
         {
             eventObjectsStatusDict[eventId] = true;
+        }
+        else
+        {
+            Debug.Log(eventId+ " is not existed!");
         }
     }
 

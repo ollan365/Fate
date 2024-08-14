@@ -11,17 +11,21 @@ public class ActionPointManager : MonoBehaviour
     public GameObject heartParent;
     public TextMeshProUGUI dayText;
 
-    public int maxDayNum;   // 방탈출에서 지내는 최대 일수
-    public int nowDayNum;
-    public int actionPointsPerDay;
+    [SerializeField] private int maxDayNum;   // 방탈출에서 지내는 최대 일수
+    [SerializeField] private int nowDayNum;
+    [SerializeField] private int actionPointsPerDay;
 
     // 행동력 감소로 터질 하트 자리
-    public int presentHeartIndex;
+    [SerializeField] private int presentHeartIndex;
     // 회복제 먹었을 경우
-    private bool isEatenEnergySupplement;
+    [SerializeField] private bool isEatenEnergySupplement;
 
     // 설정한 actionPointsPerDay에 따라 달라지는 actionpoints배열
     private int[,] actionPointsArray;
+
+    // 방탈출2에서 회복제 먹은 상태면 배경지도 extended로 바꿈
+    [SerializeField] private GameObject backgroundImageDefault;
+    [SerializeField] private GameObject backgroundImageExtended;
 
     private void Awake()
     {
@@ -44,11 +48,11 @@ public class ActionPointManager : MonoBehaviour
         actionPointsArray = new int[5, actionPointsPerDay];
 
         int actionPoint = 1;
-        for (int row = maxDayNum - 1; row >= 0; row--)
+        for (int day = maxDayNum - 1; day >= 0; day--)
         {
-            for (int col = 0; col < actionPointsPerDay; col++)
+            for (int index = 0; index < actionPointsPerDay; index++)
             {
-                actionPointsArray[row, col] = actionPoint;
+                actionPointsArray[day, index] = actionPoint;
                 actionPoint++;
             }
         }
@@ -59,18 +63,32 @@ public class ActionPointManager : MonoBehaviour
     {
         int actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
         // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
-        //int heartCount = actionPoint % actionPointsPerDay;
         int heartCount = presentHeartIndex + 1;
 
         // 회복제 먹어서 actionPoint가 2개 더 늘어남
         if (isEatenEnergySupplement)
         {
-            actionPointsPerDay = 7;
-            GameManager.Instance.SetVariable("ActionPointsPerDay", actionPointsPerDay);
-            // actionPointPerDay가 변경되어 다시 actionPointsArray 생성
-            CreateActionPointsArray(actionPointsPerDay);
+            // 하트 수가 actionPointsPerDay일 때 먹은 것이면 DecrementActionPoint에서 하트가 0이 되면 
+            // 다음날과 최대 하트로 미리 업데이트 해두기에 하트가 0일 때 먹은 것. 하트를 0개에서 2개로 만들어줌
+            if (heartCount == actionPointsPerDay)
+            {
+                nowDayNum -= 1;
+                GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
 
-            presentHeartIndex += 2;
+                // presentHeartIndex도 2-1로 업데이트
+                presentHeartIndex = 1;
+
+                actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
+            }
+            else
+            {
+                actionPointsPerDay = 7;
+                GameManager.Instance.SetVariable("ActionPointsPerDay", actionPointsPerDay);
+                // actionPointPerDay가 변경되어 다시 actionPointsArray 생성
+                CreateActionPointsArray(actionPointsPerDay);
+
+                presentHeartIndex += 2;
+            }
 
             heartCount = presentHeartIndex + 1;
 
@@ -80,7 +98,6 @@ public class ActionPointManager : MonoBehaviour
             GameManager.Instance.SetVariable("ActionPoint", actionPoint);
             GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
         }
-        
         // 하트가 0이 되면
         if (heartCount == 0)
         {
@@ -96,10 +113,6 @@ public class ActionPointManager : MonoBehaviour
             heartCount = actionPointsPerDay;
         }
 
-        //Debug.Log("heartCount : " + heartCount);
-        //Debug.Log("actionPoint : " + actionPoint);
-        //Debug.Log("겜 매니저의 actionPoint : " + GameManager.Instance.GetVariable("ActionPoint"));
-
         for (int i = 0; i < heartCount; i++)
         {
             // create heart on screen by creating instances of heart prefab under heart parent
@@ -109,10 +122,13 @@ public class ActionPointManager : MonoBehaviour
         // change Day text on screen
         dayText.text = $"Day {nowDayNum}";
 
+        // 하트 배경지 바꿈
+        ChangeHeartBackgroundImageExtended((bool)GameManager.Instance.GetVariable("TeddyBearFixed"));
+
         if (isEatenEnergySupplement)
-        {
             isEatenEnergySupplement = false;
-        }
+
+        //Debug.Log(heartParent.transform.childCount);
     }
 
     public void DecrementActionPoint()
@@ -125,25 +141,27 @@ public class ActionPointManager : MonoBehaviour
             CreateActionPointsArray(actionPointsPerDay);
         }
 
-        if (presentHeartIndex > -1)
-        {
-            // pop heart on screen
-            GameObject heart = heartParent.transform.GetChild(presentHeartIndex).gameObject;
+        // 시계 퍼즐에서 연속으로 클릭했을 때 포인트 감소 오류 뜨지 않게 함
+        if (heartParent.transform.childCount < 1)
+            return;
 
-            // animate heart by triggering "break" animation
-            heart.GetComponent<Animator>().SetTrigger("Break");
+        // pop heart on screen
+        GameObject heart = heartParent.transform.GetChild(presentHeartIndex).gameObject;
 
-            // deactivate heart after animation
-            StartCoroutine(DeactivateHeart(heart));
+        // animate heart by triggering "break" animation
+        heart.GetComponent<Animator>().SetTrigger("Break");
 
-        }
+        // deactivate heart after animation
+        StartCoroutine(DeactivateHeart(heart));
+
         presentHeartIndex--;
 
         int actionPoint;
 
+        // 하트가 다 없어지면
         if (presentHeartIndex == -1)
         {
-            if(nowDayNum < 5)
+            if(nowDayNum < maxDayNum)
             {
                 // 현재 날짜를 다음날로 업데이트
                 nowDayNum += 1;
@@ -259,7 +277,6 @@ public class ActionPointManager : MonoBehaviour
         StartCoroutine(RefillHearts(totalTime / 2));
     }
 
-
     private static IEnumerator DeactivateHeart(Object heart)
     {
         yield return new WaitForSeconds(0.5f);
@@ -289,6 +306,20 @@ public class ActionPointManager : MonoBehaviour
         isEatenEnergySupplement = true;
 
         CreateHearts();
+
+        // 하트 배경지 바꿈
+        ChangeHeartBackgroundImageExtended(true);
+    }
+
+    private bool isChoosingBrokenBearChoice = false;
+    public void SetChoosingBrokenBearChoice(bool isChoosing)
+    {
+        isChoosingBrokenBearChoice = isChoosing;
+    }
+
+    public bool GetChoosingBrokenBearChoice()
+    {
+        return isChoosingBrokenBearChoice;
     }
 
     // 침대에서 휴식하면 행동력 강제로 다음날로 넘어감
@@ -333,4 +364,36 @@ public class ActionPointManager : MonoBehaviour
 
         SaveManager.Instance.SaveGameData();
     }
+
+    // 회복제 먹은 상태라면 배경지를 바꿈
+    private void ChangeHeartBackgroundImageExtended(bool isExtended)
+    {
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Room2")
+        {
+            if (isExtended)
+            {
+                if (backgroundImageExtended.activeSelf) return;
+                else
+                {
+                    if ((presentHeartIndex + 1) > 5)
+                    {
+                        backgroundImageDefault.SetActive(false);
+                        backgroundImageExtended.SetActive(true);
+                    }
+                }
+            }
+            else
+            {
+                backgroundImageDefault.SetActive(true);
+                backgroundImageExtended.SetActive(false);
+            }
+        }
+    }
+
+
+
+    //public void showchildCount()
+    //{
+    //    Debug.Log(heartParent.transform.childCount);
+    //}
 }

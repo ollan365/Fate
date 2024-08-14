@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StorageTeddyBear : EventObject
 {
-    private void Awake()
+    private void Start()
     {
         GetComponent<Collider2D>().enabled = false;
     }
