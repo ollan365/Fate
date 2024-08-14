@@ -4,108 +4,94 @@ using UnityEngine;
 
 public class FollowEnd : MonoBehaviour
 {
-    private Camera mainCam;
-    private float zoomTime = 1.5f;
-    private enum Position { Fate, Accidy, ZoomOut }
-    private void Start()
-    {
-        mainCam = Camera.main;
-    }
-    public IEnumerator EndFollow(bool isDayMiniGame)
+    [SerializeField] private FollowGameManager followGameManager;
+    [SerializeField] private GameObject frontCanvas;
+    private Animator Accidy { get => FollowManager.Instance.Accidy; }
+    private Animator Fate { get => FollowManager.Instance.Fate; }
+    
+    public IEnumerator EndFollow()
     {
         // 필연으로 줌인
-        StartCoroutine(ZoomIn(Position.Fate));
-        yield return new WaitForSeconds(zoomTime + 0.5f);
+        yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.Fate) + 0.5f);
 
         // 스크립트 "Follow1Fianal" 출력 + 느낌표
         FollowManager.Instance.blockingPanel.SetActive(true);
+        frontCanvas.SetActive(false);
         DialogueManager.Instance.StartDialogue("Follow1Final_001");
 
         // 스크립트가 끝날 때까지 대기
         while (FollowManager.Instance.blockingPanel.activeSelf)
             yield return null;
+        frontCanvas.SetActive(true);
         yield return new WaitForSeconds(0.5f);
 
         // 우연으로 줌인
-        StartCoroutine(ZoomIn(Position.Accidy));
-        yield return new WaitForSeconds(zoomTime + 0.5f);
+        yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.Accidy) + 0.5f);
 
         // 우연 대사 출력
+        FollowManager.Instance.SetCharcter(1);
         FollowManager.Instance.blockingPanel.SetActive(true);
+        frontCanvas.SetActive(false);
         DialogueManager.Instance.StartDialogue("Follow1Final_002");
 
         // 스크립트가 끝날 때까지 대기
         while (FollowManager.Instance.blockingPanel.activeSelf)
             yield return null;
+        frontCanvas.SetActive(true);
         yield return new WaitForSeconds(0.5f);
 
         // 우연이 뒤돌아봄
-        FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(0);
+        Accidy.SetBool("Back", true);
         SoundPlayer.Instance.UISoundPlay(Constants.Sound_TurnAround);
         yield return new WaitForSeconds(0.5f);
 
         // 다시 필연 쪽으로 줌인
-        StartCoroutine(ZoomIn(Position.Fate));
-        yield return new WaitForSeconds(zoomTime + 0.5f);
+        yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.Fate) + 0.5f);
 
-        // 뒷걸음질 3번 후 뒤돌아서 1.5배속 달리기
+        // 뒷걸음질 3번
         SoundPlayer.Instance.UISoundPlay(Constants.Sound_FollowEnd);
-        FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(1);
+        Fate.speed = 0.6f;
+        Fate.SetBool("Walking", true);
         for (int i = 0; i < 3; i++)
         {
-            StartCoroutine(FollowManager.Instance.followAnim.MoveFate());
+            StartCoroutine(MoveFate());
             yield return new WaitForSeconds(1f);
         }
 
-        // 카메라 원래대로
-        StartCoroutine(ZoomIn(Position.ZoomOut));
-
-        // 페이드 아웃
-        FollowManager.Instance.followAnim.ChangeAnimStatusOnEnd(2);
-        yield return new WaitForSeconds(1f);
+        // 뒤돌아서 1.5배속 달리기
+        Fate.SetBool("Walking", false);
+        Fate.SetTrigger("Turn");
 
         // 미행 끝
-        if (!isDayMiniGame && SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_1) FollowManager.Instance.FollowFinishGameStart();
-        else SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+        StartCoroutine(DelayLoadScene());
+
+        while (true)
+        {
+            Fate.transform.Translate(Vector3.left * 2 * Time.deltaTime);
+            yield return null;
+        }
+    }
+    private IEnumerator DelayLoadScene()
+    {
+        yield return new WaitForSeconds(1);
+        SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 
-    private IEnumerator ZoomIn(Position type)
+    // === 미행이 끝났을 때 === //
+    public IEnumerator MoveFate()
     {
-        Vector3 originPosition = mainCam.transform.position;
-        float originSize = mainCam.orthographicSize;
-
-        Vector3 targetPosition = new(0, 0, -10);
-        float targetSize = 5;
-
-        switch (type)
-        {
-            case Position.Fate:
-                targetPosition = new(0, -2, -10);
-                targetSize = 3;
-                break;
-
-            case Position.Accidy:
-                targetPosition = new(8, -2, -10);
-                targetSize = 3;
-                break;
-
-            default: break;
-        }
+        Vector3 originPosition = Fate.transform.position;
+        Vector3 targetPosition = originPosition + new Vector3(-0.3f, 0, 0);
 
         float elapsedTime = 0f;
 
-        while (elapsedTime < zoomTime)
+        while (elapsedTime < 1.2f)
         {
-            // 보간하여 카메라 위치와 크기를 변경
-            mainCam.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
-            mainCam.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
-
+            Fate.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / 1.2f);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // 변경이 완료된 후 최종 목표값으로 설정
-        mainCam.transform.position = targetPosition;
-        mainCam.orthographicSize = targetSize;
+        Fate.transform.position = targetPosition;
     }
 }
