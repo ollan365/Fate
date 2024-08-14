@@ -116,6 +116,7 @@ public class StartLogic : MonoBehaviour
         if (sceneNum == 2) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
         if (sceneNum == 3) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_2);
         if (sceneNum == 4) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_2);
+        if (sceneNum == 5) SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 
     // ========== 프롤로그 시작 ========== //
