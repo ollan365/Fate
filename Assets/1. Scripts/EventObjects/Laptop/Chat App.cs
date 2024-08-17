@@ -1,0 +1,175 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ChatApp : MonoBehaviour
+{
+    [SerializeField] private Transform conversationList;
+    [SerializeField] private GameObject conversationPrefab;
+    [SerializeField] private Transform messageList;
+    [SerializeField] private GameObject messagePrefabLeft;
+    [SerializeField] private GameObject messagePrefabRight;
+    [SerializeField] private GameObject datePrefab;
+
+    private readonly Dictionary<string, List<Message>> conversations = new Dictionary<string, List<Message>>();
+
+    private string currentConversationKey;
+
+    private void Start()
+    {
+        LoadConversations();
+        DisplayConversationsList();
+    }
+
+    private void LoadConversations()
+    {
+        var chatCsv = Resources.Load<TextAsset>("Datas/laptop_Chat");
+
+        if (chatCsv == null)
+        {
+            Debug.LogError("Failed to load laptop_Chat CSV file");
+            return;
+        }
+
+        var lines = chatCsv.text.Split('\n');
+        
+        var previousConversationID = "";
+        var previousMessage = new Message();
+        
+        for (var i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue; // Skip empty lines
+
+            var fields = lines[i].Split(',');
+
+            if (fields.Length < 6 || string.IsNullOrWhiteSpace(fields[5]))
+            {
+                // Debug.LogWarning($"Invalid or empty script line in CSV: {lines[i]}");
+                continue;
+            }
+
+            var currentConversationID = fields[0].Trim();
+            var currentMessage = new Message
+            {
+                Date = fields[2].Trim(),
+                Time = fields[3].Trim(),
+                SpeakerName = DialogueManager.Instance.scripts[fields[4].Trim()].GetScript(),
+                ScriptContent = DialogueManager.Instance.scripts[fields[5].Trim()].GetScript()
+            };
+
+            if (string.IsNullOrWhiteSpace(currentConversationID)) currentConversationID = previousConversationID;
+            if (string.IsNullOrWhiteSpace(currentMessage.Date)) currentMessage.Date = previousMessage.Date;
+            if (string.IsNullOrWhiteSpace(currentMessage.Time)) currentMessage.Time = previousMessage.Time;
+            if (string.IsNullOrWhiteSpace(currentMessage.SpeakerName)) currentMessage.SpeakerName = previousMessage.SpeakerName;
+
+            // add message to conversation
+            if (conversations.ContainsKey(currentConversationID))
+                conversations[currentConversationID].Add(currentMessage);
+            else
+                conversations.Add(currentConversationID, new List<Message> { currentMessage });
+
+            previousConversationID = currentConversationID;
+            previousMessage = currentMessage;
+        }
+    }
+
+    private void DisplayConversationsList()
+    {
+        // Order conversations by the latest message in each conversation (in ascending order)
+        var orderedConversations = conversations
+            .OrderByDescending(c => c.Value.Max(m => DateTime.ParseExact(m.Date + " " + m.Time, "yy.MM.dd. HH:mm", null)));
+
+        foreach (var conversation in orderedConversations)
+        {
+            GameObject newConversation = Instantiate(conversationPrefab, conversationList);
+            
+            GameObject conversationIDAndDate = newConversation.transform.Find("ConversationIDAndDate").gameObject;
+            
+            TextMeshProUGUI conversationIDText = conversationIDAndDate.transform.Find("ConversationIDText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI dateText = conversationIDAndDate.transform.Find("DateText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI latestMessageText = newConversation.transform.Find("LatestMessageText").GetComponent<TextMeshProUGUI>();
+
+            // Display the SpeakerID if it's not "DialogueC_002"
+            var displaySpeakerID = conversation.Value.FirstOrDefault(m => m.SpeakerName != "우연")?.SpeakerName;
+
+            // Get the latest message in the conversation
+            var latestMessage = conversation.Value.OrderByDescending(m => DateTime.ParseExact(m.Date + " " + m.Time, "yy.MM.dd. HH:mm", null)).First();
+
+            conversationIDText.text = displaySpeakerID ?? conversation.Key;
+            latestMessageText.text = latestMessage.ScriptContent;
+            
+            DateTime parsedDate = DateTime.ParseExact(latestMessage.Date, "yy.MM.dd.", null);
+            string formattedDate = parsedDate.ToString("MMM dd");
+            dateText.text = formattedDate;
+
+            // Add a click listener to the conversation button
+            Button conversationButton = newConversation.GetComponent<Button>();
+            if (conversationButton != null)
+            {
+                string conversationKey = conversation.Key;
+                conversationButton.onClick.AddListener(() => OnConversationClicked(conversationKey));
+            }
+        }
+    }
+
+    private void OnConversationClicked(string conversationKey)
+    {
+        if (!conversations.ContainsKey(conversationKey)) return;
+
+        if (currentConversationKey == conversationKey) return;
+        currentConversationKey = conversationKey;
+
+        // Clear previous messages
+        foreach (Transform child in messageList)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Get the messages for the selected conversation and order by datetime ascending
+        var messages = conversations[conversationKey]
+            .OrderBy(m => DateTime.ParseExact(m.Date + " " + m.Time, "yy.MM.dd. HH:mm", null));
+
+        string previousDate = null;
+
+        foreach (var message in messages)
+        {
+            // Check if the date has changed and instantiate a date prefab if it has
+            if (previousDate != message.Date)
+            {
+                GameObject newDate = Instantiate(datePrefab, messageList);
+                TextMeshProUGUI dateText = newDate.GetComponentInChildren<TextMeshProUGUI>();
+
+                DateTime parsedDate = DateTime.ParseExact(message.Date, "yy.MM.dd.", null);
+                string formattedDate = parsedDate.ToString("MMM dd");
+
+                dateText.text = formattedDate;
+
+                previousDate = message.Date;
+            }
+
+            // Instantiate the appropriate message prefab (left or right)
+            GameObject messagePrefab = message.SpeakerName == "우연" ? messagePrefabRight : messagePrefabLeft;
+            GameObject newMessage = Instantiate(messagePrefab, messageList);
+            GameObject parent = newMessage.transform.Find("Parent").gameObject;
+            TextMeshProUGUI speakerText = parent.transform.Find("SpeakerText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI messageText = parent.transform.Find("MessageText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI timeText = newMessage.transform.Find("TimeText").GetComponent<TextMeshProUGUI>();
+
+            speakerText.text = message.SpeakerName;
+            messageText.text = message.ScriptContent;
+            timeText.text = message.Time;
+        }
+    }
+
+}
+
+public class Message
+{
+    public string Date;
+    public string Time;
+    public string SpeakerName;
+    public string ScriptContent;
+}
