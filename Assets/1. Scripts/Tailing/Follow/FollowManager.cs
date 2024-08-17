@@ -60,6 +60,7 @@ public class FollowManager : MonoBehaviour
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); return; }
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) { StartCoroutine(followTutorial.StartTutorial()); }
+        // else if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2) { StartCoroutine(followTutorial.StartTutorial()); }
     }
     public void StartFollow()
     {
