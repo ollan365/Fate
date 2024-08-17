@@ -43,6 +43,7 @@ public class LaptopLock : EventObject, IResultExecutable
     // 노트북 잠금 풀림
     private void ShowLaptopContent()
     {
+        gameObject.SetActive(false);
         laptopContent.SetActive(true);
     } 
 

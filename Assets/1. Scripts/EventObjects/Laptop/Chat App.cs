@@ -26,7 +26,7 @@ public class ChatApp : MonoBehaviour
 
     private void LoadConversations()
     {
-        var chatCsv = Resources.Load<TextAsset>("Datas/laptop_Chat");
+        var chatCsv = Resources.Load<TextAsset>("Datas/laptop_chat");
 
         if (chatCsv == null)
         {
