@@ -19,6 +19,17 @@ public class StartLogic : MonoBehaviour
     private int language = 1;
     public int Language { set => language = value; }
 
+    [Header("Album")]
+    [SerializeField] private GameObject albumButton;
+    [SerializeField] private Sprite lockSprite;
+    [SerializeField] private Sprite[] endingSprites;
+    [SerializeField] private Button[] endingButtons;
+    [SerializeField] private Image[] endingButtonImages;
+    [SerializeField] private GameObject albumPage;
+    [SerializeField] private Image albumImage;
+    [SerializeField] private TextMeshProUGUI endingTypeText;
+    [SerializeField] private TextMeshProUGUI endingNameText;
+
     [Header("Name, Birth Page")]
     [SerializeField] private GameObject namePanel;
     [SerializeField] private GameObject birthPanel;
@@ -119,6 +130,49 @@ public class StartLogic : MonoBehaviour
         if (sceneNum == 5) SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 
+    // ========== 앨범 ========== //
+    public void ClickAlbum()
+    {
+        for (int i = 0; i < SaveManager.Instance.EndingData.endingCollectCount.Length; i++)
+        {
+            int index = i;
+            if (SaveManager.Instance.EndingData.endingCollectCount[i] > 0)
+            {
+                endingButtons[i].onClick.AddListener(() => OpenAlbumPage(index));
+                endingButtonImages[i].sprite = endingSprites[i * 2 + SaveManager.Instance.EndingData.accidyGender];
+            }
+            else
+            {
+                endingButtons[i].onClick.RemoveAllListeners();
+                endingButtonImages[i].sprite = lockSprite;
+            }
+        }
+    }
+    public void OpenAlbumPage(int endingIndex)
+    {
+        const int Bad_A = 0, Bad_B = 1, True = 2, Hidden = 3;
+        albumImage.sprite = endingSprites[endingIndex * 2 + SaveManager.Instance.EndingData.accidyGender];
+        switch (endingIndex)
+        {
+            case Bad_A:
+                endingTypeText.text = "# 배드 엔딩 A";
+                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0417"].GetScript();
+                break;
+            case Bad_B:
+                endingTypeText.text = "# 배드 엔딩 B";
+                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0618"].GetScript();
+                break;
+            case True:
+                endingTypeText.text = "# 트루 엔딩";
+                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0678"].GetScript();
+                break;
+            case Hidden:
+                endingTypeText.text = "# 히든 엔딩";
+                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0777"].GetScript();
+                break;
+        }
+        albumPage.SetActive(true);
+    }
     // ========== 프롤로그 시작 ========== //
     private IEnumerator StartPrologue()
     {
@@ -126,6 +180,7 @@ public class StartLogic : MonoBehaviour
             StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
+        albumButton.SetActive(false);
         MemoManager.Instance.HideMemoButton = true;
 
         EventManager.Instance.CallEvent("EventFirstPrologue");
@@ -211,10 +266,15 @@ public class StartLogic : MonoBehaviour
     public void SettingsComplete()
     {
         GameManager.Instance.SetVariable("Language", language);
-        GameManager.Instance.SetVariable("FateGender", 0);  // 필연 성별 설정 (더 이상 선택 기능이 없어졌으므로 0으로 고정
+        GameManager.Instance.SetVariable("FateGender", 0);  // 필연 성별 설정 (선택 기능이 없어졌음)
 
         string birthday = ((monthDropdown.value + 1) * 100 + (dayDropdown.value + 1)).ToString();
         if (birthday.Length == 3) birthday = "0" + birthday;
         GameManager.Instance.SetVariable("FateBirthday", birthday);
+
+        SaveManager.Instance.EndingData.accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
+        SaveManager.Instance.EndingData.fateName = (string)GameManager.Instance.GetVariable("FateName");
+        SaveManager.Instance.EndingData.language = (int)GameManager.Instance.GetVariable("Language");
+        SaveManager.Instance.EndingData.fateBirthDay = (int)GameManager.Instance.GetVariable("FateBirthday");
     }
 }

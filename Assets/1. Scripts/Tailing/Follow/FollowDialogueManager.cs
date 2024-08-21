@@ -31,14 +31,12 @@ public class FollowDialogueManager : MonoBehaviour
         foreach (GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
 
         frontCanvas.SetActive(false); // 플레이어를 가리는 물체들이 있는 canvas를 꺼버린다
-        BlockingPanel.SetActive(true); // 화면을 어둡게 만든다
         return true;
     }
 
     public void EndScript()
     {
         frontCanvas.SetActive(true); // 플레이어를 가리는 물체들이 있는 canvas를 켠다
-        BlockingPanel.SetActive(false); // 화면을 가리는 판넬을 끈다
 
         EndExtraDialogue(true);
     }

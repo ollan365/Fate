@@ -969,6 +969,10 @@ public class ResultManager : MonoBehaviour
 
 
             // 미행 1
+            case "ResultFollowTutorialNextStep":
+                FollowManager.Instance.TutorialNextStep();
+                break;
+
             case "ResultVillaScript": // 빌라에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("Follow_002");
                 break;
