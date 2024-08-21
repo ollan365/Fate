@@ -39,6 +39,7 @@ public class SaveManager : MonoBehaviour
             initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, GameManager.Instance.eventObjectsStatusDict, MemoManager.Instance.SavedMemoList, MemoManager.Instance.RevealedMemoList);
 
         if (EndingData == null) return;
+
         GameManager.Instance.SetVariable("EndingCollect", EndingData.allEndingCollectCount);
         GameManager.Instance.SetVariable("LastEnding", EndingData.lastEnding.ToString());
         GameManager.Instance.SetVariable("BadACollect", EndingData.endingCollectCount[0]);
@@ -46,7 +47,12 @@ public class SaveManager : MonoBehaviour
         GameManager.Instance.SetVariable("TrueCollect", EndingData.endingCollectCount[2]);
         GameManager.Instance.SetVariable("HiddenCollect", EndingData.endingCollectCount[3]);
         GameManager.Instance.SetVariable("BadEndingCollect", EndingData.badEndingColloectCount);
-    }
+
+        GameManager.Instance.SetVariable("FateName", EndingData.fateName);
+        GameManager.Instance.SetVariable("Language", EndingData.language);
+        GameManager.Instance.SetVariable("AccidyGender", EndingData.accidyGender);
+        GameManager.Instance.SetVariable("FateBirthday", EndingData.fateBirthDay);
+}
     public void InitGameData()
     {
         string ToJsonData = JsonUtility.ToJson(initData, true);
@@ -239,6 +245,11 @@ public class EndingData
     public int badEndingColloectCount = 0; // 배드 엔딩을 본 횟수
     public int[] endingCollectCount = new int[4] { 0, 0, 0, 0 }; // 각 엔딩을 본 횟수
     public EndingType lastEnding = EndingType.NONE; // 마지막으로 본 엔딩
+
+    public int accidyGender = 0;
+    public string fateName = "필연";
+    public int language = 1;
+    public int fateBirthDay = 0516;
 
     public void AddEnding(EndingType ending)
     {

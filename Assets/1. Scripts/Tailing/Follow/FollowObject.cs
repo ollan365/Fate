@@ -37,7 +37,7 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
         
         SoundPlayer.Instance.UISoundPlay(Sound_FollowSpecialObject);
 
-        if (objectName == FollowObjectName.Extra || FollowManager.Instance.IsTutorial) { OnMouseDown_Normal(); return; }
+        if (objectName == FollowObjectName.Extra) { OnMouseDown_Normal(); return; }
 
         FollowManager.Instance.ClickSpecialObject(this);
     }

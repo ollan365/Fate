@@ -23,7 +23,7 @@ public class FollowManager : MonoBehaviour
     public Animator Fate { get => fate; }
 
     [Header("Another Follow Manager")]
-    public FollowTutorial followTutorial;
+    [SerializeField] private FollowTutorial followTutorial;
     [SerializeField] private FollowEnd followEnd;
     [SerializeField] private FollowDialogueManager followDialogueManager;
     [SerializeField] private FollowGameManager followGameManager;
@@ -41,6 +41,8 @@ public class FollowManager : MonoBehaviour
     public int ClickCount { get; set; }
     public bool CanClick { get { return !followGameManager.IsFateHide && followGameManager.NowAccidyStatus != FollowGameManager.AccidyStatus.RED; } }
     public bool IsTutorial { set; get; } // 튜토리얼 중인지 아닌지
+    public bool TutorialFateNotMovable { get => IsTutorial && !followTutorial.fateMovable; }
+    public bool TutorialFateCantHide { get => IsTutorial && !followTutorial.fateCanHide; }
     public bool IsEnd { set; get; } // 현재 미행이 끝났는지 아닌지
     public bool IsDialogueOpen { set; get; } // 현재 대화창이 열려있는지
 
@@ -57,9 +59,11 @@ public class FollowManager : MonoBehaviour
         SetCharcter(0);
 
         StartCoroutine(ChangeBeaconSprite());
+        StartCoroutine(followGameManager.CameraMove());
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); return; }
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) { StartCoroutine(followTutorial.StartTutorial()); }
+        // else if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2) { StartCoroutine(followTutorial.StartTutorial()); }
     }
     public void StartFollow()
     {
@@ -85,10 +89,17 @@ public class FollowManager : MonoBehaviour
         }
     }
 
+    public void TutorialNextStep()
+    {
+        followTutorial.NextStep();
+    }
+
     // ==================== 미행 다이얼로그 ==================== //
     public bool ClickObject()
     {
         if (IsEnd || IsDialogueOpen || !CanClick) return false;
+
+        blockingPanel.SetActive(true);
 
         accidyAnimatorSpeed = Accidy.speed;
         fateAnimatorSpeed = Fate.speed;
@@ -104,21 +115,13 @@ public class FollowManager : MonoBehaviour
     }
     public void EndScript()
     {
+        IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
+        blockingPanel.SetActive(false);
+
         Accidy.speed = accidyAnimatorSpeed;
         Fate.speed = fateAnimatorSpeed;
 
-        IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
-
-        if (IsTutorial) // 튜토리얼 중에는 다르게 작동
-        {
-            followTutorial.NextStep();
-            return;
-        }
-        else if (IsEnd)
-        {
-            blockingPanel.SetActive(false);
-            return;
-        }
+        if (IsEnd || IsTutorial) return;
 
         followDialogueManager.EndScript();
         followGameManager.ChangeAnimStatusToStop(false);
