@@ -18,7 +18,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI speakerText;
     public TextMeshProUGUI[] scriptText;
     public Image[] backgroundImages;
-    public Image[] characterImage;
+    public Image[] characterImages;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
@@ -34,6 +34,7 @@ public class DialogueManager : MonoBehaviour
     public Dictionary<string, Script> scripts = new Dictionary<string, Script>();
     private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
     private Dictionary<string, ImagePath> imagePaths = new Dictionary<string, ImagePath>();
+    private Dictionary<string, ImagePath> backgrounds = new Dictionary<string, ImagePath>();
 
     // 상태 변수
     private string currentDialogueID = "";
@@ -55,6 +56,7 @@ public class DialogueManager : MonoBehaviour
             scripts = dialoguesParser.ParseScripts();
             choices = dialoguesParser.ParseChoices();
             imagePaths = dialoguesParser.ParseImagePaths();
+            backgrounds = dialoguesParser.ParseBackgrounds();
             
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -175,13 +177,18 @@ public class DialogueManager : MonoBehaviour
 
         StartCoroutine(TypeSentence(sentence));
 
+        var accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
+        var accidyGenderString = (accidyGender == 0) ? "female" : "male";
+        Debug.Log($"accidy gender: {accidyGenderString}");
+        
         // 배경화면 표시
         var backgroundID = dialogueLine.BackgroundID;
         var currentBackgroundImage = backgroundImages[dialogueType.ToInt()];
         if (string.IsNullOrWhiteSpace(backgroundID)) currentBackgroundImage.color = new Color(1, 1, 1, 0);
         else
         {
-            currentBackgroundImage.sprite = Resources.Load<Sprite>("Background Images/" + backgroundID);
+            var backgroundSprite = Resources.Load<Sprite>(backgrounds[backgroundID].GetPath(accidyGender));
+            currentBackgroundImage.sprite = backgroundSprite;
             currentBackgroundImage.color = new Color(1, 1, 1, 1);
         }
         
@@ -196,14 +203,13 @@ public class DialogueManager : MonoBehaviour
 
         // 화자 이미지 표시
         var imageID = dialogueLine.ImageID;
-        if (string.IsNullOrWhiteSpace(imageID)) foreach(Image characterImage in characterImage) characterImage.color = new Color(1, 1, 1, 0);
+        if (string.IsNullOrWhiteSpace(imageID)) foreach (var characterImage in characterImages) characterImage.color = new Color(1, 1, 1, 0);
         else
         {
-            var accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
             var characterSprite = Resources.Load<Sprite>(imagePaths[imageID].GetPath(accidyGender));
             var yOffset = (accidyGender == 0) ? -195 : -150;
 
-            foreach (Image characterImage in characterImage)
+            foreach (Image characterImage in characterImages)
             {
                 characterImage.color = new Color(1, 1, 1, 1);
                 characterImage.sprite = characterSprite;
@@ -212,8 +218,8 @@ public class DialogueManager : MonoBehaviour
                 characterImage.gameObject.SetActive(true);
             }
 
-            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterImage[1].gameObject.SetActive(false);
-            else characterImage[1].color = new Color(0, 0, 0, 0.8f);
+            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterImages[1].gameObject.SetActive(false);
+            else characterImages[1].color = new Color(0, 0, 0, 0.8f);
         }
         
     }
@@ -259,7 +265,7 @@ public class DialogueManager : MonoBehaviour
         
         isDialogueActive = false;
         dialogueSet[dialogueType.ToInt()].SetActive(false);
-        foreach (Image characterImage in characterImage)
+        foreach (Image characterImage in characterImages)
             characterImage.gameObject.SetActive(false);
         if (dialogueQueue.Count > 0)  // 큐에 다이얼로그가 들어있으면 다시 대화 시작
         {

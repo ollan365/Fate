@@ -9,12 +9,14 @@ public class DialoguesParser : MonoBehaviour
     private TextAsset scriptsCSV = Resources.Load<TextAsset>("Datas/scripts");
     private TextAsset choicesCSV = Resources.Load<TextAsset>("Datas/choices");
     private TextAsset imagePathsCSV = Resources.Load<TextAsset>("Datas/image paths");
+    private TextAsset backgroundsCSV = Resources.Load<TextAsset>("Datas/backgrounds");
     
     // 자료 구조
     private Dictionary<string, Dialogue> dialogues = new Dictionary<string, Dialogue>();
     private Dictionary<string, Script> scripts = new Dictionary<string, Script>();
     private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
     private Dictionary<string, ImagePath> imagePaths = new Dictionary<string, ImagePath>();
+    private Dictionary<string, ImagePath> backgrounds = new Dictionary<string, ImagePath>();
 
     private string Escaper(string originalString)
     {
@@ -147,4 +149,29 @@ public class DialoguesParser : MonoBehaviour
         return imagePaths;
     }
     
+    public Dictionary<string, ImagePath> ParseBackgrounds()
+    {
+        string[] lines = backgroundsCSV.text.Split('\n');
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if(string.IsNullOrWhiteSpace(lines[i])) continue;
+
+            string[] fields = lines[i].Split(',');
+
+            string imageID = fields[0].Trim();
+            string girlPath = fields[1].Trim();
+            string boyPath = fields[2].Trim();
+            girlPath = $"Background Images/{girlPath}";
+            boyPath = $"Background Images/{boyPath}";
+            ImagePath imagePath = new ImagePath(
+                imageID,
+                girlPath,
+                boyPath
+            );
+            backgrounds[imageID] = imagePath;
+        }
+
+        return backgrounds;
+    }
 }

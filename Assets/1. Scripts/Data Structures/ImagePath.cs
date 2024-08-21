@@ -14,7 +14,6 @@ public class ImagePath
 
     public string GetPath(int gender)
     {
-        if (gender == 0) return GirlPath;
-        else return BoyPath;
+        return gender == 0 ? GirlPath : BoyPath;
     }
 }
