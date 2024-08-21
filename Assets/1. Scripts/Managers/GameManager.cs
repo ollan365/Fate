@@ -84,7 +84,6 @@ public class GameManager : MonoBehaviour
 
         variables["ActionPointsPerDay"] = 5;
 
-        //variables["PresentHeartIndex"] = 4;
         variables["PresentHeartIndex"] = (int)GetVariable("ActionPointsPerDay") - 1; // 행동력 감소로 터질 하트 자리
         // presentHeartIndex가 쓰이는 곳은 배열이기에 0부터 시작해서 5 - 1 한 값으로 초기화.
 
@@ -495,6 +494,14 @@ public class GameManager : MonoBehaviour
         if (!eventObjectsStatusDict.ContainsKey(eventObject.GetEventId()))
         {
             eventObjectsStatusDict.Add(eventObject.GetEventId(), false);
+        }
+    }
+
+    public void AddEventObject(string eventObjectId)
+    {
+        if (!eventObjectsStatusDict.ContainsKey(eventObjectId))
+        {
+            eventObjectsStatusDict.Add(eventObjectId, false);
         }
     }
 

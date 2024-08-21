@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Bag : EventObject
 {
-    private void Awake()
+    private void Start()
     {
         GetComponent<CircleCollider2D>().enabled = false;
     }

@@ -95,6 +95,14 @@ public class Day : MonoBehaviour
         specialDateImage2.GetComponent<RectTransform>().localScale = new Vector3(1, heightScale, 1);
 
         // Debug.Log($"special dates: {specialDates["FateBirthday"]}, {specialDates["AccidyBirthday"]}, {specialDate1}, {specialDate2}");
+
+        GameManager.Instance.AddEventObject("EventCalendarBirthdayFate");
+        GameManager.Instance.AddEventObject("EventCalendarBirthdayAccidy");
+        GameManager.Instance.AddEventObject("EventCalendarSpecialDateA");
+        GameManager.Instance.AddEventObject("EventCalendarSpecialDateB");
+        GameManager.Instance.AddEventObject("EventCalendarSameBirthdays");
+        GameManager.Instance.AddEventObject("EventCalendarSameAsSpecialDateA");
+        GameManager.Instance.AddEventObject("EventCalendarSameAsSpecialDateB");
     }
 
     public void OnMouseDown()
@@ -119,6 +127,18 @@ public class Day : MonoBehaviour
         }
 
         if (string.IsNullOrEmpty(eventID)) return;
-        EventManager.Instance.CallEvent(eventID);
+
+        // 조사하는 Day 중복조사 묻게 함
+        // 여기의 Day들은 EventObject 상속 받아서 된 것이 아니기에
+        // EventObject의 OnMouseDown에서 호출하던 메소드들을 똑같이 호출함
+        GameManager.Instance.SetVariable("isInquiry", true);
+        GameManager.Instance.SetCurrentInquiryObjectId(eventID);
+        EventManager.Instance.CallEvent("Event_Inquiry");
+
+        // CalendarCluesFound를 다 조사한 상태면 달력 중복 조사 상태로 변경
+        if ((int)GameManager.Instance.GetVariable("CalendarCluesFound")>=4)
+        {
+            ResultManager.Instance.ExecuteResult("Result_IsFinishedEventCalendar");
+        }
     }
 }
