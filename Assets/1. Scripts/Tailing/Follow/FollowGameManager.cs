@@ -16,7 +16,6 @@ public class FollowGameManager : MonoBehaviour
     [SerializeField] private float accidyMoveSpeed;
     [SerializeField] float fateMoveSpeed;
     [SerializeField] int clickCountLimit;
-    private float tutorialMoveTime = 0;
     public float Distance { get => Accidy.transform.position.x - Fate.transform.position.x; }
     public bool StopAccidy { get; set; }
 
@@ -32,18 +31,12 @@ public class FollowGameManager : MonoBehaviour
     private bool IsFateMove { get; set; }
     void Update()
     {
-        if (!StopAccidy) MoveAccidy();
+        if (!StopAccidy && !FollowManager.Instance.IsTutorial) MoveAccidy();
 
-        if (!IsEnd && !FollowManager.Instance.IsTutorial && !IsDialogueOpen) MoveFate();
+        if (!IsEnd && !IsDialogueOpen || FollowManager.Instance.IsTutorial) MoveFate();
     }
     private void MoveAccidy()
     {
-        if (FollowManager.Instance.IsTutorial)
-        {
-            tutorialMoveTime -= Time.deltaTime;
-            if (tutorialMoveTime < 0) return;
-        }
-
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
         accidyDialogueBox.transform.position -= moveVector;
@@ -52,14 +45,15 @@ public class FollowGameManager : MonoBehaviour
     }
     private void MoveFate()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) FateHide(true);
+        if (Input.GetKeyDown(KeyCode.Space) && !FollowManager.Instance.TutorialFateCantHide) FateHide(true);
 
-        if (!IsFateHide)
+        if (!IsFateHide && !FollowManager.Instance.TutorialFateNotMovable)
         {
             IsFateMove = false;
             if (Input.GetKey(KeyCode.A))
             {
-                Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
+                if (Fate.transform.position.x > -8) Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
+
                 Fate.SetBool("Right", false);
                 IsFateMove = true;
             }
@@ -73,7 +67,7 @@ public class FollowGameManager : MonoBehaviour
             Fate.SetBool("Walking", IsFateMove);
         }
 
-        if (Input.GetKeyUp(KeyCode.Space)) FateHide(false);
+        if (Input.GetKeyUp(KeyCode.Space) && !FollowManager.Instance.TutorialFateCantHide) FateHide(false);
     }
     public void ChangeAnimStatusToStop(bool stop)
     {
@@ -105,7 +99,6 @@ public class FollowGameManager : MonoBehaviour
         StartCoroutine(AccidyLogic());
         StartCoroutine(AccidyDialogueBoxLogic());
         StartCoroutine(Warning());
-        StartCoroutine(CameraMove());
 
         // 미행이 끝날 때까지 반복
         while (!IsEnd)
@@ -217,13 +210,14 @@ public class FollowGameManager : MonoBehaviour
         }
         accidyDialogueBox.SetActive(false);
     }
-    private IEnumerator CameraMove()
+    public IEnumerator CameraMove()
     {
         while (!IsEnd)
         {
             while(!IsEnd && accidyStatus != AccidyStatus.RED)
             {
-                Camera.main.transform.position = new(Fate.transform.position.x, 0, -10);
+                float cameraX = Mathf.Max(0, Fate.transform.position.x);
+                Camera.main.transform.position = new(cameraX, 0, -10);
                 yield return null;
             }
 
