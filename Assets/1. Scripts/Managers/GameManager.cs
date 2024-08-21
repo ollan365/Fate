@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public bool isDebug = false;
     public bool skipTutorial = false;
     public bool skipInquiry = false;
+    public int accidyGender = 0;  // 우연 성별 {0: 여자, 1: 남자}
 
     // 조사 시스템에서 현재 조사하고 있는 오브젝트의 evnetId를 저장함
     private string currentInquiryObjectId = "";
@@ -70,7 +71,7 @@ public class GameManager : MonoBehaviour
         variables["FateGender"] = 0;  // 필연 성별 {0: 여자, 1: 남자}
         variables["FateBirthday"] = "0516";  // 필연 생일
         
-        variables["AccidyGender"] = 0;  // 우연 성별 {0: 여자, 1: 남자}
+        variables["AccidyGender"] = accidyGender;  // 우연 성별 {0: 여자, 1: 남자}
         variables["AccidyBirthday"] = "0616";  // 우연 생일
 
         variables["isInquiry"] = false; // 조사 시스템에서 예 누르면 true되고 계속 조사 가능.

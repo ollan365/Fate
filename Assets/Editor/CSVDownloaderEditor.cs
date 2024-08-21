@@ -17,7 +17,8 @@ public class CSVDownloaderEditor : EditorWindow
         {"scripts", "888011379"},
         {"image paths", "1449854056"},
         {"memos", "1578497812"},
-        {"diary", "1694526261"}
+        {"diary", "1694526261"},
+        {"backgrounds", "1143880704"}
     };
 
     [MenuItem("Tools/Download CSVs")]
