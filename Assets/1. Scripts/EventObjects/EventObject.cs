@@ -8,7 +8,7 @@ public class EventObject : MonoBehaviour
     [SerializeField]
     protected int sideNum;
 
-    [SerializeField] protected bool isInquiry = false;
+    [SerializeField] protected bool isInquiry = true;
 
     protected void OnMouseDown()
     {

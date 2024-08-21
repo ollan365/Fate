@@ -231,6 +231,7 @@ public class ResultManager : MonoBehaviour
 
             case "Result_NextMorningDay":    // 휴식 대사 스크립트 마지막인 Next에서 호출됨.
                 // fade in/out effect 실행 후 아침 대사 출력하는 메소드 호출
+                DialogueManager.Instance.EndDialogue();
                 RoomManager.Instance.actionPointManager.nextMorningDay();
                 break;
 

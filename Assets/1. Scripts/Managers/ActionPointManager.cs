@@ -198,6 +198,7 @@ public class ActionPointManager : MonoBehaviour
         SaveManager.Instance.SaveGameData();
     }
 
+    // 귀가 스크립트 출력 부분
     public void RefillHeartsOrEndDay()
     {
         // turn off all ImageAndLockPanel objects and zoom out
@@ -207,45 +208,90 @@ public class ActionPointManager : MonoBehaviour
         int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
         if (actionPoint == 0)
         {
-            SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+            // 방탈출2에서 5일차까지 끝내고 미행으로 넘어가기 전에 나오는 스크립트
+            if (SceneManager.Instance.CurrentScene == Constants.SceneType.ROOM_2)
+            {
+                DialogueManager.Instance.StartDialogue("RoomEscape2S_016");
+                SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_2);
+            }
+            else
+            {
+                SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+            }
+            
             return;
         }
         // 귀가 스크립트 출력
         var randomHomeComing = new Random((uint)System.DateTime.Now.Ticks);  // choose a random dialogue ID
 
         var HomeComingDialogueID = "";
-        switch (nowDayNum)
+
+        // 방탈출1 귀가 스크립트
+        if (SceneManager.Instance.CurrentScene == Constants.SceneType.ROOM_1)
         {
-            case 2:
-                //랜덤대사 1일차 귀가
-                string[] random1HomeComingDialogueIDs = { "RoomEscapeS_001", "RoomEscapeS_003" };
-                HomeComingDialogueID = random1HomeComingDialogueIDs[randomHomeComing.NextInt(0, 2)];
-                break;
+            switch (nowDayNum)
+            {
+                case 2:
+                    //랜덤대사 1일차 귀가
+                    string[] random1HomeComingDialogueIDs = { "RoomEscapeS_001", "RoomEscapeS_003" };
+                    HomeComingDialogueID = random1HomeComingDialogueIDs[randomHomeComing.NextInt(0, 2)];
+                    break;
 
-            case 3:
-                //특정대사 2일차 귀가
-                HomeComingDialogueID = "RoomEscapeS_005";
-                break;
+                case 3:
+                    //특정대사 2일차 귀가
+                    HomeComingDialogueID = "RoomEscapeS_005";
+                    break;
 
-            case 4:
-                //특정대사 3일차 귀가
-                HomeComingDialogueID = "RoomEscapeS_008";
-                break;
+                case 4:
+                    //특정대사 3일차 귀가
+                    HomeComingDialogueID = "RoomEscapeS_008";
+                    break;
 
-            case 5:
-                //랜덤대사 4일차 귀가
-                string[] random2HomeComingDialogueIDs = { "RoomEscapeS_012", "RoomEscapeS_013" };
-                HomeComingDialogueID = random2HomeComingDialogueIDs[randomHomeComing.NextInt(0, 2)];
-                break;
+                case 5:
+                    //랜덤대사 4일차 귀가
+                    string[] random2HomeComingDialogueIDs = { "RoomEscapeS_012", "RoomEscapeS_013" };
+                    HomeComingDialogueID = random2HomeComingDialogueIDs[randomHomeComing.NextInt(0, 2)];
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
+        else // 방탈출2 귀가 스크립트
+        {
+            switch (nowDayNum)
+            {
+                case 2:
+                    //특정대사 1일차 귀가
+                    HomeComingDialogueID = "RoomEscape2S_004";
+                    break;
+
+                case 3:
+                    //특정대사 2일차 귀가
+                    HomeComingDialogueID = "RoomEscape2S_006";
+                    break;
+
+                case 4:
+                    //특정대사 3일차 귀가
+                    HomeComingDialogueID = "RoomEscape2S_009";
+                    break;
+
+                case 5:
+                    //특정대사 4일차 귀가
+                    HomeComingDialogueID = "RoomEscape2S_012";
+                    break;
+
+                default:
+                    break;
+            }
+        }
+            
         DialogueManager.Instance.StartDialogue(HomeComingDialogueID);
         GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
         // 귀가 스크립트 이후 끝나면 Next의 Event_NextMorningDay fade in/out 이펙트 나옴
     }
 
+    // 외출(아침) 스크립트 출력 부분
     public void nextMorningDay()
     {
         // 다음날이 되고(fade in/out effect 실행) 아침 스크립트 출력
@@ -254,23 +300,53 @@ public class ActionPointManager : MonoBehaviour
 
         var MorningDialogueID = "";
 
-        switch (nowDayNum)
+        // 방탈출1 외출 스크립트
+        if (SceneManager.Instance.CurrentScene == Constants.SceneType.ROOM_1)
         {
-            case 2:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_004";
-                break;
+            switch (nowDayNum)
+            {
+                case 2:
+                    //특정 대사
+                    MorningDialogueID = "RoomEscapeS_004";
+                    break;
 
-            case 3: case 4:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_015";
-                break;
+                case 3:
+                case 4:
+                    //특정 대사
+                    MorningDialogueID = "RoomEscapeS_015";
+                    break;
 
-            case 5:
-                //특정 대사
-                MorningDialogueID = "RoomEscapeS_014";
-                break;
+                case 5:
+                    //특정 대사
+                    MorningDialogueID = "RoomEscapeS_014";
+                    break;
+            }
         }
+        else // 방탈출2 외출 스크립트
+        {
+            switch (nowDayNum)
+            {
+                case 2:
+                    //특정 대사
+                    MorningDialogueID = "RoomEscape2S_005";
+                    break;
+
+                case 3:
+                    //특정 대사
+                    MorningDialogueID = "RoomEscape2S_008";
+                    break;
+                case 4:
+                    //특정 대사
+                    MorningDialogueID = "RoomEscape2S_011";
+                    break;
+
+                case 5:
+                    //특정 대사
+                    MorningDialogueID = "RoomEscape2S_014";
+                    break;
+            }
+        }
+            
         StartCoroutine(DialogueManager.Instance.StartDialogue(MorningDialogueID, totalTime));
 
         // 여기서 하트 생성 및 다음날로 날짜 업데이트
@@ -390,10 +466,4 @@ public class ActionPointManager : MonoBehaviour
         }
     }
 
-
-
-    //public void showchildCount()
-    //{
-    //    Debug.Log(heartParent.transform.childCount);
-    //}
 }
