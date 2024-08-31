@@ -11,6 +11,7 @@ public class FollowManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject[] UI_OffAtEnd;
     [SerializeField] private GameObject blockingPanel;
+    [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
     [SerializeField] private Transform frontObjects;
@@ -109,6 +110,7 @@ public class FollowManager : MonoBehaviour
         foreach (Transform frontObject in frontObjects)
         { frontObject.GetComponent<Image>().color = setting; }
 
+        if (extraBlockingPanel.activeSelf && activeTrue) return;
         blockingPanel.SetActive(activeTrue);
     }
     public bool ClickObject()
@@ -116,6 +118,7 @@ public class FollowManager : MonoBehaviour
         if (IsEnd || !CanClick) return false;
 
         SetBlockingPanel(true);
+        followGameManager.ChangeAnimStatusToStop(true);
 
         if (IsDialogueOpen) return false;
 
@@ -128,7 +131,6 @@ public class FollowManager : MonoBehaviour
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
         followDialogueManager.ClickObject();
 
-        followGameManager.ChangeAnimStatusToStop(true);
         return true;
     }
     public void EndScript()
