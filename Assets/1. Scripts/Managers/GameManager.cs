@@ -4,7 +4,6 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
-using Random = Unity.Mathematics.Random;
 
 public class GameManager : MonoBehaviour
 {
