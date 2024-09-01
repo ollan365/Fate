@@ -11,6 +11,7 @@ public class FollowTutorial : MonoBehaviour
     [SerializeField] private GameObject moveButtons;
     [SerializeField] private GameObject hideButtons;
     [SerializeField] private TextMeshProUGUI startText;
+    [SerializeField] private Image startBlockingPanel;
     [SerializeField] private GameObject fate;
 
     public bool accidyNextLogic = false;
@@ -38,14 +39,29 @@ public class FollowTutorial : MonoBehaviour
 
         FollowManager.Instance.StartFollow();
 
-        highlightPanel.SetActive(false);
         FollowManager.Instance.SetBlockingPanel(true);
-        DialogueManager.Instance.StartDialogue("FollowTutorial_002");
+
+        if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_1)
+        {
+            highlightPanel.SetActive(false);
+            DialogueManager.Instance.StartDialogue("FollowTutorial_002");
+        }
+
+        else if(SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
+        {
+            DialogueManager.Instance.StartDialogue("Follow2S_01");
+        }
     }
     
     public void NextStep()
     {
         Debug.Log(tutorialStep);
+
+        if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
+        {
+            StartCoroutine(EndTutorial());
+            return;
+        }
 
         switch (tutorialStep)
         {
@@ -152,15 +168,18 @@ public class FollowTutorial : MonoBehaviour
     {
         fateMovable = false;
         startText.gameObject.SetActive(true);
+        startBlockingPanel.gameObject.SetActive(true);
         float current = 0, fadeTime = 1;
         while (current < fadeTime)
         {
             current += Time.deltaTime;
 
             startText.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, current / fadeTime));
+            startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, current / fadeTime));
             yield return null;
         }
         startText.gameObject.SetActive(false);
+        startBlockingPanel.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         FollowManager.Instance.SetBlockingPanel(false);
         tutorialBlockingPanel.SetActive(false);

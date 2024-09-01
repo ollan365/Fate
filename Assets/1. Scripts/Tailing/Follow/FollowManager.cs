@@ -71,7 +71,7 @@ public class FollowManager : MonoBehaviour
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); return; }
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) { StartCoroutine(followTutorial.StartTutorial()); }
-        // else if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2) { StartCoroutine(followTutorial.StartTutorial()); }
+        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2) { StartCoroutine(followTutorial.StartTutorial()); }
     }
     public void StartFollow()
     {
@@ -238,7 +238,7 @@ public class FollowManager : MonoBehaviour
         }
 
         // 두번째 미행
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
+        if (!IsTutorial && SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
         {
             switch ((int)Accidy.transform.position.x)
             {
