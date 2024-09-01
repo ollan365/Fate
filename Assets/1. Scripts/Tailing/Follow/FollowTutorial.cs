@@ -55,8 +55,6 @@ public class FollowTutorial : MonoBehaviour
     
     public void NextStep()
     {
-        Debug.Log(tutorialStep);
-
         if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
         {
             StartCoroutine(EndTutorial());
