@@ -17,7 +17,7 @@ public class ResultManager : MonoBehaviour
     
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
-        Debug.Log($"registered {objectName}");
+        //Debug.Log($"registered {objectName}");
 
         if (!executableObjects.ContainsKey(objectName))
         {
@@ -27,7 +27,7 @@ public class ResultManager : MonoBehaviour
 
     public void InitializeExecutableObjects()
     {
-        Debug.Log("############### unregistered all executable objects ###############");
+        //Debug.Log("############### unregistered all executable objects ###############");
 
         executableObjects = new Dictionary<string, IResultExecutable>();
     }

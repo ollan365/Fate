@@ -10,7 +10,7 @@ public class ZoomView : EventObject, IResultExecutable
         string executableName = $"{name} {sideNum}";  // "{이 오브젝트의 이름} + {사이드 번호}"로 executable 등록
         ResultManager.Instance.RegisterExecutable(executableName, this);
 
-        ResultManager.Instance.executableObjectsKeyCheck(executableName);
+        //ResultManager.Instance.executableObjectsKeyCheck(executableName);
 
         if (!isClosed)
             gameObject.SetActive(false);
