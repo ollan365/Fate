@@ -35,6 +35,9 @@ public class Chair : EventObject, IResultExecutable
             case 2:
                 movedPositions[2] = new Vector2(652f, -497f);
                 break;
+            case 3:
+                movedPositions[3] = new Vector2(-533f, -424f);
+                break;
         }
 
         deskUnzoomedButton = deskUnzoomedButton.GetComponent<Button>();

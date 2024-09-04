@@ -9,7 +9,17 @@ public class Drawers : EventObject, IResultExecutable
     public string parentObjectName;  // 방탈출2 옷장 서랍장. 부모 오브젝트 이름
     private string closedOrOpen;
 
-    private void Start()
+    public bool isUpDrawer;
+
+    [Header("서랍장 아랫칸")]
+    public List<GameObject> sideClosedDownDrawerObjects;
+    public List<GameObject> sideOpenDownDrawerObjects;
+
+    [Header("서랍장 윗칸")]
+    public List<GameObject> sideClosedUpDrawerObjects;
+    public List<GameObject> sideOpenUpDrawerObjects;
+
+    private void Awake()
     {
         closedOrOpen = isClosedDrawers ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Drawers", this);
@@ -38,5 +48,53 @@ public class Drawers : EventObject, IResultExecutable
         otherDrawers.SetActive(true);
         gameObject.SetActive(false);
 
+        showDrawersInSide();
+    }
+
+    private void showDrawersInSide()
+    {
+        // 서랍장 윗칸
+        if (isUpDrawer)
+        {
+            if (closedOrOpen == "Closed" && !gameObject.activeSelf)
+            {
+                // 문이 열린 상태
+                foreach (GameObject closedDrawer in sideClosedUpDrawerObjects)
+                    closedDrawer.SetActive(false);
+
+                foreach (GameObject openDrawer in sideOpenUpDrawerObjects)
+                    openDrawer.SetActive(true);
+            }
+            else
+            {
+                // 문이 닫힌 상태
+                foreach (GameObject closedDrawer in sideClosedUpDrawerObjects)
+                    closedDrawer.SetActive(true);
+
+                foreach (GameObject openDrawer in sideOpenUpDrawerObjects)
+                    openDrawer.SetActive(false);
+            }
+        }
+        else // 서랍장 아랫칸
+        {
+            if (closedOrOpen == "Closed" && !gameObject.activeSelf)
+            {
+                // 문이 열린 상태
+                foreach (GameObject closedDrawer in sideClosedDownDrawerObjects)
+                    closedDrawer.SetActive(false);
+
+                foreach (GameObject openDrawer in sideOpenDownDrawerObjects)
+                    openDrawer.SetActive(true);
+            }
+            else
+            {
+                // 문이 닫힌 상태
+                foreach (GameObject closedDrawer in sideClosedDownDrawerObjects)
+                    closedDrawer.SetActive(true);
+
+                foreach (GameObject openDrawer in sideOpenDownDrawerObjects)
+                    openDrawer.SetActive(false);
+            }
+        }
     }
 }
