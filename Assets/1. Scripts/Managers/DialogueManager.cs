@@ -19,6 +19,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI[] scriptText;
     public Image[] backgroundImages;
     public Image[] characterImages;
+    public Image characterFadeImage;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
@@ -220,8 +221,8 @@ public class DialogueManager : MonoBehaviour
                 characterImage.gameObject.SetActive(true);
             }
 
-            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterImages[1].gameObject.SetActive(false);
-            else characterImages[1].color = new Color(0, 0, 0, 0.8f);
+            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterFadeImage.gameObject.SetActive(false);
+            else characterFadeImage.color = new Color(0, 0, 0, 0.8f);
         }
         
     }
