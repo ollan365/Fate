@@ -29,19 +29,20 @@ public class FollowGameManager : MonoBehaviour
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
     public bool IsFateHide { get; private set; }
     private bool IsFateMove { get; set; }
+    private bool IsTutorial { get => FollowManager.Instance.IsTutorial; }
     void Update()
     {
-        if (!StopAccidy && !FollowManager.Instance.IsTutorial) MoveAccidy();
+        if (!StopAccidy && !IsTutorial) MoveAccidy();
 
-        if (!IsEnd && !IsDialogueOpen || FollowManager.Instance.IsTutorial) MoveFate();
+        if (!IsEnd && !IsDialogueOpen || IsTutorial) MoveFate();
+
+        if (!IsEnd) FollowManager.Instance.CheckPosition();
     }
     private void MoveAccidy()
     {
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
         accidyDialogueBox.transform.position -= moveVector;
-
-        if (!IsEnd) FollowManager.Instance.CheckPosition();
     }
     private void MoveFate()
     {
@@ -52,14 +53,14 @@ public class FollowGameManager : MonoBehaviour
             IsFateMove = false;
             if (Input.GetKey(KeyCode.A))
             {
-                if (Fate.transform.position.x > -8) Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
+                if (Fate.transform.position.x > -1) Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
 
                 Fate.SetBool("Right", false);
                 IsFateMove = true;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                Fate.transform.Translate(Vector3.right * fateMoveSpeed * Time.deltaTime);
+                if (!IsTutorial || Fate.transform.position.x < 2) Fate.transform.Translate(Vector3.right * fateMoveSpeed * Time.deltaTime);
                 Fate.SetBool("Right", true);
                 IsFateMove = true;
             }
@@ -74,7 +75,7 @@ public class FollowGameManager : MonoBehaviour
         // 대화 중이거나, 만약 필연 또는 우연이 뒤돌아 있으면 다시 이동하지 않음
         if (!stop && !IsEnd)
         {
-            if (IsDialogueOpen || accidyStatus != AccidyStatus.GREEN) return;
+            if (IsDialogueOpen || accidyStatus != AccidyStatus.GREEN || IsTutorial) return;
         }
 
         StopAccidy = stop;
@@ -87,6 +88,7 @@ public class FollowGameManager : MonoBehaviour
     }
     public void StartGame()
     {
+        StopAllCoroutines();
         StartCoroutine(StartGameLogic());
     }
     private IEnumerator StartGameLogic()
@@ -94,8 +96,10 @@ public class FollowGameManager : MonoBehaviour
         StopAccidy = false;
         IsFateMove = false;
         IsFateHide = false;
+        doubtGaugeSliders[0].value = 0;
 
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
+        StartCoroutine(CameraMove());
         StartCoroutine(AccidyLogic());
         StartCoroutine(AccidyDialogueBoxLogic());
         StartCoroutine(Warning());
@@ -109,7 +113,7 @@ public class FollowGameManager : MonoBehaviour
                 ChangeGaugeAlpha(Time.deltaTime * 3);
                 doubtGaugeSliders[0].value += 0.001f;
                 doubtGaugeSliders[1].value = doubtGaugeSliders[0].value;
-                if (doubtGaugeSliders[0].value == 1) FollowManager.Instance.FollowEndLogicStart();
+                if (!IsTutorial && doubtGaugeSliders[0].value == 1) FollowManager.Instance.FollowEndLogicStart();
             }
             else ChangeGaugeAlpha(-Time.deltaTime);
 
@@ -139,10 +143,18 @@ public class FollowGameManager : MonoBehaviour
         float waitingTimeForNextAction = WaitingTimeForNextAccidyAction(nextAccidyAction), currentTime = 0;
         while (!IsEnd)
         {
-            while (IsDialogueOpen || (!IsFateHide && accidyStatus == AccidyStatus.RED)) { yield return null; continue; } // 대화창이 열려있음
+            if (IsTutorial)
+            {
+                while (!FollowManager.Instance.TutorialAccidyNextLogic) yield return null;
+                FollowManager.Instance.TutorialAccidyNextLogic = false;
+            }
+            else
+            {
+                while (IsDialogueOpen || (!IsFateHide && accidyStatus == AccidyStatus.RED)) { yield return null; } // 대화창이 열려있음
 
-            if(nextAccidyAction == AccidyAction.Stop && FollowManager.Instance.ClickCount >= clickCountLimit) { FollowManager.Instance.ClickCount = 0; } // 우연이 걷고 있을 때 클릭을 다섯번 이상하면 우연이가 바로 뒤돌아 봄
-            else if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
+                if (nextAccidyAction == AccidyAction.Stop && FollowManager.Instance.ClickCount >= clickCountLimit) { FollowManager.Instance.ClickCount = 0; } // 우연이 걷고 있을 때 클릭을 다섯번 이상하면 우연이가 바로 뒤돌아 봄
+                else if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
+            }
 
             switch (nextAccidyAction)
             {
@@ -190,7 +202,7 @@ public class FollowGameManager : MonoBehaviour
         float currentTime = 0;
         while (!IsEnd)
         {
-            while (IsDialogueOpen) { yield return null; } // 대화창이 열려있음
+            while (!IsTutorial && IsDialogueOpen) { yield return null; } // 대화창이 열려있음
 
             if (accidyStatus == AccidyStatus.RED && IsFateHide) { text.text = "  ?  "; currentTime = 0; }
             else if (accidyStatus == AccidyStatus.RED && !IsFateHide) { text.text = "  !  "; currentTime = 0; }
@@ -210,7 +222,7 @@ public class FollowGameManager : MonoBehaviour
         }
         accidyDialogueBox.SetActive(false);
     }
-    public IEnumerator CameraMove()
+    private IEnumerator CameraMove()
     {
         while (!IsEnd)
         {
