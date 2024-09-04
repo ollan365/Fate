@@ -4,7 +4,7 @@ public static class Constants
     public enum SceneType { START, ROOM_1, FOLLOW_1, ROOM_2, FOLLOW_2, ENDING }
 
     // 대화창의 종류
-    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, FOLLOW_TUTORIAL, CENTER }
+    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, CENTER }
     public static int ToInt(this DialogueType dialogueType)
     {
         // 다이얼로그 타입에 따라 다른 숫자 반환
@@ -15,8 +15,7 @@ public static class Constants
             case DialogueType.FOLLOW: return 2;
             case DialogueType.FOLLOW_THINKING: return 3;
             case DialogueType.FOLLOW_EXTRA: return 4;
-            case DialogueType.FOLLOW_TUTORIAL: return 5;
-            case DialogueType.CENTER: return 6;
+            case DialogueType.CENTER: return 5;
             default: return 0;
         }
     }

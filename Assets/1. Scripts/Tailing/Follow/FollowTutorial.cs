@@ -5,24 +5,21 @@ using System.Collections;
 
 public class FollowTutorial : MonoBehaviour
 {
-    [SerializeField] private GameObject frontCanvas;
     [SerializeField] private GameObject highlightPanel;
+    [SerializeField] private Animator beaconAnimator;
+    [SerializeField] private GameObject tutorialBlockingPanel;
     [SerializeField] private GameObject moveButtons;
     [SerializeField] private GameObject hideButtons;
     [SerializeField] private TextMeshProUGUI startText;
-    [SerializeField] private GameObject accidyDialogueBox;
+    [SerializeField] private Image startBlockingPanel;
     [SerializeField] private GameObject fate;
-    [SerializeField] private Slider[] doubtGaugeSliders;
-    [SerializeField] private Image[] overHeadDoubtGaugeSliderImages;
 
-    private GameObject BlockingPanel { get => FollowManager.Instance.blockingPanel; }
-
+    public bool accidyNextLogic = false;
     public bool fateMovable = false;
     public bool fateCanHide = false;
 
     private GameObject accidy;
 
-    private Coroutine accidyDialogueCoroutine;
     private int tutorialStep = 0;
 
     public IEnumerator StartTutorial()
@@ -31,51 +28,51 @@ public class FollowTutorial : MonoBehaviour
 
         // 다른 물체를 누를 수 없도록 만든다
         FollowManager.Instance.IsTutorial = true;
-        frontCanvas.SetActive(false);
+        tutorialBlockingPanel.SetActive(true);
 
         // 튜토리얼 중에 메모 버튼이 켜지지 않도록 설정
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
-        accidyDialogueCoroutine = StartCoroutine(AccidyDialogueBoxLogic());
         yield return new WaitForSeconds(1.5f);
 
-        highlightPanel.SetActive(false);
-        BlockingPanel.SetActive(true);
-        DialogueManager.Instance.StartDialogue("FollowTutorial_002");
-    }
-    private IEnumerator AccidyDialogueBoxLogic()
-    {
-        TMP_Text text = accidyDialogueBox.GetComponentInChildren<TextMeshProUGUI>();
-        float currentTime = 0;
-        while (true)
-        {
-            currentTime += Time.deltaTime;
-            if (currentTime > 1)
-            {
-                if (text.text.Length < 3) text.text += ".";
-                else text.text = "";
+        FollowManager.Instance.StartFollow();
 
-                currentTime = 0;
-            }
-            yield return null;
+        FollowManager.Instance.SetBlockingPanel(true);
+
+        if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_1)
+        {
+            highlightPanel.SetActive(false);
+            DialogueManager.Instance.StartDialogue("FollowTutorial_002");
+        }
+
+        else if(SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
+        {
+            DialogueManager.Instance.StartDialogue("Follow2S_01");
         }
     }
+    
     public void NextStep()
     {
-        Debug.Log(tutorialStep);
+        if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
+        {
+            StartCoroutine(EndTutorial());
+            return;
+        }
 
         switch (tutorialStep)
         {
             case 0: // 신호등 판넬 켜기
-                BlockingPanel.SetActive(false);
+                FollowManager.Instance.SetBlockingPanel(false);
                 highlightPanel.SetActive(true);
+                beaconAnimator.SetBool(nameof(Light), true);
                 break;
             case 1: // 신호등을 눌렀을 때
-                BlockingPanel.SetActive(true);
+                FollowManager.Instance.SetBlockingPanel(true);
                 highlightPanel.SetActive(false);
                 DialogueManager.Instance.StartDialogue("FollowTutorial_004");
+                beaconAnimator.SetBool(nameof(Light), false);
                 break;
             case 2: // 이동 가능
                 StartCoroutine(MoveLogicTutorial());
@@ -93,14 +90,11 @@ public class FollowTutorial : MonoBehaviour
     {
         moveButtons.SetActive(true);
         fateMovable = true;
-        BlockingPanel.SetActive(true);
+        FollowManager.Instance.SetBlockingPanel(true);
         DialogueManager.Instance.StartDialogue("FollowTutorial_005");
 
         // 필연이 일정 거리 이상 앞으로 이동할 때까지 대기
-        while (fate.transform.position.x < 4 || tutorialStep == 3) yield return null;
-
-        fateMovable = false;
-        fate.GetComponent<Animator>().SetBool("Walking", false);
+        while (fate.transform.position.x < 2 || tutorialStep == 3) yield return null;
         fateCanHide = true;
 
         moveButtons.SetActive(false);
@@ -108,10 +102,9 @@ public class FollowTutorial : MonoBehaviour
         // 우연이 뒤돌아보기 직전
         accidy.transform.parent.SetAsLastSibling();
 
-        StopCoroutine(accidyDialogueCoroutine);
-        accidyDialogueBox.GetComponentInChildren<TextMeshProUGUI>().text = "...?";
+        accidyNextLogic = true;
 
-        BlockingPanel.SetActive(true);
+        FollowManager.Instance.SetBlockingPanel(true);
         DialogueManager.Instance.StartDialogue("FollowTutorial_006");
 
         hideButtons.SetActive(true);
@@ -119,11 +112,11 @@ public class FollowTutorial : MonoBehaviour
 
     private IEnumerator HideLogicTutorial()
     {
-        BlockingPanel.SetActive(false);
+        FollowManager.Instance.SetBlockingPanel(false);
 
-        accidy.GetComponent<Animator>().SetBool("Back", true);
+        accidyNextLogic = true;
         yield return new WaitForSeconds(0.5f);
-        accidyDialogueBox.GetComponentInChildren<TextMeshProUGUI>().text = "?";
+        accidyNextLogic = true;
         yield return new WaitForSeconds(0.5f);
 
         float spaceBarClickTime = 3;
@@ -134,33 +127,17 @@ public class FollowTutorial : MonoBehaviour
                 spaceBarClickTime -= Time.deltaTime;
                 yield return null;
             }
-
+            
             if (spaceBarClickTime <= 0) break;
-
-            ChangeGaugeAlpha(Time.deltaTime * 3);
-            doubtGaugeSliders[0].value += 0.001f;
-            doubtGaugeSliders[1].value = doubtGaugeSliders[0].value;
-
-            if (doubtGaugeSliders[0].value == 1) FollowManager.Instance.FollowEndLogicStart();
-            else ChangeGaugeAlpha(-Time.deltaTime);
-
-            yield return null;
+            else yield return null;
         }
         hideButtons.SetActive(false);
 
         accidy.transform.parent.SetAsFirstSibling();
-        accidy.GetComponent<Animator>().SetBool("Back", false);
-        accidyDialogueCoroutine = StartCoroutine(AccidyDialogueBoxLogic());
-        yield return new WaitForSeconds(0.5f);
-        BlockingPanel.SetActive(true);
+        accidyNextLogic = true;
+        yield return new WaitForSeconds(1f);
+        FollowManager.Instance.SetBlockingPanel(true);
         DialogueManager.Instance.StartDialogue("FollowTutorial_007");
-    }
-
-    private void ChangeGaugeAlpha(float value)
-    {
-        Color color = overHeadDoubtGaugeSliderImages[0].color;
-        color.a = Mathf.Clamp(color.a + value, 0, 1);
-        foreach (Image image in overHeadDoubtGaugeSliderImages) image.color = color;
     }
 
     //private void AdditionalTutorialSet()
@@ -189,26 +166,26 @@ public class FollowTutorial : MonoBehaviour
     {
         fateMovable = false;
         startText.gameObject.SetActive(true);
+        startBlockingPanel.gameObject.SetActive(true);
         float current = 0, fadeTime = 1;
         while (current < fadeTime)
         {
             current += Time.deltaTime;
 
             startText.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, current / fadeTime));
+            startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, current / fadeTime));
             yield return null;
         }
         startText.gameObject.SetActive(false);
+        startBlockingPanel.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
-        BlockingPanel.SetActive(false);
+        FollowManager.Instance.SetBlockingPanel(false);
+        tutorialBlockingPanel.SetActive(false);
 
         MemoManager.Instance.HideMemoButton = false;
         MemoManager.Instance.SetMemoButtons(true);
 
         FollowManager.Instance.IsTutorial = false;
-        frontCanvas.SetActive(true);
-
-        StopCoroutine(accidyDialogueCoroutine);
-
         FollowManager.Instance.StartFollow();
     }
 }

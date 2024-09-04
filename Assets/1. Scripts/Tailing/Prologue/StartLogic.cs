@@ -140,6 +140,7 @@ public class StartLogic : MonoBehaviour
             {
                 endingButtons[i].onClick.AddListener(() => OpenAlbumPage(index));
                 endingButtonImages[i].sprite = endingSprites[i * 2 + SaveManager.Instance.EndingData.accidyGender];
+                endingButtonImages[i].color = new Color(1, 1, 1, 1);
             }
             else
             {

@@ -7,8 +7,6 @@ using static Constants;
 
 public class FollowDialogueManager : MonoBehaviour
 {
-    [SerializeField] private GameObject frontCanvas;
-
     [Header("Dialogue")]
     [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private GameObject[] extraCanvas;
@@ -17,7 +15,6 @@ public class FollowDialogueManager : MonoBehaviour
     [SerializeField] private Image specialObjectButtonImage;
     private FollowExtra extra = FollowExtra.None;
 
-    private GameObject BlockingPanel { get => FollowManager.Instance.blockingPanel; }
     private bool IsEnd { get => FollowManager.Instance.IsEnd; }
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
 
@@ -30,22 +27,19 @@ public class FollowDialogueManager : MonoBehaviour
         // 엑스트라 캐릭터의 대사가 출력되는 중이면 끈다
         foreach (GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
 
-        frontCanvas.SetActive(false); // 플레이어를 가리는 물체들이 있는 canvas를 꺼버린다
         return true;
     }
 
     public void EndScript()
     {
-        frontCanvas.SetActive(true); // 플레이어를 가리는 물체들이 있는 canvas를 켠다
-
         EndExtraDialogue(true);
     }
     public void OpenExtraDialogue(string extraName)
     {
         extra = ToEnum(extraName);
 
+        FollowManager.Instance.SetBlockingPanel(false);
         extraBlockingPanel.SetActive(true); // 일반적인 블로킹 판넬이 아닌 다른 걸 켠다
-        BlockingPanel.SetActive(false);
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
 
@@ -66,7 +60,7 @@ public class FollowDialogueManager : MonoBehaviour
 
         extra = FollowExtra.None;
 
-        if (!dialogueEnd) BlockingPanel.SetActive(true); // 아직 다른 대사가 출력되는 중
+        if (!dialogueEnd) FollowManager.Instance.SetBlockingPanel(true); // 아직 다른 대사가 출력되는 중
     }
     public void ClickSpecialObject(FollowObject followObject)
     {

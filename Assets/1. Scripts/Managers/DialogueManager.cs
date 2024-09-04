@@ -90,6 +90,8 @@ public class DialogueManager : MonoBehaviour
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
+
         MemoManager.Instance.SetMemoButtons(false);
     }
 
@@ -271,9 +273,6 @@ public class DialogueManager : MonoBehaviour
         {
             string queuedDialogueID = dialogueQueue.Dequeue();
             StartDialogue(queuedDialogueID);
-
-            if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
-                if (FollowManager.Instance) FollowManager.Instance.ClickObject();
 
             return;
         }
