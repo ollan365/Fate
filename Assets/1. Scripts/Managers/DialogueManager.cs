@@ -182,7 +182,7 @@ public class DialogueManager : MonoBehaviour
 
         var accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
         var accidyGenderString = (accidyGender == 0) ? "female" : "male";
-        Debug.Log($"accidy gender: {accidyGenderString}");
+        // Debug.Log($"accidy gender: {accidyGenderString}");
         
         // 배경화면 표시
         var backgroundID = dialogueLine.BackgroundID;
