@@ -418,7 +418,7 @@ public class ActionPointManager : MonoBehaviour
 
         int actionPoint;
 
-        if (nowDayNum < 5) 
+        if (nowDayNum < maxDayNum) 
         {
             nowDayNum += 1;
             presentHeartIndex = (int)GameManager.Instance.GetVariable("ActionPointsPerDay") - 1;
@@ -451,7 +451,7 @@ public class ActionPointManager : MonoBehaviour
                 if (backgroundImageExtended.activeSelf) return;
                 else
                 {
-                    if ((presentHeartIndex + 1) > 5)
+                    if ((presentHeartIndex + 1) > maxDayNum)
                     {
                         backgroundImageDefault.SetActive(false);
                         backgroundImageExtended.SetActive(true);
