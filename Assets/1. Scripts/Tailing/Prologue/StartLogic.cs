@@ -111,7 +111,11 @@ public class StartLogic : MonoBehaviour
         SaveManager.Instance.SaveInitGameData();
 
         if(loadPrologue || (SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd)) { StartCoroutine(StartPrologue()); buttons.SetActive(false); }
-        else if (SaveManager.Instance.CheckGameData()) { SaveManager.Instance.LoadGameData(); buttons.SetActive(false); }
+        else if (SaveManager.Instance.CheckGameData())
+        {
+            SceneManager.Instance.LoadScene(SaveManager.Instance.LoadGameData());
+            buttons.SetActive(false);
+        }
         else noGameDataPanel.SetActive(true);
     }
     public void ChangeSoundValue(int index)

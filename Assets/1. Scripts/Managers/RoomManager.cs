@@ -50,7 +50,8 @@ public class RoomManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
+        SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
     }
     

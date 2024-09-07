@@ -60,6 +60,8 @@ public class FollowManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        SceneManager.Instance.ChangeSceneEffect();
+
         IsTutorial = false;
         IsEnd = false;
         IsDialogueOpen = false;

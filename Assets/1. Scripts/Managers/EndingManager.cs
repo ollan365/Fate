@@ -52,6 +52,7 @@ public class EndingManager : MonoBehaviour
 
     public void StartEnding()
     {
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.isFollow = false;
         DialogueManager.Instance.dialogueType = DialogueType.ROOM;
@@ -97,7 +98,11 @@ public class EndingManager : MonoBehaviour
         StartCoroutine(ClockEffect());
         yield return new WaitForSeconds(15f);
 
-        if (!isTest) SaveManager.Instance.LoadGameData();
+        if (!isTest)
+        {
+            SaveManager.Instance.LoadGameData();
+            SceneManager.Instance.LoadScene(SceneType.START);
+        }
         if (isTest) SceneManager.Instance.LoadScene(SceneType.ENDING);
     }
     private IEnumerator ClockEffect()
