@@ -4,7 +4,7 @@ public static class Constants
     public enum SceneType { START, ROOM_1, FOLLOW_1, ROOM_2, FOLLOW_2, ENDING }
 
     // 대화창의 종류
-    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, FOLLOW_TUTORIAL, CENTER }
+    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, CENTER }
     public static int ToInt(this DialogueType dialogueType)
     {
         // 다이얼로그 타입에 따라 다른 숫자 반환
@@ -15,8 +15,7 @@ public static class Constants
             case DialogueType.FOLLOW: return 2;
             case DialogueType.FOLLOW_THINKING: return 3;
             case DialogueType.FOLLOW_EXTRA: return 4;
-            case DialogueType.FOLLOW_TUTORIAL: return 5;
-            case DialogueType.CENTER: return 6;
+            case DialogueType.CENTER: return 5;
             default: return 0;
         }
     }
@@ -27,31 +26,68 @@ public static class Constants
     // 사운드 종류
     // 1. 배경음
     public const int
-        BGM_STOP = -1, BGM_OPENING = 0, BGM_ROOM1 = 1, BGM_FOLLOW1 = 2, BGM_MINIGAME = 3, BGM_FINISHGAME = 4, BGM_ROOM2 = 5,
-        BGM_BAD = 6, BGM_TRUE = 7, BGM_HIDDEN = 8;
+        BGM_STOP = -1,
+        BGM_OPENING = 0,
+        BGM_ROOM1 = 1,
+        BGM_FOLLOW1 = 2,
+        BGM_MINIGAME = 3,
+        BGM_FINISHGAME = 4,
+        BGM_ROOM2 = 5,
+        BGM_BAD = 6, 
+        BGM_TRUE = 7, 
+        BGM_HIDDEN = 8;
 
     // 2. 방탈출 오브젝트들
     public const int
-        Sound_CarpetOpen = 0, Sound_CarpetClose = 1, Sound_ClosetOpen = 2, Sound_ClosetClose = 3,
-        Sound_StorageOpen = 4, Sound_StorageClose = 5, Sound_Key = 6, Sound_LockerKeyMovement = 7, Sound_LockerUnlock = 9,
-        Sound_DiaryUnlock = 10, Sound_LaptopBoot = 11, Sound_Poster = 12, Sound_ChairMovement = 13, Sound_GrabPaper = 23,
-        Sound_TincaseOpen = 24, Sound_SewingBoxBall = 25, Sound_SewingBoxOpen = 26;
+        Sound_CarpetOpen = 0, 
+        Sound_CarpetClose = 1, 
+        Sound_ClosetOpen = 2, 
+        Sound_ClosetClose = 3,
+        Sound_StorageOpen = 4,
+        Sound_StorageClose = 5,
+        Sound_Key = 6,
+        Sound_LockerKeyMovement = 7,
+        Sound_LockerUnlock = 9,
+        Sound_DiaryUnlock = 10,
+        Sound_LaptopBoot = 11,
+        Sound_Poster = 12,
+        Sound_ChairMovement = 13,
+        Sound_GrabPaper = 23,
+        Sound_TincaseOpen = 24, 
+        Sound_SewingBoxBall = 25, 
+        Sound_SewingBoxOpen = 26;
 
     // 3. 미행
     public const int
-        Sound_Building = 15, Sound_FollowSpecialObject = 16, Sound_Cat = 17, Sound_TurnAround = 18, Sound_FollowEnd = 19;
+        Sound_Building = 15, 
+        Sound_FollowSpecialObject = 16, 
+        Sound_Cat = 17, 
+        Sound_TurnAround = 18, 
+        Sound_FollowEnd = 19;
 
     // 4. 루프 (반복 되어야 하는 것)
     public const int
-        Sound_FootStep_Fate = 0, Sound_FootStep_Accidy = 1, Sound_ClockMovement = 2, Sound_TincaseScroll = 3;
+        Sound_FootStep_Fate = 0, 
+        Sound_FootStep_Accidy = 1,
+        Sound_ClockMovement = 2, 
+        Sound_TincaseScroll = 3;
 
     // 5. 그 외
     public const int
-        Sound_Typing = -1, Sound_Click = 20, Sound_Correct = 21, Sound_Wrong = 22;
+        Sound_Typing = -1, 
+        Sound_Click = 20, 
+        Sound_Correct = 21,
+        Sound_Wrong = 22;
 
     public const int
-        Sound_AccidentSound = 27, Sound_Run2_1 = 28, Sound_9_1_LockerKeyMovement = 29;
-        
+        Sound_AccidentSound = 27,
+        Sound_Run2_1 = 28,
+        Sound_9_1_LockerKeyMovement = 29,
+        Sound_CarCrash_new = 30,
+        Sound_RunStairs1_2 = 31,
+        Sound_Door_open_metal = 32,
+        Sound_Unlock_doorslap_ = 33,
+        Sound_Wall_crash_002 = 34;
 
     // 시계 부분
 
@@ -66,9 +102,26 @@ public static class Constants
 
 
         // ========== 두번째 미행 ========== //
-        Villa2, Bar2, Bread2, BeerA, Izakawa2, Cafe2, Clothes_3F, Clothes_2F, DrinkA, CocktailBar2, Restaurant2, DrinkB, MusicBar2, Cosmetic2, DrinkC, BeerB, Club2,
-        Light2, Con2, Clothes_1F,
-
+        Villa2,
+        Bar2,
+        Bread2,
+        BeerA,
+        Izakawa2,
+        Cafe2,
+        Clothes_3F,
+        Clothes_2F,
+        DrinkA,
+        CocktailBar2,
+        Restaurant2,
+        DrinkB,
+        MusicBar2,
+        Cosmetic2,
+        DrinkC,
+        BeerB,
+        Club2,
+        Light2, 
+        Con2, 
+        Clothes_1F,
 
         // ========== 기타 등등 ========== //
         Extra
@@ -76,7 +129,16 @@ public static class Constants
 
     public enum FollowExtra
     {
-        None, Angry, Employee, RunAway_1, RunAway_2, Police, Smoker_1, Smoker_2, Clubber_1, Clubber_2
+        None, 
+        Angry, 
+        Employee, 
+        RunAway_1, 
+        RunAway_2, 
+        Police, 
+        Smoker_1, 
+        Smoker_2, 
+        Clubber_1, 
+        Clubber_2
     }
     public static string EventID(this FollowObjectName objectName)
     {

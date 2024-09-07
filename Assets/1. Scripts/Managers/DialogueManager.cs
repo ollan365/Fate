@@ -19,6 +19,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI[] scriptText;
     public Image[] backgroundImages;
     public Image[] characterImages;
+    public Image characterFadeImage;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
@@ -90,6 +91,8 @@ public class DialogueManager : MonoBehaviour
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
+
         MemoManager.Instance.SetMemoButtons(false);
     }
 
@@ -179,7 +182,7 @@ public class DialogueManager : MonoBehaviour
 
         var accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
         var accidyGenderString = (accidyGender == 0) ? "female" : "male";
-        Debug.Log($"accidy gender: {accidyGenderString}");
+        // Debug.Log($"accidy gender: {accidyGenderString}");
         
         // 배경화면 표시
         var backgroundID = dialogueLine.BackgroundID;
@@ -218,8 +221,8 @@ public class DialogueManager : MonoBehaviour
                 characterImage.gameObject.SetActive(true);
             }
 
-            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterImages[1].gameObject.SetActive(false);
-            else characterImages[1].color = new Color(0, 0, 0, 0.8f);
+            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterFadeImage.gameObject.SetActive(false);
+            else characterFadeImage.color = new Color(0, 0, 0, 0.8f);
         }
         
     }
@@ -271,9 +274,6 @@ public class DialogueManager : MonoBehaviour
         {
             string queuedDialogueID = dialogueQueue.Dequeue();
             StartDialogue(queuedDialogueID);
-
-            if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
-                if (FollowManager.Instance) FollowManager.Instance.ClickObject();
 
             return;
         }

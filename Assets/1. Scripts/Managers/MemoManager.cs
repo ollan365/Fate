@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,12 @@ public class MemoManager : PageContentsManager
     [SerializeField] private GameObject leftButtonNotificationImage;
     [SerializeField] private GameObject rightButtonNotificationImage;
 
+    [Header("Page Num Text")]
+    [SerializeField] private TextMeshProUGUI leftPageNum;
+    [SerializeField] private TextMeshProUGUI rightPageNum;
+    [SerializeField] private TextMeshProUGUI frontPageNum;
+    [SerializeField] private TextMeshProUGUI backPageNum;
+    
     public static MemoManager Instance { get; private set; }
     public bool isMemoOpen = false;
     public bool isFollow = false;
@@ -260,18 +267,22 @@ public class MemoManager : PageContentsManager
         {
             case PageType.Left:
                 leftPage.text = pageNum == 0 ? "" : allMemos[pageNum - 1][1];
+                leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
                 break;
             
             case PageType.Right:
                 rightPage.text = pageNum > allMemos.Count ? "" : allMemos[pageNum - 1][1];
+                rightPageNum.text = pageNum > allMemos.Count ? "" : pageNum.ToString();
                 break;
             
             case PageType.Back:
                 backPage.text = allMemos[pageNum - 1][1];
+                backPageNum.text = pageNum.ToString();
                 break;
             
             case PageType.Front:
                 frontPage.text = allMemos[pageNum - 1][1];
+                frontPageNum.text = pageNum.ToString();
                 break;
         }
     }
@@ -307,7 +318,7 @@ public class MemoManager : PageContentsManager
             unseenMemoPages.Remove(pageNum);
             UpdateNotification();
             
-            Debug.Log($"Marked page {pageNum} as read");
+            // Debug.Log($"Marked page {pageNum} as read");
         }
     }
 
@@ -317,10 +328,7 @@ public class MemoManager : PageContentsManager
 
         int currentPage = memoPages.currentPage;
 
-        foreach (var pageNum in unseenMemoPages)
-        {
-            // Debug.Log($"Unseen Memo Page: {pageNum}");
-        }
+        // foreach (var pageNum in unseenMemoPages) Debug.Log($"Unseen Memo Page: {pageNum}");
         
         bool hasUnreadLeft = unseenMemoPages.Exists(pageNum => pageNum < currentPage);
         bool hasUnreadRight = unseenMemoPages.Exists(pageNum => pageNum > currentPage + 1);

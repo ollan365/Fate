@@ -10,7 +10,10 @@ public class Doors : EventObject, IResultExecutable
     public string parentObjectName;  // 옷장, 수남장 등 부모 오브젝트 이름
     private string closedOrOpen;
 
-    private void Start()
+    public List<GameObject> sideClosedDoorObjects;
+    public List<GameObject> sideOpenDoorObjects;
+
+    private void Awake()
     {
         closedOrOpen = isClosedDoors ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Doors", this);
@@ -49,5 +52,23 @@ public class Doors : EventObject, IResultExecutable
         otherDoors.SetActive(true);
         gameObject.SetActive(false);
 
+        if(closedOrOpen== "Closed" && !gameObject.activeSelf)
+        {
+            // 문이 열린 상태
+            foreach (GameObject closedDoor in sideClosedDoorObjects)
+                closedDoor.SetActive(false);
+
+            foreach (GameObject openDoor in sideOpenDoorObjects)
+                openDoor.SetActive(true);
+        }
+        else
+        {
+            // 문이 닫힌 상태
+            foreach (GameObject closedDoor in sideClosedDoorObjects)
+                closedDoor.SetActive(true);
+
+            foreach (GameObject openDoor in sideOpenDoorObjects)
+                openDoor.SetActive(false);
+        }
     }
 }

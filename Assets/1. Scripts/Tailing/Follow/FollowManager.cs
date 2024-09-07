@@ -10,9 +10,11 @@ public class FollowManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject[] UI_OffAtEnd;
-    public GameObject blockingPanel;
+    [SerializeField] private GameObject blockingPanel;
+    [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
+    [SerializeField] private Transform frontObjects;
     public Slider memoGaugeSlider;
 
     [Header("Character")]
@@ -40,11 +42,18 @@ public class FollowManager : MonoBehaviour
     
     public int ClickCount { get; set; }
     public bool CanClick { get { return !followGameManager.IsFateHide && followGameManager.NowAccidyStatus != FollowGameManager.AccidyStatus.RED; } }
-    public bool IsTutorial { set; get; } // 튜토리얼 중인지 아닌지
-    public bool TutorialFateNotMovable { get => IsTutorial && !followTutorial.fateMovable; }
-    public bool TutorialFateCantHide { get => IsTutorial && !followTutorial.fateCanHide; }
     public bool IsEnd { set; get; } // 현재 미행이 끝났는지 아닌지
     public bool IsDialogueOpen { set; get; } // 현재 대화창이 열려있는지
+
+    // 튜토리얼 관련 변수들
+    public bool IsTutorial { set; get; }
+    public bool TutorialFateNotMovable { get => IsTutorial && !followTutorial.fateMovable; }
+    public bool TutorialFateCantHide { get => IsTutorial && !followTutorial.fateCanHide; }
+    public bool TutorialAccidyNextLogic
+    {
+        set => followTutorial.accidyNextLogic = value;
+        get => followTutorial.accidyNextLogic;
+    }
 
     void Awake()
     {
@@ -59,11 +68,10 @@ public class FollowManager : MonoBehaviour
         SetCharcter(0);
 
         StartCoroutine(ChangeBeaconSprite());
-        StartCoroutine(followGameManager.CameraMove());
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); return; }
         if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) { StartCoroutine(followTutorial.StartTutorial()); }
-        // else if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2) { StartCoroutine(followTutorial.StartTutorial()); }
+        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2) { StartCoroutine(followTutorial.StartTutorial()); }
     }
     public void StartFollow()
     {
@@ -95,11 +103,24 @@ public class FollowManager : MonoBehaviour
     }
 
     // ==================== 미행 다이얼로그 ==================== //
+    public void SetBlockingPanel(bool activeTrue)
+    {
+        Color setting = activeTrue ? new Color(0.2f, 0.2f, 0.2f) : new Color(1, 1, 1);
+
+        foreach (Transform frontObject in frontObjects)
+        { frontObject.GetComponent<Image>().color = setting; }
+
+        if (extraBlockingPanel.activeSelf && activeTrue) return;
+        blockingPanel.SetActive(activeTrue);
+    }
     public bool ClickObject()
     {
-        if (IsEnd || IsDialogueOpen || !CanClick) return false;
+        if (IsEnd || !CanClick) return false;
 
-        blockingPanel.SetActive(true);
+        SetBlockingPanel(true);
+        followGameManager.ChangeAnimStatusToStop(true);
+
+        if (IsDialogueOpen) return false;
 
         accidyAnimatorSpeed = Accidy.speed;
         fateAnimatorSpeed = Fate.speed;
@@ -110,13 +131,12 @@ public class FollowManager : MonoBehaviour
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
         followDialogueManager.ClickObject();
 
-        followGameManager.ChangeAnimStatusToStop(true);
         return true;
     }
     public void EndScript()
     {
         IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
-        blockingPanel.SetActive(false);
+        SetBlockingPanel(false);
 
         Accidy.speed = accidyAnimatorSpeed;
         Fate.speed = fateAnimatorSpeed;
@@ -218,7 +238,7 @@ public class FollowManager : MonoBehaviour
         }
 
         // 두번째 미행
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
+        if (!IsTutorial && SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
         {
             switch ((int)Accidy.transform.position.x)
             {

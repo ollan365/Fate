@@ -18,7 +18,7 @@ public class ResultManager : MonoBehaviour
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
         //Debug.Log($"registered {objectName}");
-        
+
         if (!executableObjects.ContainsKey(objectName))
         {
             executableObjects[objectName] = executable;
@@ -27,7 +27,7 @@ public class ResultManager : MonoBehaviour
 
     public void InitializeExecutableObjects()
     {
-        // Debug.Log("############### unregistered all executable objects ###############");
+        //Debug.Log("############### unregistered all executable objects ###############");
 
         executableObjects = new Dictionary<string, IResultExecutable>();
     }
@@ -37,7 +37,7 @@ public class ResultManager : MonoBehaviour
         if (executableObjects.ContainsKey(objectName))
             Debug.Log(objectName + " key exists");
         else
-            Debug.Log(objectName + " key does not exists");
+            Debug.Log(objectName + " key does not exist");
     }
 
     void Awake()
@@ -398,6 +398,7 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_ChairMovement);
                 executableObjects["Chair1"].ExecuteAction();
                 executableObjects["Chair2"].ExecuteAction();
+                executableObjects["Chair3"].ExecuteAction();
                 GameManager.Instance.InverseVariable("ChairMoved");
                 break;
 
@@ -613,12 +614,17 @@ public class ResultManager : MonoBehaviour
 
 
             case "ResultClosetZoom": // 옷장 확대 화면으로 전환
-                executableObjects["Closet Unzoomed 2"].ExecuteAction();
+                //executableObjectsKeyCheck("Closet Unzoomed-closed 2");
+                //executableObjectsKeyCheck("Closet Unzoomed-open 2");
+                executableObjects["Closet Unzoomed-closed 2"].ExecuteAction();
+                executableObjects["Closet Unzoomed-open 2"].ExecuteAction();
                 break;
             
             case "ResultCabinetZoom": // 서랍장 확대 화면으로 전환
-                // executableObjects["Cabinet Unzoomed 2"].ExecuteAction();
-                executableObjects["Cabinet Unzoomed 3"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed-closed 2"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed-open 2"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed-closed 3"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed-open 3"].ExecuteAction();
                 break;
             
             case "Result_showZoomedDesk": // 책상 화면으로 전환
@@ -778,6 +784,10 @@ public class ResultManager : MonoBehaviour
 
             case "Result_showZoomedClosetUnder": // 옷장 아래 영역 확대 화면으로 전환
                 executableObjects["ClosetUnder Unzoomed 2"].ExecuteAction();
+                executableObjects["ClosetUnderDown Unzoomed-closed 2"].ExecuteAction();
+                executableObjects["ClosetUnderDown Unzoomed-open 2"].ExecuteAction();
+                executableObjects["ClosetUnderUp Unzoomed-closed 2"].ExecuteAction();
+                executableObjects["ClosetUnderUp Unzoomed-open 2"].ExecuteAction();
                 break;
 
             case "Result_showZoomedMedicine2": // 약 확대 화면으로 전환

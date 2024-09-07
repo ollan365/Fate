@@ -36,7 +36,12 @@ public class SaveManager : MonoBehaviour
     public void SaveInitGameData()
     {
         if (initData == null)
-            initData = new SaveData(SceneType.START, 1, GameManager.Instance.Variables, GameManager.Instance.eventObjectsStatusDict, MemoManager.Instance.SavedMemoList, MemoManager.Instance.RevealedMemoList);
+            initData = new SaveData(SceneType.START,
+                1,
+                GameManager.Instance.Variables,
+                GameManager.Instance.eventObjectsStatusDict,
+                MemoManager.Instance.SavedMemoList,
+                MemoManager.Instance.RevealedMemoList);
 
         if (EndingData == null) return;
 
@@ -249,7 +254,7 @@ public class EndingData
     public int accidyGender = 0;
     public string fateName = "필연";
     public int language = 1;
-    public int fateBirthDay = 0516;
+    public string fateBirthDay = "0516";
 
     public void AddEnding(EndingType ending)
     {

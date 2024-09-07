@@ -140,6 +140,7 @@ public class StartLogic : MonoBehaviour
             {
                 endingButtons[i].onClick.AddListener(() => OpenAlbumPage(index));
                 endingButtonImages[i].sprite = endingSprites[i * 2 + SaveManager.Instance.EndingData.accidyGender];
+                endingButtonImages[i].color = new Color(1, 1, 1, 1);
             }
             else
             {
@@ -275,6 +276,6 @@ public class StartLogic : MonoBehaviour
         SaveManager.Instance.EndingData.accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
         SaveManager.Instance.EndingData.fateName = (string)GameManager.Instance.GetVariable("FateName");
         SaveManager.Instance.EndingData.language = (int)GameManager.Instance.GetVariable("Language");
-        SaveManager.Instance.EndingData.fateBirthDay = (int)GameManager.Instance.GetVariable("FateBirthday");
+        SaveManager.Instance.EndingData.fateBirthDay = (string)GameManager.Instance.GetVariable("FateBirthday");
     }
 }
