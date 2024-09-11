@@ -151,6 +151,14 @@ public class ResultManager : MonoBehaviour
                 StartLogic.Instance.OpenBirthPanel();
                 break;
 
+            case "ResultNameSetting":
+                DialogueManager.Instance.StartDialogue("Prologue_Birth");
+                break;
+
+            case "ResultBirthSetting":
+                DialogueManager.Instance.StartDialogue("Prologue_008_B");
+                break;
+
             case "ResultPrologueQuestions":
                 DialogueManager.Instance.StartDialogue("Prologue_Name");
                 break;
@@ -988,7 +996,39 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("Follow2S_01");
                 break;
 
-            case "ResultFollowTutorialNextStep":
+            case "ResultFollowTutorialNextStep_0":
+                FollowManager.Instance.TutorialNextStep();
+                break;
+
+            case "ResultFollowTutorialNextStep_1":
+                FollowManager.Instance.TutorialNextStep();
+                DialogueManager.Instance.StartDialogue("FollowTutorial_004");
+                break;
+
+            case "ResultFollowTutorialNextStep_2":
+                FollowManager.Instance.TutorialNextStep();
+                DialogueManager.Instance.StartDialogue("FollowTutorial_005");
+                break;
+
+            case "ResultFollowTutorialNextStep_3":
+                FollowManager.Instance.TutorialNextStep();
+                break;
+
+            case "ResultFollowTutorialNextStep_4":
+                FollowManager.Instance.TutorialNextStep();
+                DialogueManager.Instance.StartDialogue("FollowTutorial_006");
+                break;
+
+            case "ResultFollowTutorialNextStep_5":
+                FollowManager.Instance.TutorialNextStep();
+                break;
+
+            case "ResultFollowTutorialNextStep_6":
+                FollowManager.Instance.TutorialNextStep();
+                DialogueManager.Instance.StartDialogue("FollowTutorial_007");
+                break;
+
+            case "ResultFollowTutorialNextStep_7":
                 FollowManager.Instance.TutorialNextStep();
                 break;
 

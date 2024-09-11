@@ -224,8 +224,8 @@ public class StartLogic : MonoBehaviour
     public void NameSetting()
     {
         GameManager.Instance.SetVariable("FateName", fateName);
-        DialogueManager.Instance.StartDialogue("Prologue_Birth");
         blockingPanel.SetActive(true);
+        EventManager.Instance.CallEvent("Event_NameSetting");
     }
 
     // ===== 생일 설정 ===== //
@@ -262,9 +262,9 @@ public class StartLogic : MonoBehaviour
 
     public void BirthSetting()
     {
-        DialogueManager.Instance.StartDialogue("Prologue_008_B");
         blockingPanel.SetActive(true);
         SettingsComplete();
+        EventManager.Instance.CallEvent("Event_BirthSetting");
     }
 
     // 필연 설정 완료

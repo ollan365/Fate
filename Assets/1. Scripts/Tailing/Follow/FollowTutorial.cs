@@ -43,6 +43,8 @@ public class FollowTutorial : MonoBehaviour
     
     public void NextStep()
     {
+        Debug.Log(GameManager.Instance.GetVariable("FollowTutorialPhase"));
+
         if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
         {
             StartCoroutine(EndTutorial());
@@ -59,16 +61,21 @@ public class FollowTutorial : MonoBehaviour
             case 1: // 신호등을 눌렀을 때
                 FollowManager.Instance.SetBlockingPanel(true);
                 highlightPanel.SetActive(false);
-                DialogueManager.Instance.StartDialogue("FollowTutorial_004");
                 beaconAnimator.SetBool(nameof(Light), false);
                 break;
             case 2: // 이동 가능
                 StartCoroutine(MoveLogicTutorial());
                 break;
-            case 4: // 우연이 뒤를 돌았다가 다시 앞을 볼 때까지 숨기
+            case 4: // 이동 가능
+                MoveEnd();
+                break;
+            case 5: // 우연이 뒤를 돌았다가 다시 앞을 볼 때까지 숨기
                 StartCoroutine(HideLogicTutorial());
                 break;
-            case 5: // 튜토리얼 끝
+            case 6:
+                FollowManager.Instance.SetBlockingPanel(true);
+                break;
+            case 7: // 튜토리얼 끝
                 StartCoroutine(EndTutorial());
                 break;
         }
@@ -79,10 +86,14 @@ public class FollowTutorial : MonoBehaviour
         moveButtons.SetActive(true);
         fateMovable = true;
         FollowManager.Instance.SetBlockingPanel(true);
-        DialogueManager.Instance.StartDialogue("FollowTutorial_005");
 
         // 필연이 일정 거리 이상 앞으로 이동할 때까지 대기
         while (fate.transform.position.x < 2 || (int)GameManager.Instance.GetVariable("FollowTutorialPhase") == 3) yield return null;
+
+        EventManager.Instance.CallEvent("EventFollowTutorialNextStep");
+    }
+    private void MoveEnd()
+    {
         fateCanHide = true;
 
         moveButtons.SetActive(false);
@@ -93,7 +104,6 @@ public class FollowTutorial : MonoBehaviour
         accidyNextLogic = true;
 
         FollowManager.Instance.SetBlockingPanel(true);
-        DialogueManager.Instance.StartDialogue("FollowTutorial_006");
 
         hideButtons.SetActive(true);
     }
@@ -124,8 +134,8 @@ public class FollowTutorial : MonoBehaviour
         accidy.transform.parent.SetAsFirstSibling();
         accidyNextLogic = true;
         yield return new WaitForSeconds(1f);
-        FollowManager.Instance.SetBlockingPanel(true);
-        DialogueManager.Instance.StartDialogue("FollowTutorial_007");
+
+        EventManager.Instance.CallEvent("EventFollowTutorialNextStep");
     }
 
     //private void AdditionalTutorialSet()
