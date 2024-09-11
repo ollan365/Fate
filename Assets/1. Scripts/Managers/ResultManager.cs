@@ -980,6 +980,14 @@ public class ResultManager : MonoBehaviour
 
 
             // 미행 1
+            case "ResultFollow1Tutorial":
+                DialogueManager.Instance.StartDialogue("FollowTutorial_002");
+                break;
+
+            case "ResultFollow2Tutorial":
+                DialogueManager.Instance.StartDialogue("Follow2S_01");
+                break;
+
             case "ResultFollowTutorialNextStep":
                 FollowManager.Instance.TutorialNextStep();
                 break;
@@ -1112,6 +1120,10 @@ public class ResultManager : MonoBehaviour
                 MemoManager.Instance.RevealMemo("F1Memo_010");
                 break;
 
+            case "ResultFollowEndNextStep":
+                // FollowManager.Instance.FollowTutorialNextStep();
+                break;
+
             case "ResultFollowEnd": // 미행 끝 (메모 개수 충분)
                 SceneManager.Instance.LoadScene(SceneType.ROOM_2);
                 break;
@@ -1181,7 +1193,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLightMemo2": // 미행2 신호등 메모 -> 아직 스크립트 없음
-                // MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultSolicitationScript2": // 미행2 호객행위 스크립트 출력
@@ -1189,7 +1201,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSolicitationMemo2": // 미행2 호객행위 메모 -> 아직 스크립트 없음
-                // MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultConScript2": // 미행2 편의점 스크립트 출력
@@ -1197,7 +1209,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultConMemo2": // 미행2 편의점 메모 -> 아직 스크립트 없음
-                // MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultTeenageScript2": // 미행2 가출 청소년 스크립트 출력
@@ -1205,7 +1217,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTeenageMemo2": // 미행2 가출 청소년 메모 -> 아직 스크립트 없음
-                // MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "Result1FClothesScript2": // 미행2 가출 1층 옷가게 스크립트 출력
@@ -1213,7 +1225,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result1FClothesMemo2": // 미행2 가출 1층 옷가게 메모 -> 아직 스크립트 없음
-                // MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultPoliceScript2": // 미행2 경찰 스크립트
@@ -1221,7 +1233,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPoliceMemo2": // 미행2 경찰 메모 -> 아직 스크립트 없음
-                // MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultCigaretteScript2": // 미행2 담배피는 사람 스크립트
@@ -1229,7 +1241,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCigaretteMemo2": // 미행2 담배피는 사람 메모 -> 아직 스크립트 없음
-                // MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultGuardScript2": // 미행2 클럽가드 스크립트
@@ -1237,7 +1249,44 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultGuardMemo2": // 미행2 클럽가드 메모 -> 아직 스크립트 없음
-                // MemoManager.Instance.AddMemo("F1Memo_008");
+                MemoManager.Instance.RevealMemo("F1Memo_008");
+                break;
+
+            case "ResultUnlockFOLLOW_1":
+                DialogueManager.Instance.StartDialogue("FollowTutorial_001");
+                break;
+
+            case "ResultLockFOLLOW_1":
+                SoundPlayer.Instance.ChangeBGM(BGM_BAD);
+                DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01");
+                break;
+
+            case "ResultUnlockROOM_2":
+                StartCoroutine(EndingManager.Instance.Ending_Follow1());
+                break;
+
+            case "ResultStartDialogue_Follow1Final":
+                DialogueManager.Instance.StartDialogue("Follow1Final_003");
+                break;
+
+            case "ResultLockROOM_2":
+                SoundPlayer.Instance.ChangeBGM(BGM_BAD);
+                DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
+                break;
+
+            case "ResultUnlockHidden":
+                SoundPlayer.Instance.ChangeBGM(BGM_HIDDEN);
+                DialogueManager.Instance.StartDialogue("HiddenEnding_00");
+                break;
+
+            case "ResultUnlockTrue":
+                SoundPlayer.Instance.ChangeBGM(BGM_TRUE);
+                DialogueManager.Instance.StartDialogue("TrueEnding_01");
+                break;
+
+            case "ResultLockTrueAndHidden":
+                SoundPlayer.Instance.ChangeBGM(BGM_BAD);
+                DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
                 break;
 
             case "ResultBadA_End":

@@ -6,10 +6,11 @@ public class FollowEnd : MonoBehaviour
 {
     [SerializeField] private FollowGameManager followGameManager;
     [SerializeField] private GameObject blockingPanel;
+    [SerializeField] 
     private Animator Accidy { get => FollowManager.Instance.Accidy; }
     private Animator Fate { get => FollowManager.Instance.Fate; }
     
-    public IEnumerator EndFollow()
+    public IEnumerator EndFollowLogic()
     {
         // 필연으로 줌인
         yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.Fate) + 0.5f);

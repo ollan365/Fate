@@ -20,8 +20,6 @@ public class FollowTutorial : MonoBehaviour
 
     private GameObject accidy;
 
-    private int tutorialStep = 0;
-
     public IEnumerator StartTutorial()
     {
         accidy = FollowManager.Instance.Accidy.gameObject;
@@ -35,22 +33,12 @@ public class FollowTutorial : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(false);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+        if (highlightPanel) highlightPanel.SetActive(false);
         yield return new WaitForSeconds(1.5f);
 
         FollowManager.Instance.StartFollow();
-
         FollowManager.Instance.SetBlockingPanel(true);
-
-        if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_1)
-        {
-            highlightPanel.SetActive(false);
-            DialogueManager.Instance.StartDialogue("FollowTutorial_002");
-        }
-
-        else if(SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
-        {
-            DialogueManager.Instance.StartDialogue("Follow2S_01");
-        }
+        EventManager.Instance.CallEvent("EventFollowTutorial");
     }
     
     public void NextStep()
@@ -61,7 +49,7 @@ public class FollowTutorial : MonoBehaviour
             return;
         }
 
-        switch (tutorialStep)
+        switch ((int)GameManager.Instance.GetVariable("FollowTutorialPhase"))
         {
             case 0: // 신호등 판넬 켜기
                 FollowManager.Instance.SetBlockingPanel(false);
@@ -84,7 +72,7 @@ public class FollowTutorial : MonoBehaviour
                 StartCoroutine(EndTutorial());
                 break;
         }
-        tutorialStep++;
+        GameManager.Instance.IncrementVariable("FollowTutorialPhase");
     }
     private IEnumerator MoveLogicTutorial()
     {
@@ -94,7 +82,7 @@ public class FollowTutorial : MonoBehaviour
         DialogueManager.Instance.StartDialogue("FollowTutorial_005");
 
         // 필연이 일정 거리 이상 앞으로 이동할 때까지 대기
-        while (fate.transform.position.x < 2 || tutorialStep == 3) yield return null;
+        while (fate.transform.position.x < 2 || (int)GameManager.Instance.GetVariable("FollowTutorialPhase") == 3) yield return null;
         fateCanHide = true;
 
         moveButtons.SetActive(false);

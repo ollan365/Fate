@@ -8,6 +8,13 @@ ConditionTutorialPhase3,튜토리얼 3 진행 중,TutorialPhase,==,3
 ConditionTutorialPhase4,튜토리얼 4 진행 중,TutorialPhase,==,4
 ConditionTutorialPhase5,튜토리얼 5 진행 중,TutorialPhase,==,5
 ,,,,
+ConditionSceneSTART,현재 씬이 START 씬,CurrentScene,==,0
+ConditionSceneROOM_1,현재 씬이 ROOM_1 씬,CurrentScene,==,1
+ConditionSceneFOLLOW_1,현재 씬이 FOLLOW_1 씬,CurrentScene,==,2
+ConditionSceneROOM_2,현재 씬이 ROOM_2 씬,CurrentScene,==,3
+ConditionSceneFOLLOW_2,현재 씬이 FOLLOW_2 씬,CurrentScene,==,4
+ConditionSceneENDING,현재 씬이 ENDING 씬,CurrentScene,==,5
+,,,,
 ConditionCurrentSide1,현재 사이드1번 방,currentSideIndex,==,0
 ConditionCurrentSide2Or3,현재 사이드 2~3번 방,currentSideIndex,>,0
 ,,,,
@@ -100,6 +107,10 @@ ConditionStorageTeddyBearManyClick,서랍장 내부 곰인형을 한 번 이상 
 ,,,,
 ConditionInquiryOk,,isInquiry,==,TRUE
 ,,,,
+ConditionNowDayNum2,,NowDayNum,==,2
+ConditionNowDayNum3,,NowDayNum,==,3
+ConditionNowDayNum4,,NowDayNum,==,4
+ConditionNowDayNum5,,NowDayNum,==,5
 ,,,,
 ConditionBedTeddy2FirstClick,방탈출2 침대 위 곰인형 처음 클릭,BedTeddyClick2,==,0
 ConditionBedTeddy2ManyClick,방탈출2 침대 위 곰인형 한 번 이상 클릭,BedTeddyClick2,>,0
@@ -199,6 +210,11 @@ ConditionClosetClothAndBag2ManyClick,방탕출2 옷장 안 정리 안된 옷과 
 ConditionUnderClosetClothes2FirstClick,옷장 밑 수납장 속 헝클어진 옷을 처음 클릭,UnderClosetClothes2Click,==,0
 ConditionUnderClosetClothes2ManyClick,옷장 밑 수납장 속 헝클어진 옷을 여러번 클릭,UnderClosetClothes2Click,>,0
 ,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
 ConditionVillaClick,빌라를 처음 클릭,VillaClick,>=,0
 ConditionBreadClick,2층 빵집을클릭,BreadClick,>=,0
 ConditionConClick,1층 편의점을 클릭,ConClick,>=,0
@@ -236,6 +252,12 @@ Condition10timesClick,10번 클릭 ,EventClick,==,10
 Condition20timesClick,20번 클릭,EventClick,==,20
 Condition30timesClick,30번 혹은 그 이상,EventClick,==,30
 ,,,,
+ConditionFollowTutorialPhase0,미행 튜토리얼 0 진행 중,FollowTutorialPhase,==,0
+ConditionFollowTutorialPhase1,미행 튜토리얼 1 진행 중,FollowTutorialPhase,==,1
+ConditionFollowTutorialPhase2,미행 튜토리얼 2 진행 중,FollowTutorialPhase,==,2
+ConditionFollowTutorialPhase3,미행 튜토리얼 3 진행 중,FollowTutorialPhase,==,3
+ConditionFollowTutorialPhase4,미행 튜토리얼 4 진행 중,FollowTutorialPhase,==,4
+ConditionFollowTutorialPhase5,미행 튜토리얼 5 진행 중,FollowTutorialPhase,==,5
 ,,,,
 ConditionVillaClick2,미행 2 빌라를 클릭,VillaClick2,>=,0
 ConditionBarClick2,미행 2 편의점 건물 3층 바를 클릭,BarClick2,>=,0
@@ -274,6 +296,11 @@ ConditionGuardManyClick2,미행2 클럽 가드 여러번 클릭,GuardClick2,>,0
 ,,,,
 ConditionEnding_0,엔딩을 아예 보지 않은 상태,EndingCollect,==,0
 ConditionEnding_1,엔딩을 하나 이상을 본 상태,EndingCollect,>,0
+,,,,
+ConditionMemoCount_ROOM_1,ROOM_1의 메모 개수,MemoCount_ROOM_1,>,8
+ConditionMemoCount_FOLLOW_1,FOLLOW_1의 메모 개수,MemoCount_FOLLOW_1,>=,8
+ConditionMemoCount_ROOM_2,ROOM_2의 메모 개수,MemoCount_ROOM_2,>=,8
+ConditionMemoCount_FOLLOW_2,FOLLOW_2의 메모 개수,MemoCount_FOLLOW_2,>=,8
 ,,,,
 ConditionEnding_BadA,BadA 엔딩을 하나 이상,BadACollect,>,0
 ConditionEnding_BadB,BadB 엔딩을 하나 이상,BadBCollect,>,0

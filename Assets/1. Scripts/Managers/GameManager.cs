@@ -79,6 +79,13 @@ public class GameManager : MonoBehaviour
 
         variables["RefillHeartsOrEndDay"] = false;
 
+        variables["CurrentScene"] = Constants.SceneType.START.ToInt();
+
+        variables["MemoCount_ROOM_1"] = 0;
+        variables["MemoCount_FOLLOW_1"] = 0;
+        variables["MemoCount_ROOM_2"] = 0;
+        variables["MemoCount_FOLLOW_2"] = 0;
+
         // 1 - 1. 방탈출 ActionPoint 관련 변수들
         variables["ActionPoint"] = 25;  // 행동력 
 
@@ -274,6 +281,9 @@ public class GameManager : MonoBehaviour
 
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
+        // 미행 튜토리얼 단계
+        variables["FollowTutorialPhase"] = 0;
+
         // 빌라
         variables["VillaClick"] = 0;
         // 2층 빵집

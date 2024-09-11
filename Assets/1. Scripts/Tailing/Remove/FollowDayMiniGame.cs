@@ -200,7 +200,8 @@ public class FollowDayMiniGame : MonoBehaviour
         }
 
         // 게임 오버이고 메모의 개수 충분할 때
-        if (isGameOver && MemoManager.Instance.UnlockNextScene())
+        // if (isGameOver && MemoManager.Instance.UnlockNextScene())
+        if (isGameOver)
         {
             DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM;
             blockingPanel.SetActive(true);

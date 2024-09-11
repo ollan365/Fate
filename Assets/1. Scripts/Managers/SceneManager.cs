@@ -80,6 +80,8 @@ public class SceneManager : MonoBehaviour
 
     public void ChangeSceneEffect()
     {
+        GameManager.Instance.SetVariable("CurrentScene", CurrentScene.ToInt());
+            
         // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
         switch (sceneType)
         {
