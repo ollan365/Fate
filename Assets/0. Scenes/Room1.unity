@@ -13131,7 +13131,8 @@ MonoBehaviour:
   imageAndLockPanelManager: {fileID: 370811677}
   isInvestigating: 0
   tutorialManager: {fileID: 1180950097}
-  actionPointManager: {fileID: 1382991586}
+  actionPointManager: {fileID: 1382991588}
+  Room2ActionPointManager: {fileID: 0}
   heartParent: {fileID: 648974758}
   dayText: {fileID: 799394682}
 --- !u!4 &1149435151
@@ -15809,7 +15810,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1382991587}
-  - component: {fileID: 1382991586}
+  - component: {fileID: 1382991588}
   m_Layer: 0
   m_Name: ActionPoint Manager
   m_TagString: Untagged
@@ -15817,28 +15818,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1382991586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1382991585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 813b619385a8b4640b236cc31997fbd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heartPrefab: {fileID: 6969201055948651551, guid: 070edf69f3ac742a3962b3ba4cfaf5e1, type: 3}
-  heartParent: {fileID: 648974758}
-  dayText: {fileID: 799394682}
-  maxDayNum: 0
-  nowDayNum: 0
-  actionPointsPerDay: 0
-  presentHeartIndex: 0
-  isEatenEnergySupplement: 0
-  backgroundImageDefault: {fileID: 1650052478}
-  backgroundImageExtended: {fileID: 0}
 --- !u!4 &1382991587
 Transform:
   m_ObjectHideFlags: 0
@@ -15854,6 +15833,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1382991588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382991585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 189202bef8a3e5d42bf953150c135008, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heartPrefab: {fileID: 6969201055948651551, guid: 070edf69f3ac742a3962b3ba4cfaf5e1, type: 3}
+  heartParent: {fileID: 648974758}
+  dayText: {fileID: 799394682}
+  maxDayNum: 0
+  nowDayNum: 0
+  actionPointsPerDay: 0
+  presentHeartIndex: 0
 --- !u!1 &1384277336
 GameObject:
   m_ObjectHideFlags: 0
@@ -18668,11 +18666,6 @@ PrefabInstance:
 --- !u!224 &1650052477 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6034836307008348862, guid: c84ef57fc50cdd446a5bc0603bfb711b, type: 3}
-  m_PrefabInstance: {fileID: 1650052476}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1650052478 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8188069679920105902, guid: c84ef57fc50cdd446a5bc0603bfb711b, type: 3}
   m_PrefabInstance: {fileID: 1650052476}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1685621560

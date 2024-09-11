@@ -35,6 +35,7 @@ public class RoomManager : MonoBehaviour
 
     // 액션포인트 매니저
     public ActionPointManager actionPointManager;
+    public Room2ActionPointManager Room2ActionPointManager;
 
     // ************************* temporary members for action points *************************
     [SerializeField] GameObject heartParent;
