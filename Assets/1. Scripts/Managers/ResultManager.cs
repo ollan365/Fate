@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Constants;
+using Random = Unity.Mathematics.Random;
 
 public class ResultManager : MonoBehaviour
 {
@@ -654,6 +655,43 @@ public class ResultManager : MonoBehaviour
                 SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
                 break;
 
+            // 방탈출1 귀가 스크립트
+            case "Result_Room1HomeComing2":
+                // 랜덤
+                var randomHomeComing = new Random((uint)System.DateTime.Now.Ticks);  // choose a random dialogue ID
+                string[] random1HomeComing2DialogueIDs = { "RoomEscapeS_001", "RoomEscapeS_003" };
+                DialogueManager.Instance.StartDialogue(random1HomeComing2DialogueIDs[randomHomeComing.NextInt(0, 2)]);
+                break;
+
+            case "Result_Room1HomeComing3":
+                DialogueManager.Instance.StartDialogue("RoomEscapeS_005");
+                break;
+
+            case "Result_Room1HomeComing4":
+                DialogueManager.Instance.StartDialogue("RoomEscapeS_008");
+                break;
+
+            case "Result_Room1HomeComing5":
+                // 랜덤
+                randomHomeComing = new Random((uint)System.DateTime.Now.Ticks);  // choose a random dialogue ID
+                string[] random1HomeComing5DialogueIDs = { "RoomEscapeS_012", "RoomEscapeS_013" };
+                DialogueManager.Instance.StartDialogue(random1HomeComing5DialogueIDs[randomHomeComing.NextInt(0, 2)]);
+                break;
+
+            // 방탈출1 아침 스크립트
+            case "Result_Room1Morning2":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
+                break;
+
+            case "Result_Room1Morning3":
+            case "Result_Room1Morning4":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_015", totalTime));
+                break;
+
+            case "Result_Room1Morning5":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_014", totalTime));
+                break;
+
 
             // 방탈출 2
 
@@ -749,14 +787,14 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultEatEnergySupplement":
-                RoomManager.Instance.actionPointManager.EatEnergySupplement();
+                RoomManager.Instance.Room2ActionPointManager.EatEnergySupplement();
                 break;
 
             case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
-                RoomManager.Instance.actionPointManager.SetChoosingBrokenBearChoice(true);
+                RoomManager.Instance.Room2ActionPointManager.SetChoosingBrokenBearChoice(true);
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
-                RoomManager.Instance.actionPointManager.SetChoosingBrokenBearChoice(false);
+                RoomManager.Instance.Room2ActionPointManager.SetChoosingBrokenBearChoice(false);
                 break;
 
             case "ResultDiary2Script": // 다이어리에 대한 설명
@@ -984,6 +1022,40 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "book2");
                 executableObjects["Book2"].ExecuteAction();
                 Debug.Log("  떨어진 책 읽기");
+                break;
+
+            // 방탈출2 귀가 스크립트
+            case "Result_Room2HomeComing2":
+                DialogueManager.Instance.StartDialogue("RoomEscape2S_004");
+                break;
+
+            case "Result_Room2HomeComing3":
+                DialogueManager.Instance.StartDialogue("RoomEscape2S_006");
+                break;
+
+            case "Result_Room2HomeComing4":
+                DialogueManager.Instance.StartDialogue("RoomEscape2S_009");
+                break;
+
+            case "Result_Room2HomeComing5":
+                DialogueManager.Instance.StartDialogue("RoomEscape2S_012");
+                break;
+
+            // 방탈출2 아침 스크립트
+            case "Result_Room2Morning2":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_005", totalTime));
+                break;
+
+            case "Result_Room2Morning3":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_008", totalTime));
+                break;
+
+            case "Result_Room2Morning4":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_011", totalTime));
+                break;
+
+            case "Result_Room2Morning5":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_014", totalTime));
                 break;
 
 

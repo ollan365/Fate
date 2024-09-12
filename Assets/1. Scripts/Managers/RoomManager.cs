@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using UnityEditor.SceneManagement;
+//using UnityEditor.SceneManagement;
 
 public class RoomManager : MonoBehaviour
 {
@@ -35,6 +35,7 @@ public class RoomManager : MonoBehaviour
 
     // 액션포인트 매니저
     public ActionPointManager actionPointManager;
+    public Room2ActionPointManager Room2ActionPointManager;
 
     // ************************* temporary members for action points *************************
     [SerializeField] GameObject heartParent;
