@@ -23,13 +23,13 @@ public class DialogueManager : MonoBehaviour
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
-    [Header("teddyBearIcons")]public GameObject[] teddyBearIcons;
+    [Header("teddyBearIcons")] public GameObject[] teddyBearIcons;
     [Header("Blocking Panels")] public Image[] blockingPanels;
-    
+
     // 타자 효과 속도
     [Header("Typing Speed")]
     public float typeSpeed = 0.05f;
-    
+
     // 자료 구조
     public Dictionary<string, Dialogue> dialogues = new Dictionary<string, Dialogue>();
     public Dictionary<string, Script> scripts = new Dictionary<string, Script>();
@@ -44,10 +44,10 @@ public class DialogueManager : MonoBehaviour
     private bool isAuto = false;
     private bool isFast = false;
     private string fullSentence;
-    
+
     // Dialogue Queue
     private Queue<string> dialogueQueue = new Queue<string>();
-    
+
     void Awake()
     {
         if (Instance == null)
@@ -58,7 +58,7 @@ public class DialogueManager : MonoBehaviour
             choices = dialoguesParser.ParseChoices();
             imagePaths = dialoguesParser.ParseImagePaths();
             backgrounds = dialoguesParser.ParseBackgrounds();
-            
+
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -75,7 +75,7 @@ public class DialogueManager : MonoBehaviour
         if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
         {
             Debug.Log($"dialogue ID: {dialogueID} queued!");
-            
+
             dialogueQueue.Enqueue(dialogueID);
             return;
         }
@@ -126,10 +126,11 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayDialogueLine(DialogueLine dialogueLine)
     {
-        foreach (Transform child in choicesContainer[dialogueType.ToInt()])
-        {
-            Destroy(child.gameObject);
-        }
+        if (choicesContainer.Length > dialogueType.ToInt())
+            foreach (Transform child in choicesContainer[dialogueType.ToInt()])
+            {
+                Destroy(child.gameObject);
+            }
 
         // 화자에 따라 대화창 변경
         ChangeDialogueCanvas(dialogueLine.SpeakerID);
@@ -173,8 +174,8 @@ public class DialogueManager : MonoBehaviour
         // 미행의 행인은 별도의 SpeakerID를 가짐
         if (dialogueType != DialogueType.FOLLOW_EXTRA)
         {
-            speakerText.text = dialogueLine.SpeakerID == "DialogueC_003" 
-                ? GameManager.Instance.GetVariable("FateName").ToString() 
+            speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
+                ? GameManager.Instance.GetVariable("FateName").ToString()
                 : scripts[dialogueLine.SpeakerID].GetScript();
         }
 
@@ -183,18 +184,20 @@ public class DialogueManager : MonoBehaviour
         var accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
         var accidyGenderString = (accidyGender == 0) ? "female" : "male";
         // Debug.Log($"accidy gender: {accidyGenderString}");
-        
+
         // 배경화면 표시
         var backgroundID = dialogueLine.BackgroundID;
-        var currentBackgroundImage = backgroundImages[dialogueType.ToInt()];
-        if (string.IsNullOrWhiteSpace(backgroundID)) currentBackgroundImage.color = new Color(1, 1, 1, 0);
-        else
+        foreach (var currentBackgroundImage in backgroundImages)
         {
-            var backgroundSprite = Resources.Load<Sprite>(backgrounds[backgroundID].GetPath(accidyGender));
-            currentBackgroundImage.sprite = backgroundSprite;
-            currentBackgroundImage.color = new Color(1, 1, 1, 1);
+            if (string.IsNullOrWhiteSpace(backgroundID)) currentBackgroundImage.color = new Color(1, 1, 1, 0);
+            else
+            {
+                var backgroundSprite = Resources.Load<Sprite>(backgrounds[backgroundID].GetPath(accidyGender));
+                currentBackgroundImage.sprite = backgroundSprite;
+                currentBackgroundImage.color = new Color(1, 1, 1, 1);
+            }
         }
-        
+
         // 사운드 효과 재생
         if (!string.IsNullOrWhiteSpace(dialogueLine.SoundID))
         {
@@ -224,9 +227,9 @@ public class DialogueManager : MonoBehaviour
             if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterFadeImage.gameObject.SetActive(false);
             else characterFadeImage.color = new Color(0, 0, 0, 0.8f);
         }
-        
+
     }
-    
+
     private void ChangeDialogueCanvas(string speaker)
     {
         // 방 대화창
@@ -236,7 +239,7 @@ public class DialogueManager : MonoBehaviour
             dialogueType = DialogueType.ROOM;
 
         // 미행 대화창
-        else if(dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING || dialogueType == DialogueType.FOLLOW_EXTRA)
+        else if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING || dialogueType == DialogueType.FOLLOW_EXTRA)
         {
             if (speaker == "DialogueC_004")
             {
@@ -265,7 +268,7 @@ public class DialogueManager : MonoBehaviour
 
         // 재생하고 있던 사운드 멈춤
         // 추가 부탁드립니다
-        
+
         isDialogueActive = false;
         dialogueSet[dialogueType.ToInt()].SetActive(false);
         foreach (Image characterImage in characterImages)
@@ -298,7 +301,7 @@ public class DialogueManager : MonoBehaviour
         RoomManager.Instance.SetButtons();
 
     }
-    
+
     public void SkipButtonClick()
     {
         StopAllCoroutines();
@@ -306,7 +309,7 @@ public class DialogueManager : MonoBehaviour
         dialogues[currentDialogueID].SetCurrentLineIndex(dialogues[currentDialogueID].Lines.Count - 2);
         StartCoroutine(SkipDialogue());
     }
-    
+
     private IEnumerator SkipDialogue()
     {
         ProceedToNext();
@@ -343,18 +346,18 @@ public class DialogueManager : MonoBehaviour
         else if (string.IsNullOrWhiteSpace(next))  // 빈칸인 경우 다음 줄(대사)로 이동
         {
             currentDialogueLineIndex++;
-            
+
             if (currentDialogueLineIndex >= dialogues[currentDialogueID].Lines.Count)
             {
                 EndDialogue();  // 더 이상 DialogueLine이 존재하지 않으면 대화 종료
                 return;
             }
-            else if(currentDialogueLineIndex == dialogues[currentDialogueID].Lines.Count - 1)
+            else if (currentDialogueLineIndex == dialogues[currentDialogueID].Lines.Count - 1)
             {
                 foreach (GameObject skip in skipText) skip.SetActive(false); //  다이얼로그의 마지막 대사는 스킵 불가능
             }
             dialogues[currentDialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
-            DialogueLine nextDialogueLine = dialogues[currentDialogueID].Lines[currentDialogueLineIndex]; 
+            DialogueLine nextDialogueLine = dialogues[currentDialogueID].Lines[currentDialogueLineIndex];
             DisplayDialogueLine(nextDialogueLine);
         }
         else if (choices.ContainsKey(next)) // Choice인 경우
@@ -364,7 +367,7 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeSentence(string sentence)
     {
-        teddyBearIcons[dialogueType.ToInt()].SetActive(false);
+        if(teddyBearIcons.Length > dialogueType.ToInt()) teddyBearIcons[dialogueType.ToInt()].SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
 
@@ -401,7 +404,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
-        teddyBearIcons[dialogueType.ToInt()].SetActive(true);
+        if (teddyBearIcons.Length > dialogueType.ToInt()) teddyBearIcons[dialogueType.ToInt()].SetActive(true);
 
         if (isFast)
         {
@@ -417,11 +420,11 @@ public class DialogueManager : MonoBehaviour
             foreach (GameObject skip in skipText) skip.SetActive(true);
         }
     }
-    
+
     public void OnDialoguePanelClick()
     {
         if (!isDialogueActive || isAuto) return;
-        
+
         if (isTyping)
         {
             CompleteSentence();
@@ -431,20 +434,22 @@ public class DialogueManager : MonoBehaviour
             ProceedToNext();
         }
     }
-    
+
     private void CompleteSentence()
     {
         StopAllCoroutines();
         scriptText[dialogueType.ToInt()].text = fullSentence;
         isTyping = false;
-        teddyBearIcons[dialogueType.ToInt()].SetActive(true);
+        if (teddyBearIcons.Length > dialogueType.ToInt()) teddyBearIcons[dialogueType.ToInt()].SetActive(true);
     }
-    
+
     // ---------------------------------------------- Choice methods ----------------------------------------------
     private void DisplayChoices(string choiceID)
     {
-        blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0.7f);
-        
+        if (choicesContainer.Length <= dialogueType.ToInt()) return;
+
+        if (blockingPanels.Length > dialogueType.ToInt()) blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0.7f);
+
         foreach (Transform child in choicesContainer[dialogueType.ToInt()])
         {
             Destroy(child.gameObject);
@@ -490,14 +495,14 @@ public class DialogueManager : MonoBehaviour
         {
             EventManager.Instance.CallEvent(next);
         }
-        
+
         foreach (Transform child in choicesContainer[dialogueType.ToInt()])
         {
             Destroy(child.gameObject);
         }
-        
-        blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0);
+
+        if (blockingPanels.Length > dialogueType.ToInt()) blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0);
 
     }
-    
+
 }

@@ -60,6 +60,8 @@ public class FollowManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        SceneManager.Instance.ChangeSceneEffect();
+
         IsTutorial = false;
         IsEnd = false;
         IsDialogueOpen = false;
@@ -70,8 +72,11 @@ public class FollowManager : MonoBehaviour
         StartCoroutine(ChangeBeaconSprite());
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); return; }
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1) { StartCoroutine(followTutorial.StartTutorial()); }
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2) { StartCoroutine(followTutorial.StartTutorial()); }
+        StartCoroutine(followTutorial.StartTutorial());
+    }
+    public void FollowTutorialNextStep()
+    {
+        followTutorial.NextStep();
     }
     public void StartFollow()
     {
@@ -265,6 +270,6 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
-        StartCoroutine(followEnd.EndFollow());
+        StartCoroutine(followEnd.EndFollowLogic());
     }
 }

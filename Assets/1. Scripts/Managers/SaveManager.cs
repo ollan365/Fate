@@ -79,11 +79,11 @@ public class SaveManager : MonoBehaviour
         return File.Exists(Application.persistentDataPath + "/" + GameDataFileName);
     }
     // 불러오기
-    public void LoadGameData()
+    public SceneType LoadGameData()
     {
         string filePath = Application.persistentDataPath + "/" + GameDataFileName;
 
-        if (!File.Exists(filePath)) return; // no save game data
+        if (!File.Exists(filePath)) return SceneType.START; // no save game data
 
         // 저장된 파일 읽어오고 Json을 클래스 형식으로 전환해서 할당
         string FromJsonData = File.ReadAllText(filePath);
@@ -96,8 +96,7 @@ public class SaveManager : MonoBehaviour
         MemoManager.Instance.SavedMemoList = data.SavedMemoList;
         MemoManager.Instance.RevealedMemoList = data.RevealedMemoList;
 
-        // 게임 데이터에 따른 씬으로 이동
-        SceneManager.Instance.LoadScene(data.sceneType);
+        return data.sceneType;
     }
 
     // 저장하기

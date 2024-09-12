@@ -39,36 +39,31 @@ public class SceneManager : MonoBehaviour
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
-        int sceneIndex = -1, bgmIndex = -1;
+        int sceneIndex = -1;
         switch (loadSceneType)
         {
             case SceneType.START:
                 sceneIndex = 0;
-                bgmIndex = BGM_OPENING;
                 sceneType = SceneType.START;
                 ScreenEffect.Instance.TextOnFade("Prologue");
                 break;
             case SceneType.ROOM_1:
                 sceneIndex = 1;
-                bgmIndex = BGM_ROOM1;
                 sceneType = SceneType.ROOM_1;
                 ScreenEffect.Instance.TextOnFade("Chapter I");
                 break;
             case SceneType.FOLLOW_1:
                 sceneIndex = 2;
-                bgmIndex = BGM_FOLLOW1;
                 sceneType = SceneType.FOLLOW_1;
                 ScreenEffect.Instance.TextOnFade("Chapter II");
                 break;
             case SceneType.ROOM_2:
                 sceneIndex = 3;
-                bgmIndex = BGM_ROOM2;
                 sceneType = SceneType.ROOM_2;
                 ScreenEffect.Instance.TextOnFade("Chapter III");
                 break;
             case SceneType.FOLLOW_2:
                 sceneIndex = 4;
-                bgmIndex = BGM_FOLLOW1;
                 sceneType = SceneType.FOLLOW_2;
                 ScreenEffect.Instance.TextOnFade("Chapter IV");
                 break;
@@ -81,7 +76,12 @@ public class SceneManager : MonoBehaviour
 
         // 씬 로드
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneIndex);
+    }
 
+    public void ChangeSceneEffect()
+    {
+        GameManager.Instance.SetVariable("CurrentScene", CurrentScene.ToInt());
+            
         // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
         switch (sceneType)
         {
@@ -99,20 +99,28 @@ public class SceneManager : MonoBehaviour
                 break;
         }
 
-        // MemoManager.Instance.ChangeMemoButton();
+        int bgmIndex = -1;
+        switch (sceneType)
+        {
+            case SceneType.START:
+                bgmIndex = BGM_OPENING;
+                SoundPlayer.Instance.ChangeBGM(bgmIndex);
+                return;
+            case SceneType.ROOM_1:
+                bgmIndex = BGM_ROOM1;
+                break;
+            case SceneType.ROOM_2:
+                bgmIndex = BGM_ROOM2;
+                break;
+            case SceneType.FOLLOW_1:
+                bgmIndex = BGM_FOLLOW1;
+                break;
+            case SceneType.FOLLOW_2:
+                bgmIndex = BGM_FOLLOW1;
+                break;
+        }
+
         MemoManager.Instance.SetMemoCurrentPageAndFlags();
-
-        if (sceneType == SceneType.START)
-        {
-            SoundPlayer.Instance.ChangeBGM(bgmIndex);
-            yield break;
-        }
-        if (loadSceneType == SceneType.ENDING)
-        {
-            StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
-            yield break;
-        }
-
         MemoManager.Instance.HideMemoButton = false;
         MemoManager.Instance.SetMemoButtons(true);
 

@@ -92,7 +92,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         ScreenEffect.Instance.coverPanel.color = Color.black;
 
         // 메모의 개수가 부족할 때
-        if (!MemoManager.Instance.UnlockNextScene())
+        // if (!MemoManager.Instance.UnlockNextScene())
         {
             SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
             yield break;

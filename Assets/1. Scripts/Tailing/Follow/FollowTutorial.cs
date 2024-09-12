@@ -20,8 +20,6 @@ public class FollowTutorial : MonoBehaviour
 
     private GameObject accidy;
 
-    private int tutorialStep = 0;
-
     public IEnumerator StartTutorial()
     {
         accidy = FollowManager.Instance.Accidy.gameObject;
@@ -35,33 +33,25 @@ public class FollowTutorial : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(false);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+        if (highlightPanel) highlightPanel.SetActive(false);
         yield return new WaitForSeconds(1.5f);
 
         FollowManager.Instance.StartFollow();
-
         FollowManager.Instance.SetBlockingPanel(true);
-
-        if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_1)
-        {
-            highlightPanel.SetActive(false);
-            DialogueManager.Instance.StartDialogue("FollowTutorial_002");
-        }
-
-        else if(SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
-        {
-            DialogueManager.Instance.StartDialogue("Follow2S_01");
-        }
+        EventManager.Instance.CallEvent("EventFollowTutorial");
     }
     
     public void NextStep()
     {
+        Debug.Log(GameManager.Instance.GetVariable("FollowTutorialPhase"));
+
         if (SceneManager.Instance.CurrentScene == Constants.SceneType.FOLLOW_2)
         {
             StartCoroutine(EndTutorial());
             return;
         }
 
-        switch (tutorialStep)
+        switch ((int)GameManager.Instance.GetVariable("FollowTutorialPhase"))
         {
             case 0: // 신호등 판넬 켜기
                 FollowManager.Instance.SetBlockingPanel(false);
@@ -71,30 +61,39 @@ public class FollowTutorial : MonoBehaviour
             case 1: // 신호등을 눌렀을 때
                 FollowManager.Instance.SetBlockingPanel(true);
                 highlightPanel.SetActive(false);
-                DialogueManager.Instance.StartDialogue("FollowTutorial_004");
                 beaconAnimator.SetBool(nameof(Light), false);
                 break;
             case 2: // 이동 가능
                 StartCoroutine(MoveLogicTutorial());
                 break;
-            case 4: // 우연이 뒤를 돌았다가 다시 앞을 볼 때까지 숨기
+            case 4: // 이동 가능
+                MoveEnd();
+                break;
+            case 5: // 우연이 뒤를 돌았다가 다시 앞을 볼 때까지 숨기
                 StartCoroutine(HideLogicTutorial());
                 break;
-            case 5: // 튜토리얼 끝
+            case 6:
+                FollowManager.Instance.SetBlockingPanel(true);
+                break;
+            case 7: // 튜토리얼 끝
                 StartCoroutine(EndTutorial());
                 break;
         }
-        tutorialStep++;
+        GameManager.Instance.IncrementVariable("FollowTutorialPhase");
     }
     private IEnumerator MoveLogicTutorial()
     {
         moveButtons.SetActive(true);
         fateMovable = true;
         FollowManager.Instance.SetBlockingPanel(true);
-        DialogueManager.Instance.StartDialogue("FollowTutorial_005");
 
         // 필연이 일정 거리 이상 앞으로 이동할 때까지 대기
-        while (fate.transform.position.x < 2 || tutorialStep == 3) yield return null;
+        while (fate.transform.position.x < 2 || (int)GameManager.Instance.GetVariable("FollowTutorialPhase") == 3) yield return null;
+
+        EventManager.Instance.CallEvent("EventFollowTutorialNextStep");
+    }
+    private void MoveEnd()
+    {
         fateCanHide = true;
 
         moveButtons.SetActive(false);
@@ -105,7 +104,6 @@ public class FollowTutorial : MonoBehaviour
         accidyNextLogic = true;
 
         FollowManager.Instance.SetBlockingPanel(true);
-        DialogueManager.Instance.StartDialogue("FollowTutorial_006");
 
         hideButtons.SetActive(true);
     }
@@ -136,8 +134,8 @@ public class FollowTutorial : MonoBehaviour
         accidy.transform.parent.SetAsFirstSibling();
         accidyNextLogic = true;
         yield return new WaitForSeconds(1f);
-        FollowManager.Instance.SetBlockingPanel(true);
-        DialogueManager.Instance.StartDialogue("FollowTutorial_007");
+
+        EventManager.Instance.CallEvent("EventFollowTutorialNextStep");
     }
 
     //private void AdditionalTutorialSet()

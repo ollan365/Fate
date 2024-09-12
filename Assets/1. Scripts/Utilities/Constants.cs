@@ -2,6 +2,20 @@ public static class Constants
 {
     // 씬의 종류
     public enum SceneType { START, ROOM_1, FOLLOW_1, ROOM_2, FOLLOW_2, ENDING }
+    public static int ToInt(this SceneType sceneType)
+    {
+        // 다이얼로그 타입에 따라 다른 숫자 반환
+        switch (sceneType)
+        {
+            case SceneType.START: return 0;
+            case SceneType.ROOM_1: return 1;
+            case SceneType.FOLLOW_1: return 2;
+            case SceneType.ROOM_2: return 3;
+            case SceneType.FOLLOW_2: return 4;
+            case SceneType.ENDING: return 5;
+            default: return 0;
+        }
+    }
 
     // 대화창의 종류
     public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, CENTER }

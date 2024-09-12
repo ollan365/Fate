@@ -111,7 +111,11 @@ public class StartLogic : MonoBehaviour
         SaveManager.Instance.SaveInitGameData();
 
         if(loadPrologue || (SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd)) { StartCoroutine(StartPrologue()); buttons.SetActive(false); }
-        else if (SaveManager.Instance.CheckGameData()) { SaveManager.Instance.LoadGameData(); buttons.SetActive(false); }
+        else if (SaveManager.Instance.CheckGameData())
+        {
+            SceneManager.Instance.LoadScene(SaveManager.Instance.LoadGameData());
+            buttons.SetActive(false);
+        }
         else noGameDataPanel.SetActive(true);
     }
     public void ChangeSoundValue(int index)
@@ -220,8 +224,8 @@ public class StartLogic : MonoBehaviour
     public void NameSetting()
     {
         GameManager.Instance.SetVariable("FateName", fateName);
-        DialogueManager.Instance.StartDialogue("Prologue_Birth");
         blockingPanel.SetActive(true);
+        EventManager.Instance.CallEvent("Event_NameSetting");
     }
 
     // ===== 생일 설정 ===== //
@@ -258,9 +262,9 @@ public class StartLogic : MonoBehaviour
 
     public void BirthSetting()
     {
-        DialogueManager.Instance.StartDialogue("Prologue_008_B");
         blockingPanel.SetActive(true);
         SettingsComplete();
+        EventManager.Instance.CallEvent("Event_BirthSetting");
     }
 
     // 필연 설정 완료
