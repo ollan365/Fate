@@ -283,7 +283,10 @@ public class DialogueManager : MonoBehaviour
         if (!RoomManager.Instance) return;
 
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
-        var isChoosingBrokenBearChoice = RoomManager.Instance.actionPointManager.GetChoosingBrokenBearChoice();
+        var isChoosingBrokenBearChoice = false;
+        if (SceneManager.Instance.CurrentScene == Constants.SceneType.ROOM_2)
+            isChoosingBrokenBearChoice = RoomManager.Instance.Room2ActionPointManager.GetChoosingBrokenBearChoice();
+
         if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice)
             RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
 

@@ -18,7 +18,7 @@ public class ZoomView : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
-        ResultManager.Instance.executableObjectsKeyCheck($"{name} {sideNum}");
+        //ResultManager.Instance.executableObjectsKeyCheck($"{name} {sideNum}");
         base.OnMouseDown();
     }
 
