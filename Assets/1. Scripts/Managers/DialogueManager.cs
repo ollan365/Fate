@@ -443,7 +443,7 @@ public class DialogueManager : MonoBehaviour
     // ---------------------------------------------- Choice methods ----------------------------------------------
     private void DisplayChoices(string choiceID)
     {
-        if (choicesContainer.Length > dialogueType.ToInt()) return;
+        if (choicesContainer.Length <= dialogueType.ToInt()) return;
 
         if (blockingPanels.Length > dialogueType.ToInt()) blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0.7f);
 
