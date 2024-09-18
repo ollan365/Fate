@@ -11,7 +11,7 @@ public class MemoManager : PageContentsManager
     [SerializeField] private GameObject memoContents;
     [SerializeField] private PageFlip memoPages;
     [SerializeField] private GameObject memoButton;
-    [SerializeField] private GameObject exitButton;
+    [SerializeField] public GameObject exitButton;
     [SerializeField] private List<Button> flags;
     [SerializeField] private GameObject notificationImage;
     [SerializeField] private GameObject leftButtonNotificationImage;

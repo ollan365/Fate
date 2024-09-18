@@ -101,7 +101,10 @@ public static class Constants
         Sound_RunStairs1_2 = 31,
         Sound_Door_open_metal = 32,
         Sound_Unlock_doorslap_ = 33,
-        Sound_Wall_crash_002 = 34;
+        Sound_Wall_crash_002 = 34,
+        Sound_City_people_talking = 35,
+        Sound_Wavecrash__ = 36,
+        Sound_Truck_honk_1 = 37;
 
     // 시계 부분
 

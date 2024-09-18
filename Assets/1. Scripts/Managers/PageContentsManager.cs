@@ -13,8 +13,8 @@ public enum PageType
 
 abstract public class PageContentsManager : MonoBehaviour
 {
-    [SerializeField] protected GameObject flipLeftButton;
-    [SerializeField] protected GameObject flipRightButton;
+    [SerializeField] public GameObject flipLeftButton;
+    [SerializeField] public GameObject flipRightButton;
     
     protected Dictionary<string, string> PagesDictionary = new Dictionary<string, string>();
     [SerializeField] protected TextMeshProUGUI leftPage;
