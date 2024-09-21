@@ -128,7 +128,6 @@ public class MemoManager : PageContentsManager
             if (RevealedMemoList[i].Contains(scriptID)) continue;
             
             RevealedMemoList[i].Add(scriptID);
-            GameManager.Instance.IncrementVariable($"MemoCount_{SceneManager.Instance.CurrentScene}");
 
             for (var j = 0; j < SavedMemoList[i].Count; j++)
             {
@@ -142,6 +141,8 @@ public class MemoManager : PageContentsManager
                 {
                     unseenMemoPages.Add(pageNum);
                     // Debug.Log($"Added page {pageNum} to unseen memo pages");
+
+                    GameManager.Instance.IncrementVariable($"MemoCount_{SceneManager.Instance.CurrentScene}");
                 }
                 break;
             }

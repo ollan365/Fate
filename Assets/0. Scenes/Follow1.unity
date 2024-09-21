@@ -2109,7 +2109,6 @@ GameObject:
   - component: {fileID: 297757557}
   - component: {fileID: 297757556}
   - component: {fileID: 297757555}
-  - component: {fileID: 297757554}
   m_Layer: 0
   m_Name: Beacon Image
   m_TagString: Untagged
@@ -2136,26 +2135,6 @@ RectTransform:
   m_AnchoredPosition: {x: -312.07983, y: -36.239998}
   m_SizeDelta: {x: 1814, y: 271}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &297757554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297757552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28fa691a72ab4b149a5de83b2b94a95b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventId: 
-  sideNum: 0
-  isInquiry: 0
-  objectName: 8
-  extraName: 0
-  isSpecial: 1
-  specialSprite: {fileID: 21300000, guid: 348b1cf840b48574eb2e1c118d01cf24, type: 3}
-  scaleValue: 1.6
 --- !u!114 &297757555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2200,7 +2179,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 297757554}
+      - m_Target: {fileID: 1027480631}
         m_TargetAssemblyTypeName: FollowObject, Assembly-CSharp
         m_MethodName: OnMouseDown
         m_Mode: 1

@@ -152,8 +152,9 @@ public class FollowGameManager : MonoBehaviour
             {
                 while (IsDialogueOpen || (!IsFateHide && accidyStatus == AccidyStatus.RED)) { yield return null; } // 대화창이 열려있음
 
-                if (nextAccidyAction == AccidyAction.Stop && FollowManager.Instance.ClickCount >= clickCountLimit) { FollowManager.Instance.ClickCount = 0; } // 우연이 걷고 있을 때 클릭을 다섯번 이상하면 우연이가 바로 뒤돌아 봄
-                else if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
+                // if (nextAccidyAction == AccidyAction.Stop && FollowManager.Instance.ClickCount >= clickCountLimit) { FollowManager.Instance.ClickCount = 0; } // 우연이 걷고 있을 때 클릭을 다섯번 이상하면 우연이가 바로 뒤돌아 봄
+                // else if 
+                if (currentTime < waitingTimeForNextAction) { currentTime += Time.deltaTime; yield return null; continue; } // 아직 다음 행동을 할 만큼 시간이 흐르지 않음
             }
 
             switch (nextAccidyAction)

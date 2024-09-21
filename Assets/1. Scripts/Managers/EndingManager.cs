@@ -11,7 +11,6 @@ public class EndingManager : MonoBehaviour
     
     [Header("배경")]
     [SerializeField] private Image background;
-    [SerializeField] private GameObject blockingPanel;
     [SerializeField] private Sprite background_room1;
     [SerializeField] private Sprite background_follow1;
 
@@ -56,7 +55,6 @@ public class EndingManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.isFollow = false;
         DialogueManager.Instance.dialogueType = DialogueType.ROOM;
-        blockingPanel.SetActive(true);
 
         yield return new WaitForSeconds(2.5f);
 
@@ -146,7 +144,6 @@ public class EndingManager : MonoBehaviour
     }
     public IEnumerator Ending_Follow1()
     {
-        blockingPanel.SetActive(false);
         background.sprite = background_follow1;
         background.color = Color.white;
 
@@ -180,7 +177,6 @@ public class EndingManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         // 우연의 대사 시작
-        blockingPanel.SetActive(true);
         EventManager.Instance.CallEvent("EventEndUnlockROOM_2");
     }
     public void ChoiceEnding()

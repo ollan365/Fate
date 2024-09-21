@@ -232,6 +232,9 @@ public class DialogueManager : MonoBehaviour
 
     private void ChangeDialogueCanvas(string speaker)
     {
+        if(dialogueType == DialogueType.CENTER)
+            dialogueType = DialogueType.ROOM;
+
         // 방 대화창
         if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
             dialogueType = DialogueType.ROOM_THINKING;
