@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = Unity.Mathematics.Random;
 
 public class Room2ActionPointManager : ActionPointManager
 {
@@ -160,6 +159,8 @@ public class Room2ActionPointManager : ActionPointManager
         }
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
+
+
 
         if (actionPoint % actionPointsPerDay == 0)
         {
