@@ -67,6 +67,10 @@ public class AutoFlip : MonoBehaviour {
         isFlipping = true;
         controlledBook.mode = flipMode;
 
+		controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
+		controlledBook.pageContentsManager.flipRightButton.SetActive(false);
+        MemoManager.Instance.exitButton.SetActive(false);
+
         float frameTime = pageFlipTime / animationFramesCount;
         float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
         float xl = ((controlledBook.EdgeBottomRight.x - controlledBook.EdgeBottomLeft.x) / 2) * 0.9f;
@@ -93,5 +97,7 @@ public class AutoFlip : MonoBehaviour {
         
         if (flipMode == FlipMode.RightToLeft) currentPage += 2;
         else currentPage -= 2;
+        
+        MemoManager.Instance.exitButton.SetActive(true);
     }
 }

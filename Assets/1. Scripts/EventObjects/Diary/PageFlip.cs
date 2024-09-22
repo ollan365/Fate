@@ -14,7 +14,7 @@ public enum FlipMode
 public class PageFlip : MonoBehaviour
 {
     [Header("PageTextManager")]
-    [SerializeField] private PageContentsManager pageContentsManager;
+    public PageContentsManager pageContentsManager;
     
     [Header("Canvas and Panel")]
     public Canvas canvas;
