@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public enum RoomType
-{
-    Room1,
-    Room2
-}
+//public enum RoomType
+//{
+//    Room1,
+//    Room2
+//}
 
 abstract public class ActionPointManager : MonoBehaviour
 {
@@ -25,6 +25,10 @@ abstract public class ActionPointManager : MonoBehaviour
 
     // 설정한 actionPointsPerDay에 따라 달라지는 actionpoints배열
     protected int[,] actionPointsArray;
+
+    [SerializeField] protected Q_Vignette_Single WarningVignette;
+
+    [SerializeField] protected bool isWarning = false;
 
     // ************************* temporary methods for action points *************************
     // create actionPointsArray
@@ -110,4 +114,61 @@ abstract public class ActionPointManager : MonoBehaviour
 
         SaveManager.Instance.SaveGameData();
     }
+
+    protected IEnumerator Warning()
+    {
+        int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
+        
+        while (actionPoint > 0)
+        {
+            while (actionPoint != 0 && !isWarning)
+                yield return null;
+
+            float start = 0, end = 1, fadeTime = 1;
+            float current = 0, percent = 0;
+
+            while (actionPoint != 0 && isWarning)
+            {
+                while (percent < 1 && fadeTime != 0)
+                {
+                    current += Time.deltaTime;
+                    percent = current / fadeTime;
+
+                    if (actionPoint == 0 || !isWarning) break;
+
+                    yield return null;
+                }
+
+                while (isWarning)
+                {
+                    WarningVignette.mainColor.a = 1;
+
+                    if (actionPoint == 0 || !isWarning) break;
+
+                    yield return null;
+                }
+
+                WarningVignette.mainColor.a = end;
+                end = start;
+                start = WarningVignette.mainColor.a;
+
+                current = 0;
+                percent = 0;
+            }
+
+            while (percent < 1 && fadeTime != 0)
+            {
+                current += Time.deltaTime * 2;
+                percent = current / fadeTime;
+
+                WarningVignette.mainColor.a = Mathf.Lerp(WarningVignette.mainColor.a, 0, percent);
+
+                yield return null;
+
+            }
+        }
+
+        WarningVignette.mainColor.a = 0;
+    }
+
 }

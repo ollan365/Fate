@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = Unity.Mathematics.Random;
 
 public class Room1ActionPointManager : ActionPointManager
 {
@@ -96,6 +95,9 @@ public class Room1ActionPointManager : ActionPointManager
         }
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
+
+        isWarning = true;
+        //StartCoroutine(Warning());
 
         if (actionPoint % actionPointsPerDay == 0)
         {
