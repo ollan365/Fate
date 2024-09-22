@@ -71,7 +71,9 @@ public class EndingManager : MonoBehaviour
     public void EndEnding(EndingType endingType)
     {
         SaveManager.Instance.InitGameData();
-        SaveManager.Instance.SaveEndingData(endingType);
+        // 데모 버전은 엔딩 저장 안함
+        // SaveManager.Instance.SaveEndingData(endingType);
+        SaveManager.Instance.DeleteGameData();
         StartCoroutine(DelayLoadScene());
     }
     public void TestClock()
@@ -144,6 +146,12 @@ public class EndingManager : MonoBehaviour
     }
     public IEnumerator Ending_Follow1()
     {
+        // 데모 버전에서는 메모를 전부 모아도 ROOM2로 넘어가지 않음
+        SoundPlayer.Instance.ChangeBGM(BGM_BAD);
+        DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
+        yield break;
+
+
         background.sprite = background_follow1;
         background.color = Color.white;
 

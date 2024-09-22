@@ -45,7 +45,7 @@ public class SceneManager : MonoBehaviour
             case SceneType.START:
                 sceneIndex = 0;
                 sceneType = SceneType.START;
-                ScreenEffect.Instance.TextOnFade("Prologue");
+                ScreenEffect.Instance.TextOnFade("To Be Continued...");
                 break;
             case SceneType.ROOM_1:
                 sceneIndex = 1;

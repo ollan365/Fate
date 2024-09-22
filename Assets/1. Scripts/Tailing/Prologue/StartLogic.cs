@@ -54,6 +54,9 @@ public class StartLogic : MonoBehaviour
             Destroy(gameObject);
         }
 
+        // 데모 버전용 세팅
+        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+
         if (SaveManager.Instance && SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd
             && GameManager.Instance && GameManager.Instance.GetVariable("BadEndingCollect") != null)
             LoadGame(true);
