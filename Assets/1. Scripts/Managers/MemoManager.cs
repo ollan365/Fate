@@ -121,7 +121,7 @@ public class MemoManager : PageContentsManager
     {
         var scriptID = memoScripts[memoID];
 
-        int currentSceneIndex = GetCurrentSceneIndex();
+        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
         
         for (int i = 0; i <= currentSceneIndex; i++)
         {
@@ -142,7 +142,7 @@ public class MemoManager : PageContentsManager
                     unseenMemoPages.Add(pageNum);
                     // Debug.Log($"Added page {pageNum} to unseen memo pages");
 
-                    GameManager.Instance.IncrementVariable($"MemoCount_{SceneManager.Instance.CurrentScene}");
+                    GameManager.Instance.IncrementVariable($"MemoCount_{((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum()}");
                 }
                 break;
             }
@@ -151,28 +151,6 @@ public class MemoManager : PageContentsManager
         UpdateNotification();
     }
 
-    private static int GetCurrentSceneIndex()
-    {
-        var index = 0;
-        switch (SceneManager.Instance.CurrentScene)
-        {
-            case SceneType.ROOM_1:
-                index = 0;
-                break;
-            case SceneType.FOLLOW_1:
-                index = 1;
-                break;
-            case SceneType.ROOM_2:
-                index = 2;
-                break;
-            case SceneType.FOLLOW_2:
-                index = 3;
-                break;
-        }
-
-        return index;
-    }
-    
     public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false)
     {
         if (showMemoIcon && wantToHideMemoButton) return;
@@ -180,7 +158,7 @@ public class MemoManager : PageContentsManager
         memoButton.SetActive(showMemoIcon);
         exitButton.SetActive(showMemoExitButton);
 
-        var currentSceneIndex = GetCurrentSceneIndex();
+        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
         if (RoomManager.Instance && currentSceneIndex is 0 or 2) RoomManager.Instance.SetButtons();
     }
     
@@ -207,7 +185,7 @@ public class MemoManager : PageContentsManager
     
     private void SetMemoCurrentPage()
     {
-        var currentSceneIndex = GetCurrentSceneIndex();
+        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
 
         // Calculate the starting page index for the current scene
         int startingPageIndex = CalculateFirstPageNumber(currentSceneIndex);
@@ -218,7 +196,7 @@ public class MemoManager : PageContentsManager
 
     private void SetFlags()
     {
-        var currentSceneIndex = GetCurrentSceneIndex();
+        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
 
         for (var i = 0; i <= currentSceneIndex; i++) flags[i].gameObject.SetActive(true);
         for (var i = currentSceneIndex + 1; i < flags.Count; i++) flags[i].gameObject.SetActive(false);
@@ -236,7 +214,7 @@ public class MemoManager : PageContentsManager
 
     private List<string[]> GetAggregatedMemos()
     {
-        var currentSceneIndex = GetCurrentSceneIndex();
+        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
         var allMemos = new List<string[]>();
 
         for (int i = 0; i <= currentSceneIndex; i++) allMemos.AddRange(SavedMemoList[i]);
@@ -336,7 +314,7 @@ public class MemoManager : PageContentsManager
 
             for (int i = 0; i < 10; i++)
             {
-                RevealedMemoList[GetCurrentSceneIndex()].Add(i.ToString());
+                RevealedMemoList[(int)GameManager.Instance.GetVariable("CurrentScene")].Add(i.ToString());
             }
             SceneManager.Instance.LoadScene(SceneType.ENDING);
         }

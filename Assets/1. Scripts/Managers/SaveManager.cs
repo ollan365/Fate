@@ -103,10 +103,9 @@ public class SaveManager : MonoBehaviour
     public void SaveGameData()
     {
         // 저장할 데이터 생성 (방이면 RoomManager에 접근하여 현재 화면의 인덱스도 저장)
-        var currentSideIndex = SceneManager.Instance.CurrentScene == SceneType.ROOM_1 || SceneManager.Instance.CurrentScene == SceneType.ROOM_2
-        ? RoomManager.Instance.currentSideIndex : 1;
+        var currentSideIndex = RoomManager.Instance ? RoomManager.Instance.currentSideIndex : 1;
 
-        data = new(SceneManager.Instance.CurrentScene,
+        data = new(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum(),
             currentSideIndex,
             GameManager.Instance.Variables,
             GameManager.Instance.eventObjectsStatusDict,
