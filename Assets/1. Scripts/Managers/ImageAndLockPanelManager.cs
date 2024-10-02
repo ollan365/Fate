@@ -36,6 +36,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private Sprite medicine2Image;
     [SerializeField] private Sprite ticketImage;
     [SerializeField] private Sprite book2CoverImage;
+    [SerializeField] private Sprite closetKey2Image;
 
     [Header("잠금 장치들")]
     [SerializeField] private GameObject laptopGameObject;
@@ -46,6 +47,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private GameObject sewingBoxGameObject;
     [SerializeField] private GameObject diary2GameObject;
     [SerializeField] private GameObject book2GameObject;
+    [SerializeField] private GameObject dreamDiaryGameObject;
 
     [Header("튜토리얼 강조 이미지들")]
     [SerializeField] private GameObject LeftMoveButton;
@@ -91,7 +93,8 @@ public class ImageAndLockPanelManager : MonoBehaviour
             {"shoppingBag2", shoppingBag2Image},
             {"medicine2", medicine2Image},
             {"ticket",ticketImage},
-            {"book2Cover", book2CoverImage}
+            {"book2Cover", book2CoverImage},
+            {"closetKey2", closetKey2Image}
         };
 
         lockObjectDictionary = new Dictionary<string, GameObject>()
@@ -104,6 +107,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             {"sewingBox", sewingBoxGameObject},
             { "diary2", diary2GameObject },
             { "book2", book2GameObject },
+            { "dreamDiary",dreamDiaryGameObject},
         };
 
         TutorialimageDictionary = new Dictionary<string, GameObject>()

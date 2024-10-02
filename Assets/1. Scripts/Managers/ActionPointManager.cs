@@ -28,7 +28,7 @@ abstract public class ActionPointManager : MonoBehaviour
 
     [SerializeField] protected Q_Vignette_Single WarningVignette;
 
-    [SerializeField] protected bool isWarning = false;
+    [SerializeField] protected float warningTime;
 
     // ************************* temporary methods for action points *************************
     // create actionPointsArray
@@ -118,57 +118,50 @@ abstract public class ActionPointManager : MonoBehaviour
     protected IEnumerator Warning()
     {
         int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
-        
-        while (actionPoint > 0)
+        // actionPoint가 0보다 클 때만 코루틴 실행
+        if (actionPoint <= 0)
         {
-            while (actionPoint != 0 && !isWarning)
-                yield return null;
-
-            float start = 0, end = 1, fadeTime = 1;
-            float current = 0, percent = 0;
-
-            while (actionPoint != 0 && isWarning)
-            {
-                while (percent < 1 && fadeTime != 0)
-                {
-                    current += Time.deltaTime;
-                    percent = current / fadeTime;
-
-                    if (actionPoint == 0 || !isWarning) break;
-
-                    yield return null;
-                }
-
-                while (isWarning)
-                {
-                    WarningVignette.mainColor.a = 1;
-
-                    if (actionPoint == 0 || !isWarning) break;
-
-                    yield return null;
-                }
-
-                WarningVignette.mainColor.a = end;
-                end = start;
-                start = WarningVignette.mainColor.a;
-
-                current = 0;
-                percent = 0;
-            }
-
-            while (percent < 1 && fadeTime != 0)
-            {
-                current += Time.deltaTime * 2;
-                percent = current / fadeTime;
-
-                WarningVignette.mainColor.a = Mathf.Lerp(WarningVignette.mainColor.a, 0, percent);
-
-                yield return null;
-
-            }
+            yield break; // actionPoint가 0 이하면 코루틴 종료
         }
 
+        float start = 0, end = 1;
+        float fadeInTime = 0.5f;  // 경고 표시 페이드 인 시간
+        float fadeOutTime = 0.5f;  // 경고 종료 페이드 아웃 시간
+        float current = 0, percent = 0;
+
+        // 경고 시작: WarningVignette.mainColor.a를 start에서 end로 페이드 인
+        while (percent < 1 && fadeInTime != 0)
+        {
+            current += Time.deltaTime;
+            percent = current / fadeInTime;
+
+            // vignette의 투명도(alpha)를 0에서 1로 선형 보간(Lerp)
+            WarningVignette.mainColor.a = Mathf.Lerp(start, end, percent);
+
+            yield return null;
+        }
+
+        // warningTime 동안 경고 상태 유지
+        yield return new WaitForSeconds(warningTime);
+
+        // 경고 종료: WarningVignette.mainColor.a를 다시 0으로 페이드 아웃
+        current = 0;
+        percent = 0;
+
+        while (percent < 1 && fadeOutTime != 0)
+        {
+            current += Time.deltaTime * 2;  // 페이드 아웃 속도를 더 빠르게 설정
+            percent = current / fadeOutTime;
+
+            // WarningVignette 투명도를 1에서 0으로 선형 보간(Lerp)
+            WarningVignette.mainColor.a = Mathf.Lerp(end, start, percent);
+
+            yield return null;
+        }
+
+        // 코루틴 종료 시 WarningVignette.mainColor.a를 0으로 설정하여 경고 완전히 숨기기
         WarningVignette.mainColor.a = 0;
     }
+
 
 }

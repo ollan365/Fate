@@ -627,6 +627,7 @@ public class ResultManager : MonoBehaviour
                 //executableObjectsKeyCheck("Closet Unzoomed-open 2");
                 executableObjects["Closet Unzoomed-closed 2"].ExecuteAction();
                 executableObjects["Closet Unzoomed-open 2"].ExecuteAction();
+                executableObjects["Closet Unzoomed-open back image 2"].ExecuteAction();
                 break;
             
             case "ResultCabinetZoom": // 서랍장 확대 화면으로 전환
@@ -946,10 +947,6 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "shoppingBag2");
                 break;
 
-            case "ResultClosetKey2Script": // 옷장 안 열쇠 스크립트
-                DialogueManager.Instance.StartDialogue("RoomEscape2_028");
-                break;
-
             case "ResultClosetBag2Script": // 옷장 안 가방 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape2_029");
                 break;
@@ -1000,10 +997,6 @@ public class ResultManager : MonoBehaviour
                 Debug.Log("위칸 옷더미 조사");
                 break;
 
-            case "ResultDreamDiary2Script": // 옷장 서랍장 위칸 꿈일기 조사 스크립트 테스트용
-                Debug.Log("꿈일기 조사");
-                break;
-
             case "ResultWardrobeUnderClothes2Script": // 옷장 서랍장 아래칸 옷더미 조사 스크립트 테스트용
                 Debug.Log("아래칸 옷더미 조사");
                 break;
@@ -1015,14 +1008,51 @@ public class ResultManager : MonoBehaviour
 
             case "ResultBook2Script": // 떨어진 책 한권 스크립트
                 DialogueManager.Instance.StartDialogue("RoomEscape2_015");
-                Debug.Log(" 떨어진 책 한권 스크립트");
+                //Debug.Log(" 떨어진 책 한권 스크립트");
+                break;
+
+            case "ResultBook2Memo": // 책에 대한 메모
+                MemoManager.Instance.RevealMemo("R2Memo_004");
                 break;
 
             case "ResultBook2SystemActivartion": // 떨어진 책 읽기
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "book2");
                 executableObjects["Book2"].ExecuteAction();
-                Debug.Log("  떨어진 책 읽기");
+                //Debug.Log("  떨어진 책 읽기");
                 break;
+
+            case "ResultClosetKey2Script": // 옷장 안 열쇠에 대한 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_028");
+                break;
+
+            case "ResultClosetKey2Zoom": // 옷장 안 열쇠 줌
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "closetKey2");
+                break;
+
+            case "ResultClosetKey2Disappear": // 열쇠 사라짐
+                //Debug.Log("ResultClosetKey2Disappear executed");
+                executableObjects["ClosetKey2_0"].ExecuteAction();
+                executableObjects["ClosetKey2_2"].ExecuteAction();
+                // ClosetKey2_2 는 Side2의 옷장 문 열어 뒀을 때 보이는 옷장 속 클릭 안 되는 열쇠
+                break;
+
+            case "ResultDreamDiary2Script": // 옷장 꿈일기 발견 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_034");
+                break;
+
+            case "ResultDreamDiary2WithKeyScript": // 열쇠 발견 후 꿈일기 발견 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape2_035");
+                break;
+
+            case "ResultDreamDiary2Memo": // 꿈일기에 대한 메모
+                MemoManager.Instance.RevealMemo("R2Memo_009");
+                break;
+
+            case "ResultDreamDiary2SystemActivartion": // 꿈일기 읽기
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "dreamDiary");
+                executableObjects["DreamDiary"].ExecuteAction();
+                break;
+
 
             // 방탈출2 귀가 스크립트
             case "Result_Room2HomeComing2":

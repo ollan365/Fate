@@ -9,6 +9,7 @@ public class DiaryManager : PageContentsManager
     private Dictionary<string, string> diary1Pages = new Dictionary<string, string>();
     private Dictionary<string, string> diary2Pages = new Dictionary<string, string>();
     private Dictionary<string, string> room2BookPages = new Dictionary<string, string>();
+    private Dictionary<string, string> dreamDiaryPages = new Dictionary<string, string>();
 
     public int totalPageCount = 0;
     
@@ -36,6 +37,10 @@ public class DiaryManager : PageContentsManager
 
             case "Room2Book":
                 diaryPages.totalPageCount = room2BookPages.Count;
+                break;
+
+            case "DreamDiary":
+                diaryPages.totalPageCount = dreamDiaryPages.Count;
                 break;
         }
     }
@@ -111,6 +116,8 @@ public class DiaryManager : PageContentsManager
                 return diary2Pages;
             case "Room2Book":
                 return room2BookPages;
+            case "DreamDiary":
+                return dreamDiaryPages;
             default:
                 return diary1Pages;
         }
@@ -179,6 +186,7 @@ public class DiaryManager : PageContentsManager
             if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
             else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
             else if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;
+            else if (diaryPageID.StartsWith("DreamDiary_")) targetDictionary = dreamDiaryPages;
 
             if (targetDictionary.ContainsKey(diaryPageID)) targetDictionary[diaryPageID] += "\n\n" + script;
             else targetDictionary.Add(diaryPageID, script);
