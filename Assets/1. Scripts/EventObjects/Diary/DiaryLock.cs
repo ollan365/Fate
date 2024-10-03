@@ -54,9 +54,9 @@ public class DiaryLock : EventObject, IResultExecutable
     {
         yield return new WaitForSeconds(0.2f);
         string correctPassword = (string)GameManager.Instance.GetVariable("FateBirthday");  // 다이어리 비밀번호 = 필연 생일
-        
-        // Debug.Log($"correctPassword: {correctPassword}\npasswordInput: {passwordInput}");
-        
+
+        //Debug.Log($"correctPassword: {correctPassword}\npasswordInput: {passwordInput}");
+
         string variableName = diaryLockExecutableName == "DiaryLock" ? "DiaryPasswordCorrect" : "Diary2PasswordCorrect";
         GameManager.Instance.SetVariable(variableName, passwordInput == correctPassword);
         

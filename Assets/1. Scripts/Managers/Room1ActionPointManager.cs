@@ -96,8 +96,7 @@ public class Room1ActionPointManager : ActionPointManager
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
 
-        isWarning = true;
-        //StartCoroutine(Warning());
+        StartCoroutine(Warning());
 
         if (actionPoint % actionPointsPerDay == 0)
         {

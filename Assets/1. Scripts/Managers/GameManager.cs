@@ -279,6 +279,13 @@ public class GameManager : MonoBehaviour
         // 화려한 꿈관련 책
         variables["Book2Click"] = 0;
 
+        // 옷장 안 열쇠
+        variables["HasClosetKey2"] = false;
+
+        // 꿈일기
+        variables["DreamDiary2Click"] = 0;
+        variables["DreamDiary2Opened"] = false;
+
 
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 미행 튜토리얼 단계
