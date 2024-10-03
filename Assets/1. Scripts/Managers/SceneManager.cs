@@ -5,8 +5,6 @@ using static Constants;
 public class SceneManager : MonoBehaviour
 {
     public static SceneManager Instance { get; private set; }
-    private SceneType sceneType;
-    public SceneType CurrentScene { get => sceneType; }
     public int roomSideIndex = 0;
     
     void Awake()
@@ -44,27 +42,27 @@ public class SceneManager : MonoBehaviour
         {
             case SceneType.START:
                 sceneIndex = 0;
-                sceneType = SceneType.START;
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.START.ToInt());
                 ScreenEffect.Instance.TextOnFade("Prologue");
                 break;
             case SceneType.ROOM_1:
                 sceneIndex = 1;
-                sceneType = SceneType.ROOM_1;
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_1.ToInt());
                 ScreenEffect.Instance.TextOnFade("Chapter I");
                 break;
             case SceneType.FOLLOW_1:
                 sceneIndex = 2;
-                sceneType = SceneType.FOLLOW_1;
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_1.ToInt());
                 ScreenEffect.Instance.TextOnFade("Chapter II");
                 break;
             case SceneType.ROOM_2:
                 sceneIndex = 3;
-                sceneType = SceneType.ROOM_2;
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_2.ToInt());
                 ScreenEffect.Instance.TextOnFade("Chapter III");
                 break;
             case SceneType.FOLLOW_2:
                 sceneIndex = 4;
-                sceneType = SceneType.FOLLOW_2;
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_2.ToInt());
                 ScreenEffect.Instance.TextOnFade("Chapter IV");
                 break;
             case SceneType.ENDING:
@@ -80,10 +78,8 @@ public class SceneManager : MonoBehaviour
 
     public void ChangeSceneEffect()
     {
-        GameManager.Instance.SetVariable("CurrentScene", CurrentScene.ToInt());
-            
         // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
-        switch (sceneType)
+        switch (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum())
         {
             case SceneType.START:
             case SceneType.ROOM_1:
@@ -100,7 +96,7 @@ public class SceneManager : MonoBehaviour
         }
 
         int bgmIndex = -1;
-        switch (sceneType)
+        switch (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum())
         {
             case SceneType.START:
                 bgmIndex = BGM_OPENING;
@@ -109,11 +105,11 @@ public class SceneManager : MonoBehaviour
             case SceneType.ROOM_1:
                 bgmIndex = BGM_ROOM1;
                 break;
-            case SceneType.ROOM_2:
-                bgmIndex = BGM_ROOM2;
-                break;
             case SceneType.FOLLOW_1:
                 bgmIndex = BGM_FOLLOW1;
+                break;
+            case SceneType.ROOM_2:
+                bgmIndex = BGM_ROOM2;
                 break;
             case SceneType.FOLLOW_2:
                 bgmIndex = BGM_FOLLOW1;

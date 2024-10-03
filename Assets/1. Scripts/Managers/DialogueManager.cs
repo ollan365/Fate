@@ -264,10 +264,8 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
-        if (SceneManager.Instance.CurrentScene == SceneType.FOLLOW_1 || SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
-        {
-            if (FollowManager.Instance) FollowManager.Instance.EndScript();
-        }
+        if (FollowManager.Instance) FollowManager.Instance.EndScript();
+        
 
         // 재생하고 있던 사운드 멈춤
         // 추가 부탁드립니다
@@ -290,7 +288,7 @@ public class DialogueManager : MonoBehaviour
 
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
         var isChoosingBrokenBearChoice = false;
-        if (SceneManager.Instance.CurrentScene == Constants.SceneType.ROOM_2)
+        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.ROOM_2.ToInt())
             isChoosingBrokenBearChoice = RoomManager.Instance.Room2ActionPointManager.GetChoosingBrokenBearChoice();
 
         if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice)

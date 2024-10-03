@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -103,10 +104,9 @@ public class SaveManager : MonoBehaviour
     public void SaveGameData()
     {
         // 저장할 데이터 생성 (방이면 RoomManager에 접근하여 현재 화면의 인덱스도 저장)
-        var currentSideIndex = SceneManager.Instance.CurrentScene == SceneType.ROOM_1 || SceneManager.Instance.CurrentScene == SceneType.ROOM_2
-        ? RoomManager.Instance.currentSideIndex : 1;
+        var currentSideIndex = RoomManager.Instance ? RoomManager.Instance.currentSideIndex : 1;
 
-        data = new(SceneManager.Instance.CurrentScene,
+        data = new(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum(),
             currentSideIndex,
             GameManager.Instance.Variables,
             GameManager.Instance.eventObjectsStatusDict,
@@ -139,6 +139,7 @@ public class SaveData
     public int lastSideIndex;
 
     public string variablesToJson;
+    public string variablesTypeToJson;
     public string eventObjectStatusToJson;
     public string savedMemo;
     public string revealedMemo;
@@ -162,6 +163,7 @@ public class SaveData
     {
         // string으로 변환된 값을 담을 Dictionary<string, string>
         Dictionary<string, string> stringVariables = new();
+        Dictionary<string, string> typeVariables = new();
 
         // 각각의 object를 string으로 변환하여 stringVariables에 추가
         foreach (var variable in dictionary)
@@ -170,22 +172,13 @@ public class SaveData
             object value = variable.Value;
             string stringValue;
 
-            // 값의 유형에 따라 적절한 처리를 수행
-            if (value is int intValue)
-            {
-                stringValue = intValue.ToString();
-            }
-            else if (value is bool boolValue)
-            {
-                stringValue = boolValue.ToString();
-            }
-            else
-            {
-                stringValue = value.ToString();
-            }
-
+            stringValue = value.ToString();
             stringVariables.Add(key, stringValue);
+
+            typeVariables.Add(key, value.GetType().ToString());
         }
+
+        variablesTypeToJson = JsonConvert.SerializeObject(typeVariables, Formatting.Indented);
         return JsonConvert.SerializeObject(stringVariables, Formatting.Indented);
     }
     private string ToJson(Dictionary<string, bool> dictionary)
@@ -212,20 +205,22 @@ public class SaveData
     {
         // JSON 문자열을 Dictionary<string, string>으로 역직렬화
         Dictionary<string, string> stringVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+        Dictionary<string, string> typeVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(variablesTypeToJson);
 
         // Dictionary<string, object>을 생성하여 변환된 값들을 추가
         Dictionary<string, object> objectVariables = new();
         foreach (var variable in stringVariables)
         {
             object value;
-            // string을 적절한 형식으로 변환하여 object 변수에 할당
-            if (int.TryParse(variable.Value, out int intValue))
+            Type type = Type.GetType(typeVariables[variable.Key]);
+
+            if (type == typeof(int))
             {
-                value = intValue;
+                value = Convert.ToInt32(variable.Value);
             }
             else if (bool.TryParse(variable.Value, out bool boolValue))
             {
-                value = boolValue;
+                value = Convert.ToBoolean(variable.Value);
             }
             else
             {

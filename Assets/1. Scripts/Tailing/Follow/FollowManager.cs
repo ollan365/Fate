@@ -243,12 +243,12 @@ public class FollowManager : MonoBehaviour
         }
 
         // 두번째 미행
-        if (!IsTutorial && SceneManager.Instance.CurrentScene == SceneType.FOLLOW_2)
+        if (!IsTutorial && (int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_2.ToInt())
         {
             switch ((int)Accidy.transform.position.x)
             {
-                case 8: followDialogueManager.ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
-                case 12: followDialogueManager.ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
+                case 10: followDialogueManager.ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
+                case 14: followDialogueManager.ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
             }
         }
     }
