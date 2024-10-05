@@ -153,8 +153,14 @@ public class MemoManager : PageContentsManager
 
     public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false)
     {
-        if (showMemoIcon && wantToHideMemoButton) return;
-
+        // Debug.Log($"SetMemoButtons({showMemoIcon}, {showMemoExitButton})" +
+        //           $"\nWant to Hide Memo Button: {wantToHideMemoButton}");
+        if (wantToHideMemoButton)
+        {
+            memoButton.SetActive(false);
+            exitButton.SetActive(false);
+        }
+        
         memoButton.SetActive(showMemoIcon);
         exitButton.SetActive(showMemoExitButton);
 

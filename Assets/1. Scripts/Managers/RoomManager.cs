@@ -54,7 +54,7 @@ public class RoomManager : MonoBehaviour
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
     }
-    
+
     void Start()
     {
         // 모든 Side 켰다 끄기
@@ -63,7 +63,7 @@ public class RoomManager : MonoBehaviour
             side.SetActive(true);
             side.SetActive(false);
         }
-        
+
         // 모든 확대 화면 켰다 끄기
         foreach (GameObject zoomView in zoomViews)
         {
@@ -74,27 +74,21 @@ public class RoomManager : MonoBehaviour
         // Side 1으로 초기화?
         currentView = sides[currentSideIndex];
         SetCurrentSide(currentSideIndex);
-        
+
+        MemoManager.Instance.HideMemoButton = false;
         SetButtons();
 
         actionPointManager.heartParent = heartParent;
         actionPointManager.dayText = dayText;
-        actionPointManager.CreateHearts();  // create hearts on room start
-
-        // 아래는 뭘 살려야할지 모르겠어서 두개 모두 살려뒀습니다
-        // 참고로 SceneManager.Instance.CurrentScene == SceneType.ROOM_1이 true 이면 현재 씬이 Room1 입니당...!
-        // 도움되실까 싶어서 남겨둡니당...
-        
-        //// 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만) - 겜메에서 현재 씬 이름 저장하고 가져오는 방식으로 변경 필요
-        //if (!GameManager.Instance.skipTutorial && EditorSceneManager.GetActiveScene().name == "Room1") DialogueManager.Instance.StartDialogue("Prologue_015");
+        actionPointManager.CreateHearts(); // create hearts on room start
 
         // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
         {
-            if(!GameManager.Instance.skipTutorial)
-                DialogueManager.Instance.StartDialogue("Prologue_015");
-        }
+            if (GameManager.Instance.skipTutorial) return;
 
+            DialogueManager.Instance.StartDialogue("Prologue_015");
+        }
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
