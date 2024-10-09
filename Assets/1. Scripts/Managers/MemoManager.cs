@@ -121,7 +121,7 @@ public class MemoManager : PageContentsManager
     {
         var scriptID = memoScripts[memoID];
 
-        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
+        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
         
         for (int i = 0; i <= currentSceneIndex; i++)
         {
@@ -159,7 +159,7 @@ public class MemoManager : PageContentsManager
         exitButton.SetActive(showMemoExitButton);
 
         var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
-        if (RoomManager.Instance && currentSceneIndex is 0 or 2) RoomManager.Instance.SetButtons();
+        if (RoomManager.Instance && currentSceneIndex is 1 or 3) RoomManager.Instance.SetButtons();
     }
     
     public void SetMemoContents(bool isTrue)
@@ -185,7 +185,7 @@ public class MemoManager : PageContentsManager
     
     private void SetMemoCurrentPage()
     {
-        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
+        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
 
         // Calculate the starting page index for the current scene
         int startingPageIndex = CalculateFirstPageNumber(currentSceneIndex);
@@ -196,7 +196,7 @@ public class MemoManager : PageContentsManager
 
     private void SetFlags()
     {
-        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
+        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
 
         for (var i = 0; i <= currentSceneIndex; i++) flags[i].gameObject.SetActive(true);
         for (var i = currentSceneIndex + 1; i < flags.Count; i++) flags[i].gameObject.SetActive(false);
@@ -214,7 +214,7 @@ public class MemoManager : PageContentsManager
 
     private List<string[]> GetAggregatedMemos()
     {
-        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
+        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
         var allMemos = new List<string[]>();
 
         for (int i = 0; i <= currentSceneIndex; i++) allMemos.AddRange(SavedMemoList[i]);
@@ -314,7 +314,7 @@ public class MemoManager : PageContentsManager
 
             for (int i = 0; i < 10; i++)
             {
-                RevealedMemoList[(int)GameManager.Instance.GetVariable("CurrentScene")].Add(i.ToString());
+                RevealedMemoList[(int)GameManager.Instance.GetVariable("CurrentScene") - 1].Add(i.ToString());
             }
             SceneManager.Instance.LoadScene(SceneType.ENDING);
         }
