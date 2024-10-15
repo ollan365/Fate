@@ -1374,7 +1374,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultUnlockROOM_2":
-                StartCoroutine(EndingManager.Instance.Ending_Follow1());
+                EndingManager.Instance.Ending_Follow1();
                 break;
 
             case "ResultStartDialogue_Follow1Final":

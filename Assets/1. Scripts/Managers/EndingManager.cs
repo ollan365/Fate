@@ -12,7 +12,6 @@ public class EndingManager : MonoBehaviour
     [Header("배경")]
     [SerializeField] private Image background;
     [SerializeField] private Sprite background_room1;
-    [SerializeField] private Sprite background_follow1;
 
     [Header("시계")]
     [SerializeField] private GameObject clock;
@@ -28,9 +27,8 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private bool isTesting;
 
     [Header("미행 1 엔딩")]
-    [SerializeField] private GameObject fate;
-    [SerializeField] private GameObject[] accidys;
-    private GameObject accidy;
+    [SerializeField] private VideoPlayer[] followVideos;
+    private VideoPlayer followVideo;
 
 
     void Awake()
@@ -44,7 +42,12 @@ public class EndingManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (isTesting) ScreenEffect.Instance.coverPanel.gameObject.SetActive(false);
+        if (isTesting)
+        {
+            ScreenEffect.Instance.coverPanel.gameObject.SetActive(false);
+            GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_1.ToInt());
+            GameManager.Instance.SetVariable("MemoCount_FOLLOW_1", 9);
+        }
 
         StartCoroutine(StartEnding());
     }
@@ -142,39 +145,20 @@ public class EndingManager : MonoBehaviour
             yield return new WaitForSeconds(waitingTime);
         }
     }
-    public IEnumerator Ending_Follow1()
+    public void Ending_Follow1()
     {
-        background.sprite = background_follow1;
-        background.color = Color.white;
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) followVideo = followVideos[0];
+        else followVideo = followVideos[1];
 
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidys[0];
-        else accidy = accidys[1];
+        followVideo.loopPointReached += AddLoopPointReachedToFollowVideo;
 
-        // 필연이 앞으로 걸어나옴
-        while (true)
-        {
-            fate.transform.position += Vector3.up * Time.deltaTime * 5;
-            if (fate.transform.position.y >= 2.3f)
-            {
-                fate.transform.position = new(fate.transform.position.x, 2.3f, fate.transform.position.z);
-                break;
-            }
-            yield return null;
-        }
-        yield return new WaitForSeconds(1.5f);
-
-        // 우연이 앞으로 걸어나옴
-        while (true)
-        {
-            accidy.transform.position += Vector3.up * Time.deltaTime;
-            if (accidy.transform.position.y >= 0)
-            {
-                accidy.transform.position = new(accidy.transform.position.x, 0, accidy.transform.position.z);
-                break;
-            }
-            yield return null;
-        }
-        yield return new WaitForSeconds(0.5f);
+        // 비디오 재생
+        followVideo.gameObject.SetActive(true);
+        followVideo.Play();
+    }
+    private void AddLoopPointReachedToFollowVideo(VideoPlayer vp)
+    {
+        followVideo.gameObject.SetActive(false);
 
         // 우연의 대사 시작
         EventManager.Instance.CallEvent("EventEndUnlockROOM_2");
