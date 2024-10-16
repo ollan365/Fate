@@ -312,7 +312,23 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
                 break;
-            
+
+            // 다회차 곰인형
+            case "ResultNewTeddyBearScript":
+                DialogueManager.Instance.StartDialogue("RoomEscape2nd_001");
+                break;
+
+            case "ResultNewTeddyBearMemo":
+                MemoManager.Instance.RevealMemo("R1Memo_014");
+                break;
+
+            case "ResultNewTeddyBearZoom":
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "newTeddyBear");
+                break;
+
+
+            // 방탈출1
+
             case "ResultTeddyBearScript": // 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_001");
                 break;
@@ -990,15 +1006,6 @@ public class ResultManager : MonoBehaviour
             case "ResultWardrobeDownDrawersClosed": // 옷장 서랍장 아래칸이 닫힘
                 SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
                 executableObjects["OpenWardrobeDownDrawers"].ExecuteAction();
-                break;
-
-            //테스트용
-            case "ResultWardrobeUpClothes2Script": // 옷장 서랍장 위칸 옷더미 조사 스크립트 테스트용
-                Debug.Log("위칸 옷더미 조사");
-                break;
-
-            case "ResultWardrobeUnderClothes2Script": // 옷장 서랍장 아래칸 옷더미 조사 스크립트 테스트용
-                Debug.Log("아래칸 옷더미 조사");
                 break;
 
             case "Result_showBook2CoverImage": // 떨어진 책 한권 표지 확대 UI

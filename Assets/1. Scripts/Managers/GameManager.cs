@@ -105,6 +105,11 @@ public class GameManager : MonoBehaviour
         variables["TutorialPhase"] = 0;
 
         // 2 - 1. 이벤트 오브젝트 관련 변수들 - 첫번째 방탈출
+
+        // 다회차 추가 곰인형
+        variables["NewTeddyBearClick"] = 0;
+
+
         // 침대 위 곰인형
         variables["DollsClick"] = 0;
 
@@ -483,7 +488,8 @@ public class GameManager : MonoBehaviour
          //   "FateBirthday"
          // "isTutorial",
          // "TutorialPhase"
-         "ActionPoint"
+         "ActionPoint",
+         "EndingCollect"
         });
 
         foreach (var item in variables)

@@ -14,6 +14,9 @@ public class ImageAndLockPanelManager : MonoBehaviour
     private Image objectImageImageComponent;
     private RectTransform objectImageRectTransform;
 
+    [Header("방탈출 다회차 이벤트 오브젝트 확대 이미지")]
+    [SerializeField] private Sprite newTeddyBearImage;
+
     [Header("방탈출1 이벤트 오브젝트 확대 이미지")]
     [SerializeField] private Sprite amuletImage;
     [SerializeField] private Sprite clockImage;
@@ -73,6 +76,9 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
         imageDictionary = new Dictionary<string, Sprite>()  // imageDictionary 초기화
         {
+            // 방탈출 다회차 Object 확대 이미지
+            {"newTeddyBear", newTeddyBearImage},
+
             // 방탈출1 확대 이미지
             {"amulet", amuletImage},
             {"clock", clockImage},
@@ -83,6 +89,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             {"letterOfResignation", letterOfResignationImage},
             {"photoInsideBox", photoInsideBoxImage},
             {"cafePintInBagImage", cafePintInBagImage},
+
             // 방탈출2 확대 이미지
             {"tinCase", tinCaseImage},
             {"sewingBox", sewingBoxImage},
@@ -94,7 +101,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             {"medicine2", medicine2Image},
             {"ticket",ticketImage},
             {"book2Cover", book2CoverImage},
-            {"closetKey2", closetKey2Image}
+            {"closetKey2", closetKey2Image},
         };
 
         lockObjectDictionary = new Dictionary<string, GameObject>()
@@ -104,7 +111,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             { "diary", diaryGameObject },
             { "calendar", calendarGameObject },
             { "tinCase", tinCaseGameObject },
-            {"sewingBox", sewingBoxGameObject},
+            { "sewingBox", sewingBoxGameObject},
             { "diary2", diary2GameObject },
             { "book2", book2GameObject },
             { "dreamDiary",dreamDiaryGameObject},
