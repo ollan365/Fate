@@ -112,6 +112,11 @@ ConditionNowDayNum3,,NowDayNum,==,3
 ConditionNowDayNum4,,NowDayNum,==,4
 ConditionNowDayNum5,,NowDayNum,==,5
 ,,,,
+ConditionNewTeddyBearFristClick,2회차 곰인형을 처음 클릭,NewTeddyBearClick,==,0
+ConditionNewTeddyBearManyClick,2회차 곰인형을 여러번 클릭,NewTeddyBearClick,>,0
+,,,,
+,,,,
+,,,,
 ConditionBedTeddy2FirstClick,방탈출2 침대 위 곰인형 처음 클릭,BedTeddyClick2,==,0
 ConditionBedTeddy2ManyClick,방탈출2 침대 위 곰인형 한 번 이상 클릭,BedTeddyClick2,>,0
 ,,,,
@@ -195,8 +200,16 @@ ConditionTinCaseNotCorrect,틴케이스 비밀번호를 틀린 상태. 즉 티�
 ConditionMedicine2FirstClick,선반 위 약을 처음 클릭,Medicine2Click,==,0
 ConditionMedicine2ManyClick,선반 위 약을 여러번 클릭,Medicine2Click,>,0
 ,,,,
+ConditionGetClosetKey2,방탈출2 옷장 안 열쇠를 획득,HasClosetKey2,==,TRUE
+ConditionNotGetClosetKey2 ,방탈출2  옷장 안 열쇠를 획득하지 않음,HasClosetKey2,==,FALSE
 ConditionClosetKey2FirstClick,방탈출2 옷장 안 열쇠를 처음 클릭,ClosetKey2Click,==,0
-ConditionClosetKey2ManyClick,방탈출2  옷장 안 열쇠를 여러번 클릭,ClosetKey2Click,>,0
+,,,,
+ConditionDreamDiary2FirstClick,방탈출2 꿈일기 처음 클릭,DreamDiary2Click,==,0
+ConditionDreamDiary2ManyClick,방탈출2 꿈일기 여러번 클릭,DreamDiary2Click,>,0
+ConditionGetClosetKey2,옷장 안 열쇠 획득한 상태,HasClosetKey2,==,TRUE
+ConditionNotGetClosetKey2,옷장 안 열쇠 획득하지 않은 상태,HasClosetKey2,==,FALSE
+ConditionDreamDiary2Opened,방탈출2 꿈일기를 열람한 상태,DreamDiary2Opened,==,TRUE
+ConditionNotDreamDiary2Opened,방탈출2 꿈일기를 열람하지 못한 상태,DreamDiary2Opened,==,FALSE
 ,,,,
 ConditionClosetBag2FirstClick,방탈출2 옷장 안 가방을 처음 클릭,ClosetBag2Click,==,0
 ConditionClosetBag2ManyClick,방탈출2 옷장 안 가방을 여러번 클릭,ClosetBag2Click,>,0
@@ -209,11 +222,6 @@ ConditionClosetClothAndBag2ManyClick,방탕출2 옷장 안 정리 안된 옷과 
 ,,,,
 ConditionUnderClosetClothes2FirstClick,옷장 밑 수납장 속 헝클어진 옷을 처음 클릭,UnderClosetClothes2Click,==,0
 ConditionUnderClosetClothes2ManyClick,옷장 밑 수납장 속 헝클어진 옷을 여러번 클릭,UnderClosetClothes2Click,>,0
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
 ,,,,
 ConditionVillaClick,빌라를 처음 클릭,VillaClick,>=,0
 ConditionBreadClick,2층 빵집을클릭,BreadClick,>=,0
@@ -319,7 +327,6 @@ ConditionLastEnding_True,마지막으로 끝난 엔딩이 True,LastEnding,==,Tru
 ConditionLastEnding_Hidden,마지막으로 끝난 엔딩이 Hidden,LastEnding,==,Hidden
 ,,,,
 ConditionBadEndingCollect,배드 엔딩을 본 횟수가 n회 이상,BadEndingCollect,>,10
-,,,,
 ,,,,
 ,,,,
 ,,,,

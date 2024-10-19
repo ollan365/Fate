@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -12,6 +12,7 @@ public class EndingManager : MonoBehaviour
     [Header("배경")]
     [SerializeField] private Image background;
     [SerializeField] private Sprite background_room1;
+    [SerializeField] private Sprite background_follow1;
 
     [Header("시계")]
     [SerializeField] private GameObject clock;
@@ -24,11 +25,10 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private Sprite minuteAfterEffect;
     [SerializeField] private float waitingTime;
     [SerializeField] private float value;
-    [SerializeField] private bool isTesting;
 
     [Header("미행 1 엔딩")]
-    [SerializeField] private VideoPlayer[] followVideos;
-    private VideoPlayer followVideo;
+    [SerializeField] private VideoClip[] videoClips;
+    [SerializeField] private VideoPlayer followVideoPlayer;
 
 
     void Awake()
@@ -40,13 +40,6 @@ public class EndingManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }
-
-        if (isTesting)
-        {
-            ScreenEffect.Instance.coverPanel.gameObject.SetActive(false);
-            GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_1.ToInt());
-            GameManager.Instance.SetVariable("MemoCount_FOLLOW_1", 9);
         }
 
         StartCoroutine(StartEnding());
@@ -145,20 +138,34 @@ public class EndingManager : MonoBehaviour
             yield return new WaitForSeconds(waitingTime);
         }
     }
+    public void Ending_Follow1_StreetVideo()
+    {
+        followVideoPlayer.gameObject.SetActive(true);
+        followVideoPlayer.clip = videoClips[0];
+        followVideoPlayer.Play();
+        followVideoPlayer.loopPointReached += OnStreetVideoEnd;
+    }
+    public void OnStreetVideoEnd(VideoPlayer vp)
+    {
+        followVideoPlayer.gameObject.SetActive(false);
+        EventManager.Instance.CallEvent("EventStreetVideoEnd");
+    }
     public void Ending_Follow1()
     {
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) followVideo = followVideos[0];
-        else followVideo = followVideos[1];
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) followVideoPlayer.clip = videoClips[1];
+        else followVideoPlayer.clip = videoClips[2];
 
-        followVideo.loopPointReached += AddLoopPointReachedToFollowVideo;
+        background.sprite = background_follow1;
+        background.color = Color.white;
+        followVideoPlayer.loopPointReached += OnFollowFateAndAccidyVideoEnd;
 
         // 비디오 재생
-        followVideo.gameObject.SetActive(true);
-        followVideo.Play();
+        followVideoPlayer.gameObject.SetActive(true);
+        followVideoPlayer.Play();
     }
-    private void AddLoopPointReachedToFollowVideo(VideoPlayer vp)
+    private void OnFollowFateAndAccidyVideoEnd(VideoPlayer vp)
     {
-        followVideo.gameObject.SetActive(false);
+        followVideoPlayer.gameObject.SetActive(false);
 
         // 우연의 대사 시작
         EventManager.Instance.CallEvent("EventEndUnlockROOM_2");

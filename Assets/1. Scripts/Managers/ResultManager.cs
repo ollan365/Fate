@@ -1365,16 +1365,18 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultUnlockFOLLOW_1":
+                SoundPlayer.Instance.ChangeBGM(BGM_ROOM1);
                 DialogueManager.Instance.StartDialogue("FollowTutorial_001");
                 break;
 
             case "ResultLockFOLLOW_1":
-                SoundPlayer.Instance.ChangeBGM(BGM_BAD);
+                SoundPlayer.Instance.ChangeBGM(BGM_ROOM1);
                 DialogueManager.Instance.StartDialogue("BadEndingA_ver1_01");
                 break;
 
             case "ResultUnlockROOM_2":
-                EndingManager.Instance.Ending_Follow1();
+                SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
+                EndingManager.Instance.Ending_Follow1_StreetVideo();
                 break;
 
             case "ResultStartDialogue_Follow1Final":
@@ -1382,25 +1384,50 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLockROOM_2":
-                SoundPlayer.Instance.ChangeBGM(BGM_BAD);
+                SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
+                EndingManager.Instance.Ending_Follow1_StreetVideo();
+                break;
+
+            case "ResultStreetVideo_NotClear":
                 DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
                 break;
 
+            case "ResultStreetVideo_Clear":
+                EndingManager.Instance.Ending_Follow1();
+                break;
+
+            case "ResultBadEndingB_01B":
+                SoundPlayer.Instance.ChangeBGM(BGM_BAD_B);
+                DialogueManager.Instance.StartDialogue("BadEndingB_ver1_01B");
+                break;
+
             case "ResultUnlockHidden":
-                SoundPlayer.Instance.ChangeBGM(BGM_HIDDEN);
+                SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
                 DialogueManager.Instance.StartDialogue("HiddenEnding_00");
                 break;
 
             case "ResultUnlockTrue":
-                SoundPlayer.Instance.ChangeBGM(BGM_TRUE);
+                SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
                 DialogueManager.Instance.StartDialogue("TrueEnding_01");
                 break;
 
             case "ResultLockTrueAndHidden":
-                SoundPlayer.Instance.ChangeBGM(BGM_BAD);
+                SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
                 DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01");
                 break;
 
+            case "ResultChangeBGM_BadA":
+                SoundPlayer.Instance.ChangeBGM(BGM_BAD_A);
+                break;
+
+            case "ResultChangeBGM_True":
+                SoundPlayer.Instance.ChangeBGM(BGM_TRUE);
+                break;
+
+            case "ResultChangeBGM_Hidden":
+                SoundPlayer.Instance.ChangeBGM(BGM_HIDDEN);
+                break;
+                
             case "ResultBadA_End":
                 EndingManager.Instance.EndEnding(EndingType.BAD_A);
                 break;
