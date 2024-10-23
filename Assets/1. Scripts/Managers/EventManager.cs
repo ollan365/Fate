@@ -138,11 +138,16 @@ public class EventManager : MonoBehaviour
                 if (CheckConditions_AND(conditions))
                 {
                     ExecuteResults(results);
+                    return;
                 }
             }
             else if (logic == "OR") // logic이 OR인 경우
             {
-                if (CheckConditions_OR(conditions)) ExecuteResults(results);
+                if (CheckConditions_OR(conditions))
+                {
+                    ExecuteResults(results); 
+                    return;
+                }
             }
             else // logic이 빈칸인 경우
             {

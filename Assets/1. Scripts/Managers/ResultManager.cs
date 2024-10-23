@@ -181,6 +181,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
+                SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
                 RoomManager.Instance.actionPointManager.DecrementActionPoint();
                 break;
 
@@ -222,6 +223,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_restYes": // 휴식에서 예 버튼
+                SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
                 DialogueManager.Instance.EndDialogue();
                 // 휴식취함(다음날로 넘어가는 만큼 행동력 감소, 날짜와 하트 업데이트)
                 // fade in, fade out 이후 휴식 대사 출력되고 우연 랜덤 대사 출력됨

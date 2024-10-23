@@ -81,7 +81,8 @@ public static class Constants
         Sound_GrabPaper = 23,
         Sound_TincaseOpen = 24, 
         Sound_SewingBoxBall = 25, 
-        Sound_SewingBoxOpen = 26;
+        Sound_SewingBoxOpen = 26,
+        Sound_HeartPop = 38;
 
     // 3. 미행
     public const int
