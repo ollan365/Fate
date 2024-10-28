@@ -32,6 +32,16 @@ public class DiaryLock : EventObject, IResultExecutable
         diaryManager.SetTotalPages();
         diaryContent.SetActive(true);
         gameObject.SetActive(false);
+
+        // 방탈출2 다이어리 관련
+        // 방탈출2에서 다이어리2 다시 조사할 때 2페이지를 펼쳐둔 상태이면
+        // 열자마자 바로 다이어리 내용 확인 스크립트 출력됨
+        if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect")
+            && diaryManager.GetDiaryType() == "Diary2"&& diaryContent.activeSelf)
+        {
+            // 다이어리 내용 끝까지인 2페이지 확인하면 다이어리 내용 확인 스크립트 출력됨
+            EventManager.Instance.CallEvent("EventDiary2Content");
+        }
     }
 
     public void InputNumber(string buttonInput)

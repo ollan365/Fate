@@ -106,6 +106,11 @@ public class DiaryManager : PageContentsManager
         return diaryType + "_" + pageNum.ToString().PadLeft(3, '0');
     }
 
+    public string GetDiaryType()
+    {
+        return diaryType;
+    }
+
     private Dictionary<string, string> GetCurrentPagesDictionary()
     {
         switch (diaryType)
@@ -144,10 +149,11 @@ public class DiaryManager : PageContentsManager
 
         // 방탈출2 다이어리 관련
         if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect")
-            && presentPageNum == 2 && diaryType == "Diary2")
+            && GetDiaryType() == "Diary2")
         {
             // 다이어리 내용 끝까지인 2페이지 확인하면 다이어리 내용 확인 스크립트 출력됨
-            DialogueManager.Instance.StartDialogue("RoomEscape2_016");
+            GameManager.Instance.SetVariable("Diary2PresentPageNumber", presentPageNum);
+            EventManager.Instance.CallEvent("EventDiary2Content");
         }
     }
 
