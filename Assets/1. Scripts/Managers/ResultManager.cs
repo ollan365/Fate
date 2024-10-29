@@ -472,7 +472,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCarpetDropOutLetterMemo": // 종이에 대한 메모
-                MemoManager.Instance.RevealMemo("R1Memo_013");
+                MemoManager.Instance.RevealMemo("R1Memo_006");
                 break;
 
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
