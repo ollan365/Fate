@@ -181,6 +181,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
+                SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
                 RoomManager.Instance.actionPointManager.DecrementActionPoint();
                 break;
 
@@ -222,6 +223,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "Result_restYes": // 휴식에서 예 버튼
+                SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
                 DialogueManager.Instance.EndDialogue();
                 // 휴식취함(다음날로 넘어가는 만큼 행동력 감소, 날짜와 하트 업데이트)
                 // fade in, fade out 이후 휴식 대사 출력되고 우연 랜덤 대사 출력됨
@@ -312,7 +314,23 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
                 break;
-            
+
+            // 다회차 곰인형
+            case "ResultNewTeddyBearScript":
+                DialogueManager.Instance.StartDialogue("RoomEscape2nd_001");
+                break;
+
+            case "ResultNewTeddyBearMemo":
+                MemoManager.Instance.RevealMemo("R1Memo_014");
+                break;
+
+            case "ResultNewTeddyBearZoom":
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "newTeddyBear");
+                break;
+
+
+            // 방탈출1
+
             case "ResultTeddyBearScript": // 곰인형에 대한 설명
                 DialogueManager.Instance.StartDialogue("RoomEscape_001");
                 break;
@@ -454,7 +472,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCarpetDropOutLetterMemo": // 종이에 대한 메모
-                MemoManager.Instance.RevealMemo("R1Memo_013");
+                MemoManager.Instance.RevealMemo("R1Memo_006");
                 break;
 
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
@@ -652,6 +670,27 @@ public class ResultManager : MonoBehaviour
                 executableObjects["DeskShelf Unzoomed 2"].ExecuteAction();
                 break;
 
+            case "ResultBooksScript": // 다이어리 옆 책 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_036");
+                break;
+
+            case "ResultShelfBearScript": // 다이어리 선반위 곰인형 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_037");
+                break;
+
+            case "ResultClosetUnderScript": // 옷장 밑 부분 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_038");
+                break;
+
+            case "ResultDoorBearScript": // 문 앞 곰인형 장식 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_039");
+                break;
+
+            case "ResultDoorScript": // 문 스크립트
+                DialogueManager.Instance.StartDialogue("RoomEscape_040");
+                break;
+
+
             case "ResultEndRoom1": // Room1 끝
                 SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
                 break;
@@ -711,8 +750,6 @@ public class ResultManager : MonoBehaviour
 
             case "ResultTinCaseFailedScript": // 틴케이스 비밀번호 틀림에 대한 설명
                 //DialogueManager.Instance.StartDialogue("RoomEscape2_020");
-
-                Debug.Log("틴케이스 비밀번호 틀림에 대한 설명");
                 break;
 
             case "ResultTinCaseGetTicket": // 티켓을 획득
@@ -725,9 +762,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTinCaseGetTicketMemo": // 티켓 획득 후 메모
-                //MemoManager.Instance.AddMemo("R1Memo_003");
-
-                Debug.Log("티켓 획득 후 메모");
+                MemoManager.Instance.RevealMemo("R2Memo_007");
                 break;
 
 
@@ -760,9 +795,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedleMemo":   // 실과 바늘 획득 후 메모
-                //MemoManager.Instance.AddMemo("R1Memo_003");
-
-                Debug.Log("실과 바늘 획득 후 메모");
+                MemoManager.Instance.RevealMemo("R2Memo_006");
                 break;
 
             case "ResultBrokenTeddyBear2NoThreadAndNeedleScript": // 실바늘 없을때 곰인형에 대한 설명
@@ -812,11 +845,11 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultDiary2Memo": // 다이어리에 대한 메모가 작성됨
-                //MemoManager.Instance.RevealMemo("R1Memo_002");
+                MemoManager.Instance.RevealMemo("R2Memo_003");
                 break;
 
             case "ResultDiary2ContentScript": // 다이어리에 대한 스크립트
-                //DialogueManager.Instance.StartDialogue("RoomEscape_010");
+                DialogueManager.Instance.StartDialogue("RoomEscape2_016");
                 break;
 
             case "ResultDiary2LockFailedScript": // 다이어리 비밀번호를 틀렸다는 스크립트
@@ -891,7 +924,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultMedicine2Memo": // 선반 위 약 메모
-                //MemoManager.Instance.RevealMemo("");
+                MemoManager.Instance.RevealMemo("R2Memo_010");
                 break;
 
             case "ResultMedicine2Zoom": // 선반 위 약 확대UI
@@ -904,7 +937,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultHospitalFlyer2Memo": // 방탈출2 병원 전단지 메모
-
+                MemoManager.Instance.RevealMemo("R2Memo_001");
                 break;
 
             case "ResultHospitalFlyer2Zoom": // 방탈출2 병원 전단지 확대 UI
@@ -916,7 +949,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPoster2Memo": // 방탈출2 바다 포스터 메모
-
+                MemoManager.Instance.RevealMemo("R2Memo_002");
                 break;
 
             case "ResultPoster2Zoom": // 방탈출2 바다 포스터 확대 UI
@@ -928,7 +961,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultStarSticker2Memo": // 방탈출2 별 스티커 메모
-
+                MemoManager.Instance.RevealMemo("R2Memo_005");
                 break;
 
             case "ResultStarSticker2Zoom": // 방탈출2 별 스티커 확대 UI
@@ -940,7 +973,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultShoppingBag2Memo": // 방탈출2 쇼핑백 메모
-
+                MemoManager.Instance.RevealMemo("R2Memo_008");
                 break;
 
             case "ResultShoppingBag2Zoom": // 방탈출2 쇼핑백 확대 UI
@@ -990,15 +1023,6 @@ public class ResultManager : MonoBehaviour
             case "ResultWardrobeDownDrawersClosed": // 옷장 서랍장 아래칸이 닫힘
                 SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
                 executableObjects["OpenWardrobeDownDrawers"].ExecuteAction();
-                break;
-
-            //테스트용
-            case "ResultWardrobeUpClothes2Script": // 옷장 서랍장 위칸 옷더미 조사 스크립트 테스트용
-                Debug.Log("위칸 옷더미 조사");
-                break;
-
-            case "ResultWardrobeUnderClothes2Script": // 옷장 서랍장 아래칸 옷더미 조사 스크립트 테스트용
-                Debug.Log("아래칸 옷더미 조사");
                 break;
 
             case "Result_showBook2CoverImage": // 떨어진 책 한권 표지 확대 UI

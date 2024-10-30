@@ -105,6 +105,11 @@ public class GameManager : MonoBehaviour
         variables["TutorialPhase"] = 0;
 
         // 2 - 1. 이벤트 오브젝트 관련 변수들 - 첫번째 방탈출
+
+        // 다회차 추가 곰인형
+        variables["NewTeddyBearClick"] = 0;
+
+
         // 침대 위 곰인형
         variables["DollsClick"] = 0;
 
@@ -126,6 +131,7 @@ public class GameManager : MonoBehaviour
         // 다이어리
         variables["DiaryClick"] = 0;
         variables["DiaryPasswordCorrect"] = false;
+        variables["Diary2PresentPageNumber"] = 0;
 
         // 시계
         variables["ClockClick"] = 0;
@@ -188,7 +194,21 @@ public class GameManager : MonoBehaviour
         // 서랍장 내부 곰인형
         variables["StorageTeddyBearClick"] = 0;
 
-        // 달력
+        // 선반 위 책들
+        variables["BooksClick"] = 0;
+
+        // 선반 위 곰인형들
+        variables["ShelfBearClick"] = 0;
+
+        // 옷장 아래 서랍
+        variables["ClosetUnderClick"] = 0;
+
+        // 문 곰돌이 장식물
+        variables["DoorBearClick"] = 0;
+
+        // 문
+        variables["DoorClick"] = 0;
+
 
         // 두번째 방탈출
 
@@ -483,7 +503,8 @@ public class GameManager : MonoBehaviour
          //   "FateBirthday"
          // "isTutorial",
          // "TutorialPhase"
-         "ActionPoint"
+         "ActionPoint",
+         "Diary2PresentPageNumber"
         });
 
         foreach (var item in variables)
