@@ -59,9 +59,10 @@ public static class Constants
         BGM_MINIGAME = 3,
         BGM_FINISHGAME = 4,
         BGM_ROOM2 = 5,
-        BGM_BAD = 6, 
-        BGM_TRUE = 7, 
-        BGM_HIDDEN = 8;
+        BGM_BAD_A = 6,
+        BGM_BAD_B = 7,
+        BGM_TRUE = 8,
+        BGM_HIDDEN = 9;
 
     // 2. 방탈출 오브젝트들
     public const int

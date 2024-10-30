@@ -32,6 +32,8 @@ public class FollowGameManager : MonoBehaviour
     private bool IsTutorial { get => FollowManager.Instance.IsTutorial; }
     void Update()
     {
+        if (!Accidy) return;
+
         if (!StopAccidy && !IsTutorial) MoveAccidy();
 
         if (!IsEnd && !IsDialogueOpen || IsTutorial) MoveFate();

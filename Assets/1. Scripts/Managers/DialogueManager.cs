@@ -473,8 +473,13 @@ public class DialogueManager : MonoBehaviour
             {
                 switch (effect)
                 {
-                    case "END":
+                    case "END_RUN":
                         choiceButton.onClick.AddListener(() => EndingManager.Instance.ChoiceEnding());
+                        choiceButton.onClick.AddListener(() => EventManager.Instance.CallEvent("EventChangeBGMOfEnd_RUN"));
+                        break;
+                    case "END_STAY":
+                        choiceButton.onClick.AddListener(() => EndingManager.Instance.ChoiceEnding());
+                        choiceButton.onClick.AddListener(() => EventManager.Instance.CallEvent("EventChangeBGMOfEnd_STAY"));
                         break;
                     case "LOCK":
                         choiceText.text = "<color=#101010>" + scripts[choiceLine.ScriptID].GetScript() + "</color>";

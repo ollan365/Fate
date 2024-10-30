@@ -123,5 +123,20 @@ public class SceneManager : MonoBehaviour
         SoundPlayer.Instance.ChangeBGM(bgmIndex);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
+
+    public void NotClearThisScene()
+    {
+        string currentScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum().ToString();
+        GameManager.Instance.SetVariable($"MemoCount_{currentScene}", 0);
+
+        LoadScene(SceneType.ENDING);
+    }
+    public void ClearThisScene()
+    {
+        string currentScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum().ToString();
+        GameManager.Instance.SetVariable($"MemoCount_{currentScene}", 9);
+
+        LoadScene(SceneType.ENDING);
+    }
 }
 

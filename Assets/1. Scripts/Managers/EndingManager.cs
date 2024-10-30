@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -25,12 +25,10 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private Sprite minuteAfterEffect;
     [SerializeField] private float waitingTime;
     [SerializeField] private float value;
-    [SerializeField] private bool isTesting;
 
     [Header("미행 1 엔딩")]
-    [SerializeField] private GameObject fate;
-    [SerializeField] private GameObject[] accidys;
-    private GameObject accidy;
+    [SerializeField] private VideoClip[] videoClips;
+    [SerializeField] private VideoPlayer followVideoPlayer;
 
 
     void Awake()
@@ -43,8 +41,6 @@ public class EndingManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        if (isTesting) ScreenEffect.Instance.coverPanel.gameObject.SetActive(false);
 
         StartCoroutine(StartEnding());
     }
@@ -142,39 +138,34 @@ public class EndingManager : MonoBehaviour
             yield return new WaitForSeconds(waitingTime);
         }
     }
-    public IEnumerator Ending_Follow1()
+    public void Ending_Follow1_StreetVideo()
     {
+        followVideoPlayer.gameObject.SetActive(true);
+        followVideoPlayer.clip = videoClips[0];
+        followVideoPlayer.Play();
+        followVideoPlayer.loopPointReached += OnStreetVideoEnd;
+    }
+    public void OnStreetVideoEnd(VideoPlayer vp)
+    {
+        followVideoPlayer.gameObject.SetActive(false);
+        EventManager.Instance.CallEvent("EventStreetVideoEnd");
+    }
+    public void Ending_Follow1()
+    {
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) followVideoPlayer.clip = videoClips[1];
+        else followVideoPlayer.clip = videoClips[2];
+
         background.sprite = background_follow1;
         background.color = Color.white;
+        followVideoPlayer.loopPointReached += OnFollowFateAndAccidyVideoEnd;
 
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidy = accidys[0];
-        else accidy = accidys[1];
-
-        // 필연이 앞으로 걸어나옴
-        while (true)
-        {
-            fate.transform.position += Vector3.up * Time.deltaTime * 5;
-            if (fate.transform.position.y >= 2.3f)
-            {
-                fate.transform.position = new(fate.transform.position.x, 2.3f, fate.transform.position.z);
-                break;
-            }
-            yield return null;
-        }
-        yield return new WaitForSeconds(1.5f);
-
-        // 우연이 앞으로 걸어나옴
-        while (true)
-        {
-            accidy.transform.position += Vector3.up * Time.deltaTime;
-            if (accidy.transform.position.y >= 0)
-            {
-                accidy.transform.position = new(accidy.transform.position.x, 0, accidy.transform.position.z);
-                break;
-            }
-            yield return null;
-        }
-        yield return new WaitForSeconds(0.5f);
+        // 비디오 재생
+        followVideoPlayer.gameObject.SetActive(true);
+        followVideoPlayer.Play();
+    }
+    private void OnFollowFateAndAccidyVideoEnd(VideoPlayer vp)
+    {
+        followVideoPlayer.gameObject.SetActive(false);
 
         // 우연의 대사 시작
         EventManager.Instance.CallEvent("EventEndUnlockROOM_2");
