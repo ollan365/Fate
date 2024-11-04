@@ -143,10 +143,7 @@ public class ChatApp : MonoBehaviour
         currentConversationKey = conversationKey;
 
         messageParent.SetActive(true);
-        senderText.text = conversations[conversationKey]
-                              .FirstOrDefault(m => m.SpeakerName != "우연")
-                              ?.SpeakerName ??
-                          conversationKey;
+        senderText.text = conversations[conversationKey].FirstOrDefault(m => m.SpeakerName != "우연")?.SpeakerName ?? conversationKey;
         
         // Clear previous messages
         foreach (Transform child in messageList)

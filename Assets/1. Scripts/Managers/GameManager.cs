@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -113,8 +114,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"variable \"{variableName}\" does not exist!");
         }
-        
-        if (isDebug) ShowVariables();
     }
 
     public object GetVariable(string variableName)
@@ -135,8 +134,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt++;
         SetVariable(variableName, cnt);
-    
-        if (isDebug) ShowVariables();
     }
 
     public void IncrementVariable(string variableName, int count)
@@ -144,8 +141,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt += count;
         SetVariable(variableName, cnt);
-
-        if (isDebug) ShowVariables();
     }
 
     public void DecrementVariable(string variableName)
@@ -153,8 +148,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt--;
         SetVariable(variableName, cnt);
-
-        if (isDebug) ShowVariables();
     }
 
     public void DecrementVariable(string variableName, int count)
@@ -162,8 +155,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt -= count;
         SetVariable(variableName, cnt);
-
-        if (isDebug) ShowVariables();
     }
 
     public void InverseVariable(string variableName)
@@ -183,6 +174,11 @@ public class GameManager : MonoBehaviour
     }
 
     // 디버깅 용
+    private void Update()
+    {
+        if (isDebug) ShowVariables();
+    }
+
     private void ShowVariables()
     {
         variablesText.text = "";  // 텍스트 초기화
