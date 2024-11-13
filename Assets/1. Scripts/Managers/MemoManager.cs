@@ -38,6 +38,11 @@ public class MemoManager : PageContentsManager
     public List<List<string>> RevealedMemoList { get; set; } = new List<List<string>>();  // RevealedMemoList[sceneIndex][memoIndex] = memoID
     private List<int> unseenMemoPages = new List<int>(); // List to track page numbers of unseen memos
 
+    // 메모 게이지
+    [SerializeField] private Image gaugeImage;
+    [SerializeField] private Image clearFlagImage;
+    private Color ClearColor = new Color(1, 0.792f, 0.259f);
+
     private void Awake()
     {
         if (Instance == null)
