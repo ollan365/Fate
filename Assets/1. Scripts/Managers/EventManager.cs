@@ -153,6 +153,7 @@ public class EventManager : MonoBehaviour
             {
                 string conditionID = conditions[0].ConditionID;
                 bool isCondition = ConditionManager.Instance.IsCondition(conditionID);
+                //Debug.Log(conditionID+" : "+isCondition);
                 if (isCondition)
                 {
                     ExecuteResults(results);

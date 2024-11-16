@@ -165,8 +165,11 @@ public class Room2ActionPointManager : ActionPointManager
         if (actionPoint % actionPointsPerDay == 0)
         {
             bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
-            if (!isDialogueActive) RefillHeartsOrEndDay();
-            else GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            bool isInvestigating = RoomManager.Instance.GetIsInvestigating();
+            if (!isDialogueActive && !isInvestigating) RefillHeartsOrEndDay();
+            //else if (!isDialogueActive) RefillHeartsOrEndDay();
+            else if (isInvestigating) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            else if (isDialogueActive) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
         }
 
         SaveManager.Instance.SaveGameData();

@@ -1046,6 +1046,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClosetKey2Script": // 옷장 안 열쇠에 대한 스크립트
+                SoundPlayer.Instance.UISoundPlay(Sound_Key);
                 DialogueManager.Instance.StartDialogue("RoomEscape2_028");
                 break;
 
@@ -1065,6 +1066,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultDreamDiary2WithKeyScript": // 열쇠 발견 후 꿈일기 발견 스크립트
+                SoundPlayer.Instance.UISoundPlay(Sound_LockerUnlock);
                 DialogueManager.Instance.StartDialogue("RoomEscape2_035");
                 break;
 

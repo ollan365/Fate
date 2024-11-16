@@ -503,8 +503,7 @@ public class GameManager : MonoBehaviour
          //   "FateBirthday"
          // "isTutorial",
          // "TutorialPhase"
-         "ActionPoint",
-         "Diary2PresentPageNumber"
+         "ActionPoint"
         });
 
         foreach (var item in variables)
