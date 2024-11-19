@@ -87,6 +87,12 @@ public class GameManager : MonoBehaviour
         variables["MemoCount_ROOM_2"] = 0;
         variables["MemoCount_FOLLOW_2"] = 0;
 
+        for (int i = 1; i <= 4; i++)
+        {
+            int cutLine = int.Parse(ConditionManager.Instance.conditions[$"ConditionMemoClear_{i.ToEnum()}"].Value);
+            variables[$"CutLine_{i.ToEnum()}"] = cutLine;
+        }
+
         // 1 - 1. 방탈출 ActionPoint 관련 변수들
         variables["ActionPoint"] = 25;  // 행동력 
 

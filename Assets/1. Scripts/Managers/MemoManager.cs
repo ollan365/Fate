@@ -39,9 +39,12 @@ public class MemoManager : PageContentsManager
     private List<int> unseenMemoPages = new List<int>(); // List to track page numbers of unseen memos
 
     // 메모 게이지
+    [SerializeField] private GameObject memoGauge;
     [SerializeField] private Image gaugeImage;
+    [SerializeField] private Slider clearFlagPos;
     [SerializeField] private Image clearFlagImage;
-    private Color ClearColor = new Color(1, 0.792f, 0.259f);
+    private Color unclearColor = new Color(0.5f, 0.5f, 0.5f);
+    private Color clearColor = new Color(1, 0.792f, 0.259f);
 
     private void Awake()
     {
@@ -148,6 +151,7 @@ public class MemoManager : PageContentsManager
                     // Debug.Log($"Added page {pageNum} to unseen memo pages");
 
                     GameManager.Instance.IncrementVariable($"MemoCount_{((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum()}");
+                    SetMemoGauge();
                 }
                 break;
             }
@@ -166,7 +170,25 @@ public class MemoManager : PageContentsManager
         var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
         if (RoomManager.Instance && currentSceneIndex is 1 or 3) RoomManager.Instance.SetButtons();
     }
-    
+
+    public void SetMemoGauge(bool showMemoGauge = true)
+    {
+        memoGauge.SetActive(showMemoGauge);
+
+        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
+
+        if (currentSceneIndex is 0 or 5) return;
+
+        int cutLine = (int)GameManager.Instance.GetVariable($"CutLine_{currentSceneIndex.ToEnum()}");
+        int currentMemoCount = (int)GameManager.Instance.GetVariable($"MemoCount_{currentSceneIndex.ToEnum()}");
+
+        gaugeImage.fillAmount = (float)currentMemoCount / SavedMemoList[currentSceneIndex - 1].Count;
+        clearFlagPos.value = (float)cutLine / SavedMemoList[currentSceneIndex - 1].Count;
+
+        if (currentMemoCount < cutLine) clearFlagImage.color = unclearColor;
+        else clearFlagImage.color = clearColor;
+    }
+
     public void SetMemoContents(bool isTrue)
     {
         memoContents.SetActive(isTrue);

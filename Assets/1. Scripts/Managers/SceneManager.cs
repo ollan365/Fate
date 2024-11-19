@@ -29,6 +29,7 @@ public class SceneManager : MonoBehaviour
     {
         // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
         MemoManager.Instance.SetMemoButtons(false);
+        MemoManager.Instance.SetMemoGauge(false);
 
         // 대사 출력 중이면 기다리기
         while (DialogueManager.Instance.isDialogueActive)
@@ -104,15 +105,19 @@ public class SceneManager : MonoBehaviour
                 return;
             case SceneType.ROOM_1:
                 bgmIndex = BGM_ROOM1;
+                MemoManager.Instance.SetMemoGauge();
                 break;
             case SceneType.FOLLOW_1:
                 bgmIndex = BGM_FOLLOW1;
+                MemoManager.Instance.SetMemoGauge();
                 break;
             case SceneType.ROOM_2:
                 bgmIndex = BGM_ROOM2;
+                MemoManager.Instance.SetMemoGauge();
                 break;
             case SceneType.FOLLOW_2:
                 bgmIndex = BGM_FOLLOW1;
+                MemoManager.Instance.SetMemoGauge();
                 break;
         }
 
