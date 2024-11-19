@@ -23,6 +23,7 @@ public class DialogueManager : MonoBehaviour
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
+    public GameObject blurImage;
     [Header("teddyBearIcons")] public GameObject[] teddyBearIcons;
     [Header("Blocking Panels")] public Image[] blockingPanels;
 
@@ -88,6 +89,10 @@ public class DialogueManager : MonoBehaviour
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
+
+        if (initialDialogueLine.Blur == "TRUE") blurImage.SetActive(true);
+        else blurImage.SetActive(false);
+
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
@@ -118,6 +123,10 @@ public class DialogueManager : MonoBehaviour
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
+
+        if (initialDialogueLine.Blur == "TRUE") blurImage.SetActive(true);
+        else blurImage.SetActive(false);
+
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
@@ -283,6 +292,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         MemoManager.Instance.SetMemoButtons(true);
+        blurImage.SetActive(false);
 
         if (!RoomManager.Instance) return;
 
