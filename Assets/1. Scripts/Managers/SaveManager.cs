@@ -34,6 +34,7 @@ public class SaveManager : MonoBehaviour
         if (File.Exists(filePath)) EndingData = JsonUtility.FromJson<EndingData>(File.ReadAllText(filePath));
         else EndingData = new EndingData();
     }
+
     public void SaveInitGameData()
     {
         if (initData == null)
@@ -58,7 +59,8 @@ public class SaveManager : MonoBehaviour
         GameManager.Instance.SetVariable("Language", EndingData.language);
         GameManager.Instance.SetVariable("AccidyGender", EndingData.accidyGender);
         GameManager.Instance.SetVariable("FateBirthday", EndingData.fateBirthDay);
-}
+    }
+
     public void InitGameData()
     {
         string ToJsonData = JsonUtility.ToJson(initData, true);

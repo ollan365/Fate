@@ -131,6 +131,7 @@ public class SceneManager : MonoBehaviour
 
         LoadScene(SceneType.ENDING);
     }
+    
     public void ClearThisScene()
     {
         string currentScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum().ToString();

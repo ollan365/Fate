@@ -1447,7 +1447,9 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultStreetVideo_Clear":
-                EndingManager.Instance.Ending_Follow1();
+                DialogueManager.Instance.StartDialogue("BadEndingA_ver2_01"); // demo 
+
+                // EndingManager.Instance.Ending_Follow1();
                 break;
 
             case "ResultBadEndingB_01B":

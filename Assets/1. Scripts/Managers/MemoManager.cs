@@ -61,7 +61,16 @@ public class MemoManager : PageContentsManager
         LoadMemos();
         UpdateNotification();
     }
-    
+
+    // private void Update()
+    // {
+    //     var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
+    //     if (currentSceneIndex < 0) return;
+    //     
+    //     if (RevealedMemoList[1].Count < 10) RevealedMemoList[1].Add("test"); 
+    //     GameManager.Instance.variablesText.text = $"Unlocked: {RevealedMemoList[currentSceneIndex].Count}\n";
+    // }
+
     // memos.csv 파일 파싱
     public override void ParsePageContents()
     {

@@ -30,7 +30,6 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private VideoClip[] videoClips;
     [SerializeField] private VideoPlayer followVideoPlayer;
 
-
     void Awake()
     {
         if (Instance == null)

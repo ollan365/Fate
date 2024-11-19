@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     }
 
     // 디버깅용
-    [SerializeField] private TextMeshProUGUI variablesText;
+    [SerializeField] public TextMeshProUGUI variablesText;
     public bool isDebug = false;
     public bool skipTutorial = false;
     public bool skipInquiry = false;
@@ -488,17 +488,18 @@ public class GameManager : MonoBehaviour
 
     private void ShowVariables()
     {
-        variablesText.text = "";  // 텍스트 초기화
+        // variablesText.text = "";  // 텍스트 초기화
 
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[]
         {
-         "FateBirthday",
-         "AccidyBirthday",
+            // "FateName",
+         // "FateBirthday",
+         // "AccidyBirthday",
          // "isTutorial",
          // "TutorialPhase"
-         "ActionPoint",
-         "Diary2PresentPageNumber"
+         // "ActionPoint",
+         // "Diary2PresentPageNumber"
         });
 
         foreach (var item in variables)

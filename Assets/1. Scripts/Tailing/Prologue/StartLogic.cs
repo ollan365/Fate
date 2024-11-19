@@ -54,6 +54,8 @@ public class StartLogic : MonoBehaviour
             Destroy(gameObject);
         }
 
+        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+        
         if (SaveManager.Instance && SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd
             && GameManager.Instance && GameManager.Instance.GetVariable("BadEndingCollect") != null)
             LoadGame(true);
@@ -110,7 +112,12 @@ public class StartLogic : MonoBehaviour
     {
         SaveManager.Instance.SaveInitGameData();
 
-        if(loadPrologue || (SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd)) { StartCoroutine(StartPrologue()); buttons.SetActive(false); }
+        if (loadPrologue ||
+            (SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd))
+        {
+            StartCoroutine(StartPrologue());
+            buttons.SetActive(false);
+        }
         else if (SaveManager.Instance.CheckGameData())
         {
             SceneManager.Instance.LoadScene(SaveManager.Instance.LoadGameData());
