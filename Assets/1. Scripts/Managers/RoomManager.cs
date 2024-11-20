@@ -91,7 +91,9 @@ public class RoomManager : MonoBehaviour
         // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
         {
-            if (!GameManager.Instance.skipTutorial)
+            if (!GameManager.Instance.skipTutorial
+                && SaveManager.Instance.EndingData.allEndingCollectCount == 0
+                && !(bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
                 DialogueManager.Instance.StartDialogue("Prologue_015");
         }
 

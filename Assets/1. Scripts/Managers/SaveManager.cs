@@ -58,7 +58,7 @@ public class SaveManager : MonoBehaviour
         GameManager.Instance.SetVariable("Language", EndingData.language);
         GameManager.Instance.SetVariable("AccidyGender", EndingData.accidyGender);
         GameManager.Instance.SetVariable("FateBirthday", EndingData.fateBirthDay);
-}
+    }
     public void InitGameData()
     {
         string ToJsonData = JsonUtility.ToJson(initData, true);
@@ -77,7 +77,7 @@ public class SaveManager : MonoBehaviour
     }
     public bool CheckGameData()
     {
-        return File.Exists(Application.persistentDataPath + "/" + GameDataFileName) && EndingData.allEndingCollectCount == 0;
+        return File.Exists(Application.persistentDataPath + "/" + GameDataFileName) || EndingData.allEndingCollectCount > 0;
     }
     // 불러오기
     public SceneType LoadGameData()

@@ -76,6 +76,9 @@ public class GameManager : MonoBehaviour
 
         variables["isInquiry"] = false; // 조사 시스템에서 예 누르면 true되고 계속 조사 가능.
 
+        variables["EndTutorial_ROOM_1"] = false;
+        variables["EndTutorial_FOLLOW_1"] = false;
+
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
         variables["RefillHeartsOrEndDay"] = false;
@@ -499,12 +502,10 @@ public class GameManager : MonoBehaviour
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[]
         {
-         "FateBirthday",
-         "AccidyBirthday",
-         // "isTutorial",
-         // "TutorialPhase"
+         "PresentHeartIndex",
          "ActionPoint",
-         "Diary2PresentPageNumber"
+         "NowDayNum",
+         "EndTutorial_ROOM_1"
         });
 
         foreach (var item in variables)

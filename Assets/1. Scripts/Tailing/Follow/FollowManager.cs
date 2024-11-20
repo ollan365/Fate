@@ -68,11 +68,15 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         mainCam = Camera.main;
         SetCharcter(0);
-
+        
         StartCoroutine(ChangeBeaconSprite());
 
-        if (GameManager.Instance.skipTutorial) { StartFollow(); return; }
-        StartCoroutine(followTutorial.StartTutorial());
+        if (GameManager.Instance.skipTutorial) { StartFollow(); }
+        else if ((int)GameManager.Instance.GetVariable("currentSideIndex") == SceneType.FOLLOW_1.ToInt())
+        {
+            if(SaveManager.Instance.EndingData.allEndingCollectCount > 0 || (bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1")) { StartFollow(); }
+        }
+        else StartCoroutine(followTutorial.StartTutorial());
     }
     public void FollowTutorialNextStep()
     {

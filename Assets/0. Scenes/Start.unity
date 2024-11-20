@@ -2905,6 +2905,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &253448330 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6429038456096953622, guid: a442416757919244c85077cad77ddde1, type: 3}
+  m_PrefabInstance: {fileID: 4158441320582179960}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffb57441873507c46b3184fed8f01683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &260248965
 GameObject:
   m_ObjectHideFlags: 0
@@ -14784,7 +14795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   variablesText: {fileID: 1815064768}
-  isDebug: 0
+  isDebug: 1
   skipTutorial: 0
   skipInquiry: 0
   accidyGender: 0
@@ -25014,6 +25025,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7816868610625785015, guid: a442416757919244c85077cad77ddde1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7954047303733896797, guid: a442416757919244c85077cad77ddde1, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -25033,6 +25048,14 @@ PrefabInstance:
     - target: {fileID: 8664774012329348664, guid: a442416757919244c85077cad77ddde1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8713002903282609204, guid: a442416757919244c85077cad77ddde1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 253448330}
+    - target: {fileID: 8713002903282609204, guid: a442416757919244c85077cad77ddde1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TestEnding
       objectReference: {fileID: 0}
     - target: {fileID: 8745638214289050818, guid: a442416757919244c85077cad77ddde1, type: 3}
       propertyPath: m_IsActive
