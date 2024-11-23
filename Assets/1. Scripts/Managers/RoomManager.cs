@@ -23,6 +23,9 @@ public class RoomManager : MonoBehaviour
     // 나가기 버튼
     [Header("나가기 버튼")] [SerializeField] private Button exitButton;
 
+    // 비네팅 효과
+    [Header("비네팅 효과")] [SerializeField] private GameObject vignette;
+    
     // 메모 게이지
     [Header("메모 게이지")]
     [SerializeField] private GameObject memoGauge;
@@ -44,6 +47,7 @@ public class RoomManager : MonoBehaviour
     public Room2ActionPointManager Room2ActionPointManager;
 
     // ************************* temporary members for action points *************************
+    [SerializeField] GameObject actionPointsUI;
     [SerializeField] GameObject heartParent;
     [SerializeField] TextMeshProUGUI dayText;
     
@@ -214,14 +218,29 @@ public class RoomManager : MonoBehaviour
         }
     }
     
+    private void SetVignette(bool isTrue)
+    {
+        vignette.SetActive(isTrue);
+    }
+    
+    private void SetActionPointsUI(bool isTrue)
+    {
+        actionPointsUI.SetActive(isTrue);
+    }
+    
     public void SetButtons()
     {
         bool isInvestigatingOrZoomed = isInvestigating || isZoomed;
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
         bool isMemoOpen = MemoManager.Instance.isMemoOpen;
+        bool isLaptopOpen = (bool)GameManager.Instance.GetVariable("isLaptopOpen");
+        bool isLaptopAppOpen = (bool)GameManager.Instance.GetVariable("isLaptopAppOpen");
         
-        SetExitButton(isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
+        SetExitButton((isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen) 
+                      || (isLaptopOpen && !isLaptopAppOpen));
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
+        SetActionPointsUI(!isLaptopOpen);
+        SetVignette(!isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 }
