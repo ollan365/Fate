@@ -91,5 +91,40 @@ public class TutorialManager : MonoBehaviour
 
         MemoManager.Instance.SetMemoButtons(true);
     }
-    
+
+    public IEnumerator CheckChairMovement()
+    {
+        // isChairMoving이 true일 때 대기
+        while ((bool)GameManager.Instance.GetVariable("isChairMoving"))
+        {
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        // isChairMoving이 false가 되면 의자 이미지 강조 실행
+        ResultManager.Instance.ExecuteResult("Result_TutorialPhase2ForceSide1");
+    }
+
+    // 이동 버튼 강조 관련
+    public int getSeenSideStateFalse()
+    {
+        int falseCount = 0; // false 값의 개수 카운트
+        int falseIndex = -1; // false 값을 가진 인덱스를 저장 (-1은 초기값)
+
+        for (int index = 0; index < seenSides.Count; index++)
+        {
+            if (!seenSides[index])
+            {
+                falseCount++;
+                falseIndex = index;
+
+                if (falseCount > 1)
+                {
+                    return 0; // falseCount가 2개 이상이면 아직 방 이동 버튼 안 누른 시점.
+                }
+            }
+        }
+
+        return falseCount == 1 ? falseIndex : 0;
+    }
+
 }

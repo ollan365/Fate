@@ -269,6 +269,10 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("TutorialForce_001");
                 break;
 
+            case "Result_TutorialPhase2ChairStateCheck": // 의자가 밀고 있는 상태인지 체크
+                StartCoroutine(RoomManager.Instance.tutorialManager.CheckChairMovement());
+                break;
+
             case "Result_TutorialPhase2ForceSide1":  // 의자 밀어보자 (의자 강조)
                 RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialChair");
                 DialogueManager.Instance.StartDialogue("TutorialForce_002");

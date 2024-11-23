@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour
 
         // 의자
         variables["ChairMoved"] = false;
+        variables["isChairMoving"] = false;
 
         // 노트북
         variables["LaptopClick"] = 0;
@@ -503,7 +504,8 @@ public class GameManager : MonoBehaviour
          //   "FateBirthday"
          // "isTutorial",
          // "TutorialPhase"
-         "ActionPoint"
+         "ActionPoint",
+         "PresentHeartIndex"
         });
 
         foreach (var item in variables)

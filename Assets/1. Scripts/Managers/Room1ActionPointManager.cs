@@ -16,10 +16,8 @@ public class Room1ActionPointManager : ActionPointManager
         // 처음 방탈출의 actionPoint
         GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[0, presentHeartIndex]);
 
-
         GameManager.Instance.AddEventObject("EventRoom1HomeComing");
         GameManager.Instance.AddEventObject("EventRoom1Morning");
-
     }
 
     // create 5 hearts on screen on room start
@@ -95,6 +93,7 @@ public class Room1ActionPointManager : ActionPointManager
         }
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
+        GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
 
         StartCoroutine(Warning());
 

@@ -119,6 +119,8 @@ public class RoomManager : MonoBehaviour
             if(!GameManager.Instance.skipTutorial)
                 tutorialManager.SetSeenSides(newSideIndex);
         }
+
+        Debug.Log(newSideIndex);
     }
 
     public void OnExitButtonClick()
