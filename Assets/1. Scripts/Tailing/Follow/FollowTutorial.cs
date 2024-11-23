@@ -183,6 +183,8 @@ public class FollowTutorial : MonoBehaviour
         MemoManager.Instance.HideMemoButton = false;
         MemoManager.Instance.SetMemoButtons(true);
 
+        GameManager.Instance.SetVariable("EndTutorial_FOLLOW_1", true);
+
         FollowManager.Instance.IsTutorial = false;
         FollowManager.Instance.StartFollow();
     }
