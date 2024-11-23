@@ -148,6 +148,8 @@ public class GameManager : MonoBehaviour
         variables["LaptopClick"] = 0;
         variables["LaptopPasswordCorrect"] = false;
         variables["LaptopPassword"] = "04551";
+        variables["isLaptopOpen"] = false;
+        variables["isLaptopAppOpen"] = false;
 
         // 카펫
         variables["ClosedCarpetClick"] = 0;
