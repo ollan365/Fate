@@ -28,12 +28,12 @@ public class ChatApp : MonoBehaviour
 
     public void OnEnable()
     {
-        GameManager.Instance.SetVariable("isLaptopOpen", true);
+        GameManager.Instance.SetVariable("isLaptopAppOpen", true);
     }
     
     public void OnDisable()
     {
-        GameManager.Instance.SetVariable("isLaptopOpen", false);
+        GameManager.Instance.SetVariable("isLaptopAppOpen", false);
     }
 
     private void LoadConversations()
@@ -143,7 +143,10 @@ public class ChatApp : MonoBehaviour
         currentConversationKey = conversationKey;
 
         messageParent.SetActive(true);
-        senderText.text = conversations[conversationKey].FirstOrDefault(m => m.SpeakerName != "우연")?.SpeakerName ?? conversationKey;
+        senderText.text = conversations[conversationKey]
+                              .FirstOrDefault(m => m.SpeakerName != "우연")
+                              ?.SpeakerName ??
+                          conversationKey;
         
         // Clear previous messages
         foreach (Transform child in messageList)
