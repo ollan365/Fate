@@ -15,7 +15,12 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
     [SerializeField] private Transform frontObjects;
-    public Slider memoGaugeSlider;
+
+    [Header("Memo Gauge")]
+    [SerializeField] private GameObject memoGauge;
+    [SerializeField] private Image gaugeImage;
+    [SerializeField] private Slider clearFlagSlider;
+    [SerializeField] private Image clearFlageImage;
 
     [Header("Character")]
     [SerializeField] private Animator fate;
@@ -69,10 +74,16 @@ public class FollowManager : MonoBehaviour
         mainCam = Camera.main;
         SetCharcter(0);
 
+        MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
+
         StartCoroutine(ChangeBeaconSprite());
 
-        if (GameManager.Instance.skipTutorial) { StartFollow(); return; }
-        StartCoroutine(followTutorial.StartTutorial());
+        if (GameManager.Instance.skipTutorial) { StartFollow(); }
+        else if ((int)GameManager.Instance.GetVariable("currentSideIndex") == SceneType.FOLLOW_1.ToInt())
+        {
+            if(SaveManager.Instance.EndingData.allEndingCollectCount > 0 || (bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1")) { StartFollow(); }
+        }
+        else StartCoroutine(followTutorial.StartTutorial());
     }
     public void FollowTutorialNextStep()
     {
