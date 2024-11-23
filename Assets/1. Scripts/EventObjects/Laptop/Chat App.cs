@@ -26,6 +26,16 @@ public class ChatApp : MonoBehaviour
         DisplayConversationsList();
     }
 
+    public void OnEnable()
+    {
+        GameManager.Instance.SetVariable("isLaptopAppOpen", true);
+    }
+    
+    public void OnDisable()
+    {
+        GameManager.Instance.SetVariable("isLaptopAppOpen", false);
+    }
+
     private void LoadConversations()
     {
         messageParent.SetActive(false);
@@ -85,7 +95,9 @@ public class ChatApp : MonoBehaviour
     {
         // Order conversations by the latest message in each conversation (in ascending order)
         var orderedConversations = conversations
-            .OrderByDescending(c => c.Value.Max(m => DateTime.ParseExact(m.Date + " " + m.Time, "yy.MM.dd. HH:mm", null)));
+            .OrderByDescending(c => c.Value.Max(m => DateTime.ParseExact(m.Date + " " + m.Time,
+                "yy.MM.dd. HH:mm",
+                null)));
 
         foreach (var conversation in orderedConversations)
         {
@@ -101,7 +113,10 @@ public class ChatApp : MonoBehaviour
             var displaySpeakerID = conversation.Value.FirstOrDefault(m => m.SpeakerName != "우연")?.SpeakerName;
 
             // Get the latest message in the conversation
-            var latestMessage = conversation.Value.OrderByDescending(m => DateTime.ParseExact(m.Date + " " + m.Time, "yy.MM.dd. HH:mm", null)).First();
+            var latestMessage = conversation.Value.OrderByDescending(m => DateTime.ParseExact(m.Date + " " + m.Time,
+                    "yy.MM.dd. HH:mm",
+                    null))
+                .First();
 
             conversationIDText.text = displaySpeakerID ?? conversation.Key;
             latestMessageText.text = latestMessage.ScriptContent;
@@ -128,7 +143,10 @@ public class ChatApp : MonoBehaviour
         currentConversationKey = conversationKey;
 
         messageParent.SetActive(true);
-        senderText.text = conversations[conversationKey].FirstOrDefault(m => m.SpeakerName != "우연")?.SpeakerName ?? conversationKey;
+        senderText.text = conversations[conversationKey]
+                              .FirstOrDefault(m => m.SpeakerName != "우연")
+                              ?.SpeakerName ??
+                          conversationKey;
         
         // Clear previous messages
         foreach (Transform child in messageList)
@@ -175,7 +193,6 @@ public class ChatApp : MonoBehaviour
         }
         messageList.GetComponent<VerticalLayoutGroup>().spacing = 10;
     }
-
 }
 
 public class Message
