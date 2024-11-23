@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -75,6 +76,9 @@ public class GameManager : MonoBehaviour
 
         variables["isInquiry"] = false; // 조사 시스템에서 예 누르면 true되고 계속 조사 가능.
 
+        variables["EndTutorial_ROOM_1"] = false;
+        variables["EndTutorial_FOLLOW_1"] = false;
+
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
         variables["RefillHeartsOrEndDay"] = false;
@@ -85,6 +89,12 @@ public class GameManager : MonoBehaviour
         variables["MemoCount_FOLLOW_1"] = 0;
         variables["MemoCount_ROOM_2"] = 0;
         variables["MemoCount_FOLLOW_2"] = 0;
+
+        for (int i = 1; i <= 4; i++)
+        {
+            int cutLine = int.Parse(ConditionManager.Instance.conditions[$"ConditionMemoClear_{i.ToEnum()}"].Value);
+            variables[$"CutLine_{i.ToEnum()}"] = cutLine;
+        }
 
         // 1 - 1. 방탈출 ActionPoint 관련 변수들
         variables["ActionPoint"] = 25;  // 행동력 
@@ -148,6 +158,8 @@ public class GameManager : MonoBehaviour
         variables["LaptopClick"] = 0;
         variables["LaptopPasswordCorrect"] = false;
         variables["LaptopPassword"] = "04551";
+        variables["isLaptopOpen"] = false;
+        variables["isLaptopAppOpen"] = false;
 
         // 카펫
         variables["ClosedCarpetClick"] = 0;
@@ -416,7 +428,6 @@ public class GameManager : MonoBehaviour
         variables["HiddenCollect"] = 0; // 히든 엔딩을 본 횟수
         variables["BadEndingCollect"] = 0; // 배드 엔딩을 본 횟수
 
-
         if (isDebug) ShowVariables();
 
     }
@@ -431,8 +442,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"variable \"{variableName}\" does not exist!");
         }
-        
-        if (isDebug) ShowVariables();
     }
 
     public object GetVariable(string variableName)
@@ -453,8 +462,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt++;
         SetVariable(variableName, cnt);
-    
-        if (isDebug) ShowVariables();
     }
 
     public void IncrementVariable(string variableName, int count)
@@ -462,8 +469,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt += count;
         SetVariable(variableName, cnt);
-
-        if (isDebug) ShowVariables();
     }
 
     public void DecrementVariable(string variableName)
@@ -471,8 +476,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt--;
         SetVariable(variableName, cnt);
-
-        if (isDebug) ShowVariables();
     }
 
     public void DecrementVariable(string variableName, int count)
@@ -480,8 +483,6 @@ public class GameManager : MonoBehaviour
         int cnt = (int)GetVariable(variableName);
         cnt -= count;
         SetVariable(variableName, cnt);
-
-        if (isDebug) ShowVariables();
     }
 
     public void InverseVariable(string variableName)
@@ -489,11 +490,14 @@ public class GameManager : MonoBehaviour
         bool variableValue = (bool)GetVariable(variableName);
         variableValue = !variableValue;
         SetVariable(variableName, variableValue);
-        
-        if (isDebug) ShowVariables();
     }
 
     // 디버깅 용
+    private void Update()
+    {
+        if (isDebug) ShowVariables();
+    }
+
     private void ShowVariables()
     {
         variablesText.text = "";  // 텍스트 초기화
@@ -501,9 +505,7 @@ public class GameManager : MonoBehaviour
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[]
         {
-         //   "FateBirthday"
-         // "isTutorial",
-         // "TutorialPhase"
+         "PresentHeartIndex",
          "ActionPoint",
          "PresentHeartIndex"
         });

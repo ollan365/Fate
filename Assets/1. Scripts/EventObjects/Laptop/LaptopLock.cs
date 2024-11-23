@@ -23,7 +23,6 @@ public class LaptopLock : EventObject, IResultExecutable
 
     [SerializeField] private Laptop laptopA;
 
-
     //[SerializeField] private bool isProcessing = false; // 중복 처리 방지 플래그
 
     private void Start()
@@ -32,10 +31,9 @@ public class LaptopLock : EventObject, IResultExecutable
 
         ResultManager.Instance.RegisterExecutable("LaptopLock", this);
 
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)
-            imageComponent.sprite = girlVersionBackground;
-        else
-            imageComponent.sprite = boyVersionBackground;
+        imageComponent.sprite = (int)GameManager.Instance.GetVariable("AccidyGender") == 0
+            ? girlVersionBackground
+            : boyVersionBackground;
     }
 
     public void ExecuteAction()
@@ -48,6 +46,7 @@ public class LaptopLock : EventObject, IResultExecutable
     {
         gameObject.SetActive(false);
         laptopContent.SetActive(true);
+        GameManager.Instance.SetVariable("isLaptopOpen", true);
     } 
 
     // 로그인 화면에서 암호 입력 후 엔터 치면
