@@ -39,10 +39,10 @@ public class MemoManager : PageContentsManager
     private List<int> unseenMemoPages = new List<int>(); // List to track page numbers of unseen memos
 
     // 메모 게이지
-    [SerializeField] private GameObject memoGauge;
-    [SerializeField] private Image gaugeImage;
-    [SerializeField] private Slider clearFlagPos;
-    [SerializeField] private Image clearFlagImage;
+    private GameObject memoGauge;
+    private Image gaugeImage;
+    private Slider clearFlagSlider;
+    private Image clearFlageImage;
     private Color unclearColor = new Color(0.5f, 0.5f, 0.5f);
     private Color clearColor = new Color(1, 0.792f, 0.259f);
 
@@ -151,7 +151,7 @@ public class MemoManager : PageContentsManager
                     // Debug.Log($"Added page {pageNum} to unseen memo pages");
 
                     GameManager.Instance.IncrementVariable($"MemoCount_{((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum()}");
-                    SetMemoGauge();
+                    ChangeMemoGauge();
                 }
                 break;
             }
@@ -171,9 +171,22 @@ public class MemoManager : PageContentsManager
         if (RoomManager.Instance && currentSceneIndex is 1 or 3) RoomManager.Instance.SetButtons();
     }
 
-    public void SetMemoGauge(bool showMemoGauge = true)
+    public void SetMemoGauge(GameObject memoGauge, Image gaugeImage, Slider clearFlagSlider, Image clearFlageImage)
     {
-        memoGauge.SetActive(showMemoGauge);
+        this.memoGauge = memoGauge;
+        this.gaugeImage = gaugeImage;
+        this.clearFlagSlider = clearFlagSlider;
+        this.clearFlageImage = clearFlageImage;
+
+        ChangeMemoGauge();
+    }
+    public void ShowMemoGauge(bool show)
+    {
+        memoGauge.SetActive(show);
+    }
+    public void ChangeMemoGauge()
+    {
+        // memoGauge.SetActive(showMemoGauge);
 
         int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
 
@@ -183,10 +196,10 @@ public class MemoManager : PageContentsManager
         int currentMemoCount = (int)GameManager.Instance.GetVariable($"MemoCount_{currentSceneIndex.ToEnum()}");
 
         gaugeImage.fillAmount = (float)currentMemoCount / SavedMemoList[currentSceneIndex - 1].Count;
-        clearFlagPos.value = (float)cutLine / SavedMemoList[currentSceneIndex - 1].Count;
+        clearFlagSlider.value = (float)cutLine / SavedMemoList[currentSceneIndex - 1].Count;
 
-        if (currentMemoCount < cutLine) clearFlagImage.color = unclearColor;
-        else clearFlagImage.color = clearColor;
+        if (currentMemoCount < cutLine) clearFlageImage.color = unclearColor;
+        else clearFlageImage.color = clearColor;
     }
 
     public void SetMemoContents(bool isTrue)
