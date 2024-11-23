@@ -66,6 +66,8 @@ public class Chair : EventObject, IResultExecutable
         deskUnzoomedButton.enabled = false;
         isMoving = true;
 
+        GameManager.Instance.SetVariable("isChairMoving",isMoving);
+
         float elapsedTime = 0;
         Vector2 startingPosition = rectTransform.anchoredPosition;
 
@@ -80,6 +82,8 @@ public class Chair : EventObject, IResultExecutable
         
         isMoving = false;
         deskUnzoomedButton.enabled = true;
+
+        GameManager.Instance.SetVariable("isChairMoving", isMoving);
     }
 
     private void OnEnable()

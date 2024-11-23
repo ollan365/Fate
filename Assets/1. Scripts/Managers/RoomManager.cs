@@ -119,6 +119,8 @@ public class RoomManager : MonoBehaviour
             if(!GameManager.Instance.skipTutorial)
                 tutorialManager.SetSeenSides(newSideIndex);
         }
+
+        Debug.Log(newSideIndex);
     }
 
     public void OnExitButtonClick()
@@ -134,6 +136,12 @@ public class RoomManager : MonoBehaviour
         }
 
         SetButtons();
+
+        var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
+
+        if (refillHeartsOrEndDay)
+            actionPointManager.RefillHeartsOrEndDay();
+
     }
     
     // exit to root: turn off all the panels and zoom out to the root view
@@ -152,6 +160,11 @@ public class RoomManager : MonoBehaviour
     public void EmptyActionPoint()
     {
         GameManager.Instance.SetVariable("ActionPoint", 1);
+    }
+
+    public bool GetIsInvestigating()
+    {
+        return isInvestigating;
     }
 
     // ######################################## setters ########################################
