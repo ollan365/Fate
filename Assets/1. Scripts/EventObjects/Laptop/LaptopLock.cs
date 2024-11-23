@@ -22,17 +22,16 @@ public class LaptopLock : EventObject, IResultExecutable
     private Image imageComponent;
 
     [SerializeField] private Laptop laptopA;
-
+    
     private void Start()
     {
         imageComponent = GetComponent<Image>();
 
         ResultManager.Instance.RegisterExecutable("LaptopLock", this);
 
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0)
-            imageComponent.sprite = girlVersionBackground;
-        else
-            imageComponent.sprite = boyVersionBackground;
+        imageComponent.sprite = (int)GameManager.Instance.GetVariable("AccidyGender") == 0
+            ? girlVersionBackground
+            : boyVersionBackground;
     }
 
     public void ExecuteAction()
@@ -45,13 +44,35 @@ public class LaptopLock : EventObject, IResultExecutable
     {
         gameObject.SetActive(false);
         laptopContent.SetActive(true);
+        GameManager.Instance.SetVariable("isLaptopOpen", true);
     } 
 
     // 로그인 화면에서 암호 입력 후 엔터 치면
     public void TryLogin(string input)
     {
-        passwordInput = input;
-        StartCoroutine(ComparePassword());
+        //passwordInput = input;
+        //StartCoroutine(ComparePassword());
+        bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
+
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            // 이미 처리 중이라면 추가 실행 방지
+            if (isDialogueActive) return;
+
+            passwordInput = input;
+            StartCoroutine(ComparePassword());
+
+            //// 이미 처리 중이라면 추가 실행 방지
+            //if (isProcessing|| isDialogueActive) return;
+
+            //else if (!isProcessing && !isDialogueActive)
+            //{
+            //    isProcessing = true; // 플래그 설정
+
+            //    passwordInput = input;
+            //    StartCoroutine(ComparePassword());
+            //}
+        }
     }
 
     IEnumerator ComparePassword()
@@ -67,6 +88,8 @@ public class LaptopLock : EventObject, IResultExecutable
         OnMouseDown();
         yield return new WaitForSeconds(0.3f);
         ResetPassword();
+
+        //isProcessing = false;   // 플래그 초기화
     }
     
     // 비밀번호 입력 초기화

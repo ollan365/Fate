@@ -298,10 +298,12 @@ public class DialogueManager : MonoBehaviour
 
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
         var isChoosingBrokenBearChoice = false;
+        var isInvestigating = RoomManager.Instance.GetIsInvestigating();
+
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.ROOM_2.ToInt())
             isChoosingBrokenBearChoice = RoomManager.Instance.Room2ActionPointManager.GetChoosingBrokenBearChoice();
 
-        if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice)
+        if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice && !isInvestigating)
             RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
 
         // 튜토리얼 중 다른 곳 클릭하면 나오는 강조 이미지가 해당 "ㅁㅁ를 조사해보자" 스크립트 다 끝나면 자동으로 강조 이미지 꺼지게 함.

@@ -152,11 +152,14 @@ public class GameManager : MonoBehaviour
 
         // 의자
         variables["ChairMoved"] = false;
+        variables["isChairMoving"] = false;
 
         // 노트북
         variables["LaptopClick"] = 0;
         variables["LaptopPasswordCorrect"] = false;
         variables["LaptopPassword"] = "04551";
+        variables["isLaptopOpen"] = false;
+        variables["isLaptopAppOpen"] = false;
 
         // 카펫
         variables["ClosedCarpetClick"] = 0;
@@ -504,8 +507,7 @@ public class GameManager : MonoBehaviour
         {
          "PresentHeartIndex",
          "ActionPoint",
-         "NowDayNum",
-         "EndTutorial_ROOM_1"
+         "PresentHeartIndex"
         });
 
         foreach (var item in variables)

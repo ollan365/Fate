@@ -252,11 +252,8 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
             if (tutorialImageObjectName == "TutorialMoveButton")
             {
-                TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(isTrue);
-                TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(isTrue);
+                SetTutorialMoveButtonForce(isTrue);
 
-                if (RoomManager.Instance.currentSideIndex == 1) TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(false);
-                else if (RoomManager.Instance.currentSideIndex == 2) TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(false);
             }
             else
             {
@@ -312,5 +309,33 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
         bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorialObjectActive;
         TutorialBlockingPanel.SetActive(isImageOrLockActive);
+    }
+
+    private void SetTutorialMoveButtonForce(bool isTrue)
+    {
+        int notSeenSide = RoomManager.Instance.tutorialManager.getSeenSideStateFalse();
+
+        TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(isTrue);
+        TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(isTrue);
+
+        if (RoomManager.Instance.currentSideIndex == 0)
+        {
+            // 아직 안 둘러본 방쪽의 이동 버튼 강조
+            switch (notSeenSide)
+            {
+                case 0:
+                    return;
+
+                case 1:
+                    TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(false);
+                    return;
+
+                case 2:
+                    TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(false);
+                    return;
+            }
+        }
+        else if (RoomManager.Instance.currentSideIndex == 1) TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(false);
+        else if (RoomManager.Instance.currentSideIndex == 2) TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(false);
     }
 }
