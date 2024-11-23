@@ -240,7 +240,7 @@ public class RoomManager : MonoBehaviour
         bool isLaptopAppOpen = (bool)GameManager.Instance.GetVariable("isLaptopAppOpen");
         
         SetExitButton((isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen) 
-                      || (isLaptopOpen && !isLaptopAppOpen));
+                      || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen));
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
         SetActionPointsUI(!isLaptopOpen);
         SetVignette(!isLaptopOpen);
