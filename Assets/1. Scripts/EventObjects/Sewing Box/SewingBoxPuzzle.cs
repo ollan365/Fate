@@ -56,11 +56,11 @@ public class SewingBoxPuzzle : MonoBehaviour
             sewingBoxA.SetIsInquiry(true);
             isBeadsCorrect = true;
 
-            Debug.Log("맞췄습니다!");
+            //Debug.Log("맞췄습니다!");
         }
         else
         {
-            Debug.Log("틀렸습니다!");
+            //Debug.Log("틀렸습니다!");
         }
 
         EventManager.Instance.CallEvent("EventSewingBoxB");
