@@ -120,7 +120,7 @@ public class RoomManager : MonoBehaviour
                 tutorialManager.SetSeenSides(newSideIndex);
         }
 
-        //Debug.Log(newSideIndex);
+        Debug.Log(newSideIndex);
     }
 
     public void OnExitButtonClick()

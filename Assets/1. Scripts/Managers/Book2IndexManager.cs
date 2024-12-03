@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
 public class Book2IndexManager : PageContentsManager
@@ -45,17 +44,15 @@ public class Book2IndexManager : PageContentsManager
     public Sprite IndexBlueR2;
     public Image RightDownFlagThird;
 
-    [Header("Page Num Text")]
-    [SerializeField] private TextMeshProUGUI leftPageNum;
-    [SerializeField] private TextMeshProUGUI rightPageNum;
-    [SerializeField] private TextMeshProUGUI frontPageNum;
-    [SerializeField] private TextMeshProUGUI backPageNum;
-
-
     private void Awake()
     {
         ParsePageContents();
     }
+
+    //private void Update()
+    //{
+    //    //DisplayFlags();
+    //}
 
     public void SetTotalPages()
     {
@@ -80,25 +77,6 @@ public class Book2IndexManager : PageContentsManager
 
     public override void DisplayPage(PageType pageType, int pageNum)
     {
-        switch (pageType)
-        {
-            case PageType.Left:
-                leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
-                break;
-
-            case PageType.Right:
-                rightPageNum.text = pageNum.ToString();
-                break;
-
-            case PageType.Back:
-                backPageNum.text = pageNum.ToString();
-                break;
-
-            case PageType.Front:
-                frontPageNum.text = pageNum.ToString();
-                break;
-        }
-
         Dictionary<string, string> currentPages = GetCurrentPagesDictionary();
         if (currentPages == null)
         {

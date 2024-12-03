@@ -1031,7 +1031,7 @@ public class ResultManager : MonoBehaviour
 
             case "Result_showBook2CoverImage": // 떨어진 책 한권 표지 확대 UI
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "book2Cover");
-                //Debug.Log("떨어진 책 한권 표지 확대 UI");
+                Debug.Log("떨어진 책 한권 표지 확대 UI");
                 break;
 
             case "ResultBook2Script": // 떨어진 책 한권 스크립트
