@@ -10,7 +10,7 @@ public class TutorialManager : MonoBehaviour
     void Start()
     {
         if (GameManager.Instance.skipTutorial
-                || SaveManager.Instance.EndingData.allEndingCollectCount != 0
+                || (int)GameManager.Instance.GetVariable("ReplayCount") != 0
                 || (bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
             return;
 

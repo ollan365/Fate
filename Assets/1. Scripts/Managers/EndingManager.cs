@@ -66,8 +66,7 @@ public class EndingManager : MonoBehaviour
 
     public void EndEnding(EndingType endingType)
     {
-        SaveManager.Instance.InitGameData();
-        SaveManager.Instance.SaveEndingData(endingType);
+        SaveManager.Instance.SaveEndingDataAndInitGameDataExceptEndingData(endingType);
         StartCoroutine(DelayLoadScene());
     }
     public void TestClock()
