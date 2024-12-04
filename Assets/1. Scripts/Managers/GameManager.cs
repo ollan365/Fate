@@ -81,6 +81,8 @@ public class GameManager : MonoBehaviour
 
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
+        variables["ReplayCount"] = 3; // 게임 플레이 회차
+        
         variables["RefillHeartsOrEndDay"] = false;
 
         variables["CurrentScene"] = Constants.SceneType.START.ToInt();
@@ -505,9 +507,10 @@ public class GameManager : MonoBehaviour
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[]
         {
-         "PresentHeartIndex",
-         "ActionPoint",
-         "PresentHeartIndex"
+            "PresentHeartIndex",
+            "ActionPoint",
+            "PresentHeartIndex",
+            "FateBirthday"
         });
 
         foreach (var item in variables)
