@@ -97,7 +97,7 @@ public class AutoFlip : MonoBehaviour {
         
         if (flipMode == FlipMode.RightToLeft) currentPage += 2;
         else currentPage -= 2;
-        
-        MemoManager.Instance.exitButton.SetActive(true);
+
+        if (MemoManager.Instance.isMemoOpen) MemoManager.Instance.exitButton.SetActive(true);
     }
 }

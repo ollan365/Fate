@@ -74,7 +74,8 @@ public class RoomManager : MonoBehaviour
         // Side 1으로 초기화?
         currentView = sides[currentSideIndex];
         SetCurrentSide(currentSideIndex);
-        
+
+        MemoManager.Instance.HideMemoButton = false;
         SetButtons();
 
         actionPointManager.heartParent = heartParent;
@@ -120,7 +121,7 @@ public class RoomManager : MonoBehaviour
                 tutorialManager.SetSeenSides(newSideIndex);
         }
 
-        Debug.Log(newSideIndex);
+        //Debug.Log(newSideIndex);
     }
 
     public void OnExitButtonClick()
