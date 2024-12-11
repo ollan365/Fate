@@ -508,7 +508,9 @@ public class GameManager : MonoBehaviour
         {
          "PresentHeartIndex",
          "ActionPoint",
-         "PresentHeartIndex"
+         "PresentHeartIndex",
+         "EndTutorial_ROOM_1"
+
         });
 
         foreach (var item in variables)

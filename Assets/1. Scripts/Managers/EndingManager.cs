@@ -83,7 +83,6 @@ public class EndingManager : MonoBehaviour
 
         if (!isTest)
         {
-            SaveManager.Instance.LoadGameData();
             SceneManager.Instance.LoadScene(SceneType.START);
         }
         if (isTest) SceneManager.Instance.LoadScene(SceneType.ENDING);
