@@ -509,7 +509,8 @@ public class GameManager : MonoBehaviour
          "PresentHeartIndex",
          "ActionPoint",
          "PresentHeartIndex",
-         "EndTutorial_ROOM_1"
+         "EndTutorial_ROOM_1",
+         "SkipLobby"
 
         });
 

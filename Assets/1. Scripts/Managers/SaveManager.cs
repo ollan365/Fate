@@ -11,8 +11,6 @@ public class SaveManager : MonoBehaviour
 
     // --- 게임 데이터 파일이름 설정 ("원하는 이름(영문).json") --- //
     private string SAVE_DATA_FILE_PATH = "/GameData.json";
-      
-    public SaveData SavedData { private set; get; }
     private SaveData InitData { set; get; }
     private List<string> endingVariableNames;
 
@@ -37,17 +35,6 @@ public class SaveManager : MonoBehaviour
             "BadACollect", "BadBCollect", "TrueCollect", "HiddenCollect",
             "FateName","Language","AccidyGender","FateBirthday"
         };
-
-        if (File.Exists(SAVE_DATA_FILE_PATH))
-            SavedData = JsonUtility.FromJson<SaveData>(File.ReadAllText(SAVE_DATA_FILE_PATH));
-        else
-        {
-            SavedData = new SaveData();
-
-            for (int i = 0; i < endingVariableNames.Count; i++)
-                SavedData.EndingVariabls[endingVariableNames[i]] = -1;
-        }
-        
     }
 
     // 게임 데이터를 초기화 시킬 값 저장
@@ -55,8 +42,7 @@ public class SaveManager : MonoBehaviour
     {
         if (InitData != null) return;
 
-        InitData = new SaveData();
-        InitData.ChangeSavedGameData(
+        InitData = new SaveData(
             GameManager.Instance.Variables,
             GameManager.Instance.eventObjectsStatusDict,
             MemoManager.Instance.SavedMemoList,
@@ -93,32 +79,29 @@ public class SaveManager : MonoBehaviour
         GameManager.Instance.IncrementVariable("EndingCollect");
         GameManager.Instance.SetVariable("LastEnding", ending.ToString());
 
+        // 초기화용 데이터에서 엔딩 데이터(회차가 넘어가도 유지되어야하는 데이터)를 변경
+        Dictionary<string, object> tmpDictionary = InitData.Variables;
         for (int i = 0; i < endingVariableNames.Count; i++)
         {
             string dataName = endingVariableNames[i];
-            SavedData.EndingVariabls[dataName] = GameManager.Instance.GetVariable(dataName);
-        }
-        SavedData.ChangeSavedEndingData(); // 엔딩 데이터 저장
-
-        // 초기화용 데이터에서, 엔딩 데이터(회차가 넘어가도 유지되어야하는 데이터)를 변경
-        for (int i = 0; i < endingVariableNames.Count; i++)
-        {
-            string dataName = endingVariableNames[i];
-            InitData.Variables[dataName] = SavedData.EndingVariabls[dataName];
+            tmpDictionary[dataName] = GameManager.Instance.GetVariable(dataName);
         }
 
         // 초기화용 변수로 저장 후 로드
-        SaveGameData(InitData);
-        LoadGameData();
-
+        SaveGameData(new SaveData(tmpDictionary, InitData.EventObjectStatusDictionary, InitData.SavedMemoList, InitData.RevealedMemoList));
+        ApplySavedGameData();
     }
 
     public bool CheckGameData()
     {
-        return File.Exists(SAVE_DATA_FILE_PATH);
+        string FromJsonData = File.ReadAllText(SAVE_DATA_FILE_PATH);
+        SaveData saveData = JsonUtility.FromJson<SaveData>(FromJsonData);
+
+        // n회차이거나 Room1의 튜토리얼을 끝냈으면 게임 데이터가 있는 것으로 판단
+        return (int)saveData.Variables["EndingCollect"] != 0 || (bool)saveData.Variables["EndTutorial_ROOM_1"];
     }
     // 불러오기
-    public void LoadGameData()
+    public void ApplySavedGameData()
     {
         if (!File.Exists(SAVE_DATA_FILE_PATH)) return; // no save game data
 
@@ -137,37 +120,28 @@ public class SaveManager : MonoBehaviour
     {
         // 일반적인 저장의 경우, 현재 게임의 상태를 저장
         if (newSaveData == null)
-            SavedData.ChangeSavedGameData(
+            newSaveData = new SaveData(
                 GameManager.Instance.Variables,
                 GameManager.Instance.eventObjectsStatusDict,
                 MemoManager.Instance.SavedMemoList,
                 MemoManager.Instance.RevealedMemoList);
-        // 저장된 데이터를 덮어씌울 때 (엔딩 후)
-        else
-            SavedData.ChangeSavedGameData(
-                newSaveData.Variables,
-                newSaveData.EventObjectStatusDictionary,
-                newSaveData.SavedMemoList,
-                newSaveData.RevealedMemoList);
-
+        
         // 클래스를 Json 형식으로 전환하여 저장
-        File.WriteAllText(SAVE_DATA_FILE_PATH, JsonUtility.ToJson(SavedData, true));
+        File.WriteAllText(SAVE_DATA_FILE_PATH, JsonUtility.ToJson(newSaveData, true));
     }
 
     // 저장된 게임 데이터 삭제
-    public void DeleteGameData()
+    public void CreateNewGameData()
     {
         if (File.Exists(SAVE_DATA_FILE_PATH)) File.Delete(SAVE_DATA_FILE_PATH);
+        File.WriteAllText(SAVE_DATA_FILE_PATH, JsonUtility.ToJson(InitData, true));
+        ApplySavedGameData();
     }
 }
 
 [System.Serializable]
 public class SaveData
 {
-    // 엔딩과 관련된 데이터들
-    public string endingVariablesToJson;
-    public string endingVariablesTypeToJson;
-
     // 게임 데이터와 그 타입 (클릭 횟수 등)
     public string variablesToJson;
     public string variablesTypeToJson;
@@ -179,16 +153,12 @@ public class SaveData
     public string savedMemo;
     public string revealedMemo;
 
-    public Dictionary<string, object> EndingVariabls { set; get; }
     public Dictionary<string, object> Variables => ToDictionary(variablesToJson, variablesTypeToJson); // 게임 매니저의 변수들
     public Dictionary<string, bool> EventObjectStatusDictionary => ToBoolDictionary(eventObjectStatusToJson); // 게임 매니저의 변수들
     public List<List<string[]>> SavedMemoList => ToArrayList(savedMemo);
     public List<List<string>> RevealedMemoList => ToList(revealedMemo);
-    public SaveData()
-    {
-        EndingVariabls = new Dictionary<string, object>();
-    }
-    public void ChangeSavedGameData (Dictionary<string, object> variables, Dictionary<string, bool>  eventObejctStatusDictionary, List<List<string[]>> savedMemoList, List<List<string>> revealedMemoList)
+    
+    public SaveData (Dictionary<string, object> variables, Dictionary<string, bool>  eventObejctStatusDictionary, List<List<string[]>> savedMemoList, List<List<string>> revealedMemoList)
     {
         variablesToJson = ToJson(variables);
         variablesTypeToJson = TypeToJson(variables);
@@ -197,11 +167,6 @@ public class SaveData
 
         savedMemo = ToJson(savedMemoList);
         revealedMemo = ToJson(revealedMemoList);
-    }
-    public void ChangeSavedEndingData()
-    {
-        endingVariablesToJson = ToJson(EndingVariabls);
-        endingVariablesTypeToJson = TypeToJson(EndingVariabls);
     }
 
     private string ToJson(Dictionary<string, object> dictionary)

@@ -56,8 +56,15 @@ public class StartLogic : MonoBehaviour
     }
     private void Start()
     {
-        if (SaveManager.Instance.SavedData.EndingVariabls.ContainsKey("SkipLobby")
-            && (bool)SaveManager.Instance.SavedData.EndingVariabls["SkipLobby"])
+        StartCoroutine(WaitForGameManagerStartFunction());
+    }
+    private IEnumerator WaitForGameManagerStartFunction()
+    {
+        yield return null;
+        SaveManager.Instance.SaveInitGameData();
+        SaveManager.Instance.ApplySavedGameData();
+
+        if ((bool)GameManager.Instance.GetVariable("SkipLobby"))
         {
             buttons.SetActive(false);
             StartCoroutine(StartPrologue());
@@ -94,8 +101,6 @@ public class StartLogic : MonoBehaviour
     {
         if (!SaveManager.Instance.CheckGameData()) // 저장된 게임 데이터가 없는 경우
         {
-            SaveManager.Instance.SaveInitGameData();
-
             start.SetActive(false);
             StartCoroutine(StartPrologue());
         }
@@ -113,11 +118,8 @@ public class StartLogic : MonoBehaviour
     }
     public void LoadGame()
     {
-        SaveManager.Instance.SaveInitGameData();
-
         if (SaveManager.Instance.CheckGameData())
         {
-            SaveManager.Instance.LoadGameData();
             SceneManager.Instance.LoadScene(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum());
             buttons.SetActive(false);
         }
@@ -130,7 +132,7 @@ public class StartLogic : MonoBehaviour
     }
     public void GoScene(int sceneNum)
     {
-        SaveManager.Instance.SaveInitGameData();
+        SaveManager.Instance.CreateNewGameData();
 
         if (sceneNum == 1) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
         if (sceneNum == 2) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
@@ -142,23 +144,15 @@ public class StartLogic : MonoBehaviour
     // ========== 앨범 ========== //
     public void ClickAlbum()
     {
-        List<int> endingCollectCount = new List<int>();
-        
         List<string> endingName = new() { "BadACollect", "BadBCollect", "TrueCollect", "HiddenCollect" };
-        for(int i = 0; i < endingName.Count; i++)
-        {
-            if (SaveManager.Instance.SavedData.EndingVariabls.ContainsKey(endingName[i]))
-                endingCollectCount.Add((int)SaveManager.Instance.SavedData.EndingVariabls[endingName[i]]);
-            else endingCollectCount.Add(0);
-        }
-
+        
         for (int i = 0; i < endingButtons.Length; i++)
         {
             int index = i;
-            if (endingCollectCount[i] > 0) 
+            if ((int)GameManager.Instance.GetVariable(endingName[i]) > 0) 
             {
                 endingButtons[i].onClick.AddListener(() => OpenAlbumPage(index));
-                endingButtonImages[i].sprite = endingSprites[i * 2 + (int)SaveManager.Instance.SavedData.EndingVariabls["AccidyGender"]];
+                endingButtonImages[i].sprite = endingSprites[i * 2 + (int)GameManager.Instance.GetVariable("AccidyGender")];
                 endingButtonImages[i].color = new Color(1, 1, 1, 1);
             }
             else
@@ -171,7 +165,7 @@ public class StartLogic : MonoBehaviour
     public void OpenAlbumPage(int endingIndex)
     {
         const int Bad_A = 0, Bad_B = 1, True = 2, Hidden = 3;
-        albumImage.sprite = endingSprites[endingIndex * 2 + (int)SaveManager.Instance.SavedData.EndingVariabls["AccidyGender"]];
+        albumImage.sprite = endingSprites[endingIndex * 2 + (int)GameManager.Instance.GetVariable("AccidyGender")];
         switch (endingIndex)
         {
             case Bad_A:
