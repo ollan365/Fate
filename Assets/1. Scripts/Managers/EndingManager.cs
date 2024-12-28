@@ -62,12 +62,12 @@ public class EndingManager : MonoBehaviour
         }
 
         EventManager.Instance.CallEvent("EventEnding");
+        GameManager.Instance.SetVariable("CurrentScene", SceneType.ENDING.ToInt());
     }
 
     public void EndEnding(EndingType endingType)
     {
-        SaveManager.Instance.InitGameData();
-        SaveManager.Instance.SaveEndingData(endingType);
+        SaveManager.Instance.SaveEndingDataAndInitGameDataExceptEndingData(endingType);
         StartCoroutine(DelayLoadScene());
     }
     public void TestClock()
@@ -84,7 +84,6 @@ public class EndingManager : MonoBehaviour
 
         if (!isTest)
         {
-            SaveManager.Instance.LoadGameData();
             SceneManager.Instance.LoadScene(SceneType.START);
         }
         if (isTest) SceneManager.Instance.LoadScene(SceneType.ENDING);

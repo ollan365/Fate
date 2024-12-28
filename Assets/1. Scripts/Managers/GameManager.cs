@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviour
 
         variables["isInquiry"] = false; // 조사 시스템에서 예 누르면 true되고 계속 조사 가능.
 
-        variables["EndTutorial_ROOM_1"] = false;
-        variables["EndTutorial_FOLLOW_1"] = false;
+        variables["EndTutorial_ROOM_1"] = false; // Room1 튜토리얼이 끝났는가
+        variables["EndTutorial_FOLLOW_1"] = false; // Follow1 튜토리얼이 끝났는가
 
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
 
         variables["CurrentScene"] = Constants.SceneType.START.ToInt();
 
+        // 각 씬에서 모은 메모의 개수
         variables["MemoCount_ROOM_1"] = 0;
         variables["MemoCount_FOLLOW_1"] = 0;
         variables["MemoCount_ROOM_2"] = 0;
@@ -422,13 +423,14 @@ public class GameManager : MonoBehaviour
         variables["GuardClick2"] = 0;
 
         // 3. 엔딩 관련 변수들
-        variables["EndingCollect"] = 0; // 본 엔딩의 개수
+        variables["EndingCollect"] = 0; // 회차
         variables["LastEnding"] = "NONE"; // 마지막으로 본 엔딩
         variables["BadACollect"] = 0; // 배드A 엔딩을 본 횟수
         variables["BadBCollect"] = 0; // 배드B 엔딩을 본 횟수
         variables["TrueCollect"] = 0; // 트루 엔딩을 본 횟수
         variables["HiddenCollect"] = 0; // 히든 엔딩을 본 횟수
         variables["BadEndingCollect"] = 0; // 배드 엔딩을 본 횟수
+        variables["SkipLobby"] = false;
 
         if (isDebug) ShowVariables();
 
@@ -510,7 +512,10 @@ public class GameManager : MonoBehaviour
             "PresentHeartIndex",
             "ActionPoint",
             "PresentHeartIndex",
-            "FateBirthday"
+            "FateBirthday",
+            "EndTutorial_ROOM_1",
+            "SkipLobby"
+
         });
 
         foreach (var item in variables)

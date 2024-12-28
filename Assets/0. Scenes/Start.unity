@@ -1237,14 +1237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b002bfb037fee1348b8479c46233fe8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    sceneType: 0
-    lastSideIndex: 0
-    variablesToJson: 
-    variablesTypeToJson: 
-    eventObjectStatusToJson: 
-    savedMemo: 
-    revealedMemo: 
 --- !u!4 &150144863
 Transform:
   m_ObjectHideFlags: 0
@@ -14785,7 +14777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   variablesText: {fileID: 1815064768}
   isDebug: 1
-  skipTutorial: 0
+  skipTutorial: 1
   skipInquiry: 0
   accidyGender: 0
 --- !u!1 &1571167329
@@ -14873,7 +14865,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 150144862}
         m_TargetAssemblyTypeName: SaveManager, Assembly-CSharp
-        m_MethodName: DeleteGameData
+        m_MethodName: CreateNewGameData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18423,7 +18415,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1266384659}
         m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
         m_MethodName: LoadGame
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
