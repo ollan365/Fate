@@ -172,7 +172,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPrologueEnd":
-                GameManager.Instance.SetVariable("SkipLobby", false);
                 SceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
 

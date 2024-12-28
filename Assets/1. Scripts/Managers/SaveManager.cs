@@ -92,6 +92,7 @@ public class SaveManager : MonoBehaviour
         ApplySavedGameData();
     }
 
+    // 게임을 새로 시작할 때, 기존 데이터가 있는지 확인하는 함수
     public bool CheckGameData()
     {
         string FromJsonData = File.ReadAllText(SAVE_DATA_FILE_PATH);

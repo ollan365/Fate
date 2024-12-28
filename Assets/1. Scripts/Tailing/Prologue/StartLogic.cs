@@ -66,6 +66,8 @@ public class StartLogic : MonoBehaviour
 
         if ((bool)GameManager.Instance.GetVariable("SkipLobby"))
         {
+            GameManager.Instance.SetVariable("SkipLobby", false);
+            SaveManager.Instance.SaveGameData();
             buttons.SetActive(false);
             StartCoroutine(StartPrologue());
         }
@@ -120,8 +122,11 @@ public class StartLogic : MonoBehaviour
     {
         if (SaveManager.Instance.CheckGameData())
         {
-            SceneManager.Instance.LoadScene(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum());
             buttons.SetActive(false);
+
+            if (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum() == Constants.SceneType.START)
+                StartCoroutine(StartPrologue());
+            else SceneManager.Instance.LoadScene(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum());
         }
         else noGameDataPanel.SetActive(true);
     }
@@ -133,6 +138,7 @@ public class StartLogic : MonoBehaviour
     public void GoScene(int sceneNum)
     {
         SaveManager.Instance.CreateNewGameData();
+        GameManager.Instance.SetVariable("EndTutorial_ROOM_1", GameManager.Instance.skipTutorial);
 
         if (sceneNum == 1) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
         if (sceneNum == 2) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);

@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviour
 
         variables["isInquiry"] = false; // 조사 시스템에서 예 누르면 true되고 계속 조사 가능.
 
-        variables["EndTutorial_ROOM_1"] = false;
-        variables["EndTutorial_FOLLOW_1"] = false;
+        variables["EndTutorial_ROOM_1"] = false; // Room1 튜토리얼이 끝났는가
+        variables["EndTutorial_FOLLOW_1"] = false; // Follow1 튜토리얼이 끝났는가
 
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
 
         variables["CurrentScene"] = Constants.SceneType.START.ToInt();
 
+        // 각 씬에서 모은 메모의 개수
         variables["MemoCount_ROOM_1"] = 0;
         variables["MemoCount_FOLLOW_1"] = 0;
         variables["MemoCount_ROOM_2"] = 0;
