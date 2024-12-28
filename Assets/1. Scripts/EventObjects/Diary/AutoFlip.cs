@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PageFlip))]
-public class AutoFlip : MonoBehaviour {
+public class AutoFlip : MonoBehaviour
+{
     public float pageFlipTime = 0.2f; // Time it takes to flip one page
     public PageFlip controlledBook; // Reference to the PageFlip script
     public int animationFramesCount = 80; // Number of frames for the flip animation
@@ -13,20 +14,23 @@ public class AutoFlip : MonoBehaviour {
 
     private int currentPage;
 
-    private void Start () {
+    private void Start()
+    {
         if (!controlledBook) controlledBook = GetComponent<PageFlip>();
     }
 
-    public void FlipRightPage() {
+    public void FlipRightPage()
+    {
         // Debug.Log("flip right page");
-        
+
         if (isFlipping || controlledBook.currentPage >= controlledBook.totalPageCount - 1) return;
         StartCoroutine(FlipPage(FlipMode.RightToLeft));
     }
 
-    public void FlipLeftPage() {
+    public void FlipLeftPage()
+    {
         // Debug.Log("flip left page");
-        
+
         if (isFlipping || controlledBook.currentPage <= 0) return;
         StartCoroutine(FlipPage(FlipMode.LeftToRight));
     }
@@ -38,9 +42,9 @@ public class AutoFlip : MonoBehaviour {
             Debug.LogWarning("pageNum should be even!.");
             return;
         }
-        
+
         // Debug.Log($"flip to page {pageNum}");
-        
+
         if (isFlipping || pageNum < 0 || pageNum >= controlledBook.totalPageCount) return;
         StartCoroutine(FlipToPageCoroutine(pageNum));
     }
@@ -51,7 +55,7 @@ public class AutoFlip : MonoBehaviour {
         while (currentPage != pageNum)
         {
             // Debug.Log($"current page: {currentPage}, target page: {pageNum}");
-            
+
             if (currentPage < pageNum)
             {
                 yield return StartCoroutine(FlipPage(FlipMode.RightToLeft));
@@ -63,41 +67,100 @@ public class AutoFlip : MonoBehaviour {
         }
     }
 
-    private IEnumerator FlipPage(FlipMode flipMode) {
+    //   private IEnumerator FlipPage(FlipMode flipMode) {
+    //       isFlipping = true;
+    //       controlledBook.mode = flipMode;
+    //
+    // controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
+    // controlledBook.pageContentsManager.flipRightButton.SetActive(false);
+    //       MemoManager.Instance.exitButton.SetActive(false);
+    //
+    //       float frameTime = pageFlipTime / animationFramesCount;
+    //       float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
+    //       float xl = ((controlledBook.EdgeBottomRight.x - controlledBook.EdgeBottomLeft.x) / 2) * 0.9f;
+    //       float h = Mathf.Abs(controlledBook.EdgeBottomRight.y) * 0.9f;
+    //       float dx = (xl) * 2 / animationFramesCount;
+    //       float x = (flipMode == FlipMode.RightToLeft) ? xc + xl : xc - xl;
+    //       float sign = (flipMode == FlipMode.RightToLeft) ? -1 : 1;
+    //
+    //       for (int i = 0; i < animationFramesCount; i++) {
+    //           float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
+    //           Vector3 point = new Vector3(x, y, 0);
+    //           if (flipMode == FlipMode.RightToLeft) {
+    //               controlledBook.DragRightPageToPoint(point);
+    //               controlledBook.UpdateBookRtlToPoint(point);
+    //           } else {
+    //               controlledBook.DragLeftPageToPoint(point);
+    //               controlledBook.UpdateBookLtrToPoint(point);
+    //           }
+    //           yield return new WaitForSeconds(frameTime);
+    //           x += sign * dx;
+    //       }
+    //       controlledBook.ReleasePage();
+    //       isFlipping = false;
+    //       
+    //       if (flipMode == FlipMode.RightToLeft) currentPage += 2;
+    //       else currentPage -= 2;
+    //       
+    //       MemoManager.Instance.exitButton.SetActive(true);
+    //   }
+    private IEnumerator FlipPage(FlipMode flipMode)
+    {
         isFlipping = true;
         controlledBook.mode = flipMode;
 
-		controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
-		controlledBook.pageContentsManager.flipRightButton.SetActive(false);
+        controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
+        controlledBook.pageContentsManager.flipRightButton.SetActive(false);
         MemoManager.Instance.exitButton.SetActive(false);
 
-        float frameTime = pageFlipTime / animationFramesCount;
+        float elapsedTime = 0;
         float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
         float xl = ((controlledBook.EdgeBottomRight.x - controlledBook.EdgeBottomLeft.x) / 2) * 0.9f;
         float h = Mathf.Abs(controlledBook.EdgeBottomRight.y) * 0.9f;
-        float dx = (xl) * 2 / animationFramesCount;
-        float x = (flipMode == FlipMode.RightToLeft) ? xc + xl : xc - xl;
-        float sign = (flipMode == FlipMode.RightToLeft) ? -1 : 1;
 
-        for (int i = 0; i < animationFramesCount; i++) {
+        Vector3 startPoint = new Vector3(
+            flipMode == FlipMode.RightToLeft ? xc + xl : xc - xl,
+            0,
+            0
+        );
+        Vector3 endPoint = new Vector3(
+            flipMode == FlipMode.RightToLeft ? xc - xl : xc + xl,
+            0,
+            0
+        );
+
+        while (elapsedTime < pageFlipTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / pageFlipTime;
+
+            // Use smooth step for more natural movement
+            t = Mathf.SmoothStep(0, 1, t);
+
+            // Calculate current position
+            float x = Mathf.Lerp(startPoint.x, endPoint.x, t);
             float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
             Vector3 point = new Vector3(x, y, 0);
-            if (flipMode == FlipMode.RightToLeft) {
+
+            // Only call DragPageToPoint, not both
+            if (flipMode == FlipMode.RightToLeft)
+            {
                 controlledBook.DragRightPageToPoint(point);
-                controlledBook.UpdateBookRtlToPoint(point);
-            } else {
-                controlledBook.DragLeftPageToPoint(point);
-                controlledBook.UpdateBookLtrToPoint(point);
             }
-            yield return new WaitForSeconds(frameTime);
-            x += sign * dx;
+            else
+            {
+                controlledBook.DragLeftPageToPoint(point);
+            }
+
+            yield return null; // Wait for next frame instead of fixed time
         }
+
         controlledBook.ReleasePage();
         isFlipping = false;
-        
+
         if (flipMode == FlipMode.RightToLeft) currentPage += 2;
         else currentPage -= 2;
-        
+
         MemoManager.Instance.exitButton.SetActive(true);
     }
 }
