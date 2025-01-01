@@ -48,7 +48,8 @@ public class DialoguesParser : MonoBehaviour
             string imageID = fields[3].Trim();
             string backgroundID = fields[4].Trim();
             string soundID = fields[5].Trim();
-            string next = fields[6].Trim();
+            string blur = fields[6].Trim();
+            string next = fields[7].Trim();
 
             if (!dialogues.ContainsKey(dialogueID))
             {
@@ -56,7 +57,7 @@ public class DialoguesParser : MonoBehaviour
                 dialogues[dialogueID] = dialogue;
             }
 
-            dialogues[dialogueID].AddLine(speakerID, scriptID, imageID, backgroundID, soundID, next);
+            dialogues[dialogueID].AddLine(speakerID, scriptID, imageID, backgroundID, soundID, blur, next);
         }
 
         return dialogues;

@@ -1,6 +1,9 @@
 Condition ID,Condition Description,Variable Name,Logic,0
 Condition_tutorial,튜토리얼 진행 중인 상태,isTutorial,==,TRUE
 Condition_notTutorial,튜토리얼 진행 중이지 않은 상태,isTutorial,==,FALSE
+Condition_TutorialEnd_ROOM_1,방1 튜토리얼 진행 완료,EndTutorial_ROOM_1,==,TRUE
+Condition_TutorialEnd_FOLLOW_1,미행1 튜토리얼 진행 완료,EndTutorial_FOLLOW_1,==,TRUE
+Condition_TutorialNotEnd_FOLLOW_1,미행1 튜토리얼 진행 미완료,EndTutorial_FOLLOW_1,==,FALSE
 ,,,,
 ConditionTutorialPhase1,튜토리얼 1 진행 중,TutorialPhase,==,1
 ConditionTutorialPhase2,튜토리얼 2 진행 중,TutorialPhase,==,2
@@ -319,7 +322,7 @@ ConditionGuardManyClick2,미행2 클럽 가드 여러번 클릭,GuardClick2,>,0
 ConditionEnding_0,엔딩을 아예 보지 않은 상태,EndingCollect,==,0
 ConditionEnding_1,엔딩을 하나 이상을 본 상태,EndingCollect,>,0
 ,,,,
-ConditionMemoClear_ROOM_1,ROOM_1의 메모 개수,MemoCount_ROOM_1,>,8
+ConditionMemoClear_ROOM_1,ROOM_1의 메모 개수,MemoCount_ROOM_1,>=,7
 ConditionMemoClear_FOLLOW_1,FOLLOW_1의 메모 개수,MemoCount_FOLLOW_1,>=,8
 ConditionMemoClear_ROOM_2,ROOM_2의 메모 개수,MemoCount_ROOM_2,>=,8
 ConditionMemoClear_FOLLOW_2,FOLLOW_2의 메모 개수,MemoCount_FOLLOW_2,>=,8

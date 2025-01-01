@@ -53,15 +53,29 @@ public class StartLogic : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        if (SaveManager.Instance && SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd
-            && GameManager.Instance && GameManager.Instance.GetVariable("BadEndingCollect") != null)
-            LoadGame(true);
-        else if(ScreenEffect.Instance) StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 0.1f, false, 0, 0));
     }
     private void Start()
     {
-        StartCoroutine(RotateSecond());
+        StartCoroutine(WaitForGameManagerStartFunction());
+    }
+    private IEnumerator WaitForGameManagerStartFunction()
+    {
+        yield return null;
+        SaveManager.Instance.SaveInitGameData();
+        SaveManager.Instance.ApplySavedGameData();
+
+        if ((bool)GameManager.Instance.GetVariable("SkipLobby"))
+        {
+            GameManager.Instance.SetVariable("SkipLobby", false);
+            SaveManager.Instance.SaveGameData();
+            buttons.SetActive(false);
+            StartCoroutine(StartPrologue());
+        }
+        else if (ScreenEffect.Instance)
+        {
+            StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 0.1f, false, 0, 0));
+            StartCoroutine(RotateSecond());
+        }
     }
     private IEnumerator RotateSecond()
     {
@@ -89,8 +103,6 @@ public class StartLogic : MonoBehaviour
     {
         if (!SaveManager.Instance.CheckGameData()) // 저장된 게임 데이터가 없는 경우
         {
-            SaveManager.Instance.SaveInitGameData();
-
             start.SetActive(false);
             StartCoroutine(StartPrologue());
         }
@@ -106,15 +118,15 @@ public class StartLogic : MonoBehaviour
         Image backgroundImage = background.GetComponent<Image>();
         backgroundImage.sprite = titleWithLogo;
     }
-    public void LoadGame(bool loadPrologue)
+    public void LoadGame()
     {
-        SaveManager.Instance.SaveInitGameData();
-
-        if(loadPrologue || (SaveManager.Instance.EndingData != null && !SaveManager.Instance.EndingData.isEndingLogicEnd)) { StartCoroutine(StartPrologue()); buttons.SetActive(false); }
-        else if (SaveManager.Instance.CheckGameData())
+        if (SaveManager.Instance.CheckGameData())
         {
-            SceneManager.Instance.LoadScene(SaveManager.Instance.LoadGameData());
             buttons.SetActive(false);
+
+            if (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum() == Constants.SceneType.START)
+                StartCoroutine(StartPrologue());
+            else SceneManager.Instance.LoadScene(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum());
         }
         else noGameDataPanel.SetActive(true);
     }
@@ -125,7 +137,8 @@ public class StartLogic : MonoBehaviour
     }
     public void GoScene(int sceneNum)
     {
-        SaveManager.Instance.SaveInitGameData();
+        SaveManager.Instance.CreateNewGameData();
+        GameManager.Instance.SetVariable("EndTutorial_ROOM_1", GameManager.Instance.skipTutorial);
 
         if (sceneNum == 1) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
         if (sceneNum == 2) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
@@ -137,13 +150,15 @@ public class StartLogic : MonoBehaviour
     // ========== 앨범 ========== //
     public void ClickAlbum()
     {
-        for (int i = 0; i < SaveManager.Instance.EndingData.endingCollectCount.Length; i++)
+        List<string> endingName = new() { "BadACollect", "BadBCollect", "TrueCollect", "HiddenCollect" };
+        
+        for (int i = 0; i < endingButtons.Length; i++)
         {
             int index = i;
-            if (SaveManager.Instance.EndingData.endingCollectCount[i] > 0)
+            if ((int)GameManager.Instance.GetVariable(endingName[i]) > 0) 
             {
                 endingButtons[i].onClick.AddListener(() => OpenAlbumPage(index));
-                endingButtonImages[i].sprite = endingSprites[i * 2 + SaveManager.Instance.EndingData.accidyGender];
+                endingButtonImages[i].sprite = endingSprites[i * 2 + (int)GameManager.Instance.GetVariable("AccidyGender")];
                 endingButtonImages[i].color = new Color(1, 1, 1, 1);
             }
             else
@@ -156,7 +171,7 @@ public class StartLogic : MonoBehaviour
     public void OpenAlbumPage(int endingIndex)
     {
         const int Bad_A = 0, Bad_B = 1, True = 2, Hidden = 3;
-        albumImage.sprite = endingSprites[endingIndex * 2 + SaveManager.Instance.EndingData.accidyGender];
+        albumImage.sprite = endingSprites[endingIndex * 2 + (int)GameManager.Instance.GetVariable("AccidyGender")];
         switch (endingIndex)
         {
             case Bad_A:
@@ -276,10 +291,5 @@ public class StartLogic : MonoBehaviour
         string birthday = ((monthDropdown.value + 1) * 100 + (dayDropdown.value + 1)).ToString();
         if (birthday.Length == 3) birthday = "0" + birthday;
         GameManager.Instance.SetVariable("FateBirthday", birthday);
-
-        SaveManager.Instance.EndingData.accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
-        SaveManager.Instance.EndingData.fateName = (string)GameManager.Instance.GetVariable("FateName");
-        SaveManager.Instance.EndingData.language = (int)GameManager.Instance.GetVariable("Language");
-        SaveManager.Instance.EndingData.fateBirthDay = (string)GameManager.Instance.GetVariable("FateBirthday");
     }
 }

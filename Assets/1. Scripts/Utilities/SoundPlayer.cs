@@ -89,7 +89,7 @@ public class SoundPlayer : MonoBehaviour
         {
             // 이미 재생 중이면 return
             foreach(AudioSource audio in UISoundLoopPlayer)
-                if (audio.clip == UISoundClip_LOOP[num]) return;
+                if (audio.clip == UISoundClip_LOOP[num] && audio.isPlaying) return;
 
             int index = 0;
             if (UISoundLoopPlayer[index].isPlaying) index++;

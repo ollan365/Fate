@@ -10,13 +10,9 @@ public class SaveManager : MonoBehaviour
     public static SaveManager Instance { get; private set; }
 
     // --- 게임 데이터 파일이름 설정 ("원하는 이름(영문).json") --- //
-    private string GameDataFileName = "GameData.json";
-    private string EndingDataFileName = "EndingData.json";
-
-    // --- 저장용 클래스 변수 --- //
-    private SaveData initData;
-    [SerializeField] private SaveData data;
-    public EndingData EndingData { get; private set; }
+    private string SAVE_DATA_FILE_PATH = "/GameData.json";
+    private SaveData InitData { set; get; }
+    private List<string> endingVariableNames;
 
     void Awake()
     {
@@ -30,131 +26,146 @@ public class SaveManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        string filePath = Application.persistentDataPath + "/" + EndingDataFileName;
-        if (File.Exists(filePath)) EndingData = JsonUtility.FromJson<EndingData>(File.ReadAllText(filePath));
-        else EndingData = new EndingData();
+        SAVE_DATA_FILE_PATH = Application.persistentDataPath + SAVE_DATA_FILE_PATH;
+
+        // 엔딩 후에도 초기화되면 안되는 변수들
+        endingVariableNames = new List<string>
+        {
+            "EndingCollect", "LastEnding","BadEndingCollect", "SkipLobby",
+            "BadACollect", "BadBCollect", "TrueCollect", "HiddenCollect",
+            "FateName","Language","AccidyGender","FateBirthday"
+        };
     }
+
+    // 게임 데이터를 초기화 시킬 값 저장
     public void SaveInitGameData()
     {
-        if (initData == null)
-            initData = new SaveData(SceneType.START,
-                1,
-                GameManager.Instance.Variables,
-                GameManager.Instance.eventObjectsStatusDict,
-                MemoManager.Instance.SavedMemoList,
-                MemoManager.Instance.RevealedMemoList);
+        if (InitData != null) return;
 
-        if (EndingData == null) return;
-
-        GameManager.Instance.SetVariable("EndingCollect", EndingData.allEndingCollectCount);
-        GameManager.Instance.SetVariable("LastEnding", EndingData.lastEnding.ToString());
-        GameManager.Instance.SetVariable("BadACollect", EndingData.endingCollectCount[0]);
-        GameManager.Instance.SetVariable("BadBCollect", EndingData.endingCollectCount[1]);
-        GameManager.Instance.SetVariable("TrueCollect", EndingData.endingCollectCount[2]);
-        GameManager.Instance.SetVariable("HiddenCollect", EndingData.endingCollectCount[3]);
-        GameManager.Instance.SetVariable("BadEndingCollect", EndingData.badEndingColloectCount);
-
-        GameManager.Instance.SetVariable("FateName", EndingData.fateName);
-        GameManager.Instance.SetVariable("Language", EndingData.language);
-        GameManager.Instance.SetVariable("AccidyGender", EndingData.accidyGender);
-        GameManager.Instance.SetVariable("FateBirthday", EndingData.fateBirthDay);
-}
-    public void InitGameData()
-    {
-        string ToJsonData = JsonUtility.ToJson(initData, true);
-        string filePath = Application.persistentDataPath + "/" + GameDataFileName;
-
-        File.WriteAllText(filePath, ToJsonData);
-    }
-    public void SaveEndingData(EndingType ending)
-    {
-        if(ending != EndingType.NONE) EndingData.AddEnding(ending);
-
-        string ToJsonData = JsonUtility.ToJson(EndingData, true);
-        string filePath = Application.persistentDataPath + "/" + EndingDataFileName;
-
-        File.WriteAllText(filePath, ToJsonData);
-    }
-    public bool CheckGameData()
-    {
-        return File.Exists(Application.persistentDataPath + "/" + GameDataFileName);
-    }
-    // 불러오기
-    public SceneType LoadGameData()
-    {
-        string filePath = Application.persistentDataPath + "/" + GameDataFileName;
-
-        if (!File.Exists(filePath)) return SceneType.START; // no save game data
-
-        // 저장된 파일 읽어오고 Json을 클래스 형식으로 전환해서 할당
-        string FromJsonData = File.ReadAllText(filePath);
-        data = JsonUtility.FromJson<SaveData>(FromJsonData);
-
-        // 저장된 내용 로드
-        SceneManager.Instance.roomSideIndex = data.lastSideIndex;
-        GameManager.Instance.Variables = data.Variables;
-        GameManager.Instance.eventObjectsStatusDict = data.EventObjectStatusDictionary;
-        MemoManager.Instance.SavedMemoList = data.SavedMemoList;
-        MemoManager.Instance.RevealedMemoList = data.RevealedMemoList;
-
-        return data.sceneType;
-    }
-
-    // 저장하기
-    public void SaveGameData()
-    {
-        // 저장할 데이터 생성 (방이면 RoomManager에 접근하여 현재 화면의 인덱스도 저장)
-        var currentSideIndex = RoomManager.Instance ? RoomManager.Instance.currentSideIndex : 1;
-
-        data = new(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum(),
-            currentSideIndex,
+        InitData = new SaveData(
             GameManager.Instance.Variables,
             GameManager.Instance.eventObjectsStatusDict,
             MemoManager.Instance.SavedMemoList,
             MemoManager.Instance.RevealedMemoList);
+    }
+    
+    // 엔딩을 저장하고 게임 데이터 초기화 (엔딩 데이터는 초기화하지 않음)
+    public void SaveEndingDataAndInitGameDataExceptEndingData(EndingType ending)
+    {
+        switch (ending)
+        {
+            case EndingType.BAD_A:
+                GameManager.Instance.SetVariable("SkipLobby", true);
+                GameManager.Instance.IncrementVariable("BadEndingCollect");
+                GameManager.Instance.IncrementVariable("BadACollect");
+                break;
 
-        // 클래스를 Json 형식으로 전환 (true : 가독성 좋게 작성)
-        string ToJsonData = JsonUtility.ToJson(data, true);
-        string filePath = Application.persistentDataPath + "/" + GameDataFileName;
+            case EndingType.BAD_B:
+                GameManager.Instance.SetVariable("SkipLobby", true);
+                GameManager.Instance.IncrementVariable("BadEndingCollect");
+                GameManager.Instance.IncrementVariable("BadBCollect");
+                break;
 
-        // 이미 저장된 파일이 있다면 덮어쓰고, 없다면 새로 만들어서 저장
-        File.WriteAllText(filePath, ToJsonData);
+            case EndingType.TRUE:
+                GameManager.Instance.SetVariable("SkipLobby", true);
+                GameManager.Instance.IncrementVariable("TrueCollect");
+                break;
+
+            case EndingType.HIDDEN:
+                GameManager.Instance.SetVariable("SkipLobby", false);
+                GameManager.Instance.IncrementVariable("HiddenCollect");
+                break;
+        }
+        GameManager.Instance.IncrementVariable("EndingCollect");
+        GameManager.Instance.SetVariable("LastEnding", ending.ToString());
+
+        // 초기화용 데이터에서 엔딩 데이터(회차가 넘어가도 유지되어야하는 데이터)를 변경
+        Dictionary<string, object> tmpDictionary = InitData.Variables;
+        for (int i = 0; i < endingVariableNames.Count; i++)
+        {
+            string dataName = endingVariableNames[i];
+            tmpDictionary[dataName] = GameManager.Instance.GetVariable(dataName);
+        }
+
+        // 초기화용 변수로 저장 후 로드
+        SaveGameData(new SaveData(tmpDictionary, InitData.EventObjectStatusDictionary, InitData.SavedMemoList, InitData.RevealedMemoList));
+        ApplySavedGameData();
+    }
+
+    // 게임을 새로 시작할 때, 기존 데이터가 있는지 확인하는 함수
+    public bool CheckGameData()
+    {
+        string FromJsonData = File.ReadAllText(SAVE_DATA_FILE_PATH);
+        SaveData saveData = JsonUtility.FromJson<SaveData>(FromJsonData);
+
+        // n회차이거나 Room1의 튜토리얼을 끝냈으면 게임 데이터가 있는 것으로 판단
+        return (int)saveData.Variables["EndingCollect"] != 0 || (bool)saveData.Variables["EndTutorial_ROOM_1"];
+    }
+    // 불러오기
+    public void ApplySavedGameData()
+    {
+        if (!File.Exists(SAVE_DATA_FILE_PATH)) return; // no save game data
+
+        // 저장된 파일 읽어오고 Json을 클래스 형식으로 전환해서 할당
+        string FromJsonData = File.ReadAllText(SAVE_DATA_FILE_PATH);
+        SaveData saveData = JsonUtility.FromJson<SaveData>(FromJsonData);
+
+        // 저장된 내용 로드
+        GameManager.Instance.Variables = saveData.Variables;
+        GameManager.Instance.eventObjectsStatusDict = saveData.EventObjectStatusDictionary;
+        MemoManager.Instance.SavedMemoList = saveData.SavedMemoList;
+        MemoManager.Instance.RevealedMemoList = saveData.RevealedMemoList;
+    }
+    // 저장하기
+    public void SaveGameData(SaveData newSaveData = null)
+    {
+        // 일반적인 저장의 경우, 현재 게임의 상태를 저장
+        if (newSaveData == null)
+            newSaveData = new SaveData(
+                GameManager.Instance.Variables,
+                GameManager.Instance.eventObjectsStatusDict,
+                MemoManager.Instance.SavedMemoList,
+                MemoManager.Instance.RevealedMemoList);
+        
+        // 클래스를 Json 형식으로 전환하여 저장
+        File.WriteAllText(SAVE_DATA_FILE_PATH, JsonUtility.ToJson(newSaveData, true));
     }
 
     // 저장된 게임 데이터 삭제
-    public void DeleteGameData()
+    public void CreateNewGameData()
     {
-        string filePath = Application.persistentDataPath + "/" + GameDataFileName;
-        if (File.Exists(filePath)) File.Delete(filePath);
-
-        EndingData.Init();
-        SaveEndingData(EndingType.NONE);
+        if (File.Exists(SAVE_DATA_FILE_PATH)) File.Delete(SAVE_DATA_FILE_PATH);
+        File.WriteAllText(SAVE_DATA_FILE_PATH, JsonUtility.ToJson(InitData, true));
+        ApplySavedGameData();
     }
 }
 
 [System.Serializable]
 public class SaveData
 {
-    public SceneType sceneType; // 어느 씬에서 끝났는지
-    public int lastSideIndex;
-
+    // 게임 데이터와 그 타입 (클릭 횟수 등)
     public string variablesToJson;
     public string variablesTypeToJson;
+
+    //
     public string eventObjectStatusToJson;
+
+    // 메모 관련 데이터들
     public string savedMemo;
     public string revealedMemo;
 
-    public Dictionary<string, object> Variables => ToDictionary(variablesToJson); // 게임 매니저의 변수들
+    public Dictionary<string, object> Variables => ToDictionary(variablesToJson, variablesTypeToJson); // 게임 매니저의 변수들
     public Dictionary<string, bool> EventObjectStatusDictionary => ToBoolDictionary(eventObjectStatusToJson); // 게임 매니저의 변수들
     public List<List<string[]>> SavedMemoList => ToArrayList(savedMemo);
     public List<List<string>> RevealedMemoList => ToList(revealedMemo);
-
-    public SaveData(SceneType type, int currentSideIndex, Dictionary<string, object> variables, Dictionary<string, bool>  eventObejctStatusDictionary, List<List<string[]>> savedMemoList, List<List<string>> revealedMemoList)
+    
+    public SaveData (Dictionary<string, object> variables, Dictionary<string, bool>  eventObejctStatusDictionary, List<List<string[]>> savedMemoList, List<List<string>> revealedMemoList)
     {
-        sceneType = type;
-        lastSideIndex = currentSideIndex;
         variablesToJson = ToJson(variables);
+        variablesTypeToJson = TypeToJson(variables);
+
         eventObjectStatusToJson = ToJson(eventObejctStatusDictionary);
+
         savedMemo = ToJson(savedMemoList);
         revealedMemo = ToJson(revealedMemoList);
     }
@@ -163,27 +174,33 @@ public class SaveData
     {
         // string으로 변환된 값을 담을 Dictionary<string, string>
         Dictionary<string, string> stringVariables = new();
-        Dictionary<string, string> typeVariables = new();
 
         // 각각의 object를 string으로 변환하여 stringVariables에 추가
         foreach (var variable in dictionary)
         {
             string key = variable.Key;
             object value = variable.Value;
-            string stringValue;
-
-            stringValue = value.ToString();
+            string stringValue = value.ToString();
             stringVariables.Add(key, stringValue);
-
-            typeVariables.Add(key, value.GetType().ToString());
         }
-
-        variablesTypeToJson = JsonConvert.SerializeObject(typeVariables, Formatting.Indented);
         return JsonConvert.SerializeObject(stringVariables, Formatting.Indented);
     }
     private string ToJson(Dictionary<string, bool> dictionary)
     {
         return JsonConvert.SerializeObject(dictionary, Formatting.Indented);
+    }
+    private string TypeToJson(Dictionary<string, object> dictionary)
+    {
+        Dictionary<string, string> typeVariables = new();
+
+        foreach (var variable in dictionary)
+        {
+            string key = variable.Key;
+            object value = variable.Value;
+
+            typeVariables.Add(key, value.GetType().ToString());
+        }
+        return JsonConvert.SerializeObject(typeVariables, Formatting.Indented);
     }
     private string ToJson(List<List<string[]>> array)
     {
@@ -201,11 +218,11 @@ public class SaveData
     {
         return JsonConvert.DeserializeObject<List<List<string>>>(json);
     }
-    private Dictionary<string, object> ToDictionary(string json)
+    private Dictionary<string, object> ToDictionary(string json, string typeJson)
     {
         // JSON 문자열을 Dictionary<string, string>으로 역직렬화
         Dictionary<string, string> stringVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-        Dictionary<string, string> typeVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(variablesTypeToJson);
+        Dictionary<string, string> typeVariables = JsonConvert.DeserializeObject<Dictionary<string, string>>(typeJson);
 
         // Dictionary<string, object>을 생성하여 변환된 값들을 추가
         Dictionary<string, object> objectVariables = new();
@@ -235,57 +252,5 @@ public class SaveData
     private Dictionary<string, bool> ToBoolDictionary(string json)
     {
         return JsonConvert.DeserializeObject<Dictionary<string, bool>>(json); ;
-    }
-}
-public class EndingData
-{
-    public bool isEndingLogicEnd = true; // 엔딩 로직이 끝났는지 (자동 프롤로그 시작 후 프롤로그 완료까지 했는지)
-    public int allEndingCollectCount = 0; // 엔딩을 본 횟수
-    public int badEndingColloectCount = 0; // 배드 엔딩을 본 횟수
-    public int[] endingCollectCount = new int[4] { 0, 0, 0, 0 }; // 각 엔딩을 본 횟수
-    public EndingType lastEnding = EndingType.NONE; // 마지막으로 본 엔딩
-
-    public int accidyGender = 0;
-    public string fateName = "필연";
-    public int language = 1;
-    public string fateBirthDay = "0516";
-
-    public void AddEnding(EndingType ending)
-    {
-        allEndingCollectCount++;
-        lastEnding = ending;
-
-        switch (ending)
-        {
-            case EndingType.BAD_A:
-                isEndingLogicEnd = false;
-                badEndingColloectCount++;
-                endingCollectCount[0]++;
-                break;
-
-            case EndingType.BAD_B:
-                isEndingLogicEnd = false;
-                badEndingColloectCount++;
-                endingCollectCount[1]++;
-                break;
-
-            case EndingType.TRUE:
-                isEndingLogicEnd = false;
-                endingCollectCount[2]++;
-                break;
-
-            case EndingType.HIDDEN:
-                isEndingLogicEnd = true;
-                endingCollectCount[3]++;
-                break;
-        }
-    }
-    public void Init()
-    {
-        isEndingLogicEnd = true;
-        allEndingCollectCount = 0;
-        badEndingColloectCount = 0;
-        endingCollectCount = new int[4] { 0, 0, 0, 0 };
-        lastEnding = EndingType.NONE;
     }
 }

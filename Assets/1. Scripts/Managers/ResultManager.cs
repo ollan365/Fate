@@ -172,11 +172,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPrologueEnd":
-                if (SaveManager.Instance.EndingData != null)
-                {
-                    SaveManager.Instance.EndingData.isEndingLogicEnd = true;
-                    SaveManager.Instance.SaveEndingData(EndingType.NONE);
-                }
                 SceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
 
@@ -267,6 +262,10 @@ public class ResultManager : MonoBehaviour
             case "Result_TutorialPhase1Force":  // 방을 둘러보자 (이동버튼 강조)
                 RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialMoveButton");
                 DialogueManager.Instance.StartDialogue("TutorialForce_001");
+                break;
+
+            case "Result_TutorialPhase2ChairStateCheck": // 의자가 밀고 있는 상태인지 체크
+                StartCoroutine(RoomManager.Instance.tutorialManager.CheckChairMovement());
                 break;
 
             case "Result_TutorialPhase2ForceSide1":  // 의자 밀어보자 (의자 강조)
@@ -1046,6 +1045,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClosetKey2Script": // 옷장 안 열쇠에 대한 스크립트
+                SoundPlayer.Instance.UISoundPlay(Sound_Key);
                 DialogueManager.Instance.StartDialogue("RoomEscape2_028");
                 break;
 
@@ -1065,6 +1065,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultDreamDiary2WithKeyScript": // 열쇠 발견 후 꿈일기 발견 스크립트
+                SoundPlayer.Instance.UISoundPlay(Sound_LockerUnlock);
                 DialogueManager.Instance.StartDialogue("RoomEscape2_035");
                 break;
 

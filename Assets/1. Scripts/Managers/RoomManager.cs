@@ -23,6 +23,16 @@ public class RoomManager : MonoBehaviour
     // 나가기 버튼
     [Header("나가기 버튼")] [SerializeField] private Button exitButton;
 
+    // 메모 게이지
+    [Header("메모 게이지")]
+    [SerializeField] private GameObject memoGauge;
+    [SerializeField] private Image gaugeImage;
+    [SerializeField] private Slider clearFlagSlider;
+    [SerializeField] private Image clearFlageImage;
+
+    // 비네팅 효과
+    [Header("비네팅 효과")] [SerializeField] private GameObject vignette;
+
     // 이벤트 오브젝트 패널 매니저
     public ImageAndLockPanelManager imageAndLockPanelManager;
     // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
@@ -37,6 +47,7 @@ public class RoomManager : MonoBehaviour
     public Room2ActionPointManager Room2ActionPointManager;
 
     // ************************* temporary members for action points *************************
+    [SerializeField] GameObject actionPointsUI;
     [SerializeField] GameObject heartParent;
     [SerializeField] TextMeshProUGUI dayText;
     
@@ -53,6 +64,7 @@ public class RoomManager : MonoBehaviour
 
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
+        MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
     }
     
     void Start()
@@ -91,7 +103,9 @@ public class RoomManager : MonoBehaviour
         // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
         {
-            if (!GameManager.Instance.skipTutorial)
+            if (!GameManager.Instance.skipTutorial
+                && (int)GameManager.Instance.GetVariable("EndingCollect") == 0
+                && !(bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
                 DialogueManager.Instance.StartDialogue("Prologue_015");
         }
 
@@ -119,6 +133,8 @@ public class RoomManager : MonoBehaviour
             if(!GameManager.Instance.skipTutorial)
                 tutorialManager.SetSeenSides(newSideIndex);
         }
+
+        Debug.Log(newSideIndex);
     }
 
     public void OnExitButtonClick()
@@ -134,6 +150,12 @@ public class RoomManager : MonoBehaviour
         }
 
         SetButtons();
+
+        var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
+
+        if (refillHeartsOrEndDay)
+            actionPointManager.RefillHeartsOrEndDay();
+
     }
     
     // exit to root: turn off all the panels and zoom out to the root view
@@ -152,6 +174,11 @@ public class RoomManager : MonoBehaviour
     public void EmptyActionPoint()
     {
         GameManager.Instance.SetVariable("ActionPoint", 1);
+    }
+
+    public bool GetIsInvestigating()
+    {
+        return isInvestigating;
     }
 
     // ######################################## setters ########################################
@@ -204,14 +231,29 @@ public class RoomManager : MonoBehaviour
         }
     }
     
+    private void SetVignette(bool isTrue)
+    {
+        vignette.SetActive(isTrue);
+    }
+    
+    private void SetActionPointsUI(bool isTrue)
+    {
+        actionPointsUI.SetActive(isTrue);
+    }
+    
     public void SetButtons()
     {
         bool isInvestigatingOrZoomed = isInvestigating || isZoomed;
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
         bool isMemoOpen = MemoManager.Instance.isMemoOpen;
+        bool isLaptopOpen = (bool)GameManager.Instance.GetVariable("isLaptopOpen");
+        bool isLaptopAppOpen = (bool)GameManager.Instance.GetVariable("isLaptopAppOpen");
         
-        SetExitButton(isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
+        SetExitButton((isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen) 
+                      || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen));
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
+        SetActionPointsUI(!isLaptopOpen);
+        SetVignette(!isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 }

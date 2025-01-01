@@ -22,58 +22,63 @@ public class SceneManager : MonoBehaviour
 
     public void LoadScene(SceneType loadSceneType)
     {
-        StartCoroutine(ChangeScene(loadSceneType));
+        if (loadSceneType == SceneType.ENDING)
+            StartCoroutine(LoadEnding());
+        else
+            StartCoroutine(ChangeScene(loadSceneType));
     }
-
-    private IEnumerator ChangeScene(SceneType loadSceneType)
+    private IEnumerator LoadEnding()
     {
-        // 씬이 변경되는 동안 메모 버튼을 누르지 못하도록 꺼둔다
-        MemoManager.Instance.SetMemoButtons(false);
-
         // 대사 출력 중이면 기다리기
         while (DialogueManager.Instance.isDialogueActive)
             yield return null;
 
+        MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
-        int sceneIndex = -1;
+        yield return new WaitForSeconds(1f);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(SceneType.ENDING.ToInt());
+    }
+
+    private IEnumerator ChangeScene(SceneType loadSceneType)
+    {
+        // 대사 출력 중이면 기다리기
+        while (DialogueManager.Instance.isDialogueActive)
+            yield return null;
+
+        MemoManager.Instance.SetMemoButtons(false);
+        SoundPlayer.Instance.ChangeBGM(BGM_STOP);
+        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
+
         switch (loadSceneType)
         {
             case SceneType.START:
-                sceneIndex = 0;
-                GameManager.Instance.SetVariable("CurrentScene", SceneType.START.ToInt());
                 ScreenEffect.Instance.TextOnFade("Prologue");
                 break;
             case SceneType.ROOM_1:
-                sceneIndex = 1;
                 GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_1.ToInt());
                 ScreenEffect.Instance.TextOnFade("Chapter I");
                 break;
             case SceneType.FOLLOW_1:
-                sceneIndex = 2;
                 GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_1.ToInt());
                 ScreenEffect.Instance.TextOnFade("Chapter II");
                 break;
             case SceneType.ROOM_2:
-                sceneIndex = 3;
                 GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_2.ToInt());
                 ScreenEffect.Instance.TextOnFade("Chapter III");
                 break;
             case SceneType.FOLLOW_2:
-                sceneIndex = 4;
                 GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_2.ToInt());
                 ScreenEffect.Instance.TextOnFade("Chapter IV");
-                break;
-            case SceneType.ENDING:
-                sceneIndex = 5;
                 break;
         }
 
         yield return new WaitForSeconds(1f);
 
         // 씬 로드
-        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneIndex);
+        UnityEngine.SceneManagement.SceneManager.LoadScene((int)GameManager.Instance.GetVariable("CurrentScene"));
     }
 
     public void ChangeSceneEffect()
