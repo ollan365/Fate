@@ -95,7 +95,7 @@ EventClosetClosed,닫힌 옷장 문,닫힌 옷장 문을 처음 클릭,AND,Condi
 EventClosetClosed,닫힌 옷장 문,가방 조사 후 닫힌 문을 클릭,,ConditionClosetBagManyClick,ResultClosetDoorsOpen/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,새로 추가(나은)
 EventClosetClosed,닫힌 옷장 문,가방 조사 안 한 상태에서 닫힌 옷장 문 다시 클릭,AND,ConditionClosetBagFirstClick/ConditionManyClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,
 EventClosetOpen,열린 옷장 문,열린 옷장 문을 클릭,,ConditionClosetDoorsOpen,ResultClosetDoorsClosed/Result_InverseClosetDoorsClosed,새로 추가(나은)
-EventClosetBag,옷장 안 가방,가방을 처음 클릭,,ConditionClosetBagFirstClick,ResultClosetBagScript/ResultClosetBagMemo/Result_IncrementBagClick/Result_IsFinishedEventClosetBag/ResultTimePass,Result_IsFinished 추가
+EventClosetBag,옷장 안 가방,가방을 처음 클릭,,ConditionClosetBagFirstClick,ResultClosetBagScript/Result_IncrementBagClick/Result_IsFinishedEventClosetBag/ResultTimePass,Result_IsFinished 추가
 EventClosetBag,옷장 안 가방,가방을 다시 클릭,,ConditionClosetBagManyClick,ResultClosetBagScript/Result_IncrementBagClick/ResultTimePass,새로 추가(나은)
 ,,,,,,
 EventClosetBox,옷장 위 상자,상자를 열어본 상태에서 상자 다시 클릭,,ConditionBoxOpen,ResultClosetBoxScript/ResultClosetBoxSound/ResultClosetBoxPicturesUI/Result_IncrementBoxClick/ResultTimePass,새로 추가(나은)
@@ -316,6 +316,8 @@ EventRoom2Morning,,,,ConditionNowDayNum4,Result_Room2Morning4,
 EventRoom2Morning,,,,ConditionNowDayNum5,Result_Room2Morning5,
 ,,,,,,
 EventEndRoom1,,,,,ResultEndRoom1,
+EventEndRoom2,,,,,ResultEndRoom2,
+,,,,,,
 EventFollowVilla,필연이 갇힌 빌라,빌라를 처음 클릭,,ConditionVillaClick,ResultVillaScript,여기부터 미행
 EventFollowBread,빵집,빵집을 클릭,,ConditionBreadClick,ResultBreadScript,
 EventFollowConvenienceStore,편의점,편의점을 클릭,,ConditionConClick,ResultConScript,
@@ -327,7 +329,8 @@ EventFollowCafe,카페,카페 간판을 가방 조사를 하지 않은 상태에
 EventFollowCafe,카페,카페 간판을 여러번 클릭,,ConditionCafeManyClick,ResultCafeScript,
 EventFollowCafeReceipt,카페 영수증,카페 영수증을 클릭,,ConditionReceiptFirstClick,ResultReceiptScript/ResultReceiptMemo,
 EventFollowCafeReceipt,카페 영수증,카페 영수증을 한번 이상 클릭,,ConditionReceiptManyClick,ResultReceiptScript,
-EventFollowTrafficLight,신호등,신호등을 클릭,,ConditionLightFirstClick,ResultFollowTutorialNextStep_1/ResultLightMemo,
+EventFollowTrafficLight,신호등,신호등을 처음 클릭+튜토리얼 진행 X,AND,ConditionLightFirstClick/Condition_TutorialNotEnd_FOLLOW_1,ResultFollowTutorialNextStep_1/ResultLightMemo,
+EventFollowTrafficLight,신호등,신호등을 처음 클릭+튜토리얼 진행 O,AND,ConditionLightFirstClick/Condition_TutorialEnd_FOLLOW_1,ResultLightScript/ResultLightMemo,
 EventFollowTrafficLight,신호등,신호등을 한번 이상 클릭,,ConditionLightManyClick,ResultLightScript,
 EventFollowCafeLatte,남은 카페 음료,남은 카페 음료를 처음 클릭,,ConditionLatteFirstClick,ResultLatteScript/ResultLatteMemo,
 EventFollowCafeLatte,남은 카페 음료,남은 카페 음료를 클릭,,ConditionLatteManyClick,ResultLatteScript,

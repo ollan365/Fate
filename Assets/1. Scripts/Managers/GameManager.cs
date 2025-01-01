@@ -277,9 +277,17 @@ public class GameManager : MonoBehaviour
         // 위칸
         variables["WardrobeUpDrawersClosed"] = true;
         variables["ClosedWardrobeUpDrawersClick"] = 0;
+
+        variables["UpDrawerMoved"] = false;
+        variables["isUpDrawerMoving"] = false;
+
         // 아래칸
         variables["WardrobeDownDrawersClosed"] = true;
         variables["ClosedWardrobeDownDrawersClick"] = 0;
+
+        variables["DownDrawerMoved"] = false;
+        variables["isDownDrawerMoving"] = false;
+
         // 옷장 밑 수납장 속 헝클어진 옷
         variables["UnderClosetClothes2Click"] = 0;
 
@@ -505,7 +513,10 @@ public class GameManager : MonoBehaviour
          // "isTutorial",
          // "TutorialPhase"
          "ActionPoint",
-         "PresentHeartIndex"
+         "isUpDrawerMoving",
+         "UpDrawerMoved",
+         "isDownDrawerMoving",
+         "DownDrawerMoved",
         });
 
         foreach (var item in variables)

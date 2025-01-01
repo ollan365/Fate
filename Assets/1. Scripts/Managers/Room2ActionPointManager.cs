@@ -187,8 +187,7 @@ public class Room2ActionPointManager : ActionPointManager
         int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
         if (actionPoint == 0)
         {
-            DialogueManager.Instance.StartDialogue("RoomEscape2S_016");
-            SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_2);
+            EventManager.Instance.CallEvent("EventEndRoom2");
 
             return;
         }

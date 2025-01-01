@@ -1118,6 +1118,11 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_014", totalTime));
                 break;
 
+            case "ResultEndRoom2": // Room2 끝, 스크립트 출력 및 미행2로 진행
+                DialogueManager.Instance.StartDialogue("RoomEscape2S_016");
+                SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
+                break;
+
 
             // 미행 1
             case "ResultFollow1Tutorial":
