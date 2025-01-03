@@ -6,24 +6,22 @@ using UnityEngine.UI;
 
 public class DiaryManager : PageContentsManager
 {
-    private Dictionary<string, string> diary1Pages = new Dictionary<string, string>();
-    private Dictionary<string, string> diary2Pages = new Dictionary<string, string>();
-    private Dictionary<string, string> room2BookPages = new Dictionary<string, string>();
-    private Dictionary<string, string> dreamDiaryPages = new Dictionary<string, string>();
+    private Dictionary<string, (string, string)> diary1Pages = new Dictionary<string, (string, string)>();
+    private Dictionary<string, (string, string)> diary2Pages = new Dictionary<string, (string, string)>();
+    private Dictionary<string, (string, string)> room2BookPages = new Dictionary<string, (string, string)>();
+    private Dictionary<string, (string, string)> dreamDiaryPages = new Dictionary<string, (string, string)>();
 
     public int totalPageCount = 0;
     
     [SerializeField] private PageFlip diaryPages;
     [SerializeField] private string diaryType;
 
+    public Image leftPageImage;
+    public Image rightPageImage;
+    public Image backPageImage;
+    public Image frontPageImage;
+
     private int presentPageNum;
-
-    [Header("Page Num Text")]
-    [SerializeField] private TextMeshProUGUI leftPageNum;
-    [SerializeField] private TextMeshProUGUI rightPageNum;
-    [SerializeField] private TextMeshProUGUI frontPageNum;
-    [SerializeField] private TextMeshProUGUI backPageNum;
-
 
     private void Awake()
     {
@@ -55,27 +53,7 @@ public class DiaryManager : PageContentsManager
     
     public override void DisplayPage(PageType pageType, int pageNum)
     {
-        //Debug.Log(pageNum);
-        switch (pageType)
-        {
-            case PageType.Left:
-                leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
-                break;
-
-            case PageType.Right:
-                rightPageNum.text = pageNum.ToString();
-                break;
-
-            case PageType.Back:
-                backPageNum.text = pageNum.ToString();
-                break;
-
-            case PageType.Front:
-                frontPageNum.text = pageNum.ToString();
-                break;
-        }
-
-        Dictionary<string, string> currentPages = GetCurrentPagesDictionary();
+        Dictionary<string, (string, string)> currentPages = GetCurrentPagesDictionary();
         if (currentPages == null)
         {
             SetPageText(pageType, "");
@@ -86,6 +64,7 @@ public class DiaryManager : PageContentsManager
         if (pageNum < 1 || pageNum > totalPageCount)
         {
             SetPageText(pageType, "");
+            SetPageImage(pageType, "");
             // Debug.LogWarning($"Invalid page number {pageNum}. Total pages: {totalPageCount}");
             return;
         }
@@ -99,9 +78,11 @@ public class DiaryManager : PageContentsManager
             return;
         }
 
-        string pageText = currentPages[diaryID];
+        string pageText = currentPages[diaryID].Item1;
+        string doodleID = currentPages[diaryID].Item2;
 
         SetPageText(pageType, pageText);
+        SetPageImage(pageType, doodleID);
 
         presentPageNum = pageNum;
     }
@@ -127,6 +108,36 @@ public class DiaryManager : PageContentsManager
                 break;
         }
     }
+    
+    private void SetPageImage(PageType pageType, string imageID)
+    {
+        string path = "Room/Diary/doodles/" + imageID;
+        var sprite = Resources.Load<Sprite>(path);
+        var imageAlpha = imageID == "" ? 0 : 1;
+        
+        switch (pageType)
+        {
+            case PageType.Left:
+                leftPageImage.sprite = sprite ? sprite : null;
+                leftPageImage.color = new Color(1, 1, 1, imageAlpha);
+                break;
+
+            case PageType.Right:
+                rightPageImage.sprite = sprite ? sprite : null;
+                rightPageImage.color = new Color(1, 1, 1, imageAlpha);
+                break;
+
+            case PageType.Back:
+                backPageImage.sprite = sprite ? sprite : null;
+                backPageImage.color = new Color(1, 1, 1, imageAlpha);
+                break;
+
+            case PageType.Front:
+                frontPageImage.sprite = sprite ? sprite : null;
+                frontPageImage.color = new Color(1, 1, 1, imageAlpha);
+                break;
+        }
+    }
 
     private string GetDiaryID(int pageNum)
     {
@@ -138,7 +149,7 @@ public class DiaryManager : PageContentsManager
         return diaryType;
     }
 
-    private Dictionary<string, string> GetCurrentPagesDictionary()
+    private Dictionary<string, (string, string)> GetCurrentPagesDictionary()
     {
         switch (diaryType)
         {
@@ -174,11 +185,11 @@ public class DiaryManager : PageContentsManager
         // Debug.Log($"flipRightButtonOn: {flipRightButtonOn}\n\tcurrentPage: {currentPage}\n\ttotalPageCount: {totalPageCount}");
         flipRightButton.SetActive(flipRightButtonOn);
 
-        // ¹æÅ»Ãâ2 ´ÙÀÌ¾î¸® °ü·Ã
+        // ï¿½ï¿½Å»ï¿½ï¿½2 ï¿½ï¿½ï¿½Ì¾î¸® ï¿½ï¿½ï¿½ï¿½
         if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect")
             && GetDiaryType() == "Diary2")
         {
-            // ´ÙÀÌ¾î¸® ³»¿ë ³¡±îÁöÀÎ 2ÆäÀÌÁö È®ÀÎÇÏ¸é ´ÙÀÌ¾î¸® ³»¿ë È®ÀÎ ½ºÅ©¸³Æ® Ãâ·ÂµÊ
+            // ï¿½ï¿½ï¿½Ì¾î¸® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Ì¾î¸® ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ® ï¿½ï¿½Âµï¿½
             GameManager.Instance.SetVariable("Diary2PresentPageNumber", presentPageNum);
             EventManager.Instance.CallEvent("EventDiary2Content");
         }
@@ -214,15 +225,27 @@ public class DiaryManager : PageContentsManager
             }
 
             var script = DialogueManager.Instance.scripts[scriptID].GetScript();
-            Dictionary<string, string> targetDictionary = null;
+            Dictionary<string, (string, string)> targetDictionary = null;
 
             if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
             else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
             else if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;
             else if (diaryPageID.StartsWith("DreamDiary_")) targetDictionary = dreamDiaryPages;
 
-            if (targetDictionary.ContainsKey(diaryPageID)) targetDictionary[diaryPageID] += "\n\n" + script;
-            else targetDictionary.Add(diaryPageID, script);
+            // add doodles
+            bool isDoodle = fields[3].Trim() == "TRUE";
+            int replayCount = (int)GameManager.Instance.GetVariable("ReplayCount");
+            string doodleID = isDoodle ? $"doodling{replayCount}_2" : "";
+            if (diaryPageID == "Diary1_002")
+                Debug.Log($"Diary1_002: {script}, {doodleID}");
+
+            if (targetDictionary.ContainsKey(diaryPageID))
+            {
+                var currentString = targetDictionary[diaryPageID].Item1;
+                currentString += "\n\n" + script;
+                targetDictionary[diaryPageID] = (currentString, doodleID);
+            }
+            else targetDictionary.Add(diaryPageID, (script, doodleID));
         }
 
         // Set totalPageCount based on the current scene's dictionary size

@@ -9,7 +9,11 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        if (GameManager.Instance.skipTutorial) return;
+        if (GameManager.Instance.skipTutorial
+                || (int)GameManager.Instance.GetVariable("EndingCollect") != 0
+                || (bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
+            return;
+
         GameManager.Instance.SetVariable("isTutorial", true);
         GameManager.Instance.SetVariable("TutorialPhase", 1);
         RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
@@ -87,6 +91,7 @@ public class TutorialManager : MonoBehaviour
     private void EndTutorial()
     {
         GameManager.Instance.SetVariable("isTutorial", false);
+        GameManager.Instance.SetVariable("EndTutorial_ROOM_1", true);
         RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
 
         MemoManager.Instance.SetMemoButtons(true);

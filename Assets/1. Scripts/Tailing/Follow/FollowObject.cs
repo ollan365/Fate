@@ -33,8 +33,6 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
     {
         isSpecial = false; // 이후에 클릭할 시에는 바로 OnMouseDown_Normal()가 호출되도록 한다
 
-        FollowManager.Instance.memoGaugeSlider.value += 1 / FollowManager.Instance.totalFollowSpecialObjectCount;
-        
         SoundPlayer.Instance.UISoundPlay(Sound_FollowSpecialObject);
 
         if (objectName == FollowObjectName.Extra) { OnMouseDown_Normal(); return; }

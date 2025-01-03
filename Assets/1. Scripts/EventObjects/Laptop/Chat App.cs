@@ -10,6 +10,8 @@ public class ChatApp : MonoBehaviour
     [SerializeField] private Transform conversationList;
     [SerializeField] private GameObject conversationPrefab;
     [SerializeField] private Transform messageList;
+    [SerializeField] private GameObject messageParent;
+    [SerializeField] private TextMeshProUGUI senderText;
     [SerializeField] private GameObject messagePrefabLeft;
     [SerializeField] private GameObject messagePrefabRight;
     [SerializeField] private GameObject datePrefab;
@@ -24,8 +26,20 @@ public class ChatApp : MonoBehaviour
         DisplayConversationsList();
     }
 
+    public void OnEnable()
+    {
+        GameManager.Instance.SetVariable("isLaptopOpen", true);
+    }
+    
+    public void OnDisable()
+    {
+        GameManager.Instance.SetVariable("isLaptopOpen", false);
+    }
+
     private void LoadConversations()
     {
+        messageParent.SetActive(false);
+
         var chatCsv = Resources.Load<TextAsset>("Datas/laptop_chat");
 
         if (chatCsv == null)
@@ -74,29 +88,35 @@ public class ChatApp : MonoBehaviour
             previousConversationID = currentConversationID;
             previousMessage = currentMessage;
         }
+        
     }
 
     private void DisplayConversationsList()
     {
         // Order conversations by the latest message in each conversation (in ascending order)
         var orderedConversations = conversations
-            .OrderByDescending(c => c.Value.Max(m => DateTime.ParseExact(m.Date + " " + m.Time, "yy.MM.dd. HH:mm", null)));
+            .OrderByDescending(c => c.Value.Max(m => DateTime.ParseExact(m.Date + " " + m.Time,
+                "yy.MM.dd. HH:mm",
+                null)));
 
         foreach (var conversation in orderedConversations)
         {
             GameObject newConversation = Instantiate(conversationPrefab, conversationList);
             
-            GameObject conversationIDAndDate = newConversation.transform.Find("ConversationIDAndDate").gameObject;
+            GameObject conversationContents = newConversation.transform.Find("contents").gameObject;
             
-            TextMeshProUGUI conversationIDText = conversationIDAndDate.transform.Find("ConversationIDText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI dateText = conversationIDAndDate.transform.Find("DateText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI latestMessageText = newConversation.transform.Find("LatestMessageText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI conversationIDText = conversationContents.transform.Find("ConversationIDText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI dateText = conversationContents.transform.Find("DateText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI latestMessageText = conversationContents.transform.Find("LatestMessageText").GetComponent<TextMeshProUGUI>();
 
             // Display the SpeakerID if it's not "DialogueC_002"
             var displaySpeakerID = conversation.Value.FirstOrDefault(m => m.SpeakerName != "우연")?.SpeakerName;
 
             // Get the latest message in the conversation
-            var latestMessage = conversation.Value.OrderByDescending(m => DateTime.ParseExact(m.Date + " " + m.Time, "yy.MM.dd. HH:mm", null)).First();
+            var latestMessage = conversation.Value.OrderByDescending(m => DateTime.ParseExact(m.Date + " " + m.Time,
+                    "yy.MM.dd. HH:mm",
+                    null))
+                .First();
 
             conversationIDText.text = displaySpeakerID ?? conversation.Key;
             latestMessageText.text = latestMessage.ScriptContent;
@@ -122,6 +142,12 @@ public class ChatApp : MonoBehaviour
         if (currentConversationKey == conversationKey) return;
         currentConversationKey = conversationKey;
 
+        messageParent.SetActive(true);
+        senderText.text = conversations[conversationKey]
+                              .FirstOrDefault(m => m.SpeakerName != "우연")
+                              ?.SpeakerName ??
+                          conversationKey;
+        
         // Clear previous messages
         foreach (Transform child in messageList)
         {
@@ -153,17 +179,20 @@ public class ChatApp : MonoBehaviour
             // Instantiate the appropriate message prefab (left or right)
             GameObject messagePrefab = message.SpeakerName == "우연" ? messagePrefabRight : messagePrefabLeft;
             GameObject newMessage = Instantiate(messagePrefab, messageList);
-            GameObject parent = newMessage.transform.Find("Parent").gameObject;
-            TextMeshProUGUI speakerText = parent.transform.Find("SpeakerText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI messageText = parent.transform.Find("MessageText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI timeText = newMessage.transform.Find("TimeText").GetComponent<TextMeshProUGUI>();
+            // GameObject messageParentGameObject = newMessage.transform.Find("Message Parent").gameObject;
+            GameObject messageMidParent = newMessage.transform.Find("Message Mid Parent").gameObject;
+            GameObject messageBottomParent = newMessage.transform.Find("Message Bottom Parent").gameObject;
+            // TextMeshProUGUI speakerText = messageMidParent.transform.Find("SpeakerText").GetComponent<TextMeshProUGUI>();
+            GameObject messageMidBackgroundImage = messageMidParent.transform.Find("Background Image").gameObject;
+            TextMeshProUGUI messageText = messageMidBackgroundImage.transform.Find("MessageText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI timeText = messageBottomParent.transform.Find("TimeText").GetComponent<TextMeshProUGUI>();
 
-            speakerText.text = message.SpeakerName;
+            // speakerText.text = message.SpeakerName;
             messageText.text = message.ScriptContent;
             timeText.text = message.Time;
         }
+        messageList.GetComponent<VerticalLayoutGroup>().spacing = 10;
     }
-
 }
 
 public class Message
