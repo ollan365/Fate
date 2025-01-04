@@ -54,7 +54,6 @@ public class DiaryManager : PageContentsManager
         }
     }
     
-    
     public override void DisplayPage(PageType pageType, int pageNum)
     {
         Dictionary<string, (string, string)> currentPages = GetCurrentPagesDictionary();
@@ -189,11 +188,8 @@ public class DiaryManager : PageContentsManager
         // Debug.Log($"flipRightButtonOn: {flipRightButtonOn}\n\tcurrentPage: {currentPage}\n\ttotalPageCount: {totalPageCount}");
         flipRightButton.SetActive(flipRightButtonOn);
 
-        // ��Ż��2 ���̾ ����
-        if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect")
-            && GetDiaryType() == "Diary2")
+        if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect") && GetDiaryType() == "Diary2")
         {
-            // ���̾ ���� �������� 2������ Ȯ���ϸ� ���̾ ���� Ȯ�� ��ũ��Ʈ ��µ�
             GameManager.Instance.SetVariable("Diary2PresentPageNumber", presentPageNum);
             EventManager.Instance.CallEvent("EventDiary2Content");
         }
@@ -210,6 +206,7 @@ public class DiaryManager : PageContentsManager
 
         string[] lines = diaryCsv.text.Split('\n');
         string previousDiaryPageID = "";
+        doodlesOrder = GameManager.Instance.GetVariable("DoodlesOrder") as string;
 
         for (int i = 1; i < lines.Length; i++)
         {
