@@ -344,7 +344,7 @@ public class GameManager : MonoBehaviour
         // 신호등
         variables["LightClick"] = 0;
         // 음료
-        variables["LatteClcik"] = 0;
+        variables["LatteClick"] = 0;
         // 1층 옷가게
         variables["1FClothesClick"] = 0;
         // 2층 옷가게
@@ -356,7 +356,7 @@ public class GameManager : MonoBehaviour
         // 칵테일 바
         variables["CocktailBarClick"] = 0;
         // 화장품 가게
-        variables["CosemeticClick"] = 0;
+        variables["CosmeticClick"] = 0;
         // 뮤직바
         variables["MusicBarClick"] = 0;
         // 클럽
@@ -396,7 +396,7 @@ public class GameManager : MonoBehaviour
         // 뮤직바
         variables["MusicBarClick2"] = 0;
         // 화장품 가게
-        variables["CosemeticClick2"] = 0;
+        variables["CosmeticClick2"] = 0;
         // 3층 술집
         variables["DrinkCClick2"] = 0;
         // 2층 맥주 가게

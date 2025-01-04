@@ -264,13 +264,13 @@ public static class Constants
             case FollowObjectName.Receipt: return "ReceiptClick";
             case FollowObjectName.Light:   return "LightClick";
 
-            case FollowObjectName.Coffee: return "LatteClcik";
+            case FollowObjectName.Coffee: return "LatteClick";
             case FollowObjectName.Shop_1: return "1FClothesClick";
             case FollowObjectName.Shop_2: return "2FClothesClick";
             case FollowObjectName.Construction: return "ConstructionClick";
             case FollowObjectName.Omerice: return "RestaurantClick";
             case FollowObjectName.Cocktail: return "CocktailBarClick";
-            case FollowObjectName.MiracleYoung: return "CosemeticClick";
+            case FollowObjectName.MiracleYoung: return "CosmeticClick";
             case FollowObjectName.MusicBar: return "MusicBarClick";
             case FollowObjectName.Club: return "ClubCliclk";
             case FollowObjectName.Beer: return "BeerClick";
@@ -290,7 +290,7 @@ public static class Constants
             case FollowObjectName.Restaurant2: return "RestaurantClick2";
             case FollowObjectName.DrinkB: return "DrinkBClick2";
             case FollowObjectName.MusicBar2: return "MusicBarClick2";
-            case FollowObjectName.Cosmetic2: return "CosemeticClick2";
+            case FollowObjectName.Cosmetic2: return "CosmeticClick2";
             case FollowObjectName.DrinkC: return "DrinkCClick2";
             case FollowObjectName.BeerB: return "BeerBClick2";
             case FollowObjectName.Club2: return "ClubClick2";
