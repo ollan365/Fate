@@ -7,9 +7,9 @@ public class Room2ActionPointManager : ActionPointManager
     // 회복제 먹었을 경우
     [SerializeField] private bool isEatenEnergySupplement;
 
-    // 방탈출2에서 회복제 먹은 상태면 배경지도 extended로 바꿈
-    [SerializeField] private GameObject backgroundImageDefault;
-    [SerializeField] private GameObject backgroundImageExtended;
+    //// 방탈출2에서 회복제 먹은 상태면 배경지도 extended로 바꿈
+    //[SerializeField] private GameObject backgroundImageDefault;
+    //[SerializeField] private GameObject backgroundImageExtended;
 
     private bool isChoosingBrokenBearChoice = false;
 
@@ -94,8 +94,8 @@ public class Room2ActionPointManager : ActionPointManager
         // change Day text on screen
         dayText.text = $"Day {nowDayNum}";
 
-        // 하트 배경지 바꿈
-        ChangeHeartBackgroundImageExtended((bool)GameManager.Instance.GetVariable("TeddyBearFixed"));
+        //// 하트 배경지 바꿈
+        //ChangeHeartBackgroundImageExtended((bool)GameManager.Instance.GetVariable("TeddyBearFixed"));
 
         if (isEatenEnergySupplement)
             isEatenEnergySupplement = false;
@@ -228,8 +228,8 @@ public class Room2ActionPointManager : ActionPointManager
 
         CreateHearts();
 
-        // 하트 배경지 바꿈
-        ChangeHeartBackgroundImageExtended(true);
+        //// 하트 배경지 바꿈
+        //ChangeHeartBackgroundImageExtended(true);
     }
 
     public void SetChoosingBrokenBearChoice(bool isChoosing)
@@ -242,30 +242,30 @@ public class Room2ActionPointManager : ActionPointManager
         return isChoosingBrokenBearChoice;
     }
 
-    // 회복제 먹은 상태라면 배경지를 바꿈
-    private void ChangeHeartBackgroundImageExtended(bool isExtended)
-    {
-        int DefaultMaxActionPoint = 5;
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Room2")
-        {
-            if (isExtended)
-            {
-                if (backgroundImageExtended.activeSelf) return;
-                else
-                {
-                    if ((presentHeartIndex + 1) > DefaultMaxActionPoint)
-                    {
-                        backgroundImageDefault.SetActive(false);
-                        backgroundImageExtended.SetActive(true);
-                    }
-                }
-            }
-            else
-            {
-                backgroundImageDefault.SetActive(true);
-                backgroundImageExtended.SetActive(false);
-            }
-        }
-    }
+    //// 회복제 먹은 상태라면 배경지를 바꿈
+    //private void ChangeHeartBackgroundImageExtended(bool isExtended)
+    //{
+    //    int DefaultMaxActionPoint = 5;
+    //    if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Room2")
+    //    {
+    //        if (isExtended)
+    //        {
+    //            if (backgroundImageExtended.activeSelf) return;
+    //            else
+    //            {
+    //                if ((presentHeartIndex + 1) > DefaultMaxActionPoint)
+    //                {
+    //                    backgroundImageDefault.SetActive(false);
+    //                    backgroundImageExtended.SetActive(true);
+    //                }
+    //            }
+    //        }
+    //        else
+    //        {
+    //            backgroundImageDefault.SetActive(true);
+    //            backgroundImageExtended.SetActive(false);
+    //        }
+    //    }
+    //}
 
 }

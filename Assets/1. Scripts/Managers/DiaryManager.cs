@@ -185,11 +185,9 @@ public class DiaryManager : PageContentsManager
         // Debug.Log($"flipRightButtonOn: {flipRightButtonOn}\n\tcurrentPage: {currentPage}\n\ttotalPageCount: {totalPageCount}");
         flipRightButton.SetActive(flipRightButtonOn);
 
-        // ��Ż��2 ���̾ ����
         if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect")
             && GetDiaryType() == "Diary2")
         {
-            // ���̾ ���� �������� 2������ Ȯ���ϸ� ���̾ ���� Ȯ�� ��ũ��Ʈ ��µ�
             GameManager.Instance.SetVariable("Diary2PresentPageNumber", presentPageNum);
             EventManager.Instance.CallEvent("EventDiary2Content");
         }
