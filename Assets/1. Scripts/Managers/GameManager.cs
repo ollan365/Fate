@@ -334,7 +334,7 @@ public class GameManager : MonoBehaviour
         // 3층 바
         variables["BarClick"] = 0;
         // 이자카야
-        variables["IzakawaClick"] = 0;
+        variables["IzakayaClick"] = 0;
         // 고양이
         variables["CatClick"] = 0;
         // 카페
@@ -378,7 +378,7 @@ public class GameManager : MonoBehaviour
         // 3층 맥주 전문점
         variables["BeerAClick2"] = 0;
         // 이자카야
-        variables["IzakawaClick2"] = 0;
+        variables["IzakayaClick2"] = 0;
         // 카페
         variables["CafeClick2"] = 0;
         // 3층 옷가게

@@ -127,7 +127,7 @@ public static class Constants
     {
         // ========== 첫번째 미행 ========== //
         // 빌라, 빵집, 편의점, 바, 이자카야, 카페, 영수증, 신호등, 음료, 1층 옷가게, 2층 옷가게
-        Villa, Bread, Con, Bar, Izakawa, Cat, Cafe, Receipt, Light, Coffee, Shop_1, Shop_2,
+        Villa, Bread, Con, Bar, Izakaya, Cat, Cafe, Receipt, Light, Coffee, Shop_1, Shop_2,
         // 공사장, 식당, 칵테일 바, 화장품 가게, 뮤직바, 클럽, 술집, 화환
         Construction, Omerice, Cocktail, MiracleYoung, MusicBar, Club, Beer, Wreath,
 
@@ -137,7 +137,7 @@ public static class Constants
         Bar2,
         Bread2,
         BeerA,
-        Izakawa2,
+        Izakaya2,
         Cafe2,
         Clothes_3F,
         Clothes_2F,
@@ -182,7 +182,7 @@ public static class Constants
             case FollowObjectName.Bread:   return "EventFollowBread";
             case FollowObjectName.Con:     return "EventFollowConvenienceStore";
             case FollowObjectName.Bar:     return "EventFollowBar";
-            case FollowObjectName.Izakawa: return "EventFollowIzakaya";
+            case FollowObjectName.Izakaya: return "EventFollowIzakaya";
             case FollowObjectName.Cat:     return "EventFollowCat";
             case FollowObjectName.Cafe:    return "EventFollowCafe";
             case FollowObjectName.Receipt: return "EventFollowCafeReceipt";
@@ -212,7 +212,7 @@ public static class Constants
             case FollowObjectName.Bar2: return "EventFollow2Bar";
             case FollowObjectName.Bread2: return "EventFollow2Bread";
             case FollowObjectName.BeerA: return "EventFollow2BeerA";
-            case FollowObjectName.Izakawa2: return "EventFollow2Izakawa";
+            case FollowObjectName.Izakaya2: return "EventFollow2Izakaya";
             case FollowObjectName.Cafe2: return "EventFollow2Cafe";
             case FollowObjectName.Clothes_3F: return "EventFollow23FClothes";
             case FollowObjectName.Clothes_2F: return "EventFollow22FClothes";
@@ -258,7 +258,7 @@ public static class Constants
             case FollowObjectName.Bread:   return "BreadClick";
             case FollowObjectName.Con:     return "ConClick";
             case FollowObjectName.Bar:     return "BarClick";
-            case FollowObjectName.Izakawa: return "IzakawaClick";
+            case FollowObjectName.Izakaya: return "IzakayaClick";
             case FollowObjectName.Cat:     return "CatClick";
             case FollowObjectName.Cafe:    return "CafeClick";
             case FollowObjectName.Receipt: return "ReceiptClick";
@@ -281,7 +281,7 @@ public static class Constants
             case FollowObjectName.Bar2: return "BarClick2";
             case FollowObjectName.Bread2: return "BreadClick2";
             case FollowObjectName.BeerA: return "BeerAClick2";
-            case FollowObjectName.Izakawa2: return "IzakawaClick2";
+            case FollowObjectName.Izakaya2: return "IzakayaClick2";
             case FollowObjectName.Cafe2: return "CafeClick2";
             case FollowObjectName.Clothes_3F: return "3FClothesClick2";
             case FollowObjectName.Clothes_2F: return "2FClothesClick2";

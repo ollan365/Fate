@@ -1175,7 +1175,7 @@ public class ResultManager : MonoBehaviour
                 DialogueManager.Instance.StartDialogue("Follow_005");
                 break;
 
-            case "ResultIzakawaScript": // 이자카야에 대한 스크립트
+            case "ResultIzakayaScript": // 이자카야에 대한 스크립트
                 DialogueManager.Instance.StartDialogue("Follow_006");
                 break;
 
