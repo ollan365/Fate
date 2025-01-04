@@ -433,7 +433,6 @@ public class GameManager : MonoBehaviour
         if (isDebug)
         {
             ShowVariables();
-            SaveManager.Instance.DeleteGameData();
         }
     }
 
