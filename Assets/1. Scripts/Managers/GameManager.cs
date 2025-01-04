@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         else return currentInquiryObjectId;
     }
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    void Start()
+    private void Start()
     {
         // ------------------------- 변수 초기화 -------------------------
         // 1. 시스템 관련 변수들
@@ -81,7 +81,8 @@ public class GameManager : MonoBehaviour
 
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
-        variables["ReplayCount"] = 3; // 게임 플레이 회차
+        variables["ReplayCount"] = 1; // 게임 플레이 회차
+        variables["DoodlesOrder"] = "81362475"; // 낙서 표시 순서
         
         variables["RefillHeartsOrEndDay"] = false;
 
@@ -121,7 +122,6 @@ public class GameManager : MonoBehaviour
 
         // 다회차 추가 곰인형
         variables["NewTeddyBearClick"] = 0;
-
 
         // 침대 위 곰인형
         variables["DollsClick"] = 0;
@@ -225,7 +225,6 @@ public class GameManager : MonoBehaviour
         // 문
         variables["DoorClick"] = 0;
 
-
         // 두번째 방탈출
 
         // 틴 케이스
@@ -321,8 +320,7 @@ public class GameManager : MonoBehaviour
         // 꿈일기
         variables["DreamDiary2Click"] = 0;
         variables["DreamDiary2Opened"] = false;
-
-
+        
         // 2 - 2. 이벤트 오브젝트 관련 변수들 - 첫번째 미행
         // 미행 튜토리얼 단계
         variables["FollowTutorialPhase"] = 0;
@@ -432,8 +430,11 @@ public class GameManager : MonoBehaviour
         variables["BadEndingCollect"] = 0; // 배드 엔딩을 본 횟수
         variables["SkipLobby"] = false;
 
-        if (isDebug) ShowVariables();
-
+        if (isDebug)
+        {
+            ShowVariables();
+            SaveManager.Instance.DeleteGameData();
+        }
     }
 
     public void SetVariable(string variableName, object value)
@@ -499,7 +500,10 @@ public class GameManager : MonoBehaviour
     // 디버깅 용
     private void Update()
     {
-        if (isDebug) ShowVariables();
+        if (isDebug)
+        {
+            ShowVariables();
+        }
     }
 
     private void ShowVariables()

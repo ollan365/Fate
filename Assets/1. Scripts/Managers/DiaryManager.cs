@@ -23,8 +23,12 @@ public class DiaryManager : PageContentsManager
 
     private int presentPageNum;
 
+    private string doodlesOrder = "";
+    private int replayCount = 1; 
+
     private void Awake()
     {
+        // SetDoodlesOrder();
         ParsePageContents();
     }
 
@@ -234,10 +238,9 @@ public class DiaryManager : PageContentsManager
 
             // add doodles
             bool isDoodle = fields[3].Trim() == "TRUE";
-            int replayCount = (int)GameManager.Instance.GetVariable("ReplayCount");
-            string doodleID = isDoodle ? $"doodling{replayCount}_2" : "";
-            if (diaryPageID == "Diary1_002")
-                Debug.Log($"Diary1_002: {script}, {doodleID}");
+            string doodleID = "";
+            if (isDoodle)
+                doodleID = $"doodling{doodlesOrder[replayCount - 1]}_2";
 
             if (targetDictionary.ContainsKey(diaryPageID))
             {
@@ -250,10 +253,33 @@ public class DiaryManager : PageContentsManager
 
         // Set totalPageCount based on the current scene's dictionary size
         totalPageCount = GetCurrentPagesDictionary()?.Count ?? 0;
-
-        foreach (var page in GetCurrentPagesDictionary()) // Print all pages for debugging
+    }
+    
+    public void SetDoodlesOrder(int doodlesCount=8)
+    {
+        replayCount = (int)GameManager.Instance.GetVariable("ReplayCount");
+        if (replayCount != 1)
         {
-            // Debug.Log($"diaryID: {page.Key}\n\ttext: {page.Value}");
+            doodlesOrder = (string)GameManager.Instance.GetVariable("DoodlesOrder");
+            return;
         }
+        
+        bool[] visited = new bool[doodlesCount + 1];
+        for (int i = 1; i <= doodlesCount; i++)
+            visited[i] = false;
+        
+        for (int i = 1; i <= doodlesCount; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(1, doodlesCount + 1);
+            while (visited[randomIndex])
+                randomIndex = UnityEngine.Random.Range(1, doodlesCount + 1);
+            
+            visited[randomIndex] = true;
+            doodlesOrder += randomIndex.ToString();
+        }
+        
+        GameManager.Instance.SetVariable("DoodlesOrder", doodlesOrder);
+        
+        Debug.Log(doodlesOrder);
     }
 }
