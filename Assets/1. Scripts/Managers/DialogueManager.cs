@@ -13,13 +13,13 @@ public class DialogueManager : MonoBehaviour
 
     // Dialogue UI
     [Header("Dialogue UI")]
-    public DialogueType dialogueType = DialogueType.ROOM; // 사용할 대화창 종류
+    public DialogueType dialogueType = DialogueType.ROOM_ACCIDY; // 사용할 대화창 종류
     public GameObject[] dialogueSet;
     public TextMeshProUGUI speakerText;
     public TextMeshProUGUI[] scriptText;
     public Image[] backgroundImages;
     public Image[] characterImages;
-    public Image characterFadeImage;
+    public Image[] characterFadeImages;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
@@ -233,8 +233,20 @@ public class DialogueManager : MonoBehaviour
                 characterImage.gameObject.SetActive(true);
             }
 
-            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterFadeImage.gameObject.SetActive(false);
-            else characterFadeImage.color = new Color(0, 0, 0, 0.8f);
+            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001")
+                foreach (Image characterImage in characterFadeImages)
+                    characterImage.gameObject.SetActive(false);
+            else
+            {
+                foreach (Image characterImage in characterFadeImages)
+                {
+                    characterImage.color = new Color(0, 0, 0, 0.8f);
+                    characterImage.sprite = characterSprite;
+                    characterImage.SetNativeSize();
+                    characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
+                    characterImage.gameObject.SetActive(true);
+                }
+            }
         }
 
     }
@@ -242,16 +254,10 @@ public class DialogueManager : MonoBehaviour
     private void ChangeDialogueCanvas(string speaker)
     {
         if(dialogueType == DialogueType.CENTER)
-            dialogueType = DialogueType.ROOM;
-
-        // 방 대화창
-        if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
-            dialogueType = DialogueType.ROOM_THINKING;
-        else if (dialogueType == DialogueType.ROOM_THINKING && speaker != "DialogueC_004")
-            dialogueType = DialogueType.ROOM;
+            dialogueType = DialogueType.ROOM_ACCIDY;
 
         // 미행 대화창
-        else if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING || dialogueType == DialogueType.FOLLOW_EXTRA)
+        if ((int)GameManager.Instance.GetVariable("CurrentScene") is 2 or 4)
         {
             if (speaker == "DialogueC_004")
             {
@@ -268,7 +274,16 @@ public class DialogueManager : MonoBehaviour
                 FollowManager.Instance.EndExtraDialogue(false);
                 FollowManager.Instance.OpenExtraDialogue(speaker);
             }
+            return;
         }
+
+        // 방 대화창
+        if (speaker is "DialogueC_001" or "DialogueC_002")
+            dialogueType = DialogueType.ROOM_ACCIDY;
+        else if(speaker is "DialogueC_003")
+            dialogueType = DialogueType.ROOM_FATE;
+        else if (speaker is "DialogueC_004")
+            dialogueType = DialogueType.ROOM_THINKING;
     }
     public void EndDialogue()
     {

@@ -203,7 +203,7 @@ public class FollowDayMiniGame : MonoBehaviour
         // if (isGameOver && MemoManager.Instance.UnlockNextScene())
         if (isGameOver)
         {
-            DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM;
+            DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM_ACCIDY;
             blockingPanel.SetActive(true);
             DialogueManager.Instance.StartDialogue("Follow1Final_003"); // 우연의 대사 출력
             yield break;
