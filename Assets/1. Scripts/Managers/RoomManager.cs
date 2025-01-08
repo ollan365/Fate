@@ -104,7 +104,7 @@ public class RoomManager : MonoBehaviour
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
         {
             if (!GameManager.Instance.skipTutorial
-                && (int)GameManager.Instance.GetVariable("EndingCollect") == 0
+                && (int)GameManager.Instance.GetVariable("ReplayCount") == 0
                 && !(bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
                 DialogueManager.Instance.StartDialogue("Prologue_015");
         }

@@ -15,7 +15,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue UI")]
     public DialogueType dialogueType = DialogueType.ROOM_ACCIDY; // 사용할 대화창 종류
     public GameObject[] dialogueSet;
-    public TextMeshProUGUI speakerText;
+    public TextMeshProUGUI[] speakerTexts;
     public TextMeshProUGUI[] scriptText;
     public Image[] backgroundImages;
     public Image[] characterImages;
@@ -183,9 +183,10 @@ public class DialogueManager : MonoBehaviour
         // 미행의 행인은 별도의 SpeakerID를 가짐
         if (dialogueType != DialogueType.FOLLOW_EXTRA)
         {
-            speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
-                ? GameManager.Instance.GetVariable("FateName").ToString()
-                : scripts[dialogueLine.SpeakerID].GetScript();
+            foreach (TextMeshProUGUI speakerText in speakerTexts)
+                speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
+                    ? GameManager.Instance.GetVariable("FateName").ToString()
+                    : scripts[dialogueLine.SpeakerID].GetScript();
         }
 
         StartCoroutine(TypeSentence(sentence));

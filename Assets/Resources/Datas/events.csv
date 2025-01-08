@@ -95,7 +95,7 @@ EventClosetClosed,닫힌 옷장 문,닫힌 옷장 문을 처음 클릭,AND,Condi
 EventClosetClosed,닫힌 옷장 문,가방 조사 후 닫힌 문을 클릭,,ConditionClosetBagManyClick,ResultClosetDoorsOpen/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,새로 추가(나은)
 EventClosetClosed,닫힌 옷장 문,가방 조사 안 한 상태에서 닫힌 옷장 문 다시 클릭,AND,ConditionClosetBagFirstClick/ConditionManyClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,
 EventClosetOpen,열린 옷장 문,열린 옷장 문을 클릭,,ConditionClosetDoorsOpen,ResultClosetDoorsClosed/Result_InverseClosetDoorsClosed,새로 추가(나은)
-EventClosetBag,옷장 안 가방,가방을 처음 클릭,,ConditionClosetBagFirstClick,ResultClosetBagScript/ResultClosetBagMemo/Result_IncrementBagClick/Result_IsFinishedEventClosetBag/ResultTimePass,Result_IsFinished 추가
+EventClosetBag,옷장 안 가방,가방을 처음 클릭,,ConditionClosetBagFirstClick,ResultClosetBagScript/Result_IncrementBagClick/Result_IsFinishedEventClosetBag/ResultTimePass,Result_IsFinished 추가
 EventClosetBag,옷장 안 가방,가방을 다시 클릭,,ConditionClosetBagManyClick,ResultClosetBagScript/Result_IncrementBagClick/ResultTimePass,새로 추가(나은)
 ,,,,,,
 EventClosetBox,옷장 위 상자,상자를 열어본 상태에서 상자 다시 클릭,,ConditionBoxOpen,ResultClosetBoxScript/ResultClosetBoxSound/ResultClosetBoxPicturesUI/Result_IncrementBoxClick/ResultTimePass,새로 추가(나은)
@@ -316,11 +316,13 @@ EventRoom2Morning,,,,ConditionNowDayNum4,Result_Room2Morning4,
 EventRoom2Morning,,,,ConditionNowDayNum5,Result_Room2Morning5,
 ,,,,,,
 EventEndRoom1,,,,,ResultEndRoom1,
+EventEndRoom2,,,,,ResultEndRoom2,
+,,,,,,
 EventFollowVilla,필연이 갇힌 빌라,빌라를 처음 클릭,,ConditionVillaClick,ResultVillaScript,여기부터 미행
 EventFollowBread,빵집,빵집을 클릭,,ConditionBreadClick,ResultBreadScript,
 EventFollowConvenienceStore,편의점,편의점을 클릭,,ConditionConClick,ResultConScript,
 EventFollowBar,바,바를 클릭,,ConditionBarClick,ResultBarScript,
-EventFollowIzakaya,이자카야,이자카야를 클릭,,ConditionIzakawaClick,ResultIzakawaScript,
+EventFollowIzakaya,이자카야,이자카야를 클릭,,ConditionIzakayaClick,ResultIzakayaScript,
 EventFollowCat,환풍기 위 고양이,환풍기 위에 고양이 클릭,,ConditionCatClick,ResultCatScript,
 EventFollowCafe,카페,카페 간판을 가방 조사를 끝낸 상태에서 클릭,AND,ConditionCafeFirstClick/ConditionClosetBagManyClick,ResultCafeScript/ResultCafeMemo2,
 EventFollowCafe,카페,카페 간판을 가방 조사를 하지 않은 상태에서 클릭,AND,ConditionCafeFirstClick/ConditionClosetBagFirstClick,ResultCafeScript/ResultCafeMemo1,
@@ -340,7 +342,7 @@ EventFollowConstructionSite,공사장,공사장을 처음 클릭,,ConditionConst
 EventFollowConstructionSite,공사장,공사장을 여러번 클릭,,ConditionConstructionManyClick,ResultConstructionScript,
 EventFollowRestaurant,식당,식당을 클릭,,ConditionRestaurantClick,ResultRestaurantScript,
 EventFollowCocktailBar,칵테일 바,칵테일 바를 클릭,,ConditionCocktailBarClick,ResultCocktailBarScript,
-EventFollowDrugstore,화장품 가게,화장품 가게를 클릭,,ConditionCosemeticClick,ResultCosemeticScript,
+EventFollowDrugstore,화장품 가게,화장품 가게를 클릭,,ConditionCosmeticClick,ResultCosemeticScript,
 EventFollowMusicBar,뮤직바,뮤직바를 클릭,,ConditionMusicBarClick,ResultMusicBarScript,
 EventFollowClub,클럽,클럽을 클릭,,ConditionClubClick,ResultClubScript,
 EventFollowPub,술집을 클릭,술집을 클릭,,ConditionBeerClick,ResultMusicBarScript,
@@ -370,7 +372,7 @@ EventFollow2Villa,빌라 ,빌라를 클릭,,ConditionVillaClick2,ResultVillaScri
 EventFollow2Bar,편의점 건물 바,바를 클릭,,ConditionBarClick2,ResultBarScript2,
 EventFollow2Bread,빵집,빵집을 클릭,,ConditionBreadClick2,ResultBreadScript2,
 EventFollow2BeerA,맥주 전문점,카페 건물 3층 맥주전문점을 클릭,,ConditionBeerAClick2,ResultBeerAScript2,
-EventFollow2Izakawa,이자카야,카페 건물  2층 이자카야를 클릭,,ConditionIzakawaClick2,ResultIzakayaScript2,
+EventFollow2Izakaya,이자카야,카페 건물  2층 이자카야를 클릭,,ConditionIzakayaClick2,ResultIzakayaScript2,
 EventFollow2Cafe,카페,카페를 클릭,,ConditionCafeClick2,ResultCafeScript2,
 EventFollow23FClothes,3층 옷가게를 클릭,옷가게를 클릭,,Condition3FClothesClick2,Result3FClothesScript2,
 EventFollow22FClothes,2층 옷가게를 클릭,옷가게를 클릭,,Condition2FClothesClick2,Result2FClothesScript2,
@@ -379,7 +381,7 @@ EventFollow2CocktailBar,칵테일바,식당 건물 2층 칵테일집을 클릭,,
 EventFollow2Restaurant,식당,식당을 클릭,,ConditionRestaurantClick2,ResultRestaurantScript2,
 EventFollow2DrinkB,술집2,화장품 가게 3층을 술집 클릭,,ConditionDrinkBClick2,ResultDrinkScript2,
 EventFollow2MusicBar,뮤직바,뮤직바를 클릭,,ConditionMusicBarClick2,ResultMusicBarScript2,
-EventFollow2Cosemetic,화장품 가게,화장품 가게를 클릭,,ConditionCosemeticClick2,ResultCosemeticScript,
+EventFollow2Cosemetic,화장품 가게,화장품 가게를 클릭,,ConditionCosmeticClick2,ResultCosemeticScript,
 EventFollow2DrinkC,술집 ,클럽 건물 3층 술집 클릭,,ConditionDrinkCClick2,ResultDrinkScript2,
 EventFollow2BeerB,생맥 전문점,생맥 전문점 클릭,,ConditionBeerBClick2,ResultBeerBScript2,
 EventFollow2Club,클럽,클럽,,ConditionClubClick2,ResultClubScript2,

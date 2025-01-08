@@ -81,8 +81,6 @@ public class GameManager : MonoBehaviour
 
         variables["currentSideIndex"] = 0; // 방탈출 현재 사이드 번호
 
-        variables["ReplayCount"] = 3; // 게임 플레이 회차
-        
         variables["RefillHeartsOrEndDay"] = false;
 
         variables["CurrentScene"] = Constants.SceneType.START.ToInt();
@@ -423,7 +421,7 @@ public class GameManager : MonoBehaviour
         variables["GuardClick2"] = 0;
 
         // 3. 엔딩 관련 변수들
-        variables["EndingCollect"] = 0; // 회차
+        variables["ReplayCount"] = 0; // 게임 플레이 회차
         variables["LastEnding"] = "NONE"; // 마지막으로 본 엔딩
         variables["BadACollect"] = 0; // 배드A 엔딩을 본 횟수
         variables["BadBCollect"] = 0; // 배드B 엔딩을 본 횟수
