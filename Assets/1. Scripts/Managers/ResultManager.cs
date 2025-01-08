@@ -1026,7 +1026,7 @@ public class ResultManager : MonoBehaviour
 
             case "Result_showBook2CoverImage": // 떨어진 책 한권 표지 확대 UI
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "book2Cover");
-                Debug.Log("떨어진 책 한권 표지 확대 UI");
+                //Debug.Log("떨어진 책 한권 표지 확대 UI");
                 break;
 
             case "ResultBook2Script": // 떨어진 책 한권 스크립트
@@ -1111,6 +1111,11 @@ public class ResultManager : MonoBehaviour
 
             case "Result_Room2Morning5":
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_014", totalTime));
+                break;
+
+            case "ResultEndRoom2": // Room2 끝, 스크립트 출력 및 미행2로 진행
+                DialogueManager.Instance.StartDialogue("RoomEscape2S_016");
+                SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
                 break;
 
 

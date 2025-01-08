@@ -16,7 +16,6 @@ public class ClockHand : MonoBehaviour
     private int correctMinute;
     private int correctHour;
     private bool isClockTimeCorrect = false;
-    private int beforeTime;
 
     [SerializeField] private ImageAndLockPanelManager imageAndLockPanelManager;
 
@@ -42,8 +41,6 @@ public class ClockHand : MonoBehaviour
                 lastAngle = Mathf.Atan2(mousePosition.y - minuteHand.position.y, mousePosition.x - minuteHand.position.x) * Mathf.Rad2Deg;
                 dragging = true;
                 SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_ClockMovement, true);
-                
-                beforeTime = CalculateHourFromAngle(hourAngle) * 60 + CalculateMinuteFromAngle(minuteAngle);
             }
         }
         if (dragging && Input.GetMouseButton(0))
@@ -59,7 +56,7 @@ public class ClockHand : MonoBehaviour
         {
             SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_ClockMovement, false);
             dragging = false;
-            StartCoroutine(SnapHandsToNearestTick(beforeTime));
+            StartCoroutine(SnapHandsToNearestTick());
         }
     }
     private void RotateMinuteHand(float delta)
@@ -72,38 +69,30 @@ public class ClockHand : MonoBehaviour
         hourAngle += delta / 12;
         hourHand.rotation = Quaternion.Euler(0, 0, hourAngle);
     }
-    private System.Collections.IEnumerator SnapHandsToNearestTick(int timeBefore)
+    private System.Collections.IEnumerator SnapHandsToNearestTick()
     {
         isSnapping = true;  // 달라붙고 있는 도중에는 조작 불가능 
         float targetMinuteRotation = Mathf.Round(minuteAngle / 30) * 30;
         float targetHourRotation = Mathf.Round(hourAngle / 2.5f) * 2.5f;
-        
         while (Mathf.Abs(Mathf.DeltaAngle(minuteHand.eulerAngles.z, targetMinuteRotation)) > 0.1f ||
                Mathf.Abs(Mathf.DeltaAngle(hourHand.eulerAngles.z, targetHourRotation)) > 0.1f)
         {
             if (Mathf.Abs(Mathf.DeltaAngle(minuteHand.eulerAngles.z, targetMinuteRotation)) > 0.1f)
             {
-                float minuteAngle = Mathf.MoveTowardsAngle(minuteHand.eulerAngles.z,
-                    targetMinuteRotation,
-                    smoothSnapSpeed * Time.deltaTime);
+                float minuteAngle = Mathf.MoveTowardsAngle(minuteHand.eulerAngles.z, targetMinuteRotation, smoothSnapSpeed * Time.deltaTime);
                 minuteHand.rotation = Quaternion.Euler(0, 0, minuteAngle);
                 this.minuteAngle = minuteAngle;
             }
             if (Mathf.Abs(Mathf.DeltaAngle(hourHand.eulerAngles.z, targetHourRotation)) > 0.1f)
             {
-                float hourAngle = Mathf.MoveTowardsAngle(hourHand.eulerAngles.z,
-                    targetHourRotation,
-                    smoothSnapSpeed * Time.deltaTime);
+                float hourAngle = Mathf.MoveTowardsAngle(hourHand.eulerAngles.z, targetHourRotation, smoothSnapSpeed * Time.deltaTime);
                 hourHand.rotation = Quaternion.Euler(0, 0, hourAngle);
                 this.hourAngle = hourAngle;
             }
             yield return null;
         }
         isSnapping = false;
-        
-        var timeAfter = CalculateHourFromAngle(hourAngle) * 60 + CalculateMinuteFromAngle(minuteAngle);
-        if (timeBefore != timeAfter)
-            CompareClockHands();
+        CompareClockHands();
     }
     private void CompareClockHands()
     {
@@ -111,6 +100,9 @@ public class ClockHand : MonoBehaviour
 
         int currentHour = CalculateHourFromAngle(hourAngle);
         int currentMinute = CalculateMinuteFromAngle(minuteAngle);
+
+        // Debug.Log($"current time: {currentHour}:{currentMinute}");
+
         if (currentHour == correctHour && currentMinute == correctMinute)
         {
             GameManager.Instance.SetVariable("ClockTimeCorrect", true);

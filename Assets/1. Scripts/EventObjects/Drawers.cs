@@ -19,10 +19,34 @@ public class Drawers : EventObject, IResultExecutable
     public List<GameObject> sideClosedUpDrawerObjects;
     public List<GameObject> sideOpenUpDrawerObjects;
 
+    // ************************* temporary members for moving *************************
+    private Vector2 originalPosition;  // 기존 위치 
+    private List<Vector2> movedPositions = new List<Vector2> { Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero };
+    private RectTransform rectTransform;  // targetPosition에 위의 origin 위치랑 moved 위치를 대입해서 거기까지 움직이게 함.
+    [SerializeField] private float moveDuration = 0.3f; // 이동에 걸리는 시간
+    private bool isMoving = false; // 움직이는 중인지 여부
+    // ********************************************************************************
+
     private void Awake()
     {
         closedOrOpen = isClosedDrawers ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Drawers", this);
+
+
+        rectTransform = GetComponent<RectTransform>();
+
+        originalPosition = rectTransform.anchoredPosition;  // 초기 위치 저장
+        switch (isUpDrawer)
+        {
+            case true:
+                // upDrawer
+                movedPositions[1] = new Vector2(originalPosition.x, -75.3f);
+                break;
+            case false:
+                // downDrawer
+                movedPositions[2] = new Vector2(originalPosition.x, 191.7f);
+                break;
+        }
     }
 
     public new void OnMouseDown()
@@ -31,8 +55,6 @@ public class Drawers : EventObject, IResultExecutable
         if (isBusy) return;
 
         base.OnMouseDown();
-
-        //if (isClosedDrawers) GameManager.Instance.IncrementVariable($"{closedOrOpen}{parentObjectName}DrawersClick");
     }
 
     public void ExecuteAction()
@@ -45,8 +67,23 @@ public class Drawers : EventObject, IResultExecutable
         isInquiry = false;  // 조사 시스템 예 아니오 스킵
 
         //GameManager.Instance.InverseVariable($"{parentObjectName}DrawersClosed");
+
+        // ************************* temporary codes for moving *************************
         otherDrawers.SetActive(true);
-        gameObject.SetActive(false);
+        if (!otherDrawers.GetComponent<Drawers>().isClosedDrawers)
+        {
+            otherDrawers.GetComponent<Drawers>().ExecuteActionMoveDrawer();
+        }
+
+        if (!isClosedDrawers)
+        {
+            ExecuteActionMoveDrawer();
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+        // *******************************************************************************
 
         showDrawersInSide();
     }
@@ -97,4 +134,49 @@ public class Drawers : EventObject, IResultExecutable
             }
         }
     }
+
+
+    // ************************* temporary methods for moving *************************
+    public void ExecuteActionMoveDrawer()
+    {
+        bool UpDrawerMoved = isUpDrawer ? (bool)GameManager.Instance.GetVariable("UpDrawerMoved") 
+            : (bool)GameManager.Instance.GetVariable("DownDrawerMoved");
+        int movedPositionsIndex = 1;
+        if (!isUpDrawer)
+            movedPositionsIndex = 2;
+
+        Vector2 targetPosition = UpDrawerMoved ? originalPosition : movedPositions[movedPositionsIndex];
+
+        if (!isClosedDrawers) StartCoroutine(MoveDrawer(targetPosition));
+    }
+
+    IEnumerator MoveDrawer(Vector2 targetPosition)
+    {
+        isMoving = true;
+
+        GameManager.Instance.SetVariable(isUpDrawer ? "isUpDrawerMoving": "isDownDrawerMoving", isMoving);
+
+        float elapsedTime = 0;
+        Vector2 startingPosition = rectTransform.anchoredPosition;
+
+        while (elapsedTime < moveDuration)
+        {
+            rectTransform.anchoredPosition = Vector2.Lerp(startingPosition, targetPosition, (elapsedTime / moveDuration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        rectTransform.anchoredPosition = targetPosition;
+
+        isMoving = false;
+
+        GameManager.Instance.SetVariable(isUpDrawer ? "isUpDrawerMoving" : "isDownDrawerMoving", isMoving);
+
+        GameManager.Instance.InverseVariable(isUpDrawer ? "UpDrawerMoved" : "DownDrawerMoved");
+        bool DrawerMoved = (bool)GameManager.Instance.GetVariable(isUpDrawer ? "UpDrawerMoved" : "DownDrawerMoved");
+        if (!DrawerMoved)
+            gameObject.SetActive(false);
+
+    }
+    // *******************************************************************************
 }
