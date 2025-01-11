@@ -180,10 +180,12 @@ public class MemoManager : PageContentsManager
 
         ChangeMemoGauge();
     }
+    
     public void ShowMemoGauge(bool show)
     {
         memoGauge.SetActive(show);
     }
+    
     public void ChangeMemoGauge()
     {
         // memoGauge.SetActive(showMemoGauge);

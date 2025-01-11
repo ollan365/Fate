@@ -75,7 +75,9 @@ public class EventManager : MonoBehaviour
             foreach (string resultID in resultIDs)
             {
                 string resultIDTrimmed = resultID.Trim();
-                if (resultIDTrimmed.StartsWith("Result_Increment") ||
+                // Function-wrapped results
+                if (resultIDTrimmed.StartsWith("Result_StartDialogue") || 
+                    resultIDTrimmed.StartsWith("Result_Increment") ||
                     resultIDTrimmed.StartsWith("Result_Decrement") ||
                     resultIDTrimmed.StartsWith("Result_Inverse") ||
                     resultIDTrimmed.StartsWith("Result_IsFinished") ||
