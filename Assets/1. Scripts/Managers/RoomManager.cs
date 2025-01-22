@@ -62,6 +62,8 @@ public class RoomManager : MonoBehaviour
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
         MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
+        
+        UIManager.Instance.SetUI("NormalVignette", true);
     }
     
     void Start()

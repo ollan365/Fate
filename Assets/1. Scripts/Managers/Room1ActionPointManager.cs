@@ -95,7 +95,7 @@ public class Room1ActionPointManager : ActionPointManager
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
         GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
 
-        StartCoroutine(Warning());
+        Warning();
 
         if (actionPoint % actionPointsPerDay == 0)
         {
