@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class UIManager : MonoBehaviour
 {
     [Header("UI Game Objects")]
     public GameObject normalVignette;
     public GameObject warningVignette;
+    public GameObject actionPoints;
+    public GameObject heartParent;
+    public GameObject dayText;
     
     private Dictionary<string, GameObject> uiGameObjects = new Dictionary<string, GameObject>();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
+    public TextMeshProUGUI dayTextTextMeshProUGUI;
     
     [Header("Warning Vignette Settings")]
     [SerializeField] protected float warningTime;
@@ -34,9 +38,13 @@ public class UIManager : MonoBehaviour
     private void AddUIGameObjects()
     {
         uiGameObjects.Add("NormalVignette", normalVignette);
-        
         uiGameObjects.Add("WarningVignette", warningVignette);
+        uiGameObjects.Add("ActionPoints", actionPoints);
+        uiGameObjects.Add("HeartParent", heartParent);
+        uiGameObjects.Add("DayText", dayText);
+
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
+        dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
     }
     
     public void SetAllUI(bool isActive)

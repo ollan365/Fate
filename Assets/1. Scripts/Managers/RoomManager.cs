@@ -43,11 +43,6 @@ public class RoomManager : MonoBehaviour
     public ActionPointManager actionPointManager;
     public Room2ActionPointManager Room2ActionPointManager;
 
-    // ************************* temporary members for action points *************************
-    [SerializeField] GameObject actionPointsUI;
-    [SerializeField] GameObject heartParent;
-    [SerializeField] TextMeshProUGUI dayText;
-    
     void Awake()
     {
         if (Instance == null)
@@ -64,6 +59,8 @@ public class RoomManager : MonoBehaviour
         MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
         
         UIManager.Instance.SetUI("NormalVignette", true);
+        UIManager.Instance.SetUI("DayText", true);
+        UIManager.Instance.SetUI("HeartParent", true);
     }
     
     void Start()
@@ -89,8 +86,6 @@ public class RoomManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = false;
         SetButtons();
 
-        actionPointManager.heartParent = heartParent;
-        actionPointManager.dayText = dayText;
         actionPointManager.CreateHearts();  // create hearts on room start
 
         // 아래는 뭘 살려야할지 모르겠어서 두개 모두 살려뒀습니다
@@ -231,11 +226,6 @@ public class RoomManager : MonoBehaviour
         }
     }
     
-    private void SetActionPointsUI(bool isTrue)
-    {
-        actionPointsUI.SetActive(isTrue);
-    }
-    
     public void SetButtons()
     {
         bool isInvestigatingOrZoomed = isInvestigating || isZoomed;
@@ -247,8 +237,8 @@ public class RoomManager : MonoBehaviour
         SetExitButton((isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen) 
                       || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen));
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
-        SetActionPointsUI(!isLaptopOpen);
         
+        UIManager.Instance.SetUI("ActionPoints", !isLaptopOpen);
         UIManager.Instance.SetUI("NormalVignette", !isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
