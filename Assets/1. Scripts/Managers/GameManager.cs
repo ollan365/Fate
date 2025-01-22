@@ -167,15 +167,6 @@ public class GameManager : MonoBehaviour
     // 디버깅 용
     private void Update()
     {
-        if (isDebug)
-        {
-            ShowVariables();
-        }
-    }
-
-    // 디버깅 용
-    private void Update()
-    {
         if (isDebug) ShowVariables();
     }
 
