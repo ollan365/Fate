@@ -10,8 +10,6 @@ public class FollowManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject[] UI_OffAtEnd;
-    [SerializeField] private GameObject blockingPanel;
-    [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
     [SerializeField] private Transform frontObjects;
@@ -36,7 +34,7 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private FollowGameManager followGameManager;
 
     [Header("Zoom")]
-    private Camera mainCam;
+    [SerializeField] private Camera cameraNonBlur;
     private float zoomTime = 1.5f;
     public enum Position { Fate, Accidy, ZoomOut }
 
@@ -71,8 +69,7 @@ public class FollowManager : MonoBehaviour
         IsEnd = false;
         IsDialogueOpen = false;
         ClickCount = 0;
-        mainCam = Camera.main;
-        SetCharcter(0);
+        SetCharcter();
 
         MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
 
@@ -95,7 +92,7 @@ public class FollowManager : MonoBehaviour
         followGameManager.StartGame();
     }
 
-    public void SetCharcter(int index)
+    public void SetCharcter()
     {
         if (accidy != null) accidy.gameObject.SetActive(false);
 
@@ -104,13 +101,6 @@ public class FollowManager : MonoBehaviour
         else accidy = accidyBoy;
 
         accidy.gameObject.SetActive(true);
-
-        if (index == 0) accidy.transform.parent.SetAsFirstSibling();
-        if (index == 1)
-        {
-            blockingPanel.transform.SetAsLastSibling();
-            accidy.transform.parent.SetAsLastSibling();
-        }
     }
 
     public void TutorialNextStep()
@@ -119,21 +109,10 @@ public class FollowManager : MonoBehaviour
     }
 
     // ==================== 미행 다이얼로그 ==================== //
-    public void SetBlockingPanel(bool activeTrue)
-    {
-        Color setting = activeTrue ? new Color(0.2f, 0.2f, 0.2f) : new Color(1, 1, 1);
-
-        foreach (Transform frontObject in frontObjects)
-        { frontObject.GetComponent<Image>().color = setting; }
-
-        if (extraBlockingPanel.activeSelf && activeTrue) return;
-        blockingPanel.SetActive(activeTrue);
-    }
     public bool ClickObject()
     {
         if (IsEnd || !CanClick) return false;
 
-        SetBlockingPanel(true);
         followGameManager.ChangeAnimStatusToStop(true);
 
         if (IsDialogueOpen) return false;
@@ -152,7 +131,6 @@ public class FollowManager : MonoBehaviour
     public void EndScript()
     {
         IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
-        SetBlockingPanel(false);
 
         Accidy.speed = accidyAnimatorSpeed;
         Fate.speed = fateAnimatorSpeed;
@@ -205,8 +183,8 @@ public class FollowManager : MonoBehaviour
         Vector3 targetPosition = new(Fate.transform.position.x, 0, -10);
         float targetSize = 5;
 
-        Vector3 originPosition = mainCam.transform.position;
-        float originSize = mainCam.orthographicSize;
+        Vector3 originPosition = Camera.main.transform.position;
+        float originSize = Camera.main.orthographicSize;
 
         float elapsedTime = 0f;
 
@@ -231,15 +209,18 @@ public class FollowManager : MonoBehaviour
             }
 
             // 보간하여 카메라 위치와 크기를 변경
-            mainCam.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
-            mainCam.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
+            Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
+            Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
+            
+            cameraNonBlur.orthographicSize = Camera.main.orthographicSize;
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         // 변경이 완료된 후 최종 목표값으로 설정
-        mainCam.orthographicSize = targetSize;
+        Camera.main.orthographicSize = targetSize;
+        cameraNonBlur.orthographicSize = Camera.main.orthographicSize;
     }
     public void CheckPosition()
     {

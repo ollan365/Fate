@@ -7,6 +7,12 @@ using static Constants;
 
 public class FollowGameManager : MonoBehaviour
 {
+    [Header("Position Scrolls")]
+    [SerializeField] private float endPositonOfMap = 48.5f;
+    [SerializeField] private Scrollbar fateScroll;
+    [SerializeField] private Scrollbar accidyScroll;
+
+    [Header("Gauges")]
     [SerializeField] private Slider[] doubtGaugeSliders;
     [SerializeField] private Image[] overHeadDoubtGaugeSliderImages;
     [SerializeField] private GameObject accidyDialogueBox;
@@ -45,6 +51,7 @@ public class FollowGameManager : MonoBehaviour
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
         accidyDialogueBox.transform.position -= moveVector;
+        accidyScroll.value = Accidy.transform.position.x / endPositonOfMap;
     }
     private void MoveFate()
     {
@@ -68,6 +75,7 @@ public class FollowGameManager : MonoBehaviour
             }
             SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, IsFateMove);
             Fate.SetBool("Walking", IsFateMove);
+            fateScroll.value = Fate.transform.position.x / endPositonOfMap;
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && !FollowManager.Instance.TutorialFateCantHide) FateHide(false);

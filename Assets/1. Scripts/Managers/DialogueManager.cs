@@ -404,7 +404,7 @@ public class DialogueManager : MonoBehaviour
         var isEffect = false;
         var effectText = "";
 
-        // FAST 인 경우 두배의 속도로 타이핑 + 끝나면 자동으로 넘어감
+        // FAST 인 경우 두배의 속도로 타이핑
         if (isFast) typeSpeed /= 1.75f;
 
         foreach (char letter in sentence.ToCharArray())
