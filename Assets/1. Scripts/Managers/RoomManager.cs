@@ -30,9 +30,6 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private Slider clearFlagSlider;
     [SerializeField] private Image clearFlageImage;
 
-    // 비네팅 효과
-    [Header("비네팅 효과")] [SerializeField] private GameObject vignette;
-
     // 이벤트 오브젝트 패널 매니저
     public ImageAndLockPanelManager imageAndLockPanelManager;
     // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
@@ -232,11 +229,6 @@ public class RoomManager : MonoBehaviour
         }
     }
     
-    private void SetVignette(bool isTrue)
-    {
-        vignette.SetActive(isTrue);
-    }
-    
     private void SetActionPointsUI(bool isTrue)
     {
         actionPointsUI.SetActive(isTrue);
@@ -254,7 +246,8 @@ public class RoomManager : MonoBehaviour
                       || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen));
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
         SetActionPointsUI(!isLaptopOpen);
-        SetVignette(!isLaptopOpen);
+        
+        UIManager.Instance.SetUI("NormalVignette", !isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 }
