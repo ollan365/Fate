@@ -15,14 +15,6 @@ public class RoomManager : MonoBehaviour
     
     [Header("확대 화면들")][SerializeField] private List<GameObject> zoomViews;  // 확대 화면들
 
-    // 이동 버튼
-    [Header("이동 버튼들")] 
-    [SerializeField] private Button moveButtonLeft;
-    [SerializeField] private Button moveButtonRight;
-
-    // 나가기 버튼
-    [Header("나가기 버튼")] [SerializeField] private Button exitButton;
-
     // 메모 게이지
     [Header("메모 게이지")]
     [SerializeField] private GameObject memoGauge;
@@ -156,7 +148,7 @@ public class RoomManager : MonoBehaviour
     // exit to root: turn off all the panels and zoom out to the root view
     public void ExitToRoot()
     {
-        while (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
+        if (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
         if (isZoomed)
         {
             SetCurrentView(sides[currentSideIndex]);
@@ -206,22 +198,22 @@ public class RoomManager : MonoBehaviour
     // 나가기 버튼 필요 시, 보이게 함 (ResultManager에서 호출하게 함)
     private void SetExitButton(bool isTrue)
     {
-        exitButton.gameObject.SetActive(isTrue);
+        UIManager.Instance.SetUI("ExitButton", isTrue);
     }
     
     // 이동 버튼들이 조사/다이얼로그 출력 시에는 화면 상에서 보이지 않게 함
     private void SetMoveButtons(bool isTrue)
     {
-        moveButtonLeft.gameObject.SetActive(isTrue);
-        moveButtonRight.gameObject.SetActive(isTrue);
+        UIManager.Instance.SetUI("LeftButton", isTrue);
+        UIManager.Instance.SetUI("RightButton", isTrue);
         
         switch (currentSideIndex)
         {
             case 1:
-                moveButtonRight.gameObject.SetActive(false);
+                UIManager.Instance.SetUI("RightButton", false);
                 break;
             case 2:
-                moveButtonLeft.gameObject.SetActive(false);
+                UIManager.Instance.SetUI("LeftButton", false);
                 break;
         }
     }

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Room1ActionPointManager : ActionPointManager
 {
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
+        
         maxDayNum = (int)GameManager.Instance.GetVariable("MaxDayNum");
         nowDayNum = (int)GameManager.Instance.GetVariable("NowDayNum");
         actionPointsPerDay = (int)GameManager.Instance.GetVariable("ActionPointsPerDay");

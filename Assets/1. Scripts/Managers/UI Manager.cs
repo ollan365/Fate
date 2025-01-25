@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static Constants;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,14 +12,17 @@ public class UIManager : MonoBehaviour
     public GameObject actionPoints;
     public GameObject heartParent;
     public GameObject dayText;
+    public GameObject exitButton;
+    public GameObject leftButton;
+    public GameObject rightButton;
     
     private Dictionary<string, GameObject> uiGameObjects = new Dictionary<string, GameObject>();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
-    public TextMeshProUGUI dayTextTextMeshProUGUI;
+    [HideInInspector] public TextMeshProUGUI dayTextTextMeshProUGUI;
     
     [Header("Warning Vignette Settings")]
     [SerializeField] protected float warningTime;
-
+    
     public static UIManager Instance { get; private set; }
     
     private void Awake()
@@ -42,6 +46,9 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add("ActionPoints", actionPoints);
         uiGameObjects.Add("HeartParent", heartParent);
         uiGameObjects.Add("DayText", dayText);
+        uiGameObjects.Add("ExitButton", exitButton);
+        uiGameObjects.Add("LeftButton", leftButton);
+        uiGameObjects.Add("RightButton", rightButton);
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
@@ -56,6 +63,45 @@ public class UIManager : MonoBehaviour
     public void SetUI(string uiName, bool isActive)
     {
         uiGameObjects[uiName].SetActive(isActive);
+    }
+    
+    public void OnLeftButtonClick()
+    {
+        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
+
+        switch (currentSceneIndex)
+        {
+            case (int)SceneType.ROOM_1:
+            case (int)SceneType.ROOM_2:
+                RoomManager.Instance.MoveSides(-1);
+                break;
+        }
+    }
+    
+    public void OnRightButtonClick()
+    {
+        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
+
+        switch (currentSceneIndex)
+        {
+            case (int)SceneType.ROOM_1:
+            case (int)SceneType.ROOM_2:
+                RoomManager.Instance.MoveSides(1);
+                break;
+        }
+    }
+    
+    public void OnExitButtonClick()
+    {
+        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
+
+        switch (currentSceneIndex)
+        {
+            case (int)SceneType.ROOM_1:
+            case (int)SceneType.ROOM_2:
+                RoomManager.Instance.OnExitButtonClick();
+                break;
+        }
     }
     
     /*

@@ -13,8 +13,8 @@ abstract public class ActionPointManager : MonoBehaviour
 {
     // ************************* temporary members for action points *************************
     public GameObject heartPrefab;
-    protected GameObject heartParent = UIManager.Instance.heartParent;
-    protected TextMeshProUGUI dayText = UIManager.Instance.dayTextTextMeshProUGUI;
+    protected GameObject heartParent;
+    protected TextMeshProUGUI dayText;
 
     [SerializeField] protected int maxDayNum;   // 방탈출에서 지내는 최대 일수
     [SerializeField] protected int nowDayNum;
@@ -53,6 +53,12 @@ abstract public class ActionPointManager : MonoBehaviour
 
     // 외출(아침) 스크립트 출력 부분
     public abstract void nextMorningDay();
+
+    public void Awake()
+    {
+        heartParent = UIManager.Instance.heartParent;
+        dayText = UIManager.Instance.dayTextTextMeshProUGUI;
+    }
 
     protected static IEnumerator DeactivateHeart(Object heart)
     {
