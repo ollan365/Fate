@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RoomManager : MonoBehaviour
@@ -226,8 +224,9 @@ public class RoomManager : MonoBehaviour
         bool isLaptopOpen = (bool)GameManager.Instance.GetVariable("isLaptopOpen");
         bool isLaptopAppOpen = (bool)GameManager.Instance.GetVariable("isLaptopAppOpen");
         
-        SetExitButton((isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen) 
-                      || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen));
+        SetExitButton((isInvestigatingOrZoomed && !isDialogueActive) 
+                      || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen)
+                      || isMemoOpen);
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
         
         UIManager.Instance.SetUI("ActionPoints", !isLaptopOpen);

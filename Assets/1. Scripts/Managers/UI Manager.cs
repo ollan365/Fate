@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     public GameObject exitButton;
     public GameObject leftButton;
     public GameObject rightButton;
+    public GameObject memoButton;
+    public GameObject memoContents;
     
     private Dictionary<string, GameObject> uiGameObjects = new Dictionary<string, GameObject>();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -43,12 +45,17 @@ public class UIManager : MonoBehaviour
     {
         uiGameObjects.Add("NormalVignette", normalVignette);
         uiGameObjects.Add("WarningVignette", warningVignette);
+        
         uiGameObjects.Add("ActionPoints", actionPoints);
         uiGameObjects.Add("HeartParent", heartParent);
         uiGameObjects.Add("DayText", dayText);
+        
         uiGameObjects.Add("ExitButton", exitButton);
         uiGameObjects.Add("LeftButton", leftButton);
         uiGameObjects.Add("RightButton", rightButton);
+        
+        uiGameObjects.Add("MemoButton", memoButton);
+        uiGameObjects.Add("MemoContents", memoContents);
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
@@ -93,13 +100,26 @@ public class UIManager : MonoBehaviour
     
     public void OnExitButtonClick()
     {
+        if (MemoManager.Instance && MemoManager.Instance.isMemoOpen)
+        {
+            MemoManager.Instance.OnExit();
+            return;
+        }
+        
         int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
-
         switch (currentSceneIndex)
         {
+            case (int)SceneType.START:
+                Debug.Log("Exit button is not implemented in this scene.");
+                break;
+            
             case (int)SceneType.ROOM_1:
             case (int)SceneType.ROOM_2:
                 RoomManager.Instance.OnExitButtonClick();
+                break;
+            
+            default:
+                Debug.Log("Exit button is not implemented in this scene.");
                 break;
         }
     }
