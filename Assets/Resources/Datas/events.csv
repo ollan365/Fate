@@ -82,13 +82,14 @@ EventCarpetLetterOfResignation,카펫(종이),자퇴서 처음 클릭,,CoditionZ
 EventCarpetLetterOfResignation,카펫(종이),자퇴서 다시 클릭,,ConditionZeroPaperManyClick,ResultCarpetDropOutLetterZoom/ResultCarpetDropOutLetterScript/Result_IncrementPaperClick/ResultCarpetDropOutLetterMemo/Result_IncrementPaperClick/ResultTimePass,
 EventTutorialNext,,dialogues탭의 다이얼로그 Tutorial_003_B 출력 다 끝나면 next에 EventTutorialNext를 넣어서 바로 다음 튜토리얼페이즈로 넘어갈 수 있게 함,,,Result_nextTutorialPhase,
 ,,,,,,
-EventKnife,커터칼,커터칼 획득,,,ResultCutterKnifeScript/ResultCutterKnifeDisappear/Result_InverseHasKnife/Result_IsUnFinishedEventPoster/ResultTimePass,Result_IsUnFinished 추가
+EventKnife,커터칼,커터칼 획득,,,ResultCutterKnifeDisappear/ResultCutterKnifeScript/Result_InverseHasKnife/Result_IsUnFinishedEventPoster/ResultTimePass,Result_IsUnFinished 추가
 ,,,,,,
-EventPoster,포스터,포스터를 열람한 상태에서 포스터 다시 클릭,,ConditionPosterOpened,ResultPosterWithKnifeScript/Result_IncrementPosterClick/ResultTimePass,새로 추가(나은)
+EventPoster,포스터,포스터를 열람한 상태에서 포스터 다시 클릭,,ConditionPosterOpened,ResultPosterWithKnifeScript/ResultPosterOversideImageAndSound/Result_IncrementPosterClick/ResultTimePass,새로 추가(나은)
 EventPoster,포스터,커터칼 없는 상태에서 포스터 다시 클릭,AND,ConditionPosterManyClick/ConditionNotGetKnife,ResultPosterScript/Result_IncrementPosterClick/ResultTimePass,새로 추가(나은)
 EventPoster,포스터,커터칼 있는 상태에서 포스터 처음 클릭,AND,ConditionPosterFirstClick/ConditionGetKnife/ConditionNotPosterOpened,ResultPosterScript/ResultPosterWithKnifeScript/ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
 EventPoster,포스터,포스터를 처음 클릭,,ConditionPosterFirstClick,ResultPosterScript/Result_IncrementPosterClick/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
-EventPoster,포스터,포스터를 열람하지 않고 커터칼 있는 상태에서 포스터 클릭,AND,ConditionGetKnife/ConditionNotPosterOpened,ResultPosterWithKnifeScript/ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
+EventPoster,포스터,포스터를 열람하지 않고 커터칼 있는 상태에서 포스터 클릭,AND,ConditionGetKnife/ConditionNotPosterOpened,ResultPosterWithKnifeScript/ResultPosterOversideImageAndSound/ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
+EventPosterOverside,포스터 뒷면,포스터 뒷면 이미지와 효과음 재생,,ConditionGetKnife,ResultPosterOversideImageAndSound,
 ,,,,,,
 EventClosetZoom,확대 안 된 옷장,확대 되지 않은 상태에서 옷장을 클릭,,,ResultClosetZoom,30일 추가
 EventClosetClosed,닫힌 옷장 문,닫힌 옷장 문을 처음 클릭,AND,ConditionFirstClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/ResultCloseFirstClickScript/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed/ResultTimePass,새로 추가(나은)
@@ -322,7 +323,7 @@ EventFollowVilla,필연이 갇힌 빌라,빌라를 처음 클릭,,ConditionVilla
 EventFollowBread,빵집,빵집을 클릭,,ConditionBreadClick,ResultBreadScript,
 EventFollowConvenienceStore,편의점,편의점을 클릭,,ConditionConClick,ResultConScript,
 EventFollowBar,바,바를 클릭,,ConditionBarClick,ResultBarScript,
-EventFollowIzakaya,이자카야,이자카야를 클릭,,ConditionIzakawaClick,ResultIzakawaScript,
+EventFollowIzakaya,이자카야,이자카야를 클릭,,ConditionIzakayaClick,ResultIzakayaScript,
 EventFollowCat,환풍기 위 고양이,환풍기 위에 고양이 클릭,,ConditionCatClick,ResultCatScript,
 EventFollowCafe,카페,카페 간판을 가방 조사를 끝낸 상태에서 클릭,AND,ConditionCafeFirstClick/ConditionClosetBagManyClick,ResultCafeScript/ResultCafeMemo2,
 EventFollowCafe,카페,카페 간판을 가방 조사를 하지 않은 상태에서 클릭,AND,ConditionCafeFirstClick/ConditionClosetBagFirstClick,ResultCafeScript/ResultCafeMemo1,
@@ -342,7 +343,7 @@ EventFollowConstructionSite,공사장,공사장을 처음 클릭,,ConditionConst
 EventFollowConstructionSite,공사장,공사장을 여러번 클릭,,ConditionConstructionManyClick,ResultConstructionScript,
 EventFollowRestaurant,식당,식당을 클릭,,ConditionRestaurantClick,ResultRestaurantScript,
 EventFollowCocktailBar,칵테일 바,칵테일 바를 클릭,,ConditionCocktailBarClick,ResultCocktailBarScript,
-EventFollowDrugstore,화장품 가게,화장품 가게를 클릭,,ConditionCosemeticClick,ResultCosemeticScript,
+EventFollowDrugstore,화장품 가게,화장품 가게를 클릭,,ConditionCosmeticClick,ResultCosemeticScript,
 EventFollowMusicBar,뮤직바,뮤직바를 클릭,,ConditionMusicBarClick,ResultMusicBarScript,
 EventFollowClub,클럽,클럽을 클릭,,ConditionClubClick,ResultClubScript,
 EventFollowPub,술집을 클릭,술집을 클릭,,ConditionBeerClick,ResultMusicBarScript,
@@ -372,7 +373,7 @@ EventFollow2Villa,빌라 ,빌라를 클릭,,ConditionVillaClick2,ResultVillaScri
 EventFollow2Bar,편의점 건물 바,바를 클릭,,ConditionBarClick2,ResultBarScript2,
 EventFollow2Bread,빵집,빵집을 클릭,,ConditionBreadClick2,ResultBreadScript2,
 EventFollow2BeerA,맥주 전문점,카페 건물 3층 맥주전문점을 클릭,,ConditionBeerAClick2,ResultBeerAScript2,
-EventFollow2Izakawa,이자카야,카페 건물  2층 이자카야를 클릭,,ConditionIzakawaClick2,ResultIzakayaScript2,
+EventFollow2Izakaya,이자카야,카페 건물  2층 이자카야를 클릭,,ConditionIzakayaClick2,ResultIzakayaScript2,
 EventFollow2Cafe,카페,카페를 클릭,,ConditionCafeClick2,ResultCafeScript2,
 EventFollow23FClothes,3층 옷가게를 클릭,옷가게를 클릭,,Condition3FClothesClick2,Result3FClothesScript2,
 EventFollow22FClothes,2층 옷가게를 클릭,옷가게를 클릭,,Condition2FClothesClick2,Result2FClothesScript2,
@@ -381,7 +382,7 @@ EventFollow2CocktailBar,칵테일바,식당 건물 2층 칵테일집을 클릭,,
 EventFollow2Restaurant,식당,식당을 클릭,,ConditionRestaurantClick2,ResultRestaurantScript2,
 EventFollow2DrinkB,술집2,화장품 가게 3층을 술집 클릭,,ConditionDrinkBClick2,ResultDrinkScript2,
 EventFollow2MusicBar,뮤직바,뮤직바를 클릭,,ConditionMusicBarClick2,ResultMusicBarScript2,
-EventFollow2Cosemetic,화장품 가게,화장품 가게를 클릭,,ConditionCosemeticClick2,ResultCosemeticScript,
+EventFollow2Cosemetic,화장품 가게,화장품 가게를 클릭,,ConditionCosmeticClick2,ResultCosemeticScript,
 EventFollow2DrinkC,술집 ,클럽 건물 3층 술집 클릭,,ConditionDrinkCClick2,ResultDrinkScript2,
 EventFollow2BeerB,생맥 전문점,생맥 전문점 클릭,,ConditionBeerBClick2,ResultBeerBScript2,
 EventFollow2Club,클럽,클럽,,ConditionClubClick2,ResultClubScript2,

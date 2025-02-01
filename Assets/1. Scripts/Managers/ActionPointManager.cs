@@ -162,6 +162,4 @@ abstract public class ActionPointManager : MonoBehaviour
         // 코루틴 종료 시 WarningVignette.mainColor.a를 0으로 설정하여 경고 완전히 숨기기
         WarningVignette.mainColor.a = 0;
     }
-
-
 }

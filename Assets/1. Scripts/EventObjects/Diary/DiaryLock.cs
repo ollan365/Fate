@@ -46,8 +46,8 @@ public class DiaryLock : EventObject, IResultExecutable
 
     public void InputNumber(string buttonInput)
     {
-        // 현재 클릭된 게임오브젝트 가져옴(pw버튼 이름)
-        // string numberInput = EventSystem.current.currentSelectedGameObject.name;
+        // 비밀번호 무한 입력 시도 방지
+        RoomManager.Instance.ProhibitInput();
 
         if (passwordInput.Length < 4)
         {
