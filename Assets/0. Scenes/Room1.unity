@@ -857,6 +857,7 @@ GameObject:
   - component: {fileID: 62053584}
   - component: {fileID: 62053583}
   - component: {fileID: 62053588}
+  - component: {fileID: 62053589}
   m_Layer: 6
   m_Name: knife
   m_TagString: InquiryObject
@@ -898,7 +899,7 @@ MonoBehaviour:
   eventId: EventKnife
   sideNum: 0
   isInquiry: 1
-  knifeAnimator: {fileID: 0}
+  knifeAnimator: {fileID: 62053589}
   hideTime: 0.4
 --- !u!114 &62053584
 MonoBehaviour:
@@ -1007,6 +1008,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AlphaThreshold: 0.1
+--- !u!95 &62053589
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62053581}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 19d6469a52b7bdb43bd4fdfb07d2ffca, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &63105342
 GameObject:
   m_ObjectHideFlags: 0
@@ -4282,7 +4304,7 @@ MonoBehaviour:
   letterOfResignationImage: {fileID: 21300000, guid: 28a0585caf18da64b8a62e9410cac47d, type: 3}
   photoInsideBoxImage: {fileID: 21300000, guid: cc713c41a0c3a034cb5e7390a19c5ac6, type: 3}
   cafePintInBagImage: {fileID: 21300000, guid: af595b4a021f5d7429ea80c3312a7904, type: 3}
-  posterOversideImage: {fileID: 0}
+  posterOversideImage: {fileID: 21300000, guid: 51be56875a7048143b1c6e9039b80ca7, type: 3}
   tinCaseImage: {fileID: 0}
   sewingBoxImage: {fileID: 0}
   threadImage: {fileID: 0}
@@ -16546,7 +16568,7 @@ MonoBehaviour:
   eventId: EventKnife
   sideNum: 2
   isInquiry: 0
-  knifeAnimator: {fileID: 0}
+  knifeAnimator: {fileID: 1858957147}
   hideTime: 0.4
 --- !u!114 &1858957145
 MonoBehaviour:
