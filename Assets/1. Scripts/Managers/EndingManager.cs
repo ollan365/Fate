@@ -50,7 +50,7 @@ public class EndingManager : MonoBehaviour
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.isFollow = false;
-        DialogueManager.Instance.dialogueType = DialogueType.ROOM;
+        DialogueManager.Instance.dialogueType = DialogueType.ROOM_ACCIDY;
 
         yield return new WaitForSeconds(2.5f);
 

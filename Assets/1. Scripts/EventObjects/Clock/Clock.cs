@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Clock : EventObject, IResultExecutable
 {
     // 시계 시간 맞추는 화면일 때 시점 이동 제한
     [SerializeField]
     private GameObject clockPuzzle;
+
+    [SerializeField] private List<Image> Clocks;
+
+    [SerializeField] private Sprite AfterClockImage;
 
     private void Start()
     {
@@ -30,4 +35,15 @@ public class Clock : EventObject, IResultExecutable
         clockPuzzle.SetActive(true);
     }
 
+    public void SwapAfterImage()
+    {
+        bool isCorrect = (bool)GameManager.Instance.GetVariable("ClockTimeCorrect");
+        if(isCorrect)
+        {
+            foreach (Image beforeClock in Clocks)
+            {
+                beforeClock.sprite = AfterClockImage;
+            }
+        }
+    }
 }

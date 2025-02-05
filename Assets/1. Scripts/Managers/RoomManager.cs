@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RoomManager : MonoBehaviour
@@ -15,23 +13,12 @@ public class RoomManager : MonoBehaviour
     
     [Header("확대 화면들")][SerializeField] private List<GameObject> zoomViews;  // 확대 화면들
 
-    // 이동 버튼
-    [Header("이동 버튼들")] 
-    [SerializeField] private Button moveButtonLeft;
-    [SerializeField] private Button moveButtonRight;
-
-    // 나가기 버튼
-    [Header("나가기 버튼")] [SerializeField] private Button exitButton;
-
     // 메모 게이지
     [Header("메모 게이지")]
     [SerializeField] private GameObject memoGauge;
     [SerializeField] private Image gaugeImage;
     [SerializeField] private Slider clearFlagSlider;
     [SerializeField] private Image clearFlageImage;
-
-    // 비네팅 효과
-    [Header("비네팅 효과")] [SerializeField] private GameObject vignette;
 
     // 이벤트 오브젝트 패널 매니저
     public ImageAndLockPanelManager imageAndLockPanelManager;
@@ -46,11 +33,6 @@ public class RoomManager : MonoBehaviour
     public ActionPointManager actionPointManager;
     public Room2ActionPointManager Room2ActionPointManager;
 
-    // ************************* temporary members for action points *************************
-    [SerializeField] GameObject actionPointsUI;
-    [SerializeField] GameObject heartParent;
-    [SerializeField] TextMeshProUGUI dayText;
-    
     void Awake()
     {
         if (Instance == null)
@@ -65,6 +47,10 @@ public class RoomManager : MonoBehaviour
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
         MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
+        
+        UIManager.Instance.SetUI("NormalVignette", true);
+        UIManager.Instance.SetUI("DayText", true);
+        UIManager.Instance.SetUI("HeartParent", true);
     }
     
     void Start()
@@ -86,11 +72,10 @@ public class RoomManager : MonoBehaviour
         // Side 1으로 초기화?
         currentView = sides[currentSideIndex];
         SetCurrentSide(currentSideIndex);
-        
+
+        MemoManager.Instance.HideMemoButton = false;
         SetButtons();
 
-        actionPointManager.heartParent = heartParent;
-        actionPointManager.dayText = dayText;
         actionPointManager.CreateHearts();  // create hearts on room start
 
         // 아래는 뭘 살려야할지 모르겠어서 두개 모두 살려뒀습니다
@@ -104,7 +89,7 @@ public class RoomManager : MonoBehaviour
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
         {
             if (!GameManager.Instance.skipTutorial
-                && (int)GameManager.Instance.GetVariable("EndingCollect") == 0
+                && (int)GameManager.Instance.GetVariable("ReplayCount") == 0
                 && !(bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
                 DialogueManager.Instance.StartDialogue("Prologue_015");
         }
@@ -134,7 +119,7 @@ public class RoomManager : MonoBehaviour
                 tutorialManager.SetSeenSides(newSideIndex);
         }
 
-        Debug.Log(newSideIndex);
+        //Debug.Log(newSideIndex);
     }
 
     public void OnExitButtonClick()
@@ -157,11 +142,21 @@ public class RoomManager : MonoBehaviour
             actionPointManager.RefillHeartsOrEndDay();
 
     }
-    
+
+    // 비밀번호 무한 입력 시도 방지
+    public void ProhibitInput()
+    {
+        if (UIManager.Instance && UIManager.Instance.heartParent.transform.childCount < 1)
+            OnExitButtonClick();
+        else
+            return;
+    }
+
+
     // exit to root: turn off all the panels and zoom out to the root view
     public void ExitToRoot()
     {
-        while (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
+        if (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
         if (isZoomed)
         {
             SetCurrentView(sides[currentSideIndex]);
@@ -211,34 +206,24 @@ public class RoomManager : MonoBehaviour
     // 나가기 버튼 필요 시, 보이게 함 (ResultManager에서 호출하게 함)
     private void SetExitButton(bool isTrue)
     {
-        exitButton.gameObject.SetActive(isTrue);
+        UIManager.Instance.SetUI("ExitButton", isTrue);
     }
     
     // 이동 버튼들이 조사/다이얼로그 출력 시에는 화면 상에서 보이지 않게 함
     private void SetMoveButtons(bool isTrue)
     {
-        moveButtonLeft.gameObject.SetActive(isTrue);
-        moveButtonRight.gameObject.SetActive(isTrue);
+        UIManager.Instance.SetUI("LeftButton", isTrue);
+        UIManager.Instance.SetUI("RightButton", isTrue);
         
         switch (currentSideIndex)
         {
             case 1:
-                moveButtonRight.gameObject.SetActive(false);
+                UIManager.Instance.SetUI("RightButton", false);
                 break;
             case 2:
-                moveButtonLeft.gameObject.SetActive(false);
+                UIManager.Instance.SetUI("LeftButton", false);
                 break;
         }
-    }
-    
-    private void SetVignette(bool isTrue)
-    {
-        vignette.SetActive(isTrue);
-    }
-    
-    private void SetActionPointsUI(bool isTrue)
-    {
-        actionPointsUI.SetActive(isTrue);
     }
     
     public void SetButtons()
@@ -249,11 +234,13 @@ public class RoomManager : MonoBehaviour
         bool isLaptopOpen = (bool)GameManager.Instance.GetVariable("isLaptopOpen");
         bool isLaptopAppOpen = (bool)GameManager.Instance.GetVariable("isLaptopAppOpen");
         
-        SetExitButton((isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen) 
-                      || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen));
+        SetExitButton((isInvestigatingOrZoomed && !isDialogueActive) 
+                      || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen)
+                      || isMemoOpen);
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
-        SetActionPointsUI(!isLaptopOpen);
-        SetVignette(!isLaptopOpen);
+        
+        UIManager.Instance.SetUI("ActionPoints", !isLaptopOpen);
+        UIManager.Instance.SetUI("NormalVignette", !isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 }

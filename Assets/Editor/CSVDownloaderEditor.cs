@@ -20,7 +20,8 @@ public class CSVDownloaderEditor : EditorWindow
         {"diary", "1694526261"},
         {"backgrounds", "1143880704"},
         {"laptop_chat", "801842851"},
-        {"laptop_SNS", "1372899183"}
+        {"laptop_SNS", "1372899183"},
+        {"variables", "762639181"}
     };
 
     [MenuItem("Tools/Download CSVs")]

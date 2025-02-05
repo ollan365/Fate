@@ -37,7 +37,6 @@ public class FollowTutorial : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         FollowManager.Instance.StartFollow();
-        FollowManager.Instance.SetBlockingPanel(true);
         EventManager.Instance.CallEvent("EventFollowTutorial");
     }
     
@@ -54,12 +53,10 @@ public class FollowTutorial : MonoBehaviour
         switch ((int)GameManager.Instance.GetVariable("FollowTutorialPhase"))
         {
             case 0: // 신호등 판넬 켜기
-                FollowManager.Instance.SetBlockingPanel(false);
                 highlightPanel.SetActive(true);
                 beaconAnimator.SetBool(nameof(Light), true);
                 break;
             case 1: // 신호등을 눌렀을 때
-                FollowManager.Instance.SetBlockingPanel(true);
                 highlightPanel.SetActive(false);
                 beaconAnimator.SetBool(nameof(Light), false);
                 break;
@@ -73,7 +70,6 @@ public class FollowTutorial : MonoBehaviour
                 StartCoroutine(HideLogicTutorial());
                 break;
             case 6:
-                FollowManager.Instance.SetBlockingPanel(true);
                 break;
             case 7: // 튜토리얼 끝
                 StartCoroutine(EndTutorial());
@@ -85,7 +81,6 @@ public class FollowTutorial : MonoBehaviour
     {
         moveButtons.SetActive(true);
         fateMovable = true;
-        FollowManager.Instance.SetBlockingPanel(true);
 
         // 필연이 일정 거리 이상 앞으로 이동할 때까지 대기
         while (fate.transform.position.x < 2 || (int)GameManager.Instance.GetVariable("FollowTutorialPhase") == 3) yield return null;
@@ -103,15 +98,11 @@ public class FollowTutorial : MonoBehaviour
 
         accidyNextLogic = true;
 
-        FollowManager.Instance.SetBlockingPanel(true);
-
         hideButtons.SetActive(true);
     }
 
     private IEnumerator HideLogicTutorial()
     {
-        FollowManager.Instance.SetBlockingPanel(false);
-
         accidyNextLogic = true;
         yield return new WaitForSeconds(0.5f);
         accidyNextLogic = true;
@@ -177,7 +168,6 @@ public class FollowTutorial : MonoBehaviour
         startText.gameObject.SetActive(false);
         startBlockingPanel.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
-        FollowManager.Instance.SetBlockingPanel(false);
         tutorialBlockingPanel.SetActive(false);
 
         MemoManager.Instance.HideMemoButton = false;

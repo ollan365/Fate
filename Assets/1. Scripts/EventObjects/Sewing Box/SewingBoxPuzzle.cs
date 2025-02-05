@@ -46,6 +46,9 @@ public class SewingBoxPuzzle : MonoBehaviour
     // 하단 반짇고리 뚜껑 버튼 누르면 퍼즐 정답 비교하게 함
     public void CompareBeads()
     {
+        // 비밀번호 무한 입력 시도 방지
+        RoomManager.Instance.ProhibitInput();
+
         if (isBeadsCorrect) return;
 
         // 비즈들 가져와서 검사
@@ -56,11 +59,11 @@ public class SewingBoxPuzzle : MonoBehaviour
             sewingBoxA.SetIsInquiry(true);
             isBeadsCorrect = true;
 
-            Debug.Log("맞췄습니다!");
+            //Debug.Log("맞췄습니다!");
         }
         else
         {
-            Debug.Log("틀렸습니다!");
+            //Debug.Log("틀렸습니다!");
         }
 
         EventManager.Instance.CallEvent("EventSewingBoxB");

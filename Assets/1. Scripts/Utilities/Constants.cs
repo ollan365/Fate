@@ -30,18 +30,19 @@ public static class Constants
     }
 
     // 대화창의 종류
-    public enum DialogueType { ROOM, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, CENTER }
+    public enum DialogueType { ROOM_ACCIDY, ROOM_FATE, ROOM_THINKING, FOLLOW, FOLLOW_THINKING, FOLLOW_EXTRA, CENTER }
     public static int ToInt(this DialogueType dialogueType)
     {
         // 다이얼로그 타입에 따라 다른 숫자 반환
         switch (dialogueType)
         {
-            case DialogueType.ROOM: return 0;
-            case DialogueType.ROOM_THINKING: return 1;
-            case DialogueType.FOLLOW: return 2;
-            case DialogueType.FOLLOW_THINKING: return 3;
-            case DialogueType.FOLLOW_EXTRA: return 4;
-            case DialogueType.CENTER: return 5;
+            case DialogueType.ROOM_ACCIDY: return 0;
+            case DialogueType.ROOM_FATE: return 1;
+            case DialogueType.ROOM_THINKING: return 2;
+            case DialogueType.FOLLOW: return 3;
+            case DialogueType.FOLLOW_THINKING: return 4;
+            case DialogueType.FOLLOW_EXTRA: return 5;
+            case DialogueType.CENTER: return 6;
             default: return 0;
         }
     }
@@ -127,7 +128,7 @@ public static class Constants
     {
         // ========== 첫번째 미행 ========== //
         // 빌라, 빵집, 편의점, 바, 이자카야, 카페, 영수증, 신호등, 음료, 1층 옷가게, 2층 옷가게
-        Villa, Bread, Con, Bar, Izakawa, Cat, Cafe, Receipt, Light, Coffee, Shop_1, Shop_2,
+        Villa, Bread, Con, Bar, Izakaya, Cat, Cafe, Receipt, Light, Coffee, Shop_1, Shop_2,
         // 공사장, 식당, 칵테일 바, 화장품 가게, 뮤직바, 클럽, 술집, 화환
         Construction, Omerice, Cocktail, MiracleYoung, MusicBar, Club, Beer, Wreath,
 
@@ -137,7 +138,7 @@ public static class Constants
         Bar2,
         Bread2,
         BeerA,
-        Izakawa2,
+        Izakaya2,
         Cafe2,
         Clothes_3F,
         Clothes_2F,
@@ -182,7 +183,7 @@ public static class Constants
             case FollowObjectName.Bread:   return "EventFollowBread";
             case FollowObjectName.Con:     return "EventFollowConvenienceStore";
             case FollowObjectName.Bar:     return "EventFollowBar";
-            case FollowObjectName.Izakawa: return "EventFollowIzakaya";
+            case FollowObjectName.Izakaya: return "EventFollowIzakaya";
             case FollowObjectName.Cat:     return "EventFollowCat";
             case FollowObjectName.Cafe:    return "EventFollowCafe";
             case FollowObjectName.Receipt: return "EventFollowCafeReceipt";
@@ -212,7 +213,7 @@ public static class Constants
             case FollowObjectName.Bar2: return "EventFollow2Bar";
             case FollowObjectName.Bread2: return "EventFollow2Bread";
             case FollowObjectName.BeerA: return "EventFollow2BeerA";
-            case FollowObjectName.Izakawa2: return "EventFollow2Izakawa";
+            case FollowObjectName.Izakaya2: return "EventFollow2Izakaya";
             case FollowObjectName.Cafe2: return "EventFollow2Cafe";
             case FollowObjectName.Clothes_3F: return "EventFollow23FClothes";
             case FollowObjectName.Clothes_2F: return "EventFollow22FClothes";
@@ -258,19 +259,19 @@ public static class Constants
             case FollowObjectName.Bread:   return "BreadClick";
             case FollowObjectName.Con:     return "ConClick";
             case FollowObjectName.Bar:     return "BarClick";
-            case FollowObjectName.Izakawa: return "IzakawaClick";
+            case FollowObjectName.Izakaya: return "IzakayaClick";
             case FollowObjectName.Cat:     return "CatClick";
             case FollowObjectName.Cafe:    return "CafeClick";
             case FollowObjectName.Receipt: return "ReceiptClick";
             case FollowObjectName.Light:   return "LightClick";
 
-            case FollowObjectName.Coffee: return "LatteClcik";
+            case FollowObjectName.Coffee: return "LatteClick";
             case FollowObjectName.Shop_1: return "1FClothesClick";
             case FollowObjectName.Shop_2: return "2FClothesClick";
             case FollowObjectName.Construction: return "ConstructionClick";
             case FollowObjectName.Omerice: return "RestaurantClick";
             case FollowObjectName.Cocktail: return "CocktailBarClick";
-            case FollowObjectName.MiracleYoung: return "CosemeticClick";
+            case FollowObjectName.MiracleYoung: return "CosmeticClick";
             case FollowObjectName.MusicBar: return "MusicBarClick";
             case FollowObjectName.Club: return "ClubCliclk";
             case FollowObjectName.Beer: return "BeerClick";
@@ -281,7 +282,7 @@ public static class Constants
             case FollowObjectName.Bar2: return "BarClick2";
             case FollowObjectName.Bread2: return "BreadClick2";
             case FollowObjectName.BeerA: return "BeerAClick2";
-            case FollowObjectName.Izakawa2: return "IzakawaClick2";
+            case FollowObjectName.Izakaya2: return "IzakayaClick2";
             case FollowObjectName.Cafe2: return "CafeClick2";
             case FollowObjectName.Clothes_3F: return "3FClothesClick2";
             case FollowObjectName.Clothes_2F: return "2FClothesClick2";
@@ -290,7 +291,7 @@ public static class Constants
             case FollowObjectName.Restaurant2: return "RestaurantClick2";
             case FollowObjectName.DrinkB: return "DrinkBClick2";
             case FollowObjectName.MusicBar2: return "MusicBarClick2";
-            case FollowObjectName.Cosmetic2: return "CosemeticClick2";
+            case FollowObjectName.Cosmetic2: return "CosmeticClick2";
             case FollowObjectName.DrinkC: return "DrinkCClick2";
             case FollowObjectName.BeerB: return "BeerBClick2";
             case FollowObjectName.Club2: return "ClubClick2";

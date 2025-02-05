@@ -16,7 +16,6 @@ public class FollowEnd : MonoBehaviour
         yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.Fate) + 0.5f);
 
         // 스크립트 "Follow1Fianal" 출력 + 느낌표
-        FollowManager.Instance.SetBlockingPanel(true);
         DialogueManager.Instance.StartDialogue("Follow1Final_001");
 
         // 스크립트가 끝날 때까지 대기
@@ -28,8 +27,7 @@ public class FollowEnd : MonoBehaviour
         yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.Accidy) + 0.5f);
 
         // 우연 대사 출력
-        FollowManager.Instance.SetCharcter(1);
-        FollowManager.Instance.SetBlockingPanel(true);
+        // FollowManager.Instance.SetCharcter(1);
         DialogueManager.Instance.StartDialogue("Follow1Final_002");
 
         // 스크립트가 끝날 때까지 대기

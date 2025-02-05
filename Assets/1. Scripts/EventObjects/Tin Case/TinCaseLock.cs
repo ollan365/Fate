@@ -13,6 +13,9 @@ public class TinCaseLock : MonoBehaviour
 
     public void CheckAnswer()
     {
+        // 비밀번호 무한 입력 시도 방지
+        RoomManager.Instance.ProhibitInput();
+
         string answer = "";
         foreach (var wheel in wheels)
         {

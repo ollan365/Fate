@@ -52,6 +52,9 @@ public class SewingBoxBead : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private void OnMouseDown()
     {
+        // 비밀번호 무한 입력 시도 방지
+        RoomManager.Instance.ProhibitInput();
+
         zCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         offset = gameObject.transform.position - GetMouseAsWorldPoint();
     }

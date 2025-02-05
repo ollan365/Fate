@@ -27,6 +27,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private Sprite letterOfResignationImage;
     [SerializeField] private Sprite photoInsideBoxImage;
     [SerializeField] private Sprite cafePintInBagImage;
+    [SerializeField] private Sprite posterOversideImage;
 
     [Header("방탈출2 이벤트 오브젝트 확대 이미지")]
     [SerializeField] private Sprite tinCaseImage;
@@ -89,6 +90,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
             {"letterOfResignation", letterOfResignationImage},
             {"photoInsideBox", photoInsideBoxImage},
             {"cafePintInBagImage", cafePintInBagImage},
+            {"posterOverside", posterOversideImage},
 
             // 방탈출2 확대 이미지
             {"tinCase", tinCaseImage},
@@ -196,6 +198,49 @@ public class ImageAndLockPanelManager : MonoBehaviour
             if (preferredWidth > maxWidth)
             {
                 multiplier = maxWidth / preferredWidth;;
+                preferredWidth = maxWidth;
+                preferredHeight *= multiplier;
+            }
+
+            objectImageImageComponent.sprite = rawSprite;
+            objectImageRectTransform.sizeDelta = new Vector2(preferredWidth, preferredHeight);
+
+            RoomManager.Instance.SetIsInvestigating(true);
+            RoomManager.Instance.SetButtons();
+        }
+
+        objectImageGroup.SetActive(isTrue);
+        SetBlockingPanel();
+    }
+
+    public IEnumerator SetObjectImageGroupWithDelay(bool isTrue, string eventObjectName = null, float second = 0f)
+    {
+        yield return new WaitForSeconds(second);
+
+        if (isTrue && eventObjectName == null)
+        {
+            Debug.Log("eventObjectName must be a correct value!");
+            yield break;
+        }
+
+        isImageActive = isTrue;
+
+        if (isTrue)
+        {
+            Sprite rawSprite = imageDictionary[eventObjectName];
+            float maxHeight = 1200f;
+            float maxWidth = 1900f;
+
+            float rawHeight = rawSprite.rect.height;
+            float rawWidth = rawSprite.rect.width;
+
+            float multiplier = maxHeight / rawHeight; ;
+            float preferredHeight = maxHeight;
+            float preferredWidth = rawWidth * multiplier;
+
+            if (preferredWidth > maxWidth)
+            {
+                multiplier = maxWidth / preferredWidth; ;
                 preferredWidth = maxWidth;
                 preferredHeight *= multiplier;
             }

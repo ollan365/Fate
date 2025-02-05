@@ -51,13 +51,12 @@ public class MemoManager : PageContentsManager
         if (Instance == null)
         {
             Instance = this;
-            ParsePageContents();
             DontDestroyOnLoad(gameObject);
         }
         else
-        {
             Destroy(gameObject);
-        }
+
+        ParsePageContents();
 
         // Initialize the lists with the correct size
         for (var i = 0; i < 4; i++)
@@ -77,7 +76,8 @@ public class MemoManager : PageContentsManager
         var lines = memoCsv.text.Split('\n');
         for (var i = 1; i < lines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+            if (string.IsNullOrWhiteSpace(lines[i]))
+                continue;
 
             var fields = lines[i].Split(',');
 
@@ -120,23 +120,24 @@ public class MemoManager : PageContentsManager
     public void OnExit()
     {
         SetMemoContents(false);
+        SetMemoButtons(true);
 
-        if (FollowManager.Instance) FollowManager.Instance.EndScript();
+        if (FollowManager.Instance)
+            FollowManager.Instance.EndScript();
     }
 
     // 메모 추가하기
     public void RevealMemo(string memoID)
     {
         var scriptID = memoScripts[memoID];
-
         int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
         
         for (int i = 0; i <= currentSceneIndex; i++)
         {
-            if (RevealedMemoList[i].Contains(scriptID)) continue;
+            if (RevealedMemoList[i].Contains(scriptID)) 
+                continue;
             
             RevealedMemoList[i].Add(scriptID);
-
             for (var j = 0; j < SavedMemoList[i].Count; j++)
             {
                 if (SavedMemoList[i][j][0] != memoID) continue;
@@ -162,13 +163,15 @@ public class MemoManager : PageContentsManager
 
     public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false)
     {
-        if (showMemoIcon && wantToHideMemoButton) return;
+        if (showMemoIcon && wantToHideMemoButton)
+            return;
 
         memoButton.SetActive(showMemoIcon);
         exitButton.SetActive(showMemoExitButton);
 
         var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
-        if (RoomManager.Instance && currentSceneIndex is 1 or 3) RoomManager.Instance.SetButtons();
+        if (RoomManager.Instance && currentSceneIndex is 1 or 3)
+            RoomManager.Instance.SetButtons();
     }
 
     public void SetMemoGauge(GameObject memoGauge, Image gaugeImage, Slider clearFlagSlider, Image clearFlageImage)
@@ -180,10 +183,12 @@ public class MemoManager : PageContentsManager
 
         ChangeMemoGauge();
     }
+    
     public void ShowMemoGauge(bool show)
     {
         memoGauge.SetActive(show);
     }
+    
     public void ChangeMemoGauge()
     {
         // memoGauge.SetActive(showMemoGauge);
@@ -202,19 +207,15 @@ public class MemoManager : PageContentsManager
         else clearFlageImage.color = clearColor;
     }
 
-    public void SetMemoContents(bool isTrue)
+    public void SetMemoContents(bool isActive)
     {
-        memoContents.SetActive(isTrue);
-        isMemoOpen = isTrue;
-        SetMemoButtons(!isTrue, isTrue);
+        UIManager.Instance.SetUI("MemoContents", isActive);
+        isMemoOpen = isActive;
 
-        if (!isTrue) return;
-
-        var allMemos = GetAggregatedMemos();
-
-        memoPages.totalPageCount = allMemos.Count;
-        var currentPage = memoPages.currentPage;
-        DisplayPagesStatic(currentPage);
+        if (isActive) {
+            memoPages.totalPageCount = GetAggregatedMemos().Count;
+            DisplayPagesStatic(memoPages.currentPage);
+        }
     }
 
     public void SetMemoCurrentPageAndFlags()

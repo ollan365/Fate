@@ -147,6 +147,16 @@ public class StartLogic : MonoBehaviour
         if (sceneNum == 5) SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
+
     // ========== 앨범 ========== //
     public void ClickAlbum()
     {

@@ -75,6 +75,17 @@ public class LaptopLock : EventObject, IResultExecutable
         }
     }
 
+    //public void ProhibitInput()
+    //{
+    //    int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
+    //    int actionPointsPerDay = (int)GameManager.Instance.GetVariable("ActionPointsPerDay");
+
+    //    if (actionPoint % actionPointsPerDay == 0)
+    //        RoomManager.Instance.OnExitButtonClick();
+    //    else
+    //        return;
+    //}
+
     IEnumerator ComparePassword()
     {
         yield return new WaitForSeconds(0.2f);

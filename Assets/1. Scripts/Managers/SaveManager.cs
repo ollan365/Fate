@@ -31,7 +31,7 @@ public class SaveManager : MonoBehaviour
         // 엔딩 후에도 초기화되면 안되는 변수들
         endingVariableNames = new List<string>
         {
-            "EndingCollect", "LastEnding","BadEndingCollect", "SkipLobby",
+            "ReplayCount", "LastEnding","BadEndingCollect", "SkipLobby",
             "BadACollect", "BadBCollect", "TrueCollect", "HiddenCollect",
             "FateName","Language","AccidyGender","FateBirthday"
         };
@@ -76,7 +76,7 @@ public class SaveManager : MonoBehaviour
                 GameManager.Instance.IncrementVariable("HiddenCollect");
                 break;
         }
-        GameManager.Instance.IncrementVariable("EndingCollect");
+        GameManager.Instance.IncrementVariable("ReplayCount");
         GameManager.Instance.SetVariable("LastEnding", ending.ToString());
 
         // 초기화용 데이터에서 엔딩 데이터(회차가 넘어가도 유지되어야하는 데이터)를 변경
@@ -99,7 +99,7 @@ public class SaveManager : MonoBehaviour
         SaveData saveData = JsonUtility.FromJson<SaveData>(FromJsonData);
 
         // n회차이거나 Room1의 튜토리얼을 끝냈으면 게임 데이터가 있는 것으로 판단
-        return (int)saveData.Variables["EndingCollect"] != 0 || (bool)saveData.Variables["EndTutorial_ROOM_1"];
+        return (int)saveData.Variables["ReplayCount"] != 0 || (bool)saveData.Variables["EndTutorial_ROOM_1"];
     }
     // 불러오기
     public void ApplySavedGameData()

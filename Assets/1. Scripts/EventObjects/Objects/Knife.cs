@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class Knife : EventObject, IResultExecutable
 {
+    // ************************* temporary members for grab animation *************************
+    [SerializeField] private Animator knifeAnimator;
+    [SerializeField] private float hideTime = 0.4f;
+    // ********************************************************************************
+
     private void Start()
     {
         ResultManager.Instance.RegisterExecutable($"Knife{sideNum}", this);
@@ -17,13 +22,27 @@ public class Knife : EventObject, IResultExecutable
 
     public void ExecuteAction()
     {
-        HideKnife();
+        GrabKnife();
+    }
+
+    // ************************* temporary methods for grab animation *************************
+    private void GrabKnife()
+    {
+        if (sideNum != 0)
+        {
+            HideKnife();
+            return;
+        }
+
+        knifeAnimator.SetBool("grab_Knife", true);
+        Invoke("HideKnife", hideTime);
     }
 
     private void HideKnife()
     {
         gameObject.SetActive(false);
     }
+    // *******************************************************************************
 
     private void OnEnable()
     {
