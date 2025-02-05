@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
             "PresentHeartIndex",
             "FateBirthday",
             "EndTutorial_ROOM_1",
-            "SkipLobby"
+            "ReplayCount"
         });
 
         foreach (var item in variables)
