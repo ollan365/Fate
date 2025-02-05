@@ -265,7 +265,7 @@ public static class Constants
             case FollowObjectName.Receipt: return "ReceiptClick";
             case FollowObjectName.Light:   return "LightClick";
 
-            case FollowObjectName.Coffee: return "LatteClcik";
+            case FollowObjectName.Coffee: return "LatteClick";
             case FollowObjectName.Shop_1: return "1FClothesClick";
             case FollowObjectName.Shop_2: return "2FClothesClick";
             case FollowObjectName.Construction: return "ConstructionClick";

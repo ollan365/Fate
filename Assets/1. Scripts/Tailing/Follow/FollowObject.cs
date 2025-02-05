@@ -8,6 +8,7 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private FollowObjectName objectName;
     [SerializeField] private FollowExtra extraName;
     [SerializeField] private bool isSpecial;
+    [SerializeField] private GameObject[] afterBlurImages;
     public Sprite specialSprite;
     public float scaleValue;
     public new void OnMouseDown()
@@ -43,6 +44,9 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
     {
         if (objectName != FollowObjectName.Extra) eventId = objectName.EventID();
         else eventId = extraName.EventID();
+
+        foreach (GameObject image in afterBlurImages) image.SetActive(true);
+        FollowManager.Instance.EndScriptAction = () => { foreach (GameObject image in afterBlurImages) image.SetActive(false); };
 
         base.OnMouseDown();
         

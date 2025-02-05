@@ -281,7 +281,7 @@ public class DialogueManager : MonoBehaviour
         // 방 대화창
         if (speaker is "DialogueC_001" or "DialogueC_002")
             dialogueType = DialogueType.ROOM_ACCIDY;
-        else if(speaker is "DialogueC_003")
+        else if(speaker is "DialogueC_003" or "DialogueC_008")
             dialogueType = DialogueType.ROOM_FATE;
         else if (speaker is "DialogueC_004")
             dialogueType = DialogueType.ROOM_THINKING;

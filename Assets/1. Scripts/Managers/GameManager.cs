@@ -344,7 +344,7 @@ public class GameManager : MonoBehaviour
         // 신호등
         variables["LightClick"] = 0;
         // 음료
-        variables["LatteClcik"] = 0;
+        variables["LatteClick"] = 0;
         // 1층 옷가게
         variables["1FClothesClick"] = 0;
         // 2층 옷가게

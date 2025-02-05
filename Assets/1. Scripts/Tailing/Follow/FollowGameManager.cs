@@ -256,6 +256,7 @@ public class FollowGameManager : MonoBehaviour
 
                 Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
                 Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
+                FollowManager.Instance.CameraAfterBlur.orthographicSize = Camera.main.orthographicSize;
 
                 elapsedTime += Time.deltaTime;
                 yield return null;
@@ -268,6 +269,7 @@ public class FollowGameManager : MonoBehaviour
 
                 Camera.main.transform.position = targetPosition;
                 Camera.main.orthographicSize = targetSize;
+                FollowManager.Instance.CameraAfterBlur.orthographicSize = Camera.main.orthographicSize;
 
                 yield return null;
             }

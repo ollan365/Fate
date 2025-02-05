@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 using TMPro;
 using static Constants;
 public class FollowManager : MonoBehaviour
@@ -34,15 +35,18 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private FollowGameManager followGameManager;
 
     [Header("Zoom")]
-    [SerializeField] private Camera cameraNonBlur;
+    [SerializeField] private Camera cameraAfterBlur;
     private float zoomTime = 1.5f;
     public enum Position { Fate, Accidy, ZoomOut }
+    public Camera CameraAfterBlur { get => cameraAfterBlur; }
 
     [Header("Variables")]
     [SerializeField] private float accidyAnimatorSpeed;
     [SerializeField] private float fateAnimatorSpeed;
     public float totalFollowSpecialObjectCount = 10;
-    
+    public Action EndScriptAction;
+
+
     public int ClickCount { get; set; }
     public bool CanClick { get { return !followGameManager.IsFateHide && followGameManager.NowAccidyStatus != FollowGameManager.AccidyStatus.RED; } }
     public bool IsEnd { set; get; } // 현재 미행이 끝났는지 아닌지
@@ -123,6 +127,9 @@ public class FollowManager : MonoBehaviour
         Accidy.speed = 0;
         Fate.speed = 0;
 
+        foreach(Transform child in frontObjects)
+            child.GetComponent<Image>().color = new Color(0.01f, 0.01f, 0.01f);
+        
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
         followDialogueManager.ClickObject();
 
@@ -137,8 +144,12 @@ public class FollowManager : MonoBehaviour
 
         if (IsEnd || IsTutorial) return;
 
+        foreach (Transform child in frontObjects)
+            child.GetComponent<Image>().color = new Color(1, 1, 1);
+
         followDialogueManager.EndScript();
         followGameManager.ChangeAnimStatusToStop(false);
+        EndScriptAction?.Invoke();
     }
     public void OpenExtraDialogue(string extraName)
     {
@@ -212,7 +223,7 @@ public class FollowManager : MonoBehaviour
             Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
             Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
             
-            cameraNonBlur.orthographicSize = Camera.main.orthographicSize;
+            cameraAfterBlur.orthographicSize = Camera.main.orthographicSize;
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -220,7 +231,7 @@ public class FollowManager : MonoBehaviour
 
         // 변경이 완료된 후 최종 목표값으로 설정
         Camera.main.orthographicSize = targetSize;
-        cameraNonBlur.orthographicSize = Camera.main.orthographicSize;
+        cameraAfterBlur.orthographicSize = Camera.main.orthographicSize;
     }
     public void CheckPosition()
     {
