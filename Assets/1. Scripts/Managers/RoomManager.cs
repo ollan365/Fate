@@ -146,7 +146,7 @@ public class RoomManager : MonoBehaviour
     // 비밀번호 무한 입력 시도 방지
     public void ProhibitInput()
     {
-        if (heartParent.transform.childCount < 1)
+        if (UIManager.Instance && UIManager.Instance.heartParent.transform.childCount < 1)
             OnExitButtonClick();
         else
             return;

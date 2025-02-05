@@ -898,6 +898,8 @@ MonoBehaviour:
   eventId: EventKnife
   sideNum: 0
   isInquiry: 1
+  knifeAnimator: {fileID: 0}
+  hideTime: 0.4
 --- !u!114 &62053584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4280,6 +4282,7 @@ MonoBehaviour:
   letterOfResignationImage: {fileID: 21300000, guid: 28a0585caf18da64b8a62e9410cac47d, type: 3}
   photoInsideBoxImage: {fileID: 21300000, guid: cc713c41a0c3a034cb5e7390a19c5ac6, type: 3}
   cafePintInBagImage: {fileID: 21300000, guid: af595b4a021f5d7429ea80c3312a7904, type: 3}
+  posterOversideImage: {fileID: 0}
   tinCaseImage: {fileID: 0}
   sewingBoxImage: {fileID: 0}
   threadImage: {fileID: 0}
@@ -8437,6 +8440,7 @@ GameObject:
   - component: {fileID: 891301993}
   - component: {fileID: 891301992}
   - component: {fileID: 891301994}
+  - component: {fileID: 891301995}
   m_Layer: 6
   m_Name: Knife
   m_TagString: InquiryObject
@@ -8516,6 +8520,29 @@ MonoBehaviour:
   eventId: EventKnife
   sideNum: 1
   isInquiry: 0
+  knifeAnimator: {fileID: 891301995}
+  hideTime: 0.4
+--- !u!95 &891301995
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891301989}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 19d6469a52b7bdb43bd4fdfb07d2ffca, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &898558684
 GameObject:
   m_ObjectHideFlags: 0
@@ -11616,6 +11643,8 @@ MonoBehaviour:
   sideNum: 1
   isInquiry: 1
   clockPuzzle: {fileID: 1024176503}
+  Clocks: []
+  AfterClockImage: {fileID: 0}
 --- !u!114 &1209573880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16475,6 +16504,7 @@ GameObject:
   - component: {fileID: 1858957146}
   - component: {fileID: 1858957145}
   - component: {fileID: 1858957143}
+  - component: {fileID: 1858957147}
   m_Layer: 6
   m_Name: Knife
   m_TagString: InquiryObject
@@ -16516,6 +16546,8 @@ MonoBehaviour:
   eventId: EventKnife
   sideNum: 2
   isInquiry: 0
+  knifeAnimator: {fileID: 0}
+  hideTime: 0.4
 --- !u!114 &1858957145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16554,6 +16586,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1858957141}
   m_CullTransparentMesh: 1
+--- !u!95 &1858957147
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858957141}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 19d6469a52b7bdb43bd4fdfb07d2ffca, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1899501866
 GameObject:
   m_ObjectHideFlags: 0

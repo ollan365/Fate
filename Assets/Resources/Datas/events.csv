@@ -82,13 +82,14 @@ EventCarpetLetterOfResignation,카펫(종이),자퇴서 처음 클릭,,CoditionZ
 EventCarpetLetterOfResignation,카펫(종이),자퇴서 다시 클릭,,ConditionZeroPaperManyClick,ResultCarpetDropOutLetterZoom/ Result_StartDialogueRoomEscape_017 /Result_IncrementPaperClick/ResultCarpetDropOutLetterMemo/Result_IncrementPaperClick/ResultTimePass,
 EventTutorialNext,,dialogues탭의 다이얼로그 Tutorial_003_B 출력 다 끝나면 next에 EventTutorialNext를 넣어서 바로 다음 튜토리얼페이즈로 넘어갈 수 있게 함,,,Result_nextTutorialPhase,
 ,,,,,,
-EventKnife,커터칼,커터칼 획득,,,ResultCutterKnifeScript / Result_StartDialogueRoomEscape_020 / ResultCutterKnifeDisappear/Result_InverseHasKnife/Result_IsUnFinishedEventPoster/ResultTimePass,Result_IsUnFinished 추가
+EventKnife,커터칼,커터칼 획득,,,ResultCutterKnifeDisappear/ResultCutterKnifeScript/Result_InverseHasKnife/Result_IsUnFinishedEventPoster/ResultTimePass,Result_IsUnFinished 추가
 ,,,,,,
-EventPoster,포스터,포스터를 열람한 상태에서 포스터 다시 클릭,,ConditionPosterOpened,ResultPosterWithKnifeScript / Result_StartDialogueRoomEscape_021 / Result_IncrementPosterClick/ResultTimePass,새로 추가(나은)
-EventPoster,포스터,커터칼 없는 상태에서 포스터 다시 클릭,AND,ConditionPosterManyClick/ConditionNotGetKnife,ResultPosterScript / Result_StartDialogueRoomEscape_019 / Result_IncrementPosterClick/ResultTimePass,새로 추가(나은)
-EventPoster,포스터,커터칼 있는 상태에서 포스터 처음 클릭,AND,ConditionPosterFirstClick/ConditionGetKnife/ConditionNotPosterOpened,ResultPosterScript / Result_StartDialogueRoomEscape_019 / ResultPosterWithKnifeScript / Result_StartDialogueRoomEscape_021 / ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
-EventPoster,포스터,포스터를 처음 클릭,,ConditionPosterFirstClick,ResultPosterScript / Result_StartDialogueRoomEscape_019 / Result_IncrementPosterClick/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
-EventPoster,포스터,포스터를 열람하지 않고 커터칼 있는 상태에서 포스터 클릭,AND,ConditionGetKnife/ConditionNotPosterOpened,ResultPosterWithKnifeScript / Result_StartDialogueRoomEscape_021 / ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,Result_IsFinished 추가
+EventPoster,포스터,포스터를 열람한 상태에서 포스터 다시 클릭,,ConditionPosterOpened,Result_StartDialogueRoomEscape_021 / ResultPosterOversideImageAndSound/Result_IncrementPosterClick/ResultTimePass,
+EventPoster,포스터,커터칼 없는 상태에서 포스터 다시 클릭,AND,ConditionPosterManyClick/ConditionNotGetKnife,Result_StartDialogueRoomEscape_019 / ResultPosterScript/Result_IncrementPosterClick/ResultTimePass,
+EventPoster,포스터,커터칼 있는 상태에서 포스터 처음 클릭,AND,ConditionPosterFirstClick/ConditionGetKnife/ConditionNotPosterOpened,Result_StartDialogueRoomEscape_019 / ResultPosterScript/ Result_StartDialogueRoomEscape_021 /ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,
+EventPoster,포스터,포스터를 처음 클릭,,ConditionPosterFirstClick,Result_StartDialogueRoomEscape_019 / ResultPosterScript/Result_IncrementPosterClick/Result_IsFinishedEventPoster/ResultTimePass,
+EventPoster,포스터,포스터를 열람하지 않고 커터칼 있는 상태에서 포스터 클릭,AND,ConditionGetKnife/ConditionNotPosterOpened,Result_StartDialogueRoomEscape_021 /ResultPosterOversideImageAndSound/ResultPosterMemo/Result_IncrementPosterClick/Result_InversePosterOpened/Result_IsFinishedEventPoster/ResultTimePass,
+EventPosterOverside,포스터 뒷면,포스터 뒷면 이미지와 효과음 재생,,ConditionGetKnife,ResultPosterOversideImageAndSound,
 ,,,,,,
 EventClosetZoom,확대 안 된 옷장,확대 되지 않은 상태에서 옷장을 클릭,,,ResultClosetZoom,30일 추가
 EventClosetClosed,닫힌 옷장 문,닫힌 옷장 문을 처음 클릭,AND,ConditionFirstClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/ Result_StartDialogueRoomEscape_022 /Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed/ResultTimePass,새로 추가(나은)
@@ -200,7 +201,7 @@ EventSewingBoxA,반짇고리,반짇고리를 처음 클릭,,ConditionSewingBoxFi
 EventSewingBoxA,반짇고리,반짇고리 퍼즐 맞추고 또 눌렀을 때,AND,ConditionSewingBoxManyClick/ConditionSewingBoxCorrect,Result_IncrementSewingBoxClick/ResultSewingBoxGetThreadAndNeedle/ Result_StartDialogueRoomEscape2_019 /ResultTimePass,
 EventSewingBoxA,반짇고리,반짇고리 퍼즐 맞추지 않고 나갔다가 다시 들어왔을 때,AND,ConditionSewingBoxManyClick/ConditionSewingBoxNotCorrect,ResultSewingBoxSystemActivartion/Result_IncrementSewingBoxClick,
 EventSewingBoxB,반짇고리,퍼즐의 구슬을 틀린 위치로 맞춤,,ConditionSewingBoxNotCorrect,Result_StartDialogueRoomEscape2_037 / ResultTimePass,
-EventSewingBoxB,반짇고리,퍼즐의 구슬을 알맞은 위치로 맞춤,,ConditionSewingBoxCorrect,ResultSewingBoxGetThreadAndNeedle/Result_InverseGetThreadAndNeedle/ Result_StartDialogueRoomEscape2_019 /ResultSewingBoxGetThreadAndNeedleMemo/Result_IsFinishedEventSewingBoxA/ResultTimePass,
+EventSewingBoxB,반짇고리,퍼즐의 구슬을 알맞은 위치로 맞춤,,ConditionSewingBoxCorrect,ResultSewingBoxGetThreadAndNeedle/Result_InverseGetThreadAndNeedle / Result_StartDialogueRoomEscape2_019 /ResultSewingBoxGetThreadAndNeedleMemo/Result_IsFinishedEventSewingBoxA/ResultTimePass,
 EventActivateSewingBox,반짇고리 퍼즐 활성화,반짇고리에 대한 설명이 끝나고 바로 퍼즐 활성화가 가능하도록 이벤트를 생성함. (dialogue에서 바로 result 실행은 불가능하므로) 첫 조사하는 상태,,ConditionSewingBoxFirstClick,ResultSewingBoxSystemActivartion/Result_IncrementSewingBoxClick/ResultTimePass,
 ,,,,,,
 EventDiary2A,다이어리,다이어리를 처음 클릭,,ConditionDiary2FirstClick,Result_StartDialogueRoomEscape2_014 / ResultDiary2LockActivation/Result_IncrementDiary2Click/ResultTimePass,

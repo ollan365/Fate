@@ -404,12 +404,6 @@ public class ResultManager : MonoBehaviour
                 //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "knife");
                 break;
 
-            case "ResultPosterWithKnifeScript": // 포스터 뒷장에 대한 설명
-                DialogueManager.Instance.StartDialogue("RoomEscape_021");
-                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "posterOverside");
-                //SoundPlayer.Instance.UISoundPlay(Sound_Poster);
-                break;
-
             case "ResultPosterOversideImageAndSound": // 포스터 뒷장 이미지와 효과음
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "posterOverside");
                 SoundPlayer.Instance.UISoundPlay(Sound_Poster);
