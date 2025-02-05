@@ -16,14 +16,14 @@ abstract public class ActionPointManager : MonoBehaviour
     protected GameObject heartParent;
     protected TextMeshProUGUI dayText;
 
-    [SerializeField] protected int maxDayNum;   // ¹æÅ»Ãâ¿¡¼­ Áö³»´Â ÃÖ´ë ÀÏ¼ö
+    [SerializeField] protected int maxDayNum;   // Â¹Ã¦Ã…Â»ÃƒÃ¢Â¿Â¡Â¼Â­ ÃÃ¶Â³Â»Â´Ã‚ ÃƒÃ–Â´Ã« Ã€ÃÂ¼Ã¶
     [SerializeField] protected int nowDayNum;
     [SerializeField] protected int actionPointsPerDay;
 
-    // Çàµ¿·Â °¨¼Ò·Î ÅÍÁú ÇÏÆ® ÀÚ¸®
+    // Ã‡Ã ÂµÂ¿Â·Ã‚ Â°Â¨Â¼Ã’Â·Ã Ã…ÃÃÃº Ã‡ÃÃ†Â® Ã€ÃšÂ¸Â®
     [SerializeField] protected int presentHeartIndex;
 
-    // ¼³Á¤ÇÑ actionPointsPerDay¿¡ µû¶ó ´Ş¶óÁö´Â actionpoints¹è¿­
+    // Â¼Â³ÃÂ¤Ã‡Ã‘ actionPointsPerDayÂ¿Â¡ ÂµÃ»Â¶Ã³ Â´ÃÂ¶Ã³ÃÃ¶Â´Ã‚ actionpointsÂ¹Ã¨Â¿Â­
     protected int[,] actionPointsArray;
 
     // ************************* temporary methods for action points *************************
@@ -48,10 +48,10 @@ abstract public class ActionPointManager : MonoBehaviour
 
     public abstract void DecrementActionPoint();
 
-    // ±Í°¡ ½ºÅ©¸³Æ® Ãâ·Â ºÎºĞ
+    // Â±ÃÂ°Â¡ Â½ÂºÃ…Â©Â¸Â³Ã†Â® ÃƒÃ¢Â·Ã‚ ÂºÃÂºÃ
     public abstract void RefillHeartsOrEndDay();
 
-    // ¿ÜÃâ(¾ÆÄ§) ½ºÅ©¸³Æ® Ãâ·Â ºÎºĞ
+    // Â¿ÃœÃƒÃ¢(Â¾Ã†Ã„Â§) Â½ÂºÃ…Â©Â¸Â³Ã†Â® ÃƒÃ¢Â·Ã‚ ÂºÃÂºÃ
     public abstract void nextMorningDay();
 
     public void Awake()
@@ -74,19 +74,19 @@ abstract public class ActionPointManager : MonoBehaviour
         RoomManager.Instance.ExitToRoot();
     }
 
-    // Ä§´ë¿¡¼­ ÈŞ½ÄÇÏ¸é Çàµ¿·Â °­Á¦·Î ´ÙÀ½³¯·Î ³Ñ¾î°¨
-    // Day1¿¡ ÇÏÆ® 4°³ ³²¾ÆÀÖ¾îµµ Day2·Î ³Ñ¾î°¡°í actionPointsPerDay ¸¸Å­ Ã¤¿öÁü
+    // Ã„Â§Â´Ã«Â¿Â¡Â¼Â­ ÃˆÃÂ½Ã„Ã‡ÃÂ¸Ã© Ã‡Ã ÂµÂ¿Â·Ã‚ Â°Â­ÃÂ¦Â·Ã Â´Ã™Ã€Â½Â³Â¯Â·Ã Â³Ã‘Â¾Ã®Â°Â¨
+    // Day1Â¿Â¡ Ã‡ÃÃ†Â® 4Â°Â³ Â³Â²Â¾Ã†Ã€Ã–Â¾Ã®ÂµÂµ Day2Â·Ã Â³Ã‘Â¾Ã®Â°Â¡Â°Ã­ actionPointsPerDay Â¸Â¸Ã…Â­ ÃƒÂ¤Â¿Ã¶ÃÃ¼
     public IEnumerator TakeRest()
     {
         float time = 3f;
         StartCoroutine(ScreenEffect.Instance.DayPass(time));   // fade in/out effect
 
-        // ÈŞ½Ä ´ë»ç Ãâ·Â. 
+        // ÃˆÃÂ½Ã„ Â´Ã«Â»Ã§ ÃƒÃ¢Â·Ã‚. 
         StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", time));
 
         yield return new WaitForSeconds(time / 2);
 
-        // ÈŞ½ÄÇÏ¸é ±×³¯ ÇÏ·ç¿¡ ³²¾ÆÀÖ´Â Çàµ¿·Â ´Ù »ç¿ëµÇ±â¿¡ ÇöÀç ÀÖ´Â ÇÏÆ®µé »èÁ¦
+        // ÃˆÃÂ½Ã„Ã‡ÃÂ¸Ã© Â±Ã—Â³Â¯ Ã‡ÃÂ·Ã§Â¿Â¡ Â³Â²Â¾Ã†Ã€Ã–Â´Ã‚ Ã‡Ã ÂµÂ¿Â·Ã‚ Â´Ã™ Â»Ã§Â¿Ã«ÂµÃ‡Â±Ã¢Â¿Â¡ Ã‡Ã¶Ã€Ã§ Ã€Ã–Â´Ã‚ Ã‡ÃÃ†Â®ÂµÃ© Â»Ã¨ÃÂ¦
         foreach (Transform child in heartParent.transform)
         {
             Destroy(child.gameObject);
@@ -107,8 +107,8 @@ abstract public class ActionPointManager : MonoBehaviour
         }
         else
         {
-            // ¸¶Áö¸· ³¯ÀÎ 5ÀÏ¿¡ ÈŞ½ÄÇßÀ» °æ¿ì
-            // Çàµ¿·ÂÀÌ 0ÀÌ µÈ »óÅÂ
+            // Â¸Â¶ÃÃ¶Â¸Â· Â³Â¯Ã€Ã 5Ã€ÃÂ¿Â¡ ÃˆÃÂ½Ã„Ã‡ÃŸÃ€Â» Â°Ã¦Â¿Ã¬
+            // Ã‡Ã ÂµÂ¿Â·Ã‚Ã€ÃŒ 0Ã€ÃŒ ÂµÃˆ Â»Ã³Ã…Ã‚
             actionPoint = 0;
         }
 
@@ -120,10 +120,9 @@ abstract public class ActionPointManager : MonoBehaviour
     protected void Warning()
     {
         int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
-        if (actionPoint <= 0) // actionPoint°¡ 0º¸´Ù Å¬ ¶§¸¸ ÄÚ·çÆ¾ ½ÇÇà
+        if (actionPoint <= 0) // actionPointÂ°Â¡ 0ÂºÂ¸Â´Ã™ Ã…Â¬ Â¶Â§Â¸Â¸ Ã„ÃšÂ·Ã§Ã†Â¾ Â½Ã‡Ã‡Ã 
             return;
         
         StartCoroutine(UIManager.Instance.WarningCoroutine());
     }
-
 }

@@ -390,19 +390,29 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 break;
 
-            case "ResultCutterKnifeScript": // 커터칼에 대한 스크립트
-                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "knife");
-                break;
-
-            case "ResultCutterKnifeDisappear": // 커터칼 사라짐
+            case "ResultCutterKnifeDisappear": // 커터칼 집음
                 //Debug.Log("ResultCutterKnifeDisappear executed");
                 executableObjects["Knife0"].ExecuteAction();
                 executableObjects["Knife1"].ExecuteAction();
                 break;
 
+            case "ResultCutterKnifeScript": // 커터칼에 대한 스크립트
+                float knifeHideTime = 0.4f;
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_020", knifeHideTime));
+                StartCoroutine(RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroupWithDelay(true, "knife", knifeHideTime));
+                //DialogueManager.Instance.StartDialogue("RoomEscape_020");
+                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "knife");
+                break;
+
             case "ResultPosterWithKnifeScript": // 포스터 뒷장에 대한 설명
+                DialogueManager.Instance.StartDialogue("RoomEscape_021");
+                //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "posterOverside");
+                //SoundPlayer.Instance.UISoundPlay(Sound_Poster);
+                break;
+
+            case "ResultPosterOversideImageAndSound": // 포스터 뒷장 이미지와 효과음
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "posterOverside");
                 SoundPlayer.Instance.UISoundPlay(Sound_Poster);
-                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster");
                 break;
 
             case "ResultPosterMemo": // 포스터에 대한 메모

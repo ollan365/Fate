@@ -17,6 +17,9 @@ public class WheelDragHandler : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
+            // 비밀번호 무한 입력 시도 방지
+            RoomManager.Instance.ProhibitInput();
+
             if (!IsMouseOverWheel()) return;
             
             lastMousePosition = Input.mousePosition;

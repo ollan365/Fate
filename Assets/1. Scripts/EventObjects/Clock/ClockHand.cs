@@ -34,6 +34,9 @@ public class ClockHand : MonoBehaviour
         if (isSnapping || isImageActive) return;
         if (Input.GetMouseButtonDown(0) && !isSnapping)
         {
+            // 비밀번호 무한 입력 시도 방지
+            RoomManager.Instance.ProhibitInput();
+
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 handTipPosition = minuteHand.position + minuteHand.up * 5.7f;
 
@@ -116,6 +119,7 @@ public class ClockHand : MonoBehaviour
             GameManager.Instance.SetVariable("ClockTimeCorrect", true);
             // 시계 맞춘 이후에 시계 다시 클릭하면 조사창 패스된거 다시 조사창 나오게 함.
             clockA.SetIsInquiry(true);
+            clockA.SwapAfterImage();
             isClockTimeCorrect = true;
         }
 
