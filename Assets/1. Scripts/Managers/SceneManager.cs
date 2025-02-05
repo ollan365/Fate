@@ -90,7 +90,7 @@ public class SceneManager : MonoBehaviour
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
                 MemoManager.Instance.isFollow = false;
-                DialogueManager.Instance.dialogueType = DialogueType.ROOM;
+                DialogueManager.Instance.dialogueType = DialogueType.ROOM_ACCIDY;
                 // RoomManager.Instance.currentSideIndex = roomSideIndex;
                 break;
             case SceneType.FOLLOW_1:

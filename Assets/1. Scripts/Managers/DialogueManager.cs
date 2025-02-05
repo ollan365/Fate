@@ -13,13 +13,13 @@ public class DialogueManager : MonoBehaviour
 
     // Dialogue UI
     [Header("Dialogue UI")]
-    public DialogueType dialogueType = DialogueType.ROOM; // 사용할 대화창 종류
+    public DialogueType dialogueType = DialogueType.ROOM_ACCIDY; // 사용할 대화창 종류
     public GameObject[] dialogueSet;
-    public TextMeshProUGUI speakerText;
+    public TextMeshProUGUI[] speakerTexts;
     public TextMeshProUGUI[] scriptText;
     public Image[] backgroundImages;
     public Image[] characterImages;
-    public Image characterFadeImage;
+    public Image[] characterFadeImages;
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
@@ -183,9 +183,10 @@ public class DialogueManager : MonoBehaviour
         // 미행의 행인은 별도의 SpeakerID를 가짐
         if (dialogueType != DialogueType.FOLLOW_EXTRA)
         {
-            speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
-                ? GameManager.Instance.GetVariable("FateName").ToString()
-                : scripts[dialogueLine.SpeakerID].GetScript();
+            foreach (TextMeshProUGUI speakerText in speakerTexts)
+                speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
+                    ? GameManager.Instance.GetVariable("FateName").ToString()
+                    : scripts[dialogueLine.SpeakerID].GetScript();
         }
 
         StartCoroutine(TypeSentence(sentence));
@@ -233,8 +234,20 @@ public class DialogueManager : MonoBehaviour
                 characterImage.gameObject.SetActive(true);
             }
 
-            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001") characterFadeImage.gameObject.SetActive(false);
-            else characterFadeImage.color = new Color(0, 0, 0, 0.8f);
+            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001")
+                foreach (Image characterImage in characterFadeImages)
+                    characterImage.gameObject.SetActive(false);
+            else
+            {
+                foreach (Image characterImage in characterFadeImages)
+                {
+                    characterImage.color = new Color(0, 0, 0, 0.8f);
+                    characterImage.sprite = characterSprite;
+                    characterImage.SetNativeSize();
+                    characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
+                    characterImage.gameObject.SetActive(true);
+                }
+            }
         }
 
     }
@@ -242,16 +255,10 @@ public class DialogueManager : MonoBehaviour
     private void ChangeDialogueCanvas(string speaker)
     {
         if(dialogueType == DialogueType.CENTER)
-            dialogueType = DialogueType.ROOM;
-
-        // 방 대화창
-        if (dialogueType == DialogueType.ROOM && speaker == "DialogueC_004")
-            dialogueType = DialogueType.ROOM_THINKING;
-        else if (dialogueType == DialogueType.ROOM_THINKING && speaker != "DialogueC_004")
-            dialogueType = DialogueType.ROOM;
+            dialogueType = DialogueType.ROOM_ACCIDY;
 
         // 미행 대화창
-        else if (dialogueType == DialogueType.FOLLOW || dialogueType == DialogueType.FOLLOW_THINKING || dialogueType == DialogueType.FOLLOW_EXTRA)
+        if ((int)GameManager.Instance.GetVariable("CurrentScene") is 2 or 4)
         {
             if (speaker == "DialogueC_004")
             {
@@ -268,7 +275,16 @@ public class DialogueManager : MonoBehaviour
                 FollowManager.Instance.EndExtraDialogue(false);
                 FollowManager.Instance.OpenExtraDialogue(speaker);
             }
+            return;
         }
+
+        // 방 대화창
+        if (speaker is "DialogueC_001" or "DialogueC_002")
+            dialogueType = DialogueType.ROOM_ACCIDY;
+        else if(speaker is "DialogueC_003" or "DialogueC_008")
+            dialogueType = DialogueType.ROOM_FATE;
+        else if (speaker is "DialogueC_004")
+            dialogueType = DialogueType.ROOM_THINKING;
     }
     public void EndDialogue()
     {
@@ -388,7 +404,7 @@ public class DialogueManager : MonoBehaviour
         var isEffect = false;
         var effectText = "";
 
-        // FAST 인 경우 두배의 속도로 타이핑 + 끝나면 자동으로 넘어감
+        // FAST 인 경우 두배의 속도로 타이핑
         if (isFast) typeSpeed /= 1.75f;
 
         foreach (char letter in sentence.ToCharArray())

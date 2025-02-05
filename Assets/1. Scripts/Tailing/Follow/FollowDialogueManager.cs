@@ -38,7 +38,6 @@ public class FollowDialogueManager : MonoBehaviour
     {
         extra = ToEnum(extraName);
 
-        FollowManager.Instance.SetBlockingPanel(false);
         extraBlockingPanel.SetActive(true); // 일반적인 블로킹 판넬이 아닌 다른 걸 켠다
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
@@ -59,8 +58,6 @@ public class FollowDialogueManager : MonoBehaviour
         extraCanvas[Int(extra)].SetActive(false);
 
         extra = FollowExtra.None;
-
-        if (!dialogueEnd) FollowManager.Instance.SetBlockingPanel(true); // 아직 다른 대사가 출력되는 중
     }
     public void ClickSpecialObject(FollowObject followObject)
     {

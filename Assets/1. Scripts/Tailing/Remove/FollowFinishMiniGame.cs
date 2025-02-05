@@ -136,7 +136,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.5f);
-        DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM;
+        DialogueManager.Instance.dialogueType = Constants.DialogueType.ROOM_ACCIDY;
         blockingPanel.SetActive(true);
         DialogueManager.Instance.StartDialogue("Follow1Final_003"); // 우연의 대사 출력
     }
