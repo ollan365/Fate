@@ -249,7 +249,6 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
-
     }
 
     private void ChangeDialogueCanvas(string speaker)
