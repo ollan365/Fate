@@ -15,7 +15,7 @@ public class SNSApp : MonoBehaviour
         LoadSnsContents();
         DisplayPosts();
     }
-
+    
     private void LoadSnsContents()
     {
         var snsCsv = Resources.Load<TextAsset>("Datas/laptop_SNS");
