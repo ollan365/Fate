@@ -130,9 +130,7 @@ public class MemoManager : PageContentsManager
     public void RevealMemo(string memoID)
     {
         var scriptID = memoScripts[memoID];
-        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
-        
-        for (int i = 0; i <= currentSceneIndex; i++)
+        for (int i = 0; i < GetCurrentSceneIndex(); i++)
         {
             if (RevealedMemoList[i].Contains(scriptID)) 
                 continue;
@@ -151,7 +149,7 @@ public class MemoManager : PageContentsManager
                     unseenMemoPages.Add(pageNum);
                     // Debug.Log($"Added page {pageNum} to unseen memo pages");
 
-                    GameManager.Instance.IncrementVariable($"MemoCount_{((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum()}");
+                    GameManager.Instance.IncrementVariable($"MemoCount_{GetCurrentSceneIndex().ToEnum()}");
                     ChangeMemoGauge();
                 }
                 break;
@@ -169,18 +167,50 @@ public class MemoManager : PageContentsManager
         memoButton.SetActive(showMemoIcon);
         exitButton.SetActive(showMemoExitButton);
 
-        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
-        if (RoomManager.Instance && currentSceneIndex is 1 or 3)
+        if (RoomManager.Instance && GetCurrentSceneIndex() is (int)SceneType.ROOM_1 or (int)SceneType.ROOM_2)
             RoomManager.Instance.SetButtons();
     }
 
-    public void SetMemoGauge(GameObject memoGauge, Image gaugeImage, Slider clearFlagSlider, Image clearFlageImage)
+    public void SetMemoGauge(GameObject memoGaugeParent) 
     {
-        this.memoGauge = memoGauge;
-        this.gaugeImage = gaugeImage;
-        this.clearFlagSlider = clearFlagSlider;
-        this.clearFlageImage = clearFlageImage;
-
+        switch (GetCurrentSceneIndex())
+        {
+            case (int)SceneType.START:
+                break;
+            
+            case (int)SceneType.ROOM_1:
+            case (int)SceneType.ROOM_2:
+                GameObject gaugeImageGameObject = memoGaugeParent.transform.Find("Gauge Image").gameObject; 
+                gaugeImage = gaugeImageGameObject.GetComponent<Image>();
+                
+                GameObject flagSliderGameObject = gaugeImageGameObject.transform.Find("Flag Slider").gameObject;
+                clearFlagSlider = flagSliderGameObject.GetComponent<Slider>();
+                
+                GameObject handleSlideAreaGameObjectRoom = flagSliderGameObject.transform.Find("Handle Slide Area")
+                    .gameObject;
+                GameObject clearFlagBackgroundGameObject = handleSlideAreaGameObjectRoom.transform
+                    .Find("Clear Flag Background").gameObject;
+                clearFlageImage = clearFlagBackgroundGameObject.GetComponentInChildren<Image>();
+                break;
+            
+            case (int)SceneType.FOLLOW_1:
+            case (int)SceneType.FOLLOW_2:
+                GameObject backgroundGameObject = memoGaugeParent.transform.Find("Background").gameObject;
+                gaugeImage = backgroundGameObject.GetComponent<Image>();
+                
+                GameObject fillAreaGameObject = memoGaugeParent.transform.Find("Fill Area").gameObject;
+                GameObject clearSliderGameObject = fillAreaGameObject.transform.Find("Clear Slider").gameObject;
+                clearFlagSlider = clearSliderGameObject.GetComponent<Slider>();
+                
+                GameObject handleSlideAreaGameObjectFollow = clearSliderGameObject.transform.Find("Handle Slide Area")
+                    .gameObject;
+                GameObject handleGameObject = handleSlideAreaGameObjectFollow.transform.Find("Handle").gameObject;
+                clearFlageImage = handleGameObject.GetComponent<Image>();
+                break;
+            
+            default:
+                break;
+        }
         ChangeMemoGauge();
     }
     
@@ -189,22 +219,28 @@ public class MemoManager : PageContentsManager
         memoGauge.SetActive(show);
     }
     
+    private int GetCurrentSceneIndex()
+    {
+        return (int)GameManager.Instance.GetVariable("CurrentScene");
+    }
+    
     public void ChangeMemoGauge()
     {
+        Debug.Log("ChangeMemoGauge");
         // memoGauge.SetActive(showMemoGauge);
 
-        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
-
-        if (currentSceneIndex is 0 or 5) return;
+        int currentSceneIndex = GetCurrentSceneIndex();
+        int previousSceneIndex = currentSceneIndex - 1;
+        if (currentSceneIndex is (int)SceneType.START or (int)SceneType.ENDING) 
+            return;
 
         int cutLine = (int)GameManager.Instance.GetVariable($"CutLine_{currentSceneIndex.ToEnum()}");
         int currentMemoCount = (int)GameManager.Instance.GetVariable($"MemoCount_{currentSceneIndex.ToEnum()}");
 
-        gaugeImage.fillAmount = (float)currentMemoCount / SavedMemoList[currentSceneIndex - 1].Count;
-        clearFlagSlider.value = (float)cutLine / SavedMemoList[currentSceneIndex - 1].Count;
+        gaugeImage.fillAmount = (float)currentMemoCount / SavedMemoList[previousSceneIndex].Count;
+        clearFlagSlider.value = (float)cutLine / SavedMemoList[previousSceneIndex].Count;
 
-        if (currentMemoCount < cutLine) clearFlageImage.color = unclearColor;
-        else clearFlageImage.color = clearColor;
+        clearFlageImage.color = currentMemoCount < cutLine ? unclearColor : clearColor;
     }
 
     public void SetMemoContents(bool isActive)
@@ -226,10 +262,8 @@ public class MemoManager : PageContentsManager
     
     private void SetMemoCurrentPage()
     {
-        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
-
-        // Calculate the starting page index for the current scene
-        int startingPageIndex = CalculateFirstPageNumber(currentSceneIndex);
+        var previousSceneIndex = GetCurrentSceneIndex() - 1;
+        int startingPageIndex = CalculateFirstPageNumber(previousSceneIndex); // Calculate the starting page index for the current scene
         if (startingPageIndex % 2 != 0) startingPageIndex -= 1; // Ensure the page number is even
         
         memoPages.currentPage = startingPageIndex;  // Set the current page to the starting page of the current scene
@@ -237,10 +271,9 @@ public class MemoManager : PageContentsManager
 
     private void SetFlags()
     {
-        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
-
-        for (var i = 0; i <= currentSceneIndex; i++) flags[i].gameObject.SetActive(true);
-        for (var i = currentSceneIndex + 1; i < flags.Count; i++) flags[i].gameObject.SetActive(false);
+        var currentSceneIndex = GetCurrentSceneIndex();
+        for (var i = 0; i < currentSceneIndex; i++) flags[i].gameObject.SetActive(true);
+        for (var i = currentSceneIndex; i < flags.Count; i++) flags[i].gameObject.SetActive(false);
     }
     
     private int CalculateFirstPageNumber(int sceneIndex)
@@ -255,10 +288,9 @@ public class MemoManager : PageContentsManager
 
     private List<string[]> GetAggregatedMemos()
     {
-        var currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene") - 1;
         var allMemos = new List<string[]>();
-
-        for (int i = 0; i <= currentSceneIndex; i++) allMemos.AddRange(SavedMemoList[i]);
+        for (int i = 0; i < GetCurrentSceneIndex(); i++) 
+            allMemos.AddRange(SavedMemoList[i]);
 
         return allMemos;
     }
@@ -349,19 +381,11 @@ public class MemoManager : PageContentsManager
         if (unlock) // 메모를 일정 개수 이상 모았을 때
         {
             for (int i = 0; i < 10; i++)
-            {
                 RevealedMemoList[2].Add(i.ToString());
-            }
 
             for (int i = 0; i < 10; i++)
-            {
                 RevealedMemoList[(int)GameManager.Instance.GetVariable("CurrentScene") - 1].Add(i.ToString());
-            }
-            SceneManager.Instance.LoadScene(SceneType.ENDING);
         }
-        else
-        {
-            SceneManager.Instance.LoadScene(SceneType.ENDING);
-        }
+        SceneManager.Instance.LoadScene(SceneType.ENDING);
     }
 }

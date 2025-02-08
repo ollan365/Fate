@@ -13,13 +13,6 @@ public class RoomManager : MonoBehaviour
     
     [Header("확대 화면들")][SerializeField] private List<GameObject> zoomViews;  // 확대 화면들
 
-    // 메모 게이지
-    [Header("메모 게이지")]
-    [SerializeField] private GameObject memoGauge;
-    [SerializeField] private Image gaugeImage;
-    [SerializeField] private Slider clearFlagSlider;
-    [SerializeField] private Image clearFlageImage;
-
     // 이벤트 오브젝트 패널 매니저
     public ImageAndLockPanelManager imageAndLockPanelManager;
     // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
@@ -36,21 +29,18 @@ public class RoomManager : MonoBehaviour
     void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
-        }
-
+        
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
-        MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
+        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI("MemoGaugeRoom"));
         
         UIManager.Instance.SetUI("NormalVignette", true);
         UIManager.Instance.SetUI("DayText", true);
         UIManager.Instance.SetUI("HeartParent", true);
+        UIManager.Instance.SetUI("MemoGaugeRoom", true);
     }
     
     void Start()
@@ -241,6 +231,7 @@ public class RoomManager : MonoBehaviour
         
         UIManager.Instance.SetUI("ActionPoints", !isLaptopOpen);
         UIManager.Instance.SetUI("NormalVignette", !isLaptopOpen);
+        UIManager.Instance.SetUI("MemoGaugeRoom", !isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 }

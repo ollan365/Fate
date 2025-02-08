@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static Constants;
 
 public class UIManager : MonoBehaviour
@@ -17,6 +18,8 @@ public class UIManager : MonoBehaviour
     public GameObject rightButton;
     public GameObject memoButton;
     public GameObject memoContents;
+    public GameObject memoGaugeRoom;
+    public GameObject memoGaugeFollow;
     
     private Dictionary<string, GameObject> uiGameObjects = new Dictionary<string, GameObject>();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -56,9 +59,11 @@ public class UIManager : MonoBehaviour
         
         uiGameObjects.Add("MemoButton", memoButton);
         uiGameObjects.Add("MemoContents", memoContents);
+        uiGameObjects.Add("MemoGaugeRoom", memoGaugeRoom);
+        uiGameObjects.Add("MemoGaugeFollow", memoGaugeFollow);
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
-        dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
+        dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>(); 
     }
     
     public void SetAllUI(bool isActive)
@@ -71,12 +76,15 @@ public class UIManager : MonoBehaviour
     {
         uiGameObjects[uiName].SetActive(isActive);
     }
-    
+
+    public GameObject GetUI(string uiName)
+    {
+        return uiGameObjects[uiName];
+    }
+
     public void OnLeftButtonClick()
     {
-        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
-
-        switch (currentSceneIndex)
+        switch (GetCurrentSceneIndex())
         {
             case (int)SceneType.ROOM_1:
             case (int)SceneType.ROOM_2:
@@ -87,9 +95,7 @@ public class UIManager : MonoBehaviour
     
     public void OnRightButtonClick()
     {
-        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
-
-        switch (currentSceneIndex)
+        switch (GetCurrentSceneIndex())
         {
             case (int)SceneType.ROOM_1:
             case (int)SceneType.ROOM_2:
@@ -106,8 +112,7 @@ public class UIManager : MonoBehaviour
             return;
         }
         
-        int currentSceneIndex = (int)GameManager.Instance.GetVariable("CurrentScene");
-        switch (currentSceneIndex)
+        switch (GetCurrentSceneIndex())
         {
             case (int)SceneType.START:
                 Debug.Log("Exit button is not implemented in this scene.");
@@ -157,4 +162,8 @@ public class UIManager : MonoBehaviour
         SetUI("WarningVignette", false); // 경고 표시 비활성화
     }
     
+    private int GetCurrentSceneIndex()
+    {
+        return (int)GameManager.Instance.GetVariable("CurrentScene");
+    }
 }
