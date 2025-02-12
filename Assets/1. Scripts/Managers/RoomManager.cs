@@ -35,12 +35,12 @@ public class RoomManager : MonoBehaviour
         
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
-        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI("MemoGauge"));
+        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge.ToString()));
         
-        UIManager.Instance.SetUI("NormalVignette", true);
-        UIManager.Instance.SetUI("DayText", true);
-        UIManager.Instance.SetUI("HeartParent", true);
-        UIManager.Instance.SetUI("MemoGauge", true);
+        UIManager.Instance.SetUI(eUIGameObjectName.NormalVignette.ToString(), true);
+        UIManager.Instance.SetUI(eUIGameObjectName.DayText.ToString(), true);
+        UIManager.Instance.SetUI(eUIGameObjectName.HeartParent.ToString(), true);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge.ToString(), true);
     }
     
     void Start()
@@ -196,22 +196,22 @@ public class RoomManager : MonoBehaviour
     // 나가기 버튼 필요 시, 보이게 함 (ResultManager에서 호출하게 함)
     private void SetExitButton(bool isTrue)
     {
-        UIManager.Instance.SetUI("ExitButton", isTrue);
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton.ToString(), isTrue);
     }
     
     // 이동 버튼들이 조사/다이얼로그 출력 시에는 화면 상에서 보이지 않게 함
     private void SetMoveButtons(bool isTrue)
     {
-        UIManager.Instance.SetUI("LeftButton", isTrue);
-        UIManager.Instance.SetUI("RightButton", isTrue);
+        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton.ToString(), isTrue);
+        UIManager.Instance.SetUI(eUIGameObjectName.RightButton.ToString(), isTrue);
         
         switch (currentSideIndex)
         {
             case 1:
-                UIManager.Instance.SetUI("RightButton", false);
+                UIManager.Instance.SetUI(eUIGameObjectName.RightButton.ToString(), false);
                 break;
             case 2:
-                UIManager.Instance.SetUI("LeftButton", false);
+                UIManager.Instance.SetUI(eUIGameObjectName.LeftButton.ToString(), false);
                 break;
         }
     }
@@ -229,9 +229,9 @@ public class RoomManager : MonoBehaviour
                       || isMemoOpen);
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
         
-        UIManager.Instance.SetUI("ActionPoints", !isLaptopOpen);
-        UIManager.Instance.SetUI("NormalVignette", !isLaptopOpen);
-        UIManager.Instance.SetUI("MemoGauge", !isLaptopOpen);
+        UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints.ToString(), !isLaptopOpen);
+        UIManager.Instance.SetUI(eUIGameObjectName.NormalVignette.ToString(), !isLaptopOpen);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge.ToString(), !isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 }

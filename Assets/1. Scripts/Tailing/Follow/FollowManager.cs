@@ -69,8 +69,8 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         SetCharcter();
 
-        UIManager.Instance.SetUI("MemoGaugeFollow", true);
-        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI("MemoGaugeFollow"));
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge.ToString(), true);
+        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge.ToString()));
 
         StartCoroutine(ChangeBeaconSprite());
 

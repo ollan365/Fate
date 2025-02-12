@@ -42,8 +42,10 @@ public class FollowGameManager : MonoBehaviour
     {
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
-        UIManager.Instance.ChangeUIPosition("AccidyDialogueBox", Vector3.zero, -moveVector);
-        UIManager.Instance.ChangeSliderValue("AccidyPositionSlider", Accidy.transform.position.x / endPositonOfMap, 0);
+        UIManager.Instance.ChangeUIPosition(eUIGameObjectName.AccidyDialogueBox.ToString(), Vector3.zero, -moveVector);
+        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider.ToString(),
+            Accidy.transform.position.x / endPositonOfMap,
+            0);
     }
     private void MoveFate()
     {
@@ -67,7 +69,9 @@ public class FollowGameManager : MonoBehaviour
             }
             SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, IsFateMove);
             Fate.SetBool("Walking", IsFateMove);
-            UIManager.Instance.ChangeSliderValue("FatePositionSlider", Fate.transform.position.x / endPositonOfMap, 0);
+            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider.ToString(),
+                Fate.transform.position.x / endPositonOfMap,
+                0);
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && !FollowManager.Instance.TutorialFateCantHide) FateHide(false);
@@ -98,8 +102,8 @@ public class FollowGameManager : MonoBehaviour
         StopAccidy = false;
         IsFateMove = false;
         IsFateHide = false;
-        UIManager.Instance.ChangeSliderValue("DoubtGaugeSlider", 0, 0);
-        UIManager.Instance.ChangeSliderValue("OverheadDoubtGaugeSlider", 0, 0);
+        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider.ToString(), 0, 0);
+        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.OverheadDoubtGaugeSlider.ToString(), 0, 0);
 
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
         StartCoroutine(CameraMove());
@@ -113,16 +117,22 @@ public class FollowGameManager : MonoBehaviour
             // 필연이 움직였고 우연이 뒤를 돌아본 상태가 중첩되면 의심 게이지 증가
             if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
-                UIManager.Instance.ChangeImageAlpha("OverHeadDoubtGaugeSliderImage_0", Time.deltaTime * 3);
-                UIManager.Instance.ChangeImageAlpha("OverHeadDoubtGaugeSliderImage_1", Time.deltaTime * 3);
-                UIManager.Instance.ChangeSliderValue("DoubtGaugeSlider", 0, 0.001f);
-                UIManager.Instance.ChangeSliderValue("OverheadDoubtGaugeSlider", 0, 0.001f);
-                if (!IsTutorial && UIManager.Instance.GetSliderValue("DoubtGaugeSlider") == 1) FollowManager.Instance.FollowEndLogicStart();
+                UIManager.Instance.ChangeImageAlpha(eUIGameObjectName.OverHeadDoubtGaugeSliderImage0.ToString(),
+                    Time.deltaTime * 3);
+                UIManager.Instance.ChangeImageAlpha(eUIGameObjectName.OverHeadDoubtGaugeSliderImage0.ToString(),
+                    Time.deltaTime * 3);
+                UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider.ToString(), 0, 0.001f);
+                UIManager.Instance.ChangeSliderValue(eUIGameObjectName.OverheadDoubtGaugeSlider.ToString(), 0, 0.001f);
+                if (!IsTutorial &&
+                    Mathf.Approximately(UIManager.Instance.GetSliderValue(eUIGameObjectName.DoubtGaugeSlider.ToString()), 1))
+                    FollowManager.Instance.FollowEndLogicStart();
             }
             else
             {
-                UIManager.Instance.ChangeImageAlpha("OverHeadDoubtGaugeSliderImage_0", -Time.deltaTime);
-                UIManager.Instance.ChangeImageAlpha("OverHeadDoubtGaugeSliderImage_1", -Time.deltaTime);
+                UIManager.Instance.ChangeImageAlpha(eUIGameObjectName.OverHeadDoubtGaugeSliderImage0.ToString(),
+                    -Time.deltaTime);
+                UIManager.Instance.ChangeImageAlpha(eUIGameObjectName.OverHeadDoubtGaugeSliderImage1.ToString(),
+                    -Time.deltaTime);
             }
 
             yield return null;
@@ -222,7 +232,7 @@ public class FollowGameManager : MonoBehaviour
             }
             yield return null;
         }
-        UIManager.Instance.SetUI("AccidyDialogueBox", false);
+        UIManager.Instance.SetUI(eUIGameObjectName.AccidyDialogueBox.ToString(), false);
     }
     private IEnumerator CameraMove()
     {

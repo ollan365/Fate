@@ -74,7 +74,7 @@ public class AutoFlip : MonoBehaviour
 
         controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
         controlledBook.pageContentsManager.flipRightButton.SetActive(false);
-        UIManager.Instance.SetUI("ExitButton", false);
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton.ToString(), false);
 
         float elapsedTime = 0;
         float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
@@ -124,6 +124,6 @@ public class AutoFlip : MonoBehaviour
         if (flipMode == FlipMode.RightToLeft) currentPage += 2;
         else currentPage -= 2;
 
-        UIManager.Instance.SetUI("ExitButton", true);
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton.ToString(), true);
     }
 }
