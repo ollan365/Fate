@@ -226,7 +226,6 @@ public class MemoManager : PageContentsManager
     
     public void ChangeMemoGauge()
     {
-        Debug.Log("ChangeMemoGauge");
         // memoGauge.SetActive(showMemoGauge);
 
         int currentSceneIndex = GetCurrentSceneIndex();
