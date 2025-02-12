@@ -35,12 +35,12 @@ public class RoomManager : MonoBehaviour
         
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
-        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI("MemoGaugeRoom"));
+        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI("MemoGauge"));
         
         UIManager.Instance.SetUI("NormalVignette", true);
         UIManager.Instance.SetUI("DayText", true);
         UIManager.Instance.SetUI("HeartParent", true);
-        UIManager.Instance.SetUI("MemoGaugeRoom", true);
+        UIManager.Instance.SetUI("MemoGauge", true);
     }
     
     void Start()
@@ -231,7 +231,7 @@ public class RoomManager : MonoBehaviour
         
         UIManager.Instance.SetUI("ActionPoints", !isLaptopOpen);
         UIManager.Instance.SetUI("NormalVignette", !isLaptopOpen);
-        UIManager.Instance.SetUI("MemoGaugeRoom", !isLaptopOpen);
+        UIManager.Instance.SetUI("MemoGauge", !isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
     }
 }

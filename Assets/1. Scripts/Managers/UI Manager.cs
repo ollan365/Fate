@@ -18,17 +18,14 @@ public class UIManager : MonoBehaviour
     public GameObject rightButton;
     public GameObject memoButton;
     public GameObject memoContents;
+    public GameObject memoGauge;
 
     [Header("UI Game Objects - Follow")]
-    public GameObject memoGauge;
-    public GameObject gaugeImage; // Image
-    public GameObject clearFlagSlider; // Slider
-    public GameObject clearFlageImage; //Image
-    public GameObject[] doubtGaugeSliders; // Slider[]
-    public GameObject[] overHeadDoubtGaugeSliderImages; // Image[]
-    public GameObject accidyDialogueBox;
-    public GameObject fatePositionSlider; // Scrollbar -> Slider
-    public GameObject accidyPositionSlider; // Scrollbar -> Slider
+    // public GameObject[] doubtGaugeSliders; // Slider[]
+    // public GameObject[] overHeadDoubtGaugeSliderImages; // Image[]
+    // public GameObject accidyDialogueBox;
+    // public GameObject fatePositionSlider; // Scrollbar -> Slider
+    // public GameObject accidyPositionSlider; // Scrollbar -> Slider
 
     private Dictionary<string, GameObject> uiGameObjects = new Dictionary<string, GameObject>();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -68,19 +65,18 @@ public class UIManager : MonoBehaviour
 
         uiGameObjects.Add("MemoButton", memoButton);
         uiGameObjects.Add("MemoContents", memoContents);
-        uiGameObjects.Add("MemoGaugeRoom", memoGaugeRoom);
-        uiGameObjects.Add("MemoGaugeFollow", memoGaugeFollow);
+        uiGameObjects.Add("MemoGauge", memoGauge);
 
-        uiGameObjects.Add("DoubtGaugeSlider", doubtGaugeSliders[0]);
-        uiGameObjects.Add("OverheadDoubtGaugeSlider", doubtGaugeSliders[1]);
-
-        uiGameObjects.Add("OverHeadDoubtGaugeSliderImage_0", overHeadDoubtGaugeSliderImages[0]);
-        uiGameObjects.Add("OverHeadDoubtGaugeSliderImage_1", overHeadDoubtGaugeSliderImages[1]);
-
-        uiGameObjects.Add("AccidyDialogueBox", accidyDialogueBox);
-
-        uiGameObjects.Add("FatePositionSlider", fatePositionSlider);
-        uiGameObjects.Add("AccidyPositionSlider", accidyPositionSlider);
+        // uiGameObjects.Add("DoubtGaugeSlider", doubtGaugeSliders[0]);
+        // uiGameObjects.Add("OverheadDoubtGaugeSlider", doubtGaugeSliders[1]);
+        //
+        // uiGameObjects.Add("OverHeadDoubtGaugeSliderImage_0", overHeadDoubtGaugeSliderImages[0]);
+        // uiGameObjects.Add("OverHeadDoubtGaugeSliderImage_1", overHeadDoubtGaugeSliderImages[1]);
+        //
+        // uiGameObjects.Add("AccidyDialogueBox", accidyDialogueBox);
+        //
+        // uiGameObjects.Add("FatePositionSlider", fatePositionSlider);
+        // uiGameObjects.Add("AccidyPositionSlider", accidyPositionSlider);
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>(); 
@@ -151,10 +147,6 @@ public class UIManager : MonoBehaviour
     public TMP_Text GetAccidyDialogueBoxText()
     {
         return uiGameObjects["AccidyDialogueBox"].GetComponentInChildren<TextMeshProUGUI>();
-    }
-    public void ChangeMemoGauge()
-    {
-        MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage.GetComponent<Image>(), clearFlagSlider.GetComponent<Slider>(), clearFlageImage.GetComponent<Image>());
     }
 
     public void ChangeUIPosition(string uiName, Vector3 absolutePosition, Vector3 addVector)
