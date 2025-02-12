@@ -59,24 +59,21 @@ public class DiaryManager : PageContentsManager
         Dictionary<string, (string, string)> currentPages = GetCurrentPagesDictionary();
         if (currentPages == null)
         {
-            SetPageText(pageType, "");
-            // Debug.LogWarning("Current pages dictionary is null");
+            SetPageText(pageType, "", pageNum);
             return;
         }
 
         if (pageNum < 1 || pageNum > totalPageCount)
         {
-            SetPageText(pageType, "");
+            SetPageText(pageType, "", pageNum);
             SetPageImage(pageType, "");
-            // Debug.LogWarning($"Invalid page number {pageNum}. Total pages: {totalPageCount}");
             return;
         }
 
         string diaryID = GetDiaryID(pageNum);
-
         if (diaryID == null || !currentPages.ContainsKey(diaryID))
         {
-            SetPageText(pageType, "");
+            SetPageText(pageType, "", pageNum);
             Debug.LogWarning($"Diary ID '{diaryID}' not found in current pages dictionary");
             return;
         }
@@ -84,30 +81,34 @@ public class DiaryManager : PageContentsManager
         string pageText = currentPages[diaryID].Item1;
         string doodleID = currentPages[diaryID].Item2;
 
-        SetPageText(pageType, pageText);
+        SetPageText(pageType, pageText, pageNum);
         SetPageImage(pageType, doodleID);
 
         presentPageNum = pageNum;
     }
 
-    private void SetPageText(PageType pageType, string text)
+    private void SetPageText(PageType pageType, string text, int pageNum)
     {
         switch (pageType)
         {
             case PageType.Left:
                 leftPage.text = text;
+                leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
                 break;
 
             case PageType.Right:
                 rightPage.text = text;
+                rightPageNum.text = pageNum.ToString();
                 break;
 
             case PageType.Back:
                 backPage.text = text;
+                backPageNum.text = pageNum.ToString();
                 break;
 
             case PageType.Front:
                 frontPage.text = text;
+                frontPageNum.text = pageNum.ToString();
                 break;
         }
     }
