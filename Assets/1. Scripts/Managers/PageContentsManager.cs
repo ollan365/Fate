@@ -22,6 +22,12 @@ abstract public class PageContentsManager : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI backPage;
     [SerializeField] protected TextMeshProUGUI frontPage;
     
+    [Header("Page Num Text")]
+    [SerializeField] protected TextMeshProUGUI leftPageNum;
+    [SerializeField] protected TextMeshProUGUI rightPageNum;
+    [SerializeField] protected TextMeshProUGUI frontPageNum;
+    [SerializeField] protected TextMeshProUGUI backPageNum;
+    
     public abstract void ParsePageContents();
 
     public abstract void DisplayPage(PageType pageType, int pageNum);
