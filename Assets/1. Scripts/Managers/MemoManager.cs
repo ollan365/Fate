@@ -17,12 +17,6 @@ public class MemoManager : PageContentsManager
     [SerializeField] private GameObject leftButtonNotificationImage;
     [SerializeField] private GameObject rightButtonNotificationImage;
 
-    [Header("Page Num Text")]
-    [SerializeField] private TextMeshProUGUI leftPageNum;
-    [SerializeField] private TextMeshProUGUI rightPageNum;
-    [SerializeField] private TextMeshProUGUI frontPageNum;
-    [SerializeField] private TextMeshProUGUI backPageNum;
-    
     public static MemoManager Instance { get; private set; }
     public bool isMemoOpen = false;
     public bool isFollow = false;
@@ -297,26 +291,28 @@ public class MemoManager : PageContentsManager
     public override void DisplayPage(PageType pageType, int pageNum)
     {
         var allMemos = GetAggregatedMemos();
-        
+        string memoText = "";
+        if (pageNum > 0 && pageNum <= allMemos.Count)
+            memoText = allMemos[pageNum - 1][1];
         switch (pageType)
         {
             case PageType.Left:
-                leftPage.text = pageNum == 0 ? "" : allMemos[pageNum - 1][1];
+                leftPage.text = memoText;
                 leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
                 break;
             
             case PageType.Right:
-                rightPage.text = pageNum > allMemos.Count ? "" : allMemos[pageNum - 1][1];
+                rightPage.text = memoText;
                 rightPageNum.text = pageNum > allMemos.Count ? "" : pageNum.ToString();
                 break;
             
             case PageType.Back:
-                backPage.text = allMemos[pageNum - 1][1];
+                backPage.text = memoText;
                 backPageNum.text = pageNum.ToString();
                 break;
             
             case PageType.Front:
-                frontPage.text = allMemos[pageNum - 1][1];
+                frontPage.text = memoText;
                 frontPageNum.text = pageNum.ToString();
                 break;
         }

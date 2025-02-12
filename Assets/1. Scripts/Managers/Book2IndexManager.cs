@@ -45,12 +45,6 @@ public class Book2IndexManager : PageContentsManager
     public Sprite IndexBlueR2;
     public Image RightDownFlagThird;
 
-    [Header("Page Num Text")]
-    [SerializeField] private TextMeshProUGUI leftPageNum;
-    [SerializeField] private TextMeshProUGUI rightPageNum;
-    [SerializeField] private TextMeshProUGUI frontPageNum;
-    [SerializeField] private TextMeshProUGUI backPageNum;
-
     private void Awake()
     {
         ParsePageContents();
@@ -252,14 +246,14 @@ public class Book2IndexManager : PageContentsManager
         DisplayFlags();
     }
 
-    // ÆäÀÌÁö ³Ñ¾î°¥ ¶§¸¶´Ù ÇØ´ç ÀÎµ¦½º flags¸¦ À§Ä¡¿¡ ¸Â°Ô ÄÑÁÜ
-    // presentPageNum¿¡ µû¶ó ÇØ´çÇÏ´Â ÀÎµ¦½º°¡ ÀÖ´Â ÆäÀÌÁö ¸®¼Ò½º¸¦ º¯°æÇÔ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾î°¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½Îµï¿½ï¿½ï¿½ flagsï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // presentPageNumï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ò½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private void DisplayFlags()
     {
         switch (presentPageNum)
         {
             case 1:
-                //»¡°£»ö ÀÎµ¦½º
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
                 SetFlags("RightNextFlags", 0,true);
                 SetFlags("RightDownFlags", 1, true);
                 SetFlags("RightDownFlags", 2, true);
@@ -272,7 +266,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 2:
-                // 1ÆäÀÌÁö µå·¡±× Áß
+                // 1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½
                 bookPages.left.sprite = BookRedR;
                 bookPages.right.sprite = BookRedL;
 
@@ -281,7 +275,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 3:
-                //³ë¶õ»ö ÀÎµ¦½º
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
                 SetFlags("RightNextFlags", 1, true);
                 SetFlags("LeftNextFlags", 0, true);
                 SetFlags("RightDownFlags", 2, true);
@@ -294,7 +288,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 4:
-                // 3ÆäÀÌÁö µå·¡±× Áß
+                // 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½
                 bookPages.left.sprite = BookYellowR;
                 bookPages.right.sprite = BookYellowL;
 
@@ -306,7 +300,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 5:
-                //ÆÄ¶õ»ö ÀÎµ¦½º
+                //ï¿½Ä¶ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
                 SetFlags("RightNextFlags", 2, true);
                 SetFlags("LeftFlags", 0, true);
                 SetFlags("LeftNextFlags", 1, true);
@@ -317,7 +311,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 6:
-                // 5ÆäÀÌÁö µå·¡±× Áß
+                // 5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½
                 bookPages.left.sprite = BookBlueR;
                 bookPages.right.sprite = BookBlueL;
 
@@ -328,7 +322,7 @@ public class Book2IndexManager : PageContentsManager
                 bookPages.leftNext.sprite = BookL2;
                 break;
 
-            // 5ÆäÀÌÁö°¡ ³¡ÀÌÁö¸¸ µÚ¿¡ ¿©ÆÑ 2ÆäÀÌÁö°¡ ¾øÀ¸¸é 5ÆäÀÌÁö¿¡¼­ ´ÙÀ½ÀåÀ¸·Î ³Ñ±â´Â °É·Î ¿À·ù°¡ »ý°Ü¼­ ¿©¹éÀ» ¸¸µê
+            // 5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ±ï¿½ï¿½ ï¿½É·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             case 7:
                 SetFlags("LeftFlags", 0, true);
                 SetFlags("LeftFlags", 1, true);
@@ -352,8 +346,8 @@ public class Book2IndexManager : PageContentsManager
                 break;
         }
 
-        // ÆäÀÌÁö°¡ ÀÚµ¿À¸·Î ³Ñ¾î°¥ ¶§ RightDownFlagsParentÀº index°¡ RightNextGameObjectÀÇ ÇÑÄ­ ¾Õ¿¡ ÀÖ¾î¾ß ÇÏ´Âµ¥
-        // ¿ÀºêÁ§Æ®µéÀÇ À§Ä¡°¡ º¯°æµÇ¾î¼­ SetSiblingIndex·Î ¼ø¼­¸¦ Á¤·ÄÇÔ.
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾î°¥ ï¿½ï¿½ RightDownFlagsParentï¿½ï¿½ indexï¿½ï¿½ RightNextGameObjectï¿½ï¿½ ï¿½ï¿½Ä­ ï¿½Õ¿ï¿½ ï¿½Ö¾ï¿½ï¿½ ï¿½Ï´Âµï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾î¼­ SetSiblingIndexï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
         LeftFlagsParent.transform.SetAsFirstSibling();
         int rightPageIndex = NextPageClipGameObject.transform.GetSiblingIndex();
         RightNextGameObject.transform.SetSiblingIndex(rightPageIndex - 2);
