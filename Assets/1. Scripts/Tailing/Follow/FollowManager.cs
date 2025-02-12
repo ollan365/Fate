@@ -15,12 +15,6 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private Sprite[] beaconSprites;
     [SerializeField] private Transform frontObjects;
 
-    [Header("Memo Gauge")]
-    [SerializeField] private GameObject memoGauge;
-    [SerializeField] private Image gaugeImage;
-    [SerializeField] private Slider clearFlagSlider;
-    [SerializeField] private Image clearFlageImage;
-
     [Header("Character")]
     [SerializeField] private Animator fate;
     [SerializeField] private Animator accidyGirl, accidyBoy;
@@ -74,8 +68,6 @@ public class FollowManager : MonoBehaviour
         IsDialogueOpen = false;
         ClickCount = 0;
         SetCharcter();
-
-        MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
 
         StartCoroutine(ChangeBeaconSprite());
 

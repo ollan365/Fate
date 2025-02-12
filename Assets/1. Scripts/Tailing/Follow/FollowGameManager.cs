@@ -7,15 +7,7 @@ using static Constants;
 
 public class FollowGameManager : MonoBehaviour
 {
-    [Header("Position Scrolls")]
-    [SerializeField] private float endPositonOfMap = 48.5f;
-    [SerializeField] private Scrollbar fateScroll;
-    [SerializeField] private Scrollbar accidyScroll;
-
-    [Header("Gauges")]
-    [SerializeField] private Slider[] doubtGaugeSliders;
-    [SerializeField] private Image[] overHeadDoubtGaugeSliderImages;
-    [SerializeField] private GameObject accidyDialogueBox;
+    private float endPositonOfMap = 48.5f;
 
     [SerializeField] private Q_Vignette_Single vignette;
 
@@ -50,8 +42,8 @@ public class FollowGameManager : MonoBehaviour
     {
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
-        accidyDialogueBox.transform.position -= moveVector;
-        accidyScroll.value = Accidy.transform.position.x / endPositonOfMap;
+        UIManager.Instance.ChangeUIPosition("AccidyDialogueBox", Vector3.zero, -moveVector);
+        UIManager.Instance.ChangeSliderValue("AccidyPositionSlider", Accidy.transform.position.x / endPositonOfMap, 0);
     }
     private void MoveFate()
     {
@@ -75,7 +67,7 @@ public class FollowGameManager : MonoBehaviour
             }
             SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, IsFateMove);
             Fate.SetBool("Walking", IsFateMove);
-            fateScroll.value = Fate.transform.position.x / endPositonOfMap;
+            UIManager.Instance.ChangeSliderValue("FatePositionSlider", Fate.transform.position.x / endPositonOfMap, 0);
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && !FollowManager.Instance.TutorialFateCantHide) FateHide(false);
@@ -106,7 +98,8 @@ public class FollowGameManager : MonoBehaviour
         StopAccidy = false;
         IsFateMove = false;
         IsFateHide = false;
-        doubtGaugeSliders[0].value = 0;
+        UIManager.Instance.ChangeSliderValue("DoubtGaugeSlider", 0, 0);
+        UIManager.Instance.ChangeSliderValue("OverheadDoubtGaugeSlider", 0, 0);
 
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
         StartCoroutine(CameraMove());
@@ -120,22 +113,20 @@ public class FollowGameManager : MonoBehaviour
             // 필연이 움직였고 우연이 뒤를 돌아본 상태가 중첩되면 의심 게이지 증가
             if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
-                ChangeGaugeAlpha(Time.deltaTime * 3);
-                doubtGaugeSliders[0].value += 0.001f;
-                doubtGaugeSliders[1].value = doubtGaugeSliders[0].value;
-                if (!IsTutorial && doubtGaugeSliders[0].value == 1) FollowManager.Instance.FollowEndLogicStart();
+                UIManager.Instance.ChangeImageAlpha("OverHeadDoubtGaugeSliderImage_0", Time.deltaTime * 3);
+                UIManager.Instance.ChangeImageAlpha("OverHeadDoubtGaugeSliderImage_1", Time.deltaTime * 3);
+                UIManager.Instance.ChangeSliderValue("DoubtGaugeSlider", 0, 0.001f);
+                UIManager.Instance.ChangeSliderValue("OverheadDoubtGaugeSlider", 0, 0.001f);
+                if (!IsTutorial && UIManager.Instance.GetSliderValue("DoubtGaugeSlider") == 1) FollowManager.Instance.FollowEndLogicStart();
             }
-            else ChangeGaugeAlpha(-Time.deltaTime);
+            else
+            {
+                UIManager.Instance.ChangeImageAlpha("OverHeadDoubtGaugeSliderImage_0", -Time.deltaTime);
+                UIManager.Instance.ChangeImageAlpha("OverHeadDoubtGaugeSliderImage_1", -Time.deltaTime);
+            }
 
             yield return null;
         }
-    }
-
-    private void ChangeGaugeAlpha(float value)
-    {
-        Color color = overHeadDoubtGaugeSliderImages[0].color;
-        color.a = Mathf.Clamp(color.a + value, 0, 1);
-        foreach (Image image in overHeadDoubtGaugeSliderImages) image.color = color;
     }
 
     private void FateHide(bool hide)
@@ -209,7 +200,7 @@ public class FollowGameManager : MonoBehaviour
 
     private IEnumerator AccidyDialogueBoxLogic()
     {
-        TMP_Text text = accidyDialogueBox.GetComponentInChildren<TextMeshProUGUI>();
+        TMP_Text text = UIManager.Instance.GetAccidyDialogueBoxText();
         float currentTime = 0;
         while (!IsEnd)
         {
@@ -231,7 +222,7 @@ public class FollowGameManager : MonoBehaviour
             }
             yield return null;
         }
-        accidyDialogueBox.SetActive(false);
+        UIManager.Instance.SetUI("AccidyDialogueBox", false);
     }
     private IEnumerator CameraMove()
     {
