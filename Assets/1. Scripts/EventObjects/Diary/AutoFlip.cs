@@ -67,43 +67,6 @@ public class AutoFlip : MonoBehaviour
         }
     }
 
-    //   private IEnumerator FlipPage(FlipMode flipMode) {
-    //       isFlipping = true;
-    //       controlledBook.mode = flipMode;
-    //
-    // controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
-    // controlledBook.pageContentsManager.flipRightButton.SetActive(false);
-    //       MemoManager.Instance.exitButton.SetActive(false);
-    //
-    //       float frameTime = pageFlipTime / animationFramesCount;
-    //       float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
-    //       float xl = ((controlledBook.EdgeBottomRight.x - controlledBook.EdgeBottomLeft.x) / 2) * 0.9f;
-    //       float h = Mathf.Abs(controlledBook.EdgeBottomRight.y) * 0.9f;
-    //       float dx = (xl) * 2 / animationFramesCount;
-    //       float x = (flipMode == FlipMode.RightToLeft) ? xc + xl : xc - xl;
-    //       float sign = (flipMode == FlipMode.RightToLeft) ? -1 : 1;
-    //
-    //       for (int i = 0; i < animationFramesCount; i++) {
-    //           float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
-    //           Vector3 point = new Vector3(x, y, 0);
-    //           if (flipMode == FlipMode.RightToLeft) {
-    //               controlledBook.DragRightPageToPoint(point);
-    //               controlledBook.UpdateBookRtlToPoint(point);
-    //           } else {
-    //               controlledBook.DragLeftPageToPoint(point);
-    //               controlledBook.UpdateBookLtrToPoint(point);
-    //           }
-    //           yield return new WaitForSeconds(frameTime);
-    //           x += sign * dx;
-    //       }
-    //       controlledBook.ReleasePage();
-    //       isFlipping = false;
-    //       
-    //       if (flipMode == FlipMode.RightToLeft) currentPage += 2;
-    //       else currentPage -= 2;
-    //       
-    //       MemoManager.Instance.exitButton.SetActive(true);
-    //   }
     private IEnumerator FlipPage(FlipMode flipMode)
     {
         isFlipping = true;
@@ -111,7 +74,7 @@ public class AutoFlip : MonoBehaviour
 
         controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
         controlledBook.pageContentsManager.flipRightButton.SetActive(false);
-        MemoManager.Instance.exitButton.SetActive(false);
+        UIManager.Instance.SetUI("ExitButton", false);
 
         float elapsedTime = 0;
         float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
@@ -161,7 +124,6 @@ public class AutoFlip : MonoBehaviour
         if (flipMode == FlipMode.RightToLeft) currentPage += 2;
         else currentPage -= 2;
 
-        if (MemoManager.Instance.isMemoOpen) 
-            MemoManager.Instance.exitButton.SetActive(true);
+        UIManager.Instance.SetUI("ExitButton", true);
     }
 }

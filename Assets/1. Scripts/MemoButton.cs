@@ -8,7 +8,7 @@ public class MemoButton : MonoBehaviour
     {
         MemoManager.Instance.SetMemoContents(true);
         MemoManager.Instance.SetMemoButtons(false, true);
-
+        
         if (FollowManager.Instance)
             FollowManager.Instance.ClickObject();
     }
