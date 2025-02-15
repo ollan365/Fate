@@ -89,6 +89,7 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.MemoContents.ToString(), memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge.ToString(), memoGauge);
         
+        /*
         uiGameObjects.Add(eUIGameObjectName.DoubtGaugeSlider.ToString(), null);
         uiGameObjects.Add(eUIGameObjectName.OverheadDoubtGaugeSlider.ToString(), null);
         
@@ -99,6 +100,7 @@ public class UIManager : MonoBehaviour
         
         uiGameObjects.Add(eUIGameObjectName.FatePositionSlider.ToString(), null);
         uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider.ToString(), null);
+        */
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>(); 

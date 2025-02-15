@@ -49,6 +49,15 @@ public class DialogueManager : MonoBehaviour
     // Dialogue Queue
     private Queue<string> dialogueQueue = new Queue<string>();
 
+    [SerializeField] private int yOffsetMinimumGirl;
+    [SerializeField] private int yOffsetMaximumGirl;
+    [SerializeField] private int yOffsetMinimumBoy;
+    [SerializeField] private int yOffsetMaximumBoy;
+    [SerializeField] private float scaleMinimumGirl;
+    [SerializeField] private float scaleMaximumGirl;
+    [SerializeField] private float scaleMinimumBoy;
+    [SerializeField] private float scaleMaximumBoy;
+    
     void Awake()
     {
         if (Instance == null)
@@ -137,9 +146,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (choicesContainer.Length > dialogueType.ToInt())
             foreach (Transform child in choicesContainer[dialogueType.ToInt()])
-            {
                 Destroy(child.gameObject);
-            }
 
         // 화자에 따라 대화창 변경
         ChangeDialogueCanvas(dialogueLine.SpeakerID);
@@ -160,7 +167,8 @@ public class DialogueManager : MonoBehaviour
                         break;
                     case "AUTO":
                         isAuto = true;
-                        foreach (GameObject skip in skipText) skip.SetActive(false);
+                        foreach (GameObject skip in skipText) 
+                            skip.SetActive(false);
                         break;
                     case "FAST":
                         isFast = true;
@@ -177,23 +185,21 @@ public class DialogueManager : MonoBehaviour
         }
 
         // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
-        foreach (GameObject canvas in dialogueSet) if (canvas != null) canvas.SetActive(false);
+        foreach (GameObject canvas in dialogueSet) 
+            if (canvas) 
+                canvas.SetActive(false);
         dialogueSet[dialogueType.ToInt()].SetActive(true);
 
         // 미행의 행인은 별도의 SpeakerID를 가짐
         if (dialogueType != DialogueType.FOLLOW_EXTRA)
-        {
             foreach (TextMeshProUGUI speakerText in speakerTexts)
                 speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
                     ? GameManager.Instance.GetVariable("FateName").ToString()
                     : scripts[dialogueLine.SpeakerID].GetScript();
-        }
 
         StartCoroutine(TypeSentence(sentence));
 
         var accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
-        var accidyGenderString = (accidyGender == 0) ? "female" : "male";
-        // Debug.Log($"accidy gender: {accidyGenderString}");
 
         // 배경화면 표시
         var backgroundID = dialogueLine.BackgroundID;
@@ -219,36 +225,71 @@ public class DialogueManager : MonoBehaviour
 
         // 화자 이미지 표시
         var imageID = dialogueLine.ImageID;
-        if (string.IsNullOrWhiteSpace(imageID)) foreach (var characterImage in characterImages) characterImage.color = new Color(1, 1, 1, 0);
+        if (string.IsNullOrWhiteSpace(imageID))
+        {
+            foreach (var characterImage in characterImages)
+                characterImage.color = new Color(1, 1, 1, 0);
+            return;
+        }
+
+        var characterSprite = Resources.Load<Sprite>(imagePaths[imageID].GetPath(accidyGender));
+        int characterImageZoomLevel = dialogueLine.ImageZoomLevel;
+        int characterYOffset = GetCharacterYOffset(accidyGender, characterImageZoomLevel);
+        float characterScale = GetCharacterScale(accidyGender, characterImageZoomLevel);
+
+        foreach (Image characterImage in characterImages)
+        {
+            characterImage.color = new Color(1, 1, 1, 1);
+            characterImage.sprite = characterSprite;
+            characterImage.SetNativeSize();
+            RectTransform characterImageRectTransform = characterImage.GetComponent<RectTransform>(); 
+            characterImageRectTransform.anchoredPosition = new Vector3(0, characterYOffset, 0);
+            characterImageRectTransform.localScale = new Vector3(characterScale, characterScale, 1);
+            characterImage.gameObject.SetActive(true);
+        }
+
+        if (dialogueLine.SpeakerID is "DialogueC_001" or "DialogueC_002")
+            foreach (Image characterFadeImage in characterFadeImages)
+                characterFadeImage.gameObject.SetActive(false);
         else
         {
-            var characterSprite = Resources.Load<Sprite>(imagePaths[imageID].GetPath(accidyGender));
-            var yOffset = (accidyGender == 0) ? -195 : -150;
-
-            foreach (Image characterImage in characterImages)
+            foreach (Image characterImage in characterFadeImages)
             {
-                characterImage.color = new Color(1, 1, 1, 1);
+                characterImage.color = new Color(0, 0, 0, 0.8f);
                 characterImage.sprite = characterSprite;
                 characterImage.SetNativeSize();
-                characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
+                RectTransform characterImageRectTransform = characterImage.GetComponent<RectTransform>(); 
+                characterImageRectTransform.anchoredPosition = new Vector3(0, characterYOffset, 0);
+                characterImageRectTransform.localScale = new Vector3(characterScale, characterScale, 1);
                 characterImage.gameObject.SetActive(true);
             }
-
-            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001")
-                foreach (Image characterImage in characterFadeImages)
-                    characterImage.gameObject.SetActive(false);
-            else
-            {
-                foreach (Image characterImage in characterFadeImages)
-                {
-                    characterImage.color = new Color(0, 0, 0, 0.8f);
-                    characterImage.sprite = characterSprite;
-                    characterImage.SetNativeSize();
-                    characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
-                    characterImage.gameObject.SetActive(true);
-                }
-            }
         }
+    }
+
+    private int GetCharacterYOffset(int accidyGender, int characterImageZoomLevel)
+    {
+        if (characterImageZoomLevel is < 0 or > 10)
+        {
+            Debug.LogWarning("Invalid characterImageZoomLevel!");
+            return 0;
+        }
+        
+        return accidyGender == 0
+            ? yOffsetMaximumGirl - (yOffsetMaximumGirl - yOffsetMinimumGirl) / 10 * characterImageZoomLevel
+            : yOffsetMaximumBoy - (yOffsetMaximumBoy - yOffsetMinimumBoy) / 10 * characterImageZoomLevel;
+    }
+    
+    private float GetCharacterScale(int accidyGender, int characterImageZoomLevel)
+    {
+        if (characterImageZoomLevel is < 0 or > 10)
+        {
+            Debug.LogWarning("Invalid characterImageZoomLevel!");
+            return 0;
+        }
+        
+        return accidyGender == 0
+            ? scaleMinimumGirl + (scaleMaximumGirl - scaleMinimumGirl) / 10 * characterImageZoomLevel
+            : scaleMinimumBoy + (scaleMaximumBoy - scaleMinimumBoy) / 10 * characterImageZoomLevel;
     }
 
     private void ChangeDialogueCanvas(string speaker)
