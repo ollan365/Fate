@@ -43,11 +43,11 @@ public class UIManager : MonoBehaviour
     public GameObject memoGauge;
 
     [Header("UI Game Objects - Follow")]
-    public GameObject[] doubtGaugeSliders; // Slider[]
-    public GameObject[] overHeadDoubtGaugeSliderImages; // Image[]
-    public GameObject accidyDialogueBox;
-    public GameObject fatePositionSlider; // Scrollbar -> Slider
-    public GameObject accidyPositionSlider; // Scrollbar -> Slider
+    public GameObject followUIBackground;
+    public GameObject memoGaugeFollow;
+    public GameObject doubtGaugeSlider;
+    public GameObject fatePositionSlider;
+    public GameObject accidyPositionSlider;
 
     private Dictionary<string, GameObject> uiGameObjects = new Dictionary<string, GameObject>();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -77,30 +77,25 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.NormalVignette.ToString(), normalVignette);
         uiGameObjects.Add(eUIGameObjectName.WarningVignette.ToString(), warningVignette);
 
-        uiGameObjects.Add(eUIGameObjectName.ActionPoints.ToString(), actionPoints);
-        uiGameObjects.Add(eUIGameObjectName.HeartParent.ToString(), heartParent);
-        uiGameObjects.Add(eUIGameObjectName.DayText.ToString(), dayText);
-        
-        uiGameObjects.Add(eUIGameObjectName.ExitButton.ToString(), exitButton);
-        uiGameObjects.Add(eUIGameObjectName.LeftButton.ToString(), leftButton);
-        uiGameObjects.Add(eUIGameObjectName.RightButton.ToString(), rightButton);
-        
-        uiGameObjects.Add(eUIGameObjectName.MemoButton.ToString(), memoButton);
-        uiGameObjects.Add(eUIGameObjectName.MemoContents.ToString(), memoContents);
-        uiGameObjects.Add(eUIGameObjectName.MemoGauge.ToString(), memoGauge);
-        
-        /*
-        uiGameObjects.Add(eUIGameObjectName.DoubtGaugeSlider.ToString(), null);
-        uiGameObjects.Add(eUIGameObjectName.OverheadDoubtGaugeSlider.ToString(), null);
-        
-        uiGameObjects.Add(eUIGameObjectName.OverHeadDoubtGaugeSliderImage0.ToString(), null);
-        uiGameObjects.Add(eUIGameObjectName.OverHeadDoubtGaugeSliderImage1.ToString(), null);
-        
-        uiGameObjects.Add(eUIGameObjectName.AccidyDialogueBox.ToString(), null);
-        
-        uiGameObjects.Add(eUIGameObjectName.FatePositionSlider.ToString(), null);
-        uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider.ToString(), null);
-        */
+        uiGameObjects.Add("ActionPoints", actionPoints);
+        uiGameObjects.Add("HeartParent", heartParent);
+        uiGameObjects.Add("DayText", dayText);
+
+        uiGameObjects.Add("ExitButton", exitButton);
+        uiGameObjects.Add("LeftButton", leftButton);
+        uiGameObjects.Add("RightButton", rightButton);
+
+        uiGameObjects.Add("MemoButton", memoButton);
+        uiGameObjects.Add("MemoContents", memoContents);
+        uiGameObjects.Add("MemoGauge", memoGauge);
+        uiGameObjects.Add("MemoGaugeFollow", memoGaugeFollow);
+
+        uiGameObjects.Add("FollowUIBackground", followUIBackground);
+
+        uiGameObjects.Add("DoubtGaugeSlider", doubtGaugeSlider);
+
+        uiGameObjects.Add("FatePositionSlider", fatePositionSlider);
+        uiGameObjects.Add("AccidyPositionSlider", accidyPositionSlider);
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>(); 
@@ -168,33 +163,12 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-    public TMP_Text GetAccidyDialogueBoxText()
-    {
-        return uiGameObjects[eUIGameObjectName.AccidyDialogueBox.ToString()].GetComponentInChildren<TextMeshProUGUI>();
-    }
 
-    public void ChangeUIPosition(string uiName, Vector3 absolutePosition, Vector3 addVector)
-    {
-        if (addVector != Vector3.zero)
-            uiGameObjects[uiName].transform.position += addVector;
-        else
-            uiGameObjects[uiName].transform.position = absolutePosition;
-    }
-    public float GetSliderValue(string uiName)
-    {
-        return uiGameObjects[uiName].GetComponent<Slider>().value;
-    }
     public void ChangeSliderValue(string uiName, float absoluteValue, float addValue)
     {
         Slider slider = uiGameObjects[uiName].GetComponent<Slider>();
         if (addValue != 0) slider.value += addValue;
         else slider.value = absoluteValue;
-    }
-    public void ChangeImageAlpha(string uiName, float addValue)
-    {
-        Color color = uiGameObjects[uiName].GetComponent<Image>().color;
-        color.a = Mathf.Clamp(color.a + addValue, 0, 1);
-        uiGameObjects[uiName].GetComponent<Image>().color = color;
     }
 
     /*
