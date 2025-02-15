@@ -18,11 +18,8 @@ public enum eUIGameObjectName
     MemoButton,
     MemoContents,
     MemoGauge,
+    FollowUIBackground,
     DoubtGaugeSlider,
-    OverheadDoubtGaugeSlider,
-    OverHeadDoubtGaugeSliderImage0,
-    OverHeadDoubtGaugeSliderImage1,
-    AccidyDialogueBox,
     FatePositionSlider,
     AccidyPositionSlider
 }
@@ -44,7 +41,6 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Game Objects - Follow")]
     public GameObject followUIBackground;
-    public GameObject memoGaugeFollow;
     public GameObject doubtGaugeSlider;
     public GameObject fatePositionSlider;
     public GameObject accidyPositionSlider;
@@ -77,25 +73,23 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.NormalVignette.ToString(), normalVignette);
         uiGameObjects.Add(eUIGameObjectName.WarningVignette.ToString(), warningVignette);
 
-        uiGameObjects.Add("ActionPoints", actionPoints);
-        uiGameObjects.Add("HeartParent", heartParent);
-        uiGameObjects.Add("DayText", dayText);
+        uiGameObjects.Add(eUIGameObjectName.ActionPoints.ToString(), actionPoints);
+        uiGameObjects.Add(eUIGameObjectName.HeartParent.ToString(), heartParent);
+        uiGameObjects.Add(eUIGameObjectName.DayText.ToString(), dayText);
 
-        uiGameObjects.Add("ExitButton", exitButton);
-        uiGameObjects.Add("LeftButton", leftButton);
-        uiGameObjects.Add("RightButton", rightButton);
+        uiGameObjects.Add(eUIGameObjectName.ExitButton.ToString(), exitButton);
+        uiGameObjects.Add(eUIGameObjectName.LeftButton.ToString(), leftButton);
+        uiGameObjects.Add(eUIGameObjectName.RightButton.ToString(), rightButton);
 
-        uiGameObjects.Add("MemoButton", memoButton);
-        uiGameObjects.Add("MemoContents", memoContents);
-        uiGameObjects.Add("MemoGauge", memoGauge);
-        uiGameObjects.Add("MemoGaugeFollow", memoGaugeFollow);
+        uiGameObjects.Add(eUIGameObjectName.MemoContents.ToString(), memoContents);
+        uiGameObjects.Add(eUIGameObjectName.MemoGauge.ToString(), memoGauge);
 
-        uiGameObjects.Add("FollowUIBackground", followUIBackground);
+        uiGameObjects.Add(eUIGameObjectName.FollowUIBackground.ToString(), followUIBackground);
 
-        uiGameObjects.Add("DoubtGaugeSlider", doubtGaugeSlider);
+        uiGameObjects.Add(eUIGameObjectName.DoubtGaugeSlider.ToString(), doubtGaugeSlider);
 
-        uiGameObjects.Add("FatePositionSlider", fatePositionSlider);
-        uiGameObjects.Add("AccidyPositionSlider", accidyPositionSlider);
+        uiGameObjects.Add(eUIGameObjectName.FatePositionSlider.ToString(), fatePositionSlider);
+        uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider.ToString(), accidyPositionSlider);
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>(); 

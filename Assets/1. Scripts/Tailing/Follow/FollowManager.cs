@@ -72,12 +72,12 @@ public class FollowManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge.ToString(), true);
         MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge.ToString()));
 
-        UIManager.Instance.SetUI("FollowUIBackground", true);
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground.ToString(), true);
 
-        UIManager.Instance.SetUI("DoubtGaugeSlider", true);
+        UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider.ToString(), true);
 
-        UIManager.Instance.SetUI("FatePositionSlider", true);
-        UIManager.Instance.SetUI("AccidyPositionSlider", true);
+        UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider.ToString(), true);
+        UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider.ToString(), true);
 
         StartCoroutine(ChangeBeaconSprite());
 

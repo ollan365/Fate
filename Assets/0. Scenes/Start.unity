@@ -17465,21 +17465,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: FollowUI
       objectReference: {fileID: 0}
+    - target: {fileID: 3245294518042201321, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4087303025848416328, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4223724448908882829, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4376219220524597217, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4419532549138644971, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027581017386253423, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_Pivot.x
@@ -17563,11 +17567,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7695707469584319463, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9218881213203362018, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17592,11 +17596,6 @@ GameObject:
 --- !u!1 &1345736593 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5833019484858358616, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
-  m_PrefabInstance: {fileID: 1345736589}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1345736594 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5059372141755996226, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
   m_PrefabInstance: {fileID: 1345736589}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1345736595 stripped
@@ -20759,7 +20758,6 @@ MonoBehaviour:
   memoContents: {fileID: 573806206}
   memoGauge: {fileID: 2048718729}
   followUIBackground: {fileID: 1345736595}
-  memoGaugeFollow: {fileID: 1345736594}
   doubtGaugeSlider: {fileID: 1345736593}
   fatePositionSlider: {fileID: 1345736592}
   accidyPositionSlider: {fileID: 1345736590}
@@ -30695,6 +30693,42 @@ PrefabInstance:
       propertyPath: blurImage
       value: 
       objectReference: {fileID: 826967923}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: scaleMaximumBoy
+      value: 0.008
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: scaleMinimumBoy
+      value: 0.0035
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: isDialogueActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: scaleMaximumGirl
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: scaleMinimumGirl
+      value: 0.0035
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: yOffsetMaximumBoy
+      value: -150
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: yOffsetMinimumBoy
+      value: -1030
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: yOffsetMaximumGirl
+      value: -135
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: yOffsetMinimumGirl
+      value: -1020
+      objectReference: {fileID: 0}
     - target: {fileID: 3310946759512736325, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: characterImages.Array.size
       value: 3
