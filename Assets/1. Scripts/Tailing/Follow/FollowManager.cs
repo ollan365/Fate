@@ -275,6 +275,14 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
-        StartCoroutine(followEnd.EndFollowLogic());
+        StartCoroutine(followEnd.EndFollowLogic_0());
+    }
+    public void FollowEndLogic_1()
+    {
+        StartCoroutine(followEnd.EndFollowLogic_1());
+    }
+    public void FollowEndLogic_3()
+    {
+        StartCoroutine(followEnd.EndFollowLogic_3());
     }
 }
