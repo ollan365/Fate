@@ -18,6 +18,7 @@ public enum eUIGameObjectName
     MemoButton,
     MemoContents,
     MemoGauge,
+    FollowMemoGauge,
     FollowUIBackground,
     DoubtGaugeSlider,
     FatePositionSlider,
@@ -40,6 +41,7 @@ public class UIManager : MonoBehaviour
     public GameObject memoGauge;
 
     [Header("UI Game Objects - Follow")]
+    public GameObject followMemoGauge;
     public GameObject followUIBackground;
     public GameObject doubtGaugeSlider;
     public GameObject fatePositionSlider;
@@ -83,6 +85,8 @@ public class UIManager : MonoBehaviour
 
         uiGameObjects.Add(eUIGameObjectName.MemoContents.ToString(), memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge.ToString(), memoGauge);
+
+        uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge.ToString(), followMemoGauge);
 
         uiGameObjects.Add(eUIGameObjectName.FollowUIBackground.ToString(), followUIBackground);
 

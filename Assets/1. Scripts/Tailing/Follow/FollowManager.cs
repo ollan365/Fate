@@ -69,8 +69,8 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         SetCharcter();
 
-        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge.ToString(), true);
-        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge.ToString()));
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge.ToString(), true);
+        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge.ToString()));
 
         UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground.ToString(), true);
 

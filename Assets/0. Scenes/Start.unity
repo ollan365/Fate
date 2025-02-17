@@ -1453,7 +1453,10 @@ PrefabInstance:
     - {fileID: 5922121716885842761, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
     - {fileID: 3176278177878535952, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
     - {fileID: 74333239383133077, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6964462361134318448, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 621371021}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4743841464532265580, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       insertIndex: -1
@@ -8984,6 +8987,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611489082}
   m_CullTransparentMesh: 1
+--- !u!1 &621371020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 621371021}
+  - component: {fileID: 621371023}
+  - component: {fileID: 621371022}
+  m_Layer: 9
+  m_Name: Darkening Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &621371021
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621371020}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 826967926}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &621371022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621371020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &621371023
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621371020}
+  m_CullTransparentMesh: 1
 --- !u!1 &638057446
 GameObject:
   m_ObjectHideFlags: 0
@@ -11087,6 +11165,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4087764435736269419, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
   m_PrefabInstance: {fileID: 104304581}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &826967926 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6964462361134318448, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+  m_PrefabInstance: {fileID: 104304581}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &827005542
 GameObject:
   m_ObjectHideFlags: 0
@@ -12183,6 +12266,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931672508}
   m_CullTransparentMesh: 1
+--- !u!1 &943887064 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5059372141755996226, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
+  m_PrefabInstance: {fileID: 1345736589}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &968258247
 GameObject:
   m_ObjectHideFlags: 0
@@ -17467,7 +17555,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3245294518042201321, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4087303025848416328, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -17568,6 +17656,10 @@ PrefabInstance:
     - target: {fileID: 7695707469584319463, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8803681803902723228, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9218881213203362018, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -20757,6 +20849,7 @@ MonoBehaviour:
   memoButton: {fileID: 894882442}
   memoContents: {fileID: 573806206}
   memoGauge: {fileID: 2048718729}
+  followMemoGauge: {fileID: 943887064}
   followUIBackground: {fileID: 1345736595}
   doubtGaugeSlider: {fileID: 1345736593}
   fatePositionSlider: {fileID: 1345736592}
@@ -30669,6 +30762,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character Fade Room Accidy
       objectReference: {fileID: 0}
+    - target: {fileID: 1494396040373486696, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494396040373486696, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494396040373486696, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494396040373486696, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2257400349944092859, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: Script Text Room Think
@@ -30873,6 +30982,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4449723581422124240, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4449723581422124240, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4449723581422124240, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4449723581422124240, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4743841464532265580, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: Dialogue Canvas
@@ -30880,6 +31005,22 @@ PrefabInstance:
     - target: {fileID: 5065820329120429539, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: Dialogue Panel Follow Think
+      objectReference: {fileID: 0}
+    - target: {fileID: 5650517225180599366, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5650517225180599366, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5650517225180599366, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5650517225180599366, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6014061587731732954, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
@@ -30925,6 +31066,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: teddy bear icon Room Think
       objectReference: {fileID: 0}
+    - target: {fileID: 7652609644990100265, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7652609644990100265, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7652609644990100265, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7652609644990100265, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7968739782248797501, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: Blocking Panel Follow Think
@@ -30944,6 +31101,22 @@ PrefabInstance:
     - target: {fileID: 8438840454508364627, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: Character Image Room Accidy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959825914532712787, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959825914532712787, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959825914532712787, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959825914532712787, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
