@@ -52,6 +52,9 @@ public class UIManager : MonoBehaviour
     [Header("Warning Vignette Settings")]
     [SerializeField] protected float warningTime;
     
+    [Header("Mouse Cursor")]
+    [SerializeField] private MouseCursor mouseCursor;
+    
     public static UIManager Instance { get; private set; }
     
     private void Awake()
@@ -208,5 +211,13 @@ public class UIManager : MonoBehaviour
     private int GetCurrentSceneIndex()
     {
         return (int)GameManager.Instance.GetVariable("CurrentScene");
+    }
+
+    public void SetCursorMode(bool isDefault)
+    {
+        if (isDefault)
+            mouseCursor.SetDefaultMode();
+        else
+            mouseCursor.SetBusyMode();
     }
 }

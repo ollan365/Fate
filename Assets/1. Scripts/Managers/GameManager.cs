@@ -177,12 +177,13 @@ public class GameManager : MonoBehaviour
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[]
         {
-            "PresentHeartIndex",
-            "ActionPoint",
-            "PresentHeartIndex",
-            "FateBirthday",
-            "EndTutorial_ROOM_1",
-            "SkipLobby"
+            "IsHeartPopping",
+            // "PresentHeartIndex",
+            // "ActionPoint",
+            // "PresentHeartIndex",
+            // "FateBirthday",
+            // "EndTutorial_ROOM_1",
+            // "SkipLobby"
         });
 
         foreach (var item in variables)

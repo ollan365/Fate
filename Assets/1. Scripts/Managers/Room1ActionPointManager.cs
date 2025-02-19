@@ -31,20 +31,13 @@ public class Room1ActionPointManager : ActionPointManager
 
         // 하트가 0이 되면
         if (heartCount == 0)
-        {
             heartCount = actionPointsPerDay;
-        }
 
         for (int i = 0; i < heartCount; i++)
-        {
-            // create heart on screen by creating instances of heart prefab under heart parent
-            Instantiate(heartPrefab, heartParent.transform);
-        }
+            Instantiate(heartPrefab, heartParent.transform); // create heart on screen by creating instances of heart prefab under heart parent
 
         // change Day text on screen
         dayText.text = $"Day {nowDayNum}";
-
-        //Debug.Log(heartParent.transform.childCount);
     }
 
     public override void DecrementActionPoint()
@@ -82,11 +75,7 @@ public class Room1ActionPointManager : ActionPointManager
                 actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
             }
             else
-            {
-                // 마지막 날
-                // 행동력이 0이 된 상태
-                actionPoint = 0;
-            }
+                actionPoint = 0; // 마지막 날 - 행동력이 0이 된 상태
         }
         else
         {
@@ -103,10 +92,10 @@ public class Room1ActionPointManager : ActionPointManager
         {
             bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
             bool isInvestigating = RoomManager.Instance.GetIsInvestigating();
-            if (!isDialogueActive && !isInvestigating) RefillHeartsOrEndDay();
-            //else if (!isDialogueActive) RefillHeartsOrEndDay();
-            else if (isInvestigating) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
-            else if (isDialogueActive) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            if (isDialogueActive || isInvestigating) 
+                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            else
+                RefillHeartsOrEndDay();
         }
 
         SaveManager.Instance.SaveGameData();
