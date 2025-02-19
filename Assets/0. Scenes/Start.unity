@@ -19700,7 +19700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   variablesText: {fileID: 1815064768}
-  isDebug: 0
+  isDebug: 1
   skipTutorial: 1
   skipInquiry: 0
   accidyGender: 0
@@ -20631,6 +20631,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1633657069}
   - component: {fileID: 1633657070}
+  - component: {fileID: 1633657072}
   - component: {fileID: 1633657071}
   - component: {fileID: 1633657068}
   - component: {fileID: 1633657067}
@@ -20763,6 +20764,7 @@ MonoBehaviour:
   accidyPositionSlider: {fileID: 1345736590}
   dayTextTextMeshProUGUI: {fileID: 0}
   warningTime: 0.3
+  mouseCursor: {fileID: 1633657072}
 --- !u!114 &1633657071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20799,6 +20801,20 @@ MonoBehaviour:
   rightButtonNotificationImage: {fileID: 1624387217}
   isMemoOpen: 0
   isFollow: 0
+--- !u!114 &1633657072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633657064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2245dc03867a64f4db5e535a5c1c9d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultCursor: {fileID: 2800000, guid: e2017964958734f3ca9f561043eddea9, type: 3}
+  busyCursor: {fileID: 2800000, guid: 6d570d5dbea0548e0aeaca441b087699, type: 3}
 --- !u!1 &1641452832
 GameObject:
   m_ObjectHideFlags: 0
@@ -29587,7 +29603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3766474057162231561, guid: d4f25a6a9f9b348bcaee7321fa274f84, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -137.9
+      value: -137.90002
       objectReference: {fileID: 0}
     - target: {fileID: 3766474057162231561, guid: d4f25a6a9f9b348bcaee7321fa274f84, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
