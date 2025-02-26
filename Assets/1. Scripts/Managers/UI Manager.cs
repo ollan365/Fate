@@ -18,6 +18,14 @@ public enum eUIGameObjectName
     MemoButton,
     MemoContents,
     MemoGauge,
+    MenuUI,
+    WhiteMenu,
+    BlackMenu,
+    OptionUI,
+    BGMSlider,
+    SoundEffectSlider,
+    BGMValue,
+    SoundEffectValue,
     FollowMemoGauge,
     FollowUIBackground,
     DoubtGaugeSlider,
@@ -39,6 +47,16 @@ public class UIManager : MonoBehaviour
     public GameObject memoButton;
     public GameObject memoContents;
     public GameObject memoGauge;
+
+    [Header("UI Game Objects - Menu")]
+    public GameObject menuUI;
+    public GameObject whiteMenu;
+    public GameObject blackMenu;
+    public GameObject optionUI;
+    public GameObject BGMSlider;
+    public GameObject SoundEffectSlider;
+    public GameObject BGMValueText;
+    public GameObject SoundEffectValueText;
 
     [Header("UI Game Objects - Follow")]
     public GameObject followMemoGauge;
@@ -86,6 +104,16 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.MemoContents.ToString(), memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge.ToString(), memoGauge);
 
+        uiGameObjects.Add(eUIGameObjectName.MenuUI.ToString(), menuUI);
+        uiGameObjects.Add(eUIGameObjectName.WhiteMenu.ToString(), whiteMenu);
+        uiGameObjects.Add(eUIGameObjectName.BlackMenu.ToString(), blackMenu);
+
+        uiGameObjects.Add(eUIGameObjectName.OptionUI.ToString(), optionUI);
+        uiGameObjects.Add(eUIGameObjectName.BGMSlider.ToString(), BGMSlider);
+        uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider.ToString(), SoundEffectSlider);
+        uiGameObjects.Add(eUIGameObjectName.BGMValue.ToString(), BGMValueText);
+        uiGameObjects.Add(eUIGameObjectName.SoundEffectValue.ToString(), SoundEffectValueText);
+
         uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge.ToString(), followMemoGauge);
 
         uiGameObjects.Add(eUIGameObjectName.FollowUIBackground.ToString(), followUIBackground);
@@ -96,7 +124,7 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider.ToString(), accidyPositionSlider);
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
-        dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>(); 
+        dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
     }
     
     public void SetAllUI(bool isActive)
@@ -160,6 +188,26 @@ public class UIManager : MonoBehaviour
                 Debug.Log("Exit button is not implemented in this scene.");
                 break;
         }
+    }
+    public void ChangeSoundValue(eUIGameObjectName uiName)
+    {
+        TMP_Text text;
+        Slider slider;
+
+        if (uiName == eUIGameObjectName.BGMSlider)
+        {
+            text = uiGameObjects[eUIGameObjectName.BGMValue.ToString()].GetComponent<TextMeshProUGUI>();
+            slider = uiGameObjects[eUIGameObjectName.BGMSlider.ToString()].GetComponent<Slider>();
+            SoundPlayer.Instance.ChangeVolume(slider.value, -1);
+        }
+        else
+        {
+            text = uiGameObjects[eUIGameObjectName.SoundEffectValue.ToString()].GetComponent<TextMeshProUGUI>();
+            slider = uiGameObjects[eUIGameObjectName.SoundEffectSlider.ToString()].GetComponent<Slider>();
+            SoundPlayer.Instance.ChangeVolume(-1, slider.value);
+        }
+
+        text.text = (slider.value * 100).ToString("F0");
     }
 
     public void ChangeSliderValue(string uiName, float absoluteValue, float addValue)
