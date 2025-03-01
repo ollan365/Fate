@@ -34,6 +34,8 @@ public class Knife : EventObject, IResultExecutable
             return;
         }
 
+        RoomManager.Instance.SetIsInvestigating(true);
+
         knifeAnimator.SetBool("grab_Knife", true);
         Invoke("HideKnife", hideTime);
     }

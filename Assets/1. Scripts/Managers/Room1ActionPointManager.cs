@@ -133,17 +133,32 @@ public class Room1ActionPointManager : ActionPointManager
     }
 
     // 외출(아침) 스크립트 출력 부분
-    public override void nextMorningDay()
+    public override IEnumerator nextMorningDay()
     {
+        RoomManager.Instance.SetIsInvestigating(true);
+        UIManager.Instance.SetUI("MemoGauge", false);
+        UIManager.Instance.SetUI("MemoButton", false);
+        UIManager.Instance.SetUI("LeftButton", false);
+        UIManager.Instance.SetUI("RightButton", false);
+
         // 다음날이 되고(fade in/out effect 실행) 아침 스크립트 출력
-        const float totalTime = 3f;
-        StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
+        //const float totalTime = 3f;
+        //StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
+
+        const float totalTime = 5f;
+
+        StartNextDayUIAnimation(nowDayNum);
 
         // 아침 스크립트 출력
+        yield return new WaitForSeconds(totalTime);
         EventManager.Instance.CallEvent("EventRoom1Morning");
 
+        yield return new WaitWhile(() => isDayAnimating);
+
+        StartCoroutine(RefillHearts(0f));
+
         // 여기서 하트 생성 및 다음날로 날짜 업데이트
-        StartCoroutine(RefillHearts(totalTime / 2));
+        RoomManager.Instance.SetIsInvestigating(false);
     }
 
 }

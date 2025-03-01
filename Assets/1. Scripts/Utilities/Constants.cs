@@ -84,7 +84,8 @@ public static class Constants
         Sound_TincaseOpen = 24, 
         Sound_SewingBoxBall = 25, 
         Sound_SewingBoxOpen = 26,
-        Sound_HeartPop = 38;
+        Sound_HeartPop = 38,
+        Sound_DayChange = 39;
 
     // 3. 미행
     public const int
