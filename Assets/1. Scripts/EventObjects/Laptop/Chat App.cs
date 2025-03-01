@@ -28,12 +28,12 @@ public class ChatApp : MonoBehaviour
 
     public void EnableExitButton()
     {
-        UIManager.Instance.SetUI("ExitButton", true);
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton.ToString(), true);
     }
     
     public void DisableExitButton()
     {
-        UIManager.Instance.SetUI("ExitButton", false);
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton.ToString(), false);
     }
 
     public void OnEnable()

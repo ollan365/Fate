@@ -49,6 +49,15 @@ public class DialogueManager : MonoBehaviour
     // Dialogue Queue
     private Queue<string> dialogueQueue = new Queue<string>();
 
+    [SerializeField] private int yOffsetMinimumGirl;
+    [SerializeField] private int yOffsetMaximumGirl;
+    [SerializeField] private int yOffsetMinimumBoy;
+    [SerializeField] private int yOffsetMaximumBoy;
+    [SerializeField] private float scaleMinimumGirl;
+    [SerializeField] private float scaleMaximumGirl;
+    [SerializeField] private float scaleMinimumBoy;
+    [SerializeField] private float scaleMaximumBoy;
+    
     void Awake()
     {
         if (Instance == null)
@@ -133,37 +142,54 @@ public class DialogueManager : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(false);
     }
 
-    private void DisplayDialogueLine(DialogueLine dialogueLine)
+    private void ClearPreviousChoices()
     {
         if (choicesContainer.Length > dialogueType.ToInt())
             foreach (Transform child in choicesContainer[dialogueType.ToInt()])
-            {
                 Destroy(child.gameObject);
-            }
-
-        // 화자에 따라 대화창 변경
+    }
+    
+    private void SetupCanvasAndSpeakerText(DialogueLine dialogueLine)
+    {
         ChangeDialogueCanvas(dialogueLine.SpeakerID);
 
-        // 타자 효과 적용
-        isTyping = true;
+        // Deactivate all canvases and then activate the selected one.
+        foreach (GameObject canvas in dialogueSet)
+            if (canvas) 
+                canvas.SetActive(false);
+        dialogueSet[dialogueType.ToInt()].SetActive(true);
+
+        // Update speaker text if not a special case.
+        if (dialogueType != DialogueType.FOLLOW_EXTRA)
+            foreach (TextMeshProUGUI speakerText in speakerTexts)
+                speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
+                    ? GameManager.Instance.GetVariable("FateName").ToString()
+                    : scripts[dialogueLine.SpeakerID].GetScript();
+    }
+    
+    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast)
+    {
+        auto = false;
+        fast = false;
+    
         var sentence = scripts[dialogueLine.ScriptID].GetScript();
-        isAuto = false;
+    
         if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0)
         {
             var effects = scripts[dialogueLine.ScriptID].Placeholder.Split('/');
             foreach (var effect in effects)
-            {
                 switch (effect)
                 {
                     case "RED":
-                        sentence = "<color=red>" + sentence + "</color>";
+                        sentence = $"<color=red>{sentence}</color>";
                         break;
                     case "AUTO":
-                        isAuto = true;
-                        foreach (GameObject skip in skipText) skip.SetActive(false);
+                        auto = true;
+                        foreach (GameObject skip in skipText)
+                            skip.SetActive(false);
                         break;
                     case "FAST":
-                        isFast = true;
+                        fast = true;
                         break;
                     case "TRUE":
                         var fateName = (string)GameManager.Instance.GetVariable("FateName");
@@ -173,82 +199,123 @@ public class DialogueManager : MonoBehaviour
                         dialogueType = DialogueType.CENTER;
                         break;
                 }
-            }
         }
+        return sentence;
+    }
 
-        // 사용할 대화창을 제외한 다른 대화창을 꺼둔다
-        foreach (GameObject canvas in dialogueSet) if (canvas != null) canvas.SetActive(false);
-        dialogueSet[dialogueType.ToInt()].SetActive(true);
-
-        // 미행의 행인은 별도의 SpeakerID를 가짐
-        if (dialogueType != DialogueType.FOLLOW_EXTRA)
-        {
-            foreach (TextMeshProUGUI speakerText in speakerTexts)
-                speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
-                    ? GameManager.Instance.GetVariable("FateName").ToString()
-                    : scripts[dialogueLine.SpeakerID].GetScript();
-        }
-
-        StartCoroutine(TypeSentence(sentence));
-
-        var accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
-        var accidyGenderString = (accidyGender == 0) ? "female" : "male";
-        // Debug.Log($"accidy gender: {accidyGenderString}");
-
-        // 배경화면 표시
+    private void UpdateBackground(DialogueLine dialogueLine)
+    {
+        int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
         var backgroundID = dialogueLine.BackgroundID;
+    
         foreach (var currentBackgroundImage in backgroundImages)
-        {
-            if (string.IsNullOrWhiteSpace(backgroundID)) currentBackgroundImage.color = new Color(1, 1, 1, 0);
+            if (string.IsNullOrWhiteSpace(backgroundID))
+                currentBackgroundImage.color = new Color(1, 1, 1, 0);
             else
             {
                 var backgroundSprite = Resources.Load<Sprite>(backgrounds[backgroundID].GetPath(accidyGender));
                 currentBackgroundImage.sprite = backgroundSprite;
                 currentBackgroundImage.color = new Color(1, 1, 1, 1);
             }
-        }
+    }
+    
+    private void PlayDialogueSound(DialogueLine dialogueLine)
+    {
+        if (string.IsNullOrWhiteSpace(dialogueLine.SoundID))
+            return;
+        var soundID = "Sound_" + dialogueLine.SoundID;
+        var soundNum = (int)typeof(Constants).GetField(soundID).GetValue(null);
+        SoundPlayer.Instance.UISoundPlay(soundNum);
+    }
 
-        // 사운드 효과 재생
-        if (!string.IsNullOrWhiteSpace(dialogueLine.SoundID))
-        {
-            var soundID = "Sound_" + dialogueLine.SoundID;
-            // access the soundID from Constants.cs with the soundID from the csv file
-            var soundNum = (int)typeof(Constants).GetField(soundID).GetValue(null);
-            SoundPlayer.Instance.UISoundPlay(soundNum);
-        }
-
-        // 화자 이미지 표시
+    private void UpdateCharacterImages(DialogueLine dialogueLine)
+    {
+        int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
         var imageID = dialogueLine.ImageID;
-        if (string.IsNullOrWhiteSpace(imageID)) foreach (var characterImage in characterImages) characterImage.color = new Color(1, 1, 1, 0);
-        else
+
+        if (string.IsNullOrWhiteSpace(imageID))
         {
-            var characterSprite = Resources.Load<Sprite>(imagePaths[imageID].GetPath(accidyGender));
-            var yOffset = (accidyGender == 0) ? -195 : -150;
-
-            foreach (Image characterImage in characterImages)
-            {
-                characterImage.color = new Color(1, 1, 1, 1);
-                characterImage.sprite = characterSprite;
-                characterImage.SetNativeSize();
-                characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
-                characterImage.gameObject.SetActive(true);
-            }
-
-            if (dialogueLine.SpeakerID == "DialogueC_002" || dialogueLine.SpeakerID == "DialogueC_001")
-                foreach (Image characterImage in characterFadeImages)
-                    characterImage.gameObject.SetActive(false);
-            else
-            {
-                foreach (Image characterImage in characterFadeImages)
-                {
-                    characterImage.color = new Color(0, 0, 0, 0.8f);
-                    characterImage.sprite = characterSprite;
-                    characterImage.SetNativeSize();
-                    characterImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, yOffset, 0);
-                    characterImage.gameObject.SetActive(true);
-                }
-            }
+            foreach (var characterImage in characterImages)
+                characterImage.color = new Color(1, 1, 1, 0);
+            foreach (Image fadeImage in characterFadeImages)
+                fadeImage.gameObject.SetActive(false);
+            return;
         }
+
+        var characterSprite = Resources.Load<Sprite>(imagePaths[imageID].GetPath(accidyGender));
+        int zoomLevel = dialogueLine.ImageZoomLevel;
+        int yOffset = GetCharacterYOffset(accidyGender, zoomLevel);
+        float scale = GetCharacterScale(accidyGender, zoomLevel);
+
+        foreach (Image characterImage in characterImages)
+        {
+            characterImage.color = new Color(1, 1, 1, 1);
+            characterImage.sprite = characterSprite;
+            characterImage.SetNativeSize();
+            RectTransform rect = characterImage.GetComponent<RectTransform>();
+            rect.anchoredPosition = new Vector3(0, yOffset, 0);
+            rect.localScale = new Vector3(scale, scale, 1);
+            characterImage.gameObject.SetActive(true);
+        }
+
+        if (dialogueLine.SpeakerID is "DialogueC_001" or "DialogueC_002")
+            foreach (Image fadeImage in characterFadeImages)
+                fadeImage.gameObject.SetActive(false);
+        else
+            foreach (Image fadeImage in characterFadeImages)
+            {
+                fadeImage.color = new Color(0, 0, 0, 0.8f);
+                fadeImage.sprite = characterSprite;
+                fadeImage.SetNativeSize();
+                RectTransform rect = fadeImage.GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector3(0, yOffset, 0);
+                rect.localScale = new Vector3(scale, scale, 1);
+                fadeImage.gameObject.SetActive(true);
+            }
+    }
+
+    private void DisplayDialogueLine(DialogueLine dialogueLine)
+    {
+        ClearPreviousChoices();
+        SetupCanvasAndSpeakerText(dialogueLine);
+
+        // Process placeholders and get final sentence.
+        string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast);
+        isAuto = auto;
+        isFast = fast;
+
+        isTyping = true;
+        StartCoroutine(TypeSentence(sentence));
+        
+        UpdateBackground(dialogueLine);
+        PlayDialogueSound(dialogueLine);
+        UpdateCharacterImages(dialogueLine);
+    }
+
+    private int GetCharacterYOffset(int accidyGender, int characterImageZoomLevel)
+    {
+        if (characterImageZoomLevel is < 0 or > 10)
+        {
+            Debug.LogWarning("Invalid characterImageZoomLevel!");
+            return 0;
+        }
+        
+        return accidyGender == 0
+            ? yOffsetMaximumGirl - (yOffsetMaximumGirl - yOffsetMinimumGirl) / 10 * characterImageZoomLevel
+            : yOffsetMaximumBoy - (yOffsetMaximumBoy - yOffsetMinimumBoy) / 10 * characterImageZoomLevel;
+    }
+    
+    private float GetCharacterScale(int accidyGender, int characterImageZoomLevel)
+    {
+        if (characterImageZoomLevel is < 0 or > 10)
+        {
+            Debug.LogWarning("Invalid characterImageZoomLevel!");
+            return 0;
+        }
+        
+        return accidyGender == 0
+            ? scaleMinimumGirl + (scaleMaximumGirl - scaleMinimumGirl) / 10 * characterImageZoomLevel
+            : scaleMinimumBoy + (scaleMaximumBoy - scaleMinimumBoy) / 10 * characterImageZoomLevel;
     }
 
     private void ChangeDialogueCanvas(string speaker)

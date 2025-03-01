@@ -5,6 +5,34 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Constants;
 
+public enum eUIGameObjectName
+{
+    NormalVignette,
+    WarningVignette,
+    ActionPoints,
+    HeartParent,
+    DayText,
+    ExitButton,
+    LeftButton,
+    RightButton,
+    MemoButton,
+    MemoContents,
+    MemoGauge,
+    MenuUI,
+    WhiteMenu,
+    BlackMenu,
+    OptionUI,
+    BGMSlider,
+    SoundEffectSlider,
+    BGMValue,
+    SoundEffectValue,
+    FollowMemoGauge,
+    FollowUIBackground,
+    DoubtGaugeSlider,
+    FatePositionSlider,
+    AccidyPositionSlider
+}
+
 public class UIManager : MonoBehaviour
 {
     [Header("UI Game Objects")]
@@ -20,6 +48,7 @@ public class UIManager : MonoBehaviour
     public GameObject memoContents;
     public GameObject memoGauge;
 
+  /*
     [Header("UI Game Objects - Day Animation")]
     public GameObject DayAnimGameObject;
     public GameObject yesterDayNumText;
@@ -37,12 +66,23 @@ public class UIManager : MonoBehaviour
     [HideInInspector] public RectTransform yesterDayRectTransform;
     [HideInInspector] public RectTransform DayAnimGroupRectTransform;
 
+    [Header("UI Game Objects - Menu")]
+    public GameObject menuUI;
+    public GameObject whiteMenu;
+    public GameObject blackMenu;
+    public GameObject optionUI;
+    public GameObject BGMSlider;
+    public GameObject SoundEffectSlider;
+    public GameObject BGMValueText;
+    public GameObject SoundEffectValueText;
+*/
+
     [Header("UI Game Objects - Follow")]
-    // public GameObject[] doubtGaugeSliders; // Slider[]
-    // public GameObject[] overHeadDoubtGaugeSliderImages; // Image[]
-    // public GameObject accidyDialogueBox;
-    // public GameObject fatePositionSlider; // Scrollbar -> Slider
-    // public GameObject accidyPositionSlider; // Scrollbar -> Slider
+    public GameObject followMemoGauge;
+    public GameObject followUIBackground;
+    public GameObject doubtGaugeSlider;
+    public GameObject fatePositionSlider;
+    public GameObject accidyPositionSlider;
 
     private Dictionary<string, GameObject> uiGameObjects = new Dictionary<string, GameObject>();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -70,31 +110,38 @@ public class UIManager : MonoBehaviour
 
     private void AddUIGameObjects()
     {
-        uiGameObjects.Add("NormalVignette", normalVignette);
-        uiGameObjects.Add("WarningVignette", warningVignette);
+        uiGameObjects.Add(eUIGameObjectName.NormalVignette.ToString(), normalVignette);
+        uiGameObjects.Add(eUIGameObjectName.WarningVignette.ToString(), warningVignette);
 
-        uiGameObjects.Add("ActionPoints", actionPoints);
-        uiGameObjects.Add("HeartParent", heartParent);
-        uiGameObjects.Add("DayText", dayText);
+        uiGameObjects.Add(eUIGameObjectName.ActionPoints.ToString(), actionPoints);
+        uiGameObjects.Add(eUIGameObjectName.HeartParent.ToString(), heartParent);
+        uiGameObjects.Add(eUIGameObjectName.DayText.ToString(), dayText);
 
-        uiGameObjects.Add("ExitButton", exitButton);
-        uiGameObjects.Add("LeftButton", leftButton);
-        uiGameObjects.Add("RightButton", rightButton);
+        uiGameObjects.Add(eUIGameObjectName.ExitButton.ToString(), exitButton);
+        uiGameObjects.Add(eUIGameObjectName.LeftButton.ToString(), leftButton);
+        uiGameObjects.Add(eUIGameObjectName.RightButton.ToString(), rightButton);
 
-        uiGameObjects.Add("MemoButton", memoButton);
-        uiGameObjects.Add("MemoContents", memoContents);
-        uiGameObjects.Add("MemoGauge", memoGauge);
+        uiGameObjects.Add(eUIGameObjectName.MemoContents.ToString(), memoContents);
+        uiGameObjects.Add(eUIGameObjectName.MemoGauge.ToString(), memoGauge);
 
-        // uiGameObjects.Add("DoubtGaugeSlider", doubtGaugeSliders[0]);
-        // uiGameObjects.Add("OverheadDoubtGaugeSlider", doubtGaugeSliders[1]);
-        //
-        // uiGameObjects.Add("OverHeadDoubtGaugeSliderImage_0", overHeadDoubtGaugeSliderImages[0]);
-        // uiGameObjects.Add("OverHeadDoubtGaugeSliderImage_1", overHeadDoubtGaugeSliderImages[1]);
-        //
-        // uiGameObjects.Add("AccidyDialogueBox", accidyDialogueBox);
-        //
-        // uiGameObjects.Add("FatePositionSlider", fatePositionSlider);
-        // uiGameObjects.Add("AccidyPositionSlider", accidyPositionSlider);
+        uiGameObjects.Add(eUIGameObjectName.MenuUI.ToString(), menuUI);
+        uiGameObjects.Add(eUIGameObjectName.WhiteMenu.ToString(), whiteMenu);
+        uiGameObjects.Add(eUIGameObjectName.BlackMenu.ToString(), blackMenu);
+
+        uiGameObjects.Add(eUIGameObjectName.OptionUI.ToString(), optionUI);
+        uiGameObjects.Add(eUIGameObjectName.BGMSlider.ToString(), BGMSlider);
+        uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider.ToString(), SoundEffectSlider);
+        uiGameObjects.Add(eUIGameObjectName.BGMValue.ToString(), BGMValueText);
+        uiGameObjects.Add(eUIGameObjectName.SoundEffectValue.ToString(), SoundEffectValueText);
+
+        uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge.ToString(), followMemoGauge);
+
+        uiGameObjects.Add(eUIGameObjectName.FollowUIBackground.ToString(), followUIBackground);
+
+        uiGameObjects.Add(eUIGameObjectName.DoubtGaugeSlider.ToString(), doubtGaugeSlider);
+
+        uiGameObjects.Add(eUIGameObjectName.FatePositionSlider.ToString(), fatePositionSlider);
+        uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider.ToString(), accidyPositionSlider);
 
         uiGameObjects.Add("DayAnimGameObject", DayAnimGameObject);
         uiGameObjects.Add("YesterDayNumText", yesterDayNumText);
@@ -178,33 +225,32 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-    public TMP_Text GetAccidyDialogueBoxText()
+    public void ChangeSoundValue(eUIGameObjectName uiName)
     {
-        return uiGameObjects["AccidyDialogueBox"].GetComponentInChildren<TextMeshProUGUI>();
+        TMP_Text text;
+        Slider slider;
+
+        if (uiName == eUIGameObjectName.BGMSlider)
+        {
+            text = uiGameObjects[eUIGameObjectName.BGMValue.ToString()].GetComponent<TextMeshProUGUI>();
+            slider = uiGameObjects[eUIGameObjectName.BGMSlider.ToString()].GetComponent<Slider>();
+            SoundPlayer.Instance.ChangeVolume(slider.value, -1);
+        }
+        else
+        {
+            text = uiGameObjects[eUIGameObjectName.SoundEffectValue.ToString()].GetComponent<TextMeshProUGUI>();
+            slider = uiGameObjects[eUIGameObjectName.SoundEffectSlider.ToString()].GetComponent<Slider>();
+            SoundPlayer.Instance.ChangeVolume(-1, slider.value);
+        }
+
+        text.text = (slider.value * 100).ToString("F0");
     }
 
-    public void ChangeUIPosition(string uiName, Vector3 absolutePosition, Vector3 addVector)
-    {
-        if (addVector != Vector3.zero)
-            uiGameObjects[uiName].transform.position += addVector;
-        else
-            uiGameObjects[uiName].transform.position = absolutePosition;
-    }
-    public float GetSliderValue(string uiName)
-    {
-        return uiGameObjects[uiName].GetComponent<Slider>().value;
-    }
     public void ChangeSliderValue(string uiName, float absoluteValue, float addValue)
     {
         Slider slider = uiGameObjects[uiName].GetComponent<Slider>();
         if (addValue != 0) slider.value += addValue;
         else slider.value = absoluteValue;
-    }
-    public void ChangeImageAlpha(string uiName, float addValue)
-    {
-        Color color = uiGameObjects[uiName].GetComponent<Image>().color;
-        color.a = Mathf.Clamp(color.a + addValue, 0, 1);
-        uiGameObjects[uiName].GetComponent<Image>().color = color;
     }
 
     /*
@@ -213,15 +259,20 @@ public class UIManager : MonoBehaviour
      * fadeInDuration: 경고 표시 페이드 인 소요 시간
      * fadeOutDuration: 경고 표시 페이드 아웃 소요 시간
      */
-    public IEnumerator WarningCoroutine(float startAlpha = 0f, float endAlpha = 1f, float fadeInDuration = 0.5f, float fadeOutDuration = 0.5f)
+    public IEnumerator WarningCoroutine(float startAlpha = 0f,
+        float endAlpha = 1f,
+        float fadeInDuration = 0.5f,
+        float fadeOutDuration = 0.5f)
     {
-        SetUI("WarningVignette", true); // 경고 표시 활성화
+        SetUI(eUIGameObjectName.WarningVignette.ToString(), true); // 경고 표시 활성화
         
         float timeAccumulated = 0;
         while (timeAccumulated < fadeInDuration)
         {
             timeAccumulated += Time.deltaTime;
-            warningVignetteQVignetteSingle.mainColor.a = Mathf.Lerp(startAlpha, endAlpha, timeAccumulated / fadeInDuration); // WarningVignette 투명도를 0에서 1로 선형 보간(Lerp)
+            warningVignetteQVignetteSingle.mainColor.a = Mathf.Lerp(startAlpha,
+                endAlpha,
+                timeAccumulated / fadeInDuration); // WarningVignette 투명도를 0에서 1로 선형 보간(Lerp)
 
             yield return null;
         }
@@ -232,12 +283,14 @@ public class UIManager : MonoBehaviour
         while (timeAccumulated < fadeOutDuration)
         {
             timeAccumulated += Time.deltaTime * 2;  // 페이드 아웃 속도를 더 빠르게 설정
-            warningVignetteQVignetteSingle.mainColor.a = Mathf.Lerp(endAlpha, startAlpha, timeAccumulated / fadeOutDuration); // WarningVignette 투명도를 1에서 0으로 선형 보간(Lerp)
+            warningVignetteQVignetteSingle.mainColor.a = Mathf.Lerp(endAlpha,
+                startAlpha,
+                timeAccumulated / fadeOutDuration); // WarningVignette 투명도를 1에서 0으로 선형 보간(Lerp)
 
             yield return null;
         }
 
-        SetUI("WarningVignette", false); // 경고 표시 비활성화
+        SetUI(eUIGameObjectName.WarningVignette.ToString(), false); // 경고 표시 비활성화
     }
     
     private int GetCurrentSceneIndex()

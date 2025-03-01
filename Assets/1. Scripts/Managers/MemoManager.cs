@@ -238,7 +238,7 @@ public class MemoManager : PageContentsManager
 
     public void SetMemoContents(bool isActive)
     {
-        UIManager.Instance.SetUI("MemoContents", isActive);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoContents.ToString(), isActive);
         isMemoOpen = isActive;
 
         if (isActive) {

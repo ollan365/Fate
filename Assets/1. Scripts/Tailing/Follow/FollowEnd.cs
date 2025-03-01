@@ -9,30 +9,28 @@ public class FollowEnd : MonoBehaviour
     [SerializeField] 
     private Animator Accidy { get => FollowManager.Instance.Accidy; }
     private Animator Fate { get => FollowManager.Instance.Fate; }
-    
-    public IEnumerator EndFollowLogic()
+
+    public IEnumerator EndFollowLogic_0()
     {
         // 필연으로 줌인
         yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.Fate) + 0.5f);
 
         // 스크립트 "Follow1Fianal" 출력 + 느낌표
-        DialogueManager.Instance.StartDialogue("Follow1Final_001");
+        EventManager.Instance.CallEvent("EventFollowEndStep_0");
 
-        // 스크립트가 끝날 때까지 대기
-        while (blockingPanel.activeSelf)
-            yield return null;
+    }
+    public IEnumerator EndFollowLogic_1()
+    {
         yield return new WaitForSeconds(0.5f);
 
         // 우연으로 줌인
         yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.Accidy) + 0.5f);
 
         // 우연 대사 출력
-        // FollowManager.Instance.SetCharcter(1);
-        DialogueManager.Instance.StartDialogue("Follow1Final_002");
-
-        // 스크립트가 끝날 때까지 대기
-        while (blockingPanel.activeSelf)
-            yield return null;
+        EventManager.Instance.CallEvent("EventFollowEndStep_2");
+    }
+    public IEnumerator EndFollowLogic_3()
+    {
         yield return new WaitForSeconds(0.5f);
 
         // 우연이 뒤돌아봄
