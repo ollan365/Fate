@@ -237,6 +237,8 @@ public class DialogueManager : MonoBehaviour
         {
             foreach (var characterImage in characterImages)
                 characterImage.color = new Color(1, 1, 1, 0);
+            foreach (Image fadeImage in characterFadeImages)
+                fadeImage.gameObject.SetActive(false);
             return;
         }
 

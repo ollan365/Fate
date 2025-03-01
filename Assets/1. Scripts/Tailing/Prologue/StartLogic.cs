@@ -13,8 +13,6 @@ public class StartLogic : MonoBehaviour
     [SerializeField] private GameObject noGameDataPanel; // 이어서를 눌렀을 때, 저장된 데이터가 없으면 켜지는 판넬
     [SerializeField] private GameObject start;
     [SerializeField] private GameObject second;
-    [SerializeField] private Slider[] soundSliders;
-    [SerializeField] private TextMeshProUGUI[] soundValueTexts;
     [SerializeField] private GameObject buttons;
     private int language = 1;
     public int Language { set => language = value; }
@@ -130,11 +128,7 @@ public class StartLogic : MonoBehaviour
         }
         else noGameDataPanel.SetActive(true);
     }
-    public void ChangeSoundValue(int index)
-    {
-        soundValueTexts[index].text = (soundSliders[index].value * 100).ToString("F0");
-        SoundPlayer.Instance.ChangeVolume(soundSliders[0].value, soundSliders[1].value);
-    }
+    
     public void GoScene(int sceneNum)
     {
         SaveManager.Instance.CreateNewGameData();

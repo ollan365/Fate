@@ -708,8 +708,12 @@ public class ResultManager : MonoBehaviour
                 FollowManager.Instance.TutorialNextStep();
                 break;
 
-            case "ResultFollowEndNextStep":
-                // FollowManager.Instance.FollowTutorialNextStep();
+            case "ResultFollowEndLogic_1":
+                FollowManager.Instance.FollowEndLogic_1();
+                break;
+
+            case "ResultFollowEndLogic_3":
+                FollowManager.Instance.FollowEndLogic_3();
                 break;
 
             case "ResultFollowEnd": // 미행 끝 (메모 개수 충분)

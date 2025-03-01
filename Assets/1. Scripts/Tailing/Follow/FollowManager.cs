@@ -69,8 +69,8 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         SetCharcter();
 
-        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge.ToString(), true);
-        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge.ToString()));
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge.ToString(), true);
+        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge.ToString()));
 
         UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground.ToString(), true);
 
@@ -275,6 +275,14 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
-        StartCoroutine(followEnd.EndFollowLogic());
+        StartCoroutine(followEnd.EndFollowLogic_0());
+    }
+    public void FollowEndLogic_1()
+    {
+        StartCoroutine(followEnd.EndFollowLogic_1());
+    }
+    public void FollowEndLogic_3()
+    {
+        StartCoroutine(followEnd.EndFollowLogic_3());
     }
 }
