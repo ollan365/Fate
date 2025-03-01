@@ -147,7 +147,7 @@ public class Room1ActionPointManager : ActionPointManager
 
         const float totalTime = 5f;
 
-        StartNextDayUIAnimation(nowDayNum);
+        //StartNextDayUIChange(nowDayNum);
 
         // 아침 스크립트 출력
         yield return new WaitForSeconds(totalTime);

@@ -28,12 +28,15 @@ abstract public class ActionPointManager : MonoBehaviour
     protected int[,] actionPointsArray;
 
     // ************************* temporary members for Day Animation *************************
+    const int MidRotationIndex = 0;
+    const int EndRotationIndex = 1;
+
     [SerializeField] private float dayScalingTime = 2f;
     [SerializeField] private float dayAnimatingTime = 4f;
 
     public bool isDayAnimating = false;
 
-    [SerializeField] private List<Vector3> DayAnimRotationValues;   // (50, 100, 90) (0, 0, 0)
+    [SerializeField] private List<Vector3> DayAnimRotationValues;
 
     [SerializeField] private Vector3 DayAnimOriginalPosition;  // 기존 위치 (-832, 435.6, -100)
     [SerializeField] private Vector3 DayAnimMovedPosition;  // (0, 0, -100) 
@@ -45,7 +48,6 @@ abstract public class ActionPointManager : MonoBehaviour
     public RectTransform yesterDayRectTransform;
     public RectTransform DayAnimGroupRectTransform;
 
-    [SerializeField] private GameObject GearGroup;
     [SerializeField] private GameObject MainGear;
     [SerializeField] private GameObject SubGear;
     [SerializeField] private GameObject GearHourHand;
@@ -98,12 +100,17 @@ abstract public class ActionPointManager : MonoBehaviour
         heartParent = UIManager.Instance.heartParent;
         dayText = UIManager.Instance.dayTextTextMeshProUGUI;
 
+        loadDayAnimationGameObjects();
+    }
+
+    private void loadDayAnimationGameObjects()
+    {
         yesterDayNumText = UIManager.Instance.yesterDayNumTextTextMeshProUGUI;
         nowDayNumText = UIManager.Instance.nowDayNumTextTextMeshProUGUI;
         yesterDayRectTransform = UIManager.Instance.yesterDayRectTransform;
         DayAnimGroupRectTransform = UIManager.Instance.DayAnimGroupRectTransform;
 
-        DayAnimRotationValues.Add(new Vector3(50, 100, 90));
+        DayAnimRotationValues.Add(new Vector3(0, 180, 90));
         DayAnimRotationValues.Add(new Vector3(180, 180, 180));
 
         DayAnimOriginalPosition = DayAnimGroupRectTransform.anchoredPosition;  // 초기 위치 저장
@@ -112,7 +119,6 @@ abstract public class ActionPointManager : MonoBehaviour
         DayAnimScaleOriginalValue = 0.385f;
         DayAnimScaleZoomedValue = 1;
 
-        GearGroup = UIManager.Instance.gearGroup;
         MainGear = UIManager.Instance.mainGear;
         SubGear = UIManager.Instance.subGear;
         GearHourHand = UIManager.Instance.gearHourHand;
@@ -123,6 +129,7 @@ abstract public class ActionPointManager : MonoBehaviour
         GearImages.Add(GearHourHand.GetComponent<Image>());
         GearImages.Add(GearMinuteHand.GetComponent<Image>());
     }
+
 
     protected static IEnumerator DeactivateHeart(Object heart)
     {
@@ -200,23 +207,14 @@ abstract public class ActionPointManager : MonoBehaviour
     // ************************* temporary methods for day animation *************************
 
     // test
-    public void StartNextDayUIAnimation(int nowDayNum)
+    public IEnumerator StartNextDayUIChange(int nowDayNum)
     {
-        StartCoroutine(NextDayUIAnimation(nowDayNum));
-    }
-
-    public void StartNextDayUIAnimationVer2(int nowDayNum)
-    {
-        StartCoroutine(NextDayUIAnimationVer2(nowDayNum));
-    }
-
-    protected IEnumerator NextDayUIAnimation(int nowDayNum)
-    {
+        //StartCoroutine(NextDayUIAnimation());
         if (isDayAnimating)
             yield break;
-        //RoomManager.Instance.SetIsInvestigating(true);
         isDayAnimating = true;
 
+        //   1. ActionPoints UI 끄고 DayUIAnimation 관련 UI들은 켜기
         UIManager.Instance.SetUI("ActionPoints", false);
 
         UIManager.Instance.SetUI("DayAnimGameObject", true);
@@ -224,26 +222,16 @@ abstract public class ActionPointManager : MonoBehaviour
         UIManager.Instance.SetUI("NowDayNumText", true);
         UIManager.Instance.SetUI("YesterDay", true);
 
+        //   2. yesterDayNumText와 nowDayNumText 날짜 동기화
         int yesterdayNum = nowDayNum - 1;
-        float AnimatingHalfTime = dayAnimatingTime / 2;
-
         yesterDayNumText.text = $"Day {yesterdayNum}";
         nowDayNumText.text = $"Day {nowDayNum}";
-
-
-        Quaternion startRotation = yesterDayRectTransform.rotation;
-        Quaternion midRotation = startRotation * Quaternion.Euler(0,180,90);
-        Quaternion endRotation = startRotation * Quaternion.Euler(180,180,180);
-
-        elapsedTime = 0f;
-        hasChangedSibling = false;
-
-        Vector2 targetPosition = DayAnimMovedPosition;
-        float afterScaleValue = DayAnimScaleZoomedValue;
 
         // 배경이 점점 어두워짐
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, dayScalingTime));
 
+        Vector2 targetPosition = DayAnimMovedPosition;
+        float afterScaleValue = DayAnimScaleZoomedValue;
         // DayUI 확대되는 코루틴
         StartCoroutine(NextDayUIScaleAndMoving(targetPosition, afterScaleValue));
 
@@ -252,41 +240,6 @@ abstract public class ActionPointManager : MonoBehaviour
 
         // DayUI_Gear들과 시침과 분침이 돌기 시작하는 코루틴
         StartCoroutine(RotateGearsAndClockHands());
-
-        elapsedTime = 0f;
-        while (elapsedTime < dayAnimatingTime)
-        {
-            if (elapsedTime < AnimatingHalfTime)
-            {
-                float fraction = elapsedTime / AnimatingHalfTime;
-                yesterDayRectTransform.rotation = Quaternion.Slerp(startRotation, midRotation, fraction);
-            }
-            else
-            {
-                if (!hasChangedSibling)
-                {
-                    yesterDayRectTransform.SetAsFirstSibling();
-                    hasChangedSibling = true;
-                }
-
-                float fraction = (elapsedTime - AnimatingHalfTime) / AnimatingHalfTime;
-                yesterDayRectTransform.rotation = Quaternion.Slerp(midRotation, endRotation, fraction);
-
-            }
-
-            float currentY = yesterDayRectTransform.rotation.eulerAngles.y;
-            if (Mathf.Abs(currentY - 263f) < 1f)
-            {
-                //Debug.Log($" Rotation Y 값이 -97도에 가까움: {currentY}");
-                UIManager.Instance.SetUI("YesterDayNumText", false);
-            }
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        yesterDayRectTransform.rotation = endRotation;
-        UIManager.Instance.SetUI("YesterDayNumText", true);
 
         // 날짜 변경 후 순서 복구
         yesterDayNumText.text = $"Day {nowDayNum}";
@@ -310,6 +263,55 @@ abstract public class ActionPointManager : MonoBehaviour
         isDayAnimating = false;
     }
 
+    // DayUI 뒤로 넘김
+    protected IEnumerator NextDayUIAnimation(int nowDayNum)
+    {
+        
+        Quaternion startRotation = yesterDayRectTransform.rotation;
+        Quaternion midRotation = startRotation * Quaternion.Euler(DayAnimRotationValues[MidRotationIndex]);
+        Quaternion endRotation = startRotation * Quaternion.Euler(DayAnimRotationValues[EndRotationIndex]);
+
+        elapsedTime = 0f;
+        hasChangedSibling = false;
+
+        float AnimatingHalfTime = dayAnimatingTime / 2;
+        const float MidRoation_Y_value = 263f;
+
+        while (elapsedTime < dayAnimatingTime)
+        {
+            if (elapsedTime < AnimatingHalfTime)
+            {
+                float fraction = elapsedTime / AnimatingHalfTime;
+                yesterDayRectTransform.rotation = Quaternion.Slerp(startRotation, midRotation, fraction);
+            }
+            else
+            {
+                if (!hasChangedSibling)
+                {
+                    yesterDayRectTransform.SetAsFirstSibling();
+                    hasChangedSibling = true;
+                }
+
+                float fraction = (elapsedTime - AnimatingHalfTime) / AnimatingHalfTime;
+                yesterDayRectTransform.rotation = Quaternion.Slerp(midRotation, endRotation, fraction);
+
+            }
+
+            float currentY = yesterDayRectTransform.rotation.eulerAngles.y;
+            if (Mathf.Abs(currentY - MidRoation_Y_value) < 1f)
+            {
+                UIManager.Instance.SetUI("YesterDayNumText", false);
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yesterDayRectTransform.rotation = endRotation;
+        UIManager.Instance.SetUI("YesterDayNumText", true);
+    }
+
+    // DayUI 크기, 위치 가운데로 조정
     IEnumerator NextDayUIScaleAndMoving(Vector3 targetPosition, float endScaleValue)
     {
         isDayScaling = true;
@@ -335,6 +337,7 @@ abstract public class ActionPointManager : MonoBehaviour
         isDayScaling = false;
     }
 
+    // 기어, 시계 시침분침 회전
     private IEnumerator RotateGearsAndClockHands()
     {
         UIManager.Instance.SetUI("GearGroup", true);
@@ -453,99 +456,5 @@ abstract public class ActionPointManager : MonoBehaviour
                 imageList[i].color = color;
             }
         }
-    }
-
-
-    protected IEnumerator NextDayUIAnimationVer2(int nowDayNum)
-    {
-        if (isDayAnimating)
-            yield break;
-
-        isDayAnimating = true;
-
-        //RoomManager.Instance.SetIsInvestigating(true);
-        UIManager.Instance.SetUI("ActionPoints", false);
-
-        UIManager.Instance.SetUI("DayAnimGameObject", true);
-        UIManager.Instance.SetUI("YesterDayNumText", true);
-        UIManager.Instance.SetUI("NowDayNumText", true);
-        UIManager.Instance.SetUI("YesterDay", true);
-
-        int yesterdayNum = nowDayNum - 1;
-        float AnimatingHalfTime = dayAnimatingTime / 2;
-
-        yesterDayNumText.text = $"Day {yesterdayNum}";
-        nowDayNumText.text = $"Day {nowDayNum}";
-
-        Vector3 startEuler = yesterDayRectTransform.rotation.eulerAngles; // 초기 회전값
-        Vector3 midEuler = startEuler + new Vector3(0, 180, 90); // 중간 회전값
-        Vector3 endEuler = startEuler + new Vector3(180, 180, 180); // 최종 회전값
-
-        elapsedTime = 0f;
-        hasChangedSibling = false;
-
-        Vector2 targetPosition = DayAnimMovedPosition;
-        float afterScaleValue = DayAnimScaleZoomedValue;
-
-        // 배경이 점점 어두워짐
-        //StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, dayScalingTime));
-
-        // DayUI 확대되는 코루틴
-        StartCoroutine(NextDayUIScaleAndMoving(targetPosition, afterScaleValue));
-
-        // DayUI 확대가 끝날 때까지 대기
-        yield return new WaitWhile(() => isDayScaling);
-
-        // DayUI_Gear들과 시침과 분침이 돌기 시작하는 코루틴
-        StartCoroutine(RotateGearsAndClockHands());
-
-        elapsedTime = 0f;
-        while (elapsedTime < dayAnimatingTime)
-        {
-            if (elapsedTime < AnimatingHalfTime)
-            {
-                float fraction = elapsedTime / AnimatingHalfTime;
-                yesterDayRectTransform.rotation = Quaternion.Euler(Vector3.Lerp(startEuler, midEuler, fraction));
-            }
-            else
-            {
-                if (!hasChangedSibling)
-                {
-                    yesterDayRectTransform.SetAsFirstSibling();
-                    hasChangedSibling = true;
-                }
-
-                float fraction = (elapsedTime - AnimatingHalfTime) / AnimatingHalfTime;
-
-                yesterDayRectTransform.rotation = Quaternion.Euler(Vector3.Lerp(midEuler, endEuler, Mathf.Clamp01(fraction)));
-
-            }
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        yesterDayRectTransform.rotation = Quaternion.Euler(endEuler);
-
-        // 날짜 변경 후 순서 복구
-        yesterDayNumText.text = $"Day {nowDayNum}";
-        yesterDayRectTransform.SetAsLastSibling();
-
-        // 배경이 점점 밝아짐
-        //StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, dayScalingTime));
-
-        targetPosition = DayAnimOriginalPosition;
-        afterScaleValue = DayAnimScaleOriginalValue;
-        // DayUI 커지게 했던 거 작게 하고 제자리로 옮김
-        StartCoroutine(NextDayUIScaleAndMoving(targetPosition, afterScaleValue));
-
-        yield return new WaitForSeconds(dayScalingTime);
-
-        UIManager.Instance.SetUI("ActionPoints", true);
-
-        UIManager.Instance.SetUI("DayAnimGameObject", false);
-        //RoomManager.Instance.SetIsInvestigating(false);
-
-        isDayAnimating = false;
     }
 }

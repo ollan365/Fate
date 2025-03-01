@@ -26,7 +26,6 @@ public class UIManager : MonoBehaviour
     public GameObject nowDayNumText;
     public GameObject yesterDay;
 
-    public GameObject gearGroup;
     public GameObject mainGear;
     public GameObject subGear;
     public GameObject gearHourHand;
@@ -101,7 +100,6 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add("NowDayNumText", nowDayNumText);
         uiGameObjects.Add("YesterDay", yesterDay);
 
-        uiGameObjects.Add("GearGroup", gearGroup);
         uiGameObjects.Add("MainGear", mainGear);
         uiGameObjects.Add("SubGear", subGear);
         uiGameObjects.Add("GearHourHand", gearHourHand);
