@@ -16,8 +16,6 @@ public class DiaryLock : EventObject, IResultExecutable
     [SerializeField] private string diaryLockExecutableName;
     [SerializeField] private DiaryManager diaryManager;
 
-    private bool isComparing = false;
-
     private void Start()
     {
         ResultManager.Instance.RegisterExecutable(diaryLockExecutableName, this);
@@ -46,13 +44,10 @@ public class DiaryLock : EventObject, IResultExecutable
         }
     }
 
-
     public void InputNumber(string buttonInput)
     {
         // 비밀번호 무한 입력 시도 방지
         RoomManager.Instance.ProhibitInput();
-
-        Debug.Log(passwordInput.Length);
 
         if (passwordInput.Length < 4)
         {
@@ -62,15 +57,11 @@ public class DiaryLock : EventObject, IResultExecutable
             if (passwordInput.Length < 4) return;
         }
 
-        if(!isComparing)
-            StartCoroutine(ComparePassword());
-
+        StartCoroutine(ComparePassword());
     }
 
     IEnumerator ComparePassword()
     {
-        isComparing = true;
-
         yield return new WaitForSeconds(0.2f);
         string correctPassword = (string)GameManager.Instance.GetVariable("FateBirthday");  // 다이어리 비밀번호 = 필연 생일
 
@@ -85,8 +76,6 @@ public class DiaryLock : EventObject, IResultExecutable
         OnMouseDown();
         yield return new WaitForSeconds(0.3f);
         ResetPassword();
-
-        isComparing = false;
     }
     
     // 비밀번호 입력 초기화

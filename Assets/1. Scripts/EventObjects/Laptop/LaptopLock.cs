@@ -22,9 +22,7 @@ public class LaptopLock : EventObject, IResultExecutable
     private Image imageComponent;
 
     [SerializeField] private Laptop laptopA;
-
-    private bool isComparing = false;
-
+    
     private void Start()
     {
         imageComponent = GetComponent<Image>();
@@ -52,6 +50,8 @@ public class LaptopLock : EventObject, IResultExecutable
     // 로그인 화면에서 암호 입력 후 엔터 치면
     public void TryLogin(string input)
     {
+        //passwordInput = input;
+        //StartCoroutine(ComparePassword());
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
 
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
@@ -60,16 +60,34 @@ public class LaptopLock : EventObject, IResultExecutable
             if (isDialogueActive) return;
 
             passwordInput = input;
-            
-            if(!isComparing)
-                StartCoroutine(ComparePassword());
+            StartCoroutine(ComparePassword());
+
+            //// 이미 처리 중이라면 추가 실행 방지
+            //if (isProcessing|| isDialogueActive) return;
+
+            //else if (!isProcessing && !isDialogueActive)
+            //{
+            //    isProcessing = true; // 플래그 설정
+
+            //    passwordInput = input;
+            //    StartCoroutine(ComparePassword());
+            //}
         }
     }
 
+    //public void ProhibitInput()
+    //{
+    //    int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
+    //    int actionPointsPerDay = (int)GameManager.Instance.GetVariable("ActionPointsPerDay");
+
+    //    if (actionPoint % actionPointsPerDay == 0)
+    //        RoomManager.Instance.OnExitButtonClick();
+    //    else
+    //        return;
+    //}
+
     IEnumerator ComparePassword()
     {
-        isComparing = true;
-
         yield return new WaitForSeconds(0.2f);
         string correctPassword = (string)GameManager.Instance.GetVariable("LaptopPassword");
         GameManager.Instance.SetVariable("LaptopPasswordCorrect", passwordInput == correctPassword);
@@ -82,7 +100,7 @@ public class LaptopLock : EventObject, IResultExecutable
         yield return new WaitForSeconds(0.3f);
         ResetPassword();
 
-        isComparing = false;
+        //isProcessing = false;   // 플래그 초기화
     }
     
     // 비밀번호 입력 초기화
