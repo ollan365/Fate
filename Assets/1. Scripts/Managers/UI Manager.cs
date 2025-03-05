@@ -86,6 +86,7 @@ public class UIManager : MonoBehaviour
         
         AddUIGameObjects();
         SetAllUI(false);
+        SetOptionUI();
     }
 
     private void AddUIGameObjects()
@@ -126,7 +127,12 @@ public class UIManager : MonoBehaviour
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
     }
-    
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) SetMenuUI();
+    }
+
     public void SetAllUI(bool isActive)
     {
         foreach (var ui in uiGameObjects)
@@ -137,12 +143,51 @@ public class UIManager : MonoBehaviour
     {
         uiGameObjects[uiName].SetActive(isActive);
     }
+    public void SetUI(eUIGameObjectName uiEnum, bool isActive)
+    {
+        SetUI(uiEnum.ToString(), isActive);
+    }
 
     public GameObject GetUI(string uiName)
     {
         return uiGameObjects[uiName];
     }
+    public GameObject GetUI(eUIGameObjectName uiEnum)
+    {
+        return uiGameObjects[uiEnum.ToString()];
+    }
 
+    public void SetMenuUI()
+    {
+        if (GetUI(eUIGameObjectName.MenuUI).activeSelf)
+        {
+            SetUI(eUIGameObjectName.MenuUI, false);
+            SetUI(eUIGameObjectName.WhiteMenu, false);
+            SetUI(eUIGameObjectName.BlackMenu, false);
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            SetUI(eUIGameObjectName.MenuUI, true);
+            if (Random.Range(0, 2) == 0)
+                SetUI(eUIGameObjectName.WhiteMenu, true);
+            else
+                SetUI(eUIGameObjectName.BlackMenu, true);
+            Time.timeScale = 0f;
+        }
+    }
+
+    public void SetTimeScale()
+    {
+        Time.timeScale = 1f;
+    }
+    public void SetOptionUI()
+    {
+        SetUI(eUIGameObjectName.BGMSlider, true);
+        SetUI(eUIGameObjectName.SoundEffectSlider, true);
+        SetUI(eUIGameObjectName.BGMValue, true);
+        SetUI(eUIGameObjectName.SoundEffectValue, true);
+    }
     public void OnLeftButtonClick()
     {
         switch (GetCurrentSceneIndex())
@@ -189,12 +234,12 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-    public void ChangeSoundValue(eUIGameObjectName uiName)
+    public void ChangeSoundValue(string uiName)
     {
         TMP_Text text;
         Slider slider;
 
-        if (uiName == eUIGameObjectName.BGMSlider)
+        if (uiName == eUIGameObjectName.BGMSlider.ToString())
         {
             text = uiGameObjects[eUIGameObjectName.BGMValue.ToString()].GetComponent<TextMeshProUGUI>();
             slider = uiGameObjects[eUIGameObjectName.BGMSlider.ToString()].GetComponent<Slider>();

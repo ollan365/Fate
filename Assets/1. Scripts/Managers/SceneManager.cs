@@ -19,7 +19,10 @@ public class SceneManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    public void GoTitle()
+    {
+        LoadScene(SceneType.START);
+    }
     public void LoadScene(SceneType loadSceneType)
     {
         if (loadSceneType == SceneType.ENDING)
