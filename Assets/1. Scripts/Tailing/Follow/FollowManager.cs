@@ -88,7 +88,7 @@ public class FollowManager : MonoBehaviour
         }
         else StartCoroutine(followTutorial.StartTutorial());
     }
-    public void FollowTutorialNextStep()
+    public void TutorialNextStep()
     {
         followTutorial.NextStep();
     }
@@ -109,10 +109,6 @@ public class FollowManager : MonoBehaviour
         accidy.gameObject.SetActive(true);
     }
 
-    public void TutorialNextStep()
-    {
-        followTutorial.NextStep();
-    }
 
     // ==================== 미행 다이얼로그 ==================== //
     public bool ClickObject()

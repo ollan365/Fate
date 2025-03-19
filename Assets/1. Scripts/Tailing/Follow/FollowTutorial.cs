@@ -33,7 +33,7 @@ public class FollowTutorial : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(false);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
-        if (highlightPanel) highlightPanel.SetActive(false);
+        highlightPanel.SetActive(false);
         yield return new WaitForSeconds(1.5f);
 
         FollowManager.Instance.StartFollow();
@@ -52,30 +52,27 @@ public class FollowTutorial : MonoBehaviour
 
         switch ((int)GameManager.Instance.GetVariable("FollowTutorialPhase"))
         {
-            case 0: // 신호등 판넬 켜기
+            case 1: // 신호등 판넬 켜기
                 highlightPanel.SetActive(true);
-                beaconAnimator.SetBool(nameof(Light), true);
+                beaconAnimator.SetBool("Light", true);
                 break;
-            case 1: // 신호등을 눌렀을 때
+            case 2: // 신호등을 눌렀을 때
                 highlightPanel.SetActive(false);
-                beaconAnimator.SetBool(nameof(Light), false);
+                beaconAnimator.SetBool("Light", false);
                 break;
-            case 2: // 이동 가능
+            case 3: // 이동 가능
                 StartCoroutine(MoveLogicTutorial());
                 break;
-            case 4: // 이동 가능
+            case 5: // 이동 가능
                 MoveEnd();
                 break;
-            case 5: // 우연이 뒤를 돌았다가 다시 앞을 볼 때까지 숨기
+            case 6: // 우연이 뒤를 돌았다가 다시 앞을 볼 때까지 숨기
                 StartCoroutine(HideLogicTutorial());
                 break;
-            case 6:
-                break;
-            case 7: // 튜토리얼 끝
+            case 8: // 튜토리얼 끝
                 StartCoroutine(EndTutorial());
                 break;
         }
-        GameManager.Instance.IncrementVariable("FollowTutorialPhase");
     }
     private IEnumerator MoveLogicTutorial()
     {
