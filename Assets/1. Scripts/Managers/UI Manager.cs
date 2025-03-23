@@ -140,9 +140,51 @@ public class UIManager : MonoBehaviour
             SetUI(ui.Key, isActive);
     }
 
-    public void SetUI(eUIGameObjectName uiName, bool isActive)
+    public void SetUI(eUIGameObjectName uiName, bool isActive, bool fade = false)
     {
-        uiGameObjects[uiName].SetActive(isActive);
+        GameObject targetUI = uiGameObjects[uiName];
+        
+        if (fade)
+        {
+            CanvasGroup canvasGroup = targetUI.GetComponent<CanvasGroup>(); // need to memoize this
+            if (!canvasGroup)
+            {
+                Debug.LogWarning("CanvasGroup is not found in the target UI.");
+                uiGameObjects[uiName].SetActive(isActive);
+                return;
+            }
+            
+            if (isActive)
+                targetUI.SetActive(true);
+            
+            StopCoroutine($"Fade_{uiName}");
+            StartCoroutine(FadeUI(uiName, canvasGroup, isActive));
+        }
+        else
+            uiGameObjects[uiName].SetActive(isActive);
+    }
+    
+    private IEnumerator FadeUI(eUIGameObjectName uiName, CanvasGroup canvasGroup, bool fadeIn)
+    {
+        float targetAlpha = fadeIn ? 1f : 0f;
+        float startAlpha = fadeIn ? 0f : 1f;
+        float duration = 0.3f; // Fade duration
+        float elapsedTime = 0f;
+    
+        canvasGroup.alpha = startAlpha;
+    
+        while (elapsedTime < duration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+    
+        canvasGroup.alpha = targetAlpha;
+    
+        // If fading out, deactivate the object after fade is complete
+        if (!fadeIn)
+            uiGameObjects[uiName].SetActive(false);
     }
     
     public GameObject GetUI(eUIGameObjectName uiName)
