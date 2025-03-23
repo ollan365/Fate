@@ -236,9 +236,9 @@ public class MemoManager : PageContentsManager
         clearFlageImage.color = currentMemoCount < cutLine ? unclearColor : clearColor;
     }
 
-    public void SetMemoContents(bool isActive)
+    public void SetMemoContents(bool isActive, bool fade = false)
     {
-        UIManager.Instance.SetUI(eUIGameObjectName.MemoContents, isActive);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoContents, isActive, fade: fade);
         isMemoOpen = isActive;
 
         if (isActive) {
