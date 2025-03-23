@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static Constants;
@@ -31,6 +32,15 @@ public enum eUIGameObjectName
     DoubtGaugeSlider,
     FatePositionSlider,
     AccidyPositionSlider
+}
+
+public enum FloatDirection
+{
+    None,
+    Left,
+    Right,
+    Up,
+    Down
 }
 
 public class UIManager : MonoBehaviour
@@ -71,6 +81,11 @@ public class UIManager : MonoBehaviour
     
     [Header("Warning Vignette Settings")]
     [SerializeField] protected float warningTime;
+    
+    [Header("Animation Settings")]
+    public float fadeAnimationDuration = 0.3f;
+    [SerializeField] private float floatAnimationDuration = 0.3f;
+    [SerializeField] private float floatDistance = 50f;
     
     public static UIManager Instance { get; private set; }
     
@@ -140,53 +155,123 @@ public class UIManager : MonoBehaviour
             SetUI(ui.Key, isActive);
     }
 
-    public void SetUI(eUIGameObjectName uiName, bool isActive, bool fade = false)
+    public void SetUI(eUIGameObjectName uiName,
+        bool isActive,
+        bool fade = false,
+        FloatDirection floatDir = FloatDirection.None)
     {
         GameObject targetUI = uiGameObjects[uiName];
         
-        if (fade)
+        if (fade || floatDir != FloatDirection.None)
         {
             CanvasGroup canvasGroup = targetUI.GetComponent<CanvasGroup>(); // need to memoize this
             if (!canvasGroup)
             {
                 Debug.LogWarning("CanvasGroup is not found in the target UI.");
-                uiGameObjects[uiName].SetActive(isActive);
+                targetUI.SetActive(isActive);
                 return;
             }
             
             if (isActive)
                 targetUI.SetActive(true);
             
-            StopCoroutine($"Fade_{uiName}");
-            StartCoroutine(FadeUI(uiName, canvasGroup, isActive));
+            string coroutineName = $"Animate_{uiName}";
+            if (IsInvoking(coroutineName))
+                StopCoroutine(coroutineName);
+            StartCoroutine(AnimateUI(uiName, canvasGroup, isActive, floatDir));
         }
         else
-            uiGameObjects[uiName].SetActive(isActive);
+            targetUI.SetActive(isActive);
     }
     
-    private IEnumerator FadeUI(eUIGameObjectName uiName, CanvasGroup canvasGroup, bool fadeIn)
+    private IEnumerator AnimateUI(eUIGameObjectName uiName, CanvasGroup canvasGroup, bool show, FloatDirection floatDir)
     {
-        float targetAlpha = fadeIn ? 1f : 0f;
-        float startAlpha = fadeIn ? 0f : 1f;
-        float duration = 0.3f; // Fade duration
+        float targetAlpha = show ? 1f : 0f;
+        float startAlpha = show ? 0f : 1f;
+        float fadeTime = fadeAnimationDuration;
         float elapsedTime = 0f;
-    
+        
         canvasGroup.alpha = startAlpha;
-    
-        while (elapsedTime < duration)
+        
+        RectTransform rectTransform = null;
+        Vector2 startPos = Vector2.zero;
+        Vector2 targetPos = Vector2.zero;
+        Vector2 basePosition = Vector2.zero;
+        
+        if (floatDir != FloatDirection.None)
         {
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / duration);
+            rectTransform = uiGameObjects[uiName].GetComponent<RectTransform>();
+            basePosition = rectTransform.anchoredPosition;
+            
+            // Calculate start and target positions with original direction on entry, reversed on exit
+            FloatDirection effectiveDirection = show ? floatDir : GetReverseDirection(floatDir);
+            GetAnimationPositions(effectiveDirection, show, basePosition, out startPos, out targetPos);
+            
+            rectTransform.anchoredPosition = startPos;
+        }
+        
+        while (elapsedTime < fadeTime)
+        {
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
+            
+            if (floatDir != FloatDirection.None && rectTransform)
+                rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetPos, elapsedTime / floatAnimationDuration);
+            
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-    
+        
         canvasGroup.alpha = targetAlpha;
-    
-        // If fading out, deactivate the object after fade is complete
-        if (!fadeIn)
+        
+        if (floatDir != FloatDirection.None && rectTransform)
+        {
+            // If hiding, always return to original base position after animation
+            rectTransform.anchoredPosition = show ? targetPos : basePosition;
+        }
+        
+        // If hiding, deactivate the object after animation is complete
+        if (!show)
             uiGameObjects[uiName].SetActive(false);
     }
-    
+
+    private FloatDirection GetReverseDirection(FloatDirection direction)
+    {
+        switch (direction)
+        {
+            case FloatDirection.Left: return FloatDirection.Right;
+            case FloatDirection.Right: return FloatDirection.Left;
+            case FloatDirection.Up: return FloatDirection.Down;
+            case FloatDirection.Down: return FloatDirection.Up;
+            default: return FloatDirection.None;
+        }
+    }
+
+    private void GetAnimationPositions(FloatDirection floatDir, bool show, Vector2 basePosition, out Vector2 startPos, out Vector2 targetPos)
+    {
+        startPos = basePosition;
+        targetPos = basePosition;
+
+        switch (floatDir)
+        {
+            case FloatDirection.Right:
+                startPos.x = show ? basePosition.x - floatDistance : basePosition.x;
+                targetPos.x = show ? basePosition.x : basePosition.x + floatDistance;
+                break;
+            case FloatDirection.Left:
+                startPos.x = show ? basePosition.x + floatDistance : basePosition.x;
+                targetPos.x = show ? basePosition.x : basePosition.x - floatDistance;
+                break;
+            case FloatDirection.Down:
+                startPos.y = show ? basePosition.y + floatDistance : basePosition.y;
+                targetPos.y = show ? basePosition.y : basePosition.y - floatDistance;
+                break;
+            case FloatDirection.Up:
+                startPos.y = show ? basePosition.y - floatDistance : basePosition.y;
+                targetPos.y = show ? basePosition.y : basePosition.y + floatDistance;
+                break;
+        }
+    }
+
     public GameObject GetUI(eUIGameObjectName uiName)
     {
         return uiGameObjects[uiName];
