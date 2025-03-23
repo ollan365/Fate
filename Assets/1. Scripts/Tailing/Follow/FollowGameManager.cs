@@ -47,7 +47,7 @@ public class FollowGameManager : MonoBehaviour
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
         accidyDialogueBox.transform.position -= moveVector;
-        UIManager.Instance.ChangeSliderValue("AccidyPositionSlider", Accidy.transform.position.x / endPositonOfMap, 0);
+        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider, Accidy.transform.position.x / endPositonOfMap, 0);
     }
     private void MoveFate()
     {
@@ -71,7 +71,7 @@ public class FollowGameManager : MonoBehaviour
             }
             SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, IsFateMove);
             Fate.SetBool("Walking", IsFateMove);
-            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider.ToString(),
+            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider,
                 Fate.transform.position.x / endPositonOfMap,
                 0);
         }
@@ -104,7 +104,7 @@ public class FollowGameManager : MonoBehaviour
         StopAccidy = false;
         IsFateMove = false;
         IsFateHide = false;
-        UIManager.Instance.ChangeSliderValue("DoubtGaugeSlider", 0, 0);
+        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0);
         overHeadDoubtGaugeSlider.value = 0;
 
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
@@ -120,19 +120,17 @@ public class FollowGameManager : MonoBehaviour
             if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
                 ChangeGaugeAlpha(Time.deltaTime * 3);
-                UIManager.Instance.ChangeSliderValue("DoubtGaugeSlider", 0, 0.001f);
+                UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0.001f); 
                 overHeadDoubtGaugeSlider.value += 0.001f;
-                if (!IsTutorial && overHeadDoubtGaugeSlider.value == 1) FollowManager.Instance.FollowEndLogicStart();
+                if (!IsTutorial && Mathf.Approximately(overHeadDoubtGaugeSlider.value, 1)) 
+                    FollowManager.Instance.FollowEndLogicStart();
             }
             else
-            {
                 ChangeGaugeAlpha(-Time.deltaTime);
-            }
 
             yield return null;
         }
     }
-
 
     private void ChangeGaugeAlpha(float value)
     {

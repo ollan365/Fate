@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
     public GameObject fatePositionSlider;
     public GameObject accidyPositionSlider;
 
-    private Dictionary<string, GameObject> uiGameObjects = new Dictionary<string, GameObject>();
+    private readonly Dictionary<eUIGameObjectName, GameObject> uiGameObjects = new();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
     [HideInInspector] public TextMeshProUGUI dayTextTextMeshProUGUI;
     
@@ -91,38 +91,38 @@ public class UIManager : MonoBehaviour
 
     private void AddUIGameObjects()
     {
-        uiGameObjects.Add(eUIGameObjectName.NormalVignette.ToString(), normalVignette);
-        uiGameObjects.Add(eUIGameObjectName.WarningVignette.ToString(), warningVignette);
+        uiGameObjects.Add(eUIGameObjectName.NormalVignette, normalVignette);
+        uiGameObjects.Add(eUIGameObjectName.WarningVignette, warningVignette);
 
-        uiGameObjects.Add(eUIGameObjectName.ActionPoints.ToString(), actionPoints);
-        uiGameObjects.Add(eUIGameObjectName.HeartParent.ToString(), heartParent);
-        uiGameObjects.Add(eUIGameObjectName.DayText.ToString(), dayText);
+        uiGameObjects.Add(eUIGameObjectName.ActionPoints, actionPoints);
+        uiGameObjects.Add(eUIGameObjectName.HeartParent, heartParent);
+        uiGameObjects.Add(eUIGameObjectName.DayText, dayText);
 
-        uiGameObjects.Add(eUIGameObjectName.ExitButton.ToString(), exitButton);
-        uiGameObjects.Add(eUIGameObjectName.LeftButton.ToString(), leftButton);
-        uiGameObjects.Add(eUIGameObjectName.RightButton.ToString(), rightButton);
+        uiGameObjects.Add(eUIGameObjectName.ExitButton, exitButton);
+        uiGameObjects.Add(eUIGameObjectName.LeftButton, leftButton);
+        uiGameObjects.Add(eUIGameObjectName.RightButton, rightButton);
 
-        uiGameObjects.Add(eUIGameObjectName.MemoContents.ToString(), memoContents);
-        uiGameObjects.Add(eUIGameObjectName.MemoGauge.ToString(), memoGauge);
+        uiGameObjects.Add(eUIGameObjectName.MemoContents, memoContents);
+        uiGameObjects.Add(eUIGameObjectName.MemoGauge, memoGauge);
 
-        uiGameObjects.Add(eUIGameObjectName.MenuUI.ToString(), menuUI);
-        uiGameObjects.Add(eUIGameObjectName.WhiteMenu.ToString(), whiteMenu);
-        uiGameObjects.Add(eUIGameObjectName.BlackMenu.ToString(), blackMenu);
+        uiGameObjects.Add(eUIGameObjectName.MenuUI, menuUI);
+        uiGameObjects.Add(eUIGameObjectName.WhiteMenu, whiteMenu);
+        uiGameObjects.Add(eUIGameObjectName.BlackMenu, blackMenu);
 
-        uiGameObjects.Add(eUIGameObjectName.OptionUI.ToString(), optionUI);
-        uiGameObjects.Add(eUIGameObjectName.BGMSlider.ToString(), BGMSlider);
-        uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider.ToString(), SoundEffectSlider);
-        uiGameObjects.Add(eUIGameObjectName.BGMValue.ToString(), BGMValueText);
-        uiGameObjects.Add(eUIGameObjectName.SoundEffectValue.ToString(), SoundEffectValueText);
+        uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
+        uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
+        uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider, SoundEffectSlider);
+        uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
+        uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
 
-        uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge.ToString(), followMemoGauge);
+        uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge, followMemoGauge);
 
-        uiGameObjects.Add(eUIGameObjectName.FollowUIBackground.ToString(), followUIBackground);
+        uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
 
-        uiGameObjects.Add(eUIGameObjectName.DoubtGaugeSlider.ToString(), doubtGaugeSlider);
+        uiGameObjects.Add(eUIGameObjectName.DoubtGaugeSlider, doubtGaugeSlider);
 
-        uiGameObjects.Add(eUIGameObjectName.FatePositionSlider.ToString(), fatePositionSlider);
-        uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider.ToString(), accidyPositionSlider);
+        uiGameObjects.Add(eUIGameObjectName.FatePositionSlider, fatePositionSlider);
+        uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider, accidyPositionSlider);
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
@@ -130,34 +130,27 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) SetMenuUI();
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+            SetMenuUI();
     }
 
-    public void SetAllUI(bool isActive)
+    private void SetAllUI(bool isActive)
     {
         foreach (var ui in uiGameObjects)
             SetUI(ui.Key, isActive);
     }
 
-    public void SetUI(string uiName, bool isActive)
+    public void SetUI(eUIGameObjectName uiName, bool isActive)
     {
         uiGameObjects[uiName].SetActive(isActive);
     }
-    public void SetUI(eUIGameObjectName uiEnum, bool isActive)
-    {
-        SetUI(uiEnum.ToString(), isActive);
-    }
-
-    public GameObject GetUI(string uiName)
+    
+    public GameObject GetUI(eUIGameObjectName uiName)
     {
         return uiGameObjects[uiName];
     }
-    public GameObject GetUI(eUIGameObjectName uiEnum)
-    {
-        return uiGameObjects[uiEnum.ToString()];
-    }
 
-    public void SetMenuUI()
+    private void SetMenuUI()
     {
         if (GetUI(eUIGameObjectName.MenuUI).activeSelf)
         {
@@ -169,10 +162,9 @@ public class UIManager : MonoBehaviour
         else
         {
             SetUI(eUIGameObjectName.MenuUI, true);
-            if (Random.Range(0, 2) == 0)
-                SetUI(eUIGameObjectName.WhiteMenu, true);
-            else
-                SetUI(eUIGameObjectName.BlackMenu, true);
+            SetUI(Random.Range(0, 2) == 0 
+                ? eUIGameObjectName.WhiteMenu 
+                : eUIGameObjectName.BlackMenu, true);
             Time.timeScale = 0f;
         }
     }
@@ -181,13 +173,15 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
     }
-    public void SetOptionUI()
+
+    private void SetOptionUI()
     {
         SetUI(eUIGameObjectName.BGMSlider, true);
         SetUI(eUIGameObjectName.SoundEffectSlider, true);
         SetUI(eUIGameObjectName.BGMValue, true);
         SetUI(eUIGameObjectName.SoundEffectValue, true);
     }
+    
     public void OnLeftButtonClick()
     {
         switch (GetCurrentSceneIndex())
@@ -234,6 +228,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+    
     public void ChangeSoundValue(string uiName)
     {
         TMP_Text text;
@@ -241,25 +236,27 @@ public class UIManager : MonoBehaviour
 
         if (uiName == eUIGameObjectName.BGMSlider.ToString())
         {
-            text = uiGameObjects[eUIGameObjectName.BGMValue.ToString()].GetComponent<TextMeshProUGUI>();
-            slider = uiGameObjects[eUIGameObjectName.BGMSlider.ToString()].GetComponent<Slider>();
+            text = uiGameObjects[eUIGameObjectName.BGMValue].GetComponent<TextMeshProUGUI>();
+            slider = uiGameObjects[eUIGameObjectName.BGMSlider].GetComponent<Slider>();
             SoundPlayer.Instance.ChangeVolume(slider.value, -1);
         }
         else
         {
-            text = uiGameObjects[eUIGameObjectName.SoundEffectValue.ToString()].GetComponent<TextMeshProUGUI>();
-            slider = uiGameObjects[eUIGameObjectName.SoundEffectSlider.ToString()].GetComponent<Slider>();
+            text = uiGameObjects[eUIGameObjectName.SoundEffectValue].GetComponent<TextMeshProUGUI>();
+            slider = uiGameObjects[eUIGameObjectName.SoundEffectSlider].GetComponent<Slider>();
             SoundPlayer.Instance.ChangeVolume(-1, slider.value);
         }
 
         text.text = (slider.value * 100).ToString("F0");
     }
 
-    public void ChangeSliderValue(string uiName, float absoluteValue, float addValue)
+    public void ChangeSliderValue(eUIGameObjectName uiName, float absoluteValue, float addValue)
     {
         Slider slider = uiGameObjects[uiName].GetComponent<Slider>();
-        if (addValue != 0) slider.value += addValue;
-        else slider.value = absoluteValue;
+        if (addValue != 0) 
+            slider.value += addValue;
+        else 
+            slider.value = absoluteValue;
     }
 
     /*
@@ -273,7 +270,7 @@ public class UIManager : MonoBehaviour
         float fadeInDuration = 0.5f,
         float fadeOutDuration = 0.5f)
     {
-        SetUI(eUIGameObjectName.WarningVignette.ToString(), true); // 경고 표시 활성화
+        SetUI(eUIGameObjectName.WarningVignette, true); // 경고 표시 활성화
         
         float timeAccumulated = 0;
         while (timeAccumulated < fadeInDuration)
@@ -299,7 +296,7 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
 
-        SetUI(eUIGameObjectName.WarningVignette.ToString(), false); // 경고 표시 비활성화
+        SetUI(eUIGameObjectName.WarningVignette, false); // 경고 표시 비활성화
     }
     
     private int GetCurrentSceneIndex()
