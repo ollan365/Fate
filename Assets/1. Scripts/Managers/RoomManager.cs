@@ -34,7 +34,7 @@ public class RoomManager : MonoBehaviour
             Destroy(gameObject);
         
         SceneManager.Instance.ChangeSceneEffect();
-        ResultManager.Instance.InitializeExecutableObjects();
+        //ResultManager.Instance.InitializeExecutableObjects();     // GameManager에서 호출하도록 옮겨봄
         MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI("MemoGauge"));
         
         UIManager.Instance.SetUI("NormalVignette", true);
@@ -93,8 +93,16 @@ public class RoomManager : MonoBehaviour
             Debug.Log("Value of leftOrRight must be -1 or 1!");
             return;
         }
-        
-        int newSideIndex = (currentSideIndex + sides.Count + leftOrRight) % sides.Count;
+
+        //int newSideIndex = (currentSideIndex + sides.Count + leftOrRight) % sides.Count;
+        int[] rightOrder = { 0, 1, 3, 2 }; // 오른쪽 side 이동 순서
+        int[] leftOrder = { 0, 2, 3, 1 };  // 왼쪽 side 이동 순서
+
+        // 현재 위치를 해당 이동 방향의 배열에서 찾고, 이동 방향에 맞게 다음 인덱스를 구함
+        int currentPos = System.Array.IndexOf((leftOrRight == 1) ? rightOrder : leftOrder, currentSideIndex);
+        int newSideIndex = (leftOrRight == 1)
+            ? rightOrder[(currentPos + 1) % rightOrder.Length]
+            : leftOrder[(currentPos + 1) % leftOrder.Length];
         SetCurrentSide(newSideIndex);
         
         ScreenEffect.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
@@ -205,15 +213,15 @@ public class RoomManager : MonoBehaviour
         UIManager.Instance.SetUI("LeftButton", isTrue);
         UIManager.Instance.SetUI("RightButton", isTrue);
         
-        switch (currentSideIndex)
-        {
-            case 1:
-                UIManager.Instance.SetUI("RightButton", false);
-                break;
-            case 2:
-                UIManager.Instance.SetUI("LeftButton", false);
-                break;
-        }
+        //switch (currentSideIndex)
+        //{
+        //    case 1:
+        //        UIManager.Instance.SetUI("RightButton", false);
+        //        break;
+        //    case 2:
+        //        UIManager.Instance.SetUI("LeftButton", false);
+        //        break;
+        //}
     }
     
     public void SetButtons()
