@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
     public GameObject memoGauge;
 
     [Header("UI Game Objects - Day Animation")]
-    public GameObject DayAnimGameObject;
+    public GameObject DayChangingGameObject;
     public GameObject yesterDayNumText;
     public GameObject nowDayNumText;
     public GameObject yesterDay;
@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
     [HideInInspector] public TextMeshProUGUI yesterDayNumTextTextMeshProUGUI;
     [HideInInspector] public TextMeshProUGUI nowDayNumTextTextMeshProUGUI;
     [HideInInspector] public RectTransform yesterDayRectTransform;
-    [HideInInspector] public RectTransform DayAnimGroupRectTransform;
+    [HideInInspector] public RectTransform DayChangingGroupRectTransform;
 
     [Header("UI Game Objects - Follow")]
     // public GameObject[] doubtGaugeSliders; // Slider[]
@@ -95,7 +95,7 @@ public class UIManager : MonoBehaviour
         // uiGameObjects.Add("FatePositionSlider", fatePositionSlider);
         // uiGameObjects.Add("AccidyPositionSlider", accidyPositionSlider);
 
-        uiGameObjects.Add("DayAnimGameObject", DayAnimGameObject);
+        uiGameObjects.Add("DayChangingGameObject", DayChangingGameObject);
         uiGameObjects.Add("YesterDayNumText", yesterDayNumText);
         uiGameObjects.Add("NowDayNumText", nowDayNumText);
         uiGameObjects.Add("YesterDay", yesterDay);
@@ -111,7 +111,7 @@ public class UIManager : MonoBehaviour
         yesterDayNumTextTextMeshProUGUI = yesterDayNumText.GetComponent<TextMeshProUGUI>();
         nowDayNumTextTextMeshProUGUI = nowDayNumText.GetComponent<TextMeshProUGUI>();
         yesterDayRectTransform = yesterDay.GetComponent<RectTransform>();
-        DayAnimGroupRectTransform = DayAnimGameObject.GetComponent<RectTransform>();
+        DayChangingGroupRectTransform = DayChangingGameObject.GetComponent<RectTransform>();
     }
     
     public void SetAllUI(bool isActive)

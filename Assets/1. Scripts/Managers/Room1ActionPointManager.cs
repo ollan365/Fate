@@ -147,13 +147,13 @@ public class Room1ActionPointManager : ActionPointManager
 
         const float totalTime = 5f;
 
-        //StartNextDayUIChange(nowDayNum);
+        StartCoroutine(StartNextDayUIChange(nowDayNum));
 
         // 아침 스크립트 출력
         yield return new WaitForSeconds(totalTime);
         EventManager.Instance.CallEvent("EventRoom1Morning");
 
-        yield return new WaitWhile(() => isDayAnimating);
+        yield return new WaitWhile(() => isDayChanging);
 
         StartCoroutine(RefillHearts(0f));
 

@@ -215,13 +215,13 @@ public class Room2ActionPointManager : ActionPointManager
 
         const float totalTime = 5f;
 
-        //StartNextDayUIChange(nowDayNum);
+        StartCoroutine(StartNextDayUIChange(nowDayNum));
 
         // 아침 스크립트 출력
         yield return new WaitForSeconds(totalTime);
         EventManager.Instance.CallEvent("EventRoom2Morning");
 
-        yield return new WaitWhile(() => isDayAnimating);
+        yield return new WaitWhile(() => isDayChanging);
 
         StartCoroutine(RefillHearts(0f));
 
@@ -244,9 +244,6 @@ public class Room2ActionPointManager : ActionPointManager
         isEatenEnergySupplement = true;
 
         CreateHearts();
-
-        //// 하트 배경지 바꿈
-        //ChangeHeartBackgroundImageExtended(true);
     }
 
     public void SetChoosingBrokenBearChoice(bool isChoosing)
@@ -258,31 +255,4 @@ public class Room2ActionPointManager : ActionPointManager
     {
         return isChoosingBrokenBearChoice;
     }
-
-    //// 회복제 먹은 상태라면 배경지를 바꿈
-    //private void ChangeHeartBackgroundImageExtended(bool isExtended)
-    //{
-    //    int DefaultMaxActionPoint = 5;
-    //    if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Room2")
-    //    {
-    //        if (isExtended)
-    //        {
-    //            if (backgroundImageExtended.activeSelf) return;
-    //            else
-    //            {
-    //                if ((presentHeartIndex + 1) > DefaultMaxActionPoint)
-    //                {
-    //                    backgroundImageDefault.SetActive(false);
-    //                    backgroundImageExtended.SetActive(true);
-    //                }
-    //            }
-    //        }
-    //        else
-    //        {
-    //            backgroundImageDefault.SetActive(true);
-    //            backgroundImageExtended.SetActive(false);
-    //        }
-    //    }
-    //}
-
 }
