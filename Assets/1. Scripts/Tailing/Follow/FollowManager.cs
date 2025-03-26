@@ -13,7 +13,6 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private GameObject[] UI_OffAtEnd;
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
-    [SerializeField] private Transform frontObjects;
 
     [Header("Character")]
     [SerializeField] private Animator fate;
@@ -35,8 +34,6 @@ public class FollowManager : MonoBehaviour
     public Camera CameraAfterBlur { get => cameraAfterBlur; }
 
     [Header("Variables")]
-    [SerializeField] private float accidyAnimatorSpeed;
-    [SerializeField] private float fateAnimatorSpeed;
     public float totalFollowSpecialObjectCount = 10;
     public Action EndScriptAction;
 
@@ -118,17 +115,8 @@ public class FollowManager : MonoBehaviour
         followGameManager.ChangeAnimStatusToStop(true);
 
         if (IsDialogueOpen) return false;
-
-        accidyAnimatorSpeed = Accidy.speed;
-        fateAnimatorSpeed = Fate.speed;
-
-        Accidy.speed = 0;
-        Fate.speed = 0;
-
-        foreach(Transform child in frontObjects)
-            child.GetComponent<Image>().color = new Color(0.01f, 0.01f, 0.01f);
-        
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
+
         followDialogueManager.ClickObject();
 
         return true;
@@ -137,13 +125,7 @@ public class FollowManager : MonoBehaviour
     {
         IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
 
-        Accidy.speed = accidyAnimatorSpeed;
-        Fate.speed = fateAnimatorSpeed;
-
         if (IsEnd || IsTutorial) return;
-
-        foreach (Transform child in frontObjects)
-            child.GetComponent<Image>().color = new Color(1, 1, 1);
 
         followDialogueManager.EndScript();
         followGameManager.ChangeAnimStatusToStop(false);
