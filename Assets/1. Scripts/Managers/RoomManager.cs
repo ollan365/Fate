@@ -34,7 +34,7 @@ public class RoomManager : MonoBehaviour
             Destroy(gameObject);
         
         SceneManager.Instance.ChangeSceneEffect();
-        //ResultManager.Instance.InitializeExecutableObjects();     // GameManager에서 호출하도록 옮겨봄
+        ResultManager.Instance.InitializeExecutableObjects();
         MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI("MemoGauge"));
         
         UIManager.Instance.SetUI("NormalVignette", true);

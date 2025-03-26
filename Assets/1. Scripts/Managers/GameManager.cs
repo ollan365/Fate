@@ -70,9 +70,6 @@ public class GameManager : MonoBehaviour
 
         if (isDebug)
             ShowVariables();
-
-        if(ResultManager.Instance!=null)
-            ResultManager.Instance.InitializeExecutableObjects();
     }
 
     private void CreateVariables()
