@@ -2179,8 +2179,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 919874107}
-  - {fileID: 1895693745}
-  - {fileID: 1368349842}
   m_Father: {fileID: 743407122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &304935561
@@ -2263,7 +2261,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: -1457837331
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!224 &304935565
 RectTransform:
@@ -4092,7 +4090,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 4097
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -6069,7 +6067,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 519420031}
+  m_Camera: {fileID: 752389959}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -6095,6 +6093,8 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 300238180}
+  - {fileID: 1895693745}
+  - {fileID: 1368349842}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6112,7 +6112,6 @@ GameObject:
   m_Component:
   - component: {fileID: 752389957}
   - component: {fileID: 752389959}
-  - component: {fileID: 752389958}
   m_Layer: 0
   m_Name: Non Blur Camera
   m_TagString: Untagged
@@ -6135,14 +6134,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 519420032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &752389958
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752389956}
-  m_Enabled: 0
 --- !u!20 &752389959
 Camera:
   m_ObjectHideFlags: 0
@@ -16368,7 +16359,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1396668827}
   - component: {fileID: 1396668825}
-  - component: {fileID: 1396668826}
   m_Layer: 0
   m_Name: Follow UI Camera
   m_TagString: Untagged
@@ -16427,14 +16417,6 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1396668826
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1396668824}
-  m_Enabled: 0
 --- !u!4 &1396668827
 Transform:
   m_ObjectHideFlags: 0
@@ -19189,6 +19171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4b1fbc45b29e904f87402b51fd67062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterCanvas: {fileID: 1728148}
   extraBlockingPanel: {fileID: 1895693744}
   extraCanvas:
   - {fileID: 1368349841}
@@ -19900,16 +19883,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1895693744}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0002746582}
+  m_LocalPosition: {x: 0, y: 0, z: -509.9999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 300238180}
+  m_Father: {fileID: 743407122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 2500, y: 0}
-  m_SizeDelta: {x: 8920, y: 1100}
+  m_SizeDelta: {x: 7000, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1895693746
 MonoBehaviour:
@@ -19930,7 +19913,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -19968,7 +19951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9411765}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -20493,7 +20476,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 300238180}
+    m_TransformParent: {fileID: 743407122}
     m_Modifications:
     - target: {fileID: 1215398393200292754, guid: 4bd544bc8322fbf47865749e8c5ede21, type: 3}
       propertyPath: m_Sprite
@@ -20561,7 +20544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4353481043762676779, guid: 4bd544bc8322fbf47865749e8c5ede21, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0002746582
+      value: 90.000275
       objectReference: {fileID: 0}
     - target: {fileID: 4353481043762676779, guid: 4bd544bc8322fbf47865749e8c5ede21, type: 3}
       propertyPath: m_LocalRotation.w

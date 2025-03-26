@@ -8,6 +8,7 @@ using static Constants;
 public class FollowDialogueManager : MonoBehaviour
 {
     [Header("Dialogue")]
+    [SerializeField] private GameObject characterCanvas;
     [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private GameObject[] extraCanvas;
     [SerializeField] private TextMeshProUGUI[] extraDialogueText;
@@ -39,6 +40,7 @@ public class FollowDialogueManager : MonoBehaviour
         extra = ToEnum(extraName);
 
         extraBlockingPanel.SetActive(true); // 일반적인 블로킹 판넬이 아닌 다른 걸 켠다
+        SetLayerRecursively(characterCanvas, 0); // 캐릭터도 블로킹 되도록
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
 
@@ -56,8 +58,20 @@ public class FollowDialogueManager : MonoBehaviour
 
         extraBlockingPanel.SetActive(false);
         extraCanvas[Int(extra)].SetActive(false);
+        SetLayerRecursively(characterCanvas, 12);
 
         extra = FollowExtra.None;
+    }
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null) return;
+
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
     public void ClickSpecialObject(FollowObject followObject)
     {
