@@ -114,9 +114,9 @@ abstract public class ActionPointManager : MonoBehaviour
 
     private void loadDayChangeVariables()
     {
-        yesterDayNumText = UIManager.Instance.yesterDayNumTextTextMeshProUGUI;
+        yesterDayNumText = UIManager.Instance.yesterdayNumTextTextMeshProUGUI;
         nowDayNumText = UIManager.Instance.nowDayNumTextTextMeshProUGUI;
-        yesterDayRectTransform = UIManager.Instance.yesterDayRectTransform;
+        yesterDayRectTransform = UIManager.Instance.yesterdayRectTransform;
         DayChangingGroupRectTransform = UIManager.Instance.DayChangingGroupRectTransform;
 
         TurningDayBackRotationValues.Add(new Vector3(0, 180, 90));
@@ -302,13 +302,13 @@ abstract public class ActionPointManager : MonoBehaviour
             float currentY = yesterDayRectTransform.rotation.eulerAngles.y;
             if (Mathf.Abs(currentY - MidRoation_Y_value) < 1f)
             {
-                UIManager.Instance.SetUI("YesterDayNumText", false);
+                UIManager.Instance.SetUI(eUIGameObjectName.YesterdayNumText, false);
             }
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         yesterDayRectTransform.rotation = endRotation;
-        UIManager.Instance.SetUI("YesterDayNumText", true);
+        UIManager.Instance.SetUI(eUIGameObjectName.YesterdayNumText, true);
     }
 
     // DayUI 크기, 위치 가운데로 조정
@@ -442,28 +442,30 @@ abstract public class ActionPointManager : MonoBehaviour
         switch (num)
         {
             case StartDayUIChange:
-                UIManager.Instance.SetUI("ActionPoints", false);
-                UIManager.Instance.SetUI("DayChangingGameObject", true);
-                UIManager.Instance.SetUI("YesterDayNumText", true);
-                UIManager.Instance.SetUI("NowDayNumText", true);
-                UIManager.Instance.SetUI("YesterDay", true);
+                UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.DayChangingGameObject, true);
+                UIManager.Instance.SetUI(eUIGameObjectName.YesterdayNumText, true);
+                UIManager.Instance.SetUI(eUIGameObjectName.NowDayNumText, true);
+                UIManager.Instance.SetUI(eUIGameObjectName.Yesterday, true);
                 break;
+            
             case FinishDayUIChange:
-                UIManager.Instance.SetUI("ActionPoints", true);
-                UIManager.Instance.SetUI("DayChangingGameObject", false);
+                UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, true);
+                UIManager.Instance.SetUI(eUIGameObjectName.DayChangingGameObject, false);
                 break;
 
             case StartGearsAndClockHandsRotate:
-                UIManager.Instance.SetUI("MainGear", true);
-                UIManager.Instance.SetUI("SubGear", true);
-                UIManager.Instance.SetUI("GearHourHand", true);
-                UIManager.Instance.SetUI("GearMinuteHand", true);
+                UIManager.Instance.SetUI(eUIGameObjectName.MainGear, true);
+                UIManager.Instance.SetUI(eUIGameObjectName.SubGear, true);
+                UIManager.Instance.SetUI(eUIGameObjectName.GearHourHand, true);
+                UIManager.Instance.SetUI(eUIGameObjectName.GearMinuteHand, true);
                 break;
+            
             case FinishGearsAndClockHandsRotate:
-                UIManager.Instance.SetUI("MainGear", false);
-                UIManager.Instance.SetUI("SubGear", false);
-                UIManager.Instance.SetUI("GearHourHand", false);
-                UIManager.Instance.SetUI("GearMinuteHand", false);
+                UIManager.Instance.SetUI(eUIGameObjectName.MainGear, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.SubGear, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.GearHourHand, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.GearMinuteHand, false);
                 break;
         }
     }

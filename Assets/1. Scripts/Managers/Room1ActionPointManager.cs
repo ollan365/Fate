@@ -15,7 +15,7 @@ public class Room1ActionPointManager : ActionPointManager
 
         CreateActionPointsArray(actionPointsPerDay);
 
-        // ??? ??????? actionPoint
+        // 처음 방탈출의 actionPoint
         GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[0, presentHeartIndex]);
 
         GameManager.Instance.AddEventObject("EventRoom1HomeComing");
@@ -25,31 +25,22 @@ public class Room1ActionPointManager : ActionPointManager
     // create 5 hearts on screen on room start
     public override void CreateHearts()
     {
-        int actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
-        // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
         int heartCount = presentHeartIndex + 1;
 
-        // ????? 0?? ???
         if (heartCount == 0)
-        {
             heartCount = actionPointsPerDay;
-        }
 
+        // create heart on screen by creating instances of heart prefab under heart parent
         for (int i = 0; i < heartCount; i++)
-        {
-            // create heart on screen by creating instances of heart prefab under heart parent
             Instantiate(heartPrefab, heartParent.transform);
-        }
 
         // change Day text on screen
         dayText.text = $"Day {nowDayNum}";
-
-        //Debug.Log(heartParent.transform.childCount);
     }
 
     public override void DecrementActionPoint()
     {
-        // ?©£? ????? ???????? ??????? ?? ????? ???? ???? ???? ??? ??
+        // 시계 퍼즐에서 연속으로 클릭했을 때 포인트 감소 오류 뜨지 않게 함
         if (heartParent.transform.childCount < 1)
             return;
 
@@ -66,33 +57,26 @@ public class Room1ActionPointManager : ActionPointManager
 
         int actionPoint;
 
-        // ????? ?? ????????
+        // 하트가 다 없어지면
         if (presentHeartIndex == -1)
         {
             if (nowDayNum < maxDayNum)
             {
-                // ???? ????? ???????? ???????
+                // 현재 날짜를 다음날로 업데이트
                 nowDayNum += 1;
                 GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
 
-                // presentHeartIndex?? ?? ?? row?? ???????
+                // presentHeartIndex도 맨 끝 row로 업데이트
                 presentHeartIndex = (int)GameManager.Instance.GetVariable("ActionPointsPerDay") - 1;
                 GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
 
                 actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
             }
             else
-            {
-                // ?????? ??
-                // ?????? 0?? ?? ????
                 actionPoint = 0;
-            }
         }
         else
-        {
-            // actionPoint ?????????? GameManager?? ActionPoint?? ????
             actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
-        }
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
         GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
@@ -103,10 +87,12 @@ public class Room1ActionPointManager : ActionPointManager
         {
             bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
             bool isInvestigating = RoomManager.Instance.GetIsInvestigating();
-            if (!isDialogueActive && !isInvestigating) RefillHeartsOrEndDay();
-            //else if (!isDialogueActive) RefillHeartsOrEndDay();
-            else if (isInvestigating) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
-            else if (isDialogueActive) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            if (!isDialogueActive && !isInvestigating) 
+                RefillHeartsOrEndDay();
+            else if (isInvestigating) 
+                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            else
+                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
         }
 
         SaveManager.Instance.SaveGameData();
@@ -122,34 +108,26 @@ public class Room1ActionPointManager : ActionPointManager
         if (actionPoint == 0)
         {
             SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
-
             return;
         }
-        // ??? ?????? ???
+        
         EventManager.Instance.CallEvent("EventRoom1HomeComing");
-
         GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
-        // ??? ?????? ???? ?????? Next?? Event_NextMorningDay fade in/out ????? ????
     }
 
-    // ¿ÜÃâ(¾ÆÄ§) ½ºÅ©¸³Æ® Ãâ·Â ºÎºÐ
+    // 외출(아침) 스크립트 출력 부분
     public override IEnumerator nextMorningDay()
     {
         RoomManager.Instance.SetIsInvestigating(true);
-        UIManager.Instance.SetUI("MemoGauge", false);
-        UIManager.Instance.SetUI("MemoButton", false);
-        UIManager.Instance.SetUI("LeftButton", false);
-        UIManager.Instance.SetUI("RightButton", false);
-
-        // ´ÙÀ½³¯ÀÌ µÇ°í(fade in/out effect ½ÇÇà) ¾ÆÄ§ ½ºÅ©¸³Æ® Ãâ·Â
-        //const float totalTime = 3f;
-        //StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
         const float totalTime = 5f;
-
         StartCoroutine(StartNextDayUIChange(nowDayNum));
 
-        // ¾ÆÄ§ ½ºÅ©¸³Æ® Ãâ·Â
+        // 아침 스크립트 출력
         yield return new WaitForSeconds(totalTime);
         EventManager.Instance.CallEvent("EventRoom1Morning");
 
@@ -157,8 +135,7 @@ public class Room1ActionPointManager : ActionPointManager
 
         StartCoroutine(RefillHearts(0f));
 
-        // ¿©±â¼­ ÇÏÆ® »ý¼º ¹× ´ÙÀ½³¯·Î ³¯Â¥ ¾÷µ¥ÀÌÆ®
+        // 하트 생성, 다음날로 날짜 업데이트
         RoomManager.Instance.SetIsInvestigating(false);
     }
-
 }

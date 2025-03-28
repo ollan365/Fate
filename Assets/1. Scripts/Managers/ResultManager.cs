@@ -18,28 +18,22 @@ public class ResultManager : MonoBehaviour
     
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
-        Debug.Log($"registered {objectName}");
-
         if (!executableObjects.ContainsKey(objectName))
-        {
             executableObjects[objectName] = executable;
-        }
     }
 
     public void InitializeExecutableObjects()
     {
-        Debug.Log("############### unregistered all executable objects ###############");
-
         executableObjects = new Dictionary<string, IResultExecutable>();
     }
 
-    public void executableObjectsKeyCheck(string objectName)
-    {
-        if (executableObjects.ContainsKey(objectName))
-            Debug.Log(objectName + " key exists");
-        else
-            Debug.Log(objectName + " key does not exist");
-    }
+    // public void executableObjectsKeyCheck(string objectName)
+    // {
+    //     if (executableObjects.ContainsKey(objectName))
+    //         Debug.Log(objectName + " key exists");
+    //     else
+    //         Debug.Log(objectName + " key does not exist");
+    // }
 
     void Awake()
     {
@@ -350,8 +344,8 @@ public class ResultManager : MonoBehaviour
             
             case "ResultCarpetOpen": // 카펫이 들쳐짐
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetOpen);
-                executableObjectsKeyCheck("ClosedCarpet1");
-                executableObjectsKeyCheck("ClosedCarpet4");
+                // executableObjectsKeyCheck("ClosedCarpet1");
+                // executableObjectsKeyCheck("ClosedCarpet4");
                 executableObjects["ClosedCarpet1"].ExecuteAction();
                 executableObjects["ClosedCarpet4"].ExecuteAction();
                 break;
@@ -363,8 +357,8 @@ public class ResultManager : MonoBehaviour
             
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetClose);
-                executableObjectsKeyCheck("OpenCarpet1");
-                executableObjectsKeyCheck("OpenCarpet4");
+                // executableObjectsKeyCheck("OpenCarpet1");
+                // executableObjectsKeyCheck("OpenCarpet4");
                 executableObjects["OpenCarpet1"].ExecuteAction();
                 executableObjects["OpenCarpet4"].ExecuteAction();
                 break;
