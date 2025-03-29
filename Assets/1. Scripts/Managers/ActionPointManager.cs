@@ -115,7 +115,7 @@ abstract public class ActionPointManager : MonoBehaviour
     private void loadDayChangeVariables()
     {
         yesterDayNumText = UIManager.Instance.yesterdayNumTextTextMeshProUGUI;
-        nowDayNumText = UIManager.Instance.nowDayNumTextTextMeshProUGUI;
+        nowDayNumText = UIManager.Instance.todayNumTextTextMeshProUGUI;
         yesterDayRectTransform = UIManager.Instance.yesterdayRectTransform;
         DayChangingGroupRectTransform = UIManager.Instance.DayChangingGroupRectTransform;
 
@@ -163,9 +163,9 @@ abstract public class ActionPointManager : MonoBehaviour
     {
         RoomManager.Instance.SetIsInvestigating(true);
 
-        UIManager.Instance.SetUI("MemoButton", false);
-        UIManager.Instance.SetUI("LeftButton", false);
-        UIManager.Instance.SetUI("RightButton", false);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
         float time = 3f;
         StartCoroutine(ScreenEffect.Instance.DayPass(time));   // fade in/out effect
@@ -445,7 +445,7 @@ abstract public class ActionPointManager : MonoBehaviour
                 UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, false);
                 UIManager.Instance.SetUI(eUIGameObjectName.DayChangingGameObject, true);
                 UIManager.Instance.SetUI(eUIGameObjectName.YesterdayNumText, true);
-                UIManager.Instance.SetUI(eUIGameObjectName.NowDayNumText, true);
+                UIManager.Instance.SetUI(eUIGameObjectName.TodayNumText, true);
                 UIManager.Instance.SetUI(eUIGameObjectName.Yesterday, true);
                 break;
             

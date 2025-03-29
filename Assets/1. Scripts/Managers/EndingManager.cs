@@ -48,10 +48,10 @@ public class EndingManager : MonoBehaviour
     public IEnumerator StartEnding()
     {
         // Day UI와 방탈출 이동 버튼 UI off
-        UIManager.Instance.SetUI("ActionPoints", false);
-        UIManager.Instance.SetUI("MemoGauge", false);
-        UIManager.Instance.SetUI("LeftButton", false);
-        UIManager.Instance.SetUI("RightButton", false);
+        UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         MemoManager.Instance.HideMemoButton = true;

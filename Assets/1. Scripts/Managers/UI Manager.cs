@@ -34,7 +34,7 @@ public enum eUIGameObjectName
     AccidyPositionSlider,
     DayChangingGameObject,
     YesterdayNumText,
-    NowDayNumText,
+    TodayNumText,
     Yesterday,
     MainGear,
     SubGear,
@@ -60,16 +60,15 @@ public class UIManager : MonoBehaviour
     [Header("UI Game Objects - Day Animation")]
     public GameObject DayChangingGameObject;
     public GameObject yesterdayNumText;
-    public GameObject nowDayNumText;
+    public GameObject todayNumText;
     public GameObject yesterday;
-
     public GameObject mainGear;
     public GameObject subGear;
     public GameObject gearHourHand;
     public GameObject gearMinuteHand;
 
     [HideInInspector] public TextMeshProUGUI yesterdayNumTextTextMeshProUGUI;
-    [HideInInspector] public TextMeshProUGUI nowDayNumTextTextMeshProUGUI;
+    [HideInInspector] public TextMeshProUGUI todayNumTextTextMeshProUGUI;
     [HideInInspector] public RectTransform yesterdayRectTransform;
     [HideInInspector] public RectTransform DayChangingGroupRectTransform;
 
@@ -84,23 +83,6 @@ public class UIManager : MonoBehaviour
     public GameObject SoundEffectValueText;
     
     [Header("UI Game Objects - Follow")]
-    // public GameObject[] doubtGaugeSliders; // Slider[]
-    // public GameObject[] overHeadDoubtGaugeSliderImages; // Image[]
-    // public GameObject accidyDialogueBox;
-    // public GameObject fatePositionSlider; // Scrollbar -> Slider
-    // public GameObject accidyPositionSlider; // Scrollbar -> Slider
-
-	[Header("UI Game Objects - Menu")]
-    public GameObject menuUI;
-    public GameObject whiteMenu;
-    public GameObject blackMenu;
-    public GameObject optionUI;
-    public GameObject BGMSlider;
-    public GameObject SoundEffectSlider;
-    public GameObject BGMValueText;
-    public GameObject SoundEffectValueText;
-
-    [Header("UI Game Objects - Follow")]
     public GameObject followMemoGauge;
     public GameObject followUIBackground;
     public GameObject doubtGaugeSlider;
@@ -113,7 +95,6 @@ public class UIManager : MonoBehaviour
     
     [Header("Warning Vignette Settings")]
     [SerializeField] protected float warningTime;
-
 
     public static UIManager Instance { get; private set; }
     
@@ -145,6 +126,7 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.LeftButton, leftButton);
         uiGameObjects.Add(eUIGameObjectName.RightButton, rightButton);
 
+        uiGameObjects.Add(eUIGameObjectName.MemoButton, memoButton);
         uiGameObjects.Add(eUIGameObjectName.MemoContents, memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge, memoGauge);
 
@@ -158,11 +140,11 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
         uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
 
-        uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
-        uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
-        uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider, SoundEffectSlider);
-        uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
-        uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
+        // uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
+        // uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
+        // uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider, SoundEffectSlider);
+        // uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
+        // uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
 
         uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge, followMemoGauge);
 
@@ -173,17 +155,21 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.FatePositionSlider, fatePositionSlider);
         uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider, accidyPositionSlider);
 
-        uiGameObjects.Add("DayChangingGameObject", DayChangingGameObject);
-        uiGameObjects.Add("YesterDayNumText", yesterDayNumText);
-        uiGameObjects.Add("NowDayNumText", nowDayNumText);
-        uiGameObjects.Add("YesterDay", yesterDay);
+        uiGameObjects.Add(eUIGameObjectName.MainGear, mainGear);
+        uiGameObjects.Add(eUIGameObjectName.SubGear, subGear);
+        uiGameObjects.Add(eUIGameObjectName.GearHourHand, gearHourHand);
+        uiGameObjects.Add(eUIGameObjectName.GearMinuteHand, gearMinuteHand);
+        uiGameObjects.Add(eUIGameObjectName.DayChangingGameObject, DayChangingGameObject);
+        uiGameObjects.Add(eUIGameObjectName.YesterdayNumText, yesterdayNumText);
+        uiGameObjects.Add(eUIGameObjectName.TodayNumText, todayNumText);
+        uiGameObjects.Add(eUIGameObjectName.Yesterday, yesterday);
 
-        uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
+        // uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
 
-        yesterDayNumTextTextMeshProUGUI = yesterDayNumText.GetComponent<TextMeshProUGUI>();
-        nowDayNumTextTextMeshProUGUI = nowDayNumText.GetComponent<TextMeshProUGUI>();
-        yesterDayRectTransform = yesterDay.GetComponent<RectTransform>();
-        DayAnimGroupRectTransform = DayAnimGameObject.GetComponent<RectTransform>();
+        yesterdayNumTextTextMeshProUGUI = yesterdayNumText.GetComponent<TextMeshProUGUI>();
+        todayNumTextTextMeshProUGUI = todayNumText.GetComponent<TextMeshProUGUI>();
+        yesterdayRectTransform = yesterday.GetComponent<RectTransform>();
+        DayChangingGroupRectTransform = DayChangingGameObject.GetComponent<RectTransform>();
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();

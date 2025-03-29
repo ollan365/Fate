@@ -203,10 +203,10 @@ public class Room2ActionPointManager : ActionPointManager
     public override IEnumerator nextMorningDay()
     {
         RoomManager.Instance.SetIsInvestigating(true);
-        UIManager.Instance.SetUI("MemoGauge", false);
-        UIManager.Instance.SetUI("MemoButton", false);
-        UIManager.Instance.SetUI("LeftButton", false);
-        UIManager.Instance.SetUI("RightButton", false);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
         // ´ÙÀ½³¯ÀÌ µÇ°í(fade in/out effect ½ÇÇà) ¾ÆÄ§ ½ºÅ©¸³Æ® Ãâ·Â
         //const float totalTime = 3f;
