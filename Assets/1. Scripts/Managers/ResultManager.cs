@@ -18,7 +18,7 @@ public class ResultManager : MonoBehaviour
     
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
-        //Debug.Log($"registered {objectName}");
+        Debug.Log($"registered {objectName}");
 
         if (!executableObjects.ContainsKey(objectName))
         {
@@ -28,7 +28,7 @@ public class ResultManager : MonoBehaviour
 
     public void InitializeExecutableObjects()
     {
-        //Debug.Log("############### unregistered all executable objects ###############");
+        Debug.Log("############### unregistered all executable objects ###############");
 
         executableObjects = new Dictionary<string, IResultExecutable>();
     }
@@ -350,7 +350,10 @@ public class ResultManager : MonoBehaviour
             
             case "ResultCarpetOpen": // 카펫이 들쳐짐
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetOpen);
-                executableObjects["ClosedCarpet"].ExecuteAction();
+                executableObjectsKeyCheck("ClosedCarpet1");
+                executableObjectsKeyCheck("ClosedCarpet4");
+                executableObjects["ClosedCarpet1"].ExecuteAction();
+                executableObjects["ClosedCarpet4"].ExecuteAction();
                 break;
             
             case "ResultCarpetDropOutLetterZoom": // 종이를 확대해주는 UI
@@ -360,7 +363,10 @@ public class ResultManager : MonoBehaviour
             
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetClose);
-                executableObjects["OpenCarpet"].ExecuteAction();
+                executableObjectsKeyCheck("OpenCarpet1");
+                executableObjectsKeyCheck("OpenCarpet4");
+                executableObjects["OpenCarpet1"].ExecuteAction();
+                executableObjects["OpenCarpet4"].ExecuteAction();
                 break;
             
             case "ResultPosterScript": // 포스터에 대한 스크립트
@@ -457,6 +463,8 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Closet Unzoomed-closed 2"].ExecuteAction();
                 executableObjects["Closet Unzoomed-open 2"].ExecuteAction();
                 executableObjects["Closet Unzoomed-open back image 2"].ExecuteAction();
+                executableObjects["Closet Unzoomed-closed 4"].ExecuteAction();
+                executableObjects["Closet Unzoomed-open 4"].ExecuteAction();
                 break;
             
             case "ResultCabinetZoom": // 서랍장 확대 화면으로 전환
@@ -464,6 +472,8 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Cabinet Unzoomed-open 2"].ExecuteAction();
                 executableObjects["Cabinet Unzoomed-closed 3"].ExecuteAction();
                 executableObjects["Cabinet Unzoomed-open 3"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed-closed 4"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed-open 4"].ExecuteAction();
                 break;
             
             case "Result_showZoomedDesk": // 책상 화면으로 전환

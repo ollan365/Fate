@@ -7,11 +7,17 @@ public class Carpet : EventObject, IResultExecutable
     public Collider2D objectBehindCollider;
     private string closedOrOpen;
 
-    private void Start()
+    private void Awake()
     {
         closedOrOpen = isClosedCarpet ? "Closed" : "Open";
-        ResultManager.Instance.RegisterExecutable($"{closedOrOpen}Carpet", this);
-        objectBehindCollider = objectBehindCollider.GetComponent<Collider2D>();
+        ResultManager.Instance.RegisterExecutable($"{closedOrOpen}Carpet{sideNum}", this);
+        if(objectBehindCollider!=null)
+            objectBehindCollider = objectBehindCollider.GetComponent<Collider2D>();
+
+        //Debug.Log($"{closedOrOpen}Carpet{sideNum}");
+
+        if(!isClosedCarpet)
+            gameObject.SetActive(false);
     }
 
     public new void OnMouseDown()
@@ -33,7 +39,8 @@ public class Carpet : EventObject, IResultExecutable
 
     private void ToggleCarpet()
     {
-        objectBehindCollider.enabled = isClosedCarpet;
+        if (objectBehindCollider != null)
+            objectBehindCollider.enabled = isClosedCarpet;
         GameManager.Instance.InverseVariable($"CarpetClosed");
         otherCarpet.SetActive(true);
         gameObject.SetActive(false);
