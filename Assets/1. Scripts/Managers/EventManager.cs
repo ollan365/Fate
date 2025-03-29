@@ -76,7 +76,8 @@ public class EventManager : MonoBehaviour
             {
                 string resultIDTrimmed = resultID.Trim();
                 // Function-wrapped results
-                if (resultIDTrimmed.StartsWith("Result_StartDialogue") || 
+                if (resultIDTrimmed.StartsWith("Result_RevealMemo") ||
+                    resultIDTrimmed.StartsWith("Result_StartDialogue") ||
                     resultIDTrimmed.StartsWith("Result_Increment") ||
                     resultIDTrimmed.StartsWith("Result_Decrement") ||
                     resultIDTrimmed.StartsWith("Result_Inverse") ||

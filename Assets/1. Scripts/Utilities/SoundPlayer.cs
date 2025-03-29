@@ -45,12 +45,18 @@ public class SoundPlayer : MonoBehaviour
 
     public void ChangeVolume(float bgmVolume, float soundEffectVolume)
     {
-        this.bgmVolume = bgmVolume;
-        bgmPlayer.volume = bgmVolume;
+        if (bgmVolume != -1)
+        {
+            this.bgmVolume = bgmVolume;
+            bgmPlayer.volume = bgmVolume;
+        }
 
-        typingSoundPlayer.volume = soundEffectVolume;
-        foreach (AudioSource audio in UISoundLoopPlayer) audio.volume = soundEffectVolume;
-        foreach (AudioSource audio in UISoundPlayer) audio.volume = soundEffectVolume;
+        if (soundEffectVolume != -1)
+        {
+            typingSoundPlayer.volume = soundEffectVolume;
+            foreach (AudioSource audio in UISoundLoopPlayer) audio.volume = soundEffectVolume;
+            foreach (AudioSource audio in UISoundPlayer) audio.volume = soundEffectVolume;
+        }
     }
     public void ChangeBGM(int bgm)
     {

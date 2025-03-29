@@ -15,7 +15,7 @@ public class Room1ActionPointManager : ActionPointManager
 
         CreateActionPointsArray(actionPointsPerDay);
 
-        // Ã³À½ ¹æÅ»ÃâÀÇ actionPoint
+        // ì²˜ìŒ ë°©íƒˆì¶œì˜ actionPoint
         GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[0, presentHeartIndex]);
 
         GameManager.Instance.AddEventObject("EventRoom1HomeComing");
@@ -25,31 +25,22 @@ public class Room1ActionPointManager : ActionPointManager
     // create 5 hearts on screen on room start
     public override void CreateHearts()
     {
-        int actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
-        // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
         int heartCount = presentHeartIndex + 1;
 
-        // ÇÏÆ®°¡ 0ÀÌ µÇ¸é
         if (heartCount == 0)
-        {
             heartCount = actionPointsPerDay;
-        }
 
+        // create heart on screen by creating instances of heart prefab under heart parent
         for (int i = 0; i < heartCount; i++)
-        {
-            // create heart on screen by creating instances of heart prefab under heart parent
             Instantiate(heartPrefab, heartParent.transform);
-        }
 
         // change Day text on screen
         dayText.text = $"Day {nowDayNum}";
-
-        //Debug.Log(heartParent.transform.childCount);
     }
 
     public override void DecrementActionPoint()
     {
-        // ½Ã°è ÆÛÁñ¿¡¼­ ¿¬¼ÓÀ¸·Î Å¬¸¯ÇßÀ» ¶§ Æ÷ÀÎÆ® °¨¼Ò ¿À·ù ¶ßÁö ¾Ê°Ô ÇÔ
+        // ì‹œê³„ í¼ì¦ì—ì„œ ì—°ì†ìœ¼ë¡œ í´ë¦­í–ˆì„ ë•Œ í¬ì¸íŠ¸ ê°ì†Œ ì˜¤ë¥˜ ëœ¨ì§€ ì•Šê²Œ í•¨
         if (heartParent.transform.childCount < 1)
             return;
 
@@ -66,33 +57,26 @@ public class Room1ActionPointManager : ActionPointManager
 
         int actionPoint;
 
-        // ÇÏÆ®°¡ ´Ù ¾ø¾îÁö¸é
+        // í•˜íŠ¸ê°€ ë‹¤ ì—†ì–´ì§€ë©´
         if (presentHeartIndex == -1)
         {
             if (nowDayNum < maxDayNum)
             {
-                // ÇöÀç ³¯Â¥¸¦ ´ÙÀ½³¯·Î ¾÷µ¥ÀÌÆ®
+                // í˜„ì¬ ë‚ ì§œë¥¼ ë‹¤ìŒë‚ ë¡œ ì—…ë°ì´íŠ¸
                 nowDayNum += 1;
                 GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
 
-                // presentHeartIndexµµ ¸Ç ³¡ row·Î ¾÷µ¥ÀÌÆ®
+                // presentHeartIndexë„ ë§¨ ë rowë¡œ ì—…ë°ì´íŠ¸
                 presentHeartIndex = (int)GameManager.Instance.GetVariable("ActionPointsPerDay") - 1;
                 GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
 
                 actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
             }
             else
-            {
-                // ¸¶Áö¸· ³¯
-                // Çàµ¿·ÂÀÌ 0ÀÌ µÈ »óÅÂ
                 actionPoint = 0;
-            }
         }
         else
-        {
-            // actionPoint ¾÷µ¥ÀÌÆ®ÇÏ°í GameManagerÀÇ ActionPointµµ ¼öÁ¤
             actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
-        }
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
         GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
@@ -103,10 +87,12 @@ public class Room1ActionPointManager : ActionPointManager
         {
             bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
             bool isInvestigating = RoomManager.Instance.GetIsInvestigating();
-            if (!isDialogueActive && !isInvestigating) RefillHeartsOrEndDay();
-            //else if (!isDialogueActive) RefillHeartsOrEndDay();
-            else if (isInvestigating) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
-            else if (isDialogueActive) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            if (!isDialogueActive && !isInvestigating) 
+                RefillHeartsOrEndDay();
+            else if (isInvestigating) 
+                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            else
+                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
         }
 
         SaveManager.Instance.SaveGameData();
@@ -122,28 +108,34 @@ public class Room1ActionPointManager : ActionPointManager
         if (actionPoint == 0)
         {
             SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
-
             return;
         }
-        // ±Í°¡ ½ºÅ©¸³Æ® Ãâ·Â
+        
         EventManager.Instance.CallEvent("EventRoom1HomeComing");
-
         GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
-        // ±Í°¡ ½ºÅ©¸³Æ® ÀÌÈÄ ³¡³ª¸é NextÀÇ Event_NextMorningDay fade in/out ÀÌÆåÆ® ³ª¿È
     }
 
-    // ¿ÜÃâ(¾ÆÄ§) ½ºÅ©¸³Æ® Ãâ·Â ºÎºĞ
-    public override void nextMorningDay()
+    // ì™¸ì¶œ(ì•„ì¹¨) ìŠ¤í¬ë¦½íŠ¸ ì¶œë ¥ ë¶€ë¶„
+    public override IEnumerator nextMorningDay()
     {
-        // ´ÙÀ½³¯ÀÌ µÇ°í(fade in/out effect ½ÇÇà) ¾ÆÄ§ ½ºÅ©¸³Æ® Ãâ·Â
-        const float totalTime = 3f;
-        StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
+        RoomManager.Instance.SetIsInvestigating(true);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
-        // ¾ÆÄ§ ½ºÅ©¸³Æ® Ãâ·Â
+        const float totalTime = 5f;
+        StartCoroutine(StartNextDayUIChange(nowDayNum));
+
+        // ì•„ì¹¨ ìŠ¤í¬ë¦½íŠ¸ ì¶œë ¥
+        yield return new WaitForSeconds(totalTime);
         EventManager.Instance.CallEvent("EventRoom1Morning");
 
-        // ¿©±â¼­ ÇÏÆ® »ı¼º ¹× ´ÙÀ½³¯·Î ³¯Â¥ ¾÷µ¥ÀÌÆ®
-        StartCoroutine(RefillHearts(totalTime / 2));
-    }
+        yield return new WaitWhile(() => isDayChanging);
 
+        StartCoroutine(RefillHearts(0f));
+
+        // í•˜íŠ¸ ìƒì„±, ë‹¤ìŒë‚ ë¡œ ë‚ ì§œ ì—…ë°ì´íŠ¸
+        RoomManager.Instance.SetIsInvestigating(false);
+    }
 }

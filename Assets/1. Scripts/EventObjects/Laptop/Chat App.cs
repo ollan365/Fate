@@ -26,6 +26,16 @@ public class ChatApp : MonoBehaviour
         DisplayConversationsList();
     }
 
+    public void EnableExitButton()
+    {
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, true);
+    }
+    
+    public void DisableExitButton()
+    {
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, false);
+    }
+
     public void OnEnable()
     {
         GameManager.Instance.SetVariable("isLaptopOpen", true);

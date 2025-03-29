@@ -7,15 +7,11 @@ using static Constants;
 
 public class FollowGameManager : MonoBehaviour
 {
-    [Header("Position Scrolls")]
-    [SerializeField] private float endPositonOfMap = 48.5f;
-    [SerializeField] private Scrollbar fateScroll;
-    [SerializeField] private Scrollbar accidyScroll;
-
     [Header("Gauges")]
-    [SerializeField] private Slider[] doubtGaugeSliders;
+    [SerializeField] private Slider overHeadDoubtGaugeSlider;
     [SerializeField] private Image[] overHeadDoubtGaugeSliderImages;
     [SerializeField] private GameObject accidyDialogueBox;
+    private float endPositonOfMap = 48.5f;
 
     [SerializeField] private Q_Vignette_Single vignette;
 
@@ -51,7 +47,7 @@ public class FollowGameManager : MonoBehaviour
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
         accidyDialogueBox.transform.position -= moveVector;
-        accidyScroll.value = Accidy.transform.position.x / endPositonOfMap;
+        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider, Accidy.transform.position.x / endPositonOfMap, 0);
     }
     private void MoveFate()
     {
@@ -75,7 +71,9 @@ public class FollowGameManager : MonoBehaviour
             }
             SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, IsFateMove);
             Fate.SetBool("Walking", IsFateMove);
-            fateScroll.value = Fate.transform.position.x / endPositonOfMap;
+            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider,
+                Fate.transform.position.x / endPositonOfMap,
+                0);
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && !FollowManager.Instance.TutorialFateCantHide) FateHide(false);
@@ -106,7 +104,8 @@ public class FollowGameManager : MonoBehaviour
         StopAccidy = false;
         IsFateMove = false;
         IsFateHide = false;
-        doubtGaugeSliders[0].value = 0;
+        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0);
+        overHeadDoubtGaugeSlider.value = 0;
 
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
         StartCoroutine(CameraMove());
@@ -121,11 +120,13 @@ public class FollowGameManager : MonoBehaviour
             if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
                 ChangeGaugeAlpha(Time.deltaTime * 3);
-                doubtGaugeSliders[0].value += 0.001f;
-                doubtGaugeSliders[1].value = doubtGaugeSliders[0].value;
-                if (!IsTutorial && doubtGaugeSliders[0].value == 1) FollowManager.Instance.FollowEndLogicStart();
+                UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0.001f); 
+                overHeadDoubtGaugeSlider.value += 0.001f;
+                if (!IsTutorial && Mathf.Approximately(overHeadDoubtGaugeSlider.value, 1)) 
+                    FollowManager.Instance.FollowEndLogicStart();
             }
-            else ChangeGaugeAlpha(-Time.deltaTime);
+            else
+                ChangeGaugeAlpha(-Time.deltaTime);
 
             yield return null;
         }

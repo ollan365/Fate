@@ -9,9 +9,9 @@ public class CSVDownloaderEditor : EditorWindow
 {
     private static readonly Dictionary<string, string> sheetIds = new Dictionary<string, string>
     {
-        {"events", "2115772135"},
-        {"Conditions", "1563155608"},
-        {"results", "1535296605"},
+        {"events", "202180038"},
+        {"conditions", "1563155608"},
+        {"results", "445642289"},
         {"dialogues", "1768256627"},
         {"choices", "1943406759"},
         {"scripts", "888011379"},
@@ -35,12 +35,8 @@ public class CSVDownloaderEditor : EditorWindow
             using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
             {
                 var asyncOperation = webRequest.SendWebRequest();
-
-                // 동기적 대기
                 while (!asyncOperation.isDone)
-                {
-                    System.Threading.Thread.Sleep(100);
-                }
+                    System.Threading.Thread.Sleep(100); // 동기적 대기
 
                 if (webRequest.result == UnityWebRequest.Result.Success)
                 {
@@ -48,12 +44,9 @@ public class CSVDownloaderEditor : EditorWindow
                     Debug.Log($"Successfully downloaded and saved: {sheet.Key}.csv");
                 }
                 else
-                {
                     Debug.LogError($"Failed to download {sheet.Key}.csv: {webRequest.error}");
-                }
             }
         }
-
         AssetDatabase.Refresh();
     }
 }

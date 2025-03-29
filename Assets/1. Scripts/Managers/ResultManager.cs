@@ -18,28 +18,22 @@ public class ResultManager : MonoBehaviour
     
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
-        //Debug.Log($"registered {objectName}");
-
         if (!executableObjects.ContainsKey(objectName))
-        {
             executableObjects[objectName] = executable;
-        }
     }
 
     public void InitializeExecutableObjects()
     {
-        //Debug.Log("############### unregistered all executable objects ###############");
-
         executableObjects = new Dictionary<string, IResultExecutable>();
     }
 
-    public void executableObjectsKeyCheck(string objectName)
-    {
-        if (executableObjects.ContainsKey(objectName))
-            Debug.Log(objectName + " key exists");
-        else
-            Debug.Log(objectName + " key does not exist");
-    }
+    // public void executableObjectsKeyCheck(string objectName)
+    // {
+    //     if (executableObjects.ContainsKey(objectName))
+    //         Debug.Log(objectName + " key exists");
+    //     else
+    //         Debug.Log(objectName + " key does not exist");
+    // }
 
     void Awake()
     {
@@ -82,34 +76,39 @@ public class ResultManager : MonoBehaviour
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
-            case string temp when temp.StartsWith("Result_StartDialogue"):  // 대사 시작
-                variableName = temp.Substring("Result_StartDialogue".Length);
+            case string when resultID.StartsWith("Result_RevealMemo"): // 메모 획득
+                variableName = resultID["Result_RevealMemo".Length..];
+                MemoManager.Instance.RevealMemo(variableName);
+                break;
+
+            case string when resultID.StartsWith("Result_StartDialogue"):  // 대사 시작
+                variableName = resultID["Result_StartDialogue".Length..];
                 DialogueManager.Instance.StartDialogue(variableName);
                 break;
             
-            case string temp when temp.StartsWith("Result_Increment"):  // 값++
-                variableName = temp.Substring("Result_Increment".Length);
+            case string when resultID.StartsWith("Result_Increment"):  // 값++
+                variableName = resultID["Result_Increment".Length..];
                 GameManager.Instance.IncrementVariable(variableName);
                 break;
 
-            case string temp when temp.StartsWith("Result_Decrement"):  // 값--
-                variableName = temp.Substring("Result_Decrement".Length);
+            case string when resultID.StartsWith("Result_Decrement"):  // 값--
+                variableName = resultID["Result_Decrement".Length..];
                 GameManager.Instance.DecrementVariable(variableName);
                 break;
 
-            case string temp when temp.StartsWith("Result_Inverse"):  // !값
-                variableName = temp.Substring("Result_Inverse".Length);
+            case string when resultID.StartsWith("Result_Inverse"):  // !값
+                variableName = resultID["Result_Inverse".Length..];
                 GameManager.Instance.InverseVariable(variableName);
                 break;
 
-            case string temp when temp.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
-                variableName = temp.Substring("Result_isFinished".Length);
+            case string when resultID.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
+                variableName = resultID["Result_isFinished".Length..];
                 GameManager.Instance.SetEventFinished(variableName);
                 break;
 
-            case string temp when temp.StartsWith("Result_IsUnFinished"):  
+            case string when resultID.StartsWith("Result_IsUnFinished"):  
                 // EventObject의 isFinished를 false로 (포스터 커터칼 있는채로 다시 조사하면 처음 조사 스크립트 나와야 해서 추가됨)
-                variableName = temp.Substring("Result_IsUnFinished".Length);
+                variableName = resultID["Result_IsUnFinished".Length..];
                 GameManager.Instance.SetEventUnFinished(variableName);
                 break;
 
@@ -221,7 +220,7 @@ public class ResultManager : MonoBehaviour
             case "Result_NextMorningDay":    // 휴식 대사 스크립트 마지막인 Next에서 호출됨.
                 // fade in/out effect 실행 후 아침 대사 출력하는 메소드 호출
                 DialogueManager.Instance.EndDialogue();
-                RoomManager.Instance.actionPointManager.nextMorningDay();
+                StartCoroutine(RoomManager.Instance.actionPointManager.nextMorningDay());
                 break;
 
             case "ResultBlanketCheck": // 조사하기 버튼 누르면 침대 조사할 수 있게 함
@@ -279,10 +278,6 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
                 break;
 
-            case "ResultNewTeddyBearMemo":
-                MemoManager.Instance.RevealMemo("R1Memo_014");
-                break;
-
             case "ResultNewTeddyBearZoom":
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "newTeddyBear");
                 break;
@@ -292,18 +287,10 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "liquorAndPills");
                 break;
 
-            case "ResultDrinkAndMedicinMemo": // 술과 감기약에 대한 메모 작성
-                MemoManager.Instance.RevealMemo("R1Memo_012");
-                break;
-
             case "ResultPillowAmuletScript": // 베개 안에 부적을 발견
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "amulet");
                 break;
             
-            case "ResultPillowAmuletMemo": // 부적에 대한 메모 작성
-                MemoManager.Instance.RevealMemo("R1Memo_001");
-                break;
-
             case "ResultDiaryLockActivation": // 다이어리 잠금 장치 활성화됨
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "diary");
                 executableObjects["Diary"].ExecuteAction();
@@ -311,10 +298,6 @@ public class ResultManager : MonoBehaviour
             
             case "ResultDiaryLockOpen": // 다이어리가 열림
                 executableObjects["DiaryLock"].ExecuteAction();
-                break;
-            
-            case "ResultDiaryMemo": // 다이어리에 대한 메모가 작성됨
-                MemoManager.Instance.RevealMemo("R1Memo_002");
                 break;
             
             case "ResultDiaryLockFailedScript": // 다이어리 비밀번호를 틀렸다는 스크립트
@@ -336,10 +319,6 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
                 break;
 
-            case "ResultClockGetKeyMemo": // 열쇠 획득 후 메모
-                MemoManager.Instance.RevealMemo("R1Memo_003");
-                break;
-
             case "ResultChairMoved": // 의자가 옆으로 이동함
                 SoundPlayer.Instance.UISoundPlay(Sound_ChairMovement);
                 executableObjects["Chair1"].ExecuteAction();
@@ -359,17 +338,16 @@ public class ResultManager : MonoBehaviour
                 executableObjects["LaptopLock"].ExecuteAction();
                 break;
 
-            case "ResultLaptopMemo": // 노트북에 대한 설명이 메모에 기록됨
-                MemoManager.Instance.RevealMemo("R1Memo_004");
-                break;
-
             case "ResultLaptopLockFailedScript": // 노트북 비밀번호 틀림에 대한 설명
                 SoundPlayer.Instance.UISoundPlay(Sound_Wrong);
                 break;
             
             case "ResultCarpetOpen": // 카펫이 들쳐짐
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetOpen);
-                executableObjects["ClosedCarpet"].ExecuteAction();
+                // executableObjectsKeyCheck("ClosedCarpet1");
+                // executableObjectsKeyCheck("ClosedCarpet4");
+                executableObjects["ClosedCarpet1"].ExecuteAction();
+                executableObjects["ClosedCarpet4"].ExecuteAction();
                 break;
             
             case "ResultCarpetDropOutLetterZoom": // 종이를 확대해주는 UI
@@ -377,13 +355,12 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "letterOfResignation");
                 break;
             
-            case "ResultCarpetDropOutLetterMemo": // 종이에 대한 메모
-                MemoManager.Instance.RevealMemo("R1Memo_006");
-                break;
-
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetClose);
-                executableObjects["OpenCarpet"].ExecuteAction();
+                // executableObjectsKeyCheck("OpenCarpet1");
+                // executableObjectsKeyCheck("OpenCarpet4");
+                executableObjects["OpenCarpet1"].ExecuteAction();
+                executableObjects["OpenCarpet4"].ExecuteAction();
                 break;
             
             case "ResultPosterScript": // 포스터에 대한 스크립트
@@ -409,10 +386,6 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_Poster);
                 break;
 
-            case "ResultPosterMemo": // 포스터에 대한 메모
-                MemoManager.Instance.RevealMemo("R1Memo_005");
-                break;
-
             case "ResultClosetDoorsOpen": // 옷장 문이 열림
                 SoundPlayer.Instance.UISoundPlay(Sound_ClosetOpen);
                 executableObjects["ClosedClosetDoors"].ExecuteAction();
@@ -427,10 +400,6 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "cafePintInBagImage");
                 break;
 
-            case "ResultClosetBagMemo": // 옷장 속 가방 내에 전단지에 대한 메모
-                MemoManager.Instance.RevealMemo("R1Memo_006");
-                break;
-
             case "ResultClosetBoxWithoutKeyScript": // 옷장 위 상자에 대한 설명(열쇠X 상태 일 때)
                 SoundPlayer.Instance.UISoundPlay(Sound_LockerUnlock);
                 break;
@@ -442,10 +411,6 @@ public class ResultManager : MonoBehaviour
             case "ResultClosetBoxPicturesUI": // 상자 안 사진들이 UI로 보임
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "photoInsideBox");
                 GameManager.Instance.SetVariable("BoxOpened", true);
-                break;
-
-            case "ResultClosetBoxMemo": // 상자 안 사진들에 대한 메모
-                MemoManager.Instance.RevealMemo("R1Memo_011");
                 break;
 
             case "ResultCabinetDoorsOpen": // 서랍장이 열림
@@ -467,22 +432,6 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.IncrementVariable("CalendarCluesFound");
                 break;
 
-            case "ResultCalendarFBDMemo": // 필연 생일 메모
-                MemoManager.Instance.RevealMemo("R1Memo_007");
-                break;
-
-            case "ResultCalendarABDMemo": // 우연 생일 메모
-                MemoManager.Instance.RevealMemo("R1Memo_010");
-                break;
-
-            case "ResultCalendar1031Memo": // 10월 31일 메모
-                MemoManager.Instance.RevealMemo("R1Memo_008");
-                break;
-
-            case "ResultCalendar1001Memo": // 10월 1일 메모
-                MemoManager.Instance.RevealMemo("R1Memo_009");
-                break;
-            
             case "Result_IncrementFateBirthday":  // 필연 클릭 횟수 1 증가
                 GameManager.Instance.IncrementVariable("FateBirthdayClick");
                 break;
@@ -500,9 +449,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClueCompleted": // 달력 조사 다 완료함
-
                 break;
-
 
             case "ResultClosetZoom": // 옷장 확대 화면으로 전환
                 //executableObjectsKeyCheck("Closet Unzoomed-closed 2");
@@ -510,6 +457,8 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Closet Unzoomed-closed 2"].ExecuteAction();
                 executableObjects["Closet Unzoomed-open 2"].ExecuteAction();
                 executableObjects["Closet Unzoomed-open back image 2"].ExecuteAction();
+                executableObjects["Closet Unzoomed-closed 4"].ExecuteAction();
+                executableObjects["Closet Unzoomed-open 4"].ExecuteAction();
                 break;
             
             case "ResultCabinetZoom": // 서랍장 확대 화면으로 전환
@@ -517,6 +466,8 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Cabinet Unzoomed-open 2"].ExecuteAction();
                 executableObjects["Cabinet Unzoomed-closed 3"].ExecuteAction();
                 executableObjects["Cabinet Unzoomed-open 3"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed-closed 4"].ExecuteAction();
+                executableObjects["Cabinet Unzoomed-open 4"].ExecuteAction();
                 break;
             
             case "Result_showZoomedDesk": // 책상 화면으로 전환
@@ -584,11 +535,6 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "ticket");
                 break;
 
-            case "ResultTinCaseGetTicketMemo": // 티켓 획득 후 메모
-                MemoManager.Instance.RevealMemo("R2Memo_007");
-                break;
-
-
             case "Result_showSewingBoxImage":   // 반짇고리 상자 확대 이미지 표시
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
                 break;
@@ -601,10 +547,6 @@ public class ResultManager : MonoBehaviour
             case "ResultSewingBoxGetThreadAndNeedle":   // 실과 바늘을 획득
                 SoundPlayer.Instance.UISoundPlay(Sound_SewingBoxOpen); // 반짇고리 상자 열리는 소리
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "thread");  
-                break;
-
-            case "ResultSewingBoxGetThreadAndNeedleMemo":   // 실과 바늘 획득 후 메모
-                MemoManager.Instance.RevealMemo("R2Memo_006");
                 break;
 
             case "ResultFixTeddyBear": // 망가진 곰인형을 고침
@@ -640,10 +582,6 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Diary2Lock"].ExecuteAction();
                 break;
 
-            case "ResultDiary2Memo": // 다이어리에 대한 메모가 작성됨
-                MemoManager.Instance.RevealMemo("R2Memo_003");
-                break;
-
             case "ResultDiary2LockFailedScript": // 다이어리 비밀번호를 틀렸다는 스크립트
                 SoundPlayer.Instance.UISoundPlay(Sound_DiaryUnlock);
                 break;
@@ -670,10 +608,6 @@ public class ResultManager : MonoBehaviour
                 executableObjects["ShoppingBags Unzoomed 3"].ExecuteAction();
                 break;
 
-            case "ResultMedicine2Memo": // 선반 위 약 메모
-                MemoManager.Instance.RevealMemo("R2Memo_010");
-                break;
-
             case "ResultMedicine2Zoom": // 선반 위 약 확대UI
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "medicine2");
                 break;
@@ -682,32 +616,16 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_GrabPaper);
                 break;
 
-            case "ResultHospitalFlyer2Memo": // 방탈출2 병원 전단지 메모
-                MemoManager.Instance.RevealMemo("R2Memo_001");
-                break;
-
             case "ResultHospitalFlyer2Zoom": // 방탈출2 병원 전단지 확대 UI
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "hospitalPrint");
-                break;
-
-            case "ResultPoster2Memo": // 방탈출2 바다 포스터 메모
-                MemoManager.Instance.RevealMemo("R2Memo_002");
                 break;
 
             case "ResultPoster2Zoom": // 방탈출2 바다 포스터 확대 UI
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "poster2");
                 break;
 
-            case "ResultStarSticker2Memo": // 방탈출2 별 스티커 메모
-                MemoManager.Instance.RevealMemo("R2Memo_005");
-                break;
-
             case "ResultStarSticker2Zoom": // 방탈출2 별 스티커 확대 UI
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "starSticker");
-                break;
-
-            case "ResultShoppingBag2Memo": // 방탈출2 쇼핑백 메모
-                MemoManager.Instance.RevealMemo("R2Memo_008");
                 break;
 
             case "ResultShoppingBag2Zoom": // 방탈출2 쇼핑백 확대 UI
@@ -747,10 +665,6 @@ public class ResultManager : MonoBehaviour
                 //Debug.Log("떨어진 책 한권 표지 확대 UI");
                 break;
 
-            case "ResultBook2Memo": // 책에 대한 메모
-                MemoManager.Instance.RevealMemo("R2Memo_004");
-                break;
-
             case "ResultBook2SystemActivartion": // 떨어진 책 읽기
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "book2");
                 executableObjects["Book2"].ExecuteAction();
@@ -776,10 +690,6 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_LockerUnlock);
                 break;
 
-            case "ResultDreamDiary2Memo": // 꿈일기에 대한 메모
-                MemoManager.Instance.RevealMemo("R2Memo_009");
-                break;
-
             case "ResultDreamDiary2SystemActivartion": // 꿈일기 읽기
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "dreamDiary");
                 executableObjects["DreamDiary"].ExecuteAction();
@@ -791,96 +701,20 @@ public class ResultManager : MonoBehaviour
                 break;
 
             // 미행 1
-            case "ResultFollowTutorialNextStep_0":
-            case "ResultFollowTutorialNextStep_1":
-            case "ResultFollowTutorialNextStep_2":
-            case "ResultFollowTutorialNextStep_3":
-            case "ResultFollowTutorialNextStep_4":
-            case "ResultFollowTutorialNextStep_5":
-            case "ResultFollowTutorialNextStep_6":
-            case "ResultFollowTutorialNextStep_7":
+            case "ResultFollowTutorialNextStep":
                 FollowManager.Instance.TutorialNextStep();
                 break;
 
-            case "ResultCafeMemo1": // 카페에 대한 메모 1
-                MemoManager.Instance.RevealMemo("F1Memo_001");
+            case "ResultFollowEndLogic_1":
+                FollowManager.Instance.FollowEndLogic_1();
                 break;
 
-            case "ResultCafeMemo2": // 카페에 대한 메모 2
-                MemoManager.Instance.RevealMemo("F1Memo_002");
-                break;
-
-
-            case "ResultReceiptMemo": // 영수증에 대한 메모
-                MemoManager.Instance.RevealMemo("F1Memo_003");
-                break;
-
-            case "ResultLightMemo": // 신호등에 대한 메모
-                MemoManager.Instance.RevealMemo("F1Memo_004");
-                break;
-
-            case "ResultLatteMemo": // 음료에 대한 메모
-                MemoManager.Instance.RevealMemo("F1Memo_005");
-                break;
-
-            case "Result1FClothesMemo": // 1층 옷가게에 대한 메모
-                MemoManager.Instance.RevealMemo("F1Memo_006");
-                break;
-
-            case "Result2FClothesMemo": // 2층 옷가게에 대한 메모
-                MemoManager.Instance.RevealMemo("F1Memo_007");
-                break;
-
-            case "ResultConstructionMemo": // 공사장에 대한 메모
-                MemoManager.Instance.RevealMemo("F1Memo_008");
-                break;
-
-            case "ResultAngryMemo": // 화난 사람에 대한 메모
-                MemoManager.Instance.RevealMemo("F1Memo_009");
-                break;
-
-            case "ResultWreathMemo": // 쓰러진 화환에 대한 메모
-                MemoManager.Instance.RevealMemo("F1Memo_010");
-                break;
-
-            case "ResultFollowEndNextStep":
-                // FollowManager.Instance.FollowTutorialNextStep();
+            case "ResultFollowEndLogic_3":
+                FollowManager.Instance.FollowEndLogic_3();
                 break;
 
             case "ResultFollowEnd": // 미행 끝 (메모 개수 충분)
                 SceneManager.Instance.LoadScene(SceneType.ROOM_2);
-                break;
-
-            case "ResultLightMemo2": // 미행2 신호등 메모 -> 아직 스크립트 없음
-                MemoManager.Instance.RevealMemo("F1Memo_008");
-                break;
-
-            case "ResultSolicitationMemo2": // 미행2 호객행위 메모 -> 아직 스크립트 없음
-                MemoManager.Instance.RevealMemo("F1Memo_008");
-                break;
-
-            case "ResultConMemo2": // 미행2 편의점 메모 -> 아직 스크립트 없음
-                MemoManager.Instance.RevealMemo("F1Memo_008");
-                break;
-
-            case "ResultTeenageMemo2": // 미행2 가출 청소년 메모 -> 아직 스크립트 없음
-                MemoManager.Instance.RevealMemo("F1Memo_008");
-                break;
-
-            case "Result1FClothesMemo2": // 미행2 가출 1층 옷가게 메모 -> 아직 스크립트 없음
-                MemoManager.Instance.RevealMemo("F1Memo_008");
-                break;
-
-            case "ResultPoliceMemo2": // 미행2 경찰 메모 -> 아직 스크립트 없음
-                MemoManager.Instance.RevealMemo("F1Memo_008");
-                break;
-
-            case "ResultCigaretteMemo2": // 미행2 담배피는 사람 메모 -> 아직 스크립트 없음
-                MemoManager.Instance.RevealMemo("F1Memo_008");
-                break;
-
-            case "ResultGuardMemo2": // 미행2 클럽가드 메모 -> 아직 스크립트 없음
-                MemoManager.Instance.RevealMemo("F1Memo_008");
                 break;
 
             case "ResultUnlockFOLLOW_1":

@@ -13,13 +13,6 @@ public class FollowManager : MonoBehaviour
     [SerializeField] private GameObject[] UI_OffAtEnd;
     [SerializeField] private Image beaconImage;
     [SerializeField] private Sprite[] beaconSprites;
-    [SerializeField] private Transform frontObjects;
-
-    [Header("Memo Gauge")]
-    [SerializeField] private GameObject memoGauge;
-    [SerializeField] private Image gaugeImage;
-    [SerializeField] private Slider clearFlagSlider;
-    [SerializeField] private Image clearFlageImage;
 
     [Header("Character")]
     [SerializeField] private Animator fate;
@@ -41,8 +34,6 @@ public class FollowManager : MonoBehaviour
     public Camera CameraAfterBlur { get => cameraAfterBlur; }
 
     [Header("Variables")]
-    [SerializeField] private float accidyAnimatorSpeed;
-    [SerializeField] private float fateAnimatorSpeed;
     public float totalFollowSpecialObjectCount = 10;
     public Action EndScriptAction;
 
@@ -75,7 +66,15 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         SetCharcter();
 
-        MemoManager.Instance.SetMemoGauge(memoGauge, gaugeImage, clearFlagSlider, clearFlageImage);
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge, true);
+        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge));
+
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground, true);
+
+        UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider, true);
+
+        UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider, true);
 
         StartCoroutine(ChangeBeaconSprite());
 
@@ -86,7 +85,7 @@ public class FollowManager : MonoBehaviour
         }
         else StartCoroutine(followTutorial.StartTutorial());
     }
-    public void FollowTutorialNextStep()
+    public void TutorialNextStep()
     {
         followTutorial.NextStep();
     }
@@ -107,10 +106,6 @@ public class FollowManager : MonoBehaviour
         accidy.gameObject.SetActive(true);
     }
 
-    public void TutorialNextStep()
-    {
-        followTutorial.NextStep();
-    }
 
     // ==================== 미행 다이얼로그 ==================== //
     public bool ClickObject()
@@ -120,17 +115,8 @@ public class FollowManager : MonoBehaviour
         followGameManager.ChangeAnimStatusToStop(true);
 
         if (IsDialogueOpen) return false;
-
-        accidyAnimatorSpeed = Accidy.speed;
-        fateAnimatorSpeed = Fate.speed;
-
-        Accidy.speed = 0;
-        Fate.speed = 0;
-
-        foreach(Transform child in frontObjects)
-            child.GetComponent<Image>().color = new Color(0.01f, 0.01f, 0.01f);
-        
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
+
         followDialogueManager.ClickObject();
 
         return true;
@@ -139,13 +125,7 @@ public class FollowManager : MonoBehaviour
     {
         IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
 
-        Accidy.speed = accidyAnimatorSpeed;
-        Fate.speed = fateAnimatorSpeed;
-
         if (IsEnd || IsTutorial) return;
-
-        foreach (Transform child in frontObjects)
-            child.GetComponent<Image>().color = new Color(1, 1, 1);
 
         followDialogueManager.EndScript();
         followGameManager.ChangeAnimStatusToStop(false);
@@ -273,6 +253,14 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
-        StartCoroutine(followEnd.EndFollowLogic());
+        StartCoroutine(followEnd.EndFollowLogic_0());
+    }
+    public void FollowEndLogic_1()
+    {
+        StartCoroutine(followEnd.EndFollowLogic_1());
+    }
+    public void FollowEndLogic_3()
+    {
+        StartCoroutine(followEnd.EndFollowLogic_3());
     }
 }

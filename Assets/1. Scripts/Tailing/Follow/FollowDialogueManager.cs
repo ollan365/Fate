@@ -8,11 +8,15 @@ using static Constants;
 public class FollowDialogueManager : MonoBehaviour
 {
     [Header("Dialogue")]
+    [SerializeField] private GameObject characterCanvas;
     [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private GameObject[] extraCanvas;
     [SerializeField] private TextMeshProUGUI[] extraDialogueText;
     [SerializeField] private GameObject specialObjectButton;
     [SerializeField] private Image specialObjectButtonImage;
+    [SerializeField] private Transform frontObjects;
+    [SerializeField] private float accidyAnimatorSpeed;
+    [SerializeField] private float fateAnimatorSpeed;
     private FollowExtra extra = FollowExtra.None;
 
     private bool IsEnd { get => FollowManager.Instance.IsEnd; }
@@ -22,16 +26,29 @@ public class FollowDialogueManager : MonoBehaviour
     {
         extraBlockingPanel.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.OnDialoguePanelClick());
     }
-    public bool ClickObject()
+    public void ClickObject()
     {
         // 엑스트라 캐릭터의 대사가 출력되는 중이면 끈다
         foreach (GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
+        
+        foreach (Transform child in frontObjects)
+            child.GetComponent<Image>().color = new Color(0.01f, 0.01f, 0.01f);
 
-        return true;
+        accidyAnimatorSpeed = FollowManager.Instance.Accidy.speed;
+        fateAnimatorSpeed = FollowManager.Instance.Fate.speed;
+
+        FollowManager.Instance.Accidy.speed = 0;
+        FollowManager.Instance.Fate.speed = 0;
     }
 
     public void EndScript()
     {
+        foreach (Transform child in frontObjects)
+            child.GetComponent<Image>().color = new Color(1, 1, 1);
+
+        FollowManager.Instance.Accidy.speed = accidyAnimatorSpeed;
+        FollowManager.Instance.Fate.speed = fateAnimatorSpeed;
+
         EndExtraDialogue(true);
     }
     public void OpenExtraDialogue(string extraName)
@@ -39,8 +56,12 @@ public class FollowDialogueManager : MonoBehaviour
         extra = ToEnum(extraName);
 
         extraBlockingPanel.SetActive(true); // 일반적인 블로킹 판넬이 아닌 다른 걸 켠다
+        SetLayerRecursively(characterCanvas, 0); // 캐릭터도 블로킹 되도록
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+        
+        foreach (Transform child in frontObjects)
+            child.GetComponent<Image>().color = new Color(0.01f, 0.01f, 0.01f);
 
         DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_EXTRA.ToInt()] = extraCanvas[Int(extra)];
         DialogueManager.Instance.scriptText[DialogueType.FOLLOW_EXTRA.ToInt()] = extraDialogueText[Int(extra)];
@@ -53,11 +74,26 @@ public class FollowDialogueManager : MonoBehaviour
         if (extra == FollowExtra.None) return;
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+        
+        foreach (Transform child in frontObjects)
+            child.GetComponent<Image>().color = new Color(1, 1, 1);
 
         extraBlockingPanel.SetActive(false);
         extraCanvas[Int(extra)].SetActive(false);
+        SetLayerRecursively(characterCanvas, 12);
 
         extra = FollowExtra.None;
+    }
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null) return;
+
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
     public void ClickSpecialObject(FollowObject followObject)
     {

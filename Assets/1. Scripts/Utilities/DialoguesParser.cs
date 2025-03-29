@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,10 +47,14 @@ public class DialoguesParser : MonoBehaviour
             string speakerID = fields[1].Trim();
             string scriptID = fields[2].Trim();
             string imageID = fields[3].Trim();
-            string backgroundID = fields[4].Trim();
-            string soundID = fields[5].Trim();
-            string blur = fields[6].Trim();
-            string next = fields[7].Trim();
+            string imageZoomLevelString = fields[4].Trim();
+            int imageZoomLevel = string.IsNullOrWhiteSpace(imageZoomLevelString)
+                ? 0
+                : Convert.ToInt32(imageZoomLevelString);
+            string backgroundID = fields[5].Trim();
+            string soundID = fields[6].Trim();
+            string blur = fields[7].Trim();
+            string next = fields[8].Trim();
 
             if (!dialogues.ContainsKey(dialogueID))
             {
@@ -57,7 +62,7 @@ public class DialoguesParser : MonoBehaviour
                 dialogues[dialogueID] = dialogue;
             }
 
-            dialogues[dialogueID].AddLine(speakerID, scriptID, imageID, backgroundID, soundID, blur, next);
+            dialogues[dialogueID].AddLine(speakerID, scriptID, imageID, imageZoomLevel, backgroundID, soundID, blur, next);
         }
 
         return dialogues;
