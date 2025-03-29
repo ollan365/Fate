@@ -206,6 +206,11 @@ public class UIManager : MonoBehaviour
             SetUI(eUIGameObjectName.BlackMenu, false);
             Time.timeScale = 1f;
         }
+        else if (GetUI(eUIGameObjectName.OptionUI).activeSelf)
+        {
+            SetUI(eUIGameObjectName.OptionUI, false);
+            Time.timeScale = 1f;
+        }
         else
         {
             SetUI(eUIGameObjectName.MenuUI, true);

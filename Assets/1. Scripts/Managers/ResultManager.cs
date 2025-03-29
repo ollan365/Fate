@@ -701,14 +701,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             // 미행 1
-            case "ResultFollowTutorialNextStep_0":
-            case "ResultFollowTutorialNextStep_1":
-            case "ResultFollowTutorialNextStep_2":
-            case "ResultFollowTutorialNextStep_3":
-            case "ResultFollowTutorialNextStep_4":
-            case "ResultFollowTutorialNextStep_5":
-            case "ResultFollowTutorialNextStep_6":
-            case "ResultFollowTutorialNextStep_7":
+            case "ResultFollowTutorialNextStep":
                 FollowManager.Instance.TutorialNextStep();
                 break;
 
