@@ -74,9 +74,6 @@ public class FollowDialogueManager : MonoBehaviour
         if (extra == FollowExtra.None) return;
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-        
-        foreach (Transform child in frontObjects)
-            child.GetComponent<Image>().color = new Color(1, 1, 1);
 
         extraBlockingPanel.SetActive(false);
         extraCanvas[Int(extra)].SetActive(false);
