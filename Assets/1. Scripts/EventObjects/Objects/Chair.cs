@@ -10,7 +10,7 @@ public class Chair : EventObject, IResultExecutable
 {
     // 의자 위치
     private Vector2 originalPosition;  // 기존 위치 
-    private List<Vector2> movedPositions = new List<Vector2> { Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero};  // 사이드별 이동한 위치
+    [SerializeField] private List<Vector2> movedPositions = new List<Vector2> { Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero };  // 사이드별 이동한 위치
 
     // targetPosition에 위의 origin 위치랑 moved 위치를 대입해서 거기까지 움직이게 함.
     private RectTransform rectTransform;
@@ -35,8 +35,8 @@ public class Chair : EventObject, IResultExecutable
             case 2:
                 movedPositions[2] = new Vector2(652f, -497f);
                 break;
-            case 3:
-                movedPositions[3] = new Vector2(-533f, -424f);
+            case 4:
+                movedPositions[4] = new Vector2(-533f, -424f);
                 break;
         }
 
