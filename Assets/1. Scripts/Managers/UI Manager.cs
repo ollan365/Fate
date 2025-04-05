@@ -95,6 +95,12 @@ public class UIManager : MonoBehaviour
     
     [Header("Warning Vignette Settings")]
     [SerializeField] protected float warningTime;
+    
+    [Header("Cursor Settings")]
+    public Texture2D defaultCursorTexture;
+    public Texture2D investigateCursorTexture;
+
+    private bool isCursorTouchingUI;
 
     public static UIManager Instance { get; private set; }
     
@@ -236,7 +242,7 @@ public class UIManager : MonoBehaviour
     
     public void OnLeftButtonClick()
     {
-        switch (GetCurrentSceneIndex())
+        switch (SceneManager.Instance.GetActiveScene())
         {
             case (int)SceneType.ROOM_1:
             case (int)SceneType.ROOM_2:
@@ -247,7 +253,7 @@ public class UIManager : MonoBehaviour
     
     public void OnRightButtonClick()
     {
-        switch (GetCurrentSceneIndex())
+        switch (SceneManager.Instance.GetActiveScene())
         {
             case (int)SceneType.ROOM_1:
             case (int)SceneType.ROOM_2:
@@ -259,26 +265,24 @@ public class UIManager : MonoBehaviour
     public void OnExitButtonClick()
     {
         if (MemoManager.Instance && MemoManager.Instance.isMemoOpen)
-        {
             MemoManager.Instance.OnExit();
-            return;
-        }
-        
-        switch (GetCurrentSceneIndex())
-        {
-            case (int)SceneType.START:
-                Debug.Log("Exit button is not implemented in this scene.");
-                break;
-            
-            case (int)SceneType.ROOM_1:
-            case (int)SceneType.ROOM_2:
-                RoomManager.Instance.OnExitButtonClick();
-                break;
-            
-            default:
-                Debug.Log("Exit button is not implemented in this scene.");
-                break;
-        }
+        else
+            switch (SceneManager.Instance.GetActiveScene())
+            {
+                case (int)SceneType.START:
+                    Debug.Log("Exit button is not implemented in this scene.");
+                    break;
+                
+                case (int)SceneType.ROOM_1:
+                case (int)SceneType.ROOM_2:
+                    RoomManager.Instance.OnExitButtonClick();
+                    break;
+                
+                default:
+                    Debug.Log("Exit button is not implemented in this scene.");
+                    break;
+            }
+        SetCursorAuto();
     }
     
     public void ChangeSoundValue(string uiName)
@@ -310,14 +314,37 @@ public class UIManager : MonoBehaviour
         else 
             slider.value = absoluteValue;
     }
-
+    
+    // method to switch mouse cursor
+    public void SetCursorAuto()
+    {
+        bool isDefault = GameManager.Instance.GetIsBusy()
+                         || SceneManager.Instance.GetActiveScene() is (int)SceneType.START or (int)SceneType.ENDING
+                         || (RoomManager.Instance && RoomManager.Instance.imageAndLockPanelManager.isLockObjectActive)
+                         || isCursorTouchingUI;
+        ChangeCursor(isDefault);
+    }
+    
+    public void ChangeCursor(bool isDefault=true)
+    {
+        Texture2D mouseCursorTexture = isDefault ? defaultCursorTexture : investigateCursorTexture;
+        
+        Cursor.SetCursor(mouseCursorTexture, Vector2.zero, CursorMode.Auto);
+    }
+    
     /*
      * startAlpha: 경고 표시 시작 시 투명도
      * endAlpha: 경고 표시 종료 시 투명도
      * fadeInDuration: 경고 표시 페이드 인 소요 시간
      * fadeOutDuration: 경고 표시 페이드 아웃 소요 시간
      */
-    public IEnumerator WarningCoroutine(float startAlpha = 0f,
+        /*
+     * startAlpha: 경고 표시 시작 시 투명도
+     * endAlpha: 경고 표시 종료 시 투명도
+     * fadeInDuration: 경고 표시 페이드 인 소요 시간
+     * fadeOutDuration: 경고 표시 페이드 아웃 소요 시간
+     */
+        public IEnumerator WarningCoroutine(float startAlpha = 0f,
         float endAlpha = 1f,
         float fadeInDuration = 0.5f,
         float fadeOutDuration = 0.5f)
@@ -349,10 +376,5 @@ public class UIManager : MonoBehaviour
         }
 
         SetUI(eUIGameObjectName.WarningVignette, false); // 경고 표시 비활성화
-    }
-    
-    private int GetCurrentSceneIndex()
-    {
-        return (int)GameManager.Instance.GetVariable("CurrentScene");
     }
 }

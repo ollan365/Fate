@@ -66,7 +66,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
     private Dictionary<string, GameObject> lockObjectDictionary;
     private Dictionary<string, GameObject> TutorialimageDictionary;
     [SerializeField] public bool isImageActive = false;
-    [SerializeField] private bool isLockObjectActive = false;
+    [SerializeField] public bool isLockObjectActive = false;
     [SerializeField] private bool isTutorialObjectActive = false;
     private string currentLockObjectName = null;
 

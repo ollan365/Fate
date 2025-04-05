@@ -123,6 +123,7 @@ public class Room1ActionPointManager : ActionPointManager
         UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
+        UIManager.Instance.SetCursorAuto();
 
         const float totalTime = 5f;
         StartCoroutine(StartNextDayUIChange(nowDayNum));
@@ -137,5 +138,6 @@ public class Room1ActionPointManager : ActionPointManager
 
         // 하트 생성, 다음날로 날짜 업데이트
         RoomManager.Instance.SetIsInvestigating(false);
+        UIManager.Instance.SetCursorAuto();
     }
 }

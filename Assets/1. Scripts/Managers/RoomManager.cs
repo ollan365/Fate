@@ -68,13 +68,6 @@ public class RoomManager : MonoBehaviour
 
         actionPointManager.CreateHearts();  // create hearts on room start
 
-        // 아래는 뭘 살려야할지 모르겠어서 두개 모두 살려뒀습니다
-        // 참고로 SceneManager.Instance.CurrentScene == SceneType.ROOM_1이 true 이면 현재 씬이 Room1 입니당...!
-        // 도움되실까 싶어서 남겨둡니당...
-        
-        //// 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만) - 겜메에서 현재 씬 이름 저장하고 가져오는 방식으로 변경 필요
-        //if (!GameManager.Instance.skipTutorial && EditorSceneManager.GetActiveScene().name == "Room1") DialogueManager.Instance.StartDialogue("Prologue_015");
-
         // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
         {
@@ -83,7 +76,6 @@ public class RoomManager : MonoBehaviour
                 && !(bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
                 DialogueManager.Instance.StartDialogue("Prologue_015");
         }
-
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
@@ -112,17 +104,14 @@ public class RoomManager : MonoBehaviour
 
         // 튜토리얼 1 페이즈 관련
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
-        {
             if(!GameManager.Instance.skipTutorial)
                 tutorialManager.SetSeenSides(newSideIndex);
-        }
-
-        //Debug.Log(newSideIndex);
     }
 
     public void OnExitButtonClick()
     {
-        if (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
+        if (isInvestigating) 
+            imageAndLockPanelManager.OnExitButtonClick();
         else if (isZoomed)
         {
             // 화면 전환 효과
@@ -154,7 +143,8 @@ public class RoomManager : MonoBehaviour
     // exit to root: turn off all the panels and zoom out to the root view
     public void ExitToRoot()
     {
-        if (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
+        if (isInvestigating) 
+            imageAndLockPanelManager.OnExitButtonClick();
         if (isZoomed)
         {
             SetCurrentView(sides[currentSideIndex]);
@@ -241,5 +231,7 @@ public class RoomManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.NormalVignette, !isLaptopOpen);
         UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, !isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
+        
+        UIManager.Instance.SetCursorAuto();
     }
 }
