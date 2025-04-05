@@ -1551,13 +1551,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 122667731}
+  - component: {fileID: 122667732}
   m_Layer: 5
   m_Name: Action Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &122667731
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1580,6 +1581,75 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &122667732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122667730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1633657070}
+          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+          m_MethodName: SetCursorTouchingUI
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 1633657070}
+          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+          m_MethodName: SetCursorAuto
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1633657070}
+          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+          m_MethodName: SetCursorTouchingUI
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1633657070}
+          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+          m_MethodName: SetCursorAuto
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &130653502 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 411721650058731223, guid: d8e3050e6b1160648ac01618c716a784, type: 3}
@@ -5633,6 +5703,106 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1633657070}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1809845301}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1633657070}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1809845301}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCursorTouchingUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PointerEnter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCursorTouchingUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PointerExit
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: OnMouseScale, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: OnMouseScale, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499711854030961759, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 9040600441552090521, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -9677,7 +9847,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5b03e7f76eb3d140a8701369acb3037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSideIndex: 0
 --- !u!4 &701340749
 Transform:
   m_ObjectHideFlags: 0
@@ -14396,6 +14565,18 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
+        - m_Target: {fileID: 1633657070}
+          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+          m_MethodName: SetCursorTouchingUI
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
         - m_Target: {fileID: 1164648557}
           m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
           m_MethodName: PointerEnter
@@ -14412,6 +14593,18 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
+        - m_Target: {fileID: 1633657070}
+          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+          m_MethodName: SetCursorTouchingUI
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
         - m_Target: {fileID: 1164648557}
           m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
           m_MethodName: PointerExit
@@ -17413,6 +17606,10 @@ PrefabInstance:
     - target: {fileID: 3574043270137584618, guid: 5fea389e1beecf54a87f869a68d22b66, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7485712731212885136, guid: 5fea389e1beecf54a87f869a68d22b66, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21600,6 +21797,8 @@ MonoBehaviour:
   accidyPositionSlider: {fileID: 1345736590}
   dayTextTextMeshProUGUI: {fileID: 0}
   warningTime: 0.3
+  defaultCursorTexture: {fileID: 2800000, guid: 679dbfd395dd3494db04a71f7861186e, type: 3}
+  investigateCursorTexture: {fileID: 2800000, guid: 4e6600a5f68594338a9068b67f09955d, type: 3}
 --- !u!114 &1633657071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22505,6 +22704,18 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
+        - m_Target: {fileID: 1633657070}
+          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+          m_MethodName: SetCursorTouchingUI
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
         - m_Target: {fileID: 1716126140}
           m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
           m_MethodName: PointerEnter
@@ -22521,6 +22732,18 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
+        - m_Target: {fileID: 1633657070}
+          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+          m_MethodName: SetCursorTouchingUI
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
         - m_Target: {fileID: 1716126140}
           m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
           m_MethodName: PointerExit
@@ -23799,6 +24022,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9040600441552090521, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
   m_PrefabInstance: {fileID: 510539042}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1809845301 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1900898959357755026, guid: f6e2eaffd2ab28041af95d9598fd8cbe, type: 3}
+  m_PrefabInstance: {fileID: 510539042}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204520900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84625f195a0240c1941f62cd372c81c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1815064766
 GameObject:
   m_ObjectHideFlags: 0
@@ -30440,7 +30674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3766474057162231561, guid: d4f25a6a9f9b348bcaee7321fa274f84, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -137.9
+      value: -137.90002
       objectReference: {fileID: 0}
     - target: {fileID: 3766474057162231561, guid: d4f25a6a9f9b348bcaee7321fa274f84, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
