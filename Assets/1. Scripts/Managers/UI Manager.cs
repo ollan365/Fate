@@ -11,6 +11,7 @@ public enum eUIGameObjectName
     NormalVignette,
     WarningVignette,
     ActionPoints,
+    ActionPointsBackgroundImage,
     HeartParent,
     DayText,
     ExitButton,
@@ -48,6 +49,7 @@ public class UIManager : MonoBehaviour
     public GameObject normalVignette;
     public GameObject warningVignette;
     public GameObject actionPoints;
+    public GameObject actionPointsBackgroundImage;
     public GameObject heartParent;
     public GameObject dayText;
     public GameObject exitButton;
@@ -58,7 +60,7 @@ public class UIManager : MonoBehaviour
     public GameObject memoGauge;
 
     [Header("UI Game Objects - Day Animation")]
-    public GameObject DayChangingGameObject;
+    public GameObject dayChangingGameObject;
     public GameObject yesterdayNumText;
     public GameObject todayNumText;
     public GameObject yesterday;
@@ -70,7 +72,7 @@ public class UIManager : MonoBehaviour
     [HideInInspector] public TextMeshProUGUI yesterdayNumTextTextMeshProUGUI;
     [HideInInspector] public TextMeshProUGUI todayNumTextTextMeshProUGUI;
     [HideInInspector] public RectTransform yesterdayRectTransform;
-    [HideInInspector] public RectTransform DayChangingGroupRectTransform;
+    [HideInInspector] public RectTransform dayChangingGroupRectTransform;
 
     [Header("UI Game Objects - Menu")]
     public GameObject menuUI;
@@ -100,7 +102,12 @@ public class UIManager : MonoBehaviour
     public Texture2D defaultCursorTexture;
     public Texture2D investigateCursorTexture;
 
+    [Header("UI Camera")]
+    public Camera uiCamera;
+    
     private bool isCursorTouchingUI;
+    // UI GameObjects to explicitly check for cursor hover
+    private List<RectTransform> uiToCheck;
 
     public static UIManager Instance { get; private set; }
     
@@ -117,6 +124,7 @@ public class UIManager : MonoBehaviour
         AddUIGameObjects();
         SetAllUI(false);
         SetOptionUI();
+        InitializeUIToCheck();
     }
 
     private void AddUIGameObjects()
@@ -125,6 +133,7 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.WarningVignette, warningVignette);
 
         uiGameObjects.Add(eUIGameObjectName.ActionPoints, actionPoints);
+        uiGameObjects.Add(eUIGameObjectName.ActionPointsBackgroundImage, actionPointsBackgroundImage);
         uiGameObjects.Add(eUIGameObjectName.HeartParent, heartParent);
         uiGameObjects.Add(eUIGameObjectName.DayText, dayText);
 
@@ -165,7 +174,7 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.SubGear, subGear);
         uiGameObjects.Add(eUIGameObjectName.GearHourHand, gearHourHand);
         uiGameObjects.Add(eUIGameObjectName.GearMinuteHand, gearMinuteHand);
-        uiGameObjects.Add(eUIGameObjectName.DayChangingGameObject, DayChangingGameObject);
+        uiGameObjects.Add(eUIGameObjectName.DayChangingGameObject, dayChangingGameObject);
         uiGameObjects.Add(eUIGameObjectName.YesterdayNumText, yesterdayNumText);
         uiGameObjects.Add(eUIGameObjectName.TodayNumText, todayNumText);
         uiGameObjects.Add(eUIGameObjectName.Yesterday, yesterday);
@@ -175,7 +184,7 @@ public class UIManager : MonoBehaviour
         yesterdayNumTextTextMeshProUGUI = yesterdayNumText.GetComponent<TextMeshProUGUI>();
         todayNumTextTextMeshProUGUI = todayNumText.GetComponent<TextMeshProUGUI>();
         yesterdayRectTransform = yesterday.GetComponent<RectTransform>();
-        DayChangingGroupRectTransform = DayChangingGameObject.GetComponent<RectTransform>();
+        dayChangingGroupRectTransform = dayChangingGameObject.GetComponent<RectTransform>();
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
@@ -185,8 +194,10 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape)) 
             SetMenuUI();
+        
+        CheckCursorTouchingUIs();
     }
-
+    
     private void SetAllUI(bool isActive)
     {
         foreach (var ui in uiGameObjects)
@@ -315,6 +326,58 @@ public class UIManager : MonoBehaviour
             slider.value = absoluteValue;
     }
     
+    private void InitializeUIToCheck()
+    {
+        uiToCheck = new List<RectTransform> { // Add all UI GameObjects to check here
+            leftButton.GetComponent<RectTransform>(), 
+            rightButton.GetComponent<RectTransform>(), 
+            exitButton.GetComponent<RectTransform>(),
+            memoButton.GetComponent<RectTransform>(),
+            actionPointsBackgroundImage.GetComponent<RectTransform>()
+        };
+    }
+    
+    public void AddUIToCheck(RectTransform uiRectTransform)
+    {
+        uiToCheck.Add(uiRectTransform);
+    }
+    
+    public void RemoveUIToCheck(RectTransform uiRectTransform)
+    {
+        uiToCheck.Remove(uiRectTransform);
+    }
+
+    // Check if the cursor is touching any of the buttons
+    private void CheckCursorTouchingUIs()
+    {
+        bool isCursorOverUIs = false;
+        foreach (RectTransform uiRectTransform in uiToCheck)
+        {
+            GameObject uiGameObject = uiRectTransform.gameObject;
+            if (!uiGameObject.activeSelf)
+                continue;
+            
+            bool isCursorOverUI = RectTransformUtility.RectangleContainsScreenPoint(uiRectTransform,
+                Input.mousePosition,
+                uiCamera);
+            if (isCursorOverUI)
+            {
+                isCursorOverUIs = true;
+                break;
+            }
+        }
+
+        SetIsCursorTouchingUI(isCursorOverUIs);
+    }
+
+    private void SetIsCursorTouchingUI(bool isTouching)
+    {
+        bool previousState = isCursorTouchingUI;
+        isCursorTouchingUI = isTouching;
+        if (isCursorTouchingUI != previousState) // only call SetCursorAuto if state changes
+            SetCursorAuto(); 
+    }
+    
     // method to switch mouse cursor
     public void SetCursorAuto()
     {
@@ -328,7 +391,6 @@ public class UIManager : MonoBehaviour
     public void ChangeCursor(bool isDefault=true)
     {
         Texture2D mouseCursorTexture = isDefault ? defaultCursorTexture : investigateCursorTexture;
-        
         Cursor.SetCursor(mouseCursorTexture, Vector2.zero, CursorMode.Auto);
     }
     
@@ -338,19 +400,13 @@ public class UIManager : MonoBehaviour
      * fadeInDuration: 경고 표시 페이드 인 소요 시간
      * fadeOutDuration: 경고 표시 페이드 아웃 소요 시간
      */
-        /*
-     * startAlpha: 경고 표시 시작 시 투명도
-     * endAlpha: 경고 표시 종료 시 투명도
-     * fadeInDuration: 경고 표시 페이드 인 소요 시간
-     * fadeOutDuration: 경고 표시 페이드 아웃 소요 시간
-     */
-        public IEnumerator WarningCoroutine(float startAlpha = 0f,
+    public IEnumerator WarningCoroutine(float startAlpha = 0f,
         float endAlpha = 1f,
         float fadeInDuration = 0.5f,
         float fadeOutDuration = 0.5f)
     {
         SetUI(eUIGameObjectName.WarningVignette, true); // 경고 표시 활성화
-        
+
         float timeAccumulated = 0;
         while (timeAccumulated < fadeInDuration)
         {
@@ -367,7 +423,7 @@ public class UIManager : MonoBehaviour
         timeAccumulated = 0; // 경고 종료: WarningVignette.mainColor.a를 다시 0으로 페이드 아웃
         while (timeAccumulated < fadeOutDuration)
         {
-            timeAccumulated += Time.deltaTime * 2;  // 페이드 아웃 속도를 더 빠르게 설정
+            timeAccumulated += Time.deltaTime * 2; // 페이드 아웃 속도를 더 빠르게 설정
             warningVignetteQVignetteSingle.mainColor.a = Mathf.Lerp(endAlpha,
                 startAlpha,
                 timeAccumulated / fadeOutDuration); // WarningVignette 투명도를 1에서 0으로 선형 보간(Lerp)

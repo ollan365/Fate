@@ -563,14 +563,14 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultEatEnergySupplement":
-                RoomManager.Instance.Room2ActionPointManager.EatEnergySupplement();
+                RoomManager.Instance.room2ActionPointManager.EatEnergySupplement();
                 break;
 
             case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
-                RoomManager.Instance.Room2ActionPointManager.SetChoosingBrokenBearChoice(true);
+                RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(true);
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
-                RoomManager.Instance.Room2ActionPointManager.SetChoosingBrokenBearChoice(false);
+                RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(false);
                 break;
 
             case "ResultDiary2LockActivation": // 다이어리 잠금 장치 활성화됨

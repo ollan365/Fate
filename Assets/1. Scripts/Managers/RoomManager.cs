@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RoomManager : MonoBehaviour
@@ -24,7 +25,7 @@ public class RoomManager : MonoBehaviour
 
     // 액션포인트 매니저
     public ActionPointManager actionPointManager;
-    public Room2ActionPointManager Room2ActionPointManager;
+    public Room2ActionPointManager room2ActionPointManager;
 
     void Awake()
     {
@@ -38,6 +39,8 @@ public class RoomManager : MonoBehaviour
         MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge));
         
         UIManager.Instance.SetUI(eUIGameObjectName.NormalVignette, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.ActionPointsBackgroundImage, true);
         UIManager.Instance.SetUI(eUIGameObjectName.DayText, true);
         UIManager.Instance.SetUI(eUIGameObjectName.HeartParent, true);
         UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, true);
@@ -124,7 +127,6 @@ public class RoomManager : MonoBehaviour
         SetButtons();
 
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
-
         if (refillHeartsOrEndDay)
             actionPointManager.RefillHeartsOrEndDay();
 
@@ -135,8 +137,6 @@ public class RoomManager : MonoBehaviour
     {
         if (UIManager.Instance && UIManager.Instance.heartParent.transform.childCount < 1)
             OnExitButtonClick();
-        else
-            return;
     }
 
 
@@ -152,11 +152,6 @@ public class RoomManager : MonoBehaviour
         }
         
         SetButtons();
-    }
-
-    public void EmptyActionPoint()
-    {
-        GameManager.Instance.SetVariable("ActionPoint", 1);
     }
 
     public bool GetIsInvestigating()

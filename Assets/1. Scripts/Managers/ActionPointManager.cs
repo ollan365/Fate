@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine.UI;
 
 //public enum RoomType
@@ -117,7 +118,7 @@ abstract public class ActionPointManager : MonoBehaviour
         yesterDayNumText = UIManager.Instance.yesterdayNumTextTextMeshProUGUI;
         nowDayNumText = UIManager.Instance.todayNumTextTextMeshProUGUI;
         yesterDayRectTransform = UIManager.Instance.yesterdayRectTransform;
-        DayChangingGroupRectTransform = UIManager.Instance.DayChangingGroupRectTransform;
+        DayChangingGroupRectTransform = UIManager.Instance.dayChangingGroupRectTransform;
 
         TurningDayBackRotationValues.Add(new Vector3(0, 180, 90));
         TurningDayBackRotationValues.Add(new Vector3(180, 180, 180));
@@ -146,6 +147,7 @@ abstract public class ActionPointManager : MonoBehaviour
     protected static IEnumerator DeactivateHeart(Object heart)
     {
         yield return new WaitForSeconds(0.5f);
+        UIManager.Instance.RemoveUIToCheck(heart.GetComponent<RectTransform>());
         Destroy(heart);
     }
 
@@ -178,6 +180,7 @@ abstract public class ActionPointManager : MonoBehaviour
         // 휴식하면 그날 하루에 남아있는 행동력 다 사용되기에 현재 있는 하트들 삭제
         foreach (Transform child in heartParent.transform)
         {
+            UIManager.Instance.RemoveUIToCheck(child.GetComponent<RectTransform>());
             Destroy(child.gameObject);
         }
 

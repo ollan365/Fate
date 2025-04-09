@@ -31,8 +31,10 @@ public class Room1ActionPointManager : ActionPointManager
             heartCount = actionPointsPerDay;
 
         // create heart on screen by creating instances of heart prefab under heart parent
-        for (int i = 0; i < heartCount; i++)
-            Instantiate(heartPrefab, heartParent.transform);
+        for (int i = 0; i < heartCount; i++) {
+            GameObject heartGameObject = Instantiate(heartPrefab, heartParent.transform);
+            UIManager.Instance.AddUIToCheck(heartGameObject.GetComponent<RectTransform>());
+        }
 
         // change Day text on screen
         dayText.text = $"Day {nowDayNum}";

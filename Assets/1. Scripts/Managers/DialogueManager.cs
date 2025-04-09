@@ -401,7 +401,7 @@ public class DialogueManager : MonoBehaviour
         var isInvestigating = RoomManager.Instance.GetIsInvestigating();
 
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.ROOM_2.ToInt())
-            isChoosingBrokenBearChoice = RoomManager.Instance.Room2ActionPointManager.GetChoosingBrokenBearChoice();
+            isChoosingBrokenBearChoice = RoomManager.Instance.room2ActionPointManager.GetChoosingBrokenBearChoice();
 
         if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice && !isInvestigating)
             RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
