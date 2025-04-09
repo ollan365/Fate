@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
         return isBusy;
     }
 
-    // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮김
+    // 원래 EventObjectManager 기능들 GameManager에 옮김
 
     public void AddEventObject(EventObject eventObject)
     {
