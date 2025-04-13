@@ -10,7 +10,6 @@ public class FollowGameManager : MonoBehaviour
     [Header("Gauges")]
     [SerializeField] private Slider overHeadDoubtGaugeSlider;
     [SerializeField] private Image[] overHeadDoubtGaugeSliderImages;
-    [SerializeField] private GameObject accidyDialogueBox;
     private float endPositonOfMap = 48.5f;
 
     [SerializeField] private Q_Vignette_Single vignette;
@@ -26,6 +25,7 @@ public class FollowGameManager : MonoBehaviour
 
     private Animator Fate { get => FollowManager.Instance.Fate; }
     private Animator Accidy { get => FollowManager.Instance.Accidy; }
+    public GameObject AccidyDialogueBox { get => FollowManager.Instance.AccidyDialogueBox; }
 
     private bool IsEnd { get => FollowManager.Instance.IsEnd; }
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
@@ -36,7 +36,7 @@ public class FollowGameManager : MonoBehaviour
     {
         if (!Accidy) return;
 
-        if (!StopAccidy && !IsTutorial) MoveAccidy();
+        if (!StopAccidy && !IsTutorial && !IsEnd) MoveAccidy();
 
         if (!IsEnd && !IsDialogueOpen || IsTutorial) MoveFate();
 
@@ -46,7 +46,7 @@ public class FollowGameManager : MonoBehaviour
     {
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
-        accidyDialogueBox.transform.position -= moveVector;
+        AccidyDialogueBox.transform.position -= moveVector;
         UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider, Accidy.transform.position.x / endPositonOfMap, 0);
     }
     private void MoveFate()
@@ -84,6 +84,10 @@ public class FollowGameManager : MonoBehaviour
         if (!stop && !IsEnd)
         {
             if (IsDialogueOpen || accidyStatus != AccidyStatus.GREEN || IsTutorial) return;
+        }
+        else if (IsEnd)
+        {
+            stop = true;
         }
 
         StopAccidy = stop;
@@ -210,7 +214,7 @@ public class FollowGameManager : MonoBehaviour
 
     private IEnumerator AccidyDialogueBoxLogic()
     {
-        TMP_Text text = accidyDialogueBox.GetComponentInChildren<TextMeshProUGUI>();
+        TMP_Text text = AccidyDialogueBox.GetComponentInChildren<TextMeshProUGUI>();
         float currentTime = 0;
         while (!IsEnd)
         {
@@ -232,7 +236,7 @@ public class FollowGameManager : MonoBehaviour
             }
             yield return null;
         }
-        accidyDialogueBox.SetActive(false);
+        AccidyDialogueBox.SetActive(false);
     }
     private IEnumerator CameraMove()
     {

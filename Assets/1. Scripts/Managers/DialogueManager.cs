@@ -145,8 +145,9 @@ public class DialogueManager : MonoBehaviour
 
         DisplayDialogueLine(initialDialogueLine);
 
-        if (RoomManager.Instance) 
-            RoomManager.Instance.SetButtons();
+        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
+
         MemoManager.Instance.SetMemoButtons(false);
     }
 
@@ -372,10 +373,6 @@ public class DialogueManager : MonoBehaviour
     
     public void EndDialogue()
     {
-        // 대화가 끝날 때 현재 미행 파트라면 추가적인 로직 처리 (애니메이션 재생 등)
-        if (FollowManager.Instance) 
-            FollowManager.Instance.EndScript();
-        
         isDialogueActive = false;
         dialogueSet[dialogueType.ToInt()].SetActive(false);
         foreach (Image characterImage in characterImages)
@@ -389,12 +386,13 @@ public class DialogueManager : MonoBehaviour
         }
 
         MemoManager.Instance.SetMemoButtons(true);
+        
         blurImage.SetActive(false);
         
         UIManager.Instance.SetCursorAuto();
         
-        if (!RoomManager.Instance) 
-            return;
+        if (FollowManager.Instance) FollowManager.Instance.EndScript();
+        if (!RoomManager.Instance) return;
 
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
         var isChoosingBrokenBearChoice = false;

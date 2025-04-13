@@ -17,9 +17,11 @@ public class FollowManager : MonoBehaviour
     [Header("Character")]
     [SerializeField] private Animator fate;
     [SerializeField] private Animator accidyGirl, accidyBoy;
+    [SerializeField] private GameObject accidyDialogueBox;
     private Animator accidy;
     public Animator Accidy { get => accidy; }
     public Animator Fate { get => fate; }
+    public GameObject AccidyDialogueBox { get => accidyDialogueBox; }
 
     [Header("Another Follow Manager")]
     [SerializeField] private FollowTutorial followTutorial;
@@ -110,26 +112,36 @@ public class FollowManager : MonoBehaviour
     // ==================== 미행 다이얼로그 ==================== //
     public bool ClickObject()
     {
-        if (IsEnd || !CanClick) return false;
+        if (!CanClick) return false;
 
         followGameManager.ChangeAnimStatusToStop(true);
-
-        if (IsDialogueOpen) return false;
-        IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
-
         followDialogueManager.ClickObject();
+        if (!IsEnd)
+        {
+            Accidy.GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f);
+            accidyDialogueBox.SetActive(false);
+        }
 
+        if (IsTutorial || IsDialogueOpen) return false;
+        IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
+        
         return true;
     }
     public void EndScript()
     {
         IsDialogueOpen = false; // 다른 오브젝트를 누를 수 있게 만든다
 
-        if (IsEnd || IsTutorial) return;
-
         followDialogueManager.EndScript();
-        followGameManager.ChangeAnimStatusToStop(false);
+        if (!IsEnd)
+        {
+            Accidy.GetComponent<Image>().color = new Color(1, 1, 1);
+            accidyDialogueBox.SetActive(true);
+        }
         EndScriptAction?.Invoke();
+
+        if (IsTutorial) return;
+
+        followGameManager.ChangeAnimStatusToStop(false);
     }
     public void OpenExtraDialogue(string extraName)
     {
@@ -147,7 +159,6 @@ public class FollowManager : MonoBehaviour
     }
 
     // ==================== 미행 ==================== //
-
     public void ClickCat()
     {
         SoundPlayer.Instance.UISoundPlay(Sound_Cat);

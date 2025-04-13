@@ -15,11 +15,8 @@ public class FollowDialogueManager : MonoBehaviour
     [SerializeField] private GameObject specialObjectButton;
     [SerializeField] private Image specialObjectButtonImage;
     [SerializeField] private Transform frontObjects;
-    [SerializeField] private float accidyAnimatorSpeed;
-    [SerializeField] private float fateAnimatorSpeed;
     private FollowExtra extra = FollowExtra.None;
 
-    private bool IsEnd { get => FollowManager.Instance.IsEnd; }
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
 
     private void Awake()
@@ -34,8 +31,7 @@ public class FollowDialogueManager : MonoBehaviour
         foreach (Transform child in frontObjects)
             child.GetComponent<Image>().color = new Color(0.01f, 0.01f, 0.01f);
 
-        accidyAnimatorSpeed = FollowManager.Instance.Accidy.speed;
-        fateAnimatorSpeed = FollowManager.Instance.Fate.speed;
+        if (FollowManager.Instance.IsEnd || FollowManager.Instance.IsTutorial) return;
 
         FollowManager.Instance.Accidy.speed = 0;
         FollowManager.Instance.Fate.speed = 0;
@@ -46,8 +42,8 @@ public class FollowDialogueManager : MonoBehaviour
         foreach (Transform child in frontObjects)
             child.GetComponent<Image>().color = new Color(1, 1, 1);
 
-        FollowManager.Instance.Accidy.speed = accidyAnimatorSpeed;
-        FollowManager.Instance.Fate.speed = fateAnimatorSpeed;
+        FollowManager.Instance.Accidy.speed = 1;
+        FollowManager.Instance.Fate.speed = 1;
 
         EndExtraDialogue(true);
     }
@@ -56,6 +52,7 @@ public class FollowDialogueManager : MonoBehaviour
         extra = ToEnum(extraName);
 
         extraBlockingPanel.SetActive(true); // 일반적인 블로킹 판넬이 아닌 다른 걸 켠다
+        FollowManager.Instance.Accidy.GetComponent<Image>().color = new Color(1, 1, 1);
         SetLayerRecursively(characterCanvas, 0); // 캐릭터도 블로킹 되도록
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
@@ -74,9 +71,6 @@ public class FollowDialogueManager : MonoBehaviour
         if (extra == FollowExtra.None) return;
 
         extraCanvas[Int(extra)].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-        
-        foreach (Transform child in frontObjects)
-            child.GetComponent<Image>().color = new Color(1, 1, 1);
 
         extraBlockingPanel.SetActive(false);
         extraCanvas[Int(extra)].SetActive(false);
@@ -122,7 +116,7 @@ public class FollowDialogueManager : MonoBehaviour
     {
         int currentDialogueLineIndex = 0;
 
-        while (!IsEnd)
+        while (!FollowManager.Instance.IsEnd)
         {
             DialogueManager.Instance.dialogues[dialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
             DialogueLine dialogueLine = DialogueManager.Instance.dialogues[dialogueID].Lines[currentDialogueLineIndex];
@@ -138,7 +132,7 @@ public class FollowDialogueManager : MonoBehaviour
                 // 다른 물체가 클릭되었을 시
                 if (IsDialogueOpen)
                 {
-                    if (IsEnd) // 미행이 끝났으면 즉시 종료
+                    if (FollowManager.Instance.IsEnd) // 미행이 끝났으면 즉시 종료
                     {
                         extraCanvas[speakerIndex].SetActive(false);
                         break;
