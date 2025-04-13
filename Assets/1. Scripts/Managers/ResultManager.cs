@@ -659,12 +659,12 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultWardrobeUpDrawersOpen": // 옷장 서랍장 위칸이 열림
-                SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
+                SoundPlayer.Instance.UISoundPlay(Sound_DrawerOpen);
                 executableObjects["ClosedWardrobeUpDrawers"].ExecuteAction();
                 break;
 
             case "ResultWardrobeUpDrawersClosed": // 옷장 서랍장 위칸이 닫힘
-                SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
+                SoundPlayer.Instance.UISoundPlay(Sound_DrawerClose);
                 executableObjects["OpenWardrobeUpDrawers"].ExecuteAction();
                 break;
 
@@ -673,12 +673,12 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultWardrobeDownDrawersOpen": // 옷장 서랍장 아래칸이 열림
-                SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
+                SoundPlayer.Instance.UISoundPlay(Sound_DrawerOpen);
                 executableObjects["ClosedWardrobeDownDrawers"].ExecuteAction();
                 break;
 
             case "ResultWardrobeDownDrawersClosed": // 옷장 서랍장 아래칸이 닫힘
-                SoundPlayer.Instance.UISoundPlay(Sound_StorageClose);
+                SoundPlayer.Instance.UISoundPlay(Sound_DrawerClose);
                 executableObjects["OpenWardrobeDownDrawers"].ExecuteAction();
                 break;
 
