@@ -177,12 +177,7 @@ public class GameManager : MonoBehaviour
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[]
         {
-            "PresentHeartIndex",
-            "ActionPoint",
-            "PresentHeartIndex",
-            "FateBirthday",
-            "EndTutorial_ROOM_1",
-            "SkipLobby"
+            "CurrentScene",
         });
 
         foreach (var item in variables)
@@ -194,7 +189,7 @@ public class GameManager : MonoBehaviour
     public bool GetIsBusy()  // 클릭을 막아야 하는 상황들
     {
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
-        bool isInvestigating = RoomManager.Instance.isInvestigating;
+        bool isInvestigating = RoomManager.Instance && RoomManager.Instance.isInvestigating;
         bool isTutorialPhase1 = (int)variables["TutorialPhase"] == 1;
         bool isMemoOpen = MemoManager.Instance.isMemoOpen;
 
@@ -203,7 +198,7 @@ public class GameManager : MonoBehaviour
         return isBusy;
     }
 
-    // 원래 EventObjectManager의 별로 없었던 기능들 GameManager에 옮김
+    // 원래 EventObjectManager 기능들 GameManager에 옮김
 
     public void AddEventObject(EventObject eventObject)
     {

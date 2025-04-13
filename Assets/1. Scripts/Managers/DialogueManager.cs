@@ -93,19 +93,22 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = true;
 
         // 대사가 2개 이상이라면 skip 버튼 활성화
-        if (dialogues[dialogueID].Lines.Count > 1) foreach (GameObject skip in skipText) skip.SetActive(true);
+        if (dialogues[dialogueID].Lines.Count > 1) 
+            foreach (GameObject skip in skipText) 
+                skip.SetActive(true);
 
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
 
-        if (initialDialogueLine.Blur == "TRUE") blurImage.SetActive(true);
-        else blurImage.SetActive(false);
+        blurImage.SetActive(initialDialogueLine.Blur == "TRUE");
 
         DisplayDialogueLine(initialDialogueLine);
 
-        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
-        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
+        if (RoomManager.Instance) 
+            RoomManager.Instance.SetButtons();
+        if (FollowManager.Instance) 
+            FollowManager.Instance.ClickObject();
 
         MemoManager.Instance.SetMemoButtons(false);
     }
@@ -127,14 +130,18 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = true;
 
         // 대사가 2개 이상이라면 skip 버튼 활성화
-        if (dialogues[dialogueID].Lines.Count > 1) foreach (GameObject skip in skipText) skip.SetActive(true);
+        if (dialogues[dialogueID].Lines.Count > 1) 
+            foreach (GameObject skip in skipText) 
+                skip.SetActive(true);
 
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
 
-        if (initialDialogueLine.Blur == "TRUE") blurImage.SetActive(true);
-        else blurImage.SetActive(false);
+        if (initialDialogueLine.Blur == "TRUE") 
+            blurImage.SetActive(true);
+        else 
+            blurImage.SetActive(false);
 
         DisplayDialogueLine(initialDialogueLine);
 
@@ -292,6 +299,8 @@ public class DialogueManager : MonoBehaviour
         UpdateBackground(dialogueLine);
         PlayDialogueSound(dialogueLine);
         UpdateCharacterImages(dialogueLine);
+        
+        UIManager.Instance.SetCursorAuto();
     }
 
     private int GetCharacterYOffset(int accidyGender, int characterImageZoomLevel)
@@ -322,43 +331,48 @@ public class DialogueManager : MonoBehaviour
 
     private void ChangeDialogueCanvas(string speaker)
     {
-        if(dialogueType == DialogueType.CENTER)
+        if (dialogueType == DialogueType.CENTER)
             dialogueType = DialogueType.ROOM_ACCIDY;
 
         // 미행 대화창
         if ((int)GameManager.Instance.GetVariable("CurrentScene") is 2 or 4)
         {
-            if (speaker == "DialogueC_004")
+            switch (speaker)
             {
-                FollowManager.Instance.EndExtraDialogue(false);
-                dialogueType = DialogueType.FOLLOW_THINKING;
+                case "DialogueC_004":
+                    FollowManager.Instance.EndExtraDialogue(false);
+                    dialogueType = DialogueType.FOLLOW_THINKING;
+                    break;
+                case "DialogueC_002" or "DialogueC_003":
+                    FollowManager.Instance.EndExtraDialogue(false);
+                    dialogueType = DialogueType.FOLLOW;
+                    break;
+                // 행인의 대사인 경우
+                default:
+                    FollowManager.Instance.EndExtraDialogue(false);
+                    FollowManager.Instance.OpenExtraDialogue(speaker);
+                    break;
             }
-            else if (speaker is "DialogueC_002" or "DialogueC_003")
-            {
-                FollowManager.Instance.EndExtraDialogue(false);
-                dialogueType = DialogueType.FOLLOW;
-            }
-            else // 행인의 대사인 경우
-            {
-                FollowManager.Instance.EndExtraDialogue(false);
-                FollowManager.Instance.OpenExtraDialogue(speaker);
-            }
+
             return;
         }
 
-        // 방 대화창
-        if (speaker is "DialogueC_001" or "DialogueC_002")
-            dialogueType = DialogueType.ROOM_ACCIDY;
-        else if(speaker is "DialogueC_003" or "DialogueC_008")
-            dialogueType = DialogueType.ROOM_FATE;
-        else if (speaker is "DialogueC_004")
-            dialogueType = DialogueType.ROOM_THINKING;
+        switch (speaker)
+        {
+            case "DialogueC_001" or "DialogueC_002":
+                dialogueType = DialogueType.ROOM_ACCIDY;
+                break;
+            case "DialogueC_003" or "DialogueC_008":
+                dialogueType = DialogueType.ROOM_FATE;
+                break;
+            case "DialogueC_004":
+                dialogueType = DialogueType.ROOM_THINKING;
+                break;
+        }
     }
+    
     public void EndDialogue()
     {
-        // 재생하고 있던 사운드 멈춤
-        // 추가 부탁드립니다
-
         isDialogueActive = false;
         dialogueSet[dialogueType.ToInt()].SetActive(false);
         foreach (Image characterImage in characterImages)
@@ -374,7 +388,9 @@ public class DialogueManager : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(true);
         
         blurImage.SetActive(false);
-
+        
+        UIManager.Instance.SetCursorAuto();
+        
         if (FollowManager.Instance) FollowManager.Instance.EndScript();
         if (!RoomManager.Instance) return;
 
@@ -383,18 +399,16 @@ public class DialogueManager : MonoBehaviour
         var isInvestigating = RoomManager.Instance.GetIsInvestigating();
 
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.ROOM_2.ToInt())
-            isChoosingBrokenBearChoice = RoomManager.Instance.Room2ActionPointManager.GetChoosingBrokenBearChoice();
+            isChoosingBrokenBearChoice = RoomManager.Instance.room2ActionPointManager.GetChoosingBrokenBearChoice();
 
         if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice && !isInvestigating)
             RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
 
         // 튜토리얼 중 다른 곳 클릭하면 나오는 강조 이미지가 해당 "ㅁㅁ를 조사해보자" 스크립트 다 끝나면 자동으로 강조 이미지 꺼지게 함.
-        if ((bool)GameManager.Instance.GetVariable("isTutorial") && RoomManager.Instance.imageAndLockPanelManager.GetIsTutorialObjectActive())
-        {
+        if ((bool)GameManager.Instance.GetVariable("isTutorial") &&
+            RoomManager.Instance.imageAndLockPanelManager.GetIsTutorialObjectActive())
             RoomManager.Instance.imageAndLockPanelManager.OnExitButtonClick();
-        }
         RoomManager.Instance.SetButtons();
-
     }
 
     public void SkipButtonClick()

@@ -18,22 +18,26 @@ public class ResultManager : MonoBehaviour
     
     public void RegisterExecutable(string objectName, IResultExecutable executable)
     {
+        //Debug.Log($"registered {objectName}");
+
         if (!executableObjects.ContainsKey(objectName))
             executableObjects[objectName] = executable;
     }
 
     public void InitializeExecutableObjects()
     {
+        //Debug.Log("############### unregistered all executable objects ###############");
+
         executableObjects = new Dictionary<string, IResultExecutable>();
     }
 
-    // public void executableObjectsKeyCheck(string objectName)
-    // {
-    //     if (executableObjects.ContainsKey(objectName))
-    //         Debug.Log(objectName + " key exists");
-    //     else
-    //         Debug.Log(objectName + " key does not exist");
-    // }
+    //public void executableObjectsKeyCheck(string objectName)
+    //{
+    //    if (executableObjects.ContainsKey(objectName))
+    //        Debug.Log(objectName + " key exists");
+    //    else
+    //        Debug.Log(objectName + " key does not exist");
+    //}
 
     void Awake()
     {
@@ -323,7 +327,7 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_ChairMovement);
                 executableObjects["Chair1"].ExecuteAction();
                 executableObjects["Chair2"].ExecuteAction();
-                executableObjects["Chair3"].ExecuteAction();
+                executableObjects["Chair4"].ExecuteAction();
                 GameManager.Instance.InverseVariable("ChairMoved");
                 break;
 
@@ -344,10 +348,10 @@ public class ResultManager : MonoBehaviour
             
             case "ResultCarpetOpen": // 카펫이 들쳐짐
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetOpen);
-                // executableObjectsKeyCheck("ClosedCarpet1");
-                // executableObjectsKeyCheck("ClosedCarpet4");
+                //executableObjectsKeyCheck("ClosedCarpet1");
+                //executableObjectsKeyCheck("ClosedCarpet3");
                 executableObjects["ClosedCarpet1"].ExecuteAction();
-                executableObjects["ClosedCarpet4"].ExecuteAction();
+                executableObjects["ClosedCarpet3"].ExecuteAction();
                 break;
             
             case "ResultCarpetDropOutLetterZoom": // 종이를 확대해주는 UI
@@ -356,11 +360,11 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "ResultCarpetClosed": // 카펫이 원래대로 돌아감
+                //executableObjectsKeyCheck("OpenCarpet1");
+                //executableObjectsKeyCheck("OpenCarpet3");
                 SoundPlayer.Instance.UISoundPlay(Sound_CarpetClose);
-                // executableObjectsKeyCheck("OpenCarpet1");
-                // executableObjectsKeyCheck("OpenCarpet4");
                 executableObjects["OpenCarpet1"].ExecuteAction();
-                executableObjects["OpenCarpet4"].ExecuteAction();
+                executableObjects["OpenCarpet3"].ExecuteAction();
                 break;
             
             case "ResultPosterScript": // 포스터에 대한 스크립트
@@ -404,14 +408,24 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_LockerUnlock);
                 break;
 
-            case "ResultClosetBoxSound": // 상자 열리는 사운드
+            case "ResultClosetBoxOpenScript": // 열린 상자 대한 스크립트
+                float boxOpenTime = 1.5f;
+                executableObjects["Box"].ExecuteAction();
                 SoundPlayer.Instance.UISoundPlay(Sound_LockerKeyMovement);
-                break;
-
-            case "ResultClosetBoxPicturesUI": // 상자 안 사진들이 UI로 보임
-                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "photoInsideBox");
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_025", boxOpenTime));
+                StartCoroutine(RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroupWithDelay(true, "photoInsideBox", boxOpenTime));
                 GameManager.Instance.SetVariable("BoxOpened", true);
                 break;
+
+            //case "ResultClosetBoxSound": // 상자 열리는 사운드
+            //    SoundPlayer.Instance.UISoundPlay(Sound_LockerKeyMovement);
+            //    executableObjects["Box"].ExecuteAction();
+            //    break;
+
+            //case "ResultClosetBoxPicturesUI": // 상자 안 사진들이 UI로 보임
+            //    RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "photoInsideBox");
+            //    GameManager.Instance.SetVariable("BoxOpened", true);
+            //    break;
 
             case "ResultCabinetDoorsOpen": // 서랍장이 열림
                 SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
@@ -457,8 +471,8 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Closet Unzoomed-closed 2"].ExecuteAction();
                 executableObjects["Closet Unzoomed-open 2"].ExecuteAction();
                 executableObjects["Closet Unzoomed-open back image 2"].ExecuteAction();
-                executableObjects["Closet Unzoomed-closed 4"].ExecuteAction();
-                executableObjects["Closet Unzoomed-open 4"].ExecuteAction();
+                executableObjects["Closet Unzoomed-closed 3"].ExecuteAction();
+                executableObjects["Closet Unzoomed-open 3"].ExecuteAction();
                 break;
             
             case "ResultCabinetZoom": // 서랍장 확대 화면으로 전환
@@ -477,7 +491,7 @@ public class ResultManager : MonoBehaviour
             
             case "Result_showZoomedPillow": // 배게와 침대 위 인형 확대 화면으로 전환
                 executableObjects["Pillow Unzoomed 1"].ExecuteAction();
-                executableObjects["Pillow Unzoomed 3"].ExecuteAction();
+                executableObjects["Pillow Unzoomed 4"].ExecuteAction();
                 break;
             
             case "Result_showZoomedDeskShelf": // 책상 위 선반 확대 화면으로 전환
@@ -563,14 +577,14 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultEatEnergySupplement":
-                RoomManager.Instance.Room2ActionPointManager.EatEnergySupplement();
+                RoomManager.Instance.room2ActionPointManager.EatEnergySupplement();
                 break;
 
             case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
-                RoomManager.Instance.Room2ActionPointManager.SetChoosingBrokenBearChoice(true);
+                RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(true);
                 DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
-                RoomManager.Instance.Room2ActionPointManager.SetChoosingBrokenBearChoice(false);
+                RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(false);
                 break;
 
             case "ResultDiary2LockActivation": // 다이어리 잠금 장치 활성화됨
@@ -589,6 +603,7 @@ public class ResultManager : MonoBehaviour
             // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
                 executableObjects["Box Unzoomed 2"].ExecuteAction();
+                executableObjects["Box Unzoomed 3"].ExecuteAction();
                 break;
 
             case "Result_showZoomedClosetUnder": // 옷장 아래 영역 확대 화면으로 전환
@@ -597,15 +612,22 @@ public class ResultManager : MonoBehaviour
                 executableObjects["ClosetUnderDown Unzoomed-open 2"].ExecuteAction();
                 executableObjects["ClosetUnderUp Unzoomed-closed 2"].ExecuteAction();
                 executableObjects["ClosetUnderUp Unzoomed-open 2"].ExecuteAction();
+                executableObjects["ClosetUnder Unzoomed 3"].ExecuteAction();
+                executableObjects["ClosetUnderDown Unzoomed-closed 3"].ExecuteAction();
+                executableObjects["ClosetUnderDown Unzoomed-open 3"].ExecuteAction();
+                executableObjects["ClosetUnderUp Unzoomed-closed 3"].ExecuteAction();
+                executableObjects["ClosetUnderUp Unzoomed-open 3"].ExecuteAction();
                 break;
 
             case "Result_showZoomedMedicine2": // 약 확대 화면으로 전환
                 executableObjects["Medicine2 Unzoomed 1"].ExecuteAction();
-                executableObjects["Medicine2 Unzoomed 3"].ExecuteAction();
+                executableObjects["Medicine2 Unzoomed 4"].ExecuteAction();
                 break;
 
             case "Result_showZoomedShoppingBags": // 쇼핑백 확대 화면으로 전환
+                executableObjects["ShoppingBags Unzoomed 2"].ExecuteAction();
                 executableObjects["ShoppingBags Unzoomed 3"].ExecuteAction();
+                executableObjects["ShoppingBags Unzoomed 4"].ExecuteAction();
                 break;
 
             case "ResultMedicine2Zoom": // 선반 위 약 확대UI

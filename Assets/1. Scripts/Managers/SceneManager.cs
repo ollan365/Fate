@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static Constants;
 
 public class SceneManager : MonoBehaviour
 {
     public static SceneManager Instance { get; private set; }
-    public int roomSideIndex = 0;
+    // public int roomSideIndex = 0;
     
     void Awake()
     {
@@ -23,6 +24,7 @@ public class SceneManager : MonoBehaviour
     {
         LoadScene(SceneType.START);
     }
+    
     public void LoadScene(SceneType loadSceneType)
     {
         if (loadSceneType == SceneType.ENDING)
@@ -30,6 +32,7 @@ public class SceneManager : MonoBehaviour
         else
             StartCoroutine(ChangeScene(loadSceneType));
     }
+    
     private IEnumerator LoadEnding()
     {
         // 대사 출력 중이면 기다리기
@@ -43,6 +46,12 @@ public class SceneManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneType.ENDING.ToInt());
+    }
+    
+    public int GetActiveScene()
+    {
+        Scene activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        return activeScene.buildIndex;
     }
 
     private IEnumerator ChangeScene(SceneType loadSceneType)
@@ -139,6 +148,7 @@ public class SceneManager : MonoBehaviour
 
         LoadScene(SceneType.ENDING);
     }
+    
     public void ClearThisScene()
     {
         string currentScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum().ToString();

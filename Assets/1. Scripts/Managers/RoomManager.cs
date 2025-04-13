@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RoomManager : MonoBehaviour
@@ -24,7 +25,7 @@ public class RoomManager : MonoBehaviour
 
     // 액션포인트 매니저
     public ActionPointManager actionPointManager;
-    public Room2ActionPointManager Room2ActionPointManager;
+    public Room2ActionPointManager room2ActionPointManager;
 
     void Awake()
     {
@@ -38,6 +39,8 @@ public class RoomManager : MonoBehaviour
         MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge));
         
         UIManager.Instance.SetUI(eUIGameObjectName.NormalVignette, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.ActionPointsBackgroundImage, true);
         UIManager.Instance.SetUI(eUIGameObjectName.DayText, true);
         UIManager.Instance.SetUI(eUIGameObjectName.HeartParent, true);
         UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, true);
@@ -68,13 +71,6 @@ public class RoomManager : MonoBehaviour
 
         actionPointManager.CreateHearts();  // create hearts on room start
 
-        // 아래는 뭘 살려야할지 모르겠어서 두개 모두 살려뒀습니다
-        // 참고로 SceneManager.Instance.CurrentScene == SceneType.ROOM_1이 true 이면 현재 씬이 Room1 입니당...!
-        // 도움되실까 싶어서 남겨둡니당...
-        
-        //// 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만) - 겜메에서 현재 씬 이름 저장하고 가져오는 방식으로 변경 필요
-        //if (!GameManager.Instance.skipTutorial && EditorSceneManager.GetActiveScene().name == "Room1") DialogueManager.Instance.StartDialogue("Prologue_015");
-
         // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
         {
@@ -83,7 +79,6 @@ public class RoomManager : MonoBehaviour
                 && !(bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
                 DialogueManager.Instance.StartDialogue("Prologue_015");
         }
-
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
@@ -94,15 +89,7 @@ public class RoomManager : MonoBehaviour
             return;
         }
 
-        //int newSideIndex = (currentSideIndex + sides.Count + leftOrRight) % sides.Count;
-        int[] rightOrder = { 0, 1, 3, 2 }; // 오른쪽 side 이동 순서
-        int[] leftOrder = { 0, 2, 3, 1 };  // 왼쪽 side 이동 순서
-
-        // 현재 위치를 해당 이동 방향의 배열에서 찾고, 이동 방향에 맞게 다음 인덱스를 구함
-        int currentPos = System.Array.IndexOf((leftOrRight == 1) ? rightOrder : leftOrder, currentSideIndex);
-        int newSideIndex = (leftOrRight == 1)
-            ? rightOrder[(currentPos + 1) % rightOrder.Length]
-            : leftOrder[(currentPos + 1) % leftOrder.Length];
+        int newSideIndex = (currentSideIndex + sides.Count + leftOrRight) % sides.Count;
         SetCurrentSide(newSideIndex);
         
         ScreenEffect.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
@@ -112,17 +99,14 @@ public class RoomManager : MonoBehaviour
 
         // 튜토리얼 1 페이즈 관련
         if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
-        {
             if(!GameManager.Instance.skipTutorial)
                 tutorialManager.SetSeenSides(newSideIndex);
-        }
-
-        //Debug.Log(newSideIndex);
     }
 
     public void OnExitButtonClick()
     {
-        if (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
+        if (isInvestigating) 
+            imageAndLockPanelManager.OnExitButtonClick();
         else if (isZoomed)
         {
             // 화면 전환 효과
@@ -135,7 +119,6 @@ public class RoomManager : MonoBehaviour
         SetButtons();
 
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
-
         if (refillHeartsOrEndDay)
             actionPointManager.RefillHeartsOrEndDay();
 
@@ -146,15 +129,14 @@ public class RoomManager : MonoBehaviour
     {
         if (UIManager.Instance && UIManager.Instance.heartParent.transform.childCount < 1)
             OnExitButtonClick();
-        else
-            return;
     }
 
 
     // exit to root: turn off all the panels and zoom out to the root view
     public void ExitToRoot()
     {
-        if (isInvestigating) imageAndLockPanelManager.OnExitButtonClick();
+        if (isInvestigating) 
+            imageAndLockPanelManager.OnExitButtonClick();
         if (isZoomed)
         {
             SetCurrentView(sides[currentSideIndex]);
@@ -162,11 +144,6 @@ public class RoomManager : MonoBehaviour
         }
         
         SetButtons();
-    }
-
-    public void EmptyActionPoint()
-    {
-        GameManager.Instance.SetVariable("ActionPoint", 1);
     }
 
     public bool GetIsInvestigating()
@@ -213,15 +190,15 @@ public class RoomManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, isTrue);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, isTrue);
         
-        switch (currentSideIndex)
-        {
-            case 1:
-                UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
-                break;
-            case 2:
-                UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
-                break;
-        }
+        //switch (currentSideIndex)
+        //{
+        //    case 1:
+        //        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
+        //        break;
+        //    case 2:
+        //        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
+        //        break;
+        //}
     }
     
     public void SetButtons()
@@ -241,5 +218,7 @@ public class RoomManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.NormalVignette, !isLaptopOpen);
         UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, !isLaptopOpen);
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
+        
+        UIManager.Instance.SetCursorAuto();
     }
 }
