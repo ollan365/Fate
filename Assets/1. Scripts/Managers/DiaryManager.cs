@@ -226,7 +226,9 @@ public class DiaryManager : PageContentsManager
                 continue;
             }
 
-            var script = DialogueManager.Instance.scripts[scriptID].GetScript();
+            // PlayerName 언급하는 스크립트도 있기에 ProcessPlaceholders 실행 되어야 함
+            //var script = DialogueManager.Instance.scripts[scriptID].GetScript();
+            var script = ProcessPlaceholders(scriptID);
             Dictionary<string, (string, string)> targetDictionary = null;
 
             if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
@@ -279,5 +281,24 @@ public class DiaryManager : PageContentsManager
         GameManager.Instance.SetVariable("DoodlesOrder", doodlesOrder);
         
         Debug.Log(doodlesOrder);
+    }
+
+    private string ProcessPlaceholders(string scriptID)
+    {
+        var sentence = DialogueManager.Instance.scripts[scriptID].GetScript();
+
+        if (DialogueManager.Instance.scripts[scriptID].Placeholder.Length > 0)
+        {
+            var effects = DialogueManager.Instance.scripts[scriptID].Placeholder.Split('/');
+            foreach (var effect in effects)
+                switch (effect)
+                {
+                    case "TRUE":
+                        var fateName = (string)GameManager.Instance.GetVariable("FateName");
+                        sentence = sentence.Replace("{PlayerName}", fateName);
+                        break;
+                }
+        }
+        return sentence;
     }
 }
