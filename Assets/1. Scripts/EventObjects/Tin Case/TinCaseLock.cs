@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class TinCaseLock : MonoBehaviour
@@ -10,6 +12,8 @@ public class TinCaseLock : MonoBehaviour
     //private bool showCorrectAnswer = false;
 
     [SerializeField] private TinCase tinCaseA;
+
+    [SerializeField] private GameObject completeLockImage;
 
     public void CheckAnswer()
     {
@@ -28,6 +32,9 @@ public class TinCaseLock : MonoBehaviour
             StartCoroutine(ClearMessageAfterDelay(2));
             tinCaseA.SetIsInquiry(true);
             GameManager.Instance.SetVariable("TinCaseCorrect", true);
+
+            SetCompleteLockImage(true);
+            SetWheels(false);
         }
         else
         {
@@ -49,6 +56,19 @@ public class TinCaseLock : MonoBehaviour
     //        GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 + 200, 200, 50), "Correct Answer!", guiStyle);
     //    }
     //}
+
+    private void SetCompleteLockImage(bool isShow)
+    {
+        completeLockImage.SetActive(isShow);
+    }
+
+    private void SetWheels(bool isShow)
+    {
+        foreach (var wheel in wheels)
+        {
+            wheel.gameObject.SetActive(isShow);
+        }
+    }
 
     IEnumerator ClearMessageAfterDelay(float delay)
     {
