@@ -41,6 +41,8 @@ public class StartLogic : MonoBehaviour
     [SerializeField] private GameObject background;
     [SerializeField] private Sprite titleWithLogo, titleWithOutLogo, room1Side1BackgroundSprite;
 
+    [Header("Option")]
+    private bool openOptionByButton = false;
     private void Awake()
     {
         if (Instance == null)
@@ -96,6 +98,14 @@ public class StartLogic : MonoBehaviour
             // 정확히 360도 회전하도록 설정
             second.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
+    }
+    public void OpenOption()
+    {
+        UIManager.Instance.SetMenuUI(true);
+    }
+    public void SetButtons()
+    {
+        buttons.SetActive(true);
     }
     public void StartNewGame()
     {

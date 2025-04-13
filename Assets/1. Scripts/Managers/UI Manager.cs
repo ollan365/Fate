@@ -155,12 +155,6 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
         uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
 
-        // uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
-        // uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
-        // uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider, SoundEffectSlider);
-        // uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
-        // uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
-
         uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge, followMemoGauge);
 
         uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
@@ -214,18 +208,20 @@ public class UIManager : MonoBehaviour
         return uiGameObjects[uiName];
     }
 
-    private void SetMenuUI()
+    public void SetMenuUI(bool startSceneButtonClick = false)
     {
         if (GetUI(eUIGameObjectName.MenuUI).activeSelf)
         {
             SetUI(eUIGameObjectName.MenuUI, false);
             SetUI(eUIGameObjectName.WhiteMenu, false);
             SetUI(eUIGameObjectName.BlackMenu, false);
+            if (startSceneButtonClick) StartLogic.Instance.SetButtons();
             Time.timeScale = 1f;
         }
         else if (GetUI(eUIGameObjectName.OptionUI).activeSelf)
         {
             SetUI(eUIGameObjectName.OptionUI, false);
+            if (startSceneButtonClick) StartLogic.Instance.SetButtons();
             Time.timeScale = 1f;
         }
         else

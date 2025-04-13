@@ -122,7 +122,7 @@ public class FollowManager : MonoBehaviour
             accidyDialogueBox.SetActive(false);
         }
 
-        if (IsTutorial || IsDialogueOpen) return false;
+        if (IsTutorial || IsDialogueOpen || IsEnd) return false;
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
         
         return true;
