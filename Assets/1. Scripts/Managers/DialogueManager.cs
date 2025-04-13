@@ -139,6 +139,8 @@ public class DialogueManager : MonoBehaviour
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
+
         MemoManager.Instance.SetMemoButtons(false);
     }
 

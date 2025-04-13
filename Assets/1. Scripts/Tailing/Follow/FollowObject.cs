@@ -13,7 +13,8 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
     public float scaleValue;
     public new void OnMouseDown()
     {
-        if (!FollowManager.Instance.ClickObject()) return; // 상호작용 할 수 없는 상태면 리턴
+        if (FollowManager.Instance.IsTutorial && objectName == FollowObjectName.Light) { }
+        else if (!FollowManager.Instance.ClickObject()) return; // 상호작용 할 수 없는 상태면 리턴
 
         FollowManager.Instance.ClickCount++;
 

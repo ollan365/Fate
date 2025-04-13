@@ -4950,14 +4950,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 609234996}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2000167333}
   - {fileID: 1705113463}
-  m_Father: {fileID: 807959347}
+  m_Father: {fileID: 743407122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6072,7 +6072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6169,6 +6169,7 @@ RectTransform:
   m_Children:
   - {fileID: 919874107}
   - {fileID: 17806351}
+  - {fileID: 609234997}
   - {fileID: 1895693745}
   - {fileID: 1368349842}
   m_Father: {fileID: 0}
@@ -6712,7 +6713,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1922049325}
-  - {fileID: 609234997}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13428,7 +13428,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 083e27f346922a246b7e0f409ca1027e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13446,8 +13446,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -236469749
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 348b1cf840b48574eb2e1c118d01cf24, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -13822,7 +13822,7 @@ MonoBehaviour:
   extraName: 1
   isSpecial: 1
   afterBlurImages:
-  - {fileID: 1516116505}
+  - {fileID: 1368349841}
   specialSprite: {fileID: 0}
   scaleValue: 0
 --- !u!114 &1056575986
@@ -14632,6 +14632,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: FollowObject, Assembly-CSharp
         m_MethodName: OnMouseDown
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1705113462}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -19332,6 +19344,7 @@ MonoBehaviour:
   fate: {fileID: 155627208}
   accidyGirl: {fileID: 357398527}
   accidyBoy: {fileID: 1652456454}
+  accidyDialogueBox: {fileID: 700566665}
   followTutorial: {fileID: 1830803161}
   followEnd: {fileID: 1830803162}
   followDialogueManager: {fileID: 1830803165}
@@ -19411,8 +19424,6 @@ MonoBehaviour:
   specialObjectButton: {fileID: 1875757650}
   specialObjectButtonImage: {fileID: 1875757649}
   frontObjects: {fileID: 919874107}
-  accidyAnimatorSpeed: 0
-  fateAnimatorSpeed: 0
 --- !u!114 &1830803166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19429,7 +19440,6 @@ MonoBehaviour:
   overHeadDoubtGaugeSliderImages:
   - {fileID: 1289118088}
   - {fileID: 986156888}
-  accidyDialogueBox: {fileID: 700566665}
   vignette: {fileID: 866583453}
   accidyMoveSpeed: 1
   fateMoveSpeed: 2.5

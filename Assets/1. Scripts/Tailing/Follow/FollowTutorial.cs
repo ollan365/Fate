@@ -26,14 +26,14 @@ public class FollowTutorial : MonoBehaviour
 
         // 다른 물체를 누를 수 없도록 만든다
         FollowManager.Instance.IsTutorial = true;
-        tutorialBlockingPanel.SetActive(true);
+        if(tutorialBlockingPanel) tutorialBlockingPanel.SetActive(true);
 
         // 튜토리얼 중에 메모 버튼이 켜지지 않도록 설정
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
         StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
-        highlightPanel.SetActive(false);
+        if (highlightPanel) highlightPanel.SetActive(false);
         yield return new WaitForSeconds(1.5f);
 
         FollowManager.Instance.StartFollow();
@@ -165,7 +165,7 @@ public class FollowTutorial : MonoBehaviour
         startText.gameObject.SetActive(false);
         startBlockingPanel.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
-        tutorialBlockingPanel.SetActive(false);
+        if (tutorialBlockingPanel) tutorialBlockingPanel.SetActive(false);
 
         MemoManager.Instance.HideMemoButton = false;
         MemoManager.Instance.SetMemoButtons(true);
