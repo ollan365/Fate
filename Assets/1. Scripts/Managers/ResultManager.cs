@@ -567,7 +567,7 @@ public class ResultManager : MonoBehaviour
                 //Debug.Log("ResultFixTeddyBear executed");
                 executableObjects["BrokenTeddyBear0"].ExecuteAction();
                 executableObjects["BrokenTeddyBear1"].ExecuteAction();
-                executableObjects["BrokenTeddyBear3"].ExecuteAction();
+                executableObjects["BrokenTeddyBear4"].ExecuteAction();
                 GameManager.Instance.SetVariable("TeddyBearFixed", true);
                 break;
 
@@ -720,6 +720,23 @@ public class ResultManager : MonoBehaviour
             case "ResultEndRoom2": // Room2 끝, 스크립트 출력 및 미행2로 진행
                 DialogueManager.Instance.StartDialogue("Result_StartDialogueRoomEscape2S_016");
                 SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
+                break;
+
+            // 방탈출2 아침 스크립트
+            case "Result_Room2Morning2":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_005", totalTime));
+                break;
+
+            case "Result_Room2Morning3":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_008", totalTime));
+                break;
+
+            case "Result_Room2Morning4":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_011", totalTime));
+                break;
+
+            case "Result_Room2Morning5":
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape2S_014", totalTime));
                 break;
 
             // 미행 1
