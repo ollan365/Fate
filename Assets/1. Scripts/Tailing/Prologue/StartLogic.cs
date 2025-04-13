@@ -41,8 +41,6 @@ public class StartLogic : MonoBehaviour
     [SerializeField] private GameObject background;
     [SerializeField] private Sprite titleWithLogo, titleWithOutLogo, room1Side1BackgroundSprite;
 
-    [Header("Option")]
-    private bool openOptionByButton = false;
     private void Awake()
     {
         if (Instance == null)

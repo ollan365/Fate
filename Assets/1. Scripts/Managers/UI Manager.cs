@@ -29,6 +29,7 @@ public enum eUIGameObjectName
     BGMValue,
     SoundEffectValue,
     FollowMemoGauge,
+    FollowUI,
     FollowUIBackground,
     DoubtGaugeSlider,
     FatePositionSlider,
@@ -83,8 +84,10 @@ public class UIManager : MonoBehaviour
     public GameObject SoundEffectSlider;
     public GameObject BGMValueText;
     public GameObject SoundEffectValueText;
-    
+    private bool menuOpenByStartSceneButton = false;
+
     [Header("UI Game Objects - Follow")]
+    public GameObject followUIParent;
     public GameObject followMemoGauge;
     public GameObject followUIBackground;
     public GameObject doubtGaugeSlider;
@@ -155,6 +158,8 @@ public class UIManager : MonoBehaviour
         uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
         uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
 
+        uiGameObjects.Add(eUIGameObjectName.FollowUI, followUIParent);
+
         uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge, followMemoGauge);
 
         uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
@@ -210,18 +215,28 @@ public class UIManager : MonoBehaviour
 
     public void SetMenuUI(bool startSceneButtonClick = false)
     {
+        if(startSceneButtonClick) menuOpenByStartSceneButton = startSceneButtonClick;
+
         if (GetUI(eUIGameObjectName.MenuUI).activeSelf)
         {
             SetUI(eUIGameObjectName.MenuUI, false);
             SetUI(eUIGameObjectName.WhiteMenu, false);
             SetUI(eUIGameObjectName.BlackMenu, false);
-            if (startSceneButtonClick) StartLogic.Instance.SetButtons();
+            if (menuOpenByStartSceneButton)
+            {
+                StartLogic.Instance.SetButtons();
+                menuOpenByStartSceneButton = false;
+            }
             Time.timeScale = 1f;
         }
         else if (GetUI(eUIGameObjectName.OptionUI).activeSelf)
         {
             SetUI(eUIGameObjectName.OptionUI, false);
-            if (startSceneButtonClick) StartLogic.Instance.SetButtons();
+            if (menuOpenByStartSceneButton)
+            {
+                StartLogic.Instance.SetButtons();
+                menuOpenByStartSceneButton = false;
+            }
             Time.timeScale = 1f;
         }
         else
