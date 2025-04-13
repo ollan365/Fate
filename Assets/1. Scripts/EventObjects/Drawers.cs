@@ -152,6 +152,7 @@ public class Drawers : EventObject, IResultExecutable
 
     IEnumerator MoveDrawer(Vector2 targetPosition)
     {
+        RoomManager.Instance.SetIsInvestigating(true);
         isMoving = true;
 
         GameManager.Instance.SetVariable(isUpDrawer ? "isUpDrawerMoving": "isDownDrawerMoving", isMoving);
@@ -177,6 +178,7 @@ public class Drawers : EventObject, IResultExecutable
         if (!DrawerMoved)
             gameObject.SetActive(false);
 
+        RoomManager.Instance.SetIsInvestigating(false);
     }
     // *******************************************************************************
 }

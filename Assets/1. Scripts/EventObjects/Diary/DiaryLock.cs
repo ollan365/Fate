@@ -52,7 +52,7 @@ public class DiaryLock : EventObject, IResultExecutable
         // 비밀번호 무한 입력 시도 방지
         RoomManager.Instance.ProhibitInput();
 
-        Debug.Log(passwordInput.Length);
+        //Debug.Log(passwordInput.Length);
 
         if (passwordInput.Length < 4)
         {
