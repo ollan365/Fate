@@ -266,6 +266,8 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, false);
+
         StartCoroutine(followEnd.EndFollowLogic_0());
     }
     public void FollowEndLogic_1()
