@@ -16,6 +16,8 @@ public class MemoManager : PageContentsManager
     [SerializeField] private GameObject notificationImage;
     [SerializeField] private GameObject leftButtonNotificationImage;
     [SerializeField] private GameObject rightButtonNotificationImage;
+    public bool fade = true;
+    public FloatDirection floatDirection = FloatDirection.Up;
 
     public static MemoManager Instance { get; private set; }
     public bool isMemoOpen = false;
@@ -113,7 +115,7 @@ public class MemoManager : PageContentsManager
 
     public void OnExit()
     {
-        SetMemoContents(false);
+        SetMemoContents(false, fade, floatDirection);
         SetMemoButtons(true);
 
         if (FollowManager.Instance)
@@ -236,15 +238,26 @@ public class MemoManager : PageContentsManager
         clearFlageImage.color = currentMemoCount < cutLine ? unclearColor : clearColor;
     }
 
-    public void SetMemoContents(bool isActive)
+    public void SetMemoContents(bool isActive, bool fade = false, FloatDirection direction = FloatDirection.None)
     {
-        UIManager.Instance.SetUI(eUIGameObjectName.MemoContents, isActive);
+        flipLeftButton.SetActive(false);
+        flipRightButton.SetActive(false);
+         
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoContents, isActive, fade, direction);
         isMemoOpen = isActive;
 
         if (isActive) {
             memoPages.totalPageCount = GetAggregatedMemos().Count;
-            DisplayPagesStatic(memoPages.currentPage);
+            float delay = UIManager.Instance.fadeAnimationDuration;
+            StartCoroutine(DisplayPagesAfterDelay(memoPages.currentPage, delay));
         }
+    }
+    
+    private System.Collections.IEnumerator DisplayPagesAfterDelay(int page, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+         
+        DisplayPagesStatic(page);
     }
 
     public void SetMemoCurrentPageAndFlags()
