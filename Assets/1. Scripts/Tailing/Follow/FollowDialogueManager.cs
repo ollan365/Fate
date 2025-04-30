@@ -29,7 +29,7 @@ public class FollowDialogueManager : MonoBehaviour
         foreach (GameObject extra in extraCanvas) if (extra.activeSelf) extra.SetActive(false);
         
         foreach (Transform child in frontObjects)
-            child.GetComponent<Image>().color = new Color(0.01f, 0.01f, 0.01f);
+            child.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f);
 
         if (FollowManager.Instance.IsEnd || FollowManager.Instance.IsTutorial) return;
 

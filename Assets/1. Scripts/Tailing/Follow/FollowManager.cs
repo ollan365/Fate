@@ -120,7 +120,6 @@ public class FollowManager : MonoBehaviour
         followDialogueManager.ClickObject();
         if (!IsEnd)
         {
-            Accidy.GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f);
             accidyDialogueBox.SetActive(false);
         }
 
