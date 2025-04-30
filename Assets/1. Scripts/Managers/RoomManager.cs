@@ -14,8 +14,9 @@ public class RoomManager : MonoBehaviour
     
     [Header("확대 화면들")][SerializeField] private List<GameObject> zoomViews;  // 확대 화면들
 
-    // 이벤트 오브젝트 패널 매니저
+    // 오브젝트 패널 매니저
     public ImageAndLockPanelManager imageAndLockPanelManager;
+    [SerializeField] private Canvas imageAndLockPanelCanvas;
     // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
     public bool isInvestigating = false;
     private bool isZoomed = false;
@@ -33,7 +34,8 @@ public class RoomManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
-        
+
+        imageAndLockPanelCanvas.worldCamera = UIManager.Instance.uiCamera;
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
         MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge));

@@ -8,6 +8,8 @@ using static Constants;
 
 public enum eUIGameObjectName
 {
+    ObjectImageParentRoom, // object image panel parent in room scene
+    ObjectImageRoom, // object image panel in room scene
     NormalVignette,
     WarningVignette,
     ActionPoints,
@@ -45,6 +47,10 @@ public enum eUIGameObjectName
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Object Image")]
+    public GameObject objectImageParentRoom;
+    public GameObject objectImageRoom;
+    
     [Header("UI Game Objects")]
     public GameObject normalVignette;
     public GameObject warningVignette;
@@ -125,10 +131,15 @@ public class UIManager : MonoBehaviour
         SetAllUI(false);
         SetOptionUI();
         InitializeUIToCheck();
+        
+        SetUI(eUIGameObjectName.ObjectImageRoom, true);
     }
 
     private void AddUIGameObjects()
     {
+        uiGameObjects.Add(eUIGameObjectName.ObjectImageParentRoom, objectImageParentRoom);
+        uiGameObjects.Add(eUIGameObjectName.ObjectImageRoom, objectImageRoom);
+        
         uiGameObjects.Add(eUIGameObjectName.NormalVignette, normalVignette);
         uiGameObjects.Add(eUIGameObjectName.WarningVignette, warningVignette);
 

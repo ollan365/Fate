@@ -9,8 +9,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
 {
     [SerializeField] private GameObject blockingPanel;
     [SerializeField] private GameObject TutorialBlockingPanel;
-    [SerializeField] private GameObject objectImageGroup;
-    [SerializeField] private GameObject objectImage;
+    private GameObject objectImageGroup;
     private Image objectImageImageComponent;
     private RectTransform objectImageRectTransform;
 
@@ -69,9 +68,13 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] public bool isLockObjectActive = false;
     [SerializeField] private bool isTutorialObjectActive = false;
     private string currentLockObjectName = null;
+    private float maxHeight = 550f;
+    private float maxWidth = 890f;
 
     private void Awake()
     {
+        objectImageGroup = UIManager.Instance.objectImageParentRoom;
+        GameObject objectImage = UIManager.Instance.objectImageRoom;
         objectImageImageComponent = objectImage.GetComponent<Image>();
         objectImageRectTransform = objectImage.GetComponent<RectTransform>();
 
@@ -185,9 +188,6 @@ public class ImageAndLockPanelManager : MonoBehaviour
         if (isTrue)
         {
             Sprite rawSprite = imageDictionary[eventObjectName];
-            float maxHeight = 1200f;
-            float maxWidth = 1900f;
-
             float rawHeight = rawSprite.rect.height;
             float rawWidth = rawSprite.rect.width;
 
@@ -228,9 +228,6 @@ public class ImageAndLockPanelManager : MonoBehaviour
         if (isTrue)
         {
             Sprite rawSprite = imageDictionary[eventObjectName];
-            float maxHeight = 1200f;
-            float maxWidth = 1900f;
-
             float rawHeight = rawSprite.rect.height;
             float rawWidth = rawSprite.rect.width;
 
@@ -327,17 +324,17 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
     public void SetBlockingPanel()
     {
-        bool isTutorial = (bool)GameManager.Instance.GetVariable("isTutorial");
-
-        bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorial;
-        blockingPanel.SetActive(isImageOrLockActive);
-
-        // 튜토리얼이 아니면 BlockingPanel 알파값 조절 가능
-        if (!(bool)GameManager.Instance.GetVariable("isTutorial"))
-        {
-            float alpha = isImageOrLockActive ? 0.7f : 0;  // rgba의 알파값(투명도)
-            blockingPanel.GetComponent<Image>().color = new Color(0, 0, 0, alpha);
-        }
+        // bool isTutorial = (bool)GameManager.Instance.GetVariable("isTutorial");
+        //
+        // bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorial;
+        // blockingPanel.SetActive(isImageOrLockActive);
+        //
+        // // 튜토리얼이 아니면 BlockingPanel 알파값 조절 가능
+        // if (!(bool)GameManager.Instance.GetVariable("isTutorial"))
+        // {
+        //     float alpha = isImageOrLockActive ? 0.7f : 0;  // rgba의 알파값(투명도)
+        //     blockingPanel.GetComponent<Image>().color = new Color(0, 0, 0, alpha);
+        // }
     }
 
     public void SetTutorialBlockingPanel()
