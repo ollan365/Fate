@@ -46,11 +46,11 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
         if (objectName != FollowObjectName.Extra) eventId = objectName.EventID();
         else eventId = extraName.EventID();
 
+        base.OnMouseDown();
+
         foreach (GameObject image in afterBlurImages) image.SetActive(true);
         FollowManager.Instance.EndScriptAction = () => { foreach (GameObject image in afterBlurImages) image.SetActive(false); };
 
-        base.OnMouseDown();
-        
         if (objectName != FollowObjectName.Extra) GameManager.Instance.IncrementVariable(objectName.ClickVariable());
         else GameManager.Instance.IncrementVariable(extraName.ClickVariable());
     }
