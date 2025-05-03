@@ -896,7 +896,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD658\uACBD\uC124\uC815"
+  m_text: "\uC124\uC815\uD558\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ceea9849917849bfb5bd8ffe9ae5e38, type: 2}
   m_sharedMaterial: {fileID: -4137767003982002472, guid: 6ceea9849917849bfb5bd8ffe9ae5e38, type: 2}
@@ -3047,8 +3047,8 @@ GameObject:
   m_Component:
   - component: {fileID: 219087750}
   - component: {fileID: 219087752}
+  - component: {fileID: 219087755}
   - component: {fileID: 219087751}
-  - component: {fileID: 219087754}
   - component: {fileID: 219087753}
   m_Layer: 5
   m_Name: Start Button
@@ -3146,18 +3146,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 219087753}
-        m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-        m_MethodName: PointerExit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!222 &219087752
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3173,7 +3161,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 219087749}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a84625f195a0240c1941f62cd372c81c, type: 3}
   m_Name: 
@@ -3181,7 +3169,7 @@ MonoBehaviour:
   originalScale: 1
   scaleMultiplier: 1.2
   checkMouseHover: 0
---- !u!114 &219087754
+--- !u!114 &219087755
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3190,42 +3178,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 219087749}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 028a82ea0578b4787b8f8edf552def46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 219087753}
-          m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-          m_MethodName: PointerEnter
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 219087753}
-          m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-          m_MethodName: PointerExit
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  animationType: 0
+  minInterval: 2
+  maxInterval: 4
+  animationDuration: 0.5
+  animationIntensity: 1.1
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scaleAmount: 0.1
+  rotationAmount: 5
+  moveAmount: 10
+  moveDirection: {x: 0, y: 1}
+  enableHoverEffect: 1
+  hoverScaleAmount: 1.05
 --- !u!1 &221451230
 GameObject:
   m_ObjectHideFlags: 0
@@ -9479,6 +9469,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1573047221}
     m_Modifications:
     - target: {fileID: 2061767181353817718, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2061767181353817718, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -9509,6 +9503,10 @@ PrefabInstance:
     - target: {fileID: 2061767181353817718, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: StartLogic, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975878816809903025, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
+      propertyPath: m_text
+      value: "\uC885\uB8CC\uD558\uAE30"
       objectReference: {fileID: 0}
     - target: {fileID: 3990048488759261868, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
       propertyPath: m_Pivot.x
@@ -9590,14 +9588,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5923951316731441856, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6973373740870238321, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
       propertyPath: m_Name
       value: Quit Button
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9015107288786151239, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6973373740870238321, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1976589947}
   m_SourcePrefab: {fileID: 100100000, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
 --- !u!224 &683607816 stripped
 RectTransform:
@@ -13073,6 +13079,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1013989276}
   m_CullTransparentMesh: 1
+--- !u!1 &1025441619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6973373740870238321, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
+  m_PrefabInstance: {fileID: 683607815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1027574661
 GameObject:
   m_ObjectHideFlags: 0
@@ -22751,8 +22762,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1741216914}
   - component: {fileID: 1741216916}
-  - component: {fileID: 1741216915}
   - component: {fileID: 1741216918}
+  - component: {fileID: 1741216915}
   - component: {fileID: 1741216917}
   m_Layer: 5
   m_Name: Settings Button
@@ -22850,18 +22861,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1741216917}
-        m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-        m_MethodName: PointerExit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!222 &1741216916
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22877,7 +22876,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741216913}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a84625f195a0240c1941f62cd372c81c, type: 3}
   m_Name: 
@@ -22894,42 +22893,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 1741216913}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 028a82ea0578b4787b8f8edf552def46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1741216917}
-          m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-          m_MethodName: PointerEnter
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1741216917}
-          m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-          m_MethodName: PointerExit
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  animationType: 2
+  minInterval: 2
+  maxInterval: 4
+  animationDuration: 0.5
+  animationIntensity: 1.1
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scaleAmount: 0.1
+  rotationAmount: 5
+  moveAmount: 10
+  moveDirection: {x: 0, y: 1}
+  enableHoverEffect: 1
+  hoverScaleAmount: 1.05
 --- !u!1 &1745158354
 GameObject:
   m_ObjectHideFlags: 0
@@ -24653,8 +24654,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1961126905}
   - component: {fileID: 1961126907}
-  - component: {fileID: 1961126906}
   - component: {fileID: 1961126909}
+  - component: {fileID: 1961126906}
   - component: {fileID: 1961126908}
   m_Layer: 5
   m_Name: Load Button
@@ -24752,18 +24753,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1961126908}
-        m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-        m_MethodName: PointerExit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!222 &1961126907
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24779,7 +24768,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1961126904}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a84625f195a0240c1941f62cd372c81c, type: 3}
   m_Name: 
@@ -24796,42 +24785,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 1961126904}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 028a82ea0578b4787b8f8edf552def46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1961126908}
-          m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-          m_MethodName: PointerEnter
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1961126908}
-          m_TargetAssemblyTypeName: OnMouseScale, Assembly-CSharp
-          m_MethodName: PointerExit
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  animationType: 1
+  minInterval: 2
+  maxInterval: 4
+  animationDuration: 0.5
+  animationIntensity: 1.1
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scaleAmount: 0.1
+  rotationAmount: 5
+  moveAmount: 10
+  moveDirection: {x: 0, y: 1}
+  enableHoverEffect: 1
+  hoverScaleAmount: 1.05
 --- !u!1 &1963679992 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3794775505496008544, guid: 8a7c71f93c37e1d4b81adb495cb01eca, type: 3}
@@ -25045,12 +25036,59 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5923951316731441856, guid: 123aecdeb1569cf4495fb314e9118e6d, type: 3}
   m_PrefabInstance: {fileID: 683607815}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_GameObject: {fileID: 1025441619}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a84625f195a0240c1941f62cd372c81c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1976589947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025441619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 028a82ea0578b4787b8f8edf552def46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationType: 3
+  minInterval: 2
+  maxInterval: 4
+  animationDuration: 0.5
+  animationIntensity: 1.1
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scaleAmount: 0.1
+  rotationAmount: 5
+  moveAmount: 10
+  moveDirection: {x: 0, y: 1}
+  enableHoverEffect: 1
+  hoverScaleAmount: 1.05
 --- !u!1 &1995326509
 GameObject:
   m_ObjectHideFlags: 0
