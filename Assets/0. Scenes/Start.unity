@@ -15330,6 +15330,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Day Animation Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8501738870089792234, guid: d8e3050e6b1160648ac01618c716a784, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20.500809
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501738870089792234, guid: d8e3050e6b1160648ac01618c716a784, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -10.602814
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21344,7 +21352,7 @@ MonoBehaviour:
   defaultCursorTexture: {fileID: 2800000, guid: 679dbfd395dd3494db04a71f7861186e, type: 3}
   investigateCursorTexture: {fileID: 2800000, guid: 4e6600a5f68594338a9068b67f09955d, type: 3}
   uiCamera: {fileID: 1571991592}
-  fadeAnimationDuration: 0.3
+  fadeAnimationDuration: 0.5
   floatAnimationDuration: 0.3
   floatDistance: 50
 --- !u!114 &1633657071
@@ -23968,7 +23976,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1721473425975529747, guid: c5343ac7fdff942a1a8befe480b60ec8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1852809477}
   m_SourcePrefab: {fileID: 100100000, guid: c5343ac7fdff942a1a8befe480b60ec8, type: 3}
 --- !u!224 &1852809471 stripped
 RectTransform:
@@ -23985,6 +23996,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1721473425975529747, guid: c5343ac7fdff942a1a8befe480b60ec8, type: 3}
   m_PrefabInstance: {fileID: 1852809470}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &1852809477
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1852809473}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1854412353
 GameObject:
   m_ObjectHideFlags: 0
@@ -31726,6 +31749,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1571991592}
+    - target: {fileID: 3331130958026663892, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3331130958026663892, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_SortingLayerID
       value: 814526345
