@@ -16,7 +16,6 @@ public class TutorialManager : MonoBehaviour
 
         GameManager.Instance.SetVariable("isTutorial", true);
         GameManager.Instance.SetVariable("TutorialPhase", 1);
-        RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
     }
     
     public void SetSeenSides(int seenSideIndex)
@@ -92,7 +91,6 @@ public class TutorialManager : MonoBehaviour
     {
         GameManager.Instance.SetVariable("isTutorial", false);
         GameManager.Instance.SetVariable("EndTutorial_ROOM_1", true);
-        RoomManager.Instance.imageAndLockPanelManager.SetBlockingPanel();
 
         MemoManager.Instance.SetMemoButtons(true);
     }

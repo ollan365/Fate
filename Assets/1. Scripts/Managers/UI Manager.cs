@@ -6,8 +6,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static Constants;
 
-public enum FloatDirection
-{
+public enum FloatDirection {
     None,
     Left,
     Right,
@@ -15,8 +14,7 @@ public enum FloatDirection
     Down
 }
 
-public enum eUIGameObjectName
-{
+public enum eUIGameObjectName {
     ObjectImageParentRoom, // object image panel parent in room scene
     ObjectImageRoom, // object image panel in room scene
     NormalVignette,
@@ -54,8 +52,7 @@ public enum eUIGameObjectName
     GearMinuteHand
 }
 
-public class UIManager : MonoBehaviour
-{
+public class UIManager : MonoBehaviour {
     [Header("Object Image")]
     public GameObject objectImageParentRoom;
     public GameObject objectImageRoom;
@@ -131,14 +128,11 @@ public class UIManager : MonoBehaviour
 
     public static UIManager Instance { get; private set; }
     
-    private void Awake()
-    {
-        if (Instance == null)
-        {
+    private void Awake() {
+        if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-        }
-        else
+        } else
             Destroy(gameObject);
         
         AddUIGameObjects();
@@ -149,8 +143,7 @@ public class UIManager : MonoBehaviour
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
     }
 
-    private void AddUIGameObjects()
-    {
+    private void AddUIGameObjects() {
         uiGameObjects.Add(eUIGameObjectName.ObjectImageParentRoom, objectImageParentRoom);
         uiGameObjects.Add(eUIGameObjectName.ObjectImageRoom, objectImageRoom);
         
@@ -215,16 +208,14 @@ public class UIManager : MonoBehaviour
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
     }
 
-    private void Update()
-    {
+    private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) 
             SetMenuUI();
         
         CheckCursorTouchingUIs();
     }
     
-    private void SetAllUI(bool isActive)
-    {
+    private void SetAllUI(bool isActive) {
         foreach (var ui in uiGameObjects)
             SetUI(ui.Key, isActive);
     }
@@ -232,16 +223,13 @@ public class UIManager : MonoBehaviour
     public void SetUI(eUIGameObjectName uiName,
         bool isActive,
         bool fade = false,
-        FloatDirection floatDir = FloatDirection.None)
-    {
+        FloatDirection floatDir = FloatDirection.None) {
         GameObject targetUI = uiGameObjects[uiName];
         
-        if (fade || floatDir != FloatDirection.None)
-        {
+        if (fade || floatDir != FloatDirection.None) {
             CanvasGroup canvasGroup = targetUI.GetComponent<CanvasGroup>(); // need to memoize this
-            if (!canvasGroup)
-            {
-                Debug.LogWarning("CanvasGroup is not found in the target UI.");
+            if (!canvasGroup) {
+                Debug.LogWarning($"CanvasGroup is not found in the target UI: {uiName}");
                 targetUI.SetActive(isActive);
                 return;
             }
@@ -253,18 +241,15 @@ public class UIManager : MonoBehaviour
             if (IsInvoking(coroutineName))
                 StopCoroutine(coroutineName);
             StartCoroutine(AnimateUI(uiName, canvasGroup, isActive, floatDir));
-        }
-        else
+        } else
             targetUI.SetActive(isActive);
     }
     
-    public GameObject GetUI(eUIGameObjectName uiName)
-    {
+    public GameObject GetUI(eUIGameObjectName uiName) {
         return uiGameObjects[uiName];
     }
     
-    private IEnumerator AnimateUI(eUIGameObjectName uiName, CanvasGroup canvasGroup, bool show, FloatDirection floatDir)
-    {
+    private IEnumerator AnimateUI(eUIGameObjectName uiName, CanvasGroup canvasGroup, bool show, FloatDirection floatDir) {
         float targetAlpha = show ? 1f : 0f;
         float startAlpha = show ? 0f : 1f;
         float fadeTime = fadeAnimationDuration;
@@ -277,8 +262,7 @@ public class UIManager : MonoBehaviour
         Vector2 targetPos = Vector2.zero;
         Vector2 basePosition = Vector2.zero;
         
-        if (floatDir != FloatDirection.None)
-        {
+        if (floatDir != FloatDirection.None) {
             rectTransform = uiGameObjects[uiName].GetComponent<RectTransform>();
             basePosition = rectTransform.anchoredPosition;
             
@@ -289,8 +273,7 @@ public class UIManager : MonoBehaviour
             rectTransform.anchoredPosition = startPos;
         }
         
-        while (elapsedTime < fadeTime)
-        {
+        while (elapsedTime < fadeTime) {
             canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
             
             if (floatDir != FloatDirection.None && rectTransform)
@@ -303,35 +286,32 @@ public class UIManager : MonoBehaviour
         canvasGroup.alpha = targetAlpha;
         
         if (floatDir != FloatDirection.None && rectTransform)
-        {
-            // If hiding, always return to original base position after animation
             rectTransform.anchoredPosition = show ? targetPos : basePosition;
-        }
         
-        // If hiding, deactivate the object after animation is complete
         if (!show)
             uiGameObjects[uiName].SetActive(false);
     }
 
-    private FloatDirection GetReverseDirection(FloatDirection direction)
-    {
-        switch (direction)
-        {
-            case FloatDirection.Left: return FloatDirection.Right;
-            case FloatDirection.Right: return FloatDirection.Left;
-            case FloatDirection.Up: return FloatDirection.Down;
-            case FloatDirection.Down: return FloatDirection.Up;
-            default: return FloatDirection.None;
+    private FloatDirection GetReverseDirection(FloatDirection direction) {
+        switch (direction) {
+            case FloatDirection.Left: 
+                return FloatDirection.Right;
+            case FloatDirection.Right: 
+                return FloatDirection.Left;
+            case FloatDirection.Up: 
+                return FloatDirection.Down;
+            case FloatDirection.Down: 
+                return FloatDirection.Up;
+            default: 
+                return FloatDirection.None;
         }
     }
 
-    private void GetAnimationPositions(FloatDirection floatDir, bool show, Vector2 basePosition, out Vector2 startPos, out Vector2 targetPos)
-    {
+    private void GetAnimationPositions(FloatDirection floatDir, bool show, Vector2 basePosition, out Vector2 startPos, out Vector2 targetPos) {
         startPos = basePosition;
         targetPos = basePosition;
 
-        switch (floatDir)
-        {
+        switch (floatDir) {
             case FloatDirection.Right:
                 startPos.x = show ? basePosition.x - floatDistance : basePosition.x;
                 targetPos.x = show ? basePosition.x : basePosition.x + floatDistance;
@@ -351,22 +331,16 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void SetMenuUI()
-    {
-        if (GetUI(eUIGameObjectName.MenuUI).activeSelf)
-        {
+    private void SetMenuUI() {
+        if (GetUI(eUIGameObjectName.MenuUI).activeSelf) {
             SetUI(eUIGameObjectName.MenuUI, false);
             SetUI(eUIGameObjectName.WhiteMenu, false);
             SetUI(eUIGameObjectName.BlackMenu, false);
             Time.timeScale = 1f;
-        }
-        else if (GetUI(eUIGameObjectName.OptionUI).activeSelf)
-        {
+        } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
             SetUI(eUIGameObjectName.OptionUI, false);
             Time.timeScale = 1f;
-        }
-        else
-        {
+        } else {
             SetUI(eUIGameObjectName.MenuUI, true);
             SetUI(Random.Range(0, 2) == 0 
                 ? eUIGameObjectName.WhiteMenu 
@@ -375,23 +349,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SetTimeScale()
-    {
+    public void SetTimeScale() {
         Time.timeScale = 1f;
     }
 
-    private void SetOptionUI()
-    {
+    private void SetOptionUI() {
         SetUI(eUIGameObjectName.BGMSlider, true);
         SetUI(eUIGameObjectName.SoundEffectSlider, true);
         SetUI(eUIGameObjectName.BGMValue, true);
         SetUI(eUIGameObjectName.SoundEffectValue, true);
     }
     
-    public void OnLeftButtonClick()
-    {
-        switch (SceneManager.Instance.GetActiveScene())
-        {
+    public void OnLeftButtonClick() {
+        switch (SceneManager.Instance.GetActiveScene()) {
             case (int)SceneType.ROOM_1:
             case (int)SceneType.ROOM_2:
                 RoomManager.Instance.MoveSides(-1);
@@ -399,10 +369,8 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    public void OnRightButtonClick()
-    {
-        switch (SceneManager.Instance.GetActiveScene())
-        {
+    public void OnRightButtonClick() {
+        switch (SceneManager.Instance.GetActiveScene()) {
             case (int)SceneType.ROOM_1:
             case (int)SceneType.ROOM_2:
                 RoomManager.Instance.MoveSides(1);
@@ -410,22 +378,18 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    public void OnExitButtonClick()
-    {
+    public void OnExitButtonClick() {
         if (MemoManager.Instance && MemoManager.Instance.isMemoOpen)
             MemoManager.Instance.OnExit();
         else
-            switch (SceneManager.Instance.GetActiveScene())
-            {
+            switch (SceneManager.Instance.GetActiveScene()) {
                 case (int)SceneType.START:
                     Debug.Log("Exit button is not implemented in this scene.");
                     break;
-                
                 case (int)SceneType.ROOM_1:
                 case (int)SceneType.ROOM_2:
                     RoomManager.Instance.OnExitButtonClick();
                     break;
-                
                 default:
                     Debug.Log("Exit button is not implemented in this scene.");
                     break;
@@ -433,19 +397,16 @@ public class UIManager : MonoBehaviour
         SetCursorAuto();
     }
     
-    public void ChangeSoundValue(string uiName)
-    {
+    public void ChangeSoundValue(string uiName) {
         TMP_Text text;
         Slider slider;
 
-        if (uiName == eUIGameObjectName.BGMSlider.ToString())
-        {
+        if (uiName == eUIGameObjectName.BGMSlider.ToString()) {
             text = uiGameObjects[eUIGameObjectName.BGMValue].GetComponent<TextMeshProUGUI>();
             slider = uiGameObjects[eUIGameObjectName.BGMSlider].GetComponent<Slider>();
             SoundPlayer.Instance.ChangeVolume(slider.value, -1);
         }
-        else
-        {
+        else {
             text = uiGameObjects[eUIGameObjectName.SoundEffectValue].GetComponent<TextMeshProUGUI>();
             slider = uiGameObjects[eUIGameObjectName.SoundEffectSlider].GetComponent<Slider>();
             SoundPlayer.Instance.ChangeVolume(-1, slider.value);
@@ -454,8 +415,7 @@ public class UIManager : MonoBehaviour
         text.text = (slider.value * 100).ToString("F0");
     }
 
-    public void ChangeSliderValue(eUIGameObjectName uiName, float absoluteValue, float addValue)
-    {
+    public void ChangeSliderValue(eUIGameObjectName uiName, float absoluteValue, float addValue) {
         Slider slider = uiGameObjects[uiName].GetComponent<Slider>();
         if (addValue != 0) 
             slider.value += addValue;
@@ -463,9 +423,8 @@ public class UIManager : MonoBehaviour
             slider.value = absoluteValue;
     }
     
-    private void InitializeUIToCheck()
-    {
-        uiToCheck = new List<RectTransform> { // Add all UI GameObjects to check here
+    private void InitializeUIToCheck() {
+        uiToCheck = new List<RectTransform> { // Manually add all UI GameObjects to check here
             leftButton.GetComponent<RectTransform>(), 
             rightButton.GetComponent<RectTransform>(), 
             exitButton.GetComponent<RectTransform>(),
@@ -474,22 +433,18 @@ public class UIManager : MonoBehaviour
         };
     }
     
-    public void AddUIToCheck(RectTransform uiRectTransform)
-    {
+    public void AddUIToCheck(RectTransform uiRectTransform) {
         uiToCheck.Add(uiRectTransform);
     }
     
-    public void RemoveUIToCheck(RectTransform uiRectTransform)
-    {
+    public void RemoveUIToCheck(RectTransform uiRectTransform) {
         uiToCheck.Remove(uiRectTransform);
     }
 
     // Check if the cursor is touching any of the buttons
-    private void CheckCursorTouchingUIs()
-    {
+    private void CheckCursorTouchingUIs() {
         bool isCursorOverUIs = false;
-        foreach (RectTransform uiRectTransform in uiToCheck)
-        {
+        foreach (RectTransform uiRectTransform in uiToCheck) {
             GameObject uiGameObject = uiRectTransform.gameObject;
             if (!uiGameObject.activeSelf)
                 continue;
@@ -497,8 +452,7 @@ public class UIManager : MonoBehaviour
             bool isCursorOverUI = RectTransformUtility.RectangleContainsScreenPoint(uiRectTransform,
                 Input.mousePosition,
                 uiCamera);
-            if (isCursorOverUI)
-            {
+            if (isCursorOverUI) {
                 isCursorOverUIs = true;
                 break;
             }
@@ -507,8 +461,7 @@ public class UIManager : MonoBehaviour
         SetIsCursorTouchingUI(isCursorOverUIs);
     }
 
-    private void SetIsCursorTouchingUI(bool isTouching)
-    {
+    private void SetIsCursorTouchingUI(bool isTouching) {
         bool previousState = isCursorTouchingUI;
         isCursorTouchingUI = isTouching;
         if (isCursorTouchingUI != previousState) // only call SetCursorAuto if state changes
@@ -516,8 +469,7 @@ public class UIManager : MonoBehaviour
     }
     
     // method to switch mouse cursor
-    public void SetCursorAuto()
-    {
+    public void SetCursorAuto() {
         bool isDefault = GameManager.Instance.GetIsBusy()
                          || SceneManager.Instance.GetActiveScene() is (int)SceneType.START or (int)SceneType.ENDING
                          || (RoomManager.Instance && RoomManager.Instance.imageAndLockPanelManager.isLockObjectActive)
@@ -525,8 +477,7 @@ public class UIManager : MonoBehaviour
         ChangeCursor(isDefault);
     }
     
-    public void ChangeCursor(bool isDefault=true)
-    {
+    public void ChangeCursor(bool isDefault=true) {
         Texture2D mouseCursorTexture = isDefault ? defaultCursorTexture : investigateCursorTexture;
         Cursor.SetCursor(mouseCursorTexture, Vector2.zero, CursorMode.Auto);
     }
@@ -540,13 +491,11 @@ public class UIManager : MonoBehaviour
     public IEnumerator WarningCoroutine(float startAlpha = 0f,
         float endAlpha = 1f,
         float fadeInDuration = 0.5f,
-        float fadeOutDuration = 0.5f)
-    {
+        float fadeOutDuration = 0.5f) {
         SetUI(eUIGameObjectName.WarningVignette, true); // 경고 표시 활성화
 
         float timeAccumulated = 0;
-        while (timeAccumulated < fadeInDuration)
-        {
+        while (timeAccumulated < fadeInDuration) {
             timeAccumulated += Time.deltaTime;
             warningVignetteQVignetteSingle.mainColor.a = Mathf.Lerp(startAlpha,
                 endAlpha,
@@ -558,8 +507,7 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(warningTime); // warningTime 동안 경고 상태 유지
 
         timeAccumulated = 0; // 경고 종료: WarningVignette.mainColor.a를 다시 0으로 페이드 아웃
-        while (timeAccumulated < fadeOutDuration)
-        {
+        while (timeAccumulated < fadeOutDuration) {
             timeAccumulated += Time.deltaTime * 2; // 페이드 아웃 속도를 더 빠르게 설정
             warningVignetteQVignetteSingle.mainColor.a = Mathf.Lerp(endAlpha,
                 startAlpha,
