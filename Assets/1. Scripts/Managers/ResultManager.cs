@@ -655,7 +655,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultWardrobeUpDrawersOpenScript": // 옷장 서랍장 위칸이 열리는 스크립트
-                //DialogueManager.Instance.StartDialogue("RoomEscape_026");
+                // 임시!!!
+                DialogueManager.Instance.StartDialogue("RoomEscape_026");
                 break;
 
             case "ResultWardrobeUpDrawersOpen": // 옷장 서랍장 위칸이 열림
@@ -669,7 +670,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultWardrobeDownDrawersOpenScript": // 옷장 서랍장 아래칸이 열리는 스크립트
-                //DialogueManager.Instance.StartDialogue("RoomEscape_026");
+                // 임시!!!
+                DialogueManager.Instance.StartDialogue("RoomEscape_026");
                 break;
 
             case "ResultWardrobeDownDrawersOpen": // 옷장 서랍장 아래칸이 열림
