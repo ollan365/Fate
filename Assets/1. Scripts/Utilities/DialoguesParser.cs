@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialoguesParser : MonoBehaviour
+public class DialoguesParser
 {
     // CSV 파일
     private TextAsset dialoguesCSV = Resources.Load<TextAsset>("Datas/dialogues");
