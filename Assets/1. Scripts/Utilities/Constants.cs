@@ -67,9 +67,9 @@ public static class Constants
 
     // 2. 방탈출 오브젝트들
     public const int
-        Sound_CarpetOpen = 0, 
-        Sound_CarpetClose = 1, 
-        Sound_ClosetOpen = 2, 
+        Sound_CarpetOpen = 0,
+        Sound_CarpetClose = 1,
+        Sound_ClosetOpen = 2,
         Sound_ClosetClose = 3,
         Sound_StorageOpen = 4,
         Sound_StorageClose = 5,
@@ -81,11 +81,13 @@ public static class Constants
         Sound_Poster = 12,
         Sound_ChairMovement = 13,
         Sound_GrabPaper = 23,
-        Sound_TincaseOpen = 24, 
-        Sound_SewingBoxBall = 25, 
+        Sound_TincaseOpen = 24,
+        Sound_SewingBoxBall = 25,
         Sound_SewingBoxOpen = 26,
         Sound_HeartPop = 38,
-        Sound_DayChange = 39;
+        Sound_DayChange = 39,
+        Sound_DrawerOpen = 40,
+        Sound_DrawerClose = 41;
 
     // 3. 미행
     public const int
@@ -104,10 +106,11 @@ public static class Constants
 
     // 5. 그 외
     public const int
-        Sound_Typing = -1, 
-        Sound_Click = 20, 
+        Sound_Typing = -1,
+        Sound_Click = 20,
         Sound_Correct = 21,
-        Sound_Wrong = 22;
+        Sound_Wrong = 22,
+        Sound_CursorMovement = 42;
 
     public const int
         Sound_AccidentSound = 27,

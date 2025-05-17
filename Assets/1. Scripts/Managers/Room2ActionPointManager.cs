@@ -226,6 +226,7 @@ public class Room2ActionPointManager : ActionPointManager
 
         // ¿©±â¼­ ÇÏÆ® »ý¼º ¹× ´ÙÀ½³¯·Î ³¯Â¥ ¾÷µ¥ÀÌÆ®
         RoomManager.Instance.SetIsInvestigating(false);
+        UIManager.Instance.SetCursorAuto();
     }
 
     // °õÀÎÇü ¼Ó ±â·Â º¸ÃæÁ¦ ¸ÔÀ¸¸é ½ºÅ©¸³Æ® ³¡³ª¸é ¹Ù·Î ÇÏÆ® 2°³ È¸º¹µÊ.

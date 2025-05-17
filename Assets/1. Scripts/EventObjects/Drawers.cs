@@ -176,7 +176,6 @@ public class Drawers : EventObject, IResultExecutable
         bool DrawerMoved = (bool)GameManager.Instance.GetVariable(isUpDrawer ? "UpDrawerMoved" : "DownDrawerMoved");
         if (!DrawerMoved)
             gameObject.SetActive(false);
-
     }
     // *******************************************************************************
 }

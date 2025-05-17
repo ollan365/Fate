@@ -114,7 +114,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 80, y: 80}
+  m_Size: {x: 95, y: 95}
   m_EdgeRadius: 0
 --- !u!1 &2787877411241836376
 GameObject:
@@ -341,7 +341,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 60, y: 60}
+  m_Size: {x: 80, y: 80}
   m_EdgeRadius: 0
 --- !u!114 &5915332182126867903
 MonoBehaviour:
@@ -362,10 +362,13 @@ MonoBehaviour:
   - {fileID: 4359591297154617601}
   - {fileID: 4618868066238130278}
   boxCollider: {fileID: 7897107791462859685}
+  canDrag: 0
   beadRow: 1
   currentPositionNumber: 1
   beadNameNumber: 1
   moveDuration: 0.3
+  anotherBead: {fileID: 0}
+  isConflict: 0
 --- !u!1 &3394358684717129695
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +449,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 80, y: 80}
+  m_Size: {x: 95, y: 95}
   m_EdgeRadius: 0
 --- !u!1 &3483594652770757204
 GameObject:
@@ -528,7 +531,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 80, y: 80}
+  m_Size: {x: 95, y: 95}
   m_EdgeRadius: 0
 --- !u!1 &3592582782171765449
 GameObject:
@@ -820,7 +823,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 60, y: 60}
+  m_Size: {x: 80, y: 80}
   m_EdgeRadius: 0
 --- !u!114 &2631851930270188838
 MonoBehaviour:
@@ -841,10 +844,13 @@ MonoBehaviour:
   - {fileID: 4359591297154617601}
   - {fileID: 4618868066238130278}
   boxCollider: {fileID: 3798297843438912270}
+  canDrag: 0
   beadRow: 1
   currentPositionNumber: 4
   beadNameNumber: 2
   moveDuration: 0.3
+  anotherBead: {fileID: 0}
+  isConflict: 0
 --- !u!1 &4466237382966752932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,10 +1053,13 @@ MonoBehaviour:
   - {fileID: 2700306866484789625}
   - {fileID: 6105701904550848215}
   boxCollider: {fileID: 576087692928806765}
+  canDrag: 0
   beadRow: 5
   currentPositionNumber: 4
   beadNameNumber: 6
   moveDuration: 0.3
+  anotherBead: {fileID: 0}
+  isConflict: 0
 --- !u!61 &576087692928806765
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1094,7 +1103,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 60, y: 60}
+  m_Size: {x: 80, y: 80}
   m_EdgeRadius: 0
 --- !u!1 &4918939493532937061
 GameObject:
@@ -1192,10 +1201,13 @@ MonoBehaviour:
   - {fileID: 9062189127149251237}
   - {fileID: 1421744664816729005}
   boxCollider: {fileID: 0}
+  canDrag: 0
   beadRow: 3
   currentPositionNumber: 2
   beadNameNumber: 4
   moveDuration: 0.3
+  anotherBead: {fileID: 0}
+  isConflict: 0
 --- !u!61 &3523366661608538881
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1239,7 +1251,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 60, y: 60}
+  m_Size: {x: 80, y: 80}
   m_EdgeRadius: 0
 --- !u!1 &5280595183486634624
 GameObject:
@@ -1408,10 +1420,13 @@ MonoBehaviour:
   - {fileID: 1002207009177601615}
   - {fileID: 1629110089700954797}
   boxCollider: {fileID: 2225579192258307380}
+  canDrag: 0
   beadRow: 2
   currentPositionNumber: 4
   beadNameNumber: 3
   moveDuration: 0.3
+  anotherBead: {fileID: 0}
+  isConflict: 0
 --- !u!61 &2225579192258307380
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1455,7 +1470,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 60, y: 60}
+  m_Size: {x: 80, y: 80}
   m_EdgeRadius: 0
 --- !u!1 &5927384625444971248
 GameObject:
@@ -1623,10 +1638,13 @@ MonoBehaviour:
   - {fileID: 5143291581443022267}
   - {fileID: 5807914279045677614}
   boxCollider: {fileID: 7812571184689727028}
+  canDrag: 0
   beadRow: 4
   currentPositionNumber: 5
   beadNameNumber: 5
   moveDuration: 0.3
+  anotherBead: {fileID: 0}
+  isConflict: 0
 --- !u!61 &7812571184689727028
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1670,7 +1688,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 60, y: 60}
+  m_Size: {x: 80, y: 80}
   m_EdgeRadius: 0
 --- !u!1 &6306818856942458522
 GameObject:
@@ -1822,7 +1840,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 80, y: 80}
+  m_Size: {x: 95, y: 95}
   m_EdgeRadius: 0
 --- !u!1 &7130309045871743008
 GameObject:
@@ -2175,7 +2193,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 80, y: 80}
+  m_Size: {x: 95, y: 95}
   m_EdgeRadius: 0
 --- !u!1 &9067695669047059366
 GameObject:
@@ -2264,7 +2282,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sewingBoxA: {fileID: 0}
-  focusedBeadNumber: 0
   Beads:
   - {fileID: 5915332182126867903}
   - {fileID: 2631851930270188838}
