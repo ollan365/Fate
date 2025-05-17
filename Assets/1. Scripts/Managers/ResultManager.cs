@@ -380,7 +380,7 @@ public class ResultManager : MonoBehaviour
             case "ResultCutterKnifeScript": // 커터칼에 대한 스크립트
                 float knifeHideTime = 0.4f;
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_020", knifeHideTime));
-                StartCoroutine(RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroupWithDelay(true, "knife", knifeHideTime));
+                StartCoroutine(RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroupCoroutine(true, "knife", knifeHideTime));
                 //DialogueManager.Instance.StartDialogue("RoomEscape_020");
                 //RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "knife");
                 break;
@@ -413,7 +413,7 @@ public class ResultManager : MonoBehaviour
                 executableObjects["Box"].ExecuteAction();
                 SoundPlayer.Instance.UISoundPlay(Sound_LockerKeyMovement);
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_025", boxOpenTime));
-                StartCoroutine(RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroupWithDelay(true, "photoInsideBox", boxOpenTime));
+                StartCoroutine(RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroupCoroutine(true, "photoInsideBox", boxOpenTime));
                 GameManager.Instance.SetVariable("BoxOpened", true);
                 break;
 

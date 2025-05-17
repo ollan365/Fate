@@ -210,45 +210,10 @@ public class ImageAndLockPanelManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.ObjectImageParentRoom, isTrue, true);
     }
 
-    public IEnumerator SetObjectImageGroupWithDelay(bool isTrue, string eventObjectName = null, float second = 0f)
-    {
-        yield return new WaitForSeconds(second);
-
-        if (isTrue && eventObjectName == null)
-        {
-            Debug.Log("eventObjectName must be a correct value!");
-            yield break;
-        }
-
-        isImageActive = isTrue;
-
-        if (isTrue)
-        {
-            Sprite rawSprite = imageDictionary[eventObjectName];
-            float rawHeight = rawSprite.rect.height;
-            float rawWidth = rawSprite.rect.width;
-
-            float multiplier = maxHeight / rawHeight; ;
-            float preferredHeight = maxHeight;
-            float preferredWidth = rawWidth * multiplier;
-
-            if (preferredWidth > maxWidth)
-            {
-                multiplier = maxWidth / preferredWidth; ;
-                preferredWidth = maxWidth;
-                preferredHeight *= multiplier;
-            }
-
-            objectImageImageComponent.sprite = rawSprite;
-            objectImageRectTransform.sizeDelta = new Vector2(preferredWidth, preferredHeight);
-
-            RoomManager.Instance.SetIsInvestigating(true);
-            RoomManager.Instance.SetButtons();
-        }
-
-        objectImageGroup.SetActive(isTrue);
+    public IEnumerator SetObjectImageGroupCoroutine(bool isTrue, string eventObjectName = null, float delayTime = 0.1f) {
+        yield return new WaitForSeconds(delayTime);
+        SetObjectImageGroup(isTrue, eventObjectName);
     }
-
 
     public void SetLockObject(bool isTrue, string lockObjectName = null)
     {
