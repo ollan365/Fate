@@ -53,7 +53,7 @@ public class EndingManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.isFollow = false;
         DialogueManager.Instance.dialogueType = DialogueType.ROOM_ACCIDY;
@@ -82,7 +82,7 @@ public class EndingManager : MonoBehaviour
     }
     private IEnumerator DelayLoadScene(bool isTest = false)
     {
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.5f, true, 0, 0.5f));
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 0.5f, true, 0, 0.5f));
         yield return new WaitForSeconds(0.5f);
         clock.SetActive(true);
         StartCoroutine(ClockEffect());

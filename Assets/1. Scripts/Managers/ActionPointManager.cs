@@ -169,13 +169,15 @@ abstract public class ActionPointManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
-        float time = 3f;
-        StartCoroutine(ScreenEffect.Instance.DayPass(time));   // fade in/out effect
+        float totalTime = 3f;
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime/2));
+        yield return new WaitForSeconds(totalTime/2);
+        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime/2));
 
         // 휴식 대사 출력. 
-        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", time));
+        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", totalTime));
 
-        yield return new WaitForSeconds(time / 2);
+        yield return new WaitForSeconds(totalTime / 2);
 
         // 휴식하면 그날 하루에 남아있는 행동력 다 사용되기에 현재 있는 하트들 삭제
         foreach (Transform child in heartParent.transform)
@@ -234,7 +236,7 @@ abstract public class ActionPointManager : MonoBehaviour
         nowDayNumText.text = $"Day {nowDayNum}";
 
         // 배경 어두워지는 코루틴 실행
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, dayScalingTime));
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, dayScalingTime));
 
         // DayUI 확대 코루틴 실행
         StartCoroutine(ScaleAndMovingNextDayUI(ChangeDayMovedPosition, ChangeDayScaleZoomedValue));
@@ -253,7 +255,7 @@ abstract public class ActionPointManager : MonoBehaviour
         yesterDayRectTransform.SetAsLastSibling();
 
         // 배경 밝아지는 코루틴 실행
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, dayScalingTime));
+        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, dayScalingTime));
 
         // DayUI 축소 코루틴 실행
         StartCoroutine(ScaleAndMovingNextDayUI(ChangeDayOriginalPosition, ChangeDayScaleOriginalValue));
@@ -428,10 +430,8 @@ abstract public class ActionPointManager : MonoBehaviour
     // 리스트에 있는 모든 이미지의 알파값을 동시에 변경
     private void SetImagesAlphaValue(List<Image> imageList, List<Color> colors, float alpha)
     {
-        for (int i = 0; i < imageList.Count; i++)
-        {
-            if (imageList[i] != null)
-            {
+        for (int i = 0; i < imageList.Count; i++) {
+            if (imageList[i]) {
                 Color color = colors[i];
                 color.a = alpha;
                 imageList[i].color = color;

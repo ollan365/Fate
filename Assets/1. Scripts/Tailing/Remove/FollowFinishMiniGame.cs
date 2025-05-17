@@ -51,7 +51,7 @@ public class FollowFinishMiniGame : MonoBehaviour
 
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 엔드 게임 캔버스를 켠다
         SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1.5f, true, 0.5f, -1));
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1.5f, true, 0.5f, -1));
         yield return new WaitForSeconds(1.5f);
         followUICanvas.SetActive(false);
         followCanvas.SetActive(false);
@@ -89,7 +89,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         isGameOver = true;
 
         foreach (Animator a in heartAnimator) a.gameObject.SetActive(false);
-        ScreenEffect.Instance.coverPanel.color = Color.black;
+        UIManager.Instance.coverPanel.color = Color.black;
 
         // 메모의 개수가 부족할 때
         // if (!MemoManager.Instance.UnlockNextScene())
@@ -104,7 +104,7 @@ public class FollowFinishMiniGame : MonoBehaviour
     {
         //메모의 개수가 충분할 때
         // 미니 게임 끝 (페이드 인아웃)
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
         yield return new WaitForSeconds(0.2f);
         finishGameObjects.SetActive(false);
         finishGameEndCanvas.SetActive(true);
@@ -161,8 +161,8 @@ public class FollowFinishMiniGame : MonoBehaviour
         heartCount--;
 
         // 화면이 붉어지는 애니메이션
-        ScreenEffect.Instance.coverPanel.color = Color.red;
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
+        UIManager.Instance.coverPanel.color = Color.red;
+        StartCoroutine(UIManager.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
 
         if (heartCount <= 0) isGameOver = true; // 게임 오버
         else StartCoroutine(PlayerInvincible()); // 아직 생명이 남아있으면 무적 시간
@@ -172,7 +172,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         yield return new WaitForSeconds(1f);
         heartAnimator[heartCount].gameObject.SetActive(false);
 
-        ScreenEffect.Instance.coverPanel.color = Color.black;
+        UIManager.Instance.coverPanel.color = Color.black;
     }
     private IEnumerator PlayerInvincible()
     {

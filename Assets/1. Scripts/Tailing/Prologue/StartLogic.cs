@@ -69,9 +69,9 @@ public class StartLogic : MonoBehaviour
             buttons.SetActive(false);
             StartCoroutine(StartPrologue());
         }
-        else if (ScreenEffect.Instance)
+        else if (UIManager.Instance)
         {
-            StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 0.1f, false, 0, 0));
+            StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 0.1f, false, 0, 0));
             StartCoroutine(RotateSecond());
         }
     }
@@ -200,8 +200,8 @@ public class StartLogic : MonoBehaviour
     // ========== 프롤로그 시작 ========== //
     private IEnumerator StartPrologue()
     {
-        if (!ScreenEffect.Instance.coverPanel.gameObject.activeSelf)
-            StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
+        if (!UIManager.Instance.coverPanel.gameObject.activeSelf)
+            StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
         albumButton.SetActive(false);
@@ -211,7 +211,7 @@ public class StartLogic : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         background.GetComponent<Image>().sprite = room1Side1BackgroundSprite; // Background 이미지 변경
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
 
         blockingPanel.SetActive(true);
     }

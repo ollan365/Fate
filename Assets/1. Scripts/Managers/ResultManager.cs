@@ -127,17 +127,17 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCloseEyes": // 눈 깜빡이는 효과
-                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
+                StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
                 break;
 
             case "Result_FadeOut":  // fade out
                 float fadeOutTime = 3f;
-                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, fadeOutTime));
+                StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, fadeOutTime));
                 break;
 
             case "Result_FadeIn":  // fade out
                 float fadeInTime = 3f;
-                StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, fadeInTime));
+                StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, fadeInTime));
                 break;
 
             case "ResultPrologueLimit":
@@ -274,12 +274,6 @@ public class ResultManager : MonoBehaviour
 
             case "Result_TutorialPhase5Force":  // 열린 카펫 덮자 (이미지 강조는 X 검은 화면O)
                 RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-                break;
-
-            case "Result_DayPass":  // fade in/out 후 대사 출력
-                const float totalTime = 3f;
-                StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
-                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
                 break;
 
             case "ResultNewTeddyBearZoom":
@@ -520,6 +514,7 @@ public class ResultManager : MonoBehaviour
 
             // 방탈출1 아침 스크립트
             case "Result_Room1Morning2":
+                const float totalTime = 3f;
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_004", totalTime));
                 break;
 

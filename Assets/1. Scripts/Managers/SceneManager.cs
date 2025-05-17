@@ -41,7 +41,7 @@ public class SceneManager : MonoBehaviour
 
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         yield return new WaitForSeconds(1f);
 
@@ -62,28 +62,28 @@ public class SceneManager : MonoBehaviour
 
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         switch (loadSceneType)
         {
             case SceneType.START:
-                ScreenEffect.Instance.TextOnFade("Prologue");
+                UIManager.Instance.TextOnFade("Prologue");
                 break;
             case SceneType.ROOM_1:
                 GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_1.ToInt());
-                ScreenEffect.Instance.TextOnFade("Chapter I");
+                UIManager.Instance.TextOnFade("Chapter I");
                 break;
             case SceneType.FOLLOW_1:
                 GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_1.ToInt());
-                ScreenEffect.Instance.TextOnFade("Chapter II");
+                UIManager.Instance.TextOnFade("Chapter II");
                 break;
             case SceneType.ROOM_2:
                 GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_2.ToInt());
-                ScreenEffect.Instance.TextOnFade("Chapter III");
+                UIManager.Instance.TextOnFade("Chapter III");
                 break;
             case SceneType.FOLLOW_2:
                 GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_2.ToInt());
-                ScreenEffect.Instance.TextOnFade("Chapter IV");
+                UIManager.Instance.TextOnFade("Chapter IV");
                 break;
         }
 
@@ -138,7 +138,7 @@ public class SceneManager : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(true);
 
         SoundPlayer.Instance.ChangeBGM(bgmIndex);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
 
     public void NotClearThisScene()

@@ -32,7 +32,7 @@ public class FollowTutorial : MonoBehaviour
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         if (highlightPanel) highlightPanel.SetActive(false);
         yield return new WaitForSeconds(1.5f);
 

@@ -142,7 +142,7 @@ public class FollowDayMiniGame : MonoBehaviour
         // 페이드 아웃과 인을 하며 미행 캔버스를 끄고 미니 게임 캔버스를 켠다 + 브금을 바꾼다
         SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
         followUICanvas.SetActive(false);
-        StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
         yield return new WaitForSeconds(0.2f);
         followCanvas.SetActive(false);
         miniGameCanvas.SetActive(true);
@@ -187,12 +187,12 @@ public class FollowDayMiniGame : MonoBehaviour
                 heartAnimator[heartCount].SetTrigger("Break");
 
                 // 화면이 붉어지는 애니메이션
-                ScreenEffect.Instance.coverPanel.color = Color.red;
-                StartCoroutine(ScreenEffect.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
+                UIManager.Instance.coverPanel.color = Color.red;
+                StartCoroutine(UIManager.Instance.OnFade(null, 0.5f, 0, 0.2f, false, 0, 0));
                 yield return new WaitForSeconds(0.5f);
 
                 heartAnimator[heartCount].gameObject.SetActive(false);
-                ScreenEffect.Instance.coverPanel.color = Color.black;
+                UIManager.Instance.coverPanel.color = Color.black;
                 
                 onHit = false;
             }
@@ -219,7 +219,7 @@ public class FollowDayMiniGame : MonoBehaviour
             MemoManager.Instance.SetMemoButtons(true);
 
             SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
-            StartCoroutine(ScreenEffect.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
+            StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 0.2f, true, 0.2f, 0));
             yield return new WaitForSeconds(0.2f);
             miniGameCanvas.SetActive(false);
             followCanvas.SetActive(true);
@@ -260,13 +260,13 @@ public class FollowDayMiniGame : MonoBehaviour
         canClick = false; // 애니메이션 끝날 때까지 버튼 비활성화
 
         // 필연의 위치가 바뀌는 애니메이션
-        StartCoroutine(ScreenEffect.Instance.OnFade(fatePositions[ToInt(currentPlace)], 1, 0, 0.2f, false, 0, 0));
+        StartCoroutine(UIManager.Instance.OnFade(fatePositions[ToInt(currentPlace)], 1, 0, 0.2f, false, 0, 0));
         yield return new WaitForSeconds(0.2f);
 
         // 필연의 상태를 이동한 위치로 변경
         currentPlace = place;
 
-        StartCoroutine(ScreenEffect.Instance.OnFade(fatePositions[ToInt(place)], 0, 1, 0.2f, false, 0, 0));
+        StartCoroutine(UIManager.Instance.OnFade(fatePositions[ToInt(place)], 0, 1, 0.2f, false, 0, 0));
         yield return new WaitForSeconds(0.2f);
 
         canClick = true;
@@ -289,7 +289,7 @@ public class FollowDayMiniGame : MonoBehaviour
                 yield return new WaitForSeconds(difficulty);
 
                 // 우연의 모습이 바뀌는 애니메이션
-                StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
+                StartCoroutine(UIManager.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
                 yield return new WaitForSeconds(0.2f);
                 accidy.sprite = accidyBackSprite;
                 accidy.SetNativeSize();
@@ -303,7 +303,7 @@ public class FollowDayMiniGame : MonoBehaviour
                 if (isGameOver) break;
 
                 // 다시 앞을 보는 애니메이션
-                StartCoroutine(ScreenEffect.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
+                StartCoroutine(UIManager.Instance.OnFade(accidy, 1, 0, 0.2f, true, 0, 0));
                 yield return new WaitForSeconds(0.2f);
                 accidy.sprite = accidyFrontSprite;
                 accidy.SetNativeSize();

@@ -94,7 +94,7 @@ public class RoomManager : MonoBehaviour
         int newSideIndex = (currentSideIndex + sides.Count + leftOrRight) % sides.Count;
         SetCurrentSide(newSideIndex);
         
-        ScreenEffect.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
+        UIManager.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
 
         // 시점에 맞춰서 버튼 끄고 키게 함.(사이드 2번에선 오른쪽 버튼만 3번에선 왼쪽 버튼만 나오게 함)
         SetMoveButtons(true);
@@ -112,7 +112,7 @@ public class RoomManager : MonoBehaviour
         else if (isZoomed)
         {
             // 화면 전환 효과
-            ScreenEffect.Instance.MoveButtonEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0));
+            UIManager.Instance.MoveButtonEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0));
 
             SetCurrentView(sides[currentSideIndex]);
             isZoomed = false;
