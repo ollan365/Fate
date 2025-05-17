@@ -43,13 +43,15 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
     }
     public void OnMouseDown_Normal()
     {
-        if (objectName != FollowObjectName.Extra) eventId = objectName.EventID();
+        if (objectName != FollowObjectName.Extra)eventId = objectName.EventID();
         else eventId = extraName.EventID();
+
+        base.OnMouseDown();
 
         foreach (GameObject image in afterBlurImages) image.SetActive(true);
         FollowManager.Instance.EndScriptAction = () => { foreach (GameObject image in afterBlurImages) image.SetActive(false); };
 
-        base.OnMouseDown();
+        if (objectName != FollowObjectName.Extra) FollowManager.Instance.Accidy.GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f);
         
         if (objectName != FollowObjectName.Extra) GameManager.Instance.IncrementVariable(objectName.ClickVariable());
         else GameManager.Instance.IncrementVariable(extraName.ClickVariable());

@@ -9924,6 +9924,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 723931052}
   m_CullTransparentMesh: 1
+--- !u!1 &734817589 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3245294518042201321, guid: 6ab3a56193aa95241a89b9e0dea35df0, type: 3}
+  m_PrefabInstance: {fileID: 1345736589}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &736812697
 GameObject:
   m_ObjectHideFlags: 0
@@ -20971,6 +20976,7 @@ MonoBehaviour:
   SoundEffectSlider: {fileID: 564408261}
   BGMValueText: {fileID: 1027808005}
   SoundEffectValueText: {fileID: 778190506}
+  followUIParent: {fileID: 734817589}
   followMemoGauge: {fileID: 943887064}
   followUIBackground: {fileID: 1345736595}
   doubtGaugeSlider: {fileID: 1345736593}
@@ -22467,10 +22473,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2061954731}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1266384659}
+        m_TargetAssemblyTypeName: StartLogic, Assembly-CSharp
+        m_MethodName: OpenOption
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

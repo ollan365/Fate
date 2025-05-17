@@ -206,6 +206,10 @@ public class DialogueManager : MonoBehaviour
                         break;
                     case "CENTER":
                         dialogueType = DialogueType.CENTER;
+                        foreach (GameObject canvas in dialogueSet)
+                            if (canvas)
+                                canvas.SetActive(false);
+                        dialogueSet[dialogueType.ToInt()].SetActive(true);
                         break;
                 }
         }
@@ -331,9 +335,6 @@ public class DialogueManager : MonoBehaviour
 
     private void ChangeDialogueCanvas(string speaker)
     {
-        if (dialogueType == DialogueType.CENTER)
-            dialogueType = DialogueType.ROOM_ACCIDY;
-
         // 미행 대화창
         if ((int)GameManager.Instance.GetVariable("CurrentScene") is 2 or 4)
         {

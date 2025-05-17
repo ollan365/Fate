@@ -68,6 +68,8 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         SetCharcter();
 
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, true);
+
         UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge, true);
         MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge));
 
@@ -118,11 +120,10 @@ public class FollowManager : MonoBehaviour
         followDialogueManager.ClickObject();
         if (!IsEnd)
         {
-            Accidy.GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f);
             accidyDialogueBox.SetActive(false);
         }
 
-        if (IsTutorial || IsDialogueOpen) return false;
+        if (IsTutorial || IsDialogueOpen || IsEnd) return false;
         IsDialogueOpen = true; // 다른 오브젝트를 누를 수 없게 만든다
         
         return true;
@@ -263,6 +264,8 @@ public class FollowManager : MonoBehaviour
 
         MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
+
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, false);
 
         StartCoroutine(followEnd.EndFollowLogic_0());
     }

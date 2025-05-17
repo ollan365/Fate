@@ -42,7 +42,7 @@ public static class Constants
             case DialogueType.FOLLOW: return 3;
             case DialogueType.FOLLOW_THINKING: return 4;
             case DialogueType.FOLLOW_EXTRA: return 5;
-            case DialogueType.CENTER: return 6;
+            case DialogueType.CENTER: return 7;
             default: return 0;
         }
     }

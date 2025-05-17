@@ -38,6 +38,7 @@ public enum eUIGameObjectName {
     BGMValue,
     SoundEffectValue,
     FollowMemoGauge,
+    FollowUI,
     FollowUIBackground,
     DoubtGaugeSlider,
     FatePositionSlider,
@@ -99,8 +100,10 @@ public class UIManager : MonoBehaviour {
     public GameObject SoundEffectSlider;
     public GameObject BGMValueText;
     public GameObject SoundEffectValueText;
-    
+    private bool menuOpenByStartSceneButton = false;
+
     [Header("UI Game Objects - Follow")]
+    public GameObject followUIParent;
     public GameObject followMemoGauge;
     public GameObject followUIBackground;
     public GameObject doubtGaugeSlider;
@@ -177,11 +180,7 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
         uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
 
-        // uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
-        // uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
-        // uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider, SoundEffectSlider);
-        // uiGameObjects.Add(eUIGameObjectName.BGMValue, BGMValueText);
-        // uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
+        uiGameObjects.Add(eUIGameObjectName.FollowUI, followUIParent);
 
         uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge, followMemoGauge);
 
@@ -296,53 +295,28 @@ public class UIManager : MonoBehaviour {
             uiGameObjects[uiName].SetActive(false);
     }
 
-    private FloatDirection GetReverseDirection(FloatDirection direction) {
-        switch (direction) {
-            case FloatDirection.Left: 
-                return FloatDirection.Right;
-            case FloatDirection.Right: 
-                return FloatDirection.Left;
-            case FloatDirection.Up: 
-                return FloatDirection.Down;
-            case FloatDirection.Down: 
-                return FloatDirection.Up;
-            default: 
-                return FloatDirection.None;
-        }
-    }
+    public void SetMenuUI(bool startSceneButtonClick = false)
+    {
+        if(startSceneButtonClick) menuOpenByStartSceneButton = startSceneButtonClick;
 
-    private void GetAnimationPositions(FloatDirection floatDir, bool show, Vector2 basePosition, out Vector2 startPos, out Vector2 targetPos) {
-        startPos = basePosition;
-        targetPos = basePosition;
-
-        switch (floatDir) {
-            case FloatDirection.Right:
-                startPos.x = show ? basePosition.x - floatDistance : basePosition.x;
-                targetPos.x = show ? basePosition.x : basePosition.x + floatDistance;
-                break;
-            case FloatDirection.Left:
-                startPos.x = show ? basePosition.x + floatDistance : basePosition.x;
-                targetPos.x = show ? basePosition.x : basePosition.x - floatDistance;
-                break;
-            case FloatDirection.Down:
-                startPos.y = show ? basePosition.y + floatDistance : basePosition.y;
-                targetPos.y = show ? basePosition.y : basePosition.y - floatDistance;
-                break;
-            case FloatDirection.Up:
-                startPos.y = show ? basePosition.y - floatDistance : basePosition.y;
-                targetPos.y = show ? basePosition.y : basePosition.y + floatDistance;
-                break;
-        }
-    }
-
-    private void SetMenuUI() {
-        if (GetUI(eUIGameObjectName.MenuUI).activeSelf) {
+        if (GetUI(eUIGameObjectName.MenuUI).activeSelf)
+        {
             SetUI(eUIGameObjectName.MenuUI, false);
             SetUI(eUIGameObjectName.WhiteMenu, false);
             SetUI(eUIGameObjectName.BlackMenu, false);
+            if (menuOpenByStartSceneButton)
+            {
+                StartLogic.Instance.SetButtons();
+                menuOpenByStartSceneButton = false;
+            }
             Time.timeScale = 1f;
         } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
             SetUI(eUIGameObjectName.OptionUI, false);
+            if (menuOpenByStartSceneButton)
+            {
+                StartLogic.Instance.SetButtons();
+                menuOpenByStartSceneButton = false;
+            }
             Time.timeScale = 1f;
         } else {
             SetUI(eUIGameObjectName.MenuUI, true);

@@ -97,6 +97,14 @@ public class StartLogic : MonoBehaviour
             second.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
+    public void OpenOption()
+    {
+        UIManager.Instance.SetMenuUI(true);
+    }
+    public void SetButtons()
+    {
+        buttons.SetActive(true);
+    }
     public void StartNewGame()
     {
         if (!SaveManager.Instance.CheckGameData()) // 저장된 게임 데이터가 없는 경우
