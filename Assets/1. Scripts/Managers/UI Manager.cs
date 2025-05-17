@@ -294,6 +294,45 @@ public class UIManager : MonoBehaviour {
         if (!show)
             uiGameObjects[uiName].SetActive(false);
     }
+    
+    private FloatDirection GetReverseDirection(FloatDirection direction) {
+        switch (direction) {
+            case FloatDirection.Left: 
+                return FloatDirection.Right;
+            case FloatDirection.Right: 
+                return FloatDirection.Left;
+            case FloatDirection.Up: 
+                return FloatDirection.Down;
+            case FloatDirection.Down: 
+                return FloatDirection.Up;
+            default: 
+                return FloatDirection.None;
+        }
+    }
+
+    private void GetAnimationPositions(FloatDirection floatDir, bool show, Vector2 basePosition, out Vector2 startPos, out Vector2 targetPos) {
+        startPos = basePosition;
+        targetPos = basePosition;
+
+        switch (floatDir) {
+            case FloatDirection.Right:
+                startPos.x = show ? basePosition.x - floatDistance : basePosition.x;
+                targetPos.x = show ? basePosition.x : basePosition.x + floatDistance;
+                break;
+            case FloatDirection.Left:
+                startPos.x = show ? basePosition.x + floatDistance : basePosition.x;
+                targetPos.x = show ? basePosition.x : basePosition.x - floatDistance;
+                break;
+            case FloatDirection.Down:
+                startPos.y = show ? basePosition.y + floatDistance : basePosition.y;
+                targetPos.y = show ? basePosition.y : basePosition.y - floatDistance;
+                break;
+            case FloatDirection.Up:
+                startPos.y = show ? basePosition.y - floatDistance : basePosition.y;
+                targetPos.y = show ? basePosition.y : basePosition.y + floatDistance;
+                break;
+        }
+    }
 
     public void SetMenuUI(bool startSceneButtonClick = false)
     {
