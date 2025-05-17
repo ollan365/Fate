@@ -3,244 +3,178 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SewingBoxBead : MonoBehaviour, IDragHandler, IEndDragHandler
+public class SewingBoxBead : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public RectTransform[] dropZones; // µå·ÓÇÒ ¼ö ÀÖ´Â ¿µ¿ªµé
-    private Vector3 offset;
-    private float zCoord;
-    private int newParentIndex;
-    public BoxCollider2D boxCollider;
-    private bool canDrag;
+    public RectTransform[] dropZones; // ë“œë¡­í•  ìˆ˜ ìˆëŠ” ì˜ì—­ë“¤
+    [SerializeField] private bool canDrag;
 
-    // ºñÁîÀÇ Çà À§Ä¡
-    [Header("ºñÁîÀÇ Çà À§Ä¡")]
+    // ë¹„ì¦ˆì˜ í–‰ ìœ„ì¹˜
+    [Header("ë¹„ì¦ˆì˜ í–‰ ìœ„ì¹˜")]
     public int beadRow;
 
-    [Header("ÇöÀç ºñÁî À§Ä¡")]
-    public int currentPositionNumber;  // ÇöÀç ºñÁî À§Ä¡
-    [Header("ºñÁî °íÀ¯ ¹øÈ£")]
-    public int beadNameNumber;  // ºñÁî °íÀ¯ ¹øÈ£
+    [Header("í˜„ì¬ ë¹„ì¦ˆ ìœ„ì¹˜")]
+    public int currentPositionNumber;  // í˜„ì¬ ë¹„ì¦ˆ ìœ„ì¹˜ [1,X]ì˜ X (ì—´) ì •ë³´ ì €ì¥
+    [Header("ë¹„ì¦ˆ ê³ ìœ  ë²ˆí˜¸")]
+    public int beadNameNumber;  // ë¹„ì¦ˆ ê³ ìœ  ë²ˆí˜¸
 
-    [SerializeField] private float moveDuration = 0.3f; // ÀÌµ¿¿¡ °É¸®´Â ½Ã°£
+    [SerializeField] private float moveDuration = 0.3f; // ì´ë™ì— ê±¸ë¦¬ëŠ” ì‹œê°„
 
-    // 1¹ø ÁÙÀÇ ´Ù¸¥ ºñÁî
-    public GameObject anotherBead;
+    [SerializeField] private bool isConflict = false;
+
+    private RectTransform originalParent;
+
+    private RectTransform rectTransform;
+
+    float fixedPositionXvalue;
 
 
     private void Start()
     {
-        newParentIndex = -1; // ÃÊ±â°ª ¼³Á¤, À¯È¿ÇÏÁö ¾ÊÀº ÀÎµ¦½º
+        rectTransform = GetComponent<RectTransform>();
 
-        boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        if (boxCollider == null)
+        // ì‹œì‘ ì‹œ ìœ„ì¹˜ ë²ˆí˜¸ ì €ì¥
+        if (transform.parent != null)
         {
-            boxCollider = gameObject.AddComponent<BoxCollider2D>();
+            currentPositionNumber = ParseColumn(transform.parent.name);
         }
 
-        if (beadRow == 1)
-        {
-            if (beadNameNumber == 1)
-            {
-                anotherBead = GameObject.Find("Bead2");
-            }
-            else if (beadNameNumber == 2)
-            {
-                anotherBead = GameObject.Find("Bead1");
-            }
-        }
+        fixedPositionXvalue = gameObject.transform.position.x;
+        
+        // (ì˜µì…˜) ë“œë˜ê·¸ ê°ë„ ì¡°ì •
+        //EventSystem.current.pixelDragThreshold = 1;
     }
 
-    private void OnMouseDown()
-    {
-        // ºñ¹Ğ¹øÈ£ ¹«ÇÑ ÀÔ·Â ½Ãµµ ¹æÁö
-        RoomManager.Instance.ProhibitInput();
-
-        zCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-        offset = gameObject.transform.position - GetMouseAsWorldPoint();
-    }
-
-    private Vector3 GetMouseAsWorldPoint()
-    {
-        Vector3 mousePoint = Input.mousePosition;
-        mousePoint.z = zCoord;
-        return Camera.main.ScreenToWorldPoint(mousePoint);
-    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        canDrag = true;
+        // ë¹„ë°€ë²ˆí˜¸ ë¬´í•œ ì…ë ¥ ì‹œë„ ë°©ì§€
+        RoomManager.Instance.ProhibitInput();
+
+        originalParent = (RectTransform)transform.parent;
+        transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (canDrag)
-        {
-            Vector3 targetPos = GetMouseAsWorldPoint() + offset;
-            float newY = transform.position.y;
+        Vector2 pos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            (RectTransform)transform.parent,
+            eventData.position,
+            eventData.pressEventCamera,
+            out pos);
 
-            int currentParentIndex = currentPositionNumber - 1;
-
-            // Á¦ÇÑµÈ ¼öÁ÷ ÀÌµ¿ °è»ê
-            if (currentParentIndex > 0 && currentParentIndex < dropZones.Length - 1)
-            {
-                newY = targetPos.y;
-            }
-            else if (currentParentIndex == 0 && targetPos.y < transform.position.y)
-            {
-                newY = targetPos.y;
-            }
-            else if (currentParentIndex == dropZones.Length - 1 && targetPos.y > transform.position.y)
-            {
-                newY = targetPos.y;
-            }
-
-            // Ãæµ¹ °¨Áö
-            if (CheckCollision(new Vector3(transform.position.x, newY, transform.position.z)))
-            {
-                return;
-            }
-
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-        }
+        pos.x = rectTransform.anchoredPosition.x; // xì¶• ê°’ ê³ ì •í•´ì„œ ë¹„ì¦ˆ ìœ„ì¹˜ ë³´ì •
+        rectTransform.anchoredPosition = pos;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        canDrag = false;
-        SoundPlayer.Instance.UISoundPlay(Constants.Sound_SewingBoxBall);
+        RectTransform closestZone = GetClosestDropZone(eventData);
+        RectTransform validZone = GetValidDropZone(closestZone);
 
-        RectTransform newParent = null;
-        newParentIndex = -1;
-
-        for (int i = 0; i < dropZones.Length; i++)
+        if (validZone != null)
         {
-            if (RectTransformUtility.RectangleContainsScreenPoint(dropZones[i], Input.mousePosition, Camera.main))
-            {
-                newParent = dropZones[i];
-                newParentIndex = i;
-                break;
-            }
-        }
+            // ë¶€ë“œëŸ½ê²Œ ì´ë™
+            StartCoroutine(SmoothMoveToParent(validZone, moveDuration));
 
-        if (newParent != null && IsDropAllowed(newParentIndex))
-        {
-            StartCoroutine(MoveBead(newParent.position, newParent));
-            currentPositionNumber = newParentIndex + 1;
+            // ìœ„ì¹˜ ê°’ ê°±ì‹ 
+            currentPositionNumber = ParseColumn(validZone.name);
         }
         else
         {
-            if (beadRow == 1)
-            {
-                if (isConflict)
-                {
-                    int anotherBeadIndex = anotherBead.GetComponent<SewingBoxBead>().currentPositionNumber - 1;
-                    switch (beadNameNumber)
-                    {
-                        case 1:
-                            int newPositionIndex = anotherBeadIndex - 1;
-                            if (newPositionIndex < 1) newPositionIndex = 1;
-
-                            newParent = dropZones[newPositionIndex];
-                            StartCoroutine(MoveBead(newParent.position, newParent));
-
-                            currentPositionNumber = newPositionIndex + 1;
-                            break;
-
-                        case 2:
-                            newPositionIndex = anotherBeadIndex + 1;
-                            if (newPositionIndex > 4) newPositionIndex = 4;
-
-                            newParent = dropZones[newPositionIndex];
-                            StartCoroutine(MoveBead(newParent.position, newParent));
-
-                            currentPositionNumber = newPositionIndex + 1;
-                            break;
-
-                        default:
-                            return;
-                    }
-
-                }
-
-            } 
-            else return;
+            StartCoroutine(SmoothMoveToParent(originalParent, moveDuration));
+            currentPositionNumber = ParseColumn(originalParent.name);
         }
-
     }
 
-    private bool isConflict = false;
-
-    private bool IsDropAllowed(int targetIndex)
+    RectTransform GetClosestDropZone(PointerEventData eventData)
     {
-        int currentParentIndex = currentPositionNumber - 1;
+        RectTransform bestDrop = null;
+        float minDist = float.MaxValue;
 
-        if (beadNameNumber == 1)
+        foreach (var zone in dropZones)
         {
-            if (targetIndex == 4)
+            // ì›”ë“œ ì¢Œí‘œë¥¼ ìŠ¤í¬ë¦° ì¢Œí‘œë¡œ ë³€í™˜
+            Vector2 zoneScreenPos = RectTransformUtility.WorldToScreenPoint(eventData.pressEventCamera, zone.position);
+            float dist = Vector2.Distance(zoneScreenPos, eventData.position);
+
+            if (dist < minDist)
             {
-                isConflict = true;
-                return false;
-            }
-            if ((anotherBead.GetComponent<SewingBoxBead>().currentPositionNumber - 1) < targetIndex)
-            {
-                isConflict = true;
-                return false;
+                minDist = dist;
+                bestDrop = zone;
             }
         }
 
-        if (beadNameNumber == 2)
-        {
-            if (targetIndex == 0)
-            {
-                isConflict = true;
-                return false;
-            }
-            if ((anotherBead.GetComponent<SewingBoxBead>().currentPositionNumber - 1) > targetIndex)
-            {
-                isConflict = true;
-                return false;
-            }
-        }
-
-        if (targetIndex < 0 || targetIndex >= dropZones.Length) return false;
-        if (targetIndex == currentParentIndex) return false;
-
-        // ¸ñÇ¥ À§Ä¡¿¡ ´Ù¸¥ ÀÚ½ÄÀÌ ÀÖ´ÂÁö È®ÀÎ
-        return dropZones[targetIndex].childCount == 0;
+        return bestDrop;
     }
 
-    private bool CheckCollision(Vector3 targetPosition)
+    RectTransform GetValidDropZone(RectTransform target)
     {
-        foreach (RectTransform dropZone in dropZones)
-        {
-            if (dropZone == transform.parent) continue;
+        if (beadRow != 1) return target;
 
-            foreach (Transform child in dropZone)
+        int targetCol = ParseColumn(target.name);
+        int otherBeadNumber = (beadNameNumber == 1) ? 2 : 1;
+        int otherCol = FindBeadColumn(otherBeadNumber);
+
+        if (otherCol == -1) return target;
+
+        int allowedCol = -1;
+        if (beadNameNumber == 1 && targetCol >= otherCol)
+            allowedCol = otherCol - 1;
+        else if (beadNameNumber == 2 && targetCol <= otherCol)
+            allowedCol = otherCol + 1;
+
+        if (allowedCol != -1)
+        {
+            foreach (var zone in dropZones)
             {
-                if (child != transform && child.GetComponent<RectTransform>().rect.Contains(targetPosition))
-                {
-                    return true;
-                }
+                if (ParseColumn(zone.name) == allowedCol)
+                    return zone;
             }
+            return null;
         }
 
-        return false;
+        return target;
     }
 
-
-    IEnumerator MoveBead(Vector3 targetPosition, RectTransform rect)
+    int ParseColumn(string name)
     {
-        float elapsedTime = 0;
-        Vector3 startingPosition = transform.position;
+        string[] parts = name.Split(',');
+        return int.Parse(parts[1]);
+    }
 
-        while (elapsedTime < moveDuration)
+    int FindBeadColumn(int targetBeadNumber)
+    {
+        string targetName = "Bead" + targetBeadNumber;
+        foreach (var zone in dropZones)
         {
-            transform.position = Vector3.Lerp(startingPosition, targetPosition, (elapsedTime / moveDuration));
-            elapsedTime += Time.deltaTime;
+            Transform child = zone.Find(targetName);
+            if (child != null)
+                return ParseColumn(zone.name);
+        }
+        return -1;
+    }
+
+    IEnumerator SmoothMoveToParent(RectTransform targetParent, float duration)
+    {
+        SoundPlayer.Instance.UISoundPlay(Constants.Sound_SewingBoxBall);
+
+        Vector3 startPos = rectTransform.position;
+        Vector3 endPos = targetParent.position;
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            rectTransform.position = Vector3.Lerp(startPos, endPos, elapsed / duration);
             yield return null;
         }
 
-        transform.SetParent(rect);
-        transform.localPosition = Vector3.zero;
+        rectTransform.position = endPos;
+
+        // ë¶€ëª¨ ì¬ì„¤ì •ì€ ì´ë™ ëë‚œ í›„ ë§ˆì§€ë§‰ì— í•˜ê¸°
+        transform.SetParent(targetParent);
+        rectTransform.localPosition = Vector3.zero;
     }
 }

@@ -10,9 +10,6 @@ public class SewingBoxPuzzle : MonoBehaviour
 
     [SerializeField] private SewingBox sewingBoxA;
 
-    // 다른 비즈 누르면 현재 켜져 있는 비즈의 이동 버튼 꺼지게 함
-    public int focusedBeadNumber;
-
     [Header("비즈들")]
     public List<SewingBoxBead> Beads;
 
