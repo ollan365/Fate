@@ -148,7 +148,7 @@ public class FollowGameManager : MonoBehaviour
         IsFateHide = hide;
         Fate.SetBool("Hide", hide);
 
-        CursorManager.Instance.ChangeCursorInFollow();
+        UIManager.Instance.ChangeCursor();
     }
 
     private IEnumerator AccidyLogic()
@@ -188,7 +188,7 @@ public class FollowGameManager : MonoBehaviour
 
                 case AccidyAction.Turn:
                     accidyStatus = AccidyStatus.RED;
-                    CursorManager.Instance.ChangeCursorInFollow();
+                    UIManager.Instance.ChangeCursor();
                     Accidy.SetBool("Back", true);
                     nextAccidyAction = AccidyAction.Inverse_Stop;
                     break;
@@ -199,7 +199,7 @@ public class FollowGameManager : MonoBehaviour
 
                 case AccidyAction.Inverse_Turn:
                     accidyStatus = AccidyStatus.GREEN;
-                    CursorManager.Instance.ChangeCursorInFollow();
+                    if(FollowManager.Instance.CanClick) UIManager.Instance.ChangeCursor(false);
                     Accidy.SetBool("Back", false);
                     nextAccidyAction = AccidyAction.Move;
                     SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
