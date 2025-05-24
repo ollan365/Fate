@@ -105,7 +105,7 @@ abstract public class ActionPointManager : MonoBehaviour
     // 외출(아침) 스크립트 출력 부분
     public abstract IEnumerator nextMorningDay();
 
-    public void Awake()
+    protected void Awake()
     {
         heartParent = UIManager.Instance.heartParent;
         dayText = UIManager.Instance.dayTextTextMeshProUGUI;
