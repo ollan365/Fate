@@ -597,8 +597,10 @@ public class ResultManager : MonoBehaviour
 
             // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
-                executableObjects["Box Unzoomed 2"].ExecuteAction();
-                executableObjects["Box Unzoomed 3"].ExecuteAction();
+                executableObjects["Box Unzoomed-closed 2"].ExecuteAction();
+                executableObjects["Box Unzoomed-open 2"].ExecuteAction();
+                executableObjects["Box Unzoomed-closed 3"].ExecuteAction();
+                executableObjects["Box Unzoomed-open 3"].ExecuteAction();
                 break;
 
             case "Result_showZoomedClosetUnder": // 옷장 아래 영역 확대 화면으로 전환
