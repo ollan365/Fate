@@ -130,7 +130,7 @@ public class UIManager : MonoBehaviour {
     
     [Header("Animation Settings")]
     public float fadeAnimationDuration = 0.3f;
-    [SerializeField] private float floatAnimationDuration = 0.3f;
+    public float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
 
     public static UIManager Instance { get; private set; }
@@ -228,37 +228,52 @@ public class UIManager : MonoBehaviour {
         bool fade = false,
         FloatDirection floatDir = FloatDirection.None) {
         GameObject targetUI = uiGameObjects[uiName];
-        
-        if (fade || floatDir != FloatDirection.None) {
-            CanvasGroup canvasGroup = targetUI.GetComponent<CanvasGroup>(); // need to memoize this
-            if (!canvasGroup) {
-                Debug.LogWarning($"CanvasGroup is not found in the target UI: {uiName}");
-                targetUI.SetActive(isActive);
-                return;
-            }
-            
-            if (isActive)
-                targetUI.SetActive(true);
-            
-            string coroutineName = $"Animate_{uiName}";
-            if (IsInvoking(coroutineName))
-                StopCoroutine(coroutineName);
-            StartCoroutine(AnimateUI(uiName, canvasGroup, isActive, floatDir));
-        } else
-            targetUI.SetActive(isActive);
+        AnimateUI(targetUI, isActive, fade, floatDir);
     }
     
     public GameObject GetUI(eUIGameObjectName uiName) {
         return uiGameObjects[uiName];
     }
     
-    private IEnumerator AnimateUI(eUIGameObjectName uiName, CanvasGroup canvasGroup, bool show, FloatDirection floatDir) {
+    public void AnimateUI(GameObject targetUI, bool isActive, bool fade = false, FloatDirection floatDir = FloatDirection.None) {
+        if (!targetUI) {
+            Debug.LogWarning("Target UI is null!");
+            return;
+        }
+
+        if (!fade && floatDir == FloatDirection.None) {
+            targetUI.SetActive(isActive);
+            return;
+        }
+
+        CanvasGroup canvasGroup = targetUI.GetComponent<CanvasGroup>();
+        if (!canvasGroup) {
+            Debug.LogWarning($"CanvasGroup is not found in the target object: {targetUI.name}");
+            targetUI.SetActive(isActive);
+            return;
+        }
+
+        if (isActive)
+            targetUI.SetActive(true);
+
+        string coroutineName = $"Animate_{targetUI.name}";
+        if (IsInvoking(coroutineName))
+            StopCoroutine(coroutineName);
+        StartCoroutine(AnimateUICoroutine(targetUI, canvasGroup, isActive, fade, floatDir));
+    }
+
+    private IEnumerator AnimateUICoroutine(GameObject targetUI,
+        CanvasGroup canvasGroup,
+        bool show,
+        bool fade,
+        FloatDirection floatDir) {
         float targetAlpha = show ? 1f : 0f;
         float startAlpha = show ? 0f : 1f;
         float fadeTime = fadeAnimationDuration;
         float elapsedTime = 0f;
         
-        canvasGroup.alpha = startAlpha;
+        if (fade)
+            canvasGroup.alpha = startAlpha;
         
         RectTransform rectTransform = null;
         Vector2 startPos = Vector2.zero;
@@ -266,7 +281,7 @@ public class UIManager : MonoBehaviour {
         Vector2 basePosition = Vector2.zero;
         
         if (floatDir != FloatDirection.None) {
-            rectTransform = uiGameObjects[uiName].GetComponent<RectTransform>();
+            rectTransform = targetUI.GetComponent<RectTransform>();
             basePosition = rectTransform.anchoredPosition;
             
             // Calculate start and target positions with original direction on entry, reversed on exit
@@ -277,7 +292,8 @@ public class UIManager : MonoBehaviour {
         }
         
         while (elapsedTime < fadeTime) {
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
+            if (fade)
+                canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
             
             if (floatDir != FloatDirection.None && rectTransform)
                 rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetPos, elapsedTime / floatAnimationDuration);
@@ -286,13 +302,14 @@ public class UIManager : MonoBehaviour {
             yield return null;
         }
         
-        canvasGroup.alpha = targetAlpha;
+        if (fade)
+            canvasGroup.alpha = targetAlpha;
         
         if (floatDir != FloatDirection.None && rectTransform)
             rectTransform.anchoredPosition = show ? targetPos : basePosition;
         
         if (!show)
-            uiGameObjects[uiName].SetActive(false);
+            targetUI.SetActive(false);
     }
     
     private FloatDirection GetReverseDirection(FloatDirection direction) {

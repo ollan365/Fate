@@ -8,25 +8,21 @@ public class Laptop : EventObject, IResultExecutable
     [SerializeField]
     private GameObject laptopLock;
 
-    private void Start()
-    {
+    private void Start() {
         ResultManager.Instance.RegisterExecutable("Laptop", this);
     }
 
-    public new void OnMouseDown()
-    {
+    public new void OnMouseDown() {
         base.OnMouseDown();
     }
 
-    public void ExecuteAction()
-    {
+    public void ExecuteAction() {
         ActivateLaptopLock();
     }
 
     // 노트북 잠금 장치 실행 (로그인 페이지 켜짐)
-    public void ActivateLaptopLock()
-    {
+    public void ActivateLaptopLock() {
         isInquiry = false;  // 조사 시스템 예 아니오 스킵
-        laptopLock.SetActive(true);
+        UIManager.Instance.AnimateUI(laptopLock, true, true);
     }
 }

@@ -109,10 +109,8 @@ public class RoomManager : MonoBehaviour
     {
         if (isInvestigating) 
             imageAndLockPanelManager.OnExitButtonClick();
-        else if (isZoomed)
-        {
-            // 화면 전환 효과
-            UIManager.Instance.MoveButtonEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0));
+        else if (isZoomed) {
+            UIManager.Instance.MoveButtonEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0)); // 화면 전환 효과
 
             SetCurrentView(sides[currentSideIndex]);
             isZoomed = false;
@@ -123,12 +121,10 @@ public class RoomManager : MonoBehaviour
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
         if (refillHeartsOrEndDay)
             actionPointManager.RefillHeartsOrEndDay();
-
     }
 
     // 비밀번호 무한 입력 시도 방지
-    public void ProhibitInput()
-    {
+    public void ProhibitInput() {
         if (UIManager.Instance && UIManager.Instance.heartParent.transform.childCount < 1)
             OnExitButtonClick();
     }
