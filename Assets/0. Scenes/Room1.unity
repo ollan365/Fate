@@ -2963,6 +2963,7 @@ GameObject:
   - component: {fileID: 201156114}
   - component: {fileID: 201156113}
   - component: {fileID: 201156112}
+  - component: {fileID: 201156116}
   m_Layer: 5
   m_Name: Calendar
   m_TagString: Untagged
@@ -3064,6 +3065,18 @@ RectTransform:
   m_AnchoredPosition: {x: 52, y: 105}
   m_SizeDelta: {x: 830.34, y: 879.74}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &201156116
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201156111}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &207145864
 GameObject:
   m_ObjectHideFlags: 0
@@ -4959,6 +4972,11 @@ MonoBehaviour:
   diary2GameObject: {fileID: 0}
   book2GameObject: {fileID: 0}
   dreamDiaryGameObject: {fileID: 0}
+  laptopPuzzleObject: {fileID: 531644766}
+  clockPuzzleObject: {fileID: 1024176503}
+  diaryPuzzleObjectClosed: {fileID: 665616727}
+  diaryPuzzleObjectOpen: {fileID: 1529167069}
+  calendarPuzzleObject: {fileID: 201156111}
   LeftMoveButton: {fileID: 814185650}
   RightMoveButton: {fileID: 1402729555}
   Chair: {fileID: 716987902}
@@ -4969,67 +4987,6 @@ MonoBehaviour:
   isImageActive: 0
   isLockObjectActive: 0
   isTutorialObjectActive: 0
---- !u!1 &379759200
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 379759201}
-  - component: {fileID: 379759202}
-  m_Layer: 0
-  m_Name: Diary Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &379759201
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 379759200}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 61.857857, y: -30.925344, z: -5399.697}
-  m_LocalScale: {x: 53.981365, y: 53.981365, z: 53.981365}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1953225435}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &379759202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 379759200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f7cc5d43296a4174874a4e3a09d123c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flipLeftButton: {fileID: 216349380}
-  flipRightButton: {fileID: 1382176139}
-  leftPage: {fileID: 88222525}
-  rightPage: {fileID: 2009221966}
-  backPage: {fileID: 1024511221}
-  frontPage: {fileID: 1224090862}
-  leftPageNum: {fileID: 770178918}
-  rightPageNum: {fileID: 1356536551}
-  frontPageNum: {fileID: 1046736900}
-  backPageNum: {fileID: 1536988311}
-  totalPageCount: 0
-  diaryPages: {fileID: 1529167068}
-  diaryType: Diary1
-  leftPageImage: {fileID: 2088030865}
-  rightPageImage: {fileID: 1324567462}
-  backPageImage: {fileID: 1847563842}
-  frontPageImage: {fileID: 642701173}
 --- !u!1 &388148821
 GameObject:
   m_ObjectHideFlags: 0
@@ -6108,6 +6065,7 @@ GameObject:
   - component: {fileID: 531644770}
   - component: {fileID: 531644769}
   - component: {fileID: 531644771}
+  - component: {fileID: 531644772}
   m_Layer: 5
   m_Name: Laptop Lock
   m_TagString: Untagged
@@ -6193,6 +6151,18 @@ MonoBehaviour:
   girlVersionBackground: {fileID: 21300000, guid: 2ead13da57ddcad4dad2b668e6258663, type: 3}
   boyVersionBackground: {fileID: 21300000, guid: e5564a75304cd0a48bbae148359b88bc, type: 3}
   laptopA: {fileID: 1759114526}
+--- !u!225 &531644772
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531644766}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &534641363
 GameObject:
   m_ObjectHideFlags: 0
@@ -6756,6 +6726,7 @@ GameObject:
   - component: {fileID: 665616730}
   - component: {fileID: 665616729}
   - component: {fileID: 665616731}
+  - component: {fileID: 665616732}
   m_Layer: 5
   m_Name: Diary Lock
   m_TagString: Untagged
@@ -6841,7 +6812,19 @@ MonoBehaviour:
   passwordText: {fileID: 898558688}
   diaryA: {fileID: 78613626}
   diaryLockExecutableName: DiaryLock
-  diaryManager: {fileID: 379759202}
+  diaryManager: {fileID: 1206943994}
+--- !u!225 &665616732
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665616727}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &674966301
 GameObject:
   m_ObjectHideFlags: 0
@@ -10305,7 +10288,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7338800651765082012, guid: 0856c528cd0ba48619299ef259e9b96c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1390860452}
   m_SourcePrefab: {fileID: 100100000, guid: 0856c528cd0ba48619299ef259e9b96c, type: 3}
 --- !u!1 &980789494
 GameObject:
@@ -10671,6 +10657,7 @@ GameObject:
   - component: {fileID: 1024176504}
   - component: {fileID: 1024176507}
   - component: {fileID: 1024176510}
+  - component: {fileID: 1024176511}
   m_Layer: 5
   m_Name: Clock Puzzle
   m_TagString: Untagged
@@ -10724,6 +10711,18 @@ MonoBehaviour:
   hourHand: {fileID: 60935246}
   imageAndLockPanelManager: {fileID: 370811677}
   clockA: {fileID: 1209573879}
+--- !u!225 &1024176511
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024176503}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &1024511221 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6037347301771430945, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
@@ -12658,6 +12657,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1206943993}
+  - component: {fileID: 1206943994}
   m_Layer: 5
   m_Name: Diary
   m_TagString: Untagged
@@ -12686,6 +12686,35 @@ RectTransform:
   m_AnchoredPosition: {x: 46, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1206943994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206943992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7cc5d43296a4174874a4e3a09d123c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flipLeftButton: {fileID: 216349380}
+  flipRightButton: {fileID: 1382176139}
+  leftPage: {fileID: 88222525}
+  rightPage: {fileID: 2009221966}
+  backPage: {fileID: 1024511221}
+  frontPage: {fileID: 1224090862}
+  leftPageNum: {fileID: 770178918}
+  rightPageNum: {fileID: 1356536551}
+  frontPageNum: {fileID: 1046736900}
+  backPageNum: {fileID: 1536988311}
+  totalPageCount: 0
+  diaryPages: {fileID: 1529167068}
+  diaryType: Diary1
+  leftPageImage: {fileID: 2088030865}
+  rightPageImage: {fileID: 1324567462}
+  backPageImage: {fileID: 1847563842}
+  frontPageImage: {fileID: 642701173}
 --- !u!1 &1209573877
 GameObject:
   m_ObjectHideFlags: 0
@@ -14013,6 +14042,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca069e5f2aac8488587390ece1a586d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &1390860452
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390860447}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &1402729554
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14358,6 +14399,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422552170}
   m_CullTransparentMesh: 1
+--- !u!225 &1432372716
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529167069}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1456273702
 GameObject:
   m_ObjectHideFlags: 0
@@ -15338,7 +15391,7 @@ PrefabInstance:
     - target: {fileID: 3389570640511174528, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: diaryManager
       value: 
-      objectReference: {fileID: 379759202}
+      objectReference: {fileID: 0}
     - target: {fileID: 3389570640511174528, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: totalPageCount
       value: 8
@@ -15346,7 +15399,7 @@ PrefabInstance:
     - target: {fileID: 3389570640511174528, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: pageContentsManager
       value: 
-      objectReference: {fileID: 379759202}
+      objectReference: {fileID: 1206943994}
     - target: {fileID: 4160401044083248105, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -15476,6 +15529,9 @@ PrefabInstance:
       insertIndex: 0
       addedObject: {fileID: 1324567461}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8598353913274070045, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1432372716}
     - targetCorrespondingSourceObject: {fileID: 6834523792211519187, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1382176141}
@@ -19135,7 +19191,6 @@ RectTransform:
   m_Children:
   - {fileID: 865057511}
   - {fileID: 1000633619}
-  - {fileID: 379759201}
   - {fileID: 1206943993}
   - {fileID: 201156115}
   - {fileID: 1901866360}
