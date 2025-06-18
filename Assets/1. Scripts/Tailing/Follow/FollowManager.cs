@@ -68,26 +68,39 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         SetCharcter();
 
-        UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, true);
-
-        UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge, true);
-        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge));
-
-        UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground, true);
-
-        UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider, true);
-
-        UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider, true);
-        UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider, true);
+        SetUI();
 
         StartCoroutine(ChangeBeaconSprite());
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); }
-        else if ((int)GameManager.Instance.GetVariable("currentSideIndex") == SceneType.FOLLOW_1.ToInt())
+        else if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
         {
             if((int)GameManager.Instance.GetVariable("ReplayCount") > 0 || (bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1")) { StartFollow(); }
         }
         else StartCoroutine(followTutorial.StartTutorial());
+    }
+    private void SetUI()
+    {
+        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+        {
+            UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge, true);
+            MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge));
+            UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider, true);
+        }
+        else
+        {
+            UIManager.Instance.SetUI(eUIGameObjectName.FollowUI_Night, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge_Night, true);
+            MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge_Night));
+            UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground_Night, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider_Night, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider_Night, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider_Night, true);
+        }
     }
     public void TutorialNextStep()
     {

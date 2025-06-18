@@ -43,6 +43,12 @@ public enum eUIGameObjectName {
     DoubtGaugeSlider,
     FatePositionSlider,
     AccidyPositionSlider,
+    FollowMemoGauge_Night,
+    FollowUI_Night,
+    FollowUIBackground_Night,
+    DoubtGaugeSlider_Night,
+    FatePositionSlider_Night,
+    AccidyPositionSlider_Night,
     DayChangingGameObject,
     YesterdayNumText,
     TodayNumText,
@@ -109,6 +115,12 @@ public class UIManager : MonoBehaviour {
     public GameObject doubtGaugeSlider;
     public GameObject fatePositionSlider;
     public GameObject accidyPositionSlider;
+    public GameObject followUIParent_Night;
+    public GameObject followMemoGauge_Night;
+    public GameObject followUIBackground_Night;
+    public GameObject doubtGaugeSlider_Night;
+    public GameObject fatePositionSlider_Night;
+    public GameObject accidyPositionSlider_Night;
 
     private readonly Dictionary<eUIGameObjectName, GameObject> uiGameObjects = new();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -181,15 +193,18 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.SoundEffectValue, SoundEffectValueText);
 
         uiGameObjects.Add(eUIGameObjectName.FollowUI, followUIParent);
-
         uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge, followMemoGauge);
-
         uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
-
         uiGameObjects.Add(eUIGameObjectName.DoubtGaugeSlider, doubtGaugeSlider);
-
         uiGameObjects.Add(eUIGameObjectName.FatePositionSlider, fatePositionSlider);
         uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider, accidyPositionSlider);
+
+        uiGameObjects.Add(eUIGameObjectName.FollowUI_Night, followUIParent_Night);
+        uiGameObjects.Add(eUIGameObjectName.FollowMemoGauge_Night, followMemoGauge_Night);
+        uiGameObjects.Add(eUIGameObjectName.FollowUIBackground_Night, followUIBackground_Night);
+        uiGameObjects.Add(eUIGameObjectName.DoubtGaugeSlider_Night, doubtGaugeSlider_Night);
+        uiGameObjects.Add(eUIGameObjectName.FatePositionSlider_Night, fatePositionSlider_Night);
+        uiGameObjects.Add(eUIGameObjectName.AccidyPositionSlider_Night, accidyPositionSlider_Night);
 
         uiGameObjects.Add(eUIGameObjectName.MainGear, mainGear);
         uiGameObjects.Add(eUIGameObjectName.SubGear, subGear);
