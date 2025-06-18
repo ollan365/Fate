@@ -10,6 +10,7 @@ public class DiaryManager : PageContentsManager
     private Dictionary<string, (string, string)> diary2Pages = new Dictionary<string, (string, string)>();
     private Dictionary<string, (string, string)> room2BookPages = new Dictionary<string, (string, string)>();
     private Dictionary<string, (string, string)> dreamDiaryPages = new Dictionary<string, (string, string)>();
+    private Dictionary<string, (string, string)> albumPages = new Dictionary<string, (string, string)>();
 
     public int totalPageCount = 0;
     
@@ -50,6 +51,10 @@ public class DiaryManager : PageContentsManager
 
             case "DreamDiary":
                 diaryPages.totalPageCount = dreamDiaryPages.Count;
+                break;
+            
+            case "Album":
+                diaryPages.totalPageCount = albumPages.Count;
                 break;
         }
     }
@@ -113,8 +118,7 @@ public class DiaryManager : PageContentsManager
         }
     }
     
-    private void SetPageImage(PageType pageType, string imageID)
-    {
+    private void SetPageImage(PageType pageType, string imageID) {
         string path = "Room/Diary/doodles/" + imageID;
         var sprite = Resources.Load<Sprite>(path);
         var imageAlpha = imageID == "" ? 0 : 1;
@@ -165,6 +169,8 @@ public class DiaryManager : PageContentsManager
                 return room2BookPages;
             case "DreamDiary":
                 return dreamDiaryPages;
+            case "Album":
+                return albumPages;
             default:
                 return diary1Pages;
         }
@@ -226,7 +232,7 @@ public class DiaryManager : PageContentsManager
                 continue;
             }
 
-            // PlayerName ¾ð±ÞÇÏ´Â ½ºÅ©¸³Æ®µµ ÀÖ±â¿¡ ProcessPlaceholders ½ÇÇà µÇ¾î¾ß ÇÔ
+            // PlayerName ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ö±â¿¡ ProcessPlaceholders ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ ï¿½ï¿½
             //var script = DialogueManager.Instance.scripts[scriptID].GetScript();
             var script = ProcessPlaceholders(scriptID);
             Dictionary<string, (string, string)> targetDictionary = null;
@@ -235,6 +241,12 @@ public class DiaryManager : PageContentsManager
             else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
             else if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;
             else if (diaryPageID.StartsWith("DreamDiary_")) targetDictionary = dreamDiaryPages;
+            else if (diaryPageID.StartsWith("Album_")) targetDictionary = albumPages;
+            else
+            {
+                Debug.LogWarning($"Unknown diary page ID format: {diaryPageID}");
+                continue;
+            }
 
             // add doodles
             bool isDoodle = fields[3].Trim() == "TRUE";

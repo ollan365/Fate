@@ -50,7 +50,9 @@ public enum eUIGameObjectName {
     MainGear,
     SubGear,
     GearHourHand,
-    GearMinuteHand
+    GearMinuteHand,
+    Album,
+    AlbumButton,
 }
 
 public class UIManager : MonoBehaviour {
@@ -75,6 +77,8 @@ public class UIManager : MonoBehaviour {
     public GameObject memoButton;
     public GameObject memoContents;
     public GameObject memoGauge;
+    public GameObject album;
+    public GameObject albumButton;
 
     [Header("UI Game Objects - Day Animation")]
     public GameObject dayChangingGameObject;
@@ -147,7 +151,9 @@ public class UIManager : MonoBehaviour {
         SetOptionUI();
         InitializeUIToCheck();
         
+        // UI Objects that should be active by default
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
+        SetUI(eUIGameObjectName.AlbumButton, true);
     }
 
     private void AddUIGameObjects() {
@@ -199,6 +205,9 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.YesterdayNumText, yesterdayNumText);
         uiGameObjects.Add(eUIGameObjectName.TodayNumText, todayNumText);
         uiGameObjects.Add(eUIGameObjectName.Yesterday, yesterday);
+        
+        uiGameObjects.Add(eUIGameObjectName.Album, album);
+        uiGameObjects.Add(eUIGameObjectName.AlbumButton, albumButton);
 
         // uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
 
@@ -418,7 +427,9 @@ public class UIManager : MonoBehaviour {
         else
             switch (SceneManager.Instance.GetActiveScene()) {
                 case (int)SceneType.START:
-                    Debug.Log("Exit button is not implemented in this scene.");
+                    SetUI(eUIGameObjectName.Album, false, true, FloatDirection.Down);
+                    SetUI(eUIGameObjectName.AlbumButton, true);
+                    SetUI(eUIGameObjectName.ExitButton, false);
                     break;
                 case (int)SceneType.ROOM_1:
                 case (int)SceneType.ROOM_2:
