@@ -83,8 +83,8 @@ public class ImageAndLockPanelManager : MonoBehaviour
     private float maxHeight = 550f;
     private float maxWidth = 890f;
 
-    private void Awake()
-    {
+    private void Awake() {
+        blockingPanel = DialogueManager.Instance.blurImage;
         objectImageGroup = UIManager.Instance.objectImageParentRoom;
         GameObject objectImage = UIManager.Instance.objectImageRoom;
         objectImageImageComponent = objectImage.GetComponent<Image>();
@@ -218,9 +218,13 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
+            blockingPanel.SetActive(true);
         }
 
         UIManager.Instance.SetUI(eUIGameObjectName.ObjectImageParentRoom, isTrue, true);
+        
+        if (!GetIsImageOrLockPanelActive())
+            blockingPanel.SetActive(false);
     }
 
     public IEnumerator SetObjectImageGroupCoroutine(bool isTrue, string eventObjectName = null, float delayTime = 0.1f) {
@@ -242,6 +246,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
+            blockingPanel.SetActive(true);
         } else if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects)) {
             foreach (var puzzleObject in puzzleObjects)
                 UIManager.Instance.AnimateUI(puzzleObject, false, true);
@@ -249,6 +254,8 @@ public class ImageAndLockPanelManager : MonoBehaviour
         } else
             lockObjectDictionary[currentLockObjectName].gameObject.SetActive(false);
 
+        if (!GetIsImageOrLockPanelActive())
+            blockingPanel.SetActive(false);
         currentLockObjectName = lockObjectName;
     }
     
@@ -299,7 +306,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
         bool isImageOrLockActive = isImageActive || isLockObjectActive || isTutorialObjectActive;
         TutorialBlockingPanel.SetActive(isImageOrLockActive);
     }
-
+    
     private void SetTutorialMoveButtonForce(bool isTrue) {
         int notSeenSide = RoomManager.Instance.tutorialManager.getSeenSideStateFalse();
 
@@ -325,5 +332,9 @@ public class ImageAndLockPanelManager : MonoBehaviour
             TutorialimageDictionary["TutorialRightMoveButton"].gameObject.SetActive(false);
         else if (RoomManager.Instance.currentSideIndex == 2) 
             TutorialimageDictionary["TutorialLeftMoveButton"].gameObject.SetActive(false);
+    }
+    
+    public bool GetIsImageOrLockPanelActive() {
+        return isImageActive || isLockObjectActive;
     }
 }

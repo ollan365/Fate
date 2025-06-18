@@ -140,7 +140,7 @@ public class DialogueManager : MonoBehaviour
 
         if (initialDialogueLine.Blur == "TRUE") 
             blurImage.SetActive(true);
-        else 
+        else if (!GetIsImageOrLockPanelActive())
             blurImage.SetActive(false);
 
         DisplayDialogueLine(initialDialogueLine);
@@ -388,7 +388,8 @@ public class DialogueManager : MonoBehaviour
 
         MemoManager.Instance.SetMemoButtons(true);
         
-        blurImage.SetActive(false);
+        if (!GetIsImageOrLockPanelActive())
+            blurImage.SetActive(false);
         
         UIManager.Instance.SetCursorAuto();
         
@@ -616,8 +617,18 @@ public class DialogueManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        if (blockingPanels.Length > dialogueType.ToInt()) blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0);
+        if (blockingPanels.Length > dialogueType.ToInt())
+            blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0);
 
     }
-
+    
+    private bool GetIsImageOrLockPanelActive()
+    {
+        int currentScene = (int)GameManager.Instance.GetVariable("CurrentScene");
+        if (currentScene is (int)SceneType.ROOM_1 or (int)SceneType.ROOM_2 &&
+            RoomManager.Instance.imageAndLockPanelManager.GetIsImageOrLockPanelActive())
+            return true;
+        
+        return false;
+    }
 }

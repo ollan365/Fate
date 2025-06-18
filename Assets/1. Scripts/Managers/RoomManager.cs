@@ -128,8 +128,7 @@ public class RoomManager : MonoBehaviour
         if (UIManager.Instance && UIManager.Instance.heartParent.transform.childCount < 1)
             OnExitButtonClick();
     }
-
-
+    
     // exit to root: turn off all the panels and zoom out to the root view
     public void ExitToRoot()
     {
