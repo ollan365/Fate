@@ -107,17 +107,19 @@ public class StartLogic : MonoBehaviour
     }
     public void StartNewGame()
     {
-        if (!SaveManager.Instance.CheckGameData()) // 저장된 게임 데이터가 없는 경우
-        {
-            start.SetActive(false);
-            StartCoroutine(StartPrologue());
-        }
-        else
-        {
-            newStartPanel.SetActive(true);
-            Image backgroundImage = background.GetComponent<Image>();
-            backgroundImage.sprite = titleWithOutLogo;
-        }
+        StartCoroutine(StartPrologue());
+
+        // if (!SaveManager.Instance.CheckGameData()) // 저장된 게임 데이터가 없는 경우
+        // {
+        //     start.SetActive(false);
+        //     StartCoroutine(StartPrologue());
+        // }
+        // else
+        // {
+        //     newStartPanel.SetActive(true);
+        //     Image backgroundImage = background.GetComponent<Image>();
+        //     backgroundImage.sprite = titleWithOutLogo;
+        // }
     }
     public void OriginBackground()
     {

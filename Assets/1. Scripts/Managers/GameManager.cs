@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
+        PlayerPrefs.DeleteAll(); // Build purpose - Reset all playerPrefs every time the game starts
+        
         variablesCSV = Resources.Load<TextAsset>("Datas/variables");
         CreateVariables();
 
