@@ -393,7 +393,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 1472a652f4e89dc4ebaafb0e8f8515a1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1688,7 +1688,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: b85ad59e7256f1a46907591313b5cfbd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3946,6 +3946,7 @@ GameObject:
   - component: {fileID: 201156114}
   - component: {fileID: 201156113}
   - component: {fileID: 201156112}
+  - component: {fileID: 201156116}
   m_Layer: 5
   m_Name: Calendar
   m_TagString: Untagged
@@ -4047,6 +4048,18 @@ RectTransform:
   m_AnchoredPosition: {x: 52, y: 105}
   m_SizeDelta: {x: 830.34, y: 879.74}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &201156116
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201156111}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &207145864
 GameObject:
   m_ObjectHideFlags: 0
@@ -6040,7 +6053,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 1112792bb853c475e9e0f93101d4fdf3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6667,6 +6680,15 @@ MonoBehaviour:
   diary2GameObject: {fileID: 481520307}
   book2GameObject: {fileID: 859280852}
   dreamDiaryGameObject: {fileID: 666211132}
+  laptopPuzzleObject: {fileID: 531644766}
+  clockPuzzleObject: {fileID: 1024176503}
+  diaryPuzzleObjectClosed: {fileID: 1700588274}
+  diaryPuzzleObjectOpen: {fileID: 638661647}
+  calendarPuzzleObject: {fileID: 201156111}
+  tinCasePuzzleObject: {fileID: 1015460112}
+  sewingBoxPuzzleObject: {fileID: 1140844381451054919}
+  book2PuzzleObject: {fileID: 1217769414}
+  dreamDiaryPuzzleObject: {fileID: 1204193688}
   LeftMoveButton: {fileID: 63105342}
   RightMoveButton: {fileID: 5365219}
   Chair: {fileID: 716987902}
@@ -7959,7 +7981,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 15eb5810e3a034346bf5d329fe666d6d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -8243,6 +8265,7 @@ GameObject:
   - component: {fileID: 531644770}
   - component: {fileID: 531644769}
   - component: {fileID: 531644771}
+  - component: {fileID: 531644772}
   m_Layer: 5
   m_Name: Laptop Lock
   m_TagString: Untagged
@@ -8328,6 +8351,18 @@ MonoBehaviour:
   girlVersionBackground: {fileID: 21300000, guid: 2ead13da57ddcad4dad2b668e6258663, type: 3}
   boyVersionBackground: {fileID: 21300000, guid: e5564a75304cd0a48bbae148359b88bc, type: 3}
   laptopA: {fileID: 1759114526}
+--- !u!225 &531644772
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531644766}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &534641363
 GameObject:
   m_ObjectHideFlags: 0
@@ -9551,7 +9586,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7449668999292076359, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       insertIndex: 0
       addedObject: {fileID: 751147638}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8598353913274070045, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 638661649}
   m_SourcePrefab: {fileID: 100100000, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
 --- !u!224 &638661639 stripped
 RectTransform:
@@ -9628,6 +9666,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8598353913274070045, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
   m_PrefabInstance: {fileID: 638661638}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &638661649
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638661647}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &651171883
 GameObject:
   m_ObjectHideFlags: 0
@@ -10436,7 +10486,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: d54e75dcda7eaa3429e73464d3c13955, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -12985,6 +13035,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1004070005
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204193688}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1015460112 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1292818176794772210, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
@@ -12995,6 +13057,18 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8652768956999719387, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
   m_PrefabInstance: {fileID: 1986449191}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &1015460114
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015460112}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1017343364
 GameObject:
   m_ObjectHideFlags: 0
@@ -13171,6 +13245,7 @@ GameObject:
   - component: {fileID: 1024176507}
   - component: {fileID: 1024176506}
   - component: {fileID: 1024176510}
+  - component: {fileID: 1024176511}
   m_Layer: 5
   m_Name: Clock Puzzle
   m_TagString: Untagged
@@ -13254,6 +13329,18 @@ MonoBehaviour:
   hourHand: {fileID: 60935246}
   imageAndLockPanelManager: {fileID: 370811677}
   clockA: {fileID: 1209573879}
+--- !u!225 &1024176511
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024176503}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &1031299568
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15654,6 +15741,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1131317204753686562, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
   m_PrefabInstance: {fileID: 8455631714162162464}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &1217769415
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217769414}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1220599132
 GameObject:
   m_ObjectHideFlags: 0
@@ -16919,7 +17018,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6788685930501421900, guid: 9fb8beea047907c498adac59dd91967a, type: 3}
       insertIndex: 0
       addedObject: {fileID: 1856067096}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6461846311514626278, guid: 9fb8beea047907c498adac59dd91967a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1004070005}
   m_SourcePrefab: {fileID: 100100000, guid: 9fb8beea047907c498adac59dd91967a, type: 3}
 --- !u!224 &1310898485 stripped
 RectTransform:
@@ -17751,7 +17853,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 814526345
+  m_SortingLayerID: 4032945
   m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1418986092
@@ -18527,7 +18629,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 83d5aa747e753024388511bb73dd0c29, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -20137,6 +20239,7 @@ GameObject:
   - component: {fileID: 1700588278}
   - component: {fileID: 1700588277}
   - component: {fileID: 1700588279}
+  - component: {fileID: 1700588280}
   m_Layer: 5
   m_Name: Diary Lock
   m_TagString: Untagged
@@ -20223,6 +20326,18 @@ MonoBehaviour:
   diaryA: {fileID: 78613631}
   diaryLockExecutableName: Diary2Lock
   diaryManager: {fileID: 922364972}
+--- !u!225 &1700588280
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700588274}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1705609170
 GameObject:
   m_ObjectHideFlags: 0
@@ -21141,7 +21256,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 3e3bd872aeb1d49aea887612f2de2063, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -23124,6 +23239,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 5782595512977637888, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5782595512977637888, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5782595512977637888, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 4032945
+      objectReference: {fileID: 0}
     - target: {fileID: 6823618053087201662, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
       propertyPath: mainCamera
       value: 
@@ -23227,7 +23354,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1292818176794772210, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1015460114}
   m_SourcePrefab: {fileID: 100100000, guid: 6073dc894ac43442caa6a3b7b93a3b1f, type: 3}
 --- !u!1 &1992159327
 GameObject:
@@ -23561,7 +23691,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 4.000186, y: 21.581116}
+  m_AnchoredPosition: {x: 4.0001936, y: 21.581116}
   m_SizeDelta: {x: 306.9275, y: -40.96399}
   m_Pivot: {x: 0.00000008009374, y: -0.00000007264316}
 --- !u!114 &2049395622
@@ -25134,6 +25264,18 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1592491044999897745, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
   m_PrefabInstance: {fileID: 3288840728642671948}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &2965845257637699100
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140844381451054919}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3154884941438771290
 GameObject:
   m_ObjectHideFlags: 0
@@ -25262,7 +25404,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9078790170950206418, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2965845257637699100}
   m_SourcePrefab: {fileID: 100100000, guid: 524ec30a674c0b345a5315e0611a56ae, type: 3}
 --- !u!114 &4037215797782290535
 MonoBehaviour:
@@ -25854,6 +25999,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6502794509739979570, guid: 9d3ba8fa25731f645bc6d2df89fde1b8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7585053145499528233, guid: 9d3ba8fa25731f645bc6d2df89fde1b8, type: 3}
       propertyPath: DreamDiaryContents
       value: 
@@ -25970,7 +26119,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1131317204753686562, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1217769415}
   m_SourcePrefab: {fileID: 100100000, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
 --- !u!114 &8455631714162162465 stripped
 MonoBehaviour:

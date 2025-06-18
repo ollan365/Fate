@@ -307,7 +307,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
 
-            case "ResultClockSystemActivartion": // 시계 시스템 활성화
+            case "ResultClockSystemActivation": // 시계 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "clock");
                 executableObjects["Clock"].ExecuteAction();
                 break;
@@ -534,7 +534,7 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "tinCase");
                 break;
 
-            case "ResultTinCaseSystemActivartion": // 틴케이스 비밀번호 시스템 활성화
+            case "ResultTinCaseSystemActivation": // 틴케이스 비밀번호 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "tinCase");
                 executableObjects["TinCase"].ExecuteAction();
                 break;
@@ -548,7 +548,7 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
                 break;
 
-            case "ResultSewingBoxSystemActivartion": // 반짇고리 퍼즐 시스템 활성화
+            case "ResultSewingBoxSystemActivation": // 반짇고리 퍼즐 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "sewingBox");
                 executableObjects["SewingBox"].ExecuteAction();
                 break;
@@ -684,7 +684,7 @@ public class ResultManager : MonoBehaviour
                 //Debug.Log("떨어진 책 한권 표지 확대 UI");
                 break;
 
-            case "ResultBook2SystemActivartion": // 떨어진 책 읽기
+            case "ResultBook2SystemActivation": // 떨어진 책 읽기
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "book2");
                 executableObjects["Book2"].ExecuteAction();
                 //Debug.Log("  떨어진 책 읽기");
@@ -709,7 +709,7 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_LockerUnlock);
                 break;
 
-            case "ResultDreamDiary2SystemActivartion": // 꿈일기 읽기
+            case "ResultDreamDiary2SystemActivation": // 꿈일기 읽기
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "dreamDiary");
                 executableObjects["DreamDiary"].ExecuteAction();
                 break;

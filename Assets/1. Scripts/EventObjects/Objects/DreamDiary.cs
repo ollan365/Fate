@@ -26,5 +26,6 @@ public class DreamDiary : EventObject, IResultExecutable
     {
         //isInquiry = false;  // 조사 시스템 예 아니오 스킵
         DreamDiaryContents.SetActive(true);
+        UIManager.Instance.AnimateUI(DreamDiaryContents, true, true);
     }
 }

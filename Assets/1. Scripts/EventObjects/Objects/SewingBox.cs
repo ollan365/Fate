@@ -26,6 +26,6 @@ public class SewingBox : EventObject, IResultExecutable
     public void ActivateSewingBoxPuzzle()
     {
         isInquiry = false;  // 조사 시스템 예 아니오 스킵
-        SewingBoxPuzzle.SetActive(true);
+        UIManager.Instance.AnimateUI(SewingBoxPuzzle, true, true);
     }
 }
