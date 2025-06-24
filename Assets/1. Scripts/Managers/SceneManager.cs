@@ -93,8 +93,6 @@ public class SceneManager : MonoBehaviour
 
         // 씬 로드
         StartCoroutine(Load((int)GameManager.Instance.GetVariable("CurrentScene")));
-        //UnityEngine.SceneManagement.SceneManager.LoadScene((int)GameManager.Instance.GetVariable("CurrentScene"));
-
     }
 
     // 씬 비동기 로드 및 진행률 표시

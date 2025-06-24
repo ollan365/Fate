@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -59,8 +60,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI coverText;
     public Image progressBar;
     public CanvasGroup progressBarGroup;
-    //public GameObject Loading_Animation;
-    //public List<Image> loading_characters;
+    public CanvasGroup Loading_AnimationGroup;
+    public List<GameObject> loading_characters;
 
     [Header("Object Image")]
     public GameObject objectImageParentRoom;
@@ -363,7 +364,7 @@ public class UIManager : MonoBehaviour {
             Time.timeScale = 1f;
         } else {
             SetUI(eUIGameObjectName.MenuUI, true);
-            SetUI(Random.Range(0, 2) == 0 
+            SetUI(UnityEngine.Random.Range(0, 2) == 0 
                 ? eUIGameObjectName.WhiteMenu 
                 : eUIGameObjectName.BlackMenu, true);
             Time.timeScale = 0f;
@@ -446,6 +447,7 @@ public class UIManager : MonoBehaviour {
 
         float current = 0, percent = 0;
 
+        StartCoroutine(SetLoadingAnimation(start, end, fadeTime));
         while (percent < 1 && fadeTime != 0)
         {
             current += Time.deltaTime;
@@ -456,8 +458,7 @@ public class UIManager : MonoBehaviour {
 
             coverText.color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
             progressBarGroup.alpha = Mathf.Lerp(start, end, percent);
-            //loading_characters[1].color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
-
+            
             yield return null;
         }
         newColor.a = end;
@@ -477,7 +478,7 @@ public class UIManager : MonoBehaviour {
             coverText.gameObject.SetActive(false);
 
             progressBarGroup.gameObject.SetActive(false);
-            //Loading_Animation.SetActive(false);
+            Loading_AnimationGroup.gameObject.SetActive(false);
         }
     }
 
@@ -486,14 +487,41 @@ public class UIManager : MonoBehaviour {
         coverText.gameObject.SetActive(true);
         coverText.text = text;
 
-
-        // 진행도 추가 
-        // 메소드 따로 분리하기.
+        // 진행도 추가
         progressBarGroup.gameObject.SetActive(true);
-
-        //loading_characters[1].gameObject.SetActive(true);
-        //Loading_Animation.SetActive(true);
+        Loading_AnimationGroup.gameObject.SetActive(true);
     }
+
+    // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
+    private IEnumerator SetLoadingAnimation(float start, float end, float fadeTime)
+    {
+        // 모든 캐릭터 오브젝트 다 꺼두기
+        foreach (GameObject loadingCharacter in loading_characters)
+        {
+            loadingCharacter.SetActive(false);
+        }
+
+        GameObject accidyLoadingAnim;
+        // 우연의 성별에 맞게 캐릭터 애니메이션 재생 작동
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidyLoadingAnim = loading_characters[0];
+        else accidyLoadingAnim = loading_characters[1];
+
+        accidyLoadingAnim.gameObject.SetActive(true);
+
+        float current = 0, percent = 0;
+
+        while (percent < 1 && fadeTime != 0)
+        {
+            current += Time.deltaTime;
+            percent = current / fadeTime;
+
+            Loading_AnimationGroup.alpha = Mathf.Lerp(start, end, percent);
+
+            yield return null;
+        }
+    }
+
+    
     // <summary> 변수 설명
     // 화면 이동할 때 사용하기 위해 만든 거라 동작이 조금 특이합니다...
     // screen의 현재 위치가 목적지로 설정이 되고,

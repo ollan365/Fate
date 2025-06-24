@@ -75,7 +75,9 @@ abstract public class ActionPointManager : MonoBehaviour
         StartGearsAndClockHandsRotate = 3,
         FinishGearsAndClockHandsRotate = 4,
         StartDayChangeBGM = 5,
-        FinishDayChangeBGM = 6;
+        MiddleDayChangeBGM = 6,
+        EndDayChangeBGM = 7,
+        FinishDayChangeBGM = 8; 
 
     // ************************* temporary methods for action points *************************
     // create actionPointsArray
@@ -172,12 +174,6 @@ abstract public class ActionPointManager : MonoBehaviour
         float totalTime = 3f;
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime/2));
         yield return new WaitForSeconds(totalTime/2);
-        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime/2));
-
-        // 휴식 대사 출력. 
-        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", totalTime));
-
-        yield return new WaitForSeconds(totalTime / 2);
 
         // 휴식하면 그날 하루에 남아있는 행동력 다 사용되기에 현재 있는 하트들 삭제
         foreach (Transform child in heartParent.transform)
@@ -185,6 +181,13 @@ abstract public class ActionPointManager : MonoBehaviour
             UIManager.Instance.RemoveUIToCheck(child.GetComponent<RectTransform>());
             Destroy(child.gameObject);
         }
+
+        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime/2));
+
+        // 휴식 대사 출력. 
+        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", totalTime));
+
+        yield return new WaitForSeconds(totalTime / 2);
 
         int actionPoint;
 
@@ -226,7 +229,8 @@ abstract public class ActionPointManager : MonoBehaviour
     {
         isDayChanging = true;
 
-        // 브금 변경
+        // 브금 변경 (Start_Daychange)
+        // 아이콘 내려오는 브금
         SetDayChangeBGM(StartDayChangeBGM);
 
         SetChangingDayUI(StartDayUIChange);
@@ -243,6 +247,9 @@ abstract public class ActionPointManager : MonoBehaviour
 
         yield return new WaitForSeconds(dayScalingTime);
 
+        // 한장 넘기는 브금
+        SetDayChangeBGM(MiddleDayChangeBGM);
+
         // DayUI 기어와 시침 분침 돌리는 코루틴 실행
         StartCoroutine(StartRotateGearsAndClockHands());
 
@@ -250,6 +257,9 @@ abstract public class ActionPointManager : MonoBehaviour
         StartCoroutine(TurnNextDayUIBack());
 
         yield return new WaitForSeconds(dayTurningBackTime);
+
+        // 다시 원위치 브금
+        SetDayChangeBGM(EndDayChangeBGM);
 
         yesterDayNumText.text = $"Day {nowDayNum}";
         yesterDayRectTransform.SetAsLastSibling();
@@ -478,9 +488,19 @@ abstract public class ActionPointManager : MonoBehaviour
         switch (num)
         {
             case StartDayChangeBGM:
-                // BGM 정지 및 DayChange bgm 재생
+                // BGM 정지 및 Daychange_start bgm 재생 (아이콘이 내려왔다가)
                 SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
-                SoundPlayer.Instance.UISoundPlay(Constants.Sound_DayChange);
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_start);
+                break;
+
+            case MiddleDayChangeBGM:
+                // Daychange_middle bgm 재생 (한 장 넘어가고)
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_middle);
+                break;
+
+            case EndDayChangeBGM:
+                // Daychange_end bgm 재생 (다시 원위치)
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_end);
                 break;
 
             case FinishDayChangeBGM:
