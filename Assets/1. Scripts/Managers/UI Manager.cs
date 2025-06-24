@@ -57,7 +57,11 @@ public class UIManager : MonoBehaviour {
     [Header("Screen Effect")]
     public Image coverPanel;
     [SerializeField] private TextMeshProUGUI coverText;
-    
+    public Image progressBar;
+    public CanvasGroup progressBarGroup;
+    //public GameObject Loading_Animation;
+    //public List<Image> loading_characters;
+
     [Header("Object Image")]
     public GameObject objectImageParentRoom;
     public GameObject objectImageRoom;
@@ -451,6 +455,8 @@ public class UIManager : MonoBehaviour {
             fadeObject.color = newColor;
 
             coverText.color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
+            progressBarGroup.alpha = Mathf.Lerp(start, end, percent);
+            //loading_characters[1].color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
 
             yield return null;
         }
@@ -469,6 +475,9 @@ public class UIManager : MonoBehaviour {
         {
             fadeObject.gameObject.SetActive(false);
             coverText.gameObject.SetActive(false);
+
+            progressBarGroup.gameObject.SetActive(false);
+            //Loading_Animation.SetActive(false);
         }
     }
 
@@ -476,6 +485,14 @@ public class UIManager : MonoBehaviour {
     {
         coverText.gameObject.SetActive(true);
         coverText.text = text;
+
+
+        // 진행도 추가 
+        // 메소드 따로 분리하기.
+        progressBarGroup.gameObject.SetActive(true);
+
+        //loading_characters[1].gameObject.SetActive(true);
+        //Loading_Animation.SetActive(true);
     }
     // <summary> 변수 설명
     // 화면 이동할 때 사용하기 위해 만든 거라 동작이 조금 특이합니다...

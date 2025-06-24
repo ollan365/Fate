@@ -64,6 +64,8 @@ public class SceneManager : MonoBehaviour
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
+        yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
+
         switch (loadSceneType)
         {
             case SceneType.START:
@@ -90,8 +92,45 @@ public class SceneManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // 씬 로드
-        UnityEngine.SceneManagement.SceneManager.LoadScene((int)GameManager.Instance.GetVariable("CurrentScene"));
+        StartCoroutine(Load((int)GameManager.Instance.GetVariable("CurrentScene")));
+        //UnityEngine.SceneManagement.SceneManager.LoadScene((int)GameManager.Instance.GetVariable("CurrentScene"));
+
     }
+
+    // 씬 비동기 로드 및 진행률 표시
+    private IEnumerator Load(int sceneName)
+    {
+        UIManager.Instance.progressBar.fillAmount = 0f;
+
+        AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+        op.allowSceneActivation = false;
+
+        float timer = 0f;
+
+        while (!op.isDone)
+        {
+            yield return null;
+            timer += Time.unscaledDeltaTime;
+
+            if (op.progress < 0.9f)
+            {
+                UIManager.Instance.progressBar.fillAmount =
+                    Mathf.Lerp(UIManager.Instance.progressBar.fillAmount, op.progress, timer);
+                if (UIManager.Instance.progressBar.fillAmount >= op.progress) timer = 0f;
+            }
+            else
+            {
+                UIManager.Instance.progressBar.fillAmount =
+                    Mathf.Lerp(UIManager.Instance.progressBar.fillAmount, 1f, timer);
+                if (UIManager.Instance.progressBar.fillAmount >= 1.0f)
+                {
+                    op.allowSceneActivation = true;
+                    yield break;
+                }
+            }
+        }
+    }
+
 
     public void ChangeSceneEffect()
     {
