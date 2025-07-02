@@ -22,15 +22,34 @@ public class DiaryManager : PageContentsManager
     public Image backPageImage;
     public Image frontPageImage;
 
+    [SerializeField] private GameObject leftPageEndingFrames,
+        rightPageEndingFrames,
+        backPageEndingFrames,
+        frontPageEndingFrames;
+    
+    [SerializeField] private Image leftPageEndingFrameTop, leftPageEndingFrameBottom, 
+        rightPageEndingFrameTop, rightPageEndingFrameBottom,
+        backPageEndingFrameTop, backPageEndingFrameBottom,
+        frontPageEndingFrameTop, frontPageEndingFrameBottom;
+    
+    [SerializeField] private Button leftPageEndingButtonTop, leftPageEndingButtonBottom,
+        rightPageEndingButtonTop, rightPageEndingButtonBottom,
+        backPageEndingButtonTop, backPageEndingButtonBottom,
+        frontPageEndingButtonTop, frontPageEndingButtonBottom;
+    
+    private Sprite[] endingSprites;
+
     private int presentPageNum;
 
     private string doodlesOrder = "";
     private int replayCount = 1; 
+    private const int AlbumFramePageNumMinimum = 2, AlbumFramePageNumMaximum = 3;
 
     private void Awake()
     {
         // SetDoodlesOrder();
         ParsePageContents();
+        endingSprites = UIManager.Instance.endingSprites;
     }
 
     public void SetTotalPages()
@@ -72,6 +91,8 @@ public class DiaryManager : PageContentsManager
         {
             SetPageText(pageType, "", pageNum);
             SetPageImage(pageType, "");
+            if (diaryType == "Album") // Hide album frames
+                SetPageFrame(pageType, pageNum);
             return;
         }
 
@@ -88,8 +109,91 @@ public class DiaryManager : PageContentsManager
 
         SetPageText(pageType, pageText, pageNum);
         SetPageImage(pageType, doodleID);
+        if (diaryType == "Album") // Show/hide album frames
+            SetPageFrame(pageType, pageNum);
 
         presentPageNum = pageNum;
+    }
+
+    private void SetPageFrame(PageType pageType, int pageNum) {
+        switch (pageType) {
+            case PageType.Left:
+                if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
+                    leftPageEndingFrames.SetActive(true);
+                    SetAlbumFrame(leftPageEndingFrameTop,
+                        leftPageEndingFrameBottom,
+                        leftPageEndingButtonTop,
+                        leftPageEndingButtonBottom,
+                        pageNum);
+                } else 
+                    leftPageEndingFrames.SetActive(false);
+                break;
+            
+            case PageType.Right:
+                if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
+                    rightPageEndingFrames.SetActive(true);
+                    SetAlbumFrame(rightPageEndingFrameTop,
+                        rightPageEndingFrameBottom,
+                        rightPageEndingButtonTop,
+                        rightPageEndingButtonBottom,
+                        pageNum);
+                } else 
+                    rightPageEndingFrames.SetActive(false);
+                break;
+            
+            case PageType.Back:
+                if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
+                    backPageEndingFrames.SetActive(true);
+                    SetAlbumFrame(backPageEndingFrameTop,
+                        backPageEndingFrameBottom,
+                        backPageEndingButtonTop,
+                        backPageEndingButtonBottom,
+                        pageNum);
+                } else 
+                    backPageEndingFrames.SetActive(false);
+                break;
+            
+            case PageType.Front:
+                if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
+                    frontPageEndingFrames.SetActive(true);
+                    SetAlbumFrame(frontPageEndingFrameTop,
+                        frontPageEndingFrameBottom,
+                        frontPageEndingButtonTop,
+                        frontPageEndingButtonBottom,
+                        pageNum);
+                } else 
+                    frontPageEndingFrames.SetActive(false);
+                break;
+        }
+    }
+
+    private void SetAlbumFrame(
+        Image topFrame,
+        Image bottomFrame,
+        Button topButton,
+        Button bottomButton,    // make sure this is the right button!
+        int pageNum)
+    {
+        // remove old listeners first
+        topButton.onClick.RemoveAllListeners();
+        bottomButton.onClick.RemoveAllListeners();
+
+        int accidyGender    = (int)GameManager.Instance.GetVariable("AccidyGender");
+        int pageIndex       = pageNum - 2;
+        int spriteBase      = pageIndex * 4;
+        int albumOffset     = pageIndex * 2;
+
+        // top
+        topFrame.sprite = endingSprites[spriteBase + accidyGender];
+        topButton.onClick.AddListener(() =>
+            UIManager.Instance.OpenAlbumPage(albumOffset)
+        );
+
+        // bottom
+        bottomFrame.sprite = endingSprites[spriteBase + 2 + accidyGender];
+        bottomButton.onClick.AddListener(() =>
+            UIManager.Instance.OpenAlbumPage(albumOffset + 1)
+        );
     }
 
     private void SetPageText(PageType pageType, string text, int pageNum)
