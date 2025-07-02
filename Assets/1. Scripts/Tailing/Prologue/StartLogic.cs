@@ -71,7 +71,7 @@ public class StartLogic : MonoBehaviour
         }
         else if (UIManager.Instance)
         {
-            StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 0.1f, false, 0, 0));
+            StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 2f, false, 0, 0));
             StartCoroutine(RotateSecond());
         }
     }

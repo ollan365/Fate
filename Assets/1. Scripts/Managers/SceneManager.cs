@@ -23,6 +23,8 @@ public class SceneManager : MonoBehaviour
     public void GoTitle()
     {
         LoadScene(SceneType.START);
+        //UIManager.Instance.SetAllUI(false);
+        //UIManager.Instance.SetUI(eUIGameObjectName.ObjectImageRoom, true);
     }
     
     public void LoadScene(SceneType loadSceneType)
@@ -60,6 +62,8 @@ public class SceneManager : MonoBehaviour
         while (DialogueManager.Instance.isDialogueActive)
             yield return null;
 
+        UIManager.Instance.enableLoadingAnimation = true;
+
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
@@ -69,6 +73,7 @@ public class SceneManager : MonoBehaviour
         switch (loadSceneType)
         {
             case SceneType.START:
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.START.ToInt());
                 UIManager.Instance.TextOnFade("Prologue");
                 break;
             case SceneType.ROOM_1:

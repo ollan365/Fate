@@ -18,6 +18,7 @@ public enum FloatDirection {
 public enum eUIGameObjectName {
     ObjectImageParentRoom, // object image panel parent in room scene
     ObjectImageRoom, // object image panel in room scene
+    LoadingScreen,
     NormalVignette,
     WarningVignette,
     ActionPoints,
@@ -58,6 +59,7 @@ public class UIManager : MonoBehaviour {
     [Header("Screen Effect")]
     public Image coverPanel;
     [SerializeField] private TextMeshProUGUI coverText;
+    public GameObject loadingScreen;
     public Image progressBar;
     public CanvasGroup progressBarGroup;
     public CanvasGroup Loading_AnimationGroup;
@@ -138,6 +140,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
 
+    public bool enableLoadingAnimation = false; 
+
     public static UIManager Instance { get; private set; }
     
     private void Awake() {
@@ -146,7 +150,7 @@ public class UIManager : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
         } else
             Destroy(gameObject);
-        
+
         AddUIGameObjects();
         SetAllUI(false);
         SetOptionUI();
@@ -158,7 +162,9 @@ public class UIManager : MonoBehaviour {
     private void AddUIGameObjects() {
         uiGameObjects.Add(eUIGameObjectName.ObjectImageParentRoom, objectImageParentRoom);
         uiGameObjects.Add(eUIGameObjectName.ObjectImageRoom, objectImageRoom);
-        
+
+        uiGameObjects.Add(eUIGameObjectName.LoadingScreen, loadingScreen);
+
         uiGameObjects.Add(eUIGameObjectName.NormalVignette, normalVignette);
         uiGameObjects.Add(eUIGameObjectName.WarningVignette, warningVignette);
 
@@ -447,7 +453,9 @@ public class UIManager : MonoBehaviour {
 
         float current = 0, percent = 0;
 
-        StartCoroutine(SetLoadingAnimation(start, end, fadeTime));
+        if (enableLoadingAnimation)
+            StartCoroutine(SetLoadingAnimation(start, end, fadeTime));
+
         while (percent < 1 && fadeTime != 0)
         {
             current += Time.deltaTime;
@@ -458,8 +466,8 @@ public class UIManager : MonoBehaviour {
 
             coverText.color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
             progressBarGroup.alpha = Mathf.Lerp(start, end, percent);
-            
-            yield return null;
+
+            yield return new WaitForEndOfFrame();
         }
         newColor.a = end;
         fadeObject.color = newColor;
@@ -479,6 +487,7 @@ public class UIManager : MonoBehaviour {
 
             progressBarGroup.gameObject.SetActive(false);
             Loading_AnimationGroup.gameObject.SetActive(false);
+            enableLoadingAnimation = false;
         }
     }
 
@@ -493,11 +502,12 @@ public class UIManager : MonoBehaviour {
     }
 
     // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
-    private IEnumerator SetLoadingAnimation(float start, float end, float fadeTime)
+    public IEnumerator SetLoadingAnimation(float start, float end, float fadeTime)
     {
         // 모든 캐릭터 오브젝트 다 꺼두기
         foreach (GameObject loadingCharacter in loading_characters)
         {
+            loadingCharacter.SetActive(true);
             loadingCharacter.SetActive(false);
         }
 
