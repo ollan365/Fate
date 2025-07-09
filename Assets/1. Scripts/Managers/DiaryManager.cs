@@ -171,25 +171,35 @@ public class DiaryManager : PageContentsManager
         Image topFrame,
         Image bottomFrame,
         Button topButton,
-        Button bottomButton,    // make sure this is the right button!
+        Button bottomButton,
         int pageNum)
     {
-        // remove old listeners first
         topButton.onClick.RemoveAllListeners();
         bottomButton.onClick.RemoveAllListeners();
 
-        int accidyGender    = (int)GameManager.Instance.GetVariable("AccidyGender");
-        int pageIndex       = pageNum - 2;
-        int spriteBase      = pageIndex * 4;
-        int albumOffset     = pageIndex * 2;
+        int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
+        int pageIndex = pageNum - 2;
+        int spriteBase = pageIndex * 4;
+        int albumOffset = pageIndex * 2;
+
+        bool isTopFrameCollected, isBottomFrameCollected;
+        if (pageNum == 2) {
+            isTopFrameCollected = (int)GameManager.Instance.GetVariable("BadACollect") > 0;
+            isBottomFrameCollected = (int)GameManager.Instance.GetVariable("BadBCollect") > 0;
+        } else {
+            isTopFrameCollected = (int)GameManager.Instance.GetVariable("TrueCollect") > 0;
+            isBottomFrameCollected = (int)GameManager.Instance.GetVariable("HiddenCollect") > 0;
+        }
 
         // top
+        topFrame.gameObject.SetActive(isTopFrameCollected);
         topFrame.sprite = endingSprites[spriteBase + accidyGender];
         topButton.onClick.AddListener(() =>
             UIManager.Instance.OpenAlbumPage(albumOffset)
         );
 
         // bottom
+        bottomFrame.gameObject.SetActive(isBottomFrameCollected);
         bottomFrame.sprite = endingSprites[spriteBase + 2 + accidyGender];
         bottomButton.onClick.AddListener(() =>
             UIManager.Instance.OpenAlbumPage(albumOffset + 1)

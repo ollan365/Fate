@@ -644,7 +644,6 @@ public class UIManager : MonoBehaviour {
     }
     
     public void OpenAlbumPage(int endingIndex) {
-        Debug.Log($"Opening album page for ending index: {endingIndex}");
         const int badA = 0;
         const int badB = 1;
         const int trueEnding = 2;
