@@ -72,7 +72,7 @@ public class FollowGameManager : MonoBehaviour
                 Fate.SetBool("Right", true);
                 IsFateMove = true;
             }
-            SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, IsFateMove);
+            SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, IsFateMove);
             Fate.SetBool("Walking", IsFateMove);
 
             if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())

@@ -233,7 +233,7 @@ public class UIManager : MonoBehaviour {
         CheckCursorTouchingUIs();
     }
     
-    private void SetAllUI(bool isActive) {
+    public void SetAllUI(bool isActive) {
         foreach (var ui in uiGameObjects)
             SetUI(ui.Key, isActive);
     }

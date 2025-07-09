@@ -64,6 +64,7 @@ public class FollowDialogueManager : MonoBehaviour
         DialogueManager.Instance.scriptText[DialogueType.FOLLOW_EXTRA.ToInt()] = extraDialogueText[Int(extra)];
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW_EXTRA;
 
+        foreach(GameObject extra in extraCanvas) extra.SetActive(false);
         extraCanvas[Int(extra)].SetActive(true);
     }
     public void EndExtraDialogue(bool dialogueEnd)
@@ -142,7 +143,6 @@ public class FollowDialogueManager : MonoBehaviour
                         // 기존에 출력한 대사까지 저장 후 대화창을 비운다
                         string saveText = extraDialogueText[speakerIndex].text;
                         extraDialogueText[speakerIndex].text = "";
-                        extraCanvas[speakerIndex].SetActive(false);
 
                         // 다른 물체의 스크립트가 끝나기를 기다린다
                         while (IsDialogueOpen) yield return null;
