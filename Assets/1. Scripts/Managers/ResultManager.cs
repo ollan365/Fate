@@ -234,48 +234,6 @@ public class ResultManager : MonoBehaviour
                 EventManager.Instance.CallEvent("Event_Inquiry");
                 break;
                 
-
-            // 튜토리얼
-            case "Result_nextTutorialPhase":  // 튜토리얼 다음 페이즈로 진행
-                RoomManager.Instance.tutorialManager.ProceedToNextPhase();
-                break;
-
-            case "Result_TutorialPhase1Force":  // 방을 둘러보자 (이동버튼 강조)
-                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialMoveButton");
-                break;
-
-            case "Result_TutorialPhase2ChairStateCheck": // 의자가 밀고 있는 상태인지 체크
-                StartCoroutine(RoomManager.Instance.tutorialManager.CheckChairMovement());
-                break;
-
-            case "Result_TutorialPhase2Force":  // 의자 밀어보자 (이미지 강조는 X 검은 화면O)
-                RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-                break;
-
-            case "Result_TutorialPhase3ForceSide1":  // 카펫 들어보자 (덮인 카펫 강조)
-                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpet");
-                break;
-
-            case "Result_TutorialPhase3Force":  // 카펫 들어보자 (이미지 강조는 X 검은 화면O)
-                RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-                break;
-
-            case "Result_TutorialPhase4ForceSide1":  // 종이 조사해보자 (카펫 밑 종이 강조)
-                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpetPaper");
-                break;
-
-            case "Result_TutorialPhase4Force":  // 종이 조사해보자 (이미지 강조는 X 검은 화면O)
-                RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-                break;
-
-            case "Result_TutorialPhase5ForceSide1":  // 열린 카펫 덮자 (열린 카펫 강조)
-                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpetOpen");
-                break;
-
-            case "Result_TutorialPhase5Force":  // 열린 카펫 덮자 (이미지 강조는 X 검은 화면O)
-                RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-                break;
-
             case "ResultNewTeddyBearZoom":
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "newTeddyBear");
                 break;

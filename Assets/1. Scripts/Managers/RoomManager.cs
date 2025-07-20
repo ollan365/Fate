@@ -21,9 +21,6 @@ public class RoomManager : MonoBehaviour
     public bool isInvestigating = false;
     private bool isZoomed = false;
     
-    // 튜토리얼 매니저
-    public TutorialManager tutorialManager;
-
     // 액션포인트 매니저
     public ActionPointManager actionPointManager;
     public Room2ActionPointManager room2ActionPointManager;
@@ -72,15 +69,6 @@ public class RoomManager : MonoBehaviour
         SetButtons();
 
         actionPointManager.CreateHearts();  // create hearts on room start
-
-        // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
-        {
-            if (!GameManager.Instance.skipTutorial
-                && (int)GameManager.Instance.GetVariable("ReplayCount") == 0
-                && !(bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
-                DialogueManager.Instance.StartDialogue("Prologue_015");
-        }
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
@@ -98,11 +86,6 @@ public class RoomManager : MonoBehaviour
 
         // 시점에 맞춰서 버튼 끄고 키게 함.(사이드 2번에선 오른쪽 버튼만 3번에선 왼쪽 버튼만 나오게 함)
         SetMoveButtons(true);
-
-        // 튜토리얼 1 페이즈 관련
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
-            if(!GameManager.Instance.skipTutorial)
-                tutorialManager.SetSeenSides(newSideIndex);
     }
 
     public void OnExitButtonClick()
