@@ -58,6 +58,7 @@ public enum eUIGameObjectName {
     AlbumImageGameObject,
     EndingTypeGameObject,
     EndingNameGameObject,
+    BlockingPanelDefault, // blocks everything with sorting layer = "Default"
 }
 
 public class UIManager : MonoBehaviour {
@@ -82,6 +83,7 @@ public class UIManager : MonoBehaviour {
     public GameObject memoButton;
     public GameObject memoContents;
     public GameObject memoGauge;
+    public GameObject blockingPanelDefault;
     
     [Header("UI Game Objects - Album")]
     public GameObject album;
@@ -190,6 +192,8 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.MemoButton, memoButton);
         uiGameObjects.Add(eUIGameObjectName.MemoContents, memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge, memoGauge);
+        
+        uiGameObjects.Add(eUIGameObjectName.BlockingPanelDefault, blockingPanelDefault);
 
         uiGameObjects.Add(eUIGameObjectName.MenuUI, menuUI);
         uiGameObjects.Add(eUIGameObjectName.WhiteMenu, whiteMenu);
@@ -708,5 +712,9 @@ public class UIManager : MonoBehaviour {
         }
 
         SetUI(eUIGameObjectName.WarningVignette, false); // 경고 표시 비활성화
+    }
+
+    public void ToggleHighlightAnimationEffect(eUIGameObjectName uiName, bool isOn) {
+        uiGameObjects[uiName].GetComponent<HighlightAnimator>().ToggleHighlight(isOn);
     }
 }

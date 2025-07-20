@@ -27,7 +27,7 @@ public class RoomManager : MonoBehaviour
     public Room2ActionPointManager room2ActionPointManager;
     
     [Header("튜토리얼 매니저")]
-    [SerializeField] private TutorialManager tutorialManager;
+    public TutorialManager tutorialManager;
 
     void Awake()
     {
@@ -98,6 +98,9 @@ public class RoomManager : MonoBehaviour
 
         // 시점에 맞춰서 버튼 끄고 키게 함.(사이드 2번에선 오른쪽 버튼만 3번에선 왼쪽 버튼만 나오게 함)
         SetMoveButtons(true);
+        
+        if (tutorialManager)
+            tutorialManager.SetSeenSide(newSideIndex);
     }
 
     public void OnExitButtonClick()
