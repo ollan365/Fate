@@ -22,8 +22,12 @@ public class RoomManager : MonoBehaviour
     private bool isZoomed = false;
     
     // 액션포인트 매니저
+    [Header("행동력 매니저")]
     public ActionPointManager actionPointManager;
     public Room2ActionPointManager room2ActionPointManager;
+    
+    [Header("튜토리얼 매니저")]
+    [SerializeField] private TutorialManager tutorialManager;
 
     void Awake()
     {
@@ -65,10 +69,18 @@ public class RoomManager : MonoBehaviour
         currentView = sides[currentSideIndex];
         SetCurrentSide(currentSideIndex);
 
-        MemoManager.Instance.HideMemoButton = false;
+        MemoManager.Instance.SetShouldHideMemoButton(false);
         SetButtons();
 
         actionPointManager.CreateHearts();  // create hearts on room start
+
+        if (GameManager.Instance.skipTutorial ||
+            SceneManager.Instance.GetActiveScene() != Constants.SceneType.ROOM_1 ||
+            (int)GameManager.Instance.GetVariable("ReplayCount") > 0)
+            return;
+
+        tutorialManager = gameObject.GetComponent<TutorialManager>();
+        tutorialManager.StartTutorial();
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1

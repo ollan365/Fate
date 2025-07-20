@@ -262,7 +262,7 @@ public class FollowManager : MonoBehaviour
 
         foreach(GameObject ui in UI_OffAtEnd) ui.SetActive(false);
 
-        MemoManager.Instance.HideMemoButton = true;
+        MemoManager.Instance.SetShouldHideMemoButton(true);
         MemoManager.Instance.SetMemoButtons(false);
 
         UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, false);

@@ -54,7 +54,7 @@ public class EndingManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
-        MemoManager.Instance.HideMemoButton = true;
+        MemoManager.Instance.SetShouldHideMemoButton(true);
         MemoManager.Instance.isFollow = false;
         DialogueManager.Instance.dialogueType = DialogueType.ROOM_ACCIDY;
 

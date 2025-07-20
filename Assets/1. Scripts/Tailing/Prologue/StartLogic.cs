@@ -215,7 +215,7 @@ public class StartLogic : MonoBehaviour
 
         // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
         albumButton.SetActive(false);
-        MemoManager.Instance.HideMemoButton = true;
+        MemoManager.Instance.SetShouldHideMemoButton(true);
 
         EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);

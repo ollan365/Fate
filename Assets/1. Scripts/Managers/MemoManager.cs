@@ -18,8 +18,11 @@ public class MemoManager : PageContentsManager
     public static MemoManager Instance { get; private set; }
     public bool isMemoOpen;
     public bool isFollow;
-    private bool wantToHideMemoButton;
-    public bool HideMemoButton { set => wantToHideMemoButton = value; }
+    private bool shouldHideMemoButton;
+    public void SetShouldHideMemoButton(bool value)
+    {
+        shouldHideMemoButton = value;
+    }
 
     // 모든 메모
     private readonly Dictionary<string, string> memoScripts = new Dictionary<string, string>();  // memoScripts[memoID] = scriptID
@@ -153,7 +156,7 @@ public class MemoManager : PageContentsManager
 
     public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false)
     {
-        if (showMemoIcon && wantToHideMemoButton)
+        if (showMemoIcon && shouldHideMemoButton)
             return;
 
         UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, showMemoIcon);

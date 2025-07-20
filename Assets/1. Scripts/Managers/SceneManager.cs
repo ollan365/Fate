@@ -150,7 +150,7 @@ public class SceneManager : MonoBehaviour
         }
 
         MemoManager.Instance.SetMemoCurrentPageAndFlags();
-        MemoManager.Instance.HideMemoButton = false;
+        MemoManager.Instance.SetShouldHideMemoButton(false);
         MemoManager.Instance.SetMemoButtons(true);
 
         SoundPlayer.Instance.ChangeBGM(bgmIndex);
