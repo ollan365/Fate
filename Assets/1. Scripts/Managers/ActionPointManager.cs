@@ -485,9 +485,9 @@ abstract public class ActionPointManager : MonoBehaviour
 
             case FinishDayChangeBGM:
                 // Room Bgm 다시 재생
-                if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
-                    SoundPlayer.Instance.ChangeBGM(Constants.BGM_ROOM1);
-                else SoundPlayer.Instance.ChangeBGM(Constants.BGM_ROOM2);
+                SoundPlayer.Instance.ChangeBGM(SceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1
+                    ? Constants.BGM_ROOM1
+                    : Constants.BGM_ROOM2);
                 break;
         }    
     }

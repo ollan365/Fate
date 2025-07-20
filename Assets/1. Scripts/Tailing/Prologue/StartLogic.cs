@@ -130,9 +130,11 @@ public class StartLogic : MonoBehaviour
         {
             buttons.SetActive(false);
 
-            if (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum() == Constants.SceneType.START)
+            Constants.SceneType savedScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum();
+            if (savedScene == Constants.SceneType.START)
                 StartCoroutine(StartPrologue());
-            else SceneManager.Instance.LoadScene(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum());
+            else 
+                SceneManager.Instance.LoadScene(savedScene);
         }
         else noGameDataPanel.SetActive(true);
     }

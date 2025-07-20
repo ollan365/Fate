@@ -44,7 +44,7 @@ public class FollowTutorial : MonoBehaviour
     {
         Debug.Log(GameManager.Instance.GetVariable("FollowTutorialPhase"));
 
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.FOLLOW_2.ToInt())
+        if (SceneManager.Instance.GetActiveScene() == Constants.SceneType.FOLLOW_2)
         {
             StartCoroutine(EndTutorial());
             return;

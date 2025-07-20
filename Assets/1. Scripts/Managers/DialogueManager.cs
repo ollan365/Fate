@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static Constants;
 
@@ -40,14 +38,14 @@ public class DialogueManager : MonoBehaviour
 
     // 상태 변수
     private string currentDialogueID = "";
-    public bool isDialogueActive = false;
-    private bool isTyping = false;
-    private bool isAuto = false;
-    private bool isFast = false;
+    public bool isDialogueActive;
+    private bool isTyping;
+    private bool isAuto;
+    private bool isFast;
     private string fullSentence;
 
     // Dialogue Queue
-    private Queue<string> dialogueQueue = new Queue<string>();
+    private readonly Queue<string> dialogueQueue = new Queue<string>();
 
     [SerializeField] private int yOffsetMinimumGirl;
     [SerializeField] private int yOffsetMaximumGirl;
@@ -84,7 +82,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
         {
-            Debug.Log($"dialogue ID: {dialogueID} queued!");
+            if (GameManager.Instance.isDebug)
+                Debug.Log($"dialogue ID: {dialogueID} queued!");
 
             dialogueQueue.Enqueue(dialogueID);
             return;
@@ -99,32 +98,32 @@ public class DialogueManager : MonoBehaviour
 
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
+        
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
-
         blurImage.SetActive(initialDialogueLine.Blur == "TRUE");
-
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) 
             RoomManager.Instance.SetButtons();
         if (FollowManager.Instance) 
             FollowManager.Instance.ClickObject();
-
-        MemoManager.Instance.SetMemoButtons(false);
+        if (MemoManager.Instance)
+            MemoManager.Instance.SetMemoButtons(false);
     }
-
-    // 대사 출력을 second초 후에 출력을 시작함. (휴식 시스템에서 눈 깜빡이는 5초 후에 출력되게 함)
-    // 기본값 second 0으로 넣기
-    public IEnumerator StartDialogue(string dialogueID, float second = 0f)
+    
+    public IEnumerator StartDialogue(string dialogueID, float delay = 0f)
     {
-        yield return new WaitForSeconds(second);
+        if (delay > 0f) 
+            yield return new WaitForSeconds(delay);
 
         if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
         {
-            Debug.Log($"dialogue ID: {dialogueID} queued!");
+            if (GameManager.Instance.isDebug)
+                Debug.Log($"dialogue ID: {dialogueID} queued!");
 
             dialogueQueue.Enqueue(dialogueID);
-            yield break;
+            if (delay > 0f) 
+                yield break;
         }
 
         isDialogueActive = true;
@@ -145,10 +144,12 @@ public class DialogueManager : MonoBehaviour
 
         DisplayDialogueLine(initialDialogueLine);
 
-        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
-        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
-
-        MemoManager.Instance.SetMemoButtons(false);
+        if (RoomManager.Instance) 
+            RoomManager.Instance.SetButtons();
+        if (FollowManager.Instance) 
+            FollowManager.Instance.ClickObject();
+        if (MemoManager.Instance)
+            MemoManager.Instance.SetMemoButtons(false);
     }
 
     private void ClearPreviousChoices()
@@ -336,7 +337,7 @@ public class DialogueManager : MonoBehaviour
     private void ChangeDialogueCanvas(string speaker)
     {
         // 미행 대화창
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") is 2 or 4)
+        if (SceneManager.Instance.GetActiveScene() is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
         {
             switch (speaker)
             {
@@ -400,7 +401,7 @@ public class DialogueManager : MonoBehaviour
         var isChoosingBrokenBearChoice = false;
         var isInvestigating = RoomManager.Instance.GetIsInvestigating();
 
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.ROOM_2.ToInt())
+        if (SceneManager.Instance.GetActiveScene() == SceneType.ROOM_2)
             isChoosingBrokenBearChoice = RoomManager.Instance.room2ActionPointManager.GetChoosingBrokenBearChoice();
 
         if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice && !isInvestigating)
@@ -485,19 +486,18 @@ public class DialogueManager : MonoBehaviour
         // FAST 인 경우 두배의 속도로 타이핑
         if (isFast) typeSpeed /= 1.75f;
 
-        foreach (char letter in sentence.ToCharArray())
+        foreach (char letter in sentence)
         {
-            if (letter == '<')
-            {
-                effectText = ""; // effectText 초기화
-                isEffect = true;
-            }
-            else if (letter == '>') // > 가 나오면 scriptText에 한번에 붙인다
-            {
-                effectText += letter;
-                scriptText[dialogueType.ToInt()].text += effectText;
-                isEffect = false;
-                continue;
+            switch (letter) {
+                case '<':
+                    effectText = ""; // effectText 초기화
+                    isEffect = true;
+                    break;
+                case '>': // > 가 나오면 scriptText에 한번에 붙인다
+                    effectText += letter;
+                    scriptText[dialogueType.ToInt()].text += effectText;
+                    isEffect = false;
+                    continue;
             }
 
             if (isEffect) // < 가 나온 이후부터는 effectText에 붙인다
@@ -511,13 +511,15 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
-        if (teddyBearIcons.Length > dialogueType.ToInt()) teddyBearIcons[dialogueType.ToInt()].SetActive(true);
+        if (teddyBearIcons.Length > dialogueType.ToInt()) 
+            teddyBearIcons[dialogueType.ToInt()].SetActive(true);
 
         if (isFast)
         {
             typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
             isFast = false;
         }
+        
         if (isAuto)
         {
             isAuto = false;
@@ -620,8 +622,8 @@ public class DialogueManager : MonoBehaviour
     
     private bool GetIsImageOrLockPanelActive()
     {
-        int currentScene = (int)GameManager.Instance.GetVariable("CurrentScene");
-        if (currentScene is (int)SceneType.ROOM_1 or (int)SceneType.ROOM_2 &&
+        SceneType currentScene = SceneManager.Instance.GetActiveScene();
+        if ((currentScene is SceneType.ROOM_1 or SceneType.ROOM_2) &&
             RoomManager.Instance.imageAndLockPanelManager.GetIsImageOrLockPanelActive())
             return true;
         

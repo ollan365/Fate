@@ -27,11 +27,11 @@ public class RoomManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
+        if (Instance)
             Destroy(gameObject);
-
+        else
+            Instance = this;
+        
         imageAndLockPanelCanvas.worldCamera = UIManager.Instance.uiCamera;
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
@@ -61,7 +61,7 @@ public class RoomManager : MonoBehaviour
             zoomView.SetActive(false);
         }
 
-        // Side 1으로 초기화?
+        // Side 1으로 초기화
         currentView = sides[currentSideIndex];
         SetCurrentSide(currentSideIndex);
 

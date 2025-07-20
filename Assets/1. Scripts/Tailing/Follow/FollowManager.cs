@@ -238,7 +238,7 @@ public class FollowManager : MonoBehaviour
         }
 
         // 두번째 미행
-        if (!IsTutorial && (int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_2.ToInt())
+        if (!IsTutorial && SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_2)
         {
             switch ((int)Accidy.transform.position.x)
             {

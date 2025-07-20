@@ -61,7 +61,7 @@ public class EndingManager : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
 
         // 배경 바꾸기
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.ROOM_1.ToInt())
+        if (SceneManager.Instance.GetActiveScene() == SceneType.ROOM_1)
         {
             background.sprite = background_room1;
             background.color = Color.white;

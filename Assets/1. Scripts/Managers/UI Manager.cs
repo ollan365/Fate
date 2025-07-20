@@ -428,8 +428,8 @@ public class UIManager : MonoBehaviour {
     
     public void OnLeftButtonClick() {
         switch (SceneManager.Instance.GetActiveScene()) {
-            case (int)SceneType.ROOM_1:
-            case (int)SceneType.ROOM_2:
+            case SceneType.ROOM_1:
+            case SceneType.ROOM_2:
                 RoomManager.Instance.MoveSides(-1);
                 break;
         }
@@ -437,8 +437,8 @@ public class UIManager : MonoBehaviour {
     
     public void OnRightButtonClick() {
         switch (SceneManager.Instance.GetActiveScene()) {
-            case (int)SceneType.ROOM_1:
-            case (int)SceneType.ROOM_2:
+            case SceneType.ROOM_1:
+            case SceneType.ROOM_2:
                 RoomManager.Instance.MoveSides(1);
                 break;
         }
@@ -449,13 +449,13 @@ public class UIManager : MonoBehaviour {
             MemoManager.Instance.OnExit();
         else
             switch (SceneManager.Instance.GetActiveScene()) {
-                case (int)SceneType.START:
+                case SceneType.START:
                     SetUI(eUIGameObjectName.Album, false, true, FloatDirection.Down);
                     SetUI(eUIGameObjectName.AlbumButton, true);
                     SetUI(eUIGameObjectName.ExitButton, false);
                     break;
-                case (int)SceneType.ROOM_1:
-                case (int)SceneType.ROOM_2:
+                case SceneType.ROOM_1:
+                case SceneType.ROOM_2:
                     RoomManager.Instance.OnExitButtonClick();
                     break;
                 default:
@@ -632,7 +632,7 @@ public class UIManager : MonoBehaviour {
     // method to switch mouse cursor
     public void SetCursorAuto() {
         bool isDefault = GameManager.Instance.GetIsBusy()
-                         || SceneManager.Instance.GetActiveScene() is (int)SceneType.START or (int)SceneType.ENDING
+                         || SceneManager.Instance.GetActiveScene() is SceneType.START or SceneType.ENDING
                          || (RoomManager.Instance && RoomManager.Instance.imageAndLockPanelManager.isLockObjectActive)
                          || isCursorTouchingUI;
         ChangeCursor(isDefault);

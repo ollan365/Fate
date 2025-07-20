@@ -48,10 +48,25 @@ public class SceneManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneType.ENDING.ToInt());
     }
     
-    public int GetActiveScene()
-    {
+    public SceneType GetActiveScene() {
         Scene activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        return activeScene.buildIndex;
+        switch (activeScene.name) {
+            case "Start":
+                return SceneType.START;
+            case "Room1":
+                return SceneType.ROOM_1;
+            case "Follow1":
+                return SceneType.FOLLOW_1;
+            case "Room2":
+                return SceneType.ROOM_2;
+            case "Follow2":
+                return SceneType.FOLLOW_2;
+            case "Ending":
+                return SceneType.ENDING;
+        }
+        
+        Debug.LogError($"Unknown scene: {activeScene.name}");
+        return SceneType.START;
     }
 
     private IEnumerator ChangeScene(SceneType loadSceneType)
@@ -60,6 +75,7 @@ public class SceneManager : MonoBehaviour
         while (DialogueManager.Instance.isDialogueActive)
             yield return null;
 
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
