@@ -152,6 +152,7 @@ public class FollowDialogueManager : MonoBehaviour
                         extraDialogueText[speakerIndex].text = saveText;
                     }
                 }
+                if (FollowManager.Instance.IsEnd) break;
 
                 extraDialogueText[speakerIndex].text += letter;
                 SoundPlayer.Instance.UISoundPlay(Sound_Typing); // 타자 소리 한번씩만

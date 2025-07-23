@@ -255,8 +255,8 @@ public class FollowManager : MonoBehaviour
         {
             switch ((int)Accidy.transform.position.x)
             {
-                case 10: followDialogueManager.ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
-                case 14: followDialogueManager.ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
+                case 8: followDialogueManager.ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
+                case 13: followDialogueManager.ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
             }
         }
     }
@@ -279,6 +279,7 @@ public class FollowManager : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(false);
 
         UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowUI_Night, false);
 
         StartCoroutine(followEnd.EndFollowLogic_0());
     }

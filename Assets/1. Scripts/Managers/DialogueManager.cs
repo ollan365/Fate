@@ -103,12 +103,13 @@ public class DialogueManager : MonoBehaviour
 
         blurImage.SetActive(initialDialogueLine.Blur == "TRUE");
 
+        if (FollowManager.Instance)
+            FollowManager.Instance.ClickObject();
+
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) 
             RoomManager.Instance.SetButtons();
-        if (FollowManager.Instance) 
-            FollowManager.Instance.ClickObject();
 
         MemoManager.Instance.SetMemoButtons(false);
     }
@@ -143,10 +144,11 @@ public class DialogueManager : MonoBehaviour
         else 
             blurImage.SetActive(false);
 
+        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
+
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) RoomManager.Instance.SetButtons();
-        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
 
         MemoManager.Instance.SetMemoButtons(false);
     }
