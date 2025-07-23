@@ -238,16 +238,18 @@ public class FollowGameManager : MonoBehaviour
         {
             while (!IsTutorial && IsDialogueOpen) { yield return null; } // 대화창이 열려있음
 
-            if (accidyStatus == AccidyStatus.RED && IsFateHide) { text.text = "  ?  "; currentTime = 0; }
-            else if (accidyStatus == AccidyStatus.RED && !IsFateHide) { text.text = "  !  "; currentTime = 0; }
+            if (accidyStatus == AccidyStatus.RED && IsFateHide) { text.text = "?"; currentTime = 0; }
+            else if (accidyStatus == AccidyStatus.RED && !IsFateHide) { text.text = "!"; currentTime = 0; }
             else if (accidyStatus == AccidyStatus.YELLOW) text.text = "...?";
             else
             {
+                if(text.text == "?" || text.text == "!" || text.text == "...?") text.text = "";
+
                 currentTime += Time.deltaTime;
                 if (currentTime > 1)
                 {
                     if (text.text.Length < 3) text.text += ".";
-                    else text.text = "";
+                    else text.text = ".";
 
                     currentTime = 0;
                 }

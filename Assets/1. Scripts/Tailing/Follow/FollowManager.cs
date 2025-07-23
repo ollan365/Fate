@@ -240,7 +240,7 @@ public class FollowManager : MonoBehaviour
     }
     public void CheckPosition()
     {
-        if (Accidy.transform.position.x > 49)
+        if (Accidy.transform.position.x > 48)
         {
             FollowEndLogicStart();
         }
