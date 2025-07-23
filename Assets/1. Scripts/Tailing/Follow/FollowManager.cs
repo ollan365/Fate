@@ -76,6 +76,7 @@ public class FollowManager : MonoBehaviour
         else if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
         {
             if((int)GameManager.Instance.GetVariable("ReplayCount") > 0 || (bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1")) { StartFollow(); }
+            else StartCoroutine(followTutorial.StartTutorial());
         }
         else StartCoroutine(followTutorial.StartTutorial());
     }
