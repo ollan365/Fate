@@ -12,8 +12,8 @@ public class FollowDialogueManager : MonoBehaviour
     [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private GameObject[] extraCanvas;
     [SerializeField] private TextMeshProUGUI[] extraDialogueText;
-    [SerializeField] private GameObject specialObjectButton;
-    [SerializeField] private Image specialObjectButtonImage;
+    //[SerializeField] private GameObject specialObjectButton;
+    //[SerializeField] private Image specialObjectButtonImage;
     [SerializeField] private Transform frontObjects;
     private FollowExtra extra = FollowExtra.None;
 
@@ -89,17 +89,6 @@ public class FollowDialogueManager : MonoBehaviour
         {
             SetLayerRecursively(child.gameObject, newLayer);
         }
-    }
-    public void ClickSpecialObject(FollowObject followObject)
-    {
-        specialObjectButton.SetActive(true);
-        specialObjectButtonImage.sprite = followObject.specialSprite;
-        specialObjectButtonImage.SetNativeSize();
-        specialObjectButtonImage.GetComponent<RectTransform>().localScale = new Vector3(followObject.scaleValue, followObject.scaleValue, followObject.scaleValue);
-
-        specialObjectButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        specialObjectButton.GetComponent<Button>().onClick.AddListener(() => followObject.OnMouseDown_Normal());
-        specialObjectButton.GetComponent<Button>().onClick.AddListener(() => specialObjectButton.SetActive(false));
     }
     // ========== 엑스트라 자동 대화창 ========== //
     private List<string> alreadyType = new();

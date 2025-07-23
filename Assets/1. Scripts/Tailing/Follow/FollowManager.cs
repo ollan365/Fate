@@ -168,10 +168,6 @@ public class FollowManager : MonoBehaviour
         followDialogueManager.EndExtraDialogue(dialogueEnd);
         IsDialogueOpen = !dialogueEnd;
     }
-    public void ClickSpecialObject(FollowObject followObject)
-    {
-        followDialogueManager.ClickSpecialObject(followObject);
-    }
 
     // ==================== 미행 ==================== //
     public void ClickCat()

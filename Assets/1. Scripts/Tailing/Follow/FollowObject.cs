@@ -39,7 +39,7 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
 
         if (objectName == FollowObjectName.Extra) { OnMouseDown_Normal(); return; }
 
-        FollowManager.Instance.ClickSpecialObject(this);
+        UIManager.Instance.FollowEventButtonSet(this);
     }
     public void OnMouseDown_Normal()
     {
