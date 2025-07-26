@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Room2ActionPointManager : ActionPointManager
 {
-    // È¸º¹Á¦ ¸Ô¾úÀ» °æ¿ì
+    // 회복제 먹었을 경우
     [SerializeField] private bool isEatenEnergySupplement;
-
-    //// ¹æÅ»Ãâ2¿¡¼­ È¸º¹Á¦ ¸ÔÀº »óÅÂ¸é ¹è°æÁöµµ extended·Î ¹Ù²Þ
-    //[SerializeField] private GameObject backgroundImageDefault;
-    //[SerializeField] private GameObject backgroundImageExtended;
 
     private bool isChoosingBrokenBearChoice = false;
 
@@ -25,7 +21,7 @@ public class Room2ActionPointManager : ActionPointManager
 
         CreateActionPointsArray(actionPointsPerDay);
 
-        // Ã³À½ ¹æÅ»ÃâÀÇ actionPoint
+        // 처음 방탈출의 actionPoint
         GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[0, presentHeartIndex]);
 
         GameManager.Instance.AddEventObject("EventRoom2HomeComing");
@@ -39,17 +35,17 @@ public class Room2ActionPointManager : ActionPointManager
         // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
         int heartCount = presentHeartIndex + 1;
 
-        // È¸º¹Á¦ ¸Ô¾î¼­ actionPoint°¡ 2°³ ´õ ´Ã¾î³²
+        // 회복제 먹어서 actionPoint가 2개 더 늘어남
         if (isEatenEnergySupplement)
         {
-            // ÇÏÆ® ¼ö°¡ actionPointsPerDayÀÏ ¶§ ¸ÔÀº °ÍÀÌ¸é DecrementActionPoint¿¡¼­ ÇÏÆ®°¡ 0ÀÌ µÇ¸é 
-            // ´ÙÀ½³¯°ú ÃÖ´ë ÇÏÆ®·Î ¹Ì¸® ¾÷µ¥ÀÌÆ® ÇØµÎ±â¿¡ ÇÏÆ®°¡ 0ÀÏ ¶§ ¸ÔÀº °Í. ÇÏÆ®¸¦ 0°³¿¡¼­ 2°³·Î ¸¸µé¾îÁÜ
+            // 하트 수가 actionPointsPerDay일 때 먹은 것이면 DecrementActionPoint에서 하트가 0이 되면 
+            // 다음날과 최대 하트로 미리 업데이트 해두기에 하트가 0일 때 먹은 것. 하트를 0개에서 2개로 만들어줌
             if (heartCount == actionPointsPerDay)
             {
                 nowDayNum -= 1;
                 GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
 
-                // presentHeartIndexµµ 2-1·Î ¾÷µ¥ÀÌÆ®
+                // presentHeartIndex도 2-1로 업데이트
                 presentHeartIndex = 1;
 
                 actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
@@ -58,7 +54,7 @@ public class Room2ActionPointManager : ActionPointManager
             {
                 actionPointsPerDay = 7;
                 GameManager.Instance.SetVariable("ActionPointsPerDay", actionPointsPerDay);
-                // actionPointPerDay°¡ º¯°æµÇ¾î ´Ù½Ã actionPointsArray »ý¼º
+                // actionPointPerDay가 변경되어 다시 actionPointsArray 생성
                 CreateActionPointsArray(actionPointsPerDay);
 
                 presentHeartIndex += 2;
@@ -66,18 +62,18 @@ public class Room2ActionPointManager : ActionPointManager
 
             heartCount = presentHeartIndex + 1;
 
-            // actionPointµµ 2°³ ´õ ´Ã¾î³­ »óÅÂ·Î ¼öÁ¤
+            // actionPoint도 2개 더 늘어난 상태로 수정
             actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
 
             GameManager.Instance.SetVariable("ActionPoint", actionPoint);
             GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
         }
-        // ÇÏÆ®°¡ 0ÀÌ µÇ¸é
+        // 하트가 0이 되면
         if (heartCount == 0)
         {
             if ((bool)GameManager.Instance.GetVariable("TeddyBearFixed"))
             {
-                // È¸º¹Á¦ ¸ÔÀº »óÅÂ¸é ÇÏ·ç¿¡ ÇÏÆ® ÃÖ´ë 5°³¿´´ø °ÍÀÌ 7°³·Î ´Ã¾î³²
+                // 회복제 먹은 상태면 하루에 하트 최대 5개였던 것이 7개로 늘어남
                 if (actionPointsPerDay == 5)
                 {
                     actionPointsPerDay = 7;
@@ -96,9 +92,6 @@ public class Room2ActionPointManager : ActionPointManager
         // change Day text on screen
         dayText.text = $"Day {nowDayNum}";
 
-        //// ÇÏÆ® ¹è°æÁö ¹Ù²Þ
-        //ChangeHeartBackgroundImageExtended((bool)GameManager.Instance.GetVariable("TeddyBearFixed"));
-
         if (isEatenEnergySupplement)
             isEatenEnergySupplement = false;
 
@@ -111,11 +104,11 @@ public class Room2ActionPointManager : ActionPointManager
         {
             actionPointsPerDay = 7;
             GameManager.Instance.SetVariable("ActionPointsPerDay", actionPointsPerDay);
-            // actionPointPerDay°¡ º¯°æµÇ¾î ´Ù½Ã actionPointsArray »ý¼º
+            // actionPointPerDay가 변경되어 다시 actionPointsArray 생성
             CreateActionPointsArray(actionPointsPerDay);
         }
 
-        // ½Ã°è ÆÛÁñ¿¡¼­ ¿¬¼ÓÀ¸·Î Å¬¸¯ÇßÀ» ¶§ Æ÷ÀÎÆ® °¨¼Ò ¿À·ù ¶ßÁö ¾Ê°Ô ÇÔ
+        // 시계 퍼즐에서 연속으로 클릭했을 때 포인트 감소 오류 뜨지 않게 함
         if (heartParent.transform.childCount < 1)
             return;
 
@@ -132,16 +125,16 @@ public class Room2ActionPointManager : ActionPointManager
 
         int actionPoint;
 
-        // ÇÏÆ®°¡ ´Ù ¾ø¾îÁö¸é
+        // 하트가 다 없어지면
         if (presentHeartIndex == -1)
         {
             if (nowDayNum < maxDayNum)
             {
-                // ÇöÀç ³¯Â¥¸¦ ´ÙÀ½³¯·Î ¾÷µ¥ÀÌÆ®
+                // 현재 날짜를 다음날로 업데이트
                 nowDayNum += 1;
                 GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
 
-                // presentHeartIndexµµ ¸Ç ³¡ row·Î ¾÷µ¥ÀÌÆ®
+                // presentHeartIndex도 맨 끝 row로 업데이트
                 presentHeartIndex = (int)GameManager.Instance.GetVariable("ActionPointsPerDay") - 1;
                 GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
 
@@ -149,14 +142,14 @@ public class Room2ActionPointManager : ActionPointManager
             }
             else
             {
-                // ¸¶Áö¸· ³¯
-                // Çàµ¿·ÂÀÌ 0ÀÌ µÈ »óÅÂ
+                // 마지막 날
+                // 행동력이 0이 된 상태
                 actionPoint = 0;
             }
         }
         else
         {
-            // actionPoint ¾÷µ¥ÀÌÆ®ÇÏ°í GameManagerÀÇ ActionPointµµ ¼öÁ¤
+            // actionPoint 업데이트하고 GameManager의 ActionPoint도 수정
             actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
         }
 
@@ -179,7 +172,7 @@ public class Room2ActionPointManager : ActionPointManager
     }
 
 
-    // ±Í°¡ ½ºÅ©¸³Æ® Ãâ·Â ºÎºÐ
+    // 귀가 스크립트 출력 부분
     public override void RefillHeartsOrEndDay()
     {
         // turn off all ImageAndLockPanel objects and zoom out
@@ -193,13 +186,14 @@ public class Room2ActionPointManager : ActionPointManager
 
             return;
         }
-        // ±Í°¡ ½ºÅ©¸³Æ® Ãâ·Â
+        // 귀가 스크립트 출력
         EventManager.Instance.CallEvent("EventRoom2HomeComing");
 
         GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
-        // ±Í°¡ ½ºÅ©¸³Æ® ÀÌÈÄ ³¡³ª¸é NextÀÇ Event_NextMorningDay fade in/out ÀÌÆåÆ® ³ª¿È
+        // 귀가 스크립트 이후 끝나면 Next의 Event_NextMorningDay fade in/out 이펙트 나옴
     }
 
+    // 외출(아침) 스크립트 출력 부분
     public override IEnumerator nextMorningDay()
     {
         RoomManager.Instance.SetIsInvestigating(true);
@@ -208,7 +202,7 @@ public class Room2ActionPointManager : ActionPointManager
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
-        // ´ÙÀ½³¯ÀÌ µÇ°í(fade in/out effect ½ÇÇà) ¾ÆÄ§ ½ºÅ©¸³Æ® Ãâ·Â
+        // 다음날이 되고(fade in/out effect 실행) 아침 스크립트 출력
         //const float totalTime = 3f;
         //StartCoroutine(ScreenEffect.Instance.DayPass(totalTime));  // fade in/out effect
 
@@ -216,7 +210,7 @@ public class Room2ActionPointManager : ActionPointManager
 
         StartCoroutine(StartNextDayUIChange(nowDayNum));
 
-        // ¾ÆÄ§ ½ºÅ©¸³Æ® Ãâ·Â
+        // 아침 스크립트 출력
         yield return new WaitForSeconds(totalTime);
         EventManager.Instance.CallEvent("EventRoom2Morning");
 
@@ -224,22 +218,22 @@ public class Room2ActionPointManager : ActionPointManager
 
         StartCoroutine(RefillHearts(0f));
 
-        // ¿©±â¼­ ÇÏÆ® »ý¼º ¹× ´ÙÀ½³¯·Î ³¯Â¥ ¾÷µ¥ÀÌÆ®
+        // 여기서 하트 생성 및 다음날로 날짜 업데이트
         RoomManager.Instance.SetIsInvestigating(false);
         UIManager.Instance.SetCursorAuto();
     }
 
-    // °õÀÎÇü ¼Ó ±â·Â º¸ÃæÁ¦ ¸ÔÀ¸¸é ½ºÅ©¸³Æ® ³¡³ª¸é ¹Ù·Î ÇÏÆ® 2°³ È¸º¹µÊ.
+    // 곰인형 속 기력 보충제 먹고 스크립트 끝나면 바로 하트 2개 회복됨.
     public void EatEnergySupplement()
     {
-        // ÀÏ´Ü ÇöÀç º¸ÀÌ´Â ÇÏÆ® Áö¿ì°í
+        // 현재 보이는 하트 삭제하고
         foreach (Transform child in heartParent.transform)
         {
             Destroy(child.gameObject);
         }
 
-        // ÇÏÆ® +2°³ Ãß°¡ÇÏ°í
-        // ÇÏÆ® ´Ù½Ã ¸¸µé°Ô ÇØ¼­ ÇÏÆ®°¡ 2°³ ´õ Ã¤¿öÁø °ÍÃ³·³ º¸ÀÌ°Ô ÇÔ.
+        // 현재 하트 개수에 2개 추가 후
+        // 하트 다시 만들게 해서 하트가 2개 더 채워지게 함.
 
         isEatenEnergySupplement = true;
 

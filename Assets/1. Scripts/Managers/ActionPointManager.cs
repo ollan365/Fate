@@ -172,8 +172,8 @@ abstract public class ActionPointManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
         float totalTime = 3f;
-        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime/2));
-        yield return new WaitForSeconds(totalTime/2);
+        // 페이드 인
+        yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime / 2));
 
         // 휴식하면 그날 하루에 남아있는 행동력 다 사용되기에 현재 있는 하트들 삭제
         foreach (Transform child in heartParent.transform)
@@ -182,15 +182,18 @@ abstract public class ActionPointManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime/2));
+        // 페이드 아웃
+        yield return StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime / 2));
+
+        // 대사 출력 전 조사 오브젝트 클릭 막기용
+        UIManager.Instance.loadingScreen.SetActive(true);
 
         // 휴식 대사 출력. 
-        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", totalTime));
+        yield return StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", totalTime));
 
-        yield return new WaitForSeconds(totalTime / 2);
+        UIManager.Instance.loadingScreen.SetActive(false);
 
         int actionPoint;
-
         if (nowDayNum < maxDayNum) 
         {
             nowDayNum += 1;
@@ -283,6 +286,7 @@ abstract public class ActionPointManager : MonoBehaviour
     // DayUI 뒤로 넘김
     protected IEnumerator TurnNextDayUIBack()
     {
+        Debug.Log("DayUI 뒤로 넘김");
         // dayui 넘어가게 할 start, mid, end rotation 
         Quaternion startRotation = yesterDayRectTransform.rotation;
         Quaternion midRotation = startRotation * Quaternion.Euler(TurningDayBackRotationValues[MidRotationIndex]);
