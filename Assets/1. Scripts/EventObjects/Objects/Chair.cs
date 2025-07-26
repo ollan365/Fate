@@ -19,7 +19,10 @@ public class Chair : EventObject, IResultExecutable
 
     private bool isMoving = false; // 의자가 움직이는 중인지 여부
 
-    [SerializeField] private Button deskUnzoomedButton;
+    private bool chairMoved = false;
+
+    [SerializeField] private GameObject deskUnMovedChair;
+    [SerializeField] private GameObject deskMovedChair;
 
     private void Awake()
     {
@@ -39,8 +42,6 @@ public class Chair : EventObject, IResultExecutable
                 movedPositions[4] = new Vector2(-533f, -424f);
                 break;
         }
-
-        deskUnzoomedButton = deskUnzoomedButton.GetComponent<Button>();
     }
 
     public new void OnMouseDown()
@@ -56,14 +57,13 @@ public class Chair : EventObject, IResultExecutable
     
     public void ExecuteAction()
     {
-        bool chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
+        chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
         Vector2 targetPosition = chairMoved ? originalPosition : movedPositions[sideNum];
         if (isActiveAndEnabled) StartCoroutine(MoveChair(targetPosition));
     }
     
     IEnumerator MoveChair(Vector2 targetPosition)
     {
-        deskUnzoomedButton.enabled = false;
         isMoving = true;
 
         GameManager.Instance.SetVariable("isChairMoving",isMoving);
@@ -81,14 +81,26 @@ public class Chair : EventObject, IResultExecutable
         rectTransform.anchoredPosition = targetPosition;
         
         isMoving = false;
-        deskUnzoomedButton.enabled = true;
+
+        chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
+        if (sideNum == 1)
+        {
+            deskUnMovedChair.SetActive(chairMoved ? false : true);
+            deskMovedChair.SetActive(chairMoved ? true : false);
+        }
 
         GameManager.Instance.SetVariable("isChairMoving", isMoving);
     }
 
     private void OnEnable()
     {
-        bool chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
+        chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
         rectTransform.anchoredPosition = chairMoved ? movedPositions[sideNum] : originalPosition;
+
+        if (sideNum == 1)
+        {
+            deskUnMovedChair.SetActive(chairMoved ? false : true);
+            deskMovedChair.SetActive(chairMoved ? true : false);
+        }
     }
 }
