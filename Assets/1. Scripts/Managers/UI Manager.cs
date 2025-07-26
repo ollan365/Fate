@@ -140,7 +140,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
 
-    public bool enableLoadingAnimation = false; 
+    public bool enableLoadingAnimation = false;
 
     public static UIManager Instance { get; private set; }
     
