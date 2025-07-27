@@ -54,24 +54,20 @@ public enum eUIGameObjectName {
     Album,
     AlbumButton,
     AlbumPage,
-    AlbumImage,
     AlbumImageGameObject,
     EndingTypeGameObject,
     EndingNameGameObject,
-    BlockingPanelDefault, // blocks everything with sorting layer = "Default"
+    BlockingPanelDefault,
 }
 
 public class UIManager : MonoBehaviour {
-    [Header("Screen Effect")]
-    public Image coverPanel;
+    [Header("Screen Effect")] public Image coverPanel;
     [SerializeField] private TextMeshProUGUI coverText;
-    
-    [Header("Object Image")]
-    public GameObject objectImageParentRoom;
+
+    [Header("Object Image")] public GameObject objectImageParentRoom;
     public GameObject objectImageRoom;
-    
-    [Header("UI Game Objects")]
-    public GameObject normalVignette;
+
+    [Header("UI Game Objects")] public GameObject normalVignette;
     public GameObject warningVignette;
     public GameObject actionPoints;
     public GameObject actionPointsBackgroundImage;
@@ -84,9 +80,8 @@ public class UIManager : MonoBehaviour {
     public GameObject memoContents;
     public GameObject memoGauge;
     public GameObject blockingPanelDefault;
-    
-    [Header("UI Game Objects - Album")]
-    public GameObject album;
+
+    [Header("UI Game Objects - Album")] public GameObject album;
     public GameObject albumButton;
     public GameObject albumPage;
     public GameObject albumImageGameObject;
@@ -96,6 +91,7 @@ public class UIManager : MonoBehaviour {
 
     [Header("UI Game Objects - Day Animation")]
     public GameObject dayChangingGameObject;
+
     public GameObject yesterdayNumText;
     public GameObject todayNumText;
     public GameObject yesterday;
@@ -111,9 +107,8 @@ public class UIManager : MonoBehaviour {
     private TextMeshProUGUI endingTypeText;
     private TextMeshProUGUI endingNameText;
     private Image albumImage;
-    
-    [Header("UI Game Objects - Menu")]
-    public GameObject menuUI;
+
+    [Header("UI Game Objects - Menu")] public GameObject menuUI;
     public GameObject whiteMenu;
     public GameObject blackMenu;
     public GameObject optionUI;
@@ -123,8 +118,7 @@ public class UIManager : MonoBehaviour {
     public GameObject SoundEffectValueText;
     private bool menuOpenByStartSceneButton = false;
 
-    [Header("UI Game Objects - Follow")]
-    public GameObject followUIParent;
+    [Header("UI Game Objects - Follow")] public GameObject followUIParent;
     public GameObject followMemoGauge;
     public GameObject followUIBackground;
     public GameObject doubtGaugeSlider;
@@ -134,40 +128,39 @@ public class UIManager : MonoBehaviour {
     private readonly Dictionary<eUIGameObjectName, GameObject> uiGameObjects = new();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
     [HideInInspector] public TextMeshProUGUI dayTextTextMeshProUGUI;
-    
-    [Header("Warning Vignette Settings")]
-    [SerializeField] protected float warningTime;
-    
-    [Header("Cursor Settings")]
-    public Texture2D defaultCursorTexture;
+
+    [Header("Warning Vignette Settings")] [SerializeField]
+    protected float warningTime;
+
+    [Header("Cursor Settings")] public Texture2D defaultCursorTexture;
     public Texture2D investigateCursorTexture;
 
-    [Header("UI Camera")]
-    public Camera uiCamera;
-    
+    [Header("UI Camera")] public Camera uiCamera;
+
     private bool isCursorTouchingUI;
+
     // UI GameObjects to explicitly check for cursor hover
     private List<RectTransform> uiToCheck;
-    
-    [Header("Animation Settings")]
-    public float fadeAnimationDuration = 0.3f;
+
+    [Header("Animation Settings")] public float fadeAnimationDuration = 0.3f;
     public float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
 
     public static UIManager Instance { get; private set; }
-    
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-        } else
+        }
+        else
             Destroy(gameObject);
-        
+
         AddUIGameObjects();
         SetAllUI(false);
         SetOptionUI();
         InitializeUIToCheck();
-        
+
         // UI Objects that should be active by default
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
         SetUI(eUIGameObjectName.AlbumButton, true);
@@ -176,7 +169,7 @@ public class UIManager : MonoBehaviour {
     private void AddUIGameObjects() {
         uiGameObjects.Add(eUIGameObjectName.ObjectImageParentRoom, objectImageParentRoom);
         uiGameObjects.Add(eUIGameObjectName.ObjectImageRoom, objectImageRoom);
-        
+
         uiGameObjects.Add(eUIGameObjectName.NormalVignette, normalVignette);
         uiGameObjects.Add(eUIGameObjectName.WarningVignette, warningVignette);
 
@@ -192,13 +185,13 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.MemoButton, memoButton);
         uiGameObjects.Add(eUIGameObjectName.MemoContents, memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge, memoGauge);
-        
+
         uiGameObjects.Add(eUIGameObjectName.BlockingPanelDefault, blockingPanelDefault);
 
         uiGameObjects.Add(eUIGameObjectName.MenuUI, menuUI);
         uiGameObjects.Add(eUIGameObjectName.WhiteMenu, whiteMenu);
         uiGameObjects.Add(eUIGameObjectName.BlackMenu, blackMenu);
-        
+
         uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
         uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
         uiGameObjects.Add(eUIGameObjectName.SoundEffectSlider, SoundEffectSlider);
@@ -224,7 +217,7 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.YesterdayNumText, yesterdayNumText);
         uiGameObjects.Add(eUIGameObjectName.TodayNumText, todayNumText);
         uiGameObjects.Add(eUIGameObjectName.Yesterday, yesterday);
-        
+
         uiGameObjects.Add(eUIGameObjectName.Album, album);
         uiGameObjects.Add(eUIGameObjectName.AlbumButton, albumButton);
         uiGameObjects.Add(eUIGameObjectName.AlbumPage, albumPage);
@@ -241,19 +234,19 @@ public class UIManager : MonoBehaviour {
 
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
-        
+
         endingTypeText = endingTypeGameObject.GetComponentInChildren<TextMeshProUGUI>();
         endingNameText = endingNameGameObject.GetComponent<TextMeshProUGUI>();
         albumImage = albumImageGameObject.GetComponent<Image>();
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) 
+        if (Input.GetKeyDown(KeyCode.Escape))
             SetMenuUI();
-        
+
         CheckCursorTouchingUIs();
     }
-    
+
     private void SetAllUI(bool isActive) {
         foreach (var ui in uiGameObjects)
             SetUI(ui.Key, isActive);
@@ -266,12 +259,13 @@ public class UIManager : MonoBehaviour {
         GameObject targetUI = uiGameObjects[uiName];
         AnimateUI(targetUI, isActive, fade, floatDir);
     }
-    
+
     public GameObject GetUI(eUIGameObjectName uiName) {
         return uiGameObjects[uiName];
     }
-    
-    public void AnimateUI(GameObject targetUI, bool isActive, bool fade = false, FloatDirection floatDir = FloatDirection.None) {
+
+    public void AnimateUI(GameObject targetUI, bool isActive, bool fade = false,
+        FloatDirection floatDir = FloatDirection.None) {
         if (!targetUI) {
             Debug.LogWarning("Target UI is null!");
             return;
@@ -307,63 +301,65 @@ public class UIManager : MonoBehaviour {
         float startAlpha = show ? 0f : 1f;
         float fadeTime = fadeAnimationDuration;
         float elapsedTime = 0f;
-        
+
         if (fade)
             canvasGroup.alpha = startAlpha;
-        
+
         RectTransform rectTransform = null;
         Vector2 startPos = Vector2.zero;
         Vector2 targetPos = Vector2.zero;
         Vector2 basePosition = Vector2.zero;
-        
+
         if (floatDir != FloatDirection.None) {
             rectTransform = targetUI.GetComponent<RectTransform>();
             basePosition = rectTransform.anchoredPosition;
-            
+
             // Calculate start and target positions with original direction on entry, reversed on exit
             FloatDirection effectiveDirection = show ? floatDir : GetReverseDirection(floatDir);
             GetAnimationPositions(effectiveDirection, show, basePosition, out startPos, out targetPos);
-            
+
             rectTransform.anchoredPosition = startPos;
         }
-        
+
         while (elapsedTime < fadeTime) {
             if (fade)
                 canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
-            
+
             if (floatDir != FloatDirection.None && rectTransform)
-                rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetPos, elapsedTime / floatAnimationDuration);
-            
+                rectTransform.anchoredPosition =
+                    Vector2.Lerp(startPos, targetPos, elapsedTime / floatAnimationDuration);
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        
+
         if (fade)
             canvasGroup.alpha = targetAlpha;
-        
+
         if (floatDir != FloatDirection.None && rectTransform)
             rectTransform.anchoredPosition = show ? targetPos : basePosition;
-        
+
         if (!show)
             targetUI.SetActive(false);
     }
-    
+
     private FloatDirection GetReverseDirection(FloatDirection direction) {
         switch (direction) {
-            case FloatDirection.Left: 
+            case FloatDirection.Left:
                 return FloatDirection.Right;
-            case FloatDirection.Right: 
+            case FloatDirection.Right:
                 return FloatDirection.Left;
-            case FloatDirection.Up: 
+            case FloatDirection.Up:
                 return FloatDirection.Down;
-            case FloatDirection.Down: 
+            case FloatDirection.Down:
                 return FloatDirection.Up;
-            default: 
+            default:
                 return FloatDirection.None;
         }
     }
 
-    private void GetAnimationPositions(FloatDirection floatDir, bool show, Vector2 basePosition, out Vector2 startPos, out Vector2 targetPos) {
+    private void GetAnimationPositions(FloatDirection floatDir, bool show, Vector2 basePosition, out Vector2 startPos,
+        out Vector2 targetPos) {
         startPos = basePosition;
         targetPos = basePosition;
 
@@ -387,33 +383,33 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void SetMenuUI(bool startSceneButtonClick = false)
-    {
-        if(startSceneButtonClick) menuOpenByStartSceneButton = startSceneButtonClick;
+    public void SetMenuUI(bool startSceneButtonClick = false) {
+        if (startSceneButtonClick) menuOpenByStartSceneButton = startSceneButtonClick;
 
-        if (GetUI(eUIGameObjectName.MenuUI).activeSelf)
-        {
+        if (GetUI(eUIGameObjectName.MenuUI).activeSelf) {
             SetUI(eUIGameObjectName.MenuUI, false);
             SetUI(eUIGameObjectName.WhiteMenu, false);
             SetUI(eUIGameObjectName.BlackMenu, false);
-            if (menuOpenByStartSceneButton)
-            {
+            if (menuOpenByStartSceneButton) {
                 StartLogic.Instance.SetButtons();
                 menuOpenByStartSceneButton = false;
             }
+
             Time.timeScale = 1f;
-        } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
+        }
+        else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
             SetUI(eUIGameObjectName.OptionUI, false);
-            if (menuOpenByStartSceneButton)
-            {
+            if (menuOpenByStartSceneButton) {
                 StartLogic.Instance.SetButtons();
                 menuOpenByStartSceneButton = false;
             }
+
             Time.timeScale = 1f;
-        } else {
+        }
+        else {
             SetUI(eUIGameObjectName.MenuUI, true);
-            SetUI(Random.Range(0, 2) == 0 
-                ? eUIGameObjectName.WhiteMenu 
+            SetUI(Random.Range(0, 2) == 0
+                ? eUIGameObjectName.WhiteMenu
                 : eUIGameObjectName.BlackMenu, true);
             Time.timeScale = 0f;
         }
@@ -429,7 +425,7 @@ public class UIManager : MonoBehaviour {
         SetUI(eUIGameObjectName.BGMValue, true);
         SetUI(eUIGameObjectName.SoundEffectValue, true);
     }
-    
+
     public void OnLeftButtonClick() {
         switch (SceneManager.Instance.GetActiveScene()) {
             case SceneType.ROOM_1:
@@ -438,7 +434,7 @@ public class UIManager : MonoBehaviour {
                 break;
         }
     }
-    
+
     public void OnRightButtonClick() {
         switch (SceneManager.Instance.GetActiveScene()) {
             case SceneType.ROOM_1:
@@ -447,7 +443,7 @@ public class UIManager : MonoBehaviour {
                 break;
         }
     }
-    
+
     public void OnExitButtonClick() {
         if (MemoManager.Instance && MemoManager.Instance.isMemoOpen)
             MemoManager.Instance.OnExit();
@@ -466,12 +462,12 @@ public class UIManager : MonoBehaviour {
                     Debug.Log("Exit button is not implemented in this scene.");
                     break;
             }
+
         SetCursorAuto();
     }
-    
+
     // 방에서 이동 버튼 눌렀을 때
-    public void MoveButtonEffect(GameObject screen, Vector3 direction)
-    {
+    public void MoveSideEffect(GameObject screen, Vector3 direction) {
         StartCoroutine(OnMoveUI(screen, direction, 100, 0.5f));
         StartCoroutine(OnFade(null, 0, 1, 0, true, 0.2f, +0.25f));
     }
@@ -484,12 +480,12 @@ public class UIManager : MonoBehaviour {
     // waitingTime은 blink가 true일 때 어두워져 있는 시간
     // changeFadeTime은 다시 밝아질 때 걸리는 시간을 조정하고 싶으면 쓰는 변수
     // </summary>
-    public IEnumerator OnFade(Image fadeObject, float start, float end, float fadeTime, bool blink=false, float waitingTime=0f, float changeFadeTime=0f)
-    {
-        if (!fadeObject) 
+    public IEnumerator OnFade(Image fadeObject, float start, float end, float fadeTime, bool blink = false,
+        float waitingTime = 0f, float changeFadeTime = 0f) {
+        if (!fadeObject)
             fadeObject = coverPanel;
 
-        if (!fadeObject.gameObject.activeSelf) 
+        if (!fadeObject.gameObject.activeSelf)
             fadeObject.gameObject.SetActive(true);
         Color newColor = fadeObject.color;
         newColor.a = start;
@@ -497,8 +493,7 @@ public class UIManager : MonoBehaviour {
 
         float current = 0, percent = 0;
 
-        while (percent < 1 && fadeTime != 0)
-        {
+        while (percent < 1 && fadeTime != 0) {
             current += Time.deltaTime;
             percent = current / fadeTime;
 
@@ -509,36 +504,34 @@ public class UIManager : MonoBehaviour {
 
             yield return null;
         }
+
         newColor.a = end;
         fadeObject.color = newColor;
 
         // 곧바로 다시 어두워지거나 밝아지게 하고 싶을 때
-        if (blink)
-        {
+        if (blink) {
             yield return new WaitForSeconds(waitingTime);
             StartCoroutine(OnFade(fadeObject, end, start, fadeTime + changeFadeTime, false, 0, 0));
         }
 
         // 투명해졌으면 끈다
-        if (fadeObject == coverPanel && end == 0)
-        {
+        if (fadeObject == coverPanel && end == 0) {
             fadeObject.gameObject.SetActive(false);
             coverText.gameObject.SetActive(false);
         }
     }
 
-    public void TextOnFade(string text)
-    {
+    public void TextOnFade(string text) {
         coverText.gameObject.SetActive(true);
         coverText.text = text;
     }
+
     // <summary> 변수 설명
     // 화면 이동할 때 사용하기 위해 만든 거라 동작이 조금 특이합니다...
     // screen의 현재 위치가 목적지로 설정이 되고,
     // 출발지점은 현재 위치(목적지)에서 direction 방향으로 distance 만큼 이동한 곳이 됩니다
     // </summary>
-    public IEnumerator OnMoveUI(GameObject screen, Vector3 direction, float distance, float time)
-    {
+    public IEnumerator OnMoveUI(GameObject screen, Vector3 direction, float distance, float time) {
         RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
         // 원래 위치 (목적지)
         var localPosition = screenRectTransform.localPosition;
@@ -548,8 +541,7 @@ public class UIManager : MonoBehaviour {
         screen.GetComponent<RectTransform>().localPosition = startPosition;
 
         float elapsedTime = 0f;
-        while (elapsedTime < time)
-        {
+        while (elapsedTime < time) {
             elapsedTime += Time.deltaTime;
             float percent = Mathf.Clamp01(elapsedTime / time);
 
@@ -561,7 +553,7 @@ public class UIManager : MonoBehaviour {
         // 원래 위치로 설정
         screen.GetComponent<RectTransform>().localPosition = originPosition;
     }
-    
+
     public void ChangeSoundValue(string uiName) {
         TMP_Text text;
         Slider slider;
@@ -582,26 +574,26 @@ public class UIManager : MonoBehaviour {
 
     public void ChangeSliderValue(eUIGameObjectName uiName, float absoluteValue, float addValue) {
         Slider slider = uiGameObjects[uiName].GetComponent<Slider>();
-        if (addValue != 0) 
+        if (addValue != 0)
             slider.value += addValue;
-        else 
+        else
             slider.value = absoluteValue;
     }
-    
+
     private void InitializeUIToCheck() {
         uiToCheck = new List<RectTransform> { // Manually add all UI GameObjects to check here
-            leftButton.GetComponent<RectTransform>(), 
-            rightButton.GetComponent<RectTransform>(), 
+            leftButton.GetComponent<RectTransform>(),
+            rightButton.GetComponent<RectTransform>(),
             exitButton.GetComponent<RectTransform>(),
             memoButton.GetComponent<RectTransform>(),
             actionPointsBackgroundImage.GetComponent<RectTransform>()
         };
     }
-    
+
     public void AddUIToCheck(RectTransform uiRectTransform) {
         uiToCheck.Add(uiRectTransform);
     }
-    
+
     public void RemoveUIToCheck(RectTransform uiRectTransform) {
         uiToCheck.Remove(uiRectTransform);
     }
@@ -613,7 +605,7 @@ public class UIManager : MonoBehaviour {
             GameObject uiGameObject = uiRectTransform.gameObject;
             if (!uiGameObject.activeSelf)
                 continue;
-            
+
             bool isCursorOverUI = RectTransformUtility.RectangleContainsScreenPoint(uiRectTransform,
                 Input.mousePosition,
                 uiCamera);
@@ -630,9 +622,9 @@ public class UIManager : MonoBehaviour {
         bool previousState = isCursorTouchingUI;
         isCursorTouchingUI = isTouching;
         if (isCursorTouchingUI != previousState) // only call SetCursorAuto if state changes
-            SetCursorAuto(); 
+            SetCursorAuto();
     }
-    
+
     // method to switch mouse cursor
     public void SetCursorAuto() {
         bool isDefault = GameManager.Instance.GetIsBusy()
@@ -641,12 +633,12 @@ public class UIManager : MonoBehaviour {
                          || isCursorTouchingUI;
         ChangeCursor(isDefault);
     }
-    
-    public void ChangeCursor(bool isDefault=true) {
+
+    public void ChangeCursor(bool isDefault = true) {
         Texture2D mouseCursorTexture = isDefault ? defaultCursorTexture : investigateCursorTexture;
         Cursor.SetCursor(mouseCursorTexture, Vector2.zero, CursorMode.Auto);
     }
-    
+
     public void OpenAlbumPage(int endingIndex) {
         const int badA = 0;
         const int badB = 1;
@@ -671,12 +663,13 @@ public class UIManager : MonoBehaviour {
                 endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0777"].GetScript();
                 break;
         }
+
         albumImageGameObject.SetActive(true);
         endingTypeGameObject.SetActive(true);
         endingNameGameObject.SetActive(true);
         albumPage.SetActive(true);
     }
-    
+
     /*
      * startAlpha: 경고 표시 시작 시 투명도
      * endAlpha: 경고 표시 종료 시 투명도
@@ -714,7 +707,11 @@ public class UIManager : MonoBehaviour {
         SetUI(eUIGameObjectName.WarningVignette, false); // 경고 표시 비활성화
     }
 
+    public void ToggleHighlightAnimationEffect(GameObject gameObject, bool isOn) {
+        gameObject.GetComponent<HighlightAnimator>().ToggleHighlight(isOn);
+    }
+
     public void ToggleHighlightAnimationEffect(eUIGameObjectName uiName, bool isOn) {
-        uiGameObjects[uiName].GetComponent<HighlightAnimator>().ToggleHighlight(isOn);
+        ToggleHighlightAnimationEffect(uiGameObjects[uiName], isOn);
     }
 }

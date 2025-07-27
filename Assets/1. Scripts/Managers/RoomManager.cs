@@ -94,12 +94,12 @@ public class RoomManager : MonoBehaviour
         int newSideIndex = (currentSideIndex + sides.Count + leftOrRight) % sides.Count;
         SetCurrentSide(newSideIndex);
         
-        UIManager.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
+        UIManager.Instance.MoveSideEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
 
         // 시점에 맞춰서 버튼 끄고 키게 함.(사이드 2번에선 오른쪽 버튼만 3번에선 왼쪽 버튼만 나오게 함)
         SetMoveButtons(true);
-        
-        if (tutorialManager)
+
+        if ((bool)GameManager.Instance.GetVariable("isTutorial"))
             tutorialManager.SetSeenSide(newSideIndex);
     }
 
@@ -108,7 +108,7 @@ public class RoomManager : MonoBehaviour
         if (isInvestigating) 
             imageAndLockPanelManager.OnExitButtonClick();
         else if (isZoomed) {
-            UIManager.Instance.MoveButtonEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0)); // 화면 전환 효과
+            UIManager.Instance.MoveSideEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0)); // 화면 전환 효과
 
             SetCurrentView(sides[currentSideIndex]);
             isZoomed = false;

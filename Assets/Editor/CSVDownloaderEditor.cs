@@ -13,15 +13,15 @@ public class CSVDownloaderEditor : EditorWindow
         {"conditions", "1563155608"},
         {"results", "445642289"},
         {"dialogues", "1768256627"},
-        {"choices", "1943406759"},
+        // {"choices", "1943406759"},
         {"scripts", "888011379"},
-        {"image paths", "1449854056"},
-        {"memos", "1578497812"},
-        {"diary", "1694526261"},
-        {"backgrounds", "1143880704"},
-        {"laptop_chat", "801842851"},
-        {"laptop_SNS", "1372899183"},
-        {"variables", "762639181"}
+        // {"image paths", "1449854056"},
+        // {"memos", "1578497812"},
+        // {"diary", "1694526261"},
+        // {"backgrounds", "1143880704"},
+        // {"laptop_chat", "801842851"},
+        // {"laptop_SNS", "1372899183"},
+        // {"variables", "762639181"}
     };
 
     [MenuItem("Tools/Download CSVs")]
@@ -41,7 +41,7 @@ public class CSVDownloaderEditor : EditorWindow
                 if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     File.WriteAllText(filePath, webRequest.downloadHandler.text);
-                    Debug.Log($"Successfully downloaded and saved: {sheet.Key}.csv");
+                    Debug.Log($"[{sheet.Key}.csv] downloaded and saved successfully");
                 }
                 else
                     Debug.LogError($"Failed to download {sheet.Key}.csv: {webRequest.error}");

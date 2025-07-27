@@ -297,7 +297,7 @@ public class DialogueManager : MonoBehaviour
         string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast);
         isAuto = auto;
         isFast = fast;
-
+        
         isTyping = true;
         StartCoroutine(TypeSentence(sentence));
         
@@ -475,6 +475,8 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeSentence(string sentence)
     {
+        Debug.Log($"Typing sentence {sentence} with speed {typeSpeed}");
+        
         if(teddyBearIcons.Length > dialogueType.ToInt()) teddyBearIcons[dialogueType.ToInt()].SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;

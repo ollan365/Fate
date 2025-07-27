@@ -239,18 +239,44 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.tutorialManager.ProceedToNextPhase();
                 break;
 
-            case "Result_TutorialPhase1Force":  // 방을 둘러보자 (이동버튼 강조)
+            case "Result_TutorialPhase1ForceMoveButtons":  // 방을 둘러보자 (이동버튼 강조)
                 UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.LeftButton, true);
                 UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.RightButton, true);
                 break;
 
-            // case "Result_TutorialPhase2ChairStateCheck": // 의자가 밀고 있는 상태인지 체크
-            //     StartCoroutine(RoomManager.Instance.tutorialManager.CheckChairMovement());
-            //     break;
-            //
-            // case "Result_TutorialPhase2Force":  // 의자 밀어보자 (이미지 강조는 X 검은 화면O)
-            //     RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-            //     break;
+            case "Result_TutorialPhase2ForceCarpet":  // 카펫 강조
+                UIManager.Instance.ToggleHighlightAnimationEffect(
+                    RoomManager.Instance.tutorialManager.tutorialGameObjects
+                        [TutorialManager.eTutorialObjectName.Carpet],
+                    true);
+                UIManager.Instance.ToggleHighlightAnimationEffect(
+                    RoomManager.Instance.tutorialManager.tutorialGameObjects
+                        [TutorialManager.eTutorialObjectName.Chair],
+                    false);
+                break;
+            
+            case "Result_TutorialPhase2ForceChair":  // 의자 밀어보자 (이미지 강조는 X 검은 화면O)
+                UIManager.Instance.ToggleHighlightAnimationEffect(
+                    RoomManager.Instance.tutorialManager.tutorialGameObjects
+                        [TutorialManager.eTutorialObjectName.Carpet],
+                    false);
+                UIManager.Instance.ToggleHighlightAnimationEffect(
+                    RoomManager.Instance.tutorialManager.tutorialGameObjects
+                        [TutorialManager.eTutorialObjectName.Chair],
+                    true);
+                RoomManager.Instance.tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.Chair]
+                    .GetComponent<CapsuleCollider2D>()
+                    .enabled = true; // 의자 클릭 되게 함
+                break;
+            
+            case "Result_TutorialPhase3ForceLoR":  // 종이 조사해보자
+                UIManager.Instance.ToggleHighlightAnimationEffect(
+                    RoomManager.Instance.tutorialManager.tutorialGameObjects
+                        [TutorialManager.eTutorialObjectName.LoR],
+                    true);
+                break;
+            
+            
             //
             // case "Result_TutorialPhase3ForceSide1":  // 카펫 들어보자 (덮인 카펫 강조)
             //     RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpet");
@@ -820,7 +846,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             default:
-                Debug.Log($"Result ID: {resultID} not found!");
+                Debug.LogWarning($"Result ID: {resultID} not found!");
                 break;
         }
     }

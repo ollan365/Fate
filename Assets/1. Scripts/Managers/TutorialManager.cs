@@ -4,20 +4,40 @@ using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
 {
+    public enum eTutorialObjectName
+    {
+        Carpet,
+        Chair,
+        LoR
+    }
+    
     private int currentPhase;
-    private string resultTutorialPhase1 = "Result_StartDialogue" + "Tutorial_000";
-    private string resultTutorialPhase2 = "Result_StartDialogue" + "Tutorial_002_A";
+    private readonly string resultTutorialPhase1 = "Result_StartDialogue" + "Tutorial_000";
+    private readonly string resultTutorialPhase2A = "Result_StartDialogue" + "Tutorial_002_A";
     private bool[] seenSides;
 
+    [SerializeField] private GameObject carpetGameObject;
+    [SerializeField] private GameObject chairGameObject;
+    [SerializeField] private GameObject letterOfResignationGameObject;
+    
+    public Dictionary<eTutorialObjectName, GameObject> tutorialGameObjects = new();
+
     public void StartTutorial() {
-        currentPhase = (int)GameManager.Instance.GetVariable("TutorialPhase");
-        seenSides = new bool[] {false, false, false, false};
+        tutorialGameObjects.Add(eTutorialObjectName.Carpet, carpetGameObject);
+        tutorialGameObjects.Add(eTutorialObjectName.Chair, chairGameObject);
+        tutorialGameObjects[eTutorialObjectName.Chair].GetComponent<CapsuleCollider2D>().enabled = false;  // 의자 클릭 안되게 함
+        tutorialGameObjects.Add(eTutorialObjectName.LoR, letterOfResignationGameObject);
         
-        MemoManager.Instance.SetShouldHideMemoButton(true); 
+        GameManager.Instance.SetVariable("isTutorial", true);
+        currentPhase = (int)GameManager.Instance.GetVariable("TutorialPhase");
+        
+        seenSides = new bool[] {false, false, false, false};
+        seenSides[0] = true;
+
+        MemoManager.Instance.SetShouldHideMemoButton(true);
         UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.BlockingPanelDefault, true);
 
-        GameManager.Instance.SetVariable("isTutorial", true);
         ProceedToNextPhase();
     }
     
@@ -34,7 +54,6 @@ public class TutorialManager : MonoBehaviour
     }
 
     public void ProceedToNextPhase() {
-        Debug.Log("Current tutorial phase: " + currentPhase);
         currentPhase++;
         GameManager.Instance.SetVariable("TutorialPhase", currentPhase);
         switch (currentPhase) {
@@ -46,9 +65,12 @@ public class TutorialManager : MonoBehaviour
                 UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.LeftButton, false);
                 UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.RightButton, false);
 
-                ResultManager.Instance.ExecuteResult(resultTutorialPhase2);
+                ResultManager.Instance.ExecuteResult(resultTutorialPhase2A);
                 break;
         }
     }
 
+    private void completeTutorial() {
+        GameManager.Instance.SetVariable("isTutorial", false);
+    }
 }
