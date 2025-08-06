@@ -13,6 +13,7 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private Image background;
     [SerializeField] private Sprite background_room1;
     [SerializeField] private Sprite background_follow1;
+    [SerializeField] private Sprite background_follow2;
 
     [Header("시계")]
     [SerializeField] private GameObject clock;
@@ -26,7 +27,7 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private float waitingTime;
     [SerializeField] private float value;
 
-    [Header("미행 1 엔딩")]
+    [Header("미행 비디오")]
     [SerializeField] private VideoClip[] videoClips;
     [SerializeField] private VideoPlayer followVideoPlayer;
 
@@ -143,37 +144,39 @@ public class EndingManager : MonoBehaviour
             yield return new WaitForSeconds(waitingTime);
         }
     }
-    public void Ending_Follow1_StreetVideo()
+    // num = 0 : 미행 1 실패 | num = 1 : 미행 1 성공 | num = 3 : 미행 2 엔딩
+    public void Ending_Follow_Video(int num)
     {
         followVideoPlayer.gameObject.SetActive(true);
-        followVideoPlayer.clip = videoClips[0];
+
+        // 우연 성별에 따라 영상 변경
+        if(num == 1 && (int)GameManager.Instance.GetVariable("AccidyGender") == 1) num = 2;
+
+        followVideoPlayer.clip = videoClips[num];
         followVideoPlayer.Play();
-        followVideoPlayer.loopPointReached += OnStreetVideoEnd;
+
+        if(num == 3) followVideoPlayer.loopPointReached += OnStreetVideoEnd_2;
+        else followVideoPlayer.loopPointReached += OnStreetVideoEnd_1;
     }
-    public void OnStreetVideoEnd(VideoPlayer vp)
+    public void OnStreetVideoEnd_1(VideoPlayer vp)
     {
         followVideoPlayer.gameObject.SetActive(false);
-        EventManager.Instance.CallEvent("EventStreetVideoEnd");
-    }
-    public void Ending_Follow1()
-    {
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) followVideoPlayer.clip = videoClips[1];
-        else followVideoPlayer.clip = videoClips[2];
 
-        background.sprite = background_follow1;
+        background.gameObject.SetActive(true);
         background.color = Color.white;
-        followVideoPlayer.loopPointReached += OnFollowFateAndAccidyVideoEnd;
+        background.sprite = background_follow1;
 
-        // 비디오 재생
-        followVideoPlayer.gameObject.SetActive(true);
-        followVideoPlayer.Play();
+        EventManager.Instance.CallEvent("EventStreetVideoEnd_1");
     }
-    private void OnFollowFateAndAccidyVideoEnd(VideoPlayer vp)
+    public void OnStreetVideoEnd_2(VideoPlayer vp)
     {
         followVideoPlayer.gameObject.SetActive(false);
 
-        // 우연의 대사 시작
-        EventManager.Instance.CallEvent("EventEndUnlockROOM_2");
+        background.gameObject.SetActive(true);
+        background.color = Color.white;
+        background.sprite = background_follow2;
+
+        EventManager.Instance.CallEvent("EventStreetVideoEnd_2");
     }
     public void ChoiceEnding()
     {
