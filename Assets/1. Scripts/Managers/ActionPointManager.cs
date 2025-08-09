@@ -75,7 +75,9 @@ abstract public class ActionPointManager : MonoBehaviour
         StartGearsAndClockHandsRotate = 3,
         FinishGearsAndClockHandsRotate = 4,
         StartDayChangeBGM = 5,
-        FinishDayChangeBGM = 6;
+        MiddleDayChangeBGM = 6,
+        EndDayChangeBGM = 7,
+        FinishDayChangeBGM = 8; 
 
     // ************************* temporary methods for action points *************************
     // create actionPointsArray
@@ -105,7 +107,7 @@ abstract public class ActionPointManager : MonoBehaviour
     // 외출(아침) 스크립트 출력 부분
     public abstract IEnumerator nextMorningDay();
 
-    public void Awake()
+    protected void Awake()
     {
         heartParent = UIManager.Instance.heartParent;
         dayText = UIManager.Instance.dayTextTextMeshProUGUI;
@@ -170,14 +172,8 @@ abstract public class ActionPointManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
         float totalTime = 3f;
-        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime/2));
-        yield return new WaitForSeconds(totalTime/2);
-        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime/2));
-
-        // 휴식 대사 출력. 
-        StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", totalTime));
-
-        yield return new WaitForSeconds(totalTime / 2);
+        // 페이드 인
+        yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime / 2));
 
         // 휴식하면 그날 하루에 남아있는 행동력 다 사용되기에 현재 있는 하트들 삭제
         foreach (Transform child in heartParent.transform)
@@ -186,8 +182,18 @@ abstract public class ActionPointManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        int actionPoint;
+        // 페이드 아웃
+        yield return StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime / 2));
 
+        // 대사 출력 전 조사 오브젝트 클릭 막기용
+        UIManager.Instance.loadingScreen.SetActive(true);
+
+        // 휴식 대사 출력. 
+        yield return StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", totalTime));
+
+        UIManager.Instance.loadingScreen.SetActive(false);
+
+        int actionPoint;
         if (nowDayNum < maxDayNum) 
         {
             nowDayNum += 1;
@@ -226,7 +232,8 @@ abstract public class ActionPointManager : MonoBehaviour
     {
         isDayChanging = true;
 
-        // 브금 변경
+        // 브금 변경 (Start_Daychange)
+        // 아이콘 내려오는 브금
         SetDayChangeBGM(StartDayChangeBGM);
 
         SetChangingDayUI(StartDayUIChange);
@@ -243,6 +250,9 @@ abstract public class ActionPointManager : MonoBehaviour
 
         yield return new WaitForSeconds(dayScalingTime);
 
+        // 한장 넘기는 브금
+        SetDayChangeBGM(MiddleDayChangeBGM);
+
         // DayUI 기어와 시침 분침 돌리는 코루틴 실행
         StartCoroutine(StartRotateGearsAndClockHands());
 
@@ -250,6 +260,9 @@ abstract public class ActionPointManager : MonoBehaviour
         StartCoroutine(TurnNextDayUIBack());
 
         yield return new WaitForSeconds(dayTurningBackTime);
+
+        // 다시 원위치 브금
+        SetDayChangeBGM(EndDayChangeBGM);
 
         yesterDayNumText.text = $"Day {nowDayNum}";
         yesterDayRectTransform.SetAsLastSibling();
@@ -273,6 +286,7 @@ abstract public class ActionPointManager : MonoBehaviour
     // DayUI 뒤로 넘김
     protected IEnumerator TurnNextDayUIBack()
     {
+        Debug.Log("DayUI 뒤로 넘김");
         // dayui 넘어가게 할 start, mid, end rotation 
         Quaternion startRotation = yesterDayRectTransform.rotation;
         Quaternion midRotation = startRotation * Quaternion.Euler(TurningDayBackRotationValues[MidRotationIndex]);
@@ -478,9 +492,19 @@ abstract public class ActionPointManager : MonoBehaviour
         switch (num)
         {
             case StartDayChangeBGM:
-                // BGM 정지 및 DayChange bgm 재생
+                // BGM 정지 및 Daychange_start bgm 재생 (아이콘이 내려왔다가)
                 SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
-                SoundPlayer.Instance.UISoundPlay(Constants.Sound_DayChange);
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_start);
+                break;
+
+            case MiddleDayChangeBGM:
+                // Daychange_middle bgm 재생 (한 장 넘어가고)
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_middle);
+                break;
+
+            case EndDayChangeBGM:
+                // Daychange_end bgm 재생 (다시 원위치)
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_end);
                 break;
 
             case FinishDayChangeBGM:

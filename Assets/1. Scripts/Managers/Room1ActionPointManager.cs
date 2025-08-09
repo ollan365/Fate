@@ -15,7 +15,7 @@ public class Room1ActionPointManager : ActionPointManager
 
         CreateActionPointsArray(actionPointsPerDay);
 
-        // 처음 방탈출의 actionPoint
+        // The First Room Escape ActionPoint
         GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[0, presentHeartIndex]);
 
         GameManager.Instance.AddEventObject("EventRoom1HomeComing");
@@ -42,7 +42,7 @@ public class Room1ActionPointManager : ActionPointManager
 
     public override void DecrementActionPoint()
     {
-        // 시계 퍼즐에서 연속으로 클릭했을 때 포인트 감소 오류 뜨지 않게 함
+        // Avoid ActionPoint Decrease errors when you click a puzzle in a row
         if (heartParent.transform.childCount < 1)
             return;
 
@@ -59,16 +59,16 @@ public class Room1ActionPointManager : ActionPointManager
 
         int actionPoint;
 
-        // 하트가 다 없어지면
+        // If all the hearts are used
         if (presentHeartIndex == -1)
         {
             if (nowDayNum < maxDayNum)
             {
-                // 현재 날짜를 다음날로 업데이트
+                // update current date to next day
                 nowDayNum += 1;
                 GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
 
-                // presentHeartIndex도 맨 끝 row로 업데이트
+                // presentHeartIndex를 맨 끝 row로 업데이트
                 presentHeartIndex = (int)GameManager.Instance.GetVariable("ActionPointsPerDay") - 1;
                 GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
 

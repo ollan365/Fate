@@ -510,7 +510,8 @@ public class ResultManager : MonoBehaviour
                 break;
             
             case "Result_showZoomedDesk": // 책상 화면으로 전환
-                executableObjects["Desk Unzoomed 1"].ExecuteAction();
+                executableObjects["Desk Unzoomed-UnMovedChair 1"].ExecuteAction();
+                executableObjects["Desk Unzoomed-MovedChair 1"].ExecuteAction();
                 executableObjects["Desk Unzoomed 2"].ExecuteAction();
                 break;
             
@@ -522,6 +523,11 @@ public class ResultManager : MonoBehaviour
             case "Result_showZoomedDeskShelf": // 책상 위 선반 확대 화면으로 전환
                 executableObjects["DeskShelf Unzoomed 1"].ExecuteAction();
                 executableObjects["DeskShelf Unzoomed 2"].ExecuteAction();
+                break;
+
+            case "Result_showZoomedDrinkAndMedicine": // 술과 감기약 확대 화면으로 전환
+                executableObjects["LiquorAndPills Unzoomed 1"].ExecuteAction();
+                executableObjects["LiquorAndPills Unzoomed 4"].ExecuteAction();
                 break;
 
             case "ResultEndRoom1": // Room1 끝
@@ -628,8 +634,13 @@ public class ResultManager : MonoBehaviour
 
             // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
-                executableObjects["Box Unzoomed 2"].ExecuteAction();
-                executableObjects["Box Unzoomed 3"].ExecuteAction();
+                if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
+                {
+                    executableObjects["Box Unzoomed-open 2"].ExecuteAction();
+                    executableObjects["Box Unzoomed-open 3"].ExecuteAction();
+                }
+                executableObjects["Box Unzoomed-closed 2"].ExecuteAction();
+                executableObjects["Box Unzoomed-closed 3"].ExecuteAction();
                 break;
 
             case "Result_showZoomedClosetUnder": // 옷장 아래 영역 확대 화면으로 전환
@@ -746,7 +757,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultEndRoom2": // Room2 끝, 스크립트 출력 및 미행2로 진행
-                DialogueManager.Instance.StartDialogue("Result_StartDialogueRoomEscape2S_016");
+                DialogueManager.Instance.StartDialogue("RoomEscape2S_016");
                 SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
                 break;
 

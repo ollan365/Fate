@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +18,7 @@ public enum FloatDirection {
 public enum eUIGameObjectName {
     ObjectImageParentRoom, // object image panel parent in room scene
     ObjectImageRoom, // object image panel in room scene
+    LoadingScreen,
     NormalVignette,
     WarningVignette,
     ActionPoints,
@@ -63,8 +65,14 @@ public enum eUIGameObjectName {
 public class UIManager : MonoBehaviour {
     [Header("Screen Effect")] public Image coverPanel;
     [SerializeField] private TextMeshProUGUI coverText;
+    public GameObject loadingScreen;
+    public Image progressBar;
+    public CanvasGroup progressBarGroup;
+    public CanvasGroup Loading_AnimationGroup;
+    public List<GameObject> loading_characters;
 
-    [Header("Object Image")] public GameObject objectImageParentRoom;
+    [Header("Object Image")]
+    public GameObject objectImageParentRoom;
     public GameObject objectImageRoom;
 
     [Header("UI Game Objects")] public GameObject normalVignette;
@@ -146,6 +154,8 @@ public class UIManager : MonoBehaviour {
     public float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
 
+    public bool enableLoadingAnimation = false;
+
     public static UIManager Instance { get; private set; }
 
     private void Awake() {
@@ -169,6 +179,8 @@ public class UIManager : MonoBehaviour {
     private void AddUIGameObjects() {
         uiGameObjects.Add(eUIGameObjectName.ObjectImageParentRoom, objectImageParentRoom);
         uiGameObjects.Add(eUIGameObjectName.ObjectImageRoom, objectImageRoom);
+
+        uiGameObjects.Add(eUIGameObjectName.LoadingScreen, loadingScreen);
 
         uiGameObjects.Add(eUIGameObjectName.NormalVignette, normalVignette);
         uiGameObjects.Add(eUIGameObjectName.WarningVignette, warningVignette);
@@ -408,8 +420,8 @@ public class UIManager : MonoBehaviour {
         }
         else {
             SetUI(eUIGameObjectName.MenuUI, true);
-            SetUI(Random.Range(0, 2) == 0
-                ? eUIGameObjectName.WhiteMenu
+            SetUI(UnityEngine.Random.Range(0, 2) == 0 
+                ? eUIGameObjectName.WhiteMenu 
                 : eUIGameObjectName.BlackMenu, true);
             Time.timeScale = 0f;
         }
@@ -493,7 +505,11 @@ public class UIManager : MonoBehaviour {
 
         float current = 0, percent = 0;
 
-        while (percent < 1 && fadeTime != 0) {
+        if (enableLoadingAnimation)
+            StartCoroutine(SetLoadingAnimation(start, end, fadeTime));
+
+        while (percent < 1 && fadeTime != 0)
+        {
             current += Time.deltaTime;
             percent = current / fadeTime;
 
@@ -501,8 +517,9 @@ public class UIManager : MonoBehaviour {
             fadeObject.color = newColor;
 
             coverText.color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
+            progressBarGroup.alpha = Mathf.Lerp(start, end, percent);
 
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
         newColor.a = end;
@@ -518,14 +535,53 @@ public class UIManager : MonoBehaviour {
         if (fadeObject == coverPanel && end == 0) {
             fadeObject.gameObject.SetActive(false);
             coverText.gameObject.SetActive(false);
+
+            progressBarGroup.gameObject.SetActive(false);
+            Loading_AnimationGroup.gameObject.SetActive(false);
+            enableLoadingAnimation = false;
         }
     }
 
     public void TextOnFade(string text) {
         coverText.gameObject.SetActive(true);
         coverText.text = text;
+
+        // 진행도 추가
+        progressBarGroup.gameObject.SetActive(true);
+        Loading_AnimationGroup.gameObject.SetActive(true);
     }
 
+    // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
+    public IEnumerator SetLoadingAnimation(float start, float end, float fadeTime)
+    {
+        // 모든 캐릭터 오브젝트 다 꺼두기
+        foreach (GameObject loadingCharacter in loading_characters)
+        {
+            loadingCharacter.SetActive(true);
+            loadingCharacter.SetActive(false);
+        }
+
+        GameObject accidyLoadingAnim;
+        // 우연의 성별에 맞게 캐릭터 애니메이션 재생 작동
+        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidyLoadingAnim = loading_characters[0];
+        else accidyLoadingAnim = loading_characters[1];
+
+        accidyLoadingAnim.gameObject.SetActive(true);
+
+        float current = 0, percent = 0;
+
+        while (percent < 1 && fadeTime != 0)
+        {
+            current += Time.deltaTime;
+            percent = current / fadeTime;
+
+            Loading_AnimationGroup.alpha = Mathf.Lerp(start, end, percent);
+
+            yield return null;
+        }
+    }
+
+    
     // <summary> 변수 설명
     // 화면 이동할 때 사용하기 위해 만든 거라 동작이 조금 특이합니다...
     // screen의 현재 위치가 목적지로 설정이 되고,

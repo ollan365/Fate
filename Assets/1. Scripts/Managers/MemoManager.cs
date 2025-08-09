@@ -221,7 +221,9 @@ public class MemoManager : PageContentsManager
         int cutLine = (int)GameManager.Instance.GetVariable($"CutLine_{currentSceneIndex.ToEnum()}");
         int currentMemoCount = (int)GameManager.Instance.GetVariable($"MemoCount_{currentSceneIndex.ToEnum()}");
 
-        gaugeImage.fillAmount = (float)currentMemoCount / SavedMemoList[previousSceneIndex].Count;
+        float gaugeTargetValue = Mathf.Clamp01((float)currentMemoCount / SavedMemoList[previousSceneIndex].Count);
+        StartCoroutine(AnimateGaugeChanging(gaugeTargetValue));
+
         clearFlagSlider.value = (float)cutLine / SavedMemoList[previousSceneIndex].Count;
 
         clearFlagImage.color = currentMemoCount < cutLine ? unclearColor : clearColor;
@@ -357,6 +359,24 @@ public class MemoManager : PageContentsManager
             // Debug.Log($"Marked page {pageNum} as read");
         }
     }
+
+    // 게이지 증가 애니메이션 코루틴
+    private System.Collections.IEnumerator AnimateGaugeChanging(float targetValue)
+    {
+        float duration = 0.5f; // 애니메이션 지속 시간 (초)
+        float elapsed = 0f;
+        float startValue = gaugeImage.fillAmount;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            gaugeImage.fillAmount = Mathf.Lerp(startValue, targetValue, elapsed / duration);
+            yield return null;
+        }
+
+        gaugeImage.fillAmount = targetValue; // 마지막에 정확히 맞춰줌
+    }
+
 
     private void UpdateNotification()
     {

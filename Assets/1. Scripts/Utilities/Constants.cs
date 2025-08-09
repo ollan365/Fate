@@ -117,9 +117,11 @@ public static class Constants
         Sound_SewingBoxBall = 25,
         Sound_SewingBoxOpen = 26,
         Sound_HeartPop = 38,
-        Sound_DayChange = 39,
-        Sound_DrawerOpen = 40,
-        Sound_DrawerClose = 41;
+        Sound_DrawerOpen = 39,
+        Sound_DrawerClose = 40,
+        Sound_Daychange_start = 41,
+        Sound_Daychange_middle = 42,
+        Sound_Daychange_end = 43;
 
     // 3. 미행
     public const int
