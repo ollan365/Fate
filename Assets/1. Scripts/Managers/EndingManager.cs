@@ -69,7 +69,7 @@ public class EndingManager : MonoBehaviour
         }
 
         EventManager.Instance.CallEvent("EventEnding");
-        GameManager.Instance.SetVariable("CurrentScene", SceneType.ENDING.ToInt());
+        GameManager.Instance.SetVariable("SavedCurrentSceneIndex", SceneType.ENDING.ToInt());
     }
 
     public void EndEnding(EndingType endingType)

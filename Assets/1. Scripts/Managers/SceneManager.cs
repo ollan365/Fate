@@ -73,8 +73,7 @@ public class SceneManager : MonoBehaviour
 
     private IEnumerator ChangeScene(SceneType loadSceneType)
     {
-        // 대사 출력 중이면 기다리기
-        while (DialogueManager.Instance.isDialogueActive)
+        while (DialogueManager.Instance.isDialogueActive) // 대사 출력 중이면 기다리기
             yield return null;
 
         UIManager.Instance.enableLoadingAnimation = true;
@@ -82,33 +81,11 @@ public class SceneManager : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
-
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
-        switch (loadSceneType)
-        {
-            case SceneType.START:
-                GameManager.Instance.SetVariable("CurrentScene", SceneType.START.ToInt());
-                UIManager.Instance.TextOnFade("Prologue");
-                break;
-            case SceneType.ROOM_1:
-                GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_1.ToInt());
-                UIManager.Instance.TextOnFade("Chapter I");
-                break;
-            case SceneType.FOLLOW_1:
-                GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_1.ToInt());
-                UIManager.Instance.TextOnFade("Chapter II");
-                break;
-            case SceneType.ROOM_2:
-                GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_2.ToInt());
-                UIManager.Instance.TextOnFade("Chapter III");
-                break;
-            case SceneType.FOLLOW_2:
-                GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_2.ToInt());
-                UIManager.Instance.TextOnFade("Chapter IV");
-                break;
-        }
-
+        string[] textOnFade = { "Prologue", "Chapter I", "Chapter II", "Chapter III", "Chapter IV" };
+        UIManager.Instance.TextOnFade(textOnFade[loadSceneType.ToInt()]);
+        GameManager.Instance.SetVariable("SavedCurrentSceneIndex", loadSceneType.ToInt());
         yield return new WaitForSeconds(1f);
 
         // 씬 로드
