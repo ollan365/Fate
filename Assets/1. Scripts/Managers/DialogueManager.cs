@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static Constants;
 
@@ -15,7 +17,6 @@ public class DialogueManager : MonoBehaviour
     public GameObject[] dialogueSet;
     public TextMeshProUGUI[] speakerTexts;
     public TextMeshProUGUI[] scriptText;
-    public TextEffect accidyMultiScript;
     public Image[] backgroundImages;
     public Image[] characterImages;
     public Image[] characterFadeImages;
@@ -43,11 +44,10 @@ public class DialogueManager : MonoBehaviour
     private bool isTyping = false;
     private bool isAuto = false;
     private bool isFast = false;
-    private bool isMulti = false;
     private string fullSentence;
 
     // Dialogue Queue
-    private readonly Queue<string> dialogueQueue = new Queue<string>();
+    private Queue<string> dialogueQueue = new Queue<string>();
 
     [SerializeField] private int yOffsetMinimumGirl;
     [SerializeField] private int yOffsetMaximumGirl;
@@ -84,8 +84,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
         {
-            if (GameManager.Instance.isDebug)
-                Debug.Log($"dialogue ID: {dialogueID} queued!");
+            Debug.Log($"dialogue ID: {dialogueID} queued!");
 
             dialogueQueue.Enqueue(dialogueID);
             return;
@@ -100,32 +99,32 @@ public class DialogueManager : MonoBehaviour
 
         dialogues[dialogueID].SetCurrentLineIndex(0);
         currentDialogueID = dialogueID;
-        
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
+
         blurImage.SetActive(initialDialogueLine.Blur == "TRUE");
+
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) 
             RoomManager.Instance.SetButtons();
         if (FollowManager.Instance) 
             FollowManager.Instance.ClickObject();
-        if (MemoManager.Instance)
-            MemoManager.Instance.SetMemoButtons(false);
+
+        MemoManager.Instance.SetMemoButtons(false);
     }
-    
-    public IEnumerator StartDialogue(string dialogueID, float delay = 0f)
+
+    // 대사 출력을 second초 후에 출력을 시작함. (휴식 시스템에서 눈 깜빡이는 5초 후에 출력되게 함)
+    // 기본값 second 0으로 넣기
+    public IEnumerator StartDialogue(string dialogueID, float second = 0f)
     {
-        if (delay > 0f) 
-            yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(second);
 
         if (isDialogueActive)  // 이미 대화가 진행중이면 큐에 넣음
         {
-            if (GameManager.Instance.isDebug)
-                Debug.Log($"dialogue ID: {dialogueID} queued!");
+            Debug.Log($"dialogue ID: {dialogueID} queued!");
 
             dialogueQueue.Enqueue(dialogueID);
-            if (delay > 0f) 
-                yield break;
+            yield break;
         }
 
         isDialogueActive = true;
@@ -141,19 +140,15 @@ public class DialogueManager : MonoBehaviour
 
         if (initialDialogueLine.Blur == "TRUE") 
             blurImage.SetActive(true);
-        else if (!GetIsImageOrLockPanelActive())
+        else 
             blurImage.SetActive(false);
-
-        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
 
         DisplayDialogueLine(initialDialogueLine);
 
-        if (RoomManager.Instance) 
-            RoomManager.Instance.SetButtons();
-        if (FollowManager.Instance) 
-            FollowManager.Instance.ClickObject();
-        if (MemoManager.Instance)
-            MemoManager.Instance.SetMemoButtons(false);
+        if (RoomManager.Instance) RoomManager.Instance.SetButtons();
+        if (FollowManager.Instance) FollowManager.Instance.ClickObject();
+
+        MemoManager.Instance.SetMemoButtons(false);
     }
 
     private void ClearPreviousChoices()
@@ -181,11 +176,10 @@ public class DialogueManager : MonoBehaviour
                     : scripts[dialogueLine.SpeakerID].GetScript();
     }
     
-    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast, out bool multi)
+    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast)
     {
         auto = false;
         fast = false;
-        multi = false;
     
         var sentence = scripts[dialogueLine.ScriptID].GetScript();
     
@@ -216,10 +210,6 @@ public class DialogueManager : MonoBehaviour
                             if (canvas)
                                 canvas.SetActive(false);
                         dialogueSet[dialogueType.ToInt()].SetActive(true);
-                        break;
-                    case "MULTI":
-                        multi = true;
-                        accidyMultiScript.gameObject.SetActive(true);
                         break;
                 }
         }
@@ -303,10 +293,9 @@ public class DialogueManager : MonoBehaviour
         SetupCanvasAndSpeakerText(dialogueLine);
 
         // Process placeholders and get final sentence.
-        string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast, out bool multi);
+        string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast);
         isAuto = auto;
         isFast = fast;
-        isMulti = multi;
 
         isTyping = true;
         StartCoroutine(TypeSentence(sentence));
@@ -347,7 +336,7 @@ public class DialogueManager : MonoBehaviour
     private void ChangeDialogueCanvas(string speaker)
     {
         // 미행 대화창
-        if (SceneManager.Instance.GetActiveScene() is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
+        if ((int)GameManager.Instance.GetVariable("CurrentScene") is 2 or 4)
         {
             switch (speaker)
             {
@@ -399,8 +388,7 @@ public class DialogueManager : MonoBehaviour
 
         MemoManager.Instance.SetMemoButtons(true);
         
-        if (!GetIsImageOrLockPanelActive())
-            blurImage.SetActive(false);
+        blurImage.SetActive(false);
         
         UIManager.Instance.SetCursorAuto();
         
@@ -411,12 +399,16 @@ public class DialogueManager : MonoBehaviour
         var isChoosingBrokenBearChoice = false;
         var isInvestigating = RoomManager.Instance.GetIsInvestigating();
 
-        if (SceneManager.Instance.GetActiveScene() == SceneType.ROOM_2)
+        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.ROOM_2.ToInt())
             isChoosingBrokenBearChoice = RoomManager.Instance.room2ActionPointManager.GetChoosingBrokenBearChoice();
 
         if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice && !isInvestigating)
             RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
 
+        // 튜토리얼 중 다른 곳 클릭하면 나오는 강조 이미지가 해당 "ㅁㅁ를 조사해보자" 스크립트 다 끝나면 자동으로 강조 이미지 꺼지게 함.
+        if ((bool)GameManager.Instance.GetVariable("isTutorial") &&
+            RoomManager.Instance.imageAndLockPanelManager.GetIsTutorialObjectActive())
+            RoomManager.Instance.imageAndLockPanelManager.OnExitButtonClick();
         RoomManager.Instance.SetButtons();
     }
 
@@ -485,8 +477,7 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeSentence(string sentence)
     {
-        if(teddyBearIcons.Length > dialogueType.ToInt()) 
-            teddyBearIcons[dialogueType.ToInt()].SetActive(false);
+        if(teddyBearIcons.Length > dialogueType.ToInt()) teddyBearIcons[dialogueType.ToInt()].SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
 
@@ -497,7 +488,7 @@ public class DialogueManager : MonoBehaviour
         // FAST 인 경우 두배의 속도로 타이핑
         if (isFast) typeSpeed /= 1.75f;
 
-        foreach (char letter in sentence)
+        foreach (char letter in sentence.ToCharArray())
         {
             if (letter == '<')
             {
@@ -508,7 +499,6 @@ public class DialogueManager : MonoBehaviour
             {
                 effectText += letter;
                 scriptText[dialogueType.ToInt()].text += effectText;
-                if (isMulti) accidyMultiScript.GetComponent<TextMeshProUGUI>().text += effectText;
                 isEffect = false;
                 continue;
             }
@@ -520,20 +510,17 @@ public class DialogueManager : MonoBehaviour
             }
 
             scriptText[dialogueType.ToInt()].text += letter;
-            if (isMulti) accidyMultiScript.Typing(letter);
             SoundPlayer.Instance.UISoundPlay(Sound_Typing); // 타자 소리 한번씩만
             yield return new WaitForSeconds(typeSpeed);
         }
         isTyping = false;
-        if (teddyBearIcons.Length > dialogueType.ToInt()) 
-            teddyBearIcons[dialogueType.ToInt()].SetActive(true);
+        if (teddyBearIcons.Length > dialogueType.ToInt()) teddyBearIcons[dialogueType.ToInt()].SetActive(true);
 
         if (isFast)
         {
             typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
             isFast = false;
         }
-        
         if (isAuto)
         {
             isAuto = false;
@@ -547,17 +534,15 @@ public class DialogueManager : MonoBehaviour
     public void OnDialoguePanelClick()
     {
         if (!isDialogueActive || isAuto) return;
-        if (isMulti)
-        {
-            isMulti = false;
-            accidyMultiScript.GetComponent<TextMeshProUGUI>().text = "";
-            accidyMultiScript.gameObject.SetActive(false);
-        }
 
         if (isTyping)
+        {
             CompleteSentence();
+        }
         else
+        {
             ProceedToNext();
+        }
     }
 
     private void CompleteSentence()
@@ -631,18 +616,8 @@ public class DialogueManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        if (blockingPanels.Length > dialogueType.ToInt())
-            blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0);
+        if (blockingPanels.Length > dialogueType.ToInt()) blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0);
 
     }
-    
-    private bool GetIsImageOrLockPanelActive()
-    {
-        SceneType currentScene = SceneManager.Instance.GetActiveScene();
-        if ((currentScene is SceneType.ROOM_1 or SceneType.ROOM_2) &&
-            RoomManager.Instance.imageAndLockPanelManager.GetIsImageOrLockPanelActive())
-            return true;
-        
-        return false;
-    }
+
 }

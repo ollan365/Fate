@@ -41,7 +41,7 @@ public class CSVDownloaderEditor : EditorWindow
                 if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     File.WriteAllText(filePath, webRequest.downloadHandler.text);
-                    Debug.Log($"[{sheet.Key}.csv] downloaded and saved successfully");
+                    Debug.Log($"Successfully downloaded and saved: {sheet.Key}.csv");
                 }
                 else
                     Debug.LogError($"Failed to download {sheet.Key}.csv: {webRequest.error}");
