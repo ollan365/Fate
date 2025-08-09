@@ -26,6 +26,5 @@ public class Book2 : EventObject, IResultExecutable
     {
         //isInquiry = false;  // 조사 시스템 예 아니오 스킵
         Book2Contents.SetActive(true);
-        UIManager.Instance.AnimateUI(Book2Contents, true, true);
     }
 }

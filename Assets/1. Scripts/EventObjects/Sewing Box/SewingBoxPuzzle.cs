@@ -17,12 +17,16 @@ public class SewingBoxPuzzle : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) {
+        if (Instance == null)
+        {
             Instance = this;
 
             settingBeadsAnswer();
-        } else
+        }
+        else
+        {
             Destroy(gameObject);
+        }
     }
 
 
@@ -42,8 +46,7 @@ public class SewingBoxPuzzle : MonoBehaviour
         // 비밀번호 무한 입력 시도 방지
         RoomManager.Instance.ProhibitInput();
 
-        if (isBeadsCorrect) 
-            return;
+        if (isBeadsCorrect) return;
 
         // 비즈들 가져와서 검사
         if (CheckBeadsAnswer())
@@ -69,9 +72,13 @@ public class SewingBoxPuzzle : MonoBehaviour
         {
             //Debug.Log((i + 1) + "번 비즈의 현재 위치 " + Beads[i].currentPositionNumber + "/ 정답 위치 : " + BeadsAnswer[i + 1]);
             if (Beads[i].currentPositionNumber == BeadsAnswer[i + 1])
+            {
                 continue;
-
-            return false;
+            }
+            else
+            {
+                return false;
+            }
         }
         return true;
     }

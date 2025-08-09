@@ -12,8 +12,8 @@ public class FollowDialogueManager : MonoBehaviour
     [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private GameObject[] extraCanvas;
     [SerializeField] private TextMeshProUGUI[] extraDialogueText;
-    //[SerializeField] private GameObject specialObjectButton;
-    //[SerializeField] private Image specialObjectButtonImage;
+    [SerializeField] private GameObject specialObjectButton;
+    [SerializeField] private Image specialObjectButtonImage;
     [SerializeField] private Transform frontObjects;
     private FollowExtra extra = FollowExtra.None;
 
@@ -64,7 +64,6 @@ public class FollowDialogueManager : MonoBehaviour
         DialogueManager.Instance.scriptText[DialogueType.FOLLOW_EXTRA.ToInt()] = extraDialogueText[Int(extra)];
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW_EXTRA;
 
-        foreach(GameObject extra in extraCanvas) extra.SetActive(false);
         extraCanvas[Int(extra)].SetActive(true);
     }
     public void EndExtraDialogue(bool dialogueEnd)
@@ -89,6 +88,17 @@ public class FollowDialogueManager : MonoBehaviour
         {
             SetLayerRecursively(child.gameObject, newLayer);
         }
+    }
+    public void ClickSpecialObject(FollowObject followObject)
+    {
+        specialObjectButton.SetActive(true);
+        specialObjectButtonImage.sprite = followObject.specialSprite;
+        specialObjectButtonImage.SetNativeSize();
+        specialObjectButtonImage.GetComponent<RectTransform>().localScale = new Vector3(followObject.scaleValue, followObject.scaleValue, followObject.scaleValue);
+
+        specialObjectButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        specialObjectButton.GetComponent<Button>().onClick.AddListener(() => followObject.OnMouseDown_Normal());
+        specialObjectButton.GetComponent<Button>().onClick.AddListener(() => specialObjectButton.SetActive(false));
     }
     // ========== 엑스트라 자동 대화창 ========== //
     private List<string> alreadyType = new();
@@ -132,6 +142,7 @@ public class FollowDialogueManager : MonoBehaviour
                         // 기존에 출력한 대사까지 저장 후 대화창을 비운다
                         string saveText = extraDialogueText[speakerIndex].text;
                         extraDialogueText[speakerIndex].text = "";
+                        extraCanvas[speakerIndex].SetActive(false);
 
                         // 다른 물체의 스크립트가 끝나기를 기다린다
                         while (IsDialogueOpen) yield return null;
@@ -141,7 +152,6 @@ public class FollowDialogueManager : MonoBehaviour
                         extraDialogueText[speakerIndex].text = saveText;
                     }
                 }
-                if (FollowManager.Instance.IsEnd) break;
 
                 extraDialogueText[speakerIndex].text += letter;
                 SoundPlayer.Instance.UISoundPlay(Sound_Typing); // 타자 소리 한번씩만

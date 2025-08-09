@@ -120,7 +120,8 @@ public class SoundPlayer : MonoBehaviour
     public void UISoundPlay(int num)
     {
         // 타이핑인 경우
-        if (num == Sound_Typing) {
+        if (num == Sound_Typing)
+        {
             typingSoundPlayer.Play();
             return;
         }

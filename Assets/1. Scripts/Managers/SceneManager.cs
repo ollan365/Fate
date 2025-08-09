@@ -50,46 +50,54 @@ public class SceneManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(SceneType.ENDING.ToInt());
     }
     
-    public SceneType GetActiveScene() {
+    public int GetActiveScene()
+    {
         Scene activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        switch (activeScene.name) {
-            case "Start":
-                return SceneType.START;
-            case "Room1":
-                return SceneType.ROOM_1;
-            case "Follow1":
-                return SceneType.FOLLOW_1;
-            case "Room2":
-                return SceneType.ROOM_2;
-            case "Follow2":
-                return SceneType.FOLLOW_2;
-            case "Ending":
-                return SceneType.ENDING;
-        }
-        
-        Debug.LogError($"Unknown scene: {activeScene.name}");
-        return SceneType.START;
+        return activeScene.buildIndex;
     }
 
     private IEnumerator ChangeScene(SceneType loadSceneType)
     {
-        while (DialogueManager.Instance.isDialogueActive) // 대사 출력 중이면 기다리기
+        // 대사 출력 중이면 기다리기
+        while (DialogueManager.Instance.isDialogueActive)
             yield return null;
 
         UIManager.Instance.enableLoadingAnimation = true;
-        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
+
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
+
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
-        string[] textOnFade = { "Prologue", "Chapter I", "Chapter II", "Chapter III", "Chapter IV" };
-        UIManager.Instance.TextOnFade(textOnFade[loadSceneType.ToInt()]);
-        GameManager.Instance.SetVariable("SavedCurrentSceneIndex", loadSceneType.ToInt());
+        switch (loadSceneType)
+        {
+            case SceneType.START:
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.START.ToInt());
+                UIManager.Instance.TextOnFade("Prologue");
+                break;
+            case SceneType.ROOM_1:
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_1.ToInt());
+                UIManager.Instance.TextOnFade("Chapter I");
+                break;
+            case SceneType.FOLLOW_1:
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_1.ToInt());
+                UIManager.Instance.TextOnFade("Chapter II");
+                break;
+            case SceneType.ROOM_2:
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.ROOM_2.ToInt());
+                UIManager.Instance.TextOnFade("Chapter III");
+                break;
+            case SceneType.FOLLOW_2:
+                GameManager.Instance.SetVariable("CurrentScene", SceneType.FOLLOW_2.ToInt());
+                UIManager.Instance.TextOnFade("Chapter IV");
+                break;
+        }
+
         yield return new WaitForSeconds(1f);
 
         // 씬 로드
-        StartCoroutine(Load(loadSceneType.ToInt()));
+        StartCoroutine(Load((int)GameManager.Instance.GetVariable("CurrentScene")));
     }
 
     // 씬 비동기 로드 및 진행률 표시
@@ -130,7 +138,7 @@ public class SceneManager : MonoBehaviour
     public void ChangeSceneEffect()
     {
         // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
-        switch (GetActiveScene())
+        switch (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum())
         {
             case SceneType.START:
             case SceneType.ROOM_1:
@@ -147,7 +155,7 @@ public class SceneManager : MonoBehaviour
         }
 
         int bgmIndex = -1;
-        switch (GetActiveScene())
+        switch (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum())
         {
             case SceneType.START:
                 bgmIndex = BGM_OPENING;
@@ -168,7 +176,7 @@ public class SceneManager : MonoBehaviour
         }
 
         MemoManager.Instance.SetMemoCurrentPageAndFlags();
-        MemoManager.Instance.SetShouldHideMemoButton(false);
+        MemoManager.Instance.HideMemoButton = false;
         MemoManager.Instance.SetMemoButtons(true);
 
         SoundPlayer.Instance.ChangeBGM(bgmIndex);
@@ -177,7 +185,7 @@ public class SceneManager : MonoBehaviour
 
     public void NotClearThisScene()
     {
-        string currentScene = GetActiveScene().ToString();
+        string currentScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum().ToString();
         GameManager.Instance.SetVariable($"MemoCount_{currentScene}", 0);
 
         LoadScene(SceneType.ENDING);
@@ -185,7 +193,7 @@ public class SceneManager : MonoBehaviour
     
     public void ClearThisScene()
     {
-        string currentScene = GetActiveScene().ToString();
+        string currentScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum().ToString();
         GameManager.Instance.SetVariable($"MemoCount_{currentScene}", 9);
 
         LoadScene(SceneType.ENDING);

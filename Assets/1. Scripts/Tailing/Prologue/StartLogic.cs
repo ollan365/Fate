@@ -130,11 +130,9 @@ public class StartLogic : MonoBehaviour
         {
             buttons.SetActive(false);
 
-            Constants.SceneType savedScene = ((int)GameManager.Instance.GetVariable("SavedCurrentSceneIndex")).ToEnum();
-            if (savedScene == Constants.SceneType.START)
+            if (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum() == Constants.SceneType.START)
                 StartCoroutine(StartPrologue());
-            else 
-                SceneManager.Instance.LoadScene(savedScene);
+            else SceneManager.Instance.LoadScene(((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum());
         }
         else noGameDataPanel.SetActive(true);
     }
@@ -215,7 +213,7 @@ public class StartLogic : MonoBehaviour
 
         // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
         albumButton.SetActive(false);
-        MemoManager.Instance.SetShouldHideMemoButton(true);
+        MemoManager.Instance.HideMemoButton = true;
 
         EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);

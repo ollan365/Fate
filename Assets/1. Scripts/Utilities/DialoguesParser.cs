@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class DialoguesParser
@@ -71,7 +70,7 @@ public class DialoguesParser
 
     public Dictionary<string, Script> ParseScripts()
     {
-        string[] lines = Regex.Split(scriptsCSV.text, @"(?<!\w)EOL(?!\w)");
+        string[] lines = scriptsCSV.text.Split("EOL");
 
         for (int i = 1; i < lines.Length; i++)
         {
