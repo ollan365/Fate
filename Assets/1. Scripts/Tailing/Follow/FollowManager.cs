@@ -68,40 +68,26 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         SetCharcter();
 
-        SetUI();
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, true);
+
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge, true);
+        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge));
+
+        UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground, true);
+
+        UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider, true);
+
+        UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider, true);
 
         StartCoroutine(ChangeBeaconSprite());
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); }
-        else if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
+        else if ((int)GameManager.Instance.GetVariable("currentSideIndex") == SceneType.FOLLOW_1.ToInt())
         {
             if((int)GameManager.Instance.GetVariable("ReplayCount") > 0 || (bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1")) { StartFollow(); }
-            else StartCoroutine(followTutorial.StartTutorial());
         }
         else StartCoroutine(followTutorial.StartTutorial());
-    }
-    private void SetUI()
-    {
-        if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
-        {
-            UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, true);
-            UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge, true);
-            MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge));
-            UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground, true);
-            UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider, true);
-            UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider, true);
-            UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider, true);
-        }
-        else
-        {
-            UIManager.Instance.SetUI(eUIGameObjectName.FollowUI_Night, true);
-            UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge_Night, true);
-            MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.FollowMemoGauge_Night));
-            UIManager.Instance.SetUI(eUIGameObjectName.FollowUIBackground_Night, true);
-            UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider_Night, true);
-            UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider_Night, true);
-            UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider_Night, true);
-        }
     }
     public void TutorialNextStep()
     {
@@ -167,6 +153,10 @@ public class FollowManager : MonoBehaviour
     {
         followDialogueManager.EndExtraDialogue(dialogueEnd);
         IsDialogueOpen = !dialogueEnd;
+    }
+    public void ClickSpecialObject(FollowObject followObject)
+    {
+        followDialogueManager.ClickSpecialObject(followObject);
     }
 
     // ==================== 미행 ==================== //
@@ -237,7 +227,7 @@ public class FollowManager : MonoBehaviour
     }
     public void CheckPosition()
     {
-        if (Accidy.transform.position.x > 48)
+        if (Accidy.transform.position.x > 49)
         {
             FollowEndLogicStart();
         }
@@ -248,12 +238,12 @@ public class FollowManager : MonoBehaviour
         }
 
         // 두번째 미행
-        if (!IsTutorial && SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_2)
+        if (!IsTutorial && (int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_2.ToInt())
         {
             switch ((int)Accidy.transform.position.x)
             {
-                case 8: followDialogueManager.ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
-                case 13: followDialogueManager.ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
+                case 10: followDialogueManager.ExtraAutoDialogue("Follow2_017"); break; // 호객 행위
+                case 14: followDialogueManager.ExtraAutoDialogue("Follow2_020"); break; // 가출 청소년
             }
         }
     }
@@ -272,11 +262,10 @@ public class FollowManager : MonoBehaviour
 
         foreach(GameObject ui in UI_OffAtEnd) ui.SetActive(false);
 
-        MemoManager.Instance.SetShouldHideMemoButton(true);
+        MemoManager.Instance.HideMemoButton = true;
         MemoManager.Instance.SetMemoButtons(false);
 
         UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, false);
-        UIManager.Instance.SetUI(eUIGameObjectName.FollowUI_Night, false);
 
         StartCoroutine(followEnd.EndFollowLogic_0());
     }

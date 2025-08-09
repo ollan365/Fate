@@ -74,15 +74,9 @@ public class ResultManager : MonoBehaviour
 
     public void ExecuteResult(string resultID)
     {
-        if (GameManager.Instance.isDebug) 
-            Debug.Log(resultID);
-        
+        if (GameManager.Instance.isDebug) Debug.Log(resultID);
         string variableName;
-        
-        TutorialManager tutorialManager = null;
-        if (RoomManager.Instance && RoomManager.Instance.tutorialManager)
-            tutorialManager = RoomManager.Instance.tutorialManager;
-        
+
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
@@ -239,74 +233,49 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.SetCurrentInquiryObjectId("EventBlanket");
                 EventManager.Instance.CallEvent("Event_Inquiry");
                 break;
-            
+                
+
             // 튜토리얼
             case "Result_nextTutorialPhase":  // 튜토리얼 다음 페이즈로 진행
-                if (!tutorialManager)
-                    break;
-                
-                tutorialManager.ProceedToNextPhase();
+                RoomManager.Instance.tutorialManager.ProceedToNextPhase();
                 break;
 
-            case "Result_TutorialPhase1ForceMoveButtons":  // 방을 둘러보자 (이동버튼 강조)
-                UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.LeftButton, true);
-                UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.RightButton, true);
+            case "Result_TutorialPhase1Force":  // 방을 둘러보자 (이동버튼 강조)
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialMoveButton");
                 break;
 
-            case "Result_TutorialPhase2ForceCarpet":  // 닫힌 카펫 강조
-                if (!tutorialManager)
-                    break;
+            case "Result_TutorialPhase2ChairStateCheck": // 의자가 밀고 있는 상태인지 체크
+                StartCoroutine(RoomManager.Instance.tutorialManager.CheckChairMovement());
+                break;
 
-                UIManager.Instance.ToggleHighlightAnimationEffect(
-                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.CarpetClosed], true);
-                UIManager.Instance.ToggleHighlightAnimationEffect(
-                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.Chair], false);
-                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.CarpetClosed, true);
-                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, false);
+            case "Result_TutorialPhase2Force":  // 의자 밀어보자 (이미지 강조는 X 검은 화면O)
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
                 break;
-            
-            case "Result_TutorialPhase2ForceChair":  // 의자 강조
-                if (!tutorialManager)
-                    break;
-                
-                UIManager.Instance.ToggleHighlightAnimationEffect(
-                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.CarpetClosed], false);
-                UIManager.Instance.ToggleHighlightAnimationEffect(
-                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.Chair], true);
-                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.CarpetClosed, false);
-                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);
+
+            case "Result_TutorialPhase3ForceSide1":  // 카펫 들어보자 (덮인 카펫 강조)
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpet");
                 break;
-            
-            case "Result_TutorialPhase3ForceLoR":  // 종이 강조
-                if (!tutorialManager)
-                    break;
-                
-                UIManager.Instance.ToggleHighlightAnimationEffect(
-                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.CarpetClosed], false);
-                UIManager.Instance.ToggleHighlightAnimationEffect(
-                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.LoR], true);
-                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.CarpetOpen, false);
+
+            case "Result_TutorialPhase3Force":  // 카펫 들어보자 (이미지 강조는 X 검은 화면O)
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
                 break;
-            
-            case "ResultHighlightHeartsOn":
-                foreach (Transform heart in UIManager.Instance.GetUI(eUIGameObjectName.HeartParent).transform)
-                    UIManager.Instance.ToggleHighlightAnimationEffect(heart.gameObject, true);
+
+            case "Result_TutorialPhase4ForceSide1":  // 종이 조사해보자 (카펫 밑 종이 강조)
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpetPaper");
                 break;
-            
-            case "ResultHighlightHeartsOff":
-                foreach (Transform heart in UIManager.Instance.GetUI(eUIGameObjectName.HeartParent).transform)
-                    UIManager.Instance.ToggleHighlightAnimationEffect(heart.gameObject, false);
+
+            case "Result_TutorialPhase4Force":  // 종이 조사해보자 (이미지 강조는 X 검은 화면O)
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
                 break;
-            
+
+            case "Result_TutorialPhase5ForceSide1":  // 열린 카펫 덮자 (열린 카펫 강조)
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpetOpen");
+                break;
+
             case "Result_TutorialPhase5Force":  // 열린 카펫 덮자 (이미지 강조는 X 검은 화면O)
-                if (!tutorialManager)
-                    break;
-                
-                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.CarpetOpen, true);
-                UIManager.Instance.ToggleHighlightAnimationEffect(
-                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.CarpetOpen], true);
+                RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
                 break;
-                
+
             case "ResultNewTeddyBearZoom":
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "newTeddyBear");
                 break;
@@ -338,7 +307,7 @@ public class ResultManager : MonoBehaviour
                 break;
             
 
-            case "ResultClockSystemActivation": // 시계 시스템 활성화
+            case "ResultClockSystemActivartion": // 시계 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "clock");
                 executableObjects["Clock"].ExecuteAction();
                 break;
@@ -571,7 +540,7 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "tinCase");
                 break;
 
-            case "ResultTinCaseSystemActivation": // 틴케이스 비밀번호 시스템 활성화
+            case "ResultTinCaseSystemActivartion": // 틴케이스 비밀번호 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "tinCase");
                 executableObjects["TinCase"].ExecuteAction();
                 break;
@@ -585,7 +554,7 @@ public class ResultManager : MonoBehaviour
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "sewingBox");
                 break;
 
-            case "ResultSewingBoxSystemActivation": // 반짇고리 퍼즐 시스템 활성화
+            case "ResultSewingBoxSystemActivartion": // 반짇고리 퍼즐 시스템 활성화
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "sewingBox");
                 executableObjects["SewingBox"].ExecuteAction();
                 break;
@@ -634,7 +603,8 @@ public class ResultManager : MonoBehaviour
 
             // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
-                if (SceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1) {
+                if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
+                {
                     executableObjects["Box Unzoomed-open 2"].ExecuteAction();
                     executableObjects["Box Unzoomed-open 3"].ExecuteAction();
                 }
@@ -725,7 +695,7 @@ public class ResultManager : MonoBehaviour
                 //Debug.Log("떨어진 책 한권 표지 확대 UI");
                 break;
 
-            case "ResultBook2SystemActivation": // 떨어진 책 읽기
+            case "ResultBook2SystemActivartion": // 떨어진 책 읽기
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "book2");
                 executableObjects["Book2"].ExecuteAction();
                 //Debug.Log("  떨어진 책 읽기");
@@ -750,7 +720,7 @@ public class ResultManager : MonoBehaviour
                 SoundPlayer.Instance.UISoundPlay(Sound_LockerUnlock);
                 break;
 
-            case "ResultDreamDiary2SystemActivation": // 꿈일기 읽기
+            case "ResultDreamDiary2SystemActivartion": // 꿈일기 읽기
                 RoomManager.Instance.imageAndLockPanelManager.SetLockObject(true, "dreamDiary");
                 executableObjects["DreamDiary"].ExecuteAction();
                 break;
@@ -804,12 +774,16 @@ public class ResultManager : MonoBehaviour
 
             case "ResultUnlockROOM_2":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
-                EndingManager.Instance.Ending_Follow_Video(1);
+                EndingManager.Instance.Ending_Follow1_StreetVideo();
                 break;
 
             case "ResultLockROOM_2":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
-                EndingManager.Instance.Ending_Follow_Video(0);
+                EndingManager.Instance.Ending_Follow1_StreetVideo();
+                break;
+
+            case "ResultStreetVideo_Clear":
+                EndingManager.Instance.Ending_Follow1();
                 break;
 
             case "ResultBadEndingB_01B":
@@ -818,17 +792,14 @@ public class ResultManager : MonoBehaviour
 
             case "ResultUnlockHidden":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
-                EndingManager.Instance.Ending_Follow_Video(3);
                 break;
 
             case "ResultUnlockTrue":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
-                EndingManager.Instance.Ending_Follow_Video(3);
                 break;
 
             case "ResultLockTrueAndHidden":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
-                EndingManager.Instance.Ending_Follow_Video(3);
                 break;
 
             case "ResultChangeBGM_BadA":
@@ -860,7 +831,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             default:
-                Debug.LogWarning($"Result ID: {resultID} not found!");
+                Debug.Log($"Result ID: {resultID} not found!");
                 break;
         }
     }
