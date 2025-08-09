@@ -112,7 +112,7 @@ public class SceneManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // 씬 로드
-        StartCoroutine(Load((int)GameManager.Instance.GetVariable("CurrentScene")));
+        StartCoroutine(Load(loadSceneType.ToInt()));
     }
 
     // 씬 비동기 로드 및 진행률 표시
@@ -153,7 +153,7 @@ public class SceneManager : MonoBehaviour
     public void ChangeSceneEffect()
     {
         // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
-        switch (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum())
+        switch (GetActiveScene())
         {
             case SceneType.START:
             case SceneType.ROOM_1:
@@ -170,7 +170,7 @@ public class SceneManager : MonoBehaviour
         }
 
         int bgmIndex = -1;
-        switch (((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum())
+        switch (GetActiveScene())
         {
             case SceneType.START:
                 bgmIndex = BGM_OPENING;
@@ -200,7 +200,7 @@ public class SceneManager : MonoBehaviour
 
     public void NotClearThisScene()
     {
-        string currentScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum().ToString();
+        string currentScene = GetActiveScene().ToString();
         GameManager.Instance.SetVariable($"MemoCount_{currentScene}", 0);
 
         LoadScene(SceneType.ENDING);
@@ -208,7 +208,7 @@ public class SceneManager : MonoBehaviour
     
     public void ClearThisScene()
     {
-        string currentScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum().ToString();
+        string currentScene = GetActiveScene().ToString();
         GameManager.Instance.SetVariable($"MemoCount_{currentScene}", 9);
 
         LoadScene(SceneType.ENDING);
