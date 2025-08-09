@@ -2274,6 +2274,7 @@ GameObject:
   - component: {fileID: 137873186}
   - component: {fileID: 137873185}
   - component: {fileID: 137873184}
+  - component: {fileID: 137873187}
   m_Layer: 6
   m_Name: openCarpet
   m_TagString: InquiryObject
@@ -2413,6 +2414,21 @@ CapsuleCollider2D:
   m_Offset: {x: 85.713646, y: -8.505484}
   m_Size: {x: 166.0199, y: 286.4141}
   m_Direction: 0
+--- !u!114 &137873187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137873178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e264ec7db6adc4e2db3e010a4bf63663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 0, b: 0, a: 1}
+  pulseScale: 1.1
+  cycleDuration: 1
 --- !u!1 &183261203
 GameObject:
   m_ObjectHideFlags: 0
@@ -11214,7 +11230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92978ad719be4a189066733e1ca35dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carpetGameObject: {fileID: 37155759}
+  carpetClosedGameObject: {fileID: 37155759}
+  carpetOpenGameObject: {fileID: 137873178}
   chairGameObject: {fileID: 1625075168}
   letterOfResignationGameObject: {fileID: 293238654}
 --- !u!1 &1157632434

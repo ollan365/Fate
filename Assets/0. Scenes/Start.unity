@@ -12842,6 +12842,7 @@ GameObject:
   - component: {fileID: 894882445}
   - component: {fileID: 894882444}
   - component: {fileID: 894882449}
+  - component: {fileID: 894882450}
   m_Layer: 10
   m_Name: Memo button
   m_TagString: Untagged
@@ -13047,6 +13048,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfeda047b085c46c590b10272e46508d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &894882450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894882442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e264ec7db6adc4e2db3e010a4bf63663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 0, b: 0, a: 1}
+  pulseScale: 1.1
+  cycleDuration: 1
 --- !u!1 &904045784
 GameObject:
   m_ObjectHideFlags: 0
@@ -25621,7 +25637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.050980393}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -32877,7 +32893,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3743309336590623764, guid: 8c0d2a63e6b08594fa805c7773099a54, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185308470854742772, guid: 8c0d2a63e6b08594fa805c7773099a54, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7783423553226925094, guid: 8c0d2a63e6b08594fa805c7773099a54, type: 3}
       propertyPath: m_Pivot.x
