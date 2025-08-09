@@ -16293,7 +16293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1186971533
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16310,8 +16310,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 348.52997}
-  m_SizeDelta: {x: 640.48, y: 347.06}
+  m_AnchoredPosition: {x: 0, y: 425.02}
+  m_SizeDelta: {x: 640.48, y: 194.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1186971534
 MonoBehaviour:
@@ -21607,7 +21607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   variablesText: {fileID: 1186971534}
-  isDebug: 1
+  isDebug: 0
   skipTutorial: 0
   skipInquiry: 0
   accidyGender: 0
@@ -22692,6 +22692,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coverPanel: {fileID: 531631312}
   coverText: {fileID: 1379851831}
+  loadingScreen: {fileID: 0}
+  progressBar: {fileID: 0}
+  progressBarGroup: {fileID: 0}
+  Loading_AnimationGroup: {fileID: 0}
+  loading_characters: []
   objectImageParentRoom: {fileID: 1852809473}
   objectImageRoom: {fileID: 1852809472}
   normalVignette: {fileID: 372497767}
@@ -22756,6 +22761,7 @@ MonoBehaviour:
   fadeAnimationDuration: 0.5
   floatAnimationDuration: 0.3
   floatDistance: 50
+  enableLoadingAnimation: 0
 --- !u!114 &1633657071
 MonoBehaviour:
   m_ObjectHideFlags: 0

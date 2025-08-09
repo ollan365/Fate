@@ -7159,7 +7159,8 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   moveDuration: 0.3
-  deskUnzoomedButton: {fileID: 1796012583}
+  deskUnMovedChair: {fileID: 0}
+  deskMovedChair: {fileID: 0}
 --- !u!1 &765916610
 GameObject:
   m_ObjectHideFlags: 0
@@ -8953,7 +8954,8 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   moveDuration: 0.3
-  deskUnzoomedButton: {fileID: 1796012583}
+  deskUnMovedChair: {fileID: 0}
+  deskMovedChair: {fileID: 0}
 --- !u!114 &912454081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14813,7 +14815,8 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   moveDuration: 0.3
-  deskUnzoomedButton: {fileID: 1774755198}
+  deskUnMovedChair: {fileID: 0}
+  deskMovedChair: {fileID: 0}
 --- !u!70 &1625075174
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -16049,7 +16052,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707680458}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20135711072b9c04b94167fc70f7aa16, type: 3}
   m_Name: 
@@ -18286,6 +18289,9 @@ MonoBehaviour:
   sideNum: 0
   isInquiry: 1
   boxAnimator: {fileID: 2003788348}
+  isClosed: 0
+  sideClosedBox: []
+  sideOpenBox: []
 --- !u!114 &2003788350
 MonoBehaviour:
   m_ObjectHideFlags: 0

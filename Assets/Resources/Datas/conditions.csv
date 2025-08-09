@@ -18,8 +18,8 @@ ConditionSceneROOM_2,현재 씬이 ROOM_2 씬,CurrentScene,==,3
 ConditionSceneFOLLOW_2,현재 씬이 FOLLOW_2 씬,CurrentScene,==,4
 ConditionSceneENDING,현재 씬이 ENDING 씬,CurrentScene,==,5
 ,,,,
-ConditionCurrentSide1,현재 사이드1번 방,currentSideIndex,==,0
-ConditionCurrentSide2Or3,현재 사이드 2~3번 방,currentSideIndex,>,0
+ConditionCurrentSide1,현재 사이드 1번,currentSideIndex,==,0
+ConditionCurrentSide2Or3,현재 사이드 1번 아님,currentSideIndex,>,0
 ,,,,
 ConditionBedTeddyFirstClick,침대 위 곰인형을 처음 클릭 했을 때,DollsClick,==,0
 ConditionBedTeddyManyClick,침대 위 곰인형을 한번 이상 클릭했을 때,DollsClick,>,0
@@ -50,10 +50,10 @@ ConditionClockManyClick,고장난 시계를 한번 이상 클릭했을 때,Clock
 ConditionClockCorrect,시계를 맞춘 상태. 즉 열쇠를 찾은 상태,ClockTimeCorrect,==,TRUE
 ConditionClockNotCorrect,시계를 맞추지 않은 상태. 즉 열쇠를 찾지 못한 상태,ClockTimeCorrect,==,FALSE
 ,,,,
-ConditionLaptapFirstClick,노트북을 처음 클릭,LaptopClick,==,0
-ConditionLaptapCorrect,노트북의 비밀번호를 맞춤,LaptopPasswordCorrect,==,TRUE
-ConditionLaptapNotCorrect,노트북의 비밀번호를 틀림,LaptopPasswordCorrect,==,FALSE
-ConditionLaptapManyClick,노트북을 한번 이상 클릭,LaptopClick,>,0
+ConditionLaptopFirstClick,노트북을 처음 클릭,LaptopClick,==,0
+ConditionLaptopCorrect,노트북의 비밀번호를 맞춤,LaptopPasswordCorrect,==,TRUE
+ConditionLaptopNotCorrect,노트북의 비밀번호를 틀림,LaptopPasswordCorrect,==,FALSE
+ConditionLaptopManyClick,노트북을 한번 이상 클릭,LaptopClick,>,0
 ,,,,
 ConditionCarpetFirstClick,카펫을 클릭한 적 없는 상태,ClosedCarpetClick,==,0
 ConditionCarpetClosed,카펫이 닫혀 있는 상태,CarpetClosed,==,TRUE
