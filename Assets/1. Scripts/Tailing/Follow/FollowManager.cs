@@ -73,7 +73,7 @@ public class FollowManager : MonoBehaviour
         StartCoroutine(ChangeBeaconSprite());
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); }
-        else if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+        else if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
         {
             if((int)GameManager.Instance.GetVariable("ReplayCount") > 0 || (bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1")) { StartFollow(); }
             else StartCoroutine(followTutorial.StartTutorial());
@@ -82,7 +82,7 @@ public class FollowManager : MonoBehaviour
     }
     private void SetUI()
     {
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+        if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
         {
             UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, true);
             UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge, true);

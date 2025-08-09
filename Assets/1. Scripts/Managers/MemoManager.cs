@@ -188,8 +188,8 @@ public class MemoManager : PageContentsManager
                 clearFlagImage = clearFlagBackgroundGameObject.GetComponentInChildren<Image>();
                 break;
             
-            case (int)SceneType.FOLLOW_1:
-            case (int)SceneType.FOLLOW_2:
+            case SceneType.FOLLOW_1:
+            case SceneType.FOLLOW_2:
                 GameObject backgroundGameObject = memoGaugeParent.transform.Find("Fill").gameObject;
                 gaugeImage = backgroundGameObject.GetComponent<Image>();
 

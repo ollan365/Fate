@@ -130,7 +130,7 @@ public class StartLogic : MonoBehaviour
         {
             buttons.SetActive(false);
 
-            Constants.SceneType savedScene = ((int)GameManager.Instance.GetVariable("CurrentScene")).ToEnum();
+            Constants.SceneType savedScene = ((int)GameManager.Instance.GetVariable("SavedCurrentSceneIndex")).ToEnum();
             if (savedScene == Constants.SceneType.START)
                 StartCoroutine(StartPrologue());
             else 

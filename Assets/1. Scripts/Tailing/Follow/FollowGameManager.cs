@@ -47,7 +47,7 @@ public class FollowGameManager : MonoBehaviour
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
         AccidyDialogueBox.transform.position -= moveVector;
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+        if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
             UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider, Accidy.transform.position.x / endPositonOfMap, 0);
         else
             UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider_Night, Accidy.transform.position.x / endPositonOfMap, 0);
@@ -75,7 +75,7 @@ public class FollowGameManager : MonoBehaviour
             SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, IsFateMove);
             Fate.SetBool("Walking", IsFateMove);
 
-            if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+            if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
                 UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider,
                 Fate.transform.position.x / endPositonOfMap,
                 0);
@@ -118,7 +118,7 @@ public class FollowGameManager : MonoBehaviour
         IsFateMove = false;
         IsFateHide = false;
 
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+        if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
             UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0);
         else
             UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider_Night, 0, 0);
@@ -138,7 +138,7 @@ public class FollowGameManager : MonoBehaviour
             {
                 ChangeGaugeAlpha(Time.deltaTime * 3);
 
-                if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+                if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
                     UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0.001f);
                 else
                     UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider_Night, 0, 0.001f);
