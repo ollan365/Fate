@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject[] dialogueSet;
     public TextMeshProUGUI[] speakerTexts;
     public TextMeshProUGUI[] scriptText;
+    public TextEffect accidyMultiScript;
     public Image[] backgroundImages;
     public Image[] characterImages;
     public Image[] characterFadeImages;
@@ -44,6 +45,7 @@ public class DialogueManager : MonoBehaviour
     private bool isTyping = false;
     private bool isAuto = false;
     private bool isFast = false;
+    private bool isMulti = false;
     private string fullSentence;
 
     // Dialogue Queue
@@ -178,10 +180,11 @@ public class DialogueManager : MonoBehaviour
                     : scripts[dialogueLine.SpeakerID].GetScript();
     }
     
-    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast)
+    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast, out bool multi)
     {
         auto = false;
         fast = false;
+        multi = false;
     
         var sentence = scripts[dialogueLine.ScriptID].GetScript();
     
@@ -212,6 +215,10 @@ public class DialogueManager : MonoBehaviour
                             if (canvas)
                                 canvas.SetActive(false);
                         dialogueSet[dialogueType.ToInt()].SetActive(true);
+                        break;
+                    case "MULTI":
+                        multi = true;
+                        accidyMultiScript.gameObject.SetActive(true);
                         break;
                 }
         }
@@ -295,9 +302,10 @@ public class DialogueManager : MonoBehaviour
         SetupCanvasAndSpeakerText(dialogueLine);
 
         // Process placeholders and get final sentence.
-        string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast);
+        string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast, out bool multi);
         isAuto = auto;
         isFast = fast;
+        isMulti = multi;
 
         isTyping = true;
         StartCoroutine(TypeSentence(sentence));
@@ -501,6 +509,7 @@ public class DialogueManager : MonoBehaviour
             {
                 effectText += letter;
                 scriptText[dialogueType.ToInt()].text += effectText;
+                if (isMulti) accidyMultiScript.GetComponent<TextMeshProUGUI>().text += effectText;
                 isEffect = false;
                 continue;
             }
@@ -512,6 +521,7 @@ public class DialogueManager : MonoBehaviour
             }
 
             scriptText[dialogueType.ToInt()].text += letter;
+            if (isMulti) accidyMultiScript.Typing(letter);
             SoundPlayer.Instance.UISoundPlay(Sound_Typing); // 타자 소리 한번씩만
             yield return new WaitForSeconds(typeSpeed);
         }
@@ -536,6 +546,12 @@ public class DialogueManager : MonoBehaviour
     public void OnDialoguePanelClick()
     {
         if (!isDialogueActive || isAuto) return;
+        if (isMulti)
+        {
+            isMulti = false;
+            accidyMultiScript.GetComponent<TextMeshProUGUI>().text = "";
+            accidyMultiScript.gameObject.SetActive(false);
+        }
 
         if (isTyping)
         {
