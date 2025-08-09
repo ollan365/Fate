@@ -804,16 +804,12 @@ public class ResultManager : MonoBehaviour
 
             case "ResultUnlockROOM_2":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
-                EndingManager.Instance.Ending_Follow1_StreetVideo();
+                EndingManager.Instance.Ending_Follow_Video(1);
                 break;
 
             case "ResultLockROOM_2":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
-                EndingManager.Instance.Ending_Follow1_StreetVideo();
-                break;
-
-            case "ResultStreetVideo_Clear":
-                EndingManager.Instance.Ending_Follow1();
+                EndingManager.Instance.Ending_Follow_Video(0);
                 break;
 
             case "ResultBadEndingB_01B":
@@ -822,14 +818,17 @@ public class ResultManager : MonoBehaviour
 
             case "ResultUnlockHidden":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
+                EndingManager.Instance.Ending_Follow_Video(3);
                 break;
 
             case "ResultUnlockTrue":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
+                EndingManager.Instance.Ending_Follow_Video(3);
                 break;
 
             case "ResultLockTrueAndHidden":
                 SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
+                EndingManager.Instance.Ending_Follow_Video(3);
                 break;
 
             case "ResultChangeBGM_BadA":

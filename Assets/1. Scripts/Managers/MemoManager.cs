@@ -188,16 +188,14 @@ public class MemoManager : PageContentsManager
                 clearFlagImage = clearFlagBackgroundGameObject.GetComponentInChildren<Image>();
                 break;
             
-            case SceneType.FOLLOW_1:
-            case SceneType.FOLLOW_2:
-                GameObject backgroundGameObject = memoGaugeParent.transform.Find("Background").gameObject;
+            case (int)SceneType.FOLLOW_1:
+            case (int)SceneType.FOLLOW_2:
+                GameObject backgroundGameObject = memoGaugeParent.transform.Find("Fill").gameObject;
                 gaugeImage = backgroundGameObject.GetComponent<Image>();
+
+                clearFlagSlider = memoGaugeParent.GetComponentInChildren<Slider>();
                 
-                GameObject fillAreaGameObject = memoGaugeParent.transform.Find("Fill Area").gameObject;
-                GameObject clearSliderGameObject = fillAreaGameObject.transform.Find("Clear Slider").gameObject;
-                clearFlagSlider = clearSliderGameObject.GetComponent<Slider>();
-                
-                GameObject handleSlideAreaGameObjectFollow = clearSliderGameObject.transform.Find("Handle Slide Area")
+                GameObject handleSlideAreaGameObjectFollow = clearFlagSlider.transform.Find("Handle Slide Area")
                     .gameObject;
                 GameObject handleGameObject = handleSlideAreaGameObjectFollow.transform.Find("Handle").gameObject;
                 clearFlagImage = handleGameObject.GetComponent<Image>();

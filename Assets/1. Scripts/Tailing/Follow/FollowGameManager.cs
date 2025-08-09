@@ -47,7 +47,10 @@ public class FollowGameManager : MonoBehaviour
         Vector3 moveVector = Vector3.left * accidyMoveSpeed * Time.deltaTime;
         Accidy.transform.position -= moveVector;
         AccidyDialogueBox.transform.position -= moveVector;
-        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider, Accidy.transform.position.x / endPositonOfMap, 0);
+        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider, Accidy.transform.position.x / endPositonOfMap, 0);
+        else
+            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider_Night, Accidy.transform.position.x / endPositonOfMap, 0);
     }
     private void MoveFate()
     {
@@ -69,9 +72,15 @@ public class FollowGameManager : MonoBehaviour
                 Fate.SetBool("Right", true);
                 IsFateMove = true;
             }
-            SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Accidy, IsFateMove);
+            SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, IsFateMove);
             Fate.SetBool("Walking", IsFateMove);
-            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider,
+
+            if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+                UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider,
+                Fate.transform.position.x / endPositonOfMap,
+                0);
+            else
+                UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider_Night,
                 Fate.transform.position.x / endPositonOfMap,
                 0);
         }
@@ -108,7 +117,11 @@ public class FollowGameManager : MonoBehaviour
         StopAccidy = false;
         IsFateMove = false;
         IsFateHide = false;
-        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0);
+
+        if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0);
+        else
+            UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider_Night, 0, 0);
         overHeadDoubtGaugeSlider.value = 0;
 
         // 우연의 움직임, 우연의 말풍선 애니메이션 시작
@@ -124,7 +137,12 @@ public class FollowGameManager : MonoBehaviour
             if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
                 ChangeGaugeAlpha(Time.deltaTime * 3);
-                UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0.001f); 
+
+                if ((int)GameManager.Instance.GetVariable("CurrentScene") == SceneType.FOLLOW_1.ToInt())
+                    UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider, 0, 0.001f);
+                else
+                    UIManager.Instance.ChangeSliderValue(eUIGameObjectName.DoubtGaugeSlider_Night, 0, 0.001f);
+                
                 overHeadDoubtGaugeSlider.value += 0.001f;
                 if (!IsTutorial && Mathf.Approximately(overHeadDoubtGaugeSlider.value, 1)) 
                     FollowManager.Instance.FollowEndLogicStart();
@@ -148,7 +166,7 @@ public class FollowGameManager : MonoBehaviour
         IsFateHide = hide;
         Fate.SetBool("Hide", hide);
 
-        CursorManager.Instance.ChangeCursorInFollow();
+        UIManager.Instance.ChangeCursor();
     }
 
     private IEnumerator AccidyLogic()
@@ -188,7 +206,7 @@ public class FollowGameManager : MonoBehaviour
 
                 case AccidyAction.Turn:
                     accidyStatus = AccidyStatus.RED;
-                    CursorManager.Instance.ChangeCursorInFollow();
+                    UIManager.Instance.ChangeCursor();
                     Accidy.SetBool("Back", true);
                     nextAccidyAction = AccidyAction.Inverse_Stop;
                     break;
@@ -199,7 +217,7 @@ public class FollowGameManager : MonoBehaviour
 
                 case AccidyAction.Inverse_Turn:
                     accidyStatus = AccidyStatus.GREEN;
-                    CursorManager.Instance.ChangeCursorInFollow();
+                    if(FollowManager.Instance.CanClick) UIManager.Instance.ChangeCursor(false);
                     Accidy.SetBool("Back", false);
                     nextAccidyAction = AccidyAction.Move;
                     SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
@@ -220,16 +238,18 @@ public class FollowGameManager : MonoBehaviour
         {
             while (!IsTutorial && IsDialogueOpen) { yield return null; } // 대화창이 열려있음
 
-            if (accidyStatus == AccidyStatus.RED && IsFateHide) { text.text = "  ?  "; currentTime = 0; }
-            else if (accidyStatus == AccidyStatus.RED && !IsFateHide) { text.text = "  !  "; currentTime = 0; }
+            if (accidyStatus == AccidyStatus.RED && IsFateHide) { text.text = "?"; currentTime = 0; }
+            else if (accidyStatus == AccidyStatus.RED && !IsFateHide) { text.text = "!"; currentTime = 0; }
             else if (accidyStatus == AccidyStatus.YELLOW) text.text = "...?";
             else
             {
+                if(text.text == "?" || text.text == "!" || text.text == "...?") text.text = "";
+
                 currentTime += Time.deltaTime;
                 if (currentTime > 1)
                 {
                     if (text.text.Length < 3) text.text += ".";
-                    else text.text = "";
+                    else text.text = ".";
 
                     currentTime = 0;
                 }
