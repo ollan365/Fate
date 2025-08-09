@@ -21,20 +21,21 @@ public class RoomManager : MonoBehaviour
     public bool isInvestigating = false;
     private bool isZoomed = false;
     
-    // 튜토리얼 매니저
-    public TutorialManager tutorialManager;
-
     // 액션포인트 매니저
+    [Header("행동력 매니저")]
     public ActionPointManager actionPointManager;
     public Room2ActionPointManager room2ActionPointManager;
+    
+    [Header("튜토리얼 매니저")]
+    public TutorialManager tutorialManager;
 
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
+        if (Instance)
             Destroy(gameObject);
-
+        else
+            Instance = this;
+        
         imageAndLockPanelCanvas.worldCamera = UIManager.Instance.uiCamera;
         SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
@@ -64,23 +65,22 @@ public class RoomManager : MonoBehaviour
             zoomView.SetActive(false);
         }
 
-        // Side 1으로 초기화?
+        // Side 1으로 초기화
         currentView = sides[currentSideIndex];
         SetCurrentSide(currentSideIndex);
 
-        MemoManager.Instance.HideMemoButton = false;
+        MemoManager.Instance.SetShouldHideMemoButton(false);
         SetButtons();
 
         actionPointManager.CreateHearts();  // create hearts on room start
 
-        // 첫 대사 출력 후 튜토리얼 1페이즈 시작(현재 씬 이름이 Room1일 때만)
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
-        {
-            if (!GameManager.Instance.skipTutorial
-                && (int)GameManager.Instance.GetVariable("ReplayCount") == 0
-                && !(bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1"))
-                DialogueManager.Instance.StartDialogue("Prologue_015");
-        }
+        if (GameManager.Instance.skipTutorial ||
+            SceneManager.Instance.GetActiveScene() != Constants.SceneType.ROOM_1 ||
+            (int)GameManager.Instance.GetVariable("ReplayCount") > 0)
+            return;
+
+        tutorialManager = gameObject.GetComponent<TutorialManager>();
+        tutorialManager.StartTutorial();
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
@@ -94,25 +94,21 @@ public class RoomManager : MonoBehaviour
         int newSideIndex = (currentSideIndex + sides.Count + leftOrRight) % sides.Count;
         SetCurrentSide(newSideIndex);
         
-        UIManager.Instance.MoveButtonEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
+        UIManager.Instance.MoveSideEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
 
         // 시점에 맞춰서 버튼 끄고 키게 함.(사이드 2번에선 오른쪽 버튼만 3번에선 왼쪽 버튼만 나오게 함)
         SetMoveButtons(true);
 
-        // 튜토리얼 1 페이즈 관련
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.ROOM_1.ToInt())
-            if(!GameManager.Instance.skipTutorial)
-                tutorialManager.SetSeenSides(newSideIndex);
+        if ((bool)GameManager.Instance.GetVariable("isTutorial"))
+            tutorialManager.SetSeenSide(newSideIndex);
     }
 
     public void OnExitButtonClick()
     {
         if (isInvestigating) 
             imageAndLockPanelManager.OnExitButtonClick();
-        else if (isZoomed)
-        {
-            // 화면 전환 효과
-            UIManager.Instance.MoveButtonEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0));
+        else if (isZoomed) {
+            UIManager.Instance.MoveSideEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0)); // 화면 전환 효과
 
             SetCurrentView(sides[currentSideIndex]);
             isZoomed = false;
@@ -123,17 +119,14 @@ public class RoomManager : MonoBehaviour
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
         if (refillHeartsOrEndDay)
             actionPointManager.RefillHeartsOrEndDay();
-
     }
 
     // 비밀번호 무한 입력 시도 방지
-    public void ProhibitInput()
-    {
+    public void ProhibitInput() {
         if (UIManager.Instance && UIManager.Instance.heartParent.transform.childCount < 1)
             OnExitButtonClick();
     }
-
-
+    
     // exit to root: turn off all the panels and zoom out to the root view
     public void ExitToRoot()
     {

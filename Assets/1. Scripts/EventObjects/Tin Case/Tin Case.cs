@@ -28,6 +28,6 @@ public class TinCase : EventObject, IResultExecutable
     private void ActivateTinCaseLock()
     {
         isInquiry = false;  // 조사 시스템 예 아니오 스킵
-        tinCaseLock.SetActive(true);
+        UIManager.Instance.AnimateUI(tinCaseLock, true, true);
     }
 }

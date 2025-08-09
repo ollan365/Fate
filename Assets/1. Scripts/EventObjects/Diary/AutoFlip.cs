@@ -76,9 +76,6 @@ public class AutoFlip : MonoBehaviour
         controlledBook.pageContentsManager.flipRightButton.SetActive(false);
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, false);
 
-        //float watingFlipTime = pageFlipTime;
-        yield return new WaitForSeconds(pageFlipTime);
-
         float elapsedTime = 0;
         float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
         float xl = ((controlledBook.EdgeBottomRight.x - controlledBook.EdgeBottomLeft.x) / 2) * 0.9f;

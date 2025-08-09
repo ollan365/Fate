@@ -18,32 +18,24 @@ public class Clock : EventObject, IResultExecutable
         ResultManager.Instance.RegisterExecutable("Clock", this);
     }
 
-    public new void OnMouseDown()
-    {
+    public new void OnMouseDown() {
         base.OnMouseDown();
     }
 
-    public void ExecuteAction()
-    {
+    public void ExecuteAction() {
         ActivateClockPuzzle();
     }
 
     // 시계 시간 맞추는 장치 실행
-    private void ActivateClockPuzzle()
-    {
+    private void ActivateClockPuzzle() {
         isInquiry = false;  // 조사 시스템 예 아니오 스킵
-        clockPuzzle.SetActive(true);
+        UIManager.Instance.AnimateUI(clockPuzzle, true, true);
     }
 
-    public void SwapAfterImage()
-    {
+    public void SwapAfterImage() {
         bool isCorrect = (bool)GameManager.Instance.GetVariable("ClockTimeCorrect");
         if(isCorrect)
-        {
             foreach (Image beforeClock in Clocks)
-            {
                 beforeClock.sprite = AfterClockImage;
-            }
-        }
     }
 }

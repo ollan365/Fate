@@ -29,7 +29,7 @@ public class FollowTutorial : MonoBehaviour
         if(tutorialBlockingPanel) tutorialBlockingPanel.SetActive(true);
 
         // 튜토리얼 중에 메모 버튼이 켜지지 않도록 설정
-        MemoManager.Instance.HideMemoButton = true;
+        MemoManager.Instance.SetShouldHideMemoButton(true);
         MemoManager.Instance.SetMemoButtons(false);
 
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
@@ -44,7 +44,7 @@ public class FollowTutorial : MonoBehaviour
     {
         Debug.Log(GameManager.Instance.GetVariable("FollowTutorialPhase"));
 
-        if ((int)GameManager.Instance.GetVariable("CurrentScene") == Constants.SceneType.FOLLOW_2.ToInt())
+        if (SceneManager.Instance.GetActiveScene() == Constants.SceneType.FOLLOW_2)
         {
             StartCoroutine(EndTutorial());
             return;
@@ -167,7 +167,7 @@ public class FollowTutorial : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (tutorialBlockingPanel) tutorialBlockingPanel.SetActive(false);
 
-        MemoManager.Instance.HideMemoButton = false;
+        MemoManager.Instance.SetShouldHideMemoButton(false);
         MemoManager.Instance.SetMemoButtons(true);
 
         GameManager.Instance.SetVariable("EndTutorial_FOLLOW_1", true);

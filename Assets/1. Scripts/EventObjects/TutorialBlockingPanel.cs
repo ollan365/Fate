@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class TutorialBlockingPanel : EventObject
 {
-    public new void OnMouseDown()
-    {
-        if((bool)GameManager.Instance.GetVariable("isTutorial"))
+    public new void OnMouseDown() {
+        if (!GameManager.Instance.GetIsBusy())
             base.OnMouseDown();
     }
 }

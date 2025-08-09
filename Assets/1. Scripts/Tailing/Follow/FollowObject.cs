@@ -23,12 +23,12 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        CursorManager.Instance.ChangeCursorInFollow();
+        if(FollowManager.Instance.CanClick) UIManager.Instance.ChangeCursor(false);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        CursorManager.Instance.ChangeCursorInFollow(true);
+        UIManager.Instance.ChangeCursor();
     }
 
     private void OnMouseDown_Special()
@@ -39,7 +39,7 @@ public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandl
 
         if (objectName == FollowObjectName.Extra) { OnMouseDown_Normal(); return; }
 
-        FollowManager.Instance.ClickSpecialObject(this);
+        UIManager.Instance.FollowEventButtonSet(this);
     }
     public void OnMouseDown_Normal()
     {
