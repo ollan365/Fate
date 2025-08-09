@@ -6,24 +6,30 @@ public class TutorialManager : MonoBehaviour
 {
     public enum eTutorialObjectName
     {
-        Carpet,
+        CarpetClosed,
+        CarpetOpen,
         Chair,
         LoR
     }
     
     private int currentPhase;
-    private readonly string resultTutorialPhase1 = "Result_StartDialogue" + "Tutorial_000";
-    private readonly string resultTutorialPhase2A = "Result_StartDialogue" + "Tutorial_002_A";
+    private static readonly string resultStartDialogue = "Result_StartDialogue";
+    private readonly string resultTutorialPhase1 = resultStartDialogue + "Tutorial_000";
+    private readonly string resultTutorialPhase2A = resultStartDialogue + "Tutorial_002_A";
+    private readonly string resultTutorialPhase4A = resultStartDialogue + "Tutorial_004_A";
+    private readonly string resultTutorialPhase6 = resultStartDialogue + "Tutorial_006";
     private bool[] seenSides;
 
-    [SerializeField] private GameObject carpetGameObject;
+    [SerializeField] private GameObject carpetClosedGameObject;
+    [SerializeField] private GameObject carpetOpenGameObject;
     [SerializeField] private GameObject chairGameObject;
     [SerializeField] private GameObject letterOfResignationGameObject;
     
     public Dictionary<eTutorialObjectName, GameObject> tutorialGameObjects = new();
 
     public void StartTutorial() {
-        tutorialGameObjects.Add(eTutorialObjectName.Carpet, carpetGameObject);
+        tutorialGameObjects.Add(eTutorialObjectName.CarpetClosed, carpetClosedGameObject);
+        tutorialGameObjects.Add(eTutorialObjectName.CarpetOpen, carpetOpenGameObject);
         tutorialGameObjects.Add(eTutorialObjectName.Chair, chairGameObject);
         tutorialGameObjects[eTutorialObjectName.Chair].GetComponent<CapsuleCollider2D>().enabled = false;  // 의자 클릭 안되게 함
         tutorialGameObjects.Add(eTutorialObjectName.LoR, letterOfResignationGameObject);
@@ -67,10 +73,34 @@ public class TutorialManager : MonoBehaviour
 
                 ResultManager.Instance.ExecuteResult(resultTutorialPhase2A);
                 break;
+            
+            case 4:
+                ResultManager.Instance.ExecuteResult(resultTutorialPhase4A);
+                break;
+                
+            case 5:
+                UIManager.Instance.ToggleHighlightAnimationEffect(tutorialGameObjects[eTutorialObjectName.LoR], false);
+                ToggleCollider(eTutorialObjectName.LoR, false);
+                break;
+            
+            case 6:
+                MemoManager.Instance.SetShouldHideMemoButton(false);
+                UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.MemoButton, true);
+                ResultManager.Instance.ExecuteResult(resultTutorialPhase6);
+                
+                CompleteTutorial();
+                break;
         }
     }
 
-    private void completeTutorial() {
+    private void CompleteTutorial() {
         GameManager.Instance.SetVariable("isTutorial", false);
+        UIManager.Instance.SetUI(eUIGameObjectName.BlockingPanelDefault, false);
+    }
+    
+    public void ToggleCollider(eTutorialObjectName objectName, bool isOn)
+    {
+        foreach (Collider2D collider in tutorialGameObjects[objectName].GetComponents<Collider2D>())
+            collider.enabled = isOn;
     }
 }

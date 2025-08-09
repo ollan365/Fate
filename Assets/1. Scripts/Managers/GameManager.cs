@@ -35,36 +35,28 @@ public class GameManager : MonoBehaviour
     // 중복조사 관련 딕셔너리
     public Dictionary<string, bool> eventObjectsStatusDict = new Dictionary<string, bool>();
 
-    public void SetCurrentInquiryObjectId(string objectId)
-    {
+    public void SetCurrentInquiryObjectId(string objectId) {
         currentInquiryObjectId = objectId;
     }
 
-    public string GetCurrentInquiryObjectId()
-    {
-        if (currentInquiryObjectId == null)
-        {
+    public string GetCurrentInquiryObjectId() {
+        if (currentInquiryObjectId == null) {
             Debug.Log("currentInquiryObjectId is NULL!");
             return null;
         }
-        else return currentInquiryObjectId;
+
+        return currentInquiryObjectId;
     }
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
+    private void Awake() {
+        if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
+        } else
             Destroy(gameObject);
-        }
     }
     
-    private void Start()
-    {
+    private void Start() {
         variablesCSV = Resources.Load<TextAsset>("Datas/variables");
         CreateVariables();
 
@@ -72,13 +64,13 @@ public class GameManager : MonoBehaviour
             ShowVariables();
     }
 
-    private void CreateVariables()
-    {
+    private void CreateVariables() {
         string[] variableLines = variablesCSV.text.Split('\n');
         
         for (int i = 1; i < variableLines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(variableLines[i])) continue;
+            if (string.IsNullOrWhiteSpace(variableLines[i])) 
+                continue;
 
             string[] fields = variableLines[i].Split(',');
 
@@ -86,8 +78,7 @@ public class GameManager : MonoBehaviour
             string variableValue = fields[1].Trim();
             string variableType = fields[2].Trim();
 
-            switch (variableType)
-            {
+            switch (variableType) {
                 case "int":
                     variables.Add(variableName, int.Parse(variableValue));
                     break;
@@ -104,141 +95,90 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetVariable(string variableName, object value)
-    {
+    public void SetVariable(string variableName, object value) {
         if (variables.ContainsKey(variableName))
-        {
             variables[variableName] = value;
-        }
         else
-        {
             Debug.Log($"variable \"{variableName}\" does not exist!");
-        }
     }
 
-    public object GetVariable(string variableName)
-    {
+    public object GetVariable(string variableName) {
         if (variables.ContainsKey(variableName))
-        {
             return variables[variableName];
-        }
-        else
-        {
-            Debug.Log($"variable: \"{variableName}\" does not exist!");
-            return null;
-        }
+
+        Debug.Log($"variable: \"{variableName}\" does not exist!");
+        return null;
     }
 
-    public void IncrementVariable(string variableName)
-    {
-        int cnt = (int)GetVariable(variableName);
-        cnt++;
-        SetVariable(variableName, cnt);
+    public void IncrementVariable(string variableName) {
+        SetVariable(variableName, (int)GetVariable(variableName) + 1);
     }
 
-    public void IncrementVariable(string variableName, int count)
-    {
-        int cnt = (int)GetVariable(variableName);
-        cnt += count;
-        SetVariable(variableName, cnt);
+    public void IncrementVariable(string variableName, int count) {
+        SetVariable(variableName, (int)GetVariable(variableName) + count);
     }
 
-    public void DecrementVariable(string variableName)
-    {
-        int cnt = (int)GetVariable(variableName);
-        cnt--;
-        SetVariable(variableName, cnt);
+    public void DecrementVariable(string variableName) {
+        SetVariable(variableName, (int)GetVariable(variableName) - 1);
     }
 
-    public void DecrementVariable(string variableName, int count)
-    {
-        int cnt = (int)GetVariable(variableName);
-        cnt -= count;
-        SetVariable(variableName, cnt);
+    public void DecrementVariable(string variableName, int count) {
+        SetVariable(variableName, (int)GetVariable(variableName) - count);
     }
 
-    public void InverseVariable(string variableName)
-    {
-        bool variableValue = (bool)GetVariable(variableName);
-        variableValue = !variableValue;
-        SetVariable(variableName, variableValue);
+    public void InverseVariable(string variableName) {
+        SetVariable(variableName, !(bool)GetVariable(variableName));
     }
 
     // 디버깅 용
-    private void Update()
-    {
+    private void Update() {
         if (isDebug) ShowVariables();
     }
 
-    private void ShowVariables()
-    {
+    private void ShowVariables() {
         variablesText.text = "";  // 텍스트 초기화
 
         // 화면에 표시하고 싶은 변수명 추가
-        List<string> keysToShow = new List<string>(new string[]
-        {
+        List<string> keysToShow = new List<string>(new string[] {
             "TutorialPhase",
             "ClosedCarpetClick"
         });
 
         foreach (var item in variables)
-        {
             if (keysToShow.Contains(item.Key)) variablesText.text += $"{item.Key}: {item.Value}\n";
-        }
     }
 
-    public bool GetIsBusy()  // 클릭을 막아야 하는 상황들
-    {
-        bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
-        bool isInvestigating = RoomManager.Instance && RoomManager.Instance.isInvestigating;
-        bool isTutorialPhase1 = (int)variables["TutorialPhase"] == 1;
-        bool isMemoOpen = MemoManager.Instance.isMemoOpen;
-
-        bool isBusy = isDialogueActive || isInvestigating || isTutorialPhase1 || isMemoOpen;
-
-        return isBusy;
+    public bool GetIsBusy() { // 클릭을 막아야 하는 상황들
+        return DialogueManager.Instance.isDialogueActive ||
+               (RoomManager.Instance && RoomManager.Instance.isInvestigating) ||
+               MemoManager.Instance.isMemoOpen;
     }
 
     // 원래 EventObjectManager 기능들 GameManager에 옮김
 
-    public void AddEventObject(EventObject eventObject)
-    {
+    public void AddEventObject(EventObject eventObject) {
         if (!eventObjectsStatusDict.ContainsKey(eventObject.GetEventId()))
-        {
             eventObjectsStatusDict.Add(eventObject.GetEventId(), false);
-        }
     }
 
-    public void AddEventObject(string eventObjectId)
-    {
+    public void AddEventObject(string eventObjectId) {
         if (!eventObjectsStatusDict.ContainsKey(eventObjectId))
-        {
             eventObjectsStatusDict.Add(eventObjectId, false);
-        }
     }
 
-    public void SetEventFinished(string eventId)
-    {
+    public void SetEventFinished(string eventId) {
         if (eventObjectsStatusDict.ContainsKey(eventId))
-        {
             eventObjectsStatusDict[eventId] = true;
-        }
         else
-        {
             Debug.Log(eventId+ " is not existed!");
-        }
     }
 
-    public void SetEventUnFinished(string eventId)
-    {
+    public void SetEventUnFinished(string eventId) {
         if (eventObjectsStatusDict.ContainsKey(eventId))
-        {
             eventObjectsStatusDict[eventId] = false;
-        }
     }
 
-    public bool GetEventStatus(string eventId)
-    {
+    public bool GetEventStatus(string eventId) {
         return eventObjectsStatusDict.ContainsKey(eventId) && eventObjectsStatusDict[eventId];
     }
 }

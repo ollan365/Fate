@@ -19,8 +19,7 @@ public class MemoManager : PageContentsManager
     public bool isMemoOpen;
     public bool isFollow;
     private bool shouldHideMemoButton;
-    public void SetShouldHideMemoButton(bool value)
-    {
+    public void SetShouldHideMemoButton(bool value) {
         shouldHideMemoButton = value;
     }
 
@@ -115,6 +114,7 @@ public class MemoManager : PageContentsManager
     {
         SetMemoContents(false);
         SetMemoButtons(true);
+        UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.MemoButton, false);
 
         if (FollowManager.Instance)
             FollowManager.Instance.EndScript();

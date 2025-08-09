@@ -74,9 +74,15 @@ public class ResultManager : MonoBehaviour
 
     public void ExecuteResult(string resultID)
     {
-        if (GameManager.Instance.isDebug) Debug.Log(resultID);
+        if (GameManager.Instance.isDebug) 
+            Debug.Log(resultID);
+        
         string variableName;
-
+        
+        TutorialManager tutorialManager = null;
+        if (RoomManager.Instance && RoomManager.Instance.tutorialManager)
+            tutorialManager = RoomManager.Instance.tutorialManager;
+        
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
@@ -236,7 +242,10 @@ public class ResultManager : MonoBehaviour
             
             // 튜토리얼
             case "Result_nextTutorialPhase":  // 튜토리얼 다음 페이즈로 진행
-                RoomManager.Instance.tutorialManager.ProceedToNextPhase();
+                if (!tutorialManager)
+                    break;
+                
+                tutorialManager.ProceedToNextPhase();
                 break;
 
             case "Result_TutorialPhase1ForceMoveButtons":  // 방을 둘러보자 (이동버튼 강조)
@@ -244,63 +253,59 @@ public class ResultManager : MonoBehaviour
                 UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.RightButton, true);
                 break;
 
-            case "Result_TutorialPhase2ForceCarpet":  // 카펫 강조
+            case "Result_TutorialPhase2ForceCarpet":  // 닫힌 카펫 강조
+                if (!tutorialManager)
+                    break;
+
                 UIManager.Instance.ToggleHighlightAnimationEffect(
-                    RoomManager.Instance.tutorialManager.tutorialGameObjects
-                        [TutorialManager.eTutorialObjectName.Carpet],
-                    true);
+                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.CarpetClosed], true);
                 UIManager.Instance.ToggleHighlightAnimationEffect(
-                    RoomManager.Instance.tutorialManager.tutorialGameObjects
-                        [TutorialManager.eTutorialObjectName.Chair],
-                    false);
+                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.Chair], false);
+                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.CarpetClosed, true);
+                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, false);
                 break;
             
-            case "Result_TutorialPhase2ForceChair":  // 의자 밀어보자 (이미지 강조는 X 검은 화면O)
+            case "Result_TutorialPhase2ForceChair":  // 의자 강조
+                if (!tutorialManager)
+                    break;
+                
                 UIManager.Instance.ToggleHighlightAnimationEffect(
-                    RoomManager.Instance.tutorialManager.tutorialGameObjects
-                        [TutorialManager.eTutorialObjectName.Carpet],
-                    false);
+                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.CarpetClosed], false);
                 UIManager.Instance.ToggleHighlightAnimationEffect(
-                    RoomManager.Instance.tutorialManager.tutorialGameObjects
-                        [TutorialManager.eTutorialObjectName.Chair],
-                    true);
-                RoomManager.Instance.tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.Chair]
-                    .GetComponent<CapsuleCollider2D>()
-                    .enabled = true; // 의자 클릭 되게 함
+                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.Chair], true);
+                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.CarpetClosed, false);
+                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);
                 break;
             
-            case "Result_TutorialPhase3ForceLoR":  // 종이 조사해보자
+            case "Result_TutorialPhase3ForceLoR":  // 종이 강조
+                if (!tutorialManager)
+                    break;
+                
                 UIManager.Instance.ToggleHighlightAnimationEffect(
-                    RoomManager.Instance.tutorialManager.tutorialGameObjects
-                        [TutorialManager.eTutorialObjectName.LoR],
-                    true);
+                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.CarpetClosed], false);
+                UIManager.Instance.ToggleHighlightAnimationEffect(
+                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.LoR], true);
+                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.CarpetOpen, false);
                 break;
             
+            case "ResultHighlightHeartsOn":
+                foreach (Transform heart in UIManager.Instance.GetUI(eUIGameObjectName.HeartParent).transform)
+                    UIManager.Instance.ToggleHighlightAnimationEffect(heart.gameObject, true);
+                break;
             
-            //
-            // case "Result_TutorialPhase3ForceSide1":  // 카펫 들어보자 (덮인 카펫 강조)
-            //     RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpet");
-            //     break;
-            //
-            // case "Result_TutorialPhase3Force":  // 카펫 들어보자 (이미지 강조는 X 검은 화면O)
-            //     RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-            //     break;
-            //
-            // case "Result_TutorialPhase4ForceSide1":  // 종이 조사해보자 (카펫 밑 종이 강조)
-            //     RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpetPaper");
-            //     break;
-            //
-            // case "Result_TutorialPhase4Force":  // 종이 조사해보자 (이미지 강조는 X 검은 화면O)
-            //     RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-            //     break;
-            //
-            // case "Result_TutorialPhase5ForceSide1":  // 열린 카펫 덮자 (열린 카펫 강조)
-            //     RoomManager.Instance.imageAndLockPanelManager.SetTutorialImageObject(true, "TutorialCarpetOpen");
-            //     break;
-            //
-            // case "Result_TutorialPhase5Force":  // 열린 카펫 덮자 (이미지 강조는 X 검은 화면O)
-            //     RoomManager.Instance.imageAndLockPanelManager.SetTutorialBlockingPanel(true);
-            //     break;
+            case "ResultHighlightHeartsOff":
+                foreach (Transform heart in UIManager.Instance.GetUI(eUIGameObjectName.HeartParent).transform)
+                    UIManager.Instance.ToggleHighlightAnimationEffect(heart.gameObject, false);
+                break;
+            
+            case "Result_TutorialPhase5Force":  // 열린 카펫 덮자 (이미지 강조는 X 검은 화면O)
+                if (!tutorialManager)
+                    break;
+                
+                tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.CarpetOpen, true);
+                UIManager.Instance.ToggleHighlightAnimationEffect(
+                    tutorialManager.tutorialGameObjects[TutorialManager.eTutorialObjectName.CarpetOpen], true);
+                break;
                 
             case "ResultNewTeddyBearZoom":
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "newTeddyBear");

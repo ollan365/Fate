@@ -475,9 +475,8 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeSentence(string sentence)
     {
-        Debug.Log($"Typing sentence {sentence} with speed {typeSpeed}");
-        
-        if(teddyBearIcons.Length > dialogueType.ToInt()) teddyBearIcons[dialogueType.ToInt()].SetActive(false);
+        if(teddyBearIcons.Length > dialogueType.ToInt()) 
+            teddyBearIcons[dialogueType.ToInt()].SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
 
@@ -534,16 +533,13 @@ public class DialogueManager : MonoBehaviour
 
     public void OnDialoguePanelClick()
     {
-        if (!isDialogueActive || isAuto) return;
+        if (!isDialogueActive || isAuto) 
+            return;
 
         if (isTyping)
-        {
             CompleteSentence();
-        }
         else
-        {
             ProceedToNext();
-        }
     }
 
     private void CompleteSentence()
