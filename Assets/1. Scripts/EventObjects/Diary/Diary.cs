@@ -23,5 +23,6 @@ public class Diary : EventObject, IResultExecutable
     private void ActivateDiaryLock() {
         isInquiry = false;  // 조사 시스템 예 아니오 스킵
         UIManager.Instance.AnimateUI(diaryLock, true, true);
+        SetCurrentLockObjectCanvasGroup(diaryLock);
     }
 }

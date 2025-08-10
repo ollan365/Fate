@@ -16,6 +16,7 @@ public enum FloatDirection {
 }
 
 public enum eUIGameObjectName {
+    BlurImage,
     ObjectImageParentRoom, // object image panel parent in room scene
     ObjectImageRoom, // object image panel in room scene
     LoadingScreen,
@@ -78,6 +79,9 @@ public class UIManager : MonoBehaviour {
     public CanvasGroup progressBarGroup;
     public CanvasGroup Loading_AnimationGroup;
     public List<GameObject> loading_characters;
+    
+    [Header("Blur Image")]
+    public GameObject blurImage;
 
     [Header("Object Image")]
     public GameObject objectImageParentRoom;
@@ -193,6 +197,8 @@ public class UIManager : MonoBehaviour {
     }
 
     private void AddUIGameObjects() {
+        uiGameObjects.Add(eUIGameObjectName.BlurImage, blurImage);
+
         uiGameObjects.Add(eUIGameObjectName.ObjectImageParentRoom, objectImageParentRoom);
         uiGameObjects.Add(eUIGameObjectName.ObjectImageRoom, objectImageRoom);
 
@@ -287,12 +293,9 @@ public class UIManager : MonoBehaviour {
             SetUI(ui.Key, isActive);
     }
 
-    public void SetUI(eUIGameObjectName uiName,
-        bool isActive,
-        bool fade = false,
+    public void SetUI(eUIGameObjectName uiName, bool isActive, bool fade = false,
         FloatDirection floatDir = FloatDirection.None) {
-        GameObject targetUI = uiGameObjects[uiName];
-        AnimateUI(targetUI, isActive, fade, floatDir);
+        AnimateUI(uiGameObjects[uiName], isActive, fade, floatDir);
     }
 
     public GameObject GetUI(eUIGameObjectName uiName) {

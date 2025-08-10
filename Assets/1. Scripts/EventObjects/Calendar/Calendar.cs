@@ -25,5 +25,6 @@ public class Calendar : EventObject, IResultExecutable
 
     private void ActivateCalendarPanel() {
         UIManager.Instance.AnimateUI(calendarPanel, true, true);
+        SetCurrentLockObjectCanvasGroup(calendarPanel);
     }
 }

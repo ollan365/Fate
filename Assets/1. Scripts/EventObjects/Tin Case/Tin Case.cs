@@ -11,7 +11,6 @@ public class TinCase : EventObject, IResultExecutable
         ResultManager.Instance.RegisterExecutable("TinCase", this);
     }
     
-
     public new void OnMouseDown()
     {
         bool isBusy = GameManager.Instance.GetIsBusy();
@@ -29,5 +28,6 @@ public class TinCase : EventObject, IResultExecutable
     {
         isInquiry = false;  // 조사 시스템 예 아니오 스킵
         UIManager.Instance.AnimateUI(tinCaseLock, true, true);
+        SetCurrentLockObjectCanvasGroup(tinCaseLock);
     }
 }

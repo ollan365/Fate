@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 public class ImageAndLockPanelManager : MonoBehaviour
 {
-    [SerializeField] private GameObject blockingPanel;
     private GameObject objectImageGroup;
     private Image objectImageImageComponent;
     private RectTransform objectImageRectTransform;
+    public CanvasGroup currentLockObjectCanvasGroup;
 
     [Header("방탈출 다회차 이벤트 오브젝트 확대 이미지")]
     [SerializeField] private Sprite newTeddyBearImage;
@@ -72,7 +72,6 @@ public class ImageAndLockPanelManager : MonoBehaviour
     private float maxWidth = 890f;
 
     private void Awake() {
-        blockingPanel = DialogueManager.Instance.blurImage;
         objectImageGroup = UIManager.Instance.objectImageParentRoom;
         GameObject objectImage = UIManager.Instance.objectImageRoom;
         objectImageImageComponent = objectImage.GetComponent<Image>();
@@ -134,21 +133,12 @@ public class ImageAndLockPanelManager : MonoBehaviour
     }
 
     public void OnExitButtonClick() {
-        if (isImageActive) {
+        if (isImageActive)
             SetObjectImageGroup(false);
-
-            bool isImageOrLockActive = isImageActive || isLockObjectActive;
-            RoomManager.Instance.SetIsInvestigating(isImageOrLockActive);
-
-            return;
-        }
-
-        if (isLockObjectActive) {
+        else if (isLockObjectActive)
             SetLockObject(false);
 
-            bool isImageOrLockActive = isImageActive || isLockObjectActive;
-            RoomManager.Instance.SetIsInvestigating(isImageOrLockActive);
-        }
+        RoomManager.Instance.SetIsInvestigating(isImageActive || isLockObjectActive);
     }
 
     public void SetObjectImageGroup(bool isTrue, string eventObjectName = null)
@@ -181,13 +171,13 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
-            blockingPanel.SetActive(true);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true);
         }
 
         UIManager.Instance.SetUI(eUIGameObjectName.ObjectImageParentRoom, isTrue, true);
         
         if (!GetIsImageOrLockPanelActive())
-            blockingPanel.SetActive(false);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false);
     }
 
     public IEnumerator SetObjectImageGroupCoroutine(bool isTrue, string eventObjectName = null, float delayTime = 0.1f) {
@@ -209,16 +199,19 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
-            blockingPanel.SetActive(true);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true);
         } else if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects)) {
             foreach (var puzzleObject in puzzleObjects)
                 UIManager.Instance.AnimateUI(puzzleObject, false, true);
             StartCoroutine(DeactivateLockObjectWithDelay(currentLockObjectName, UIManager.Instance.fadeAnimationDuration));
-        } else
+            currentLockObjectCanvasGroup = null; 
+        } else {
             lockObjectDictionary[currentLockObjectName].gameObject.SetActive(false);
+            currentLockObjectCanvasGroup = null; 
+        }
 
         if (!GetIsImageOrLockPanelActive())
-            blockingPanel.SetActive(false);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false);
         currentLockObjectName = lockObjectName;
     }
     

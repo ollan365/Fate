@@ -19,14 +19,9 @@ public class SewingBoxBead : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     [SerializeField] private float moveDuration = 0.3f; // 이동에 걸리는 시간
 
-    [SerializeField] private bool isConflict = false;
-
     private RectTransform originalParent;
 
     private RectTransform rectTransform;
-
-    float fixedPositionXvalue;
-
 
     private void Start()
     {
@@ -38,8 +33,6 @@ public class SewingBoxBead : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             currentPositionNumber = ParseColumn(transform.parent.name);
         }
 
-        fixedPositionXvalue = gameObject.transform.position.x;
-        
         // (옵션) 드래그 감도 조정
         //EventSystem.current.pixelDragThreshold = 1;
     }

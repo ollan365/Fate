@@ -211,9 +211,6 @@ public class FollowDayMiniGame : MonoBehaviour
         // 게임 오버이고 메모의 개수가 불충분 or 게임 클리어
         else
         {
-            bool followEnd = false;
-            if (isGameOver) followEnd = true;
-
             isGameOver = true; // 다른 코루틴들이 멈추도록 설정
 
             MemoManager.Instance.SetMemoButtons(true);

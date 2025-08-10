@@ -18,28 +18,22 @@ public class ClockHand : MonoBehaviour
     private bool isClockTimeCorrect = false;
     private int beforeTime;
 
-    [SerializeField] private ImageAndLockPanelManager imageAndLockPanelManager;
-
     [SerializeField] private Clock clockA;
 
-    private void Awake()
-    {
+    private void Awake() {
         correctMinute = (int)GameManager.Instance.GetVariable("ClockPasswordMinute");
         correctHour = (int)GameManager.Instance.GetVariable("ClockPasswordHour");
     }
 
-    private void Update()
-    {
-        bool isImageActive = imageAndLockPanelManager.isImageActive;
-        if (isSnapping || isImageActive) return;
-        if (Input.GetMouseButtonDown(0) && !isSnapping)
-        {
-            // 비밀번호 무한 입력 시도 방지
-            RoomManager.Instance.ProhibitInput();
+    private void Update() {
+        if (isSnapping || RoomManager.Instance.imageAndLockPanelManager.isImageActive) 
+            return;
+        
+        if (Input.GetMouseButtonDown(0)) {
+            RoomManager.Instance.ProhibitInput(); // 비밀번호 무한 입력 시도 방지
 
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 handTipPosition = minuteHand.position + minuteHand.up * 5.7f;
-
             if (Vector2.Distance(mousePosition, handTipPosition) < 2f)  // 분침의 끝부분과 일정 거리 이하에서 클릭해야 작동
             {
                 lastAngle = Mathf.Atan2(mousePosition.y - minuteHand.position.y, mousePosition.x - minuteHand.position.x) * Mathf.Rad2Deg;
@@ -70,11 +64,13 @@ public class ClockHand : MonoBehaviour
         minuteAngle += delta;
         minuteHand.rotation = Quaternion.Euler(0, 0, minuteAngle);
     }
+    
     private void RotateHourHand(float delta)
     {
         hourAngle += delta / 12;
         hourHand.rotation = Quaternion.Euler(0, 0, hourAngle);
     }
+    
     private System.Collections.IEnumerator SnapHandsToNearestTick(int timeBefore)
     {
         isSnapping = true;  // 달라붙고 있는 도중에는 조작 불가능 
@@ -108,6 +104,7 @@ public class ClockHand : MonoBehaviour
         if (timeBefore != timeAfter)
             CompareClockHands();
     }
+    
     private void CompareClockHands()
     {
         if (isClockTimeCorrect) return;
@@ -125,6 +122,7 @@ public class ClockHand : MonoBehaviour
 
         EventManager.Instance.CallEvent("EventClockB");
     }
+    
     private int CalculateHourFromAngle(float angle)
     {
         angle = (angle + 360) % 360;

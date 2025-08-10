@@ -11,7 +11,6 @@ public class ButtonAnimator : MonoBehaviour
     [SerializeField] private float minInterval = 2f;
     [SerializeField] private float maxInterval = 4f;
     [SerializeField] private float animationDuration = 0.5f;
-    [SerializeField] private float animationIntensity = 1.1f;
     [SerializeField] private AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     
     [Header("Scale Animation")]

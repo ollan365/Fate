@@ -25,7 +25,6 @@ public class SewingBoxPuzzle : MonoBehaviour
             Destroy(gameObject);
     }
 
-
     private void settingBeadsAnswer()
     {
         BeadsAnswer.Add(1,1);

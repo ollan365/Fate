@@ -52,4 +52,15 @@ public class EventObject : MonoBehaviour
     {
         this.isInquiry = isInquiry;
     }
+
+    protected void SetCurrentLockObjectCanvasGroup(GameObject lockObject) {
+        RoomManager roomManager = RoomManager.Instance;
+        CanvasGroup canvasGroup = lockObject.GetComponent<CanvasGroup>();
+        if (!(roomManager && roomManager.imageAndLockPanelManager && canvasGroup))
+            return;
+    
+        roomManager.imageAndLockPanelManager.currentLockObjectCanvasGroup = canvasGroup;
+        if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            canvasGroup.blocksRaycasts = false;
+    }
 }

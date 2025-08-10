@@ -83,10 +83,9 @@ public class Chair : EventObject, IResultExecutable
         isMoving = false;
 
         chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
-        if (sideNum == 1)
-        {
-            deskUnMovedChair.SetActive(chairMoved ? false : true);
-            deskMovedChair.SetActive(chairMoved ? true : false);
+        if (sideNum == 1) {
+            deskUnMovedChair.SetActive(!chairMoved);
+            deskMovedChair.SetActive(chairMoved);
         }
 
         GameManager.Instance.SetVariable("isChairMoving", isMoving);
@@ -97,10 +96,9 @@ public class Chair : EventObject, IResultExecutable
         chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
         rectTransform.anchoredPosition = chairMoved ? movedPositions[sideNum] : originalPosition;
 
-        if (sideNum == 1)
-        {
-            deskUnMovedChair.SetActive(chairMoved ? false : true);
-            deskMovedChair.SetActive(chairMoved ? true : false);
+        if (sideNum == 1) {
+            deskUnMovedChair.SetActive(!chairMoved);
+            deskMovedChair.SetActive(chairMoved);
         }
     }
 }

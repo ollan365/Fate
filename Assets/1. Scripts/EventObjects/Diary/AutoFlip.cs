@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(PageFlip))]
 public class AutoFlip : MonoBehaviour
@@ -75,6 +76,7 @@ public class AutoFlip : MonoBehaviour
         controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
         controlledBook.pageContentsManager.flipRightButton.SetActive(false);
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, false);
+        UIManager.Instance.GetUI(eUIGameObjectName.BlurImage).GetComponent<Button>().interactable = false;
 
         float elapsedTime = 0;
         float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
@@ -123,5 +125,6 @@ public class AutoFlip : MonoBehaviour
             currentPage -= 2;
 
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, true);
+        UIManager.Instance.GetUI(eUIGameObjectName.BlurImage).GetComponent<Button>().interactable = true;
     }
 }

@@ -97,9 +97,8 @@ public class FollowFinishMiniGame : MonoBehaviour
             GameSceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
             yield break;
         }
-
-        StartCoroutine(EndLogic());
     }
+    
     public IEnumerator EndLogic()
     {
         //메모의 개수가 충분할 때

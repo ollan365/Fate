@@ -30,12 +30,14 @@ public class Clock : EventObject, IResultExecutable
     private void ActivateClockPuzzle() {
         isInquiry = false;  // 조사 시스템 예 아니오 스킵
         UIManager.Instance.AnimateUI(clockPuzzle, true, true);
+        SetCurrentLockObjectCanvasGroup(clockPuzzle);
     }
 
     public void SwapAfterImage() {
-        bool isCorrect = (bool)GameManager.Instance.GetVariable("ClockTimeCorrect");
-        if(isCorrect)
-            foreach (Image beforeClock in Clocks)
-                beforeClock.sprite = AfterClockImage;
+        if (!(bool)GameManager.Instance.GetVariable("ClockTimeCorrect"))
+            return;
+    
+        foreach (Image beforeClock in Clocks)
+            beforeClock.sprite = AfterClockImage;
     }
 }

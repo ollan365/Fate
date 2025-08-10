@@ -22,9 +22,7 @@ public class DialogueManager : MonoBehaviour
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
-    public GameObject blurImage;
     [Header("teddyBearIcons")] public GameObject[] teddyBearIcons;
-    [Header("Blocking Panels")] public Image[] blockingPanels;
 
     // 타자 효과 속도
     [Header("Typing Speed")]
@@ -102,7 +100,7 @@ public class DialogueManager : MonoBehaviour
         currentDialogueID = dialogueID;
         
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
-        blurImage.SetActive(initialDialogueLine.Blur == "TRUE");
+        UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, initialDialogueLine.Blur == "TRUE");
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) 
@@ -139,10 +137,10 @@ public class DialogueManager : MonoBehaviour
         currentDialogueID = dialogueID;
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
 
-        if (initialDialogueLine.Blur == "TRUE") 
-            blurImage.SetActive(true);
+        if (initialDialogueLine.Blur == "TRUE")
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true);
         else if (!GetIsImageOrLockPanelActive())
-            blurImage.SetActive(false);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false);
 
         if (FollowManager.Instance) FollowManager.Instance.ClickObject();
 
@@ -163,8 +161,7 @@ public class DialogueManager : MonoBehaviour
                 Destroy(child.gameObject);
     }
     
-    private void SetupCanvasAndSpeakerText(DialogueLine dialogueLine)
-    {
+    private void SetupCanvasAndSpeakerText(DialogueLine dialogueLine) {
         ChangeDialogueCanvas(dialogueLine.SpeakerID);
 
         // Deactivate all canvases and then activate the selected one.
@@ -181,16 +178,13 @@ public class DialogueManager : MonoBehaviour
                     : scripts[dialogueLine.SpeakerID].GetScript();
     }
     
-    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast, out bool multi)
-    {
+    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast, out bool multi) {
         auto = false;
         fast = false;
         multi = false;
-    
         var sentence = scripts[dialogueLine.ScriptID].GetScript();
     
-        if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0)
-        {
+        if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0) {
             var effects = scripts[dialogueLine.ScriptID].Placeholder.Split('/');
             foreach (var effect in effects)
                 switch (effect)
@@ -226,38 +220,34 @@ public class DialogueManager : MonoBehaviour
         return sentence;
     }
 
-    private void UpdateBackground(DialogueLine dialogueLine)
-    {
+    private void UpdateBackground(DialogueLine dialogueLine) {
         int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
         var backgroundID = dialogueLine.BackgroundID;
-    
-        foreach (var currentBackgroundImage in backgroundImages)
+
+        foreach (var currentBackgroundImage in backgroundImages) {
             if (string.IsNullOrWhiteSpace(backgroundID))
                 currentBackgroundImage.color = new Color(1, 1, 1, 0);
-            else
-            {
+            else {
                 var backgroundSprite = Resources.Load<Sprite>(backgrounds[backgroundID].GetPath(accidyGender));
                 currentBackgroundImage.sprite = backgroundSprite;
                 currentBackgroundImage.color = new Color(1, 1, 1, 1);
             }
+        }
     }
     
-    private void PlayDialogueSound(DialogueLine dialogueLine)
-    {
+    private void PlayDialogueSound(DialogueLine dialogueLine) {
         if (string.IsNullOrWhiteSpace(dialogueLine.SoundID))
             return;
+        
         var soundID = "Sound_" + dialogueLine.SoundID;
         var soundNum = (int)typeof(Constants).GetField(soundID).GetValue(null);
         SoundPlayer.Instance.UISoundPlay(soundNum);
     }
 
-    private void UpdateCharacterImages(DialogueLine dialogueLine)
-    {
+    private void UpdateCharacterImages(DialogueLine dialogueLine) {
         int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
         var imageID = dialogueLine.ImageID;
-
-        if (string.IsNullOrWhiteSpace(imageID))
-        {
+        if (string.IsNullOrWhiteSpace(imageID)) {
             foreach (var characterImage in characterImages)
                 characterImage.color = new Color(1, 1, 1, 0);
             foreach (Image fadeImage in characterFadeImages)
@@ -270,8 +260,7 @@ public class DialogueManager : MonoBehaviour
         int yOffset = GetCharacterYOffset(accidyGender, zoomLevel);
         float scale = GetCharacterScale(accidyGender, zoomLevel);
 
-        foreach (Image characterImage in characterImages)
-        {
+        foreach (Image characterImage in characterImages) {
             characterImage.color = new Color(1, 1, 1, 1);
             characterImage.sprite = characterSprite;
             characterImage.SetNativeSize();
@@ -281,12 +270,11 @@ public class DialogueManager : MonoBehaviour
             characterImage.gameObject.SetActive(true);
         }
 
-        if (dialogueLine.SpeakerID is "DialogueC_001" or "DialogueC_002")
+        if (dialogueLine.SpeakerID is "DialogueC_001" or "DialogueC_002") {
             foreach (Image fadeImage in characterFadeImages)
                 fadeImage.gameObject.SetActive(false);
-        else
-            foreach (Image fadeImage in characterFadeImages)
-            {
+        } else
+            foreach (Image fadeImage in characterFadeImages) {
                 fadeImage.color = new Color(0, 0, 0, 0.8f);
                 fadeImage.sprite = characterSprite;
                 fadeImage.SetNativeSize();
@@ -297,8 +285,13 @@ public class DialogueManager : MonoBehaviour
             }
     }
 
-    private void DisplayDialogueLine(DialogueLine dialogueLine)
-    {
+    private void DisplayDialogueLine(DialogueLine dialogueLine) {
+        UIManager.Instance.GetUI(eUIGameObjectName.ObjectImageParentRoom).GetComponent<CanvasGroup>().blocksRaycasts = false;
+        if (RoomManager.Instance && 
+            RoomManager.Instance.imageAndLockPanelManager &&
+            RoomManager.Instance.imageAndLockPanelManager.currentLockObjectCanvasGroup)
+            RoomManager.Instance.imageAndLockPanelManager.currentLockObjectCanvasGroup.blocksRaycasts = false;
+        
         ClearPreviousChoices();
         SetupCanvasAndSpeakerText(dialogueLine);
 
@@ -318,10 +311,8 @@ public class DialogueManager : MonoBehaviour
         UIManager.Instance.SetCursorAuto();
     }
 
-    private int GetCharacterYOffset(int accidyGender, int characterImageZoomLevel)
-    {
-        if (characterImageZoomLevel is < 0 or > 10)
-        {
+    private int GetCharacterYOffset(int accidyGender, int characterImageZoomLevel) {
+        if (characterImageZoomLevel is < 0 or > 10) {
             Debug.LogWarning("Invalid characterImageZoomLevel!");
             return 0;
         }
@@ -331,10 +322,8 @@ public class DialogueManager : MonoBehaviour
             : yOffsetMaximumBoy - (yOffsetMaximumBoy - yOffsetMinimumBoy) / 10 * characterImageZoomLevel;
     }
     
-    private float GetCharacterScale(int accidyGender, int characterImageZoomLevel)
-    {
-        if (characterImageZoomLevel is < 0 or > 10)
-        {
+    private float GetCharacterScale(int accidyGender, int characterImageZoomLevel) {
+        if (characterImageZoomLevel is < 0 or > 10) {
             Debug.LogWarning("Invalid characterImageZoomLevel!");
             return 0;
         }
@@ -344,13 +333,10 @@ public class DialogueManager : MonoBehaviour
             : scaleMinimumBoy + (scaleMaximumBoy - scaleMinimumBoy) / 10 * characterImageZoomLevel;
     }
 
-    private void ChangeDialogueCanvas(string speaker)
-    {
+    private void ChangeDialogueCanvas(string speaker) {
         // 미행 대화창
-        if (GameSceneManager.Instance.GetActiveScene() is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
-        {
-            switch (speaker)
-            {
+        if (GameSceneManager.Instance.GetActiveScene() is SceneType.FOLLOW_1 or SceneType.FOLLOW_2) {
+            switch (speaker) {
                 case "DialogueC_004":
                     FollowManager.Instance.EndExtraDialogue(false);
                     dialogueType = DialogueType.FOLLOW_THINKING;
@@ -359,18 +345,15 @@ public class DialogueManager : MonoBehaviour
                     FollowManager.Instance.EndExtraDialogue(false);
                     dialogueType = DialogueType.FOLLOW;
                     break;
-                // 행인의 대사인 경우
-                default:
+                default: // 행인의 대사인 경우
                     FollowManager.Instance.EndExtraDialogue(false);
                     FollowManager.Instance.OpenExtraDialogue(speaker);
                     break;
             }
-
             return;
         }
 
-        switch (speaker)
-        {
+        switch (speaker) {
             case "DialogueC_001" or "DialogueC_002":
                 dialogueType = DialogueType.ROOM_ACCIDY;
                 break;
@@ -383,29 +366,29 @@ public class DialogueManager : MonoBehaviour
         }
     }
     
-    public void EndDialogue()
-    {
+    public void EndDialogue() {
         isDialogueActive = false;
         dialogueSet[dialogueType.ToInt()].SetActive(false);
         foreach (Image characterImage in characterImages)
             characterImage.gameObject.SetActive(false);
-        if (dialogueQueue.Count > 0)  // 큐에 다이얼로그가 들어있으면 다시 대화 시작
-        {
+        
+        if (dialogueQueue.Count > 0) {  // 큐에 다이얼로그가 들어있으면 다시 대화 시작
             string queuedDialogueID = dialogueQueue.Dequeue();
             StartDialogue(queuedDialogueID);
-
             return;
         }
 
         MemoManager.Instance.SetMemoButtons(true);
         
         if (!GetIsImageOrLockPanelActive())
-            blurImage.SetActive(false);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false);
         
         UIManager.Instance.SetCursorAuto();
         
-        if (FollowManager.Instance) FollowManager.Instance.EndScript();
-        if (!RoomManager.Instance) return;
+        if (FollowManager.Instance) 
+            FollowManager.Instance.EndScript();
+        if (!RoomManager.Instance)
+            return;
 
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
         var isChoosingBrokenBearChoice = false;
@@ -416,76 +399,69 @@ public class DialogueManager : MonoBehaviour
 
         if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice && !isInvestigating)
             RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
-
+        
         RoomManager.Instance.SetButtons();
+        UIManager.Instance.GetUI(eUIGameObjectName.ObjectImageParentRoom).GetComponent<CanvasGroup>().blocksRaycasts = true;
+        if (RoomManager.Instance &&
+            RoomManager.Instance.imageAndLockPanelManager &&
+            RoomManager.Instance.imageAndLockPanelManager.currentLockObjectCanvasGroup)
+            RoomManager.Instance.imageAndLockPanelManager.currentLockObjectCanvasGroup.blocksRaycasts = true;
     }
 
-    public void SkipButtonClick()
-    {
+    public void SkipButtonClick() {
         StopAllCoroutines();
 
         dialogues[currentDialogueID].SetCurrentLineIndex(dialogues[currentDialogueID].Lines.Count - 2);
         StartCoroutine(SkipDialogue());
     }
 
-    private IEnumerator SkipDialogue()
-    {
+    private IEnumerator SkipDialogue() {
         ProceedToNext();
 
-        while (!isTyping) yield return null;
+        while (!isTyping) 
+            yield return null;
 
         CompleteSentence();
-        if (isFast)
-        {
+        if (isFast) {
             typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
             isFast = false;
         }
-        if (isAuto) isAuto = false;
+        if (isAuto) 
+            isAuto = false;
 
         OnDialoguePanelClick();
     }
 
     // ---------------------------------------------- Script methods ----------------------------------------------
-    private void ProceedToNext()
-    {
+    private void ProceedToNext() {
         int currentDialogueLineIndex = dialogues[currentDialogueID].CurrentLineIndex;
         string next = dialogues[currentDialogueID].Lines[currentDialogueLineIndex].Next;
 
-        if (EventManager.Instance.events.ContainsKey(next))  // Event인 경우
-        {
+        if (EventManager.Instance.events.ContainsKey(next)) { // Event인 경우
             EndDialogue();
             EventManager.Instance.CallEvent(next);
-        }
-        else if (dialogues.ContainsKey(next))  // Dialogue인 경우
-        {
+        } else if (dialogues.ContainsKey(next)) {  // Dialogue인 경우
             EndDialogue();
             StartDialogue(next);
-        }
-        else if (string.IsNullOrWhiteSpace(next))  // 빈칸인 경우 다음 줄(대사)로 이동
-        {
+        } else if (string.IsNullOrWhiteSpace(next)) { // 빈칸인 경우 다음 줄(대사)로 이동
             currentDialogueLineIndex++;
 
-            if (currentDialogueLineIndex >= dialogues[currentDialogueID].Lines.Count)
-            {
+            if (currentDialogueLineIndex >= dialogues[currentDialogueID].Lines.Count) {
                 EndDialogue();  // 더 이상 DialogueLine이 존재하지 않으면 대화 종료
                 return;
             }
-            else if (currentDialogueLineIndex == dialogues[currentDialogueID].Lines.Count - 1)
-            {
+            
+            if (currentDialogueLineIndex == dialogues[currentDialogueID].Lines.Count - 1)
                 foreach (GameObject skip in skipText) skip.SetActive(false); //  다이얼로그의 마지막 대사는 스킵 불가능
-            }
             dialogues[currentDialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
             DialogueLine nextDialogueLine = dialogues[currentDialogueID].Lines[currentDialogueLineIndex];
             DisplayDialogueLine(nextDialogueLine);
-        }
-        else if (choices.ContainsKey(next)) // Choice인 경우
-        {
+        } else if (choices.ContainsKey(next)) // Choice인 경우
             DisplayChoices(next);
-        }
     }
-    IEnumerator TypeSentence(string sentence)
-    {
-        if(teddyBearIcons.Length > dialogueType.ToInt()) 
+    
+    IEnumerator TypeSentence(string sentence) {
+        if (teddyBearIcons.Length > dialogueType.ToInt())
             teddyBearIcons[dialogueType.ToInt()].SetActive(false);
         scriptText[dialogueType.ToInt()].text = "";
         fullSentence = sentence;
@@ -495,17 +471,15 @@ public class DialogueManager : MonoBehaviour
         var effectText = "";
 
         // FAST 인 경우 두배의 속도로 타이핑
-        if (isFast) typeSpeed /= 1.75f;
+        if (isFast) 
+            typeSpeed /= 1.75f;
 
-        foreach (char letter in sentence)
-        {
-            if (letter == '<')
-            {
+        foreach (char letter in sentence) {
+            if (letter == '<') {
                 effectText = ""; // effectText 초기화
                 isEffect = true;
             }
-            else if (letter == '>') // > 가 나오면 scriptText에 한번에 붙인다
-            {
+            else if (letter == '>') { // > 가 나오면 scriptText에 한번에 붙인다
                 effectText += letter;
                 scriptText[dialogueType.ToInt()].text += effectText;
                 if (isMulti) accidyMultiScript.GetComponent<TextMeshProUGUI>().text += effectText;
@@ -513,8 +487,7 @@ public class DialogueManager : MonoBehaviour
                 continue;
             }
 
-            if (isEffect) // < 가 나온 이후부터는 effectText에 붙인다
-            {
+            if (isEffect) {// < 가 나온 이후부터는 effectText에 붙인다
                 effectText += letter;
                 continue;
             }
@@ -528,27 +501,26 @@ public class DialogueManager : MonoBehaviour
         if (teddyBearIcons.Length > dialogueType.ToInt()) 
             teddyBearIcons[dialogueType.ToInt()].SetActive(true);
 
-        if (isFast)
-        {
+        if (isFast) {
             typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
             isFast = false;
         }
         
-        if (isAuto)
-        {
+        if (isAuto) {
             isAuto = false;
             yield return new WaitForSeconds(0.25f);
             OnDialoguePanelClick(); // 자동으로 넘어감
 
-            foreach (GameObject skip in skipText) skip.SetActive(true);
+            foreach (GameObject skip in skipText) 
+                skip.SetActive(true);
         }
     }
 
-    public void OnDialoguePanelClick()
-    {
-        if (!isDialogueActive || isAuto) return;
-        if (isMulti)
-        {
+    public void OnDialoguePanelClick() {
+        if (isAuto) 
+            return;
+        
+        if (isMulti) {
             isMulti = false;
             accidyMultiScript.GetComponent<TextMeshProUGUI>().text = "";
             accidyMultiScript.gameObject.SetActive(false);
@@ -569,21 +541,16 @@ public class DialogueManager : MonoBehaviour
     }
 
     // ---------------------------------------------- Choice methods ----------------------------------------------
-    private void DisplayChoices(string choiceID)
-    {
-        if (choicesContainer.Length <= dialogueType.ToInt()) return;
-
-        if (blockingPanels.Length > dialogueType.ToInt()) blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0.7f);
+    private void DisplayChoices(string choiceID) {
+        if (choicesContainer.Length <= dialogueType.ToInt()) 
+            return;
 
         foreach (Transform child in choicesContainer[dialogueType.ToInt()])
-        {
             Destroy(child.gameObject);
-        }
 
         List<ChoiceLine> choiceLines = choices[choiceID].Lines;
 
-        foreach (ChoiceLine choiceLine in choiceLines)
-        {
+        foreach (ChoiceLine choiceLine in choiceLines) {
             var choiceButton = Instantiate(choicePrefab, choicesContainer[dialogueType.ToInt()]).GetComponent<Button>();
             var choiceText = choiceButton.GetComponentInChildren<TextMeshProUGUI>();
 
@@ -591,49 +558,34 @@ public class DialogueManager : MonoBehaviour
             choiceButton.onClick.AddListener(() => OnChoiceSelected(choiceLine.Next));
 
             // 만약 잠김 선택지(엔딩)라면 잠김으로 뜨도록 표시
-            if (scripts[choiceLine.ScriptID].Placeholder.Length <= 0) continue;
-            var effects = scripts[choiceLine.ScriptID].Placeholder.Split('/');
-            foreach (var effect in effects)
-            {
-                switch (effect)
-                {
+            if (scripts[choiceLine.ScriptID].Placeholder.Length <= 0) 
+                continue;
+            
+            foreach (var effect in scripts[choiceLine.ScriptID].Placeholder.Split('/'))
+                switch (effect) {
                     case "END_RUN":
-                        choiceButton.onClick.AddListener(() => EndingManager.Instance.ChoiceEnding());
-                        choiceButton.onClick.AddListener(() => EventManager.Instance.CallEvent("EventChangeBGMOfEnd_RUN"));
-                        break;
                     case "END_STAY":
                         choiceButton.onClick.AddListener(() => EndingManager.Instance.ChoiceEnding());
-                        choiceButton.onClick.AddListener(() => EventManager.Instance.CallEvent("EventChangeBGMOfEnd_STAY"));
+                        choiceButton.onClick.AddListener(() => EventManager.Instance.CallEvent($"EventChangeBGMOf{effect}"));
                         break;
                     case "LOCK":
-                        choiceText.text = "<color=#101010>" + scripts[choiceLine.ScriptID].GetScript() + "</color>";
+                        choiceText.text = $"<color=#101010>{scripts[choiceLine.ScriptID].GetScript()}</color>";
                         choiceButton.onClick.RemoveAllListeners();
                         break;
                 }
-            }
         }
     }
 
     private void OnChoiceSelected(string next)
     {
-        if (dialogues.ContainsKey(next))
-        {
+        if (dialogues.ContainsKey(next)) {
             EndDialogue();
             StartDialogue(next);
-        }
-        else if (EventManager.Instance.events.ContainsKey(next))
-        {
+        } else if (EventManager.Instance.events.ContainsKey(next))
             EventManager.Instance.CallEvent(next);
-        }
 
         foreach (Transform child in choicesContainer[dialogueType.ToInt()])
-        {
             Destroy(child.gameObject);
-        }
-
-        if (blockingPanels.Length > dialogueType.ToInt())
-            blockingPanels[dialogueType.ToInt()].color = new Color(0, 0, 0, 0);
-
     }
     
     private bool GetIsImageOrLockPanelActive()

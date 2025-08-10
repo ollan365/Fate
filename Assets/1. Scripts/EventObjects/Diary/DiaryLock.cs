@@ -31,7 +31,8 @@ public class DiaryLock : EventObject, IResultExecutable
     // 다이어리 내용 보여짐
     private void ShowDiaryContent() {
         diaryManager.SetTotalPages();
-        UIManager.Instance.AnimateUI(diaryContent.gameObject, true, true);
+        UIManager.Instance.AnimateUI(diaryContent, true, true);
+        SetCurrentLockObjectCanvasGroup(diaryContent);
         gameObject.SetActive(false);
 
         // 방탈출2 다이어리 관련

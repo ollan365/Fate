@@ -26,8 +26,7 @@ public class RoomManager : MonoBehaviour
     public ActionPointManager actionPointManager;
     public Room2ActionPointManager room2ActionPointManager;
     
-    [Header("튜토리얼 매니저")]
-    public TutorialManager tutorialManager;
+    [HideInInspector] public TutorialManager tutorialManager;
 
     void Awake()
     {
