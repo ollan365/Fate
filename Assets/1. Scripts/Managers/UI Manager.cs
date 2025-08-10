@@ -276,7 +276,7 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !GameSceneManager.Instance.IsSceneChanging) 
             SetMenuUI();
 
         CheckCursorTouchingUIs();
@@ -462,7 +462,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnLeftButtonClick() {
-        switch (SceneManager.Instance.GetActiveScene()) {
+        switch (GameSceneManager.Instance.GetActiveScene()) {
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
                 RoomManager.Instance.MoveSides(-1);
@@ -471,7 +471,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnRightButtonClick() {
-        switch (SceneManager.Instance.GetActiveScene()) {
+        switch (GameSceneManager.Instance.GetActiveScene()) {
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
                 RoomManager.Instance.MoveSides(1);
@@ -483,7 +483,7 @@ public class UIManager : MonoBehaviour {
         if (MemoManager.Instance && MemoManager.Instance.isMemoOpen)
             MemoManager.Instance.OnExit();
         else
-            switch (SceneManager.Instance.GetActiveScene()) {
+            switch (GameSceneManager.Instance.GetActiveScene()) {
                 case SceneType.START:
                     SetUI(eUIGameObjectName.Album, false, true, FloatDirection.Down);
                     SetUI(eUIGameObjectName.AlbumButton, true);
@@ -562,14 +562,12 @@ public class UIManager : MonoBehaviour {
         newColor.a = end;
         fadeObject.color = newColor;
 
-        // 곧바로 다시 어두워지거나 밝아지게 하고 싶을 때
-        if (blink) {
+        if (blink) { // 곧바로 다시 어두워지거나 밝아지게 하고 싶을 때
             yield return new WaitForSeconds(waitingTime);
             StartCoroutine(OnFade(fadeObject, end, start, fadeTime + changeFadeTime, false, 0, 0));
         }
 
-        // 투명해졌으면 끈다
-        if (fadeObject == coverPanel && end == 0) {
+        if (fadeObject == coverPanel && end == 0) { // 투명해졌으면 끈다
             fadeObject.gameObject.SetActive(false);
             coverText.gameObject.SetActive(false);
 
@@ -583,41 +581,30 @@ public class UIManager : MonoBehaviour {
         coverText.gameObject.SetActive(true);
         coverText.text = text;
 
-        // 진행도 추가
         progressBarGroup.gameObject.SetActive(true);
         Loading_AnimationGroup.gameObject.SetActive(true);
     }
 
-    // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
-    public IEnumerator SetLoadingAnimation(float start, float end, float fadeTime)
+    public IEnumerator SetLoadingAnimation(float start, float end, float fadeTime) // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
     {
         // 모든 캐릭터 오브젝트 다 꺼두기
-        foreach (GameObject loadingCharacter in loading_characters)
-        {
+        foreach (GameObject loadingCharacter in loading_characters) {
             loadingCharacter.SetActive(true);
             loadingCharacter.SetActive(false);
         }
 
-        GameObject accidyLoadingAnim;
         // 우연의 성별에 맞게 캐릭터 애니메이션 재생 작동
-        if ((int)GameManager.Instance.GetVariable("AccidyGender") == 0) accidyLoadingAnim = loading_characters[0];
-        else accidyLoadingAnim = loading_characters[1];
-
-        accidyLoadingAnim.gameObject.SetActive(true);
+        loading_characters[(int)GameManager.Instance.GetVariable("AccidyGender")].gameObject.SetActive(true);
 
         float current = 0, percent = 0;
-
-        while (percent < 1 && fadeTime != 0)
-        {
+        while (percent < 1 && fadeTime != 0) {
             current += Time.deltaTime;
             percent = current / fadeTime;
 
             Loading_AnimationGroup.alpha = Mathf.Lerp(start, end, percent);
-
             yield return null;
         }
     }
-
     
     // <summary> 변수 설명
     // 화면 이동할 때 사용하기 위해 만든 거라 동작이 조금 특이합니다...
@@ -691,21 +678,15 @@ public class UIManager : MonoBehaviour {
         uiToCheck.Remove(uiRectTransform);
     }
 
-    // Check if the cursor is touching any of the buttons
-    private void CheckCursorTouchingUIs() {
+    private void CheckCursorTouchingUIs() { // Check if the cursor is touching any of the buttons
         bool isCursorOverUIs = false;
         foreach (RectTransform uiRectTransform in uiToCheck) {
-            GameObject uiGameObject = uiRectTransform.gameObject;
-            if (!uiGameObject.activeSelf)
+            if (!uiRectTransform.gameObject.activeSelf || 
+                !RectTransformUtility.RectangleContainsScreenPoint(uiRectTransform, Input.mousePosition, uiCamera)) 
                 continue;
-
-            bool isCursorOverUI = RectTransformUtility.RectangleContainsScreenPoint(uiRectTransform,
-                Input.mousePosition,
-                uiCamera);
-            if (isCursorOverUI) {
-                isCursorOverUIs = true;
-                break;
-            }
+            
+            isCursorOverUIs = true;
+            break;
         }
 
         SetIsCursorTouchingUI(isCursorOverUIs);
@@ -721,7 +702,7 @@ public class UIManager : MonoBehaviour {
     // method to switch mouse cursor
     public void SetCursorAuto() {
         bool isDefault = GameManager.Instance.GetIsBusy()
-                         || SceneManager.Instance.GetActiveScene() is SceneType.START or SceneType.ENDING
+                         || GameSceneManager.Instance.GetActiveScene() is SceneType.START or SceneType.ENDING
                          || (RoomManager.Instance && RoomManager.Instance.imageAndLockPanelManager.isLockObjectActive)
                          || isCursorTouchingUI;
         ChangeCursor(isDefault);

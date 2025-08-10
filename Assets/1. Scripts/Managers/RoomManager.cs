@@ -37,7 +37,6 @@ public class RoomManager : MonoBehaviour
             Instance = this;
         
         imageAndLockPanelCanvas.worldCamera = UIManager.Instance.uiCamera;
-        SceneManager.Instance.ChangeSceneEffect();
         ResultManager.Instance.InitializeExecutableObjects();
         MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge));
         
@@ -75,7 +74,7 @@ public class RoomManager : MonoBehaviour
         actionPointManager.CreateHearts();  // create hearts on room start
 
         if (GameManager.Instance.skipTutorial ||
-            SceneManager.Instance.GetActiveScene() != Constants.SceneType.ROOM_1 ||
+            GameSceneManager.Instance.GetActiveScene() != Constants.SceneType.ROOM_1 ||
             (int)GameManager.Instance.GetVariable("ReplayCount") > 0)
             return;
 

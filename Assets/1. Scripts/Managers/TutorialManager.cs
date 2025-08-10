@@ -86,6 +86,8 @@ public class TutorialManager : MonoBehaviour
             case 6:
                 MemoManager.Instance.SetShouldHideMemoButton(false);
                 UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.MemoButton, true);
+                UIManager.Instance.ToggleHighlightAnimationEffect(tutorialGameObjects[eTutorialObjectName.CarpetOpen], false);
+                ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);
                 ResultManager.Instance.ExecuteResult(resultTutorialPhase6);
                 
                 CompleteTutorial();

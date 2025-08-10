@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 //public enum RoomType
@@ -509,7 +510,7 @@ abstract public class ActionPointManager : MonoBehaviour
 
             case FinishDayChangeBGM:
                 // Room Bgm 다시 재생
-                SoundPlayer.Instance.ChangeBGM(SceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1
+                SoundPlayer.Instance.ChangeBGM(GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1
                     ? Constants.BGM_ROOM1
                     : Constants.BGM_ROOM2);
                 break;

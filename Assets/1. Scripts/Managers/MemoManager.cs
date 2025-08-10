@@ -124,7 +124,7 @@ public class MemoManager : PageContentsManager
     public void RevealMemo(string memoID)
     {
         var scriptID = memoScripts[memoID];
-        int currentSceneIndex = SceneManager.Instance.GetActiveScene().ToInt();
+        int currentSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt();
         for (int i = 0; i < currentSceneIndex; i++)
         {
             if (RevealedMemoList[i].Contains(scriptID)) 
@@ -144,7 +144,7 @@ public class MemoManager : PageContentsManager
                     unseenMemoPages.Add(pageNum);
                     // Debug.Log($"Added page {pageNum} to unseen memo pages");
 
-                    GameManager.Instance.IncrementVariable($"MemoCount_{SceneManager.Instance.GetActiveScene()}");
+                    GameManager.Instance.IncrementVariable($"MemoCount_{GameSceneManager.Instance.GetActiveScene()}");
                     ChangeMemoGauge();
                 }
                 break;
@@ -162,13 +162,13 @@ public class MemoManager : PageContentsManager
         UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, showMemoIcon);
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, showMemoExitButton);
 
-        if (RoomManager.Instance && SceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.ROOM_2)
+        if (RoomManager.Instance && GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.ROOM_2)
             RoomManager.Instance.SetButtons();
     }
 
     public void SetMemoGauge(GameObject memoGaugeParent) 
     {
-        switch (SceneManager.Instance.GetActiveScene())
+        switch (GameSceneManager.Instance.GetActiveScene())
         {
             case SceneType.START:
                 break;
@@ -211,7 +211,7 @@ public class MemoManager : PageContentsManager
 
     private void ChangeMemoGauge()
     {
-        int currentSceneIndex = SceneManager.Instance.GetActiveScene().ToInt();
+        int currentSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt();
         int previousSceneIndex = currentSceneIndex - 1;
         if (currentSceneIndex is (int)SceneType.START or (int)SceneType.ENDING) 
             return;
@@ -257,7 +257,7 @@ public class MemoManager : PageContentsManager
     
     private void SetMemoCurrentPage()
     {
-        var previousSceneIndex = SceneManager.Instance.GetActiveScene().ToInt() - 1;
+        var previousSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt() - 1;
         int startingPageIndex = CalculateFirstPageNumber(previousSceneIndex); // Calculate the starting page index for the current scene
         if (startingPageIndex % 2 != 0) 
             startingPageIndex -= 1; // Ensure the page number is even
@@ -267,7 +267,7 @@ public class MemoManager : PageContentsManager
 
     private void SetFlags()
     {
-        var currentSceneIndex = SceneManager.Instance.GetActiveScene().ToInt();
+        var currentSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt();
         for (var i = 0; i < currentSceneIndex; i++) 
             flags[i].gameObject.SetActive(true);
         for (var i = currentSceneIndex; i < flags.Count; i++) 
@@ -286,7 +286,7 @@ public class MemoManager : PageContentsManager
     private List<string[]> GetAggregatedMemos()
     {
         var allMemos = new List<string[]>();
-        int currentSceneIndex = SceneManager.Instance.GetActiveScene().ToInt();
+        int currentSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt();
         for (int i = 0; i < currentSceneIndex; i++) 
             allMemos.AddRange(SavedMemoList[i]);
 
@@ -402,8 +402,8 @@ public class MemoManager : PageContentsManager
                 RevealedMemoList[2].Add(i.ToString());
 
             for (int i = 0; i < 10; i++)
-                RevealedMemoList[SceneManager.Instance.GetActiveScene().ToInt() - 1].Add(i.ToString());
+                RevealedMemoList[GameSceneManager.Instance.GetActiveScene().ToInt() - 1].Add(i.ToString());
         }
-        SceneManager.Instance.LoadScene(SceneType.ENDING);
+        GameSceneManager.Instance.LoadScene(SceneType.ENDING);
     }
 }

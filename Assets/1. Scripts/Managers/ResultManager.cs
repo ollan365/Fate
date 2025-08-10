@@ -165,7 +165,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPrologueEnd":
-                SceneManager.Instance.LoadScene(SceneType.ROOM_1);
+                GameSceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
 
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
@@ -531,7 +531,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultEndRoom1": // Room1 끝
-                SceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
+                GameSceneManager.Instance.LoadScene(SceneType.FOLLOW_1);
                 break;
 
             // 방탈출1 귀가 스크립트
@@ -634,7 +634,7 @@ public class ResultManager : MonoBehaviour
 
             // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
-                if (SceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1) {
+                if (GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1) {
                     executableObjects["Box Unzoomed-open 2"].ExecuteAction();
                     executableObjects["Box Unzoomed-open 3"].ExecuteAction();
                 }
@@ -757,7 +757,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultEndRoom2": // Room2 끝, 스크립트 출력 및 미행2로 진행
                 DialogueManager.Instance.StartDialogue("RoomEscape2S_016");
-                SceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
+                GameSceneManager.Instance.LoadScene(SceneType.FOLLOW_2);
                 break;
 
             // 방탈출2 아침 스크립트
@@ -791,7 +791,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultFollowEnd": // 미행 끝 (메모 개수 충분)
-                SceneManager.Instance.LoadScene(SceneType.ROOM_2);
+                GameSceneManager.Instance.LoadScene(SceneType.ROOM_2);
                 break;
 
             case "ResultUnlockFOLLOW_1":
