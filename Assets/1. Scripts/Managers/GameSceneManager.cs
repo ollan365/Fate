@@ -132,51 +132,47 @@ public class GameSceneManager : MonoBehaviour
     }
 
 
-    private void ChangeSceneEffect()
-    {
-        // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
-        switch (GetActiveScene())
-        {
+    private void ChangeSceneEffect() { // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
+        switch (GetActiveScene()) {
             case SceneType.START:
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
                 MemoManager.Instance.isFollow = false;
                 DialogueManager.Instance.dialogueType = DialogueType.ROOM_ACCIDY;
-                // RoomManager.Instance.currentSideIndex = roomSideIndex;
                 break;
             case SceneType.FOLLOW_1:
             case SceneType.FOLLOW_2:
                 MemoManager.Instance.isFollow = true;
                 DialogueManager.Instance.dialogueType = DialogueType.FOLLOW;
                 break;
+            
+            default:
+                return;
         }
 
         int bgmIndex = -1;
-        switch (GetActiveScene())
-        {
+        switch (GetActiveScene()) {
             case SceneType.START:
-                bgmIndex = BGM_OPENING;
-                SoundPlayer.Instance.ChangeBGM(bgmIndex);
+                SoundPlayer.Instance.ChangeBGM(BGM_OPENING);
                 return;
+            
             case SceneType.ROOM_1:
                 bgmIndex = BGM_ROOM1;
-                break;
-            case SceneType.FOLLOW_1:
-                bgmIndex = BGM_FOLLOW1;
                 break;
             case SceneType.ROOM_2:
                 bgmIndex = BGM_ROOM2;
                 break;
+            case SceneType.FOLLOW_1:
             case SceneType.FOLLOW_2:
                 bgmIndex = BGM_FOLLOW1;
                 break;
         }
+        SoundPlayer.Instance.ChangeBGM(bgmIndex);
 
         MemoManager.Instance.SetMemoCurrentPageAndFlags();
         MemoManager.Instance.SetShouldHideMemoButton(false);
         MemoManager.Instance.SetMemoButtons(true);
 
-        SoundPlayer.Instance.ChangeBGM(bgmIndex);
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
 

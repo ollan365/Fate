@@ -250,25 +250,15 @@ public class MemoManager : PageContentsManager
          
         DisplayPagesStatic(page);
     }
-
-    public void SetMemoCurrentPageAndFlags()
-    {
-        SetMemoCurrentPage();
-        SetFlags();
-    }
     
-    private void SetMemoCurrentPage()
+    public void SetMemoCurrentPageAndFlags()
     {
         var previousSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt() - 1;
         int startingPageIndex = CalculateFirstPageNumber(previousSceneIndex); // Calculate the starting page index for the current scene
         if (startingPageIndex % 2 != 0) 
             startingPageIndex -= 1; // Ensure the page number is even
-        
         memoPages.currentPage = startingPageIndex;  // Set the current page to the starting page of the current scene
-    }
 
-    private void SetFlags()
-    {
         var currentSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt();
         for (var i = 0; i < currentSceneIndex; i++) 
             flags[i].gameObject.SetActive(true);

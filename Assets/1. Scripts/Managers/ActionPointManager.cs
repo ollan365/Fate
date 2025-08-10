@@ -172,7 +172,7 @@ abstract public class ActionPointManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
-        float totalTime = 3f;
+        float totalTime = 2f;
         // 페이드 인
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime / 2));
 
@@ -195,8 +195,7 @@ abstract public class ActionPointManager : MonoBehaviour
         UIManager.Instance.loadingScreen.SetActive(false);
 
         int actionPoint;
-        if (nowDayNum < maxDayNum) 
-        {
+        if (nowDayNum < maxDayNum) {
             nowDayNum += 1;
             presentHeartIndex = (int)GameManager.Instance.GetVariable("ActionPointsPerDay") - 1;
 
@@ -204,33 +203,24 @@ abstract public class ActionPointManager : MonoBehaviour
             GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
 
             actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
-
         }
         else
-        {
-            // 마지막 날인 5일에 휴식했을 경우
-            // 행동력이 0이 된 상태
-            actionPoint = 0;
-        }
+            actionPoint = 0; // 마지막 날인 5일에 휴식했을 경우: 행동력이 0이 된 상태
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
-
         RoomManager.Instance.SetIsInvestigating(false);
         SaveManager.Instance.SaveGameData();
     }
 
-    protected void Warning()
-    {
-        int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
-        if (actionPoint <= 0) // actionPoint가 0보다 클 때만 코루틴 실행
+    protected void Warning() {
+        if ((int)GameManager.Instance.GetVariable("ActionPoint") <= 0) // actionPoint가 0보다 클 때만 코루틴 실행
             return;
         
         StartCoroutine(UIManager.Instance.WarningCoroutine());
     }
 
     // ************************* temporary methods for day animation *************************
-    public IEnumerator StartNextDayUIChange(int nowDayNum)
-    {
+    protected IEnumerator StartNextDayUIChange(int nowDayNum) {
         isDayChanging = true;
 
         // 브금 변경 (Start_Daychange)
@@ -287,7 +277,6 @@ abstract public class ActionPointManager : MonoBehaviour
     // DayUI 뒤로 넘김
     protected IEnumerator TurnNextDayUIBack()
     {
-        Debug.Log("DayUI 뒤로 넘김");
         // dayui 넘어가게 할 start, mid, end rotation 
         Quaternion startRotation = yesterDayRectTransform.rotation;
         Quaternion midRotation = startRotation * Quaternion.Euler(TurningDayBackRotationValues[MidRotationIndex]);
