@@ -347,7 +347,7 @@ public class DialogueManager : MonoBehaviour
     private void ChangeDialogueCanvas(string speaker)
     {
         // 미행 대화창
-        if (SceneManager.Instance.GetActiveScene() is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
+        if (GameSceneManager.Instance.GetActiveScene() is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
         {
             switch (speaker)
             {
@@ -411,7 +411,7 @@ public class DialogueManager : MonoBehaviour
         var isChoosingBrokenBearChoice = false;
         var isInvestigating = RoomManager.Instance.GetIsInvestigating();
 
-        if (SceneManager.Instance.GetActiveScene() == SceneType.ROOM_2)
+        if (GameSceneManager.Instance.GetActiveScene() == SceneType.ROOM_2)
             isChoosingBrokenBearChoice = RoomManager.Instance.room2ActionPointManager.GetChoosingBrokenBearChoice();
 
         if (refillHeartsOrEndDay && !isChoosingBrokenBearChoice && !isInvestigating)
@@ -638,7 +638,7 @@ public class DialogueManager : MonoBehaviour
     
     private bool GetIsImageOrLockPanelActive()
     {
-        SceneType currentScene = SceneManager.Instance.GetActiveScene();
+        SceneType currentScene = GameSceneManager.Instance.GetActiveScene();
         if ((currentScene is SceneType.ROOM_1 or SceneType.ROOM_2) &&
             RoomManager.Instance.imageAndLockPanelManager.GetIsImageOrLockPanelActive())
             return true;

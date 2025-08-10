@@ -109,7 +109,7 @@ public class Room1ActionPointManager : ActionPointManager
         int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
         if (actionPoint == 0)
         {
-            SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+            GameSceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
             return;
         }
         

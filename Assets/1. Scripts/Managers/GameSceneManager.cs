@@ -3,23 +3,34 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Constants;
 
-public class SceneManager : MonoBehaviour
+public class GameSceneManager : MonoBehaviour
 {
-    public static SceneManager Instance { get; private set; }
-    // public int roomSideIndex = 0;
+    public static GameSceneManager Instance { get; private set; }
     
-    void Awake()
-    {
-        if (Instance == null)
-        {
+    public bool IsSceneChanging { get; private set; }
+    
+    void Awake() {
+        if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
+        } else
             Destroy(gameObject);
-        }
+        
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
+    
+    void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    private void OnSceneLoaded(Scene s, LoadSceneMode m) {
+        IsSceneChanging = false;
+        if (UIManager.Instance && UIManager.Instance.progressBar)
+            UIManager.Instance.progressBar.fillAmount = 1f;
+
+        ChangeSceneEffect();
+    }
+    
     public void GoTitle()
     {
         LoadScene(SceneType.START);
@@ -47,11 +58,11 @@ public class SceneManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(SceneType.ENDING.ToInt());
+        SceneManager.LoadScene(SceneType.ENDING.ToInt());
     }
     
     public SceneType GetActiveScene() {
-        Scene activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        Scene activeScene = SceneManager.GetActiveScene();
         switch (activeScene.name) {
             case "Start":
                 return SceneType.START;
@@ -80,9 +91,9 @@ public class SceneManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
-        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
+        UIManager.Instance.progressBar.fillAmount = 0f;
         string[] textOnFade = { "Prologue", "Chapter I", "Chapter II", "Chapter III", "Chapter IV" };
         UIManager.Instance.TextOnFade(textOnFade[loadSceneType.ToInt()]);
         GameManager.Instance.SetVariable("SavedCurrentSceneIndex", loadSceneType.ToInt());
@@ -92,33 +103,27 @@ public class SceneManager : MonoBehaviour
         StartCoroutine(Load(loadSceneType.ToInt()));
     }
 
-    // 씬 비동기 로드 및 진행률 표시
-    private IEnumerator Load(int sceneName)
-    {
+    private IEnumerator Load(int sceneName) { // 씬 비동기 로드 및 진행률 표시
+        IsSceneChanging = true;
         UIManager.Instance.progressBar.fillAmount = 0f;
 
-        AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
 
         float timer = 0f;
-
-        while (!op.isDone)
-        {
+        while (!op.isDone) {
             yield return null;
             timer += Time.unscaledDeltaTime;
 
-            if (op.progress < 0.9f)
-            {
+            if (op.progress < 0.9f) {
                 UIManager.Instance.progressBar.fillAmount =
                     Mathf.Lerp(UIManager.Instance.progressBar.fillAmount, op.progress, timer);
                 if (UIManager.Instance.progressBar.fillAmount >= op.progress) timer = 0f;
             }
-            else
-            {
+            else {
                 UIManager.Instance.progressBar.fillAmount =
                     Mathf.Lerp(UIManager.Instance.progressBar.fillAmount, 1f, timer);
-                if (UIManager.Instance.progressBar.fillAmount >= 1.0f)
-                {
+                if (UIManager.Instance.progressBar.fillAmount >= 1.0f) {
                     op.allowSceneActivation = true;
                     yield break;
                 }
@@ -127,7 +132,7 @@ public class SceneManager : MonoBehaviour
     }
 
 
-    public void ChangeSceneEffect()
+    private void ChangeSceneEffect()
     {
         // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
         switch (GetActiveScene())

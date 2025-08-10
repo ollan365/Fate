@@ -60,8 +60,6 @@ public class FollowManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        SceneManager.Instance.ChangeSceneEffect();
-
         IsTutorial = false;
         IsEnd = false;
         IsDialogueOpen = false;
@@ -73,7 +71,7 @@ public class FollowManager : MonoBehaviour
         StartCoroutine(ChangeBeaconSprite());
 
         if (GameManager.Instance.skipTutorial) { StartFollow(); }
-        else if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
+        else if (GameSceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
         {
             if((int)GameManager.Instance.GetVariable("ReplayCount") > 0 || (bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1")) { StartFollow(); }
             else StartCoroutine(followTutorial.StartTutorial());
@@ -82,7 +80,7 @@ public class FollowManager : MonoBehaviour
     }
     private void SetUI()
     {
-        if (SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
+        if (GameSceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
         {
             UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, true);
             UIManager.Instance.SetUI(eUIGameObjectName.FollowMemoGauge, true);
@@ -248,7 +246,7 @@ public class FollowManager : MonoBehaviour
         }
 
         // 두번째 미행
-        if (!IsTutorial && SceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_2)
+        if (!IsTutorial && GameSceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_2)
         {
             switch ((int)Accidy.transform.position.x)
             {

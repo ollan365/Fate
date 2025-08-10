@@ -62,7 +62,7 @@ public class EndingManager : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
 
         // 배경 바꾸기
-        if (SceneManager.Instance.GetActiveScene() == SceneType.ROOM_1)
+        if (GameSceneManager.Instance.GetActiveScene() == SceneType.ROOM_1)
         {
             background.sprite = background_room1;
             background.color = Color.white;
@@ -91,9 +91,9 @@ public class EndingManager : MonoBehaviour
 
         if (!isTest)
         {
-            SceneManager.Instance.LoadScene(SceneType.START);
+            GameSceneManager.Instance.LoadScene(SceneType.START);
         }
-        if (isTest) SceneManager.Instance.LoadScene(SceneType.ENDING);
+        if (isTest) GameSceneManager.Instance.LoadScene(SceneType.ENDING);
     }
     private IEnumerator ClockEffect()
     {

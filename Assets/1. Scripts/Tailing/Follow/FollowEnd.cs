@@ -67,7 +67,7 @@ public class FollowEnd : MonoBehaviour
     private IEnumerator DelayLoadScene()
     {
         yield return new WaitForSeconds(1);
-        SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+        GameSceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 
     // === 미행이 끝났을 때 === //

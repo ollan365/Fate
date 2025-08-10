@@ -134,7 +134,7 @@ public class StartLogic : MonoBehaviour
             if (savedScene == Constants.SceneType.START)
                 StartCoroutine(StartPrologue());
             else 
-                SceneManager.Instance.LoadScene(savedScene);
+                GameSceneManager.Instance.LoadScene(savedScene);
         }
         else noGameDataPanel.SetActive(true);
     }
@@ -144,11 +144,11 @@ public class StartLogic : MonoBehaviour
         SaveManager.Instance.CreateNewGameData();
         GameManager.Instance.SetVariable("EndTutorial_ROOM_1", GameManager.Instance.skipTutorial);
 
-        if (sceneNum == 1) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
-        if (sceneNum == 2) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
-        if (sceneNum == 3) SceneManager.Instance.LoadScene(Constants.SceneType.ROOM_2);
-        if (sceneNum == 4) SceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_2);
-        if (sceneNum == 5) SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+        if (sceneNum == 1) GameSceneManager.Instance.LoadScene(Constants.SceneType.ROOM_1);
+        if (sceneNum == 2) GameSceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_1);
+        if (sceneNum == 3) GameSceneManager.Instance.LoadScene(Constants.SceneType.ROOM_2);
+        if (sceneNum == 4) GameSceneManager.Instance.LoadScene(Constants.SceneType.FOLLOW_2);
+        if (sceneNum == 5) GameSceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
     }
 
     public void QuitGame()

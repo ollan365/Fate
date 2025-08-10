@@ -94,7 +94,7 @@ public class FollowFinishMiniGame : MonoBehaviour
         // 메모의 개수가 부족할 때
         // if (!MemoManager.Instance.UnlockNextScene())
         {
-            SceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
+            GameSceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
             yield break;
         }
 
