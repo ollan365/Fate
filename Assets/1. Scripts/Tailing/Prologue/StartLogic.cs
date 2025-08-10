@@ -18,7 +18,6 @@ public class StartLogic : MonoBehaviour
     public int Language { set => language = value; }
 
     [Header("Album")]
-    [SerializeField] private GameObject albumButton;
     [SerializeField] private Sprite lockSprite;
     [SerializeField] private Sprite[] endingSprites;
     [SerializeField] private Button[] endingButtons;
@@ -214,7 +213,7 @@ public class StartLogic : MonoBehaviour
             StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
-        albumButton.SetActive(false);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         MemoManager.Instance.SetShouldHideMemoButton(true);
 
         EventManager.Instance.CallEvent("EventFirstPrologue");
