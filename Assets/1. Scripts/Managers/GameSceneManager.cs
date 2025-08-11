@@ -31,11 +31,8 @@ public class GameSceneManager : MonoBehaviour
         ChangeSceneEffect();
     }
     
-    public void GoTitle()
-    {
+    public void GoTitle() {
         LoadScene(SceneType.START);
-        //UIManager.Instance.SetAllUI(false);
-        //UIManager.Instance.SetUI(eUIGameObjectName.ObjectImageRoom, true);
     }
     
     public void LoadScene(SceneType loadSceneType)

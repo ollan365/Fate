@@ -32,6 +32,11 @@ public enum eUIGameObjectName {
     MemoButton,
     MemoContents,
     MemoGauge,
+    NewGamePanel,
+    NoGameDataPanel,
+    NamePanel,
+    NameConfirmPanel,
+    BirthdayPanel,
     MenuUI,
     WhiteMenu,
     BlackMenu,
@@ -68,7 +73,7 @@ public enum eUIGameObjectName {
     AlbumImageGameObject,
     EndingTypeGameObject,
     EndingNameGameObject,
-    BlockingPanelDefault,
+    TutorialBlockingPanel,
 }
 
 public class UIManager : MonoBehaviour {
@@ -87,7 +92,8 @@ public class UIManager : MonoBehaviour {
     public GameObject objectImageParentRoom;
     public GameObject objectImageRoom;
 
-    [Header("UI Game Objects")] public GameObject normalVignette;
+    [Header("UI Game Objects")] 
+    public GameObject normalVignette;
     public GameObject warningVignette;
     public GameObject actionPoints;
     public GameObject actionPointsBackgroundImage;
@@ -99,9 +105,10 @@ public class UIManager : MonoBehaviour {
     public GameObject memoButton;
     public GameObject memoContents;
     public GameObject memoGauge;
-    public GameObject blockingPanelDefault;
+    public GameObject tutorialBlockingPanel;
 
-    [Header("UI Game Objects - Album")] public GameObject album;
+    [Header("UI Game Objects - Album")] 
+    public GameObject album;
     public GameObject albumButton;
     public GameObject albumPage;
     public GameObject albumImageGameObject;
@@ -111,7 +118,6 @@ public class UIManager : MonoBehaviour {
 
     [Header("UI Game Objects - Day Animation")]
     public GameObject dayChangingGameObject;
-
     public GameObject yesterdayNumText;
     public GameObject todayNumText;
     public GameObject yesterday;
@@ -128,7 +134,15 @@ public class UIManager : MonoBehaviour {
     private TextMeshProUGUI endingNameText;
     private Image albumImage;
 
-    [Header("UI Game Objects - Menu")] public GameObject menuUI;
+    [Header("UI Game Objects - Lobby Panels")]
+    public GameObject newGamePanel;
+    public GameObject noGameDataPanel;
+    public GameObject namePanel;
+    public GameObject nameConfirmPanel;
+    public GameObject birthdayPanel;
+    
+    [Header("UI Game Objects - Menu")] 
+    public GameObject menuUI;
     public GameObject whiteMenu;
     public GameObject blackMenu;
     public GameObject optionUI;
@@ -138,7 +152,8 @@ public class UIManager : MonoBehaviour {
     public GameObject SoundEffectValueText;
     private bool menuOpenByStartSceneButton = false;
 
-    [Header("UI Game Objects - Follow")] public GameObject followUIParent;
+    [Header("UI Game Objects - Follow")] 
+    public GameObject followUIParent;
     public GameObject followMemoGauge;
     public GameObject followUIBackground;
     public GameObject doubtGaugeSlider;
@@ -220,7 +235,13 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.MemoContents, memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge, memoGauge);
 
-        uiGameObjects.Add(eUIGameObjectName.BlockingPanelDefault, blockingPanelDefault);
+        uiGameObjects.Add(eUIGameObjectName.TutorialBlockingPanel, tutorialBlockingPanel);
+        
+        uiGameObjects.Add(eUIGameObjectName.NewGamePanel, newGamePanel);
+        uiGameObjects.Add(eUIGameObjectName.NoGameDataPanel, noGameDataPanel);
+        uiGameObjects.Add(eUIGameObjectName.NamePanel, namePanel);
+        uiGameObjects.Add(eUIGameObjectName.NameConfirmPanel, nameConfirmPanel);
+        uiGameObjects.Add(eUIGameObjectName.BirthdayPanel, birthdayPanel);
 
         uiGameObjects.Add(eUIGameObjectName.MenuUI, menuUI);
         uiGameObjects.Add(eUIGameObjectName.WhiteMenu, whiteMenu);
@@ -422,29 +443,26 @@ public class UIManager : MonoBehaviour {
     }
 
     public void SetMenuUI(bool startSceneButtonClick = false) {
-        if (startSceneButtonClick) menuOpenByStartSceneButton = startSceneButtonClick;
+        if (startSceneButtonClick)
+            menuOpenByStartSceneButton = true;
 
         if (GetUI(eUIGameObjectName.MenuUI).activeSelf) {
             SetUI(eUIGameObjectName.MenuUI, false);
             SetUI(eUIGameObjectName.WhiteMenu, false);
             SetUI(eUIGameObjectName.BlackMenu, false);
             if (menuOpenByStartSceneButton) {
-                StartLogic.Instance.SetButtons();
+                LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
-
             Time.timeScale = 1f;
-        }
-        else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
+        } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
             SetUI(eUIGameObjectName.OptionUI, false);
             if (menuOpenByStartSceneButton) {
-                StartLogic.Instance.SetButtons();
+                LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
-
             Time.timeScale = 1f;
-        }
-        else {
+        } else {
             SetUI(eUIGameObjectName.MenuUI, true);
             SetUI(UnityEngine.Random.Range(0, 2) == 0 
                 ? eUIGameObjectName.WhiteMenu 

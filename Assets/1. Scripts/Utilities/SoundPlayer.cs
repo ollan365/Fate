@@ -22,7 +22,8 @@ public class SoundPlayer : MonoBehaviour
     private Coroutine bgmCoroutine;
 
     // 동시에 여러 UI 효과음들이 플레이 될 수도 있으므로 여러 플레이어를 두고 순차적으로 실행하기 위한 변수
-    private int UISoundPlayerCursor;
+    private int uiSoundPlayerCursor;
+    
     void Awake()
     {
         if (Instance == null)
@@ -31,11 +32,14 @@ public class SoundPlayer : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else
-        {
             Destroy(gameObject);
-        }
+    }
+    
+    private void Start() {
+        bgmPlayer.volume = 0f;
         bgmCoroutine = StartCoroutine(ChangeBGMFade(BGM_OPENING));
     }
+    
     private void Update()
     {
         // 마우스 클릭 시 효과음 발생
@@ -58,35 +62,59 @@ public class SoundPlayer : MonoBehaviour
             foreach (AudioSource audio in UISoundPlayer) audio.volume = soundEffectVolume;
         }
     }
+    
     public void ChangeBGM(int bgm)
     {
-        StopCoroutine(bgmCoroutine);
+        if (bgmCoroutine != null) {
+            StopCoroutine(bgmCoroutine);
+            bgmCoroutine = null;
+        }
         bgmCoroutine = StartCoroutine(ChangeBGMFade(bgm));
     }
-    private IEnumerator ChangeBGMFade(int bgm)
-    {
-        float fadeDuration = 2f;
-        float currentTime = 0f;
+    
+    private IEnumerator ChangeBGMFade(int bgm) {
+        const float fadeDuration = 2f;
 
-        // 새로운 BGM 설정 및 재생
-        if (bgm != BGM_STOP)
-        {
+        if (bgm == BGM_STOP) {
+            float startVol = bgmPlayer.volume;
+            float t = 0f;
+            while (t < fadeDuration) {
+                t += Time.unscaledDeltaTime;
+                bgmPlayer.volume = Mathf.Lerp(startVol, 0f, t / fadeDuration);
+                yield return null;
+            }
+            bgmPlayer.volume = 0f;
+            bgmPlayer.Stop();
+            yield break;
+        }
+
+        if (bgmPlayer.isPlaying && bgmPlayer.volume > 0f) {
+            float startVol = bgmPlayer.volume;
+            float t = 0f;
+            while (t < fadeDuration * 0.5f) {
+                t += Time.unscaledDeltaTime;
+                bgmPlayer.volume = Mathf.Lerp(startVol, 0f, t / (fadeDuration * 0.5f));
+                yield return null;
+            }
+            bgmPlayer.volume = 0f;
+        }
+
+        if (bgm >= 0 && bgm < bgmClip.Length) {
             bgmPlayer.clip = bgmClip[bgm];
             bgmPlayer.Play();
         }
 
-        // 볼륨을 다시 키우기
-        while (currentTime < fadeDuration)
         {
-            currentTime += Time.deltaTime;
-            if (bgm != BGM_STOP) bgmPlayer.volume = Mathf.Lerp(0, bgmVolume, currentTime / fadeDuration);
-            else bgmPlayer.volume = Mathf.Lerp(bgmVolume, 0, currentTime / fadeDuration);
-
-            yield return null;
+            float t = 0f;
+            while (t < fadeDuration * 0.5f) {
+                t += Time.unscaledDeltaTime;
+                bgmPlayer.volume = Mathf.Lerp(0f, bgmVolume, t / (fadeDuration * 0.5f));
+                yield return null;
+            }
+            bgmPlayer.volume = bgmVolume;
         }
 
-        // 최종 볼륨 설정
-        if (bgm != BGM_STOP) bgmPlayer.volume = bgmVolume;
+        bgmCoroutine = null;
     }
 
     public void UISoundPlay_LOOP(int num, bool play)
@@ -130,16 +158,16 @@ public class SoundPlayer : MonoBehaviour
             num = Random.Range(num, num + 2);
         
         // 재생할 효과음 변경
-        UISoundPlayer[UISoundPlayerCursor].clip = UISoundClip[num];
+        UISoundPlayer[uiSoundPlayerCursor].clip = UISoundClip[num];
 
         // 일부 효과음의 경우 음악이 재생되는 위치를 바꾼다
-        UISoundPlayer[UISoundPlayerCursor].panStereo = SoundPosition();
+        UISoundPlayer[uiSoundPlayerCursor].panStereo = SoundPosition();
 
         // 음악 재생
-        UISoundPlayer[UISoundPlayerCursor].Play();
+        UISoundPlayer[uiSoundPlayerCursor].Play();
 
         // 다음 효과음 Player로 넘긴다
-        UISoundPlayerCursor = (UISoundPlayerCursor + 1) % UISoundPlayer.Length;
+        uiSoundPlayerCursor = (uiSoundPlayerCursor + 1) % UISoundPlayer.Length;
     }
 
 

@@ -42,7 +42,7 @@ public class TutorialManager : MonoBehaviour
 
         MemoManager.Instance.SetShouldHideMemoButton(true);
         UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, false);
-        UIManager.Instance.SetUI(eUIGameObjectName.BlockingPanelDefault, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.TutorialBlockingPanel, true);
 
         ProceedToNextPhase();
     }
@@ -97,7 +97,7 @@ public class TutorialManager : MonoBehaviour
 
     private void CompleteTutorial() {
         GameManager.Instance.SetVariable("isTutorial", false);
-        UIManager.Instance.SetUI(eUIGameObjectName.BlockingPanelDefault, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.TutorialBlockingPanel, false);
     }
     
     public void ToggleCollider(eTutorialObjectName objectName, bool isOn)
