@@ -393,7 +393,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 1472a652f4e89dc4ebaafb0e8f8515a1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1688,7 +1688,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: b85ad59e7256f1a46907591313b5cfbd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5661,7 +5661,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 1112792bb853c475e9e0f93101d4fdf3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6059,8 +6059,6 @@ RectTransform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 607867492}
-  - {fileID: 1292929774}
   - {fileID: 1851550804}
   - {fileID: 1953225435}
   - {fileID: 1520495359}
@@ -6091,8 +6089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c3b197799d84a67aa0098d3286cc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockingPanel: {fileID: 607867491}
-  TutorialBlockingPanel: {fileID: 1292929773}
+  currentLockObjectCanvasGroup: {fileID: 0}
   newTeddyBearImage: {fileID: 21300000, guid: 8d9b8587426cd864ca130aa5e9a285d0, type: 3}
   amuletImage: {fileID: 21300000, guid: 64c29083dfbbda94591089a982864d84, type: 3}
   clockImage: {fileID: 21300000, guid: d1f413f3ea12844e1beeb09af76a30a0, type: 3}
@@ -6124,16 +6121,17 @@ MonoBehaviour:
   diary2GameObject: {fileID: 481520307}
   book2GameObject: {fileID: 859280852}
   dreamDiaryGameObject: {fileID: 666211132}
-  LeftMoveButton: {fileID: 63105342}
-  RightMoveButton: {fileID: 5365219}
-  Chair: {fileID: 716987902}
-  Carpet: {fileID: 1750352252}
-  CarpetPaper: {fileID: 1491868246}
-  CarpetOpen: {fileID: 308357905}
-  MemoButtonImage: {fileID: 504729580}
+  laptopPuzzleObject: {fileID: 0}
+  clockPuzzleObject: {fileID: 0}
+  diaryPuzzleObjectClosed: {fileID: 0}
+  diaryPuzzleObjectOpen: {fileID: 0}
+  calendarPuzzleObject: {fileID: 0}
+  tinCasePuzzleObject: {fileID: 0}
+  sewingBoxPuzzleObject: {fileID: 0}
+  book2PuzzleObject: {fileID: 0}
+  dreamDiaryPuzzleObject: {fileID: 0}
   isImageActive: 0
   isLockObjectActive: 0
-  isTutorialObjectActive: 0
 --- !u!1 &383443410
 GameObject:
   m_ObjectHideFlags: 0
@@ -7416,7 +7414,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 15eb5810e3a034346bf5d329fe666d6d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -8261,154 +8259,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4437514966770967953, guid: 2d00fe45b996bcb49a3d8f2800df8631, type: 3}
   m_PrefabInstance: {fileID: 9185146541337385275}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &607867491
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 607867492}
-  - component: {fileID: 607867494}
-  - component: {fileID: 607867493}
-  - component: {fileID: 607867495}
-  - component: {fileID: 607867496}
-  m_Layer: 5
-  m_Name: Blocking Panel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &607867492
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 607867491}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 370811674}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
-  m_SizeDelta: {x: 2040, y: 1200}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &607867493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 607867491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &607867494
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 607867491}
-  m_CullTransparentMesh: 1
---- !u!114 &607867495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 607867491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ca36203436b5ed44a482f5348e8ac1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventId: EventTutorialBlockingPanel
-  sideNum: 0
-  isInquiry: 0
---- !u!114 &607867496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 607867491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 0
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 607867493}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 607867495}
-        m_TargetAssemblyTypeName: TutorialBlockingPanel, Assembly-CSharp
-        m_MethodName: OnMouseDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &609731345
 GameObject:
   m_ObjectHideFlags: 0
@@ -9818,7 +9668,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: d54e75dcda7eaa3429e73464d3c13955, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -11646,6 +11496,26 @@ MonoBehaviour:
   rightPageImage: {fileID: 751147636}
   backPageImage: {fileID: 2130437974}
   frontPageImage: {fileID: 1386719267}
+  leftPageEndingFrames: {fileID: 0}
+  rightPageEndingFrames: {fileID: 0}
+  backPageEndingFrames: {fileID: 0}
+  frontPageEndingFrames: {fileID: 0}
+  leftPageEndingFrameTop: {fileID: 0}
+  leftPageEndingFrameBottom: {fileID: 0}
+  rightPageEndingFrameTop: {fileID: 0}
+  rightPageEndingFrameBottom: {fileID: 0}
+  backPageEndingFrameTop: {fileID: 0}
+  backPageEndingFrameBottom: {fileID: 0}
+  frontPageEndingFrameTop: {fileID: 0}
+  frontPageEndingFrameBottom: {fileID: 0}
+  leftPageEndingButtonTop: {fileID: 0}
+  leftPageEndingButtonBottom: {fileID: 0}
+  rightPageEndingButtonTop: {fileID: 0}
+  rightPageEndingButtonBottom: {fileID: 0}
+  backPageEndingButtonTop: {fileID: 0}
+  backPageEndingButtonBottom: {fileID: 0}
+  frontPageEndingButtonTop: {fileID: 0}
+  frontPageEndingButtonBottom: {fileID: 0}
 --- !u!4 &922364973
 Transform:
   m_ObjectHideFlags: 0
@@ -12635,7 +12505,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minuteHand: {fileID: 412036798}
   hourHand: {fileID: 60935246}
-  imageAndLockPanelManager: {fileID: 370811677}
   clockA: {fileID: 1209573879}
 --- !u!224 &1031299568
 RectTransform:
@@ -14144,9 +14013,9 @@ MonoBehaviour:
   imageAndLockPanelManager: {fileID: 370811677}
   imageAndLockPanelCanvas: {fileID: 1418986091}
   isInvestigating: 0
-  tutorialManager: {fileID: 1180950097}
   actionPointManager: {fileID: 1738100056}
   room2ActionPointManager: {fileID: 1738100056}
+  tutorialManager: {fileID: 0}
 --- !u!4 &1149435151
 Transform:
   m_ObjectHideFlags: 0
@@ -14321,50 +14190,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1180950096
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1180950098}
-  - component: {fileID: 1180950097}
-  m_Layer: 0
-  m_Name: Tutorial Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1180950097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1180950096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3deca3cb1d269274686b628663270b07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1180950098
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1180950096}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1183384046 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7274142335162348907, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
@@ -15436,81 +15261,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272036504}
-  m_CullTransparentMesh: 1
---- !u!1 &1292929773
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1292929774}
-  - component: {fileID: 1292929776}
-  - component: {fileID: 1292929775}
-  m_Layer: 5
-  m_Name: Tutorial Blocking Panel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1292929774
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292929773}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0354, y: 1.0354, z: 1.0354}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 370811674}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1292929775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292929773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.69803923}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1292929776
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292929773}
   m_CullTransparentMesh: 1
 --- !u!1001 &1298723346
 PrefabInstance:
@@ -16780,7 +16530,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 814526345
+  m_SortingLayerID: 4032945
   m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1418986092
@@ -17556,7 +17306,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 83d5aa747e753024388511bb73dd0c29, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -19987,7 +19737,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -108240929
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 3e3bd872aeb1d49aea887612f2de2063, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -20745,6 +20495,26 @@ MonoBehaviour:
   rightPageImage: {fileID: 1856067097}
   backPageImage: {fileID: 1680398439}
   frontPageImage: {fileID: 956877641}
+  leftPageEndingFrames: {fileID: 0}
+  rightPageEndingFrames: {fileID: 0}
+  backPageEndingFrames: {fileID: 0}
+  frontPageEndingFrames: {fileID: 0}
+  leftPageEndingFrameTop: {fileID: 0}
+  leftPageEndingFrameBottom: {fileID: 0}
+  rightPageEndingFrameTop: {fileID: 0}
+  rightPageEndingFrameBottom: {fileID: 0}
+  backPageEndingFrameTop: {fileID: 0}
+  backPageEndingFrameBottom: {fileID: 0}
+  frontPageEndingFrameTop: {fileID: 0}
+  frontPageEndingFrameBottom: {fileID: 0}
+  leftPageEndingButtonTop: {fileID: 0}
+  leftPageEndingButtonBottom: {fileID: 0}
+  rightPageEndingButtonTop: {fileID: 0}
+  rightPageEndingButtonBottom: {fileID: 0}
+  backPageEndingButtonTop: {fileID: 0}
+  backPageEndingButtonBottom: {fileID: 0}
+  frontPageEndingButtonTop: {fileID: 0}
+  frontPageEndingButtonBottom: {fileID: 0}
 --- !u!4 &1865136553
 Transform:
   m_ObjectHideFlags: 0
@@ -22273,7 +22043,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 4.000212, y: 21.581116}
+  m_AnchoredPosition: {x: 4.000213, y: 21.581116}
   m_SizeDelta: {x: 306.9275, y: -40.96399}
   m_Pivot: {x: 0.00000008009374, y: -0.00000007264316}
 --- !u!114 &2049395622
@@ -25290,5 +25060,4 @@ SceneRoots:
   - {fileID: 207145865}
   - {fileID: 514512489}
   - {fileID: 1418986092}
-  - {fileID: 1180950098}
   - {fileID: 1193198089}

@@ -229,6 +229,12 @@ public class Book2IndexManager : PageContentsManager
             else if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
             else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
             else if (diaryPageID.StartsWith("DreamDiary_")) targetDictionary = dreamDiaryPages;
+            else if (diaryPageID.StartsWith("Album_")) continue;
+            else
+            {
+                Debug.LogWarning($"Unknown diary page ID format: {diaryPageID}");
+                continue;
+            }
 
             if (targetDictionary.ContainsKey(diaryPageID)) targetDictionary[diaryPageID] += "\n\n" + script;
             else targetDictionary.Add(diaryPageID, script);
