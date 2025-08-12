@@ -35,12 +35,8 @@ public class GameSceneManager : MonoBehaviour
         LoadScene(SceneType.START);
     }
     
-    public void LoadScene(SceneType loadSceneType)
-    {
-        if (loadSceneType == SceneType.ENDING)
-            StartCoroutine(LoadEnding());
-        else
-            StartCoroutine(ChangeScene(loadSceneType));
+    public void LoadScene(SceneType loadSceneType) {
+        StartCoroutine(loadSceneType == SceneType.ENDING ? LoadEnding() : ChangeScene(loadSceneType));
     }
     
     private IEnumerator LoadEnding()
@@ -84,12 +80,12 @@ public class GameSceneManager : MonoBehaviour
         while (DialogueManager.Instance.isDialogueActive) // 대사 출력 중이면 기다리기
             yield return null;
 
-        UIManager.Instance.enableLoadingAnimation = true;
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
+        StartCoroutine(UIManager.Instance.SetLoadingAnimation(0, 1, 1));
         UIManager.Instance.progressBar.fillAmount = 0f;
         string[] textOnFade = { "Prologue", "Chapter I", "Chapter II", "Chapter III", "Chapter IV" };
         UIManager.Instance.TextOnFade(textOnFade[loadSceneType.ToInt()]);

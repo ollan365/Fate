@@ -10,7 +10,8 @@ public class LobbyManager : MonoBehaviour
     
     public GameObject lobbyButtons;
     public Image backgroundImage;
-    public Sprite titleWithLogo, titleWithoutLogo, room1Side1BackgroundSprite, blackBGSprite;
+    public Sprite titleWithLogo, titleWithoutLogo, room1Side1BackgroundSprite, blackBgSprite;
+    [SerializeField] private GameObject lobbyPanels;
     [SerializeField] private GameObject clockSecondGameObject;
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TextMeshProUGUI nameCheckQuestion;
@@ -31,15 +32,7 @@ public class LobbyManager : MonoBehaviour
     private void Start() {
         isLobby = true;
         lobbyButtons.SetActive(true);
-        GameObject[] panels = {
-            UIManager.Instance?.GetUI(eUIGameObjectName.NewGamePanel),
-            UIManager.Instance?.GetUI(eUIGameObjectName.NoGameDataPanel),
-            UIManager.Instance?.GetUI(eUIGameObjectName.NamePanel),
-            UIManager.Instance?.GetUI(eUIGameObjectName.NameConfirmPanel),
-            UIManager.Instance?.GetUI(eUIGameObjectName.BirthdayPanel),
-        };
-        foreach (GameObject panel in panels)
-            panel.SetActive(false);
+        lobbyPanels.SetActive(true);
         
         StartCoroutine(WaitForGameManagerStartFunction());
     }
@@ -66,9 +59,6 @@ public class LobbyManager : MonoBehaviour
             for (float t = 0; t < 60f; t += Time.deltaTime) { // 1초 동안 한 바퀴 (360도) 회전
                 float angle = Mathf.Lerp(0, 360, t / 60); // 현재 시간 대비 회전 각도 계산
                 clockSecondGameObject.transform.rotation = Quaternion.Euler(0, 0, -angle);
-                clockSecondGameObject.GetComponent<Image>().color = backgroundImage.sprite == titleWithLogo
-                    ? new Color(1, 1, 1, 1)
-                    : new Color(1, 1, 1, 0);  // 다른 판넬(옵션 등)이 켜지면 투명해지도록 만든다
                 yield return null; // 한 프레임 기다림
             }
             clockSecondGameObject.transform.rotation = Quaternion.Euler(0, 0, 0);  // 정확히 360도 회전하도록 설정
@@ -128,7 +118,7 @@ public class LobbyManager : MonoBehaviour
 
         EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);
-        backgroundImage.sprite = blackBGSprite;
+        backgroundImage.sprite = blackBgSprite;
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
     

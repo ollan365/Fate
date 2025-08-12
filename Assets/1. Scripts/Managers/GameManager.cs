@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
     public bool isDebug = false;
     public bool skipTutorial = false;
     public bool skipInquiry = false;
-    public int accidyGender = 0;  // 우연 성별 {0: 여자, 1: 남자}
 
     // 조사 시스템에서 현재 조사하고 있는 오브젝트의 evnetId를 저장함
     private string currentInquiryObjectId = "";

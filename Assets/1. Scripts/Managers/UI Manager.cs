@@ -189,8 +189,6 @@ public class UIManager : MonoBehaviour {
     public float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
 
-    public bool enableLoadingAnimation = false;
-
     public static UIManager Instance { get; private set; }
 
     private void Awake() {
@@ -557,65 +555,62 @@ public class UIManager : MonoBehaviour {
 
         if (!fadeObject.gameObject.activeSelf)
             fadeObject.gameObject.SetActive(true);
-        Color newColor = fadeObject.color;
-        newColor.a = start;
-        fadeObject.color = newColor;
+        
+        Color fadeObjectColor = fadeObject.color;
+        fadeObjectColor.a = start;
+        fadeObject.color = fadeObjectColor;
 
-        float current = 0, percent = 0;
+        float t = 0f;
+        while (t < 1f && fadeTime != 0f) {
+            t += Time.unscaledDeltaTime / fadeTime;
+            float a = Mathf.Lerp(start, end, t);
 
-        if (enableLoadingAnimation)
-            StartCoroutine(SetLoadingAnimation(start, end, fadeTime));
+            fadeObjectColor.a = a;
+            fadeObject.color = fadeObjectColor;
 
-        while (percent < 1 && fadeTime != 0)
-        {
-            current += Time.deltaTime;
-            percent = current / fadeTime;
+            coverText.color = new Color(1f, 1f, 1f, a);
+            if (progressBarGroup) 
+                progressBarGroup.alpha = a;
+            if (Loading_AnimationGroup) 
+                Loading_AnimationGroup.alpha = a;
 
-            newColor.a = Mathf.Lerp(start, end, percent);
-            fadeObject.color = newColor;
-
-            coverText.color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
-            progressBarGroup.alpha = Mathf.Lerp(start, end, percent);
-
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
-        newColor.a = end;
-        fadeObject.color = newColor;
+        fadeObjectColor.a = end;
+        fadeObject.color = fadeObjectColor;
+        coverText.color = new Color(1f, 1f, 1f, end);
+        if (progressBarGroup) 
+            progressBarGroup.alpha = end;
+        if (Loading_AnimationGroup) 
+            Loading_AnimationGroup.alpha = end;
 
         if (blink) { // 곧바로 다시 어두워지거나 밝아지게 하고 싶을 때
-            yield return new WaitForSeconds(waitingTime);
+            yield return new WaitForSecondsRealtime(waitingTime);
             StartCoroutine(OnFade(fadeObject, end, start, fadeTime + changeFadeTime, false, 0, 0));
+            yield break;
         }
 
-        if (fadeObject == coverPanel && end == 0) { // 투명해졌으면 끈다
-            fadeObject.gameObject.SetActive(false);
-            coverText.gameObject.SetActive(false);
-
+        if (fadeObject == coverPanel && Mathf.Approximately(end, 0f)) { // 투명해졌으면 끈다
             progressBarGroup.gameObject.SetActive(false);
             Loading_AnimationGroup.gameObject.SetActive(false);
-            enableLoadingAnimation = false;
+            coverText.gameObject.SetActive(false);
+            fadeObject.gameObject.SetActive(false);
         }
     }
 
     public void TextOnFade(string text) {
         coverText.gameObject.SetActive(true);
         coverText.text = text;
-
+    
         progressBarGroup.gameObject.SetActive(true);
         Loading_AnimationGroup.gameObject.SetActive(true);
     }
 
-    public IEnumerator SetLoadingAnimation(float start, float end, float fadeTime) // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
-    {
-        // 모든 캐릭터 오브젝트 다 꺼두기
-        foreach (GameObject loadingCharacter in loading_characters) {
-            loadingCharacter.SetActive(true);
-            loadingCharacter.SetActive(false);
-        }
-
-        // 우연의 성별에 맞게 캐릭터 애니메이션 재생 작동
-        loading_characters[(int)GameManager.Instance.GetVariable("AccidyGender")].gameObject.SetActive(true);
+    public IEnumerator SetLoadingAnimation(float start, float end, float fadeTime) {  // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
+        int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
+        loading_characters[accidyGender].gameObject.SetActive(true); // 우연의 성별에 맞게 캐릭터 애니메이션 재생 작동
+        loading_characters[1 - accidyGender].gameObject.SetActive(false);
 
         float current = 0, percent = 0;
         while (percent < 1 && fadeTime != 0) {
