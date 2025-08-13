@@ -343,6 +343,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultClockGetKey": // 열쇠를 획득
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(false, "clock");
                 SoundPlayer.Instance.UISoundPlay(Sound_Key);
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "keys");
                 break;
@@ -576,6 +577,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultTinCaseGetTicket": // 티켓을 획득
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(false, "tinCase");
                 SoundPlayer.Instance.UISoundPlay(Sound_TincaseOpen); // 틴케이스 열리는 소리
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "ticket");
                 break;
@@ -590,6 +592,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultSewingBoxGetThreadAndNeedle":   // 실과 바늘을 획득
+                RoomManager.Instance.imageAndLockPanelManager.SetLockObject(false, "sewingBox");
                 SoundPlayer.Instance.UISoundPlay(Sound_SewingBoxOpen); // 반짇고리 상자 열리는 소리
                 RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "thread");  
                 break;
