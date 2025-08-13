@@ -63,9 +63,9 @@ EventClockB,시계,시계를 틀린 시간으로 맞춤,,ConditionClockNotCorrec
 EventActivateClock,시계 잠금장치 활성화,시계 첫 조사한 후 잠금장치 활성화,,ConditionClockFirstClick,ResultClockSystemActivation / Result_IncrementClockClick/ResultTimePass,
 ,,,,,,
 EventChair,책상 앞에 의자,의자를 클릭. 튜토리얼 2페이즈인 경우에 카펫이 닫혀있어야 의자를 움직일 수 있음,AND,Condition_tutorial / ConditionTutorialPhase2 / ConditionCarpetClosed,ResultChairMoved,
-EventChair,책상 앞에 의자,의자를 클릭. 카펫이 닫혀있어야 의자를 움직일 수 있음,,Condition_notTutorial / ConditionCarpetClosed,ResultChairMoved,
+EventChair,책상 앞에 의자,의자를 클릭. 카펫이 닫혀있어야 의자를 움직일 수 있음,AND,Condition_notTutorial / ConditionCarpetClosed,ResultChairMoved,
 ,,,,,,
-EventDeskZoom,확대 안 된 책상,확대 되지 않은 상태에서 책상 위에 있는 오브젝트들(노트북/커터칼/스탠드조명)을 클릭,,,Result_showZoomedDesk,4월 19일 추가
+EventDeskZoom,확대 안 된 책상,확대 되지 않은 상태에서 책상 위에 있는 오브젝트들(노트북/커터칼/스탠드조명)을 클릭,,ConditionIsNotChairMoving,Result_showZoomedDesk,4월 19일 추가
 ,,,,,,
 EventLaptopA,노트북,노트북을 처음 클릭,,ConditionLaptopFirstClick,Result_StartDialogueRoomEscape_014 / ResultLaptopLockActivation/Result_IncrementLaptopClick/ResultTimePass,
 EventLaptopA,노트북,비밀번호를 맞은 상태에서 한번 더 클릭,AND,ConditionLaptopCorrect/ConditionLaptopManyClick,ResultLaptopLockActivation/Result_IncrementLaptopClick/ResultLaptopLockOpen/ Result_StartDialogueRoomEscape_015 /ResultTimePass,
