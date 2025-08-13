@@ -4,6 +4,7 @@ using System.Collections;
 using System;
 using TMPro;
 using static Constants;
+using static FollowGameManager;
 public class FollowManager : MonoBehaviour
 {
     // FollowManager를 싱글턴으로 생성
@@ -186,53 +187,38 @@ public class FollowManager : MonoBehaviour
     }
     public float Zoom(Position type)
     {
-        StartCoroutine(ZoomIn(type));
+        ZoomIn(type);
         return zoomTime;
     }
-    private IEnumerator ZoomIn(Position type)
+
+    private void ZoomIn(Position type)
     {
-        Vector3 targetPosition = new(Fate.transform.position.x, 0, -10);
-        float targetSize = 5;
+        Vector3 targetPos;
+        float targetSize;
 
-        Vector3 originPosition = Camera.main.transform.position;
-        float originSize = Camera.main.orthographicSize;
-
-        float elapsedTime = 0f;
-
-        while (elapsedTime < zoomTime)
+        switch (type)
         {
-            switch (type)
-            {
-                case Position.Fate:
-                    targetPosition = new(Fate.transform.position.x, -2, -10);
-                    targetSize = 3;
-                    break;
+            case Position.Fate:
+                targetPos = new Vector3(Fate.transform.position.x, -2f, -10f);
+                targetSize = 3f;
+                break;
 
-                case Position.Accidy:
-                    targetPosition = new(Accidy.transform.position.x, -2, -10);
-                    targetSize = 3;
-                    break;
+            case Position.Accidy:
+                targetPos = new Vector3(Accidy.transform.position.x, -2f, -10f);
+                targetSize = 3f;
+                break;
 
-                case Position.ZoomOut:
-                    targetPosition = new(Fate.transform.position.x, 0, -10);
-                    targetSize = 5;
-                    break;
-            }
-
-            // 보간하여 카메라 위치와 크기를 변경
-            Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
-            Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
-            
-            cameraAfterBlur.orthographicSize = Camera.main.orthographicSize;
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            default: // Position.ZoomOut
+                targetPos = new Vector3(Fate.transform.position.x, 0f, -10f);
+                targetSize = 5f;
+                break;
         }
 
-        // 변경이 완료된 후 최종 목표값으로 설정
-        Camera.main.orthographicSize = targetSize;
-        cameraAfterBlur.orthographicSize = Camera.main.orthographicSize;
+        // 카메라 스무더에 목표만 전달 → 내부 SmoothDamp로 자연스럽게 이동/확대
+        CameraSmoother.Instance.SetTarget(targetPos, targetSize);
     }
+
+
     public void CheckPosition()
     {
         if (Accidy.transform.position.x > 48)
