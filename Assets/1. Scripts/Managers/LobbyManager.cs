@@ -10,7 +10,7 @@ public class LobbyManager : MonoBehaviour
     
     public GameObject lobbyButtons;
     public Image backgroundImage;
-    public Sprite titleWithLogo, titleWithoutLogo, room1Side1BackgroundSprite;
+    public Sprite titleWithLogo, titleWithoutLogo, room1Side1BackgroundSprite, blackBgSprite;
     [SerializeField] private GameObject lobbyPanels;
     [SerializeField] private GameObject clockSecondGameObject;
     [SerializeField] private TMP_InputField nameInput;
@@ -71,7 +71,6 @@ public class LobbyManager : MonoBehaviour
         } else {
             isLobby = false;
             lobbyButtons.SetActive(false);
-            clockSecondGameObject.SetActive(false);
             StartCoroutine(StartPrologue());
         }
     }
@@ -114,10 +113,11 @@ public class LobbyManager : MonoBehaviour
 
         MemoManager.Instance.SetShouldHideMemoButton(true); // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
+        clockSecondGameObject.SetActive(false);
 
-        EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);
-        backgroundImage.sprite = room1Side1BackgroundSprite;
+        backgroundImage.sprite = blackBgSprite;
+        EventManager.Instance.CallEvent("EventFirstPrologue");
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
     
