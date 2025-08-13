@@ -11,7 +11,7 @@ public class Clock : EventObject, IResultExecutable
 
     [SerializeField] private List<Image> Clocks;
 
-    [SerializeField] private Sprite AfterClockImage;
+    [SerializeField] private List<Sprite> AfterClockImages;
 
     private void Start()
     {
@@ -36,8 +36,10 @@ public class Clock : EventObject, IResultExecutable
     public void SwapAfterImage() {
         if (!(bool)GameManager.Instance.GetVariable("ClockTimeCorrect"))
             return;
-    
-        foreach (Image beforeClock in Clocks)
-            beforeClock.sprite = AfterClockImage;
+
+        for (int i = 0; i < Clocks.Count; i++)
+        {
+            Clocks[i].sprite = (i == 2) ? AfterClockImages[1] : AfterClockImages[0];
+        }
     }
 }
