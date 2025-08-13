@@ -10,7 +10,7 @@ public class LobbyManager : MonoBehaviour
     
     public GameObject lobbyButtons;
     public Image backgroundImage;
-    public Sprite titleWithLogo, titleWithoutLogo, room1Side1BackgroundSprite, blackBgSprite;
+    public Sprite titleWithLogo, titleWithoutLogo, room1Side1BackgroundSprite;
     [SerializeField] private GameObject lobbyPanels;
     [SerializeField] private GameObject clockSecondGameObject;
     [SerializeField] private TMP_InputField nameInput;
@@ -117,7 +117,7 @@ public class LobbyManager : MonoBehaviour
 
         EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);
-        backgroundImage.sprite = blackBgSprite;
+        backgroundImage.sprite = room1Side1BackgroundSprite;
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
     

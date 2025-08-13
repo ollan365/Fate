@@ -151,7 +151,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultCommonPrologueA":
-                LobbyManager.Instance.backgroundImage.sprite = LobbyManager.Instance?.room1Side1BackgroundSprite;
                 StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_002", 3));
                 break;
 

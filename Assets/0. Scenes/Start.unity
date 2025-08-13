@@ -343,8 +343,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1254963676}
-  - {fileID: 1571167330}
   - {fileID: 1718493773}
+  - {fileID: 1571167330}
   m_Father: {fileID: 1748946841}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -17891,7 +17891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   variablesText: {fileID: 1186971534}
   isDebug: 0
-  skipTutorial: 0
+  skipTutorial: 1
   skipInquiry: 0
 --- !u!1 &1571167329
 GameObject:
@@ -17929,7 +17929,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 90, y: 100}
+  m_AnchoredPosition: {x: -90, y: 100}
   m_SizeDelta: {x: 110, y: 60}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1571167331
@@ -19757,7 +19757,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -90, y: 100}
+  m_AnchoredPosition: {x: 90, y: 100}
   m_SizeDelta: {x: 110, y: 60}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1718493774
@@ -28382,6 +28382,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3460564257700061409, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3671802302621508169, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: Skip Text Room Fate
@@ -28389,6 +28393,10 @@ PrefabInstance:
     - target: {fileID: 3671802302621508169, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3671802302621508169, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4046082857517249554, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
@@ -28409,6 +28417,22 @@ PrefabInstance:
     - target: {fileID: 4124486772342145766, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398228219826507244, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_text
+      value: "\u25B6\u25B6 <b>SKIP</b>"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398228219826507244, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
+    - target: {fileID: 4398228219826507244, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398228219826507244, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4400048920480690112, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Pivot.x
@@ -28510,6 +28534,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4609158555011816873, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 296.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4609158555011816873, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 132.25
+      objectReference: {fileID: 0}
     - target: {fileID: 4743841464532265580, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: Dialogue Canvas
@@ -28574,6 +28606,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6317644893720952963, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364062846763970342, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_text
+      value: "\u25B6\u25B6 <b>SKIP</b>"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364062846763970342, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
+    - target: {fileID: 6364062846763970342, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364062846763970342, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6364385889202898472, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: Blocking Panel Follow
@@ -28581,6 +28633,14 @@ PrefabInstance:
     - target: {fileID: 6364385889202898472, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6367431387724840395, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 296.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 6367431387724840395, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 132.25
       objectReference: {fileID: 0}
     - target: {fileID: 6379240057011591143, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
@@ -28597,6 +28657,30 @@ PrefabInstance:
     - target: {fileID: 6422161502605494336, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6531073875352481166, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_text
+      value: "\u25B6\u25B6 <b>SKIP</b>"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6531073875352481166, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
+    - target: {fileID: 6531073875352481166, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6531073875352481166, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6534460802547957603, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 296.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 6534460802547957603, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 132.25
       objectReference: {fileID: 0}
     - target: {fileID: 6633996260621631331, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
