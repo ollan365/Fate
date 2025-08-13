@@ -39,7 +39,6 @@ public class LobbyManager : MonoBehaviour
     
     private IEnumerator WaitForGameManagerStartFunction() {
         yield return null;
-        SaveManager.Instance.SaveInitGameData();
         SaveManager.Instance.ApplySavedGameData();
 
         if ((bool)GameManager.Instance.GetVariable("SkipLobby")) {

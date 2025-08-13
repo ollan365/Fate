@@ -37,8 +37,8 @@ public class MemoManager : PageContentsManager
     private Image gaugeImage;
     private Slider clearFlagSlider;
     private Image clearFlagImage;
-    private readonly Color unclearColor = new Color(0.5f, 0.5f, 0.5f);
-    private readonly Color clearColor = new Color(1, 0.792f, 0.259f);
+    private readonly Color unclearColor = new Color(0.4f, 0.4f, 0.4f);
+    private readonly Color clearColor = new Color(1, 0.7f, 0);
 
     private void Awake()
     {
@@ -177,15 +177,13 @@ public class MemoManager : PageContentsManager
             case SceneType.ROOM_2:
                 GameObject gaugeImageGameObject = memoGaugeParent.transform.Find("Gauge Image").gameObject; 
                 gaugeImage = gaugeImageGameObject.GetComponent<Image>();
-                
-                GameObject flagSliderGameObject = gaugeImageGameObject.transform.Find("Flag Slider").gameObject;
-                clearFlagSlider = flagSliderGameObject.GetComponent<Slider>();
-                
-                GameObject handleSlideAreaGameObjectRoom = flagSliderGameObject.transform.Find("Handle Slide Area")
+
+                clearFlagSlider = memoGaugeParent.GetComponentInChildren<Slider>();
+
+                GameObject handleSlideAreaGameObjectRoom = clearFlagSlider.transform.Find("Handle Slide Area")
                     .gameObject;
-                GameObject clearFlagBackgroundGameObject = handleSlideAreaGameObjectRoom.transform
-                    .Find("Clear Flag Background").gameObject;
-                clearFlagImage = clearFlagBackgroundGameObject.GetComponentInChildren<Image>();
+                GameObject handleGameObject = handleSlideAreaGameObjectRoom.transform.Find("Handle").gameObject;
+                clearFlagImage = handleGameObject.GetComponent<Image>();
                 break;
             
             case SceneType.FOLLOW_1:
@@ -197,7 +195,7 @@ public class MemoManager : PageContentsManager
                 
                 GameObject handleSlideAreaGameObjectFollow = clearFlagSlider.transform.Find("Handle Slide Area")
                     .gameObject;
-                GameObject handleGameObject = handleSlideAreaGameObjectFollow.transform.Find("Handle").gameObject;
+                handleGameObject = handleSlideAreaGameObjectFollow.transform.Find("Handle").gameObject;
                 clearFlagImage = handleGameObject.GetComponent<Image>();
                 break;
         }

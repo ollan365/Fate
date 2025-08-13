@@ -90,8 +90,10 @@ public class GameManager : MonoBehaviour
                 default:
                     Debug.Log("Unknown variable type: " + variableType);
                     break;
-            } 
+            }
         }
+
+        SaveManager.Instance.SaveInitGameData();
     }
 
     public void SetVariable(string variableName, object value) {
