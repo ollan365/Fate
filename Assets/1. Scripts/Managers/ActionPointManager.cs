@@ -55,8 +55,8 @@ abstract public class ActionPointManager : MonoBehaviour
     [SerializeField] private GameObject GearHourHand;
     [SerializeField] private GameObject GearMinuteHand;
 
-    private float elapsedTime = 0f;
     private bool hasChangedSibling = false;
+    private bool _isTurningBack;   // Day Animation 재진입 가드용
 
     // ************************* temporary members for Day Gear Rotation and Alpha value *************************
     [SerializeField] private float mainGearSpeed = 90f;
@@ -279,16 +279,19 @@ abstract public class ActionPointManager : MonoBehaviour
     // DayUI 뒤로 넘김
     protected IEnumerator TurnNextDayUIBack()
     {
+        if (_isTurningBack) yield break;
+        _isTurningBack = true;
+
         // dayui 넘어가게 할 start, mid, end rotation 
         Quaternion startRotation = yesterDayRectTransform.rotation;
         Quaternion midRotation = startRotation * Quaternion.Euler(TurningDayBackRotationValues[MidRotationIndex]);
         Quaternion endRotation = startRotation * Quaternion.Euler(TurningDayBackRotationValues[EndRotationIndex]);
 
-        elapsedTime = 0f;
+        float elapsedTime = 0f;
         hasChangedSibling = false;
 
         float AnimatingHalfTime = dayTurningBackTime / 2;
-        float MidRoation_Y_value = 263f;
+        const float MidRoation_Y_value = 263f;
 
         while (elapsedTime < dayTurningBackTime)
         {
@@ -320,12 +323,13 @@ abstract public class ActionPointManager : MonoBehaviour
         }
         yesterDayRectTransform.rotation = endRotation;
         UIManager.Instance.SetUI(eUIGameObjectName.YesterdayNumText, true);
+        _isTurningBack = false;
     }
 
     // DayUI 크기, 위치 가운데로 조정
     IEnumerator ScaleAndMovingNextDayUI(Vector3 targetPosition, float endScaleValue)
     {
-        elapsedTime = 0f;
+        float elapsedTime = 0f;
 
         Vector3 startingPosition = DayChangingGroupRectTransform.anchoredPosition;
         Vector3 startScale = DayChangingGroupRectTransform.localScale;
