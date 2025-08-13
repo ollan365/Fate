@@ -147,21 +147,20 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPrologueLimit":
-                StartLogic.Instance.DarkBackground(true);
                 StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_000", 3));
                 break;
 
             case "ResultCommonPrologueA":
-                StartLogic.Instance.DarkBackground(false);
+                LobbyManager.Instance.backgroundImage.sprite = LobbyManager.Instance?.room1Side1BackgroundSprite;
                 StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_002", 3));
                 break;
 
             case "ResultName": // 이름 입력창
-                StartLogic.Instance.OpenNamePanel();
+                LobbyManager.Instance?.OpenNamePanel();
                 break;
 
             case "ResultBirth": // 생일 입력창
-                StartLogic.Instance.OpenBirthPanel();
+                LobbyManager.Instance?.OpenBirthPanel();
                 break;
 
             case "ResultPrologueEnd":

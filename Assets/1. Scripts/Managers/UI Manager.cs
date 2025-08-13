@@ -32,6 +32,11 @@ public enum eUIGameObjectName {
     MemoButton,
     MemoContents,
     MemoGauge,
+    NewGamePanel,
+    NoGameDataPanel,
+    NamePanel,
+    NameConfirmPanel,
+    BirthdayPanel,
     MenuUI,
     WhiteMenu,
     BlackMenu,
@@ -68,7 +73,7 @@ public enum eUIGameObjectName {
     AlbumImageGameObject,
     EndingTypeGameObject,
     EndingNameGameObject,
-    BlockingPanelDefault,
+    TutorialBlockingPanel,
 }
 
 public class UIManager : MonoBehaviour {
@@ -87,7 +92,8 @@ public class UIManager : MonoBehaviour {
     public GameObject objectImageParentRoom;
     public GameObject objectImageRoom;
 
-    [Header("UI Game Objects")] public GameObject normalVignette;
+    [Header("UI Game Objects")] 
+    public GameObject normalVignette;
     public GameObject warningVignette;
     public GameObject actionPoints;
     public GameObject actionPointsBackgroundImage;
@@ -99,9 +105,10 @@ public class UIManager : MonoBehaviour {
     public GameObject memoButton;
     public GameObject memoContents;
     public GameObject memoGauge;
-    public GameObject blockingPanelDefault;
+    public GameObject tutorialBlockingPanel;
 
-    [Header("UI Game Objects - Album")] public GameObject album;
+    [Header("UI Game Objects - Album")] 
+    public GameObject album;
     public GameObject albumButton;
     public GameObject albumPage;
     public GameObject albumImageGameObject;
@@ -111,7 +118,6 @@ public class UIManager : MonoBehaviour {
 
     [Header("UI Game Objects - Day Animation")]
     public GameObject dayChangingGameObject;
-
     public GameObject yesterdayNumText;
     public GameObject todayNumText;
     public GameObject yesterday;
@@ -128,7 +134,15 @@ public class UIManager : MonoBehaviour {
     private TextMeshProUGUI endingNameText;
     private Image albumImage;
 
-    [Header("UI Game Objects - Menu")] public GameObject menuUI;
+    [Header("UI Game Objects - Lobby Panels")]
+    public GameObject newGamePanel;
+    public GameObject noGameDataPanel;
+    public GameObject namePanel;
+    public GameObject nameConfirmPanel;
+    public GameObject birthdayPanel;
+    
+    [Header("UI Game Objects - Menu")] 
+    public GameObject menuUI;
     public GameObject whiteMenu;
     public GameObject blackMenu;
     public GameObject optionUI;
@@ -138,7 +152,8 @@ public class UIManager : MonoBehaviour {
     public GameObject SoundEffectValueText;
     private bool menuOpenByStartSceneButton = false;
 
-    [Header("UI Game Objects - Follow")] public GameObject followUIParent;
+    [Header("UI Game Objects - Follow")] 
+    public GameObject followUIParent;
     public GameObject followMemoGauge;
     public GameObject followUIBackground;
     public GameObject doubtGaugeSlider;
@@ -173,8 +188,6 @@ public class UIManager : MonoBehaviour {
     [Header("Animation Settings")] public float fadeAnimationDuration = 0.3f;
     public float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
-
-    public bool enableLoadingAnimation = false;
 
     public static UIManager Instance { get; private set; }
 
@@ -220,7 +233,13 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.MemoContents, memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge, memoGauge);
 
-        uiGameObjects.Add(eUIGameObjectName.BlockingPanelDefault, blockingPanelDefault);
+        uiGameObjects.Add(eUIGameObjectName.TutorialBlockingPanel, tutorialBlockingPanel);
+        
+        uiGameObjects.Add(eUIGameObjectName.NewGamePanel, newGamePanel);
+        uiGameObjects.Add(eUIGameObjectName.NoGameDataPanel, noGameDataPanel);
+        uiGameObjects.Add(eUIGameObjectName.NamePanel, namePanel);
+        uiGameObjects.Add(eUIGameObjectName.NameConfirmPanel, nameConfirmPanel);
+        uiGameObjects.Add(eUIGameObjectName.BirthdayPanel, birthdayPanel);
 
         uiGameObjects.Add(eUIGameObjectName.MenuUI, menuUI);
         uiGameObjects.Add(eUIGameObjectName.WhiteMenu, whiteMenu);
@@ -422,29 +441,26 @@ public class UIManager : MonoBehaviour {
     }
 
     public void SetMenuUI(bool startSceneButtonClick = false) {
-        if (startSceneButtonClick) menuOpenByStartSceneButton = startSceneButtonClick;
+        if (startSceneButtonClick)
+            menuOpenByStartSceneButton = true;
 
         if (GetUI(eUIGameObjectName.MenuUI).activeSelf) {
             SetUI(eUIGameObjectName.MenuUI, false);
             SetUI(eUIGameObjectName.WhiteMenu, false);
             SetUI(eUIGameObjectName.BlackMenu, false);
             if (menuOpenByStartSceneButton) {
-                StartLogic.Instance.SetButtons();
+                LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
-
             Time.timeScale = 1f;
-        }
-        else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
+        } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
             SetUI(eUIGameObjectName.OptionUI, false);
             if (menuOpenByStartSceneButton) {
-                StartLogic.Instance.SetButtons();
+                LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
-
             Time.timeScale = 1f;
-        }
-        else {
+        } else {
             SetUI(eUIGameObjectName.MenuUI, true);
             SetUI(UnityEngine.Random.Range(0, 2) == 0 
                 ? eUIGameObjectName.WhiteMenu 
@@ -539,65 +555,62 @@ public class UIManager : MonoBehaviour {
 
         if (!fadeObject.gameObject.activeSelf)
             fadeObject.gameObject.SetActive(true);
-        Color newColor = fadeObject.color;
-        newColor.a = start;
-        fadeObject.color = newColor;
+        
+        Color fadeObjectColor = fadeObject.color;
+        fadeObjectColor.a = start;
+        fadeObject.color = fadeObjectColor;
 
-        float current = 0, percent = 0;
+        float t = 0f;
+        while (t < 1f && fadeTime != 0f) {
+            t += Time.unscaledDeltaTime / fadeTime;
+            float a = Mathf.Lerp(start, end, t);
 
-        if (enableLoadingAnimation)
-            StartCoroutine(SetLoadingAnimation(start, end, fadeTime));
+            fadeObjectColor.a = a;
+            fadeObject.color = fadeObjectColor;
 
-        while (percent < 1 && fadeTime != 0)
-        {
-            current += Time.deltaTime;
-            percent = current / fadeTime;
+            coverText.color = new Color(1f, 1f, 1f, a);
+            if (progressBarGroup) 
+                progressBarGroup.alpha = a;
+            if (Loading_AnimationGroup) 
+                Loading_AnimationGroup.alpha = a;
 
-            newColor.a = Mathf.Lerp(start, end, percent);
-            fadeObject.color = newColor;
-
-            coverText.color = new(1, 1, 1, Mathf.Lerp(start, end, percent));
-            progressBarGroup.alpha = Mathf.Lerp(start, end, percent);
-
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
-        newColor.a = end;
-        fadeObject.color = newColor;
+        fadeObjectColor.a = end;
+        fadeObject.color = fadeObjectColor;
+        coverText.color = new Color(1f, 1f, 1f, end);
+        if (progressBarGroup) 
+            progressBarGroup.alpha = end;
+        if (Loading_AnimationGroup) 
+            Loading_AnimationGroup.alpha = end;
 
         if (blink) { // 곧바로 다시 어두워지거나 밝아지게 하고 싶을 때
-            yield return new WaitForSeconds(waitingTime);
+            yield return new WaitForSecondsRealtime(waitingTime);
             StartCoroutine(OnFade(fadeObject, end, start, fadeTime + changeFadeTime, false, 0, 0));
+            yield break;
         }
 
-        if (fadeObject == coverPanel && end == 0) { // 투명해졌으면 끈다
-            fadeObject.gameObject.SetActive(false);
-            coverText.gameObject.SetActive(false);
-
+        if (fadeObject == coverPanel && Mathf.Approximately(end, 0f)) { // 투명해졌으면 끈다
             progressBarGroup.gameObject.SetActive(false);
             Loading_AnimationGroup.gameObject.SetActive(false);
-            enableLoadingAnimation = false;
+            coverText.gameObject.SetActive(false);
+            fadeObject.gameObject.SetActive(false);
         }
     }
 
     public void TextOnFade(string text) {
         coverText.gameObject.SetActive(true);
         coverText.text = text;
-
+    
         progressBarGroup.gameObject.SetActive(true);
         Loading_AnimationGroup.gameObject.SetActive(true);
     }
 
-    public IEnumerator SetLoadingAnimation(float start, float end, float fadeTime) // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
-    {
-        // 모든 캐릭터 오브젝트 다 꺼두기
-        foreach (GameObject loadingCharacter in loading_characters) {
-            loadingCharacter.SetActive(true);
-            loadingCharacter.SetActive(false);
-        }
-
-        // 우연의 성별에 맞게 캐릭터 애니메이션 재생 작동
-        loading_characters[(int)GameManager.Instance.GetVariable("AccidyGender")].gameObject.SetActive(true);
+    public IEnumerator SetLoadingAnimation(float start, float end, float fadeTime) {  // 로딩씬의 로딩 캐릭터 애니메이션 활성화 및 알파값 0->1 / 1->0
+        int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
+        loading_characters[accidyGender].gameObject.SetActive(true); // 우연의 성별에 맞게 캐릭터 애니메이션 재생 작동
+        loading_characters[1 - accidyGender].gameObject.SetActive(false);
 
         float current = 0, percent = 0;
         while (percent < 1 && fadeTime != 0) {
