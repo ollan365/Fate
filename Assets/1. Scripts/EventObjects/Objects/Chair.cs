@@ -44,6 +44,15 @@ public class Chair : EventObject, IResultExecutable
         }
     }
 
+    private void Start()
+    {
+        if (sideNum == 1)
+        {
+            deskMovedChair.SetActive(true);
+            deskMovedChair.SetActive(false);
+        }
+    }
+
     public new void OnMouseDown()
     {
         GameManager.Instance.SetVariable("isInquiry", false);
