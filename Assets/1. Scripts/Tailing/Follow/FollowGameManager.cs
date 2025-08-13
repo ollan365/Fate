@@ -61,7 +61,8 @@ public class FollowGameManager : MonoBehaviour
             IsFateMove = false;
             if (Input.GetKey(KeyCode.A))
             {
-                if (Fate.transform.position.x > -1) Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
+                // 나중에 아트 리소스 추가되면 Vector3.right를 Vector3.left로 변경
+                if (Fate.transform.position.x > -1) Fate.transform.Translate(Vector3.right * fateMoveSpeed * Time.deltaTime);
 
                 Fate.SetBool("Right", false);
                 IsFateMove = true;
@@ -262,100 +263,101 @@ public class FollowGameManager : MonoBehaviour
     {
         while (!IsEnd)
         {
-            while(!IsEnd && accidyStatus != AccidyStatus.RED)
+            // 평상시: Fate 따라가되 X>=0
+            while (!IsEnd && accidyStatus != AccidyStatus.RED)
             {
                 float cameraX = Mathf.Max(0, Fate.transform.position.x);
-                Camera.main.transform.position = new(cameraX, 0, -10);
+                CameraSmoother.Instance.SetTarget(new Vector3(cameraX, 0f, -10f), Camera.main.orthographicSize);
                 yield return null;
             }
 
-            Vector3 originPosition = Camera.main.transform.position;
-            float originSize = Camera.main.orthographicSize;
-
-            float elapsedTime = 0f, zoomTime = 1.5f;
-
-            while (!IsEnd && elapsedTime < zoomTime)
-            {
-                float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
-                Vector3 targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
-
-                Camera.main.transform.position = Vector3.Lerp(originPosition, targetPosition, elapsedTime / zoomTime);
-                Camera.main.orthographicSize = Mathf.Lerp(originSize, targetSize, elapsedTime / zoomTime);
-                FollowManager.Instance.CameraAfterBlur.orthographicSize = Camera.main.orthographicSize;
-
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
+            // RED 진입: 두 캐릭터를 화면에 담는 타겟을 매 프레임 갱신
             while (!IsEnd && accidyStatus == AccidyStatus.RED)
             {
-                float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3, 3, 5);
-                Vector3 targetPosition = new((Fate.transform.position.x + Accidy.transform.position.x) / 2, targetSize - 5, -10);
+                float targetSize = Mathf.Clamp((Accidy.transform.position.x - Fate.transform.position.x) / 3f, 3f, 5f);
+                Vector3 targetPos = new Vector3((Fate.transform.position.x + Accidy.transform.position.x) / 2f, targetSize - 5f, -10f);
 
-                Camera.main.transform.position = targetPosition;
-                Camera.main.orthographicSize = targetSize;
-                FollowManager.Instance.CameraAfterBlur.orthographicSize = Camera.main.orthographicSize;
-
+                CameraSmoother.Instance.SetTarget(targetPos, targetSize);
                 yield return null;
             }
 
-            if (!IsEnd) yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.ZoomOut));
+            if (!IsEnd)
+                yield return new WaitForSeconds(FollowManager.Instance.Zoom(FollowManager.Position.ZoomOut));
         }
     }
     private IEnumerator Warning()
     {
+        // 부드럽게 변화시키기 위한 상태값
+        float targetAlpha = 0f;
+        float currentAlpha = 0f;
+        float smoothVel = 0f;
+
+        // 조절 파라미터 (기존 fadeTime=1과 유사하게 동작)
+        float smoothTime = 0.2f;   // 값이 작을수록 더 빠르게 수렴
+        float holdEpsilon = 0.02f;  // 목표 근접 판정 오차
+        bool toOne = true;          // RED가 아닐 때 0↔1 토글용
+
+        // 시작 알파 동기화
+        currentAlpha = GetAlpha();
+        targetAlpha = 0f;
+        SetAlpha(currentAlpha);
+
+        while (IsTutorial)
+        {
+            yield return null;
+        }
+
         while (!IsEnd)
         {
+            // 기존 조건: "트리거 전 대기"
             while (!IsEnd && (accidyStatus != AccidyStatus.RED && Distance > 6 && Distance < 9 || IsDialogueOpen))
                 yield return null;
 
-            float start = 0, end = 1, fadeTime = 1;
-            float current = 0, percent = 0;
-
+            // 기존 조건: "경고 상태 동작"
             while (!IsEnd && (Distance <= 6 || accidyStatus == AccidyStatus.RED || Distance >= 9) && !IsDialogueOpen)
             {
-                while (percent < 1 && fadeTime != 0)
-                {
-                    current += Time.deltaTime;
-                    percent = current / fadeTime;
+                // 목표에 충분히 근접하면 방향 전환
+                if (Mathf.Abs(currentAlpha - targetAlpha) <= holdEpsilon)
+                    toOne = !toOne;
 
-                    vignette.mainColor.a = Mathf.Lerp(start, end, percent);
+                targetAlpha = toOne ? 1f : 0.1f;
 
-                    if (IsEnd || IsDialogueOpen) break;
+                // 알파를 부드럽게 목표로 수렴
+                currentAlpha = Mathf.SmoothDamp(currentAlpha, targetAlpha, ref smoothVel, smoothTime);
+                SetAlpha(currentAlpha);
 
-                    yield return null;
-                }
+                // 즉시 빠져야 하는 종료/대화 열림 체크
+                if (IsEnd || IsDialogueOpen) break;
 
-                while (!IsFateHide && accidyStatus == AccidyStatus.RED)
-                {
-                    vignette.mainColor.a = 1;
-
-                    if (IsEnd || IsDialogueOpen) break;
-
-                    yield return null;
-                }
-
-                vignette.mainColor.a = end;
-                end = start;
-                start = vignette.mainColor.a;
-
-                current = 0;
-                percent = 0;
+                yield return null;
             }
 
-            while (percent < 1 && fadeTime != 0)
+            // 경고 상태가 끝났다면 알파를 부드럽게 0으로 수렴
+            while (Mathf.Abs(currentAlpha - 0f) > holdEpsilon)
             {
-                current += Time.deltaTime * 2;
-                percent = current / fadeTime;
-
-                vignette.mainColor.a = Mathf.Lerp(vignette.mainColor.a, 0, percent);
-
+                currentAlpha = Mathf.SmoothDamp(currentAlpha, 0f, ref smoothVel, smoothTime);
+                SetAlpha(currentAlpha);
                 yield return null;
             }
         }
 
-        vignette.mainColor.a = 0;
+        // 완전 종료 시 0으로 정리
+        SetAlpha(0f);
+
+        // 내부 헬퍼: 알파 읽기/쓰기 (Color는 struct라 재할당 방식 권장)
+        float GetAlpha()
+        {
+            var c = vignette.mainColor;
+            return c.a;
+        }
+        void SetAlpha(float a)
+        {
+            var c = vignette.mainColor;
+            c.a = Mathf.Clamp01(a);
+            vignette.mainColor = c;
+        }
     }
+
 
     public enum AccidyStatus { RED, YELLOW, GREEN } // 빨강: 우연이 보고 있음, 노랑: 우연이 보기 직전, 초록: 우연이 안 봄
     private enum AccidyAction { Move, Stop, Turn, Inverse_Stop, Inverse_Turn }

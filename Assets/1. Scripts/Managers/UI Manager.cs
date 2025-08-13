@@ -528,7 +528,7 @@ public class UIManager : MonoBehaviour {
 
     public void FollowEventButtonSet(FollowObject followObject)
     {
-        followEventButton.SetActive(true);
+        AnimateUI(followEventButton, true, true);
         followEventButtonImage.SetActive(true);
 
         followEventButtonImage.GetComponent<Image>().sprite = followObject.specialSprite;
@@ -537,7 +537,7 @@ public class UIManager : MonoBehaviour {
 
         followEventButton.GetComponent<Button>().onClick.RemoveAllListeners();
         followEventButton.GetComponent<Button>().onClick.AddListener(() => followObject.OnMouseDown_Normal());
-        followEventButton.GetComponent<Button>().onClick.AddListener(() => followEventButton.SetActive(false));
+        followEventButton.GetComponent<Button>().onClick.AddListener(() => AnimateUI(followEventButton, false, true));
     }
 
     // <summary> 변수 설명

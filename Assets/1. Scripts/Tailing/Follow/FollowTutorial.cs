@@ -6,10 +6,10 @@ using System.Collections;
 public class FollowTutorial : MonoBehaviour
 {
     [SerializeField] private GameObject highlightPanel;
-    [SerializeField] private Animator beaconAnimator;
+    [SerializeField] private GameObject beacon;
     [SerializeField] private GameObject tutorialBlockingPanel;
-    [SerializeField] private GameObject moveButtons;
-    [SerializeField] private GameObject hideButtons;
+    [SerializeField] private GameObject[] moveButtons;
+    [SerializeField] private GameObject hideButton;
     [SerializeField] private TextMeshProUGUI startText;
     [SerializeField] private Image startBlockingPanel;
     [SerializeField] private GameObject fate;
@@ -54,11 +54,11 @@ public class FollowTutorial : MonoBehaviour
         {
             case 1: // 신호등 판넬 켜기
                 highlightPanel.SetActive(true);
-                beaconAnimator.SetBool("Light", true);
+                UIManager.Instance.ToggleHighlightAnimationEffect(beacon, true);
                 break;
             case 2: // 신호등을 눌렀을 때
                 highlightPanel.SetActive(false);
-                beaconAnimator.SetBool("Light", false);
+                UIManager.Instance.ToggleHighlightAnimationEffect(beacon, false);
                 break;
             case 3: // 이동 가능
                 StartCoroutine(MoveLogicTutorial());
@@ -76,7 +76,10 @@ public class FollowTutorial : MonoBehaviour
     }
     private IEnumerator MoveLogicTutorial()
     {
-        moveButtons.SetActive(true);
+        moveButtons[0].SetActive(true);
+        moveButtons[1].SetActive(true);
+        UIManager.Instance.ToggleHighlightAnimationEffect(moveButtons[1], true);
+
         fateMovable = true;
 
         // 필연이 일정 거리 이상 앞으로 이동할 때까지 대기
@@ -88,14 +91,17 @@ public class FollowTutorial : MonoBehaviour
     {
         fateCanHide = true;
 
-        moveButtons.SetActive(false);
+        moveButtons[0].SetActive(false);
+        moveButtons[1].SetActive(false);
+        UIManager.Instance.ToggleHighlightAnimationEffect(moveButtons[1], false);
 
         // 우연이 뒤돌아보기 직전
         accidy.transform.parent.SetAsLastSibling();
 
         accidyNextLogic = true;
 
-        hideButtons.SetActive(true);
+        hideButton.SetActive(true);
+        UIManager.Instance.ToggleHighlightAnimationEffect(hideButton, true);
     }
 
     private IEnumerator HideLogicTutorial()
@@ -117,7 +123,8 @@ public class FollowTutorial : MonoBehaviour
             if (spaceBarClickTime <= 0) break;
             else yield return null;
         }
-        hideButtons.SetActive(false);
+        hideButton.SetActive(false);
+        UIManager.Instance.ToggleHighlightAnimationEffect(hideButton, false);
 
         accidy.transform.parent.SetAsFirstSibling();
         accidyNextLogic = true;
@@ -151,17 +158,37 @@ public class FollowTutorial : MonoBehaviour
     private IEnumerator EndTutorial()
     {
         fateMovable = false;
+
+        
         startText.gameObject.SetActive(true);
         startBlockingPanel.gameObject.SetActive(true);
-        float current = 0, fadeTime = 1;
+
+        float current = 0f;
+        float fadeTime = 0.5f; // 한쪽 방향 페이드 시간 (총 깜빡임은 *2)
+
+        // === Fade In (0 → 1) ===
         while (current < fadeTime)
         {
             current += Time.deltaTime;
+            float t = Mathf.Clamp01(current / fadeTime);
 
-            startText.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, current / fadeTime));
-            startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, current / fadeTime));
+            startText.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, t)); // 텍스트는 기존처럼 1→0
+            startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(0, 1, t)); // 0→1
             yield return null;
         }
+
+        // === Fade Out (1 → 0) ===
+        current = 0f;
+        while (current < fadeTime)
+        {
+            current += Time.deltaTime;
+            float t = Mathf.Clamp01(current / fadeTime);
+
+            startText.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, t)); // 텍스트는 다시 0→1 (원하면 생략 가능)
+            startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, t)); // 1→0
+            yield return null;
+        }
+
         startText.gameObject.SetActive(false);
         startBlockingPanel.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
