@@ -50,7 +50,7 @@ Shader "Custom/BlursShader"
                 float blur = _BlurSize;
                 blur = max(1, blur);
 
-                fixed4 color = (0, 0, 0, 0);
+                fixed4 color = fixed4(0, 0, 0, 0);
                 float weight_total = 0;
 
                 for (float x = -blur; x <= blur; x++) {
@@ -107,7 +107,7 @@ Shader "Custom/BlursShader"
                 float blur = _BlurSize;
                 blur = max(1, blur);
 
-                fixed4 color = (0, 0, 0, 0);
+                fixed4 color = fixed4(0, 0, 0, 0);
                 float weight_total = 0;
 
                 [loop]

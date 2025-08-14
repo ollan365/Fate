@@ -205,12 +205,20 @@ public class UIManager : MonoBehaviour {
         SetAllUI(false);
         SetOptionUI();
         InitializeUIToCheck();
-        ChangeBgmOrSoundEffectValue(true);
-        ChangeBgmOrSoundEffectValue(false);
 
         // UI Objects that should be active by default
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
         SetUI(eUIGameObjectName.AlbumButton, true);
+
+        if (GameManager.Instance.isDemoBuild) {
+            whiteMenu.transform.GetChild(2).gameObject.SetActive(false);
+            blackMenu.transform.GetChild(2).gameObject.SetActive(false);
+        }
+    }
+
+    private void Start() {
+        ChangeBgmOrSoundEffectValue(true);
+        ChangeBgmOrSoundEffectValue(false);
     }
 
     private void AddUIGameObjects() {
@@ -466,9 +474,9 @@ public class UIManager : MonoBehaviour {
             Time.timeScale = 1f;
         } else {
             SetUI(eUIGameObjectName.MenuUI, true);
-            SetUI(UnityEngine.Random.Range(0, 2) == 0 
-                ? eUIGameObjectName.WhiteMenu 
-                : eUIGameObjectName.BlackMenu, true);
+            SetUI(GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.FOLLOW_1 
+                ? eUIGameObjectName.BlackMenu
+                : eUIGameObjectName.WhiteMenu, true);
             Time.timeScale = 0f;
         }
     }
@@ -603,6 +611,20 @@ public class UIManager : MonoBehaviour {
             coverText.gameObject.SetActive(false);
             fadeObject.gameObject.SetActive(false);
         }
+    }
+
+    public void ResetLoadingUI() {
+        if (coverText) 
+            coverText.gameObject.SetActive(false);
+        if (progressBarGroup) 
+            progressBarGroup.gameObject.SetActive(false);
+        if (Loading_AnimationGroup) 
+            Loading_AnimationGroup.gameObject.SetActive(false);
+        if (progressBar) 
+            progressBar.fillAmount = 0f;
+        foreach (GameObject character in loading_characters)
+            if (character)
+                character.gameObject.SetActive(false);
     }
 
     public void TextOnFade(string text) {

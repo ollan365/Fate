@@ -83,6 +83,10 @@ public class GameSceneManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
+        
+        // Reset loading UI elements before starting fade-in to prevent previous elements from showing
+        UIManager.Instance.ResetLoadingUI();
+        
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         StartCoroutine(UIManager.Instance.SetLoadingAnimation(0, 1, 1));
