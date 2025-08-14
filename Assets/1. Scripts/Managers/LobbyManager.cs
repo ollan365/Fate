@@ -10,7 +10,7 @@ public class LobbyManager : MonoBehaviour
     
     public GameObject lobbyButtons;
     public Image backgroundImage;
-    public Sprite titleWithLogo, titleWithoutLogo, room1Side1BackgroundSprite, blackBgSprite;
+    public Sprite titleWithLogo, room1Side1BackgroundSprite, blackBgSprite;
     [SerializeField] private GameObject lobbyPanels;
     [SerializeField] private GameObject clockSecondGameObject;
     [SerializeField] private TMP_InputField nameInput;
@@ -33,6 +33,7 @@ public class LobbyManager : MonoBehaviour
         isLobby = true;
         lobbyButtons.SetActive(true);
         lobbyPanels.SetActive(true);
+        backgroundImage.sprite = titleWithLogo;
         
         StartCoroutine(WaitForGameManagerStartFunction());
     }
@@ -65,18 +66,10 @@ public class LobbyManager : MonoBehaviour
     }
     
     public void StartNewGame() {
-        if (SaveManager.Instance.CheckGameData()) {  // 저장된 게임 데이터가 없는 경우
+        if (SaveManager.Instance.CheckGameData())  // 저장된 게임 데이터가 없는 경우
             UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, true);
-            backgroundImage.sprite = titleWithoutLogo;
-        } else {
-            isLobby = false;
-            lobbyButtons.SetActive(false);
+        else
             StartCoroutine(StartPrologue());
-        }
-    }
-    
-    public void OriginBackground() {
-        backgroundImage.sprite = titleWithLogo;
     }
     
     public void LoadGame() {
@@ -110,11 +103,13 @@ public class LobbyManager : MonoBehaviour
     private IEnumerator StartPrologue() {
         if (!UIManager.Instance.coverPanel.gameObject.activeSelf)
             StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
-
-        MemoManager.Instance.SetShouldHideMemoButton(true); // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
-        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
+        
+        isLobby = false;
+        lobbyButtons.SetActive(false);
         clockSecondGameObject.SetActive(false);
-
+        MemoManager.Instance.SetShouldHideMemoButton(true);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
+        
         yield return new WaitForSeconds(1);
         backgroundImage.sprite = blackBgSprite;
         EventManager.Instance.CallEvent("EventFirstPrologue");
