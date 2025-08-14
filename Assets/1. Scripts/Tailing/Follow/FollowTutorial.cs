@@ -163,10 +163,12 @@ public class FollowTutorial : MonoBehaviour
             current += Time.deltaTime;
             float t = Mathf.Clamp01(current / fadeTime);
 
-            startText.GetComponent<Image>().color = new Color(1, 1, 1, Mathf.Lerp(1, 0, t)); // 텍스트는 기존처럼 1→0
+            startText.GetComponent<Image>().color = new Color(1, 1, 1, Mathf.Lerp(0, 1, t)); // 텍스트는 기존처럼 1→0
             //startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(0, 1, t)); // 0→1
             yield return null;
         }
+
+        yield return new WaitForSeconds(0.5f);
 
         // === Fade Out (1 → 0) ===
         current = 0f;
@@ -175,7 +177,7 @@ public class FollowTutorial : MonoBehaviour
             current += Time.deltaTime;
             float t = Mathf.Clamp01(current / fadeTime);
 
-            startText.GetComponent<Image>().color = new Color(1, 1, 1, Mathf.Lerp(0, 1, t)); // 텍스트는 다시 0→1 (원하면 생략 가능)
+            startText.GetComponent<Image>().color = new Color(1, 1, 1, Mathf.Lerp(1, 0, t)); // 텍스트는 다시 0→1 (원하면 생략 가능)
             //startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, t)); // 1→0
             yield return null;
         }
