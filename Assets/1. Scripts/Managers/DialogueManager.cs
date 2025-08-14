@@ -531,6 +531,7 @@ public class DialogueManager : MonoBehaviour
         }
         if (isEnding)
         {
+            SoundPlayer.Instance.UISoundPlay(Sound_EndingImpact);
             typeSpeed /= 1.5f;
             endingDialogueNextPanel.SetActive(true);
         }
