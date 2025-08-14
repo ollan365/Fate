@@ -203,6 +203,8 @@ public class UIManager : MonoBehaviour {
         SetAllUI(false);
         SetOptionUI();
         InitializeUIToCheck();
+        ChangeBgmOrSoundEffectValue(true);
+        ChangeBgmOrSoundEffectValue(false);
 
         // UI Objects that should be active by default
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
@@ -629,51 +631,36 @@ public class UIManager : MonoBehaviour {
     // </summary>
     public IEnumerator OnMoveUI(GameObject screen, Vector3 direction, float distance, float time) {
         RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
-        // 원래 위치 (목적지)
-        var localPosition = screenRectTransform.localPosition;
+        var localPosition = screenRectTransform.localPosition; // 원래 위치 (목적지)
         Vector3 originPosition = localPosition;
-        // 출발 지점
-        Vector3 startPosition = localPosition + direction * distance;
+        Vector3 startPosition = localPosition + direction * distance; // 출발 지점
         screen.GetComponent<RectTransform>().localPosition = startPosition;
 
         float elapsedTime = 0f;
         while (elapsedTime < time) {
             elapsedTime += Time.deltaTime;
             float percent = Mathf.Clamp01(elapsedTime / time);
-
             screen.transform.localPosition = Vector3.Lerp(startPosition, originPosition, percent);
 
             yield return null;
         }
 
-        // 원래 위치로 설정
-        screen.GetComponent<RectTransform>().localPosition = originPosition;
+        screen.GetComponent<RectTransform>().localPosition = originPosition; // 원래 위치로 설정
     }
 
-    public void ChangeSoundValue(string uiName) {
-        TMP_Text text;
-        Slider slider;
-
-        if (uiName == eUIGameObjectName.BGMSlider.ToString()) {
-            text = uiGameObjects[eUIGameObjectName.BGMValue].GetComponent<TextMeshProUGUI>();
-            slider = uiGameObjects[eUIGameObjectName.BGMSlider].GetComponent<Slider>();
-            SoundPlayer.Instance.ChangeVolume(slider.value, -1);
-        }
-        else {
-            text = uiGameObjects[eUIGameObjectName.SoundEffectValue].GetComponent<TextMeshProUGUI>();
-            slider = uiGameObjects[eUIGameObjectName.SoundEffectSlider].GetComponent<Slider>();
-            SoundPlayer.Instance.ChangeVolume(-1, slider.value);
-        }
-
-        text.text = (slider.value * 100).ToString("F0");
+    public void ChangeBgmOrSoundEffectValue(bool isChangeBGM) {
+        float sliderValue = uiGameObjects[isChangeBGM
+                ? eUIGameObjectName.BGMSlider
+                : eUIGameObjectName.SoundEffectSlider].GetComponent<Slider>().value;
+        SoundPlayer.Instance.ChangeVolume(isChangeBGM, sliderValue);
+        uiGameObjects[isChangeBGM
+                ? eUIGameObjectName.BGMValue
+                : eUIGameObjectName.SoundEffectValue].GetComponent<TextMeshProUGUI>().text = (sliderValue * 100).ToString("F0");
     }
 
     public void ChangeSliderValue(eUIGameObjectName uiName, float absoluteValue, float addValue) {
         Slider slider = uiGameObjects[uiName].GetComponent<Slider>();
-        if (addValue != 0)
-            slider.value += addValue;
-        else
-            slider.value = absoluteValue;
+        slider.value = addValue == 0 ? absoluteValue : slider.value + addValue;
     }
 
     private void InitializeUIToCheck() {

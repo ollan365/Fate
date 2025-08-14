@@ -17192,6 +17192,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1633657069}
     m_Modifications:
+    - target: {fileID: 471114283054276538, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
+      propertyPath: m_text
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1629370541834301786, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_Name
       value: OptionUI
@@ -17329,12 +17333,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3990026284173985484, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
+      propertyPath: m_Value
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3990026284173985484, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3990026284173985484, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3990026284173985484, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -17350,7 +17358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3990026284173985484, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeSoundValue
+      value: ChangeBgmOrSoundEffectValue
       objectReference: {fileID: 0}
     - target: {fileID: 3990026284173985484, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -17457,12 +17465,16 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -17474,11 +17486,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeSoundValue
+      value: ChangeBgmOrSoundEffectValue
       objectReference: {fileID: 0}
     - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -17487,6 +17503,10 @@ PrefabInstance:
     - target: {fileID: 6140950227997494304, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6227372969526512769, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
+      propertyPath: m_text
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 6718132298085135961, guid: dc7a5456870a0cd47a44e2e1a61570d1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -20255,7 +20275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1748946841
 RectTransform:
   m_ObjectHideFlags: 0

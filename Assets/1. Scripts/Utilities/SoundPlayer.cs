@@ -47,19 +47,16 @@ public class SoundPlayer : MonoBehaviour
             UISoundPlay(Sound_Click);
     }
 
-    public void ChangeVolume(float bgmVolume, float soundEffectVolume)
-    {
-        if (bgmVolume != -1)
-        {
-            this.bgmVolume = bgmVolume;
-            bgmPlayer.volume = bgmVolume;
-        }
-
-        if (soundEffectVolume != -1)
-        {
-            typingSoundPlayer.volume = soundEffectVolume;
-            foreach (AudioSource audio in UISoundLoopPlayer) audio.volume = soundEffectVolume;
-            foreach (AudioSource audio in UISoundPlayer) audio.volume = soundEffectVolume;
+    public void ChangeVolume(bool isChangeBGM, float targetVolume) {
+        if (isChangeBGM) {
+            bgmVolume = targetVolume;
+            bgmPlayer.volume = targetVolume;
+        } else {
+            typingSoundPlayer.volume = targetVolume;
+            foreach (AudioSource audioSource in UISoundLoopPlayer) 
+                audioSource.volume = targetVolume;
+            foreach (AudioSource audioSource in UISoundPlayer) 
+                audioSource.volume = targetVolume;
         }
     }
     
