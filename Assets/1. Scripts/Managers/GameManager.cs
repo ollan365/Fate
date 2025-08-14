@@ -142,7 +142,8 @@ public class GameManager : MonoBehaviour
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[] {
             "TutorialPhase",
-            "ClosedCarpetClick"
+            "ChairMoved",
+            "isChairMoving"
         });
 
         foreach (var item in variables)

@@ -111,6 +111,7 @@ public class LobbyManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         
         yield return new WaitForSeconds(1);
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_PROLOGUE);
         backgroundImage.sprite = blackBgSprite;
         EventManager.Instance.CallEvent("EventFirstPrologue");
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));

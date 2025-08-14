@@ -83,11 +83,13 @@ public class EndingManager : MonoBehaviour
     }
     private IEnumerator DelayLoadScene(bool isTest = false)
     {
+        SoundPlayer.Instance.UISoundStop(-1);
+        SoundPlayer.Instance.ChangeBGM(BGM_ENDINGCLOCK); 
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 0.5f, true, 0, 0.5f));
         yield return new WaitForSeconds(0.5f);
         clock.SetActive(true);
         StartCoroutine(ClockEffect());
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(16.5f);
 
         if (!isTest)
         {
