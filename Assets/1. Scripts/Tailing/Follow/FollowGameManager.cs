@@ -38,7 +38,7 @@ public class FollowGameManager : MonoBehaviour
 
         if (!StopAccidy && !IsTutorial && !IsEnd) MoveAccidy();
 
-        if (!IsEnd && !IsDialogueOpen || IsTutorial) MoveFate();
+        if (!IsEnd && !IsDialogueOpen) MoveFate();
 
         if (!IsEnd) FollowManager.Instance.CheckPosition();
     }
