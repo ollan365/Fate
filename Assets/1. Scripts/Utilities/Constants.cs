@@ -1,7 +1,8 @@
 public static class Constants
 {
     // 씬의 종류
-    public enum SceneType {
+    public enum SceneType
+    {
         START,
         ROOM_1,
         FOLLOW_1,
@@ -14,46 +15,47 @@ public static class Constants
     {
         switch (sceneType)
         {
-            case SceneType.START: 
+            case SceneType.START:
                 return 0;
-            case SceneType.ROOM_1: 
+            case SceneType.ROOM_1:
                 return 1;
-            case SceneType.FOLLOW_1: 
+            case SceneType.FOLLOW_1:
                 return 2;
-            case SceneType.ROOM_2: 
+            case SceneType.ROOM_2:
                 return 3;
-            case SceneType.FOLLOW_2: 
+            case SceneType.FOLLOW_2:
                 return 4;
-            case SceneType.ENDING: 
+            case SceneType.ENDING:
                 return 5;
-            default: 
+            default:
                 return 0;
         }
     }
-    
+
     public static SceneType ToEnum(this int sceneType)
     {
         switch (sceneType)
         {
-            case 0: 
+            case 0:
                 return SceneType.START;
-            case 1: 
+            case 1:
                 return SceneType.ROOM_1;
-            case 2: 
+            case 2:
                 return SceneType.FOLLOW_1;
-            case 3: 
+            case 3:
                 return SceneType.ROOM_2;
-            case 4: 
+            case 4:
                 return SceneType.FOLLOW_2;
-            case 5: 
+            case 5:
                 return SceneType.ENDING;
-            default: 
+            default:
                 return 0;
         }
     }
 
     // 대화창의 종류
-    public enum DialogueType {
+    public enum DialogueType
+    {
         ROOM_ACCIDY,
         ROOM_FATE,
         ROOM_THINKING,
@@ -95,7 +97,11 @@ public static class Constants
         BGM_BAD_A = 6,
         BGM_BAD_B = 7,
         BGM_TRUE = 8,
-        BGM_HIDDEN = 9;
+        BGM_HIDDEN = 9,
+        BGM_DREAM = 10,
+        BGM_EMERGENCYEXIT = 11,
+        BGM_ENDINGCLOCK = 12,
+        BGM_PROLOGUE = 13;
 
     // 2. 방탈출 오브젝트들
     public const int
@@ -125,17 +131,17 @@ public static class Constants
 
     // 3. 미행
     public const int
-        Sound_Building = 15, 
-        Sound_FollowSpecialObject = 16, 
-        Sound_Cat = 17, 
-        Sound_TurnAround = 18, 
+        Sound_Building = 15,
+        Sound_FollowSpecialObject = 16,
+        Sound_Cat = 17,
+        Sound_TurnAround = 18,
         Sound_FollowEnd = 19;
 
     // 4. 루프 (반복 되어야 하는 것)
     public const int
-        Sound_FootStep_Fate = 0, 
+        Sound_FootStep_Fate = 0,
         Sound_FootStep_Accidy = 1,
-        Sound_ClockMovement = 2, 
+        Sound_ClockMovement = 2,
         Sound_TincaseScroll = 3;
 
     // 5. 그 외
@@ -157,7 +163,9 @@ public static class Constants
         Sound_Wall_crash_002 = 34,
         Sound_City_people_talking = 35,
         Sound_Wavecrash__ = 36,
-        Sound_Truck_honk_1 = 37;
+        Sound_Truck_honk_1 = 37,
+        Sound_TrafficOutside = 44,
+        Sound_EndingImpact = 45;
 
     // 시계 부분
 
@@ -189,8 +197,8 @@ public static class Constants
         DrinkC,
         BeerB,
         Club2,
-        Light2, 
-        Con2, 
+        Light2,
+        Con2,
         Clothes_1F,
 
         // ========== 기타 등등 ========== //
@@ -199,15 +207,15 @@ public static class Constants
 
     public enum FollowExtra
     {
-        None, 
-        Angry, 
-        Employee, 
-        RunAway_1, 
-        RunAway_2, 
-        Police, 
-        Smoker_1, 
-        Smoker_2, 
-        Clubber_1, 
+        None,
+        Angry,
+        Employee,
+        RunAway_1,
+        RunAway_2,
+        Police,
+        Smoker_1,
+        Smoker_2,
+        Clubber_1,
         Clubber_2
     }
     public static string EventID(this FollowObjectName objectName)
@@ -217,18 +225,18 @@ public static class Constants
         {
             // ===== 첫번째 미행 ===== //
             // 첫번째 배경
-            case FollowObjectName.Villa:   return "EventFollowVilla";
-            case FollowObjectName.Bread:   return "EventFollowBread";
-            case FollowObjectName.Con:     return "EventFollowConvenienceStore";
-            case FollowObjectName.Bar:     return "EventFollowBar";
+            case FollowObjectName.Villa: return "EventFollowVilla";
+            case FollowObjectName.Bread: return "EventFollowBread";
+            case FollowObjectName.Con: return "EventFollowConvenienceStore";
+            case FollowObjectName.Bar: return "EventFollowBar";
             case FollowObjectName.Izakaya: return "EventFollowIzakaya";
-            case FollowObjectName.Cat:     return "EventFollowCat";
-            case FollowObjectName.Cafe:    return "EventFollowCafe";
+            case FollowObjectName.Cat: return "EventFollowCat";
+            case FollowObjectName.Cafe: return "EventFollowCafe";
             case FollowObjectName.Receipt: return "EventFollowCafeReceipt";
-            case FollowObjectName.Light:   return "EventFollowTrafficLight";
-            case FollowObjectName.Coffee:  return "EventFollowCafeLatte";
+            case FollowObjectName.Light: return "EventFollowTrafficLight";
+            case FollowObjectName.Coffee: return "EventFollowCafeLatte";
             case FollowObjectName.Shop_1: return "EventFollow1FClothingStore";
-            case FollowObjectName.Shop_2:   return "EventFollow2FClothingStore";
+            case FollowObjectName.Shop_2: return "EventFollow2FClothingStore";
 
             // 두번째 배경
             case FollowObjectName.Construction: return "EventFollowConstructionSite";
@@ -293,15 +301,15 @@ public static class Constants
         switch (objectName)
         {
             // ===== 첫번째 미행 ===== //
-            case FollowObjectName.Villa:   return "VillaClick";
-            case FollowObjectName.Bread:   return "BreadClick";
-            case FollowObjectName.Con:     return "ConClick";
-            case FollowObjectName.Bar:     return "BarClick";
+            case FollowObjectName.Villa: return "VillaClick";
+            case FollowObjectName.Bread: return "BreadClick";
+            case FollowObjectName.Con: return "ConClick";
+            case FollowObjectName.Bar: return "BarClick";
             case FollowObjectName.Izakaya: return "IzakayaClick";
-            case FollowObjectName.Cat:     return "CatClick";
-            case FollowObjectName.Cafe:    return "CafeClick";
+            case FollowObjectName.Cat: return "CatClick";
+            case FollowObjectName.Cafe: return "CafeClick";
             case FollowObjectName.Receipt: return "ReceiptClick";
-            case FollowObjectName.Light:   return "LightClick";
+            case FollowObjectName.Light: return "LightClick";
 
             case FollowObjectName.Coffee: return "LatteClick";
             case FollowObjectName.Shop_1: return "1FClothesClick";

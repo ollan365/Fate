@@ -563,6 +563,9 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_014", totalTime));
                 break;
 
+            //case "ResultChangeBGM_Dream":
+            //    SoundPlayer.Instance.ChangeBGM(BGM_DREAM);
+            //    break;
 
             // 방탈출 2
 
@@ -833,7 +836,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultChangeBGM_BadA":
-                SoundPlayer.Instance.ChangeBGM(BGM_BAD_A);
+                SoundPlayer.Instance.ChangeBGM(BGM_EMERGENCYEXIT);
                 break;
 
             case "ResultChangeBGM_True":

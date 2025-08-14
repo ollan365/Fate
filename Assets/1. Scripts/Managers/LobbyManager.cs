@@ -115,6 +115,7 @@ public class LobbyManager : MonoBehaviour
         MemoManager.Instance.SetShouldHideMemoButton(true); // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
 
+        SoundPlayer.Instance.ChangeBGM(Constants.BGM_PROLOGUE);
         EventManager.Instance.CallEvent("EventFirstPrologue");
         yield return new WaitForSeconds(1);
         backgroundImage.sprite = room1Side1BackgroundSprite;

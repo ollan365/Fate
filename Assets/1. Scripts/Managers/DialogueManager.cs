@@ -234,14 +234,22 @@ public class DialogueManager : MonoBehaviour
             }
         }
     }
-    
+
     private void PlayDialogueSound(DialogueLine dialogueLine) {
         if (string.IsNullOrWhiteSpace(dialogueLine.SoundID))
             return;
-        
-        var soundID = "Sound_" + dialogueLine.SoundID;
-        var soundNum = (int)typeof(Constants).GetField(soundID).GetValue(null);
-        SoundPlayer.Instance.UISoundPlay(soundNum);
+
+        if (dialogueLine.SoundID.Contains("BGM_"))
+        {
+            var bgmNum = (int)typeof(Constants).GetField(dialogueLine.SoundID).GetValue(null);
+            SoundPlayer.Instance.ChangeBGM(bgmNum);
+        }
+        else
+        {
+            var soundID = "Sound_" + dialogueLine.SoundID;
+            var soundNum = (int)typeof(Constants).GetField(soundID).GetValue(null);
+            SoundPlayer.Instance.UISoundPlay(soundNum);
+        }
     }
 
     private void UpdateCharacterImages(DialogueLine dialogueLine) {
