@@ -66,7 +66,7 @@ public class FollowGameManager : MonoBehaviour
             if (Input.GetKey(KeyCode.A))
             {
                 // 나중에 아트 리소스 추가되면 Vector3.right를 Vector3.left로 변경
-                if (Fate.transform.position.x > -1) Fate.transform.Translate(Vector3.right * fateMoveSpeed * Time.deltaTime);
+                if (Fate.transform.position.x > -1) Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
 
                 Fate.SetBool("Right", false);
                 isFateMove = true;
