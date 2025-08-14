@@ -2,128 +2,120 @@ Shader "Custom/BlursShader"
 {
     Properties
     {
-        _MainTex("Albedo (RGB)", 2D) = "white" {}
-        _BlurSize("Blur Size", Float) = 10
+        _BlurSizeX ("Blur Size X", Float) = 10
+        _BlurSizeY ("Blur Size Y", Float) = 10
     }
+
     SubShader
     {
-        Tags { "RenderType" = "Transparent" }
+        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
+        ZWrite Off
+        Cull Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
-        GrabPass {}
-
-        Pass {
+        // -------- Pass 1: Horizontal blur --------
+        GrabPass { } // capture screen BEFORE pass 1
+        Pass
+        {
             CGPROGRAM
-
-            #pragma vertex vert
+            #pragma target 3.0
+            #pragma vertex   vert
             #pragma fragment frag
             #include "UnityCG.cginc"
 
-            struct appdata
-            {
+            struct appdata {
                 float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-                fixed4 color : COLOR;
+                float2 uv     : TEXCOORD0;
+                fixed4 color  : COLOR;
+            };
+            struct v2f {
+                float4 pos     : SV_POSITION;
+                float4 grabPos : TEXCOORD0; // projective coords
             };
 
-            struct v2f
-            {
-                float4 grabPos : TEXCOORD0;
-                float4 pos : SV_POSITION;
-                float2 vertColor : COLOR;
-            };
-
-            v2f vert(appdata input)
-            {
-                v2f output;
-                output.pos = UnityObjectToClipPos(input.vertex);
-                output.grabPos = ComputeGrabScreenPos(output.pos);
-                output.vertColor = input.color;
-                return output;
+            v2f vert (appdata v) {
+                v2f o;
+                o.pos     = UnityObjectToClipPos(v.vertex);
+                o.grabPos = ComputeGrabScreenPos(o.pos);
+                return o;
             }
 
             sampler2D _GrabTexture;
-            fixed4 _GrabTexture_TexelSize;
-            float _BlurSize;
+            float4    _GrabTexture_TexelSize; // (1/w,1/h,w,h)
+            float     _BlurSizeX;
 
-            half4 frag(v2f input) : SV_Target
+            half4 frag (v2f i) : SV_Target
             {
-                float blur = _BlurSize;
-                blur = max(1, blur);
+                float blur = max(1.0, _BlurSizeX);
+                half4 color = 0;
+                float  wsum = 0;
 
-                fixed4 color = fixed4(0, 0, 0, 0);
-                float weight_total = 0;
+                for (float x = -blur; x <= blur; x++)
+                {
+                    float dn = abs(x / blur);
+                    float w  = exp(-0.5 * dn * dn * 5.0); // gaussian-ish
+                    wsum += w;
 
-                for (float x = -blur; x <= blur; x++) {
-                    float distance_normalized = abs(x / blur);
-                    float weight = exp(-0.5 * pow(distance_normalized, 2) * 5.0);
-                    weight_total += weight;
-                    color += tex2Dproj(_GrabTexture, input.grabPos + float4(x * _GrabTexture_TexelSize.x, 0, 0, 0)) * weight;
+                    // scale by i.grabPos.w for projective coords
+                    float4 proj = i.grabPos + float4(x * _GrabTexture_TexelSize.x * i.grabPos.w, 0, 0, 0);
+                    color += tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(proj)) * w;
                 }
-
-                color /= weight_total;
-                return color;
+                return color / wsum;
             }
             ENDCG
         }
 
-        GrabPass {}
-
-        Pass {
+        // -------- Pass 2: Vertical blur on result of pass 1 --------
+        GrabPass { } // capture screen again (now includes pass 1 result)
+        Pass
+        {
             CGPROGRAM
-
-            #pragma vertex vert
+            #pragma target 3.0
+            #pragma vertex   vert
             #pragma fragment frag
             #include "UnityCG.cginc"
 
-            struct appdata
-            {
+            struct appdata {
                 float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-                fixed4 color : COLOR;
+                float2 uv     : TEXCOORD0;
+                fixed4 color  : COLOR;
             };
-
-            struct v2f
-            {
+            struct v2f {
+                float4 pos     : SV_POSITION;
                 float4 grabPos : TEXCOORD0;
-                float4 pos : SV_POSITION;
-                float2 vertColor : COLOR;
             };
 
-            v2f vert(appdata input)
-            {
-                v2f output;
-                output.pos = UnityObjectToClipPos(input.vertex);
-                output.grabPos = ComputeGrabScreenPos(output.pos);
-                output.vertColor = input.color;
-                return output;
+            v2f vert (appdata v) {
+                v2f o;
+                o.pos     = UnityObjectToClipPos(v.vertex);
+                o.grabPos = ComputeGrabScreenPos(o.pos);
+                return o;
             }
 
             sampler2D _GrabTexture;
-            fixed4 _GrabTexture_TexelSize;
-            float _BlurSize;
+            float4    _GrabTexture_TexelSize;
+            float     _BlurSizeY;
 
-            half4 frag(v2f input) : SV_Target
+            half4 frag (v2f i) : SV_Target
             {
-                float blur = _BlurSize;
-                blur = max(1, blur);
+                float blur = max(1.0, _BlurSizeY);
+                half4 color = 0;
+                float  wsum = 0;
 
-                fixed4 color = fixed4(0, 0, 0, 0);
-                float weight_total = 0;
+                for (float y = -blur; y <= blur; y++)
+                {
+                    float dn = abs(y / blur);
+                    float w  = exp(-0.5 * dn * dn * 5.0);
+                    wsum += w;
 
-                [loop]
-                for (float y = -blur; y <= blur; y++) {
-                    float distance_normalized = abs(y / blur);
-                    float weight = exp(-0.5 * pow(distance_normalized, 2) * 5.0);
-                    weight_total += weight;
-                    color += tex2Dproj(_GrabTexture, input.grabPos + float4(0, y * _GrabTexture_TexelSize.y, 0, 0)) * weight;
+                    float4 proj = i.grabPos + float4(0, y * _GrabTexture_TexelSize.y * i.grabPos.w, 0, 0);
+                    color += tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(proj)) * w;
                 }
-
-                color /= weight_total;
-                return color;
+                return color / wsum;
             }
             ENDCG
         }
-
     }
+
     FallBack "Diffuse"
 }

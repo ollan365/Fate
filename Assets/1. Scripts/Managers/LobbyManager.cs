@@ -34,10 +34,9 @@ public class LobbyManager : MonoBehaviour
         isLobby = true;
         lobbyButtons.SetActive(true);
         lobbyPanels.SetActive(true);
-        // backgroundImage.sprite = titleWithLogo;
 
         if (GameManager.Instance.isDemoBuild) { // default: -20
-            lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -70;
+            lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -60;
             lobbyButtons.transform.GetChild(1).gameObject.SetActive(false);
             gotoSceneButtons.SetActive(false);
         }
