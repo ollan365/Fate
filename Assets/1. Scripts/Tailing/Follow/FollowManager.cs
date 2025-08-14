@@ -102,9 +102,9 @@ public class FollowManager : MonoBehaviour
             UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider_Night, true);
         }
     }
-    public void TutorialNextStep()
+    public void TutorialNextStep(string step)
     {
-        followTutorial.NextStep();
+        followTutorial.NextStep(step);
     }
     public void StartFollow()
     {

@@ -780,8 +780,20 @@ public class ResultManager : MonoBehaviour
                 break;
 
             // 미행 1
-            case "ResultFollowTutorialNextStep":
-                FollowManager.Instance.TutorialNextStep();
+            case "Result_FollowTutorial_Lighting":
+                FollowManager.Instance.TutorialNextStep("Light");
+                break;
+
+            case "Result_FollowTutorial_Move":
+                FollowManager.Instance.TutorialNextStep("Move");
+                break;
+
+            case "Result_FollowTutorial_Hide":
+                FollowManager.Instance.TutorialNextStep("Hide");
+                break;
+
+            case "Result_FollowTutorial_End":
+                FollowManager.Instance.TutorialNextStep("End");
                 break;
 
             case "ResultFollowEndLogic_1":
