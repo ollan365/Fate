@@ -10,7 +10,7 @@ public class FollowTutorial : MonoBehaviour
     [SerializeField] private GameObject tutorialBlockingPanel;
     [SerializeField] private GameObject[] moveButtons;
     [SerializeField] private GameObject hideButton;
-    [SerializeField] private TextMeshProUGUI startText;
+    [SerializeField] private GameObject startText;
     [SerializeField] private Image startBlockingPanel;
     [SerializeField] private GameObject fate;
 
@@ -161,7 +161,7 @@ public class FollowTutorial : MonoBehaviour
 
         
         startText.gameObject.SetActive(true);
-        startBlockingPanel.gameObject.SetActive(true);
+        //startBlockingPanel.gameObject.SetActive(true);
 
         float current = 0f;
         float fadeTime = 0.5f; // 한쪽 방향 페이드 시간 (총 깜빡임은 *2)
@@ -172,8 +172,8 @@ public class FollowTutorial : MonoBehaviour
             current += Time.deltaTime;
             float t = Mathf.Clamp01(current / fadeTime);
 
-            startText.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, t)); // 텍스트는 기존처럼 1→0
-            startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(0, 1, t)); // 0→1
+            startText.GetComponent<Image>().color = new Color(1, 1, 1, Mathf.Lerp(1, 0, t)); // 텍스트는 기존처럼 1→0
+            //startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(0, 1, t)); // 0→1
             yield return null;
         }
 
@@ -184,13 +184,13 @@ public class FollowTutorial : MonoBehaviour
             current += Time.deltaTime;
             float t = Mathf.Clamp01(current / fadeTime);
 
-            startText.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, t)); // 텍스트는 다시 0→1 (원하면 생략 가능)
-            startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, t)); // 1→0
+            startText.GetComponent<Image>().color = new Color(1, 1, 1, Mathf.Lerp(0, 1, t)); // 텍스트는 다시 0→1 (원하면 생략 가능)
+            //startBlockingPanel.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, t)); // 1→0
             yield return null;
         }
 
         startText.gameObject.SetActive(false);
-        startBlockingPanel.gameObject.SetActive(false);
+        //startBlockingPanel.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         if (tutorialBlockingPanel) tutorialBlockingPanel.SetActive(false);
 
