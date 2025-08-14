@@ -57,8 +57,9 @@ public enum eUIGameObjectName {
     DoubtGaugeSlider_Night,
     FatePositionSlider_Night,
     AccidyPositionSlider_Night,
-    FollowEventButton,
     FollowEventButtonImage,
+    FollowEventButton,
+    followEventButtonNextButton,
     DayChangingGameObject,
     YesterdayNumText,
     TodayNumText,
@@ -167,6 +168,7 @@ public class UIManager : MonoBehaviour {
     public GameObject accidyPositionSlider_Night;
     public GameObject followEventButton;
     public GameObject followEventButtonImage;
+    public GameObject followEventButtonNextButton;
 
     private readonly Dictionary<eUIGameObjectName, GameObject> uiGameObjects = new();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -269,7 +271,7 @@ public class UIManager : MonoBehaviour {
 
         uiGameObjects.Add(eUIGameObjectName.FollowEventButton, followEventButton);
         uiGameObjects.Add(eUIGameObjectName.FollowEventButtonImage, followEventButtonImage);
-
+        uiGameObjects.Add(eUIGameObjectName.followEventButtonNextButton, followEventButtonNextButton);
 
         uiGameObjects.Add(eUIGameObjectName.MainGear, mainGear);
         uiGameObjects.Add(eUIGameObjectName.SubGear, subGear);
@@ -532,14 +534,16 @@ public class UIManager : MonoBehaviour {
     {
         AnimateUI(followEventButton, true, true);
         followEventButtonImage.SetActive(true);
+        followEventButtonNextButton.SetActive(true);
 
         followEventButtonImage.GetComponent<Image>().sprite = followObject.specialSprite;
         followEventButtonImage.GetComponent<Image>().SetNativeSize();
         followEventButtonImage.GetComponent<RectTransform>().localScale = new Vector3(followObject.scaleValue, followObject.scaleValue, followObject.scaleValue);
 
-        followEventButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        followEventButton.GetComponent<Button>().onClick.AddListener(() => followObject.OnMouseDown_Normal());
-        followEventButton.GetComponent<Button>().onClick.AddListener(() => AnimateUI(followEventButton, false, true));
+        followEventButtonNextButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        followEventButtonNextButton.GetComponent<Button>().onClick.AddListener(() => followObject.OnMouseDown_Normal());
+        followEventButtonNextButton.GetComponent<Button>().onClick.AddListener(() => followEventButtonNextButton.SetActive(false));
+        followEventButtonNextButton.GetComponent<Button>().onClick.AddListener(() => AnimateUI(followEventButton, false, true));
     }
 
     // <summary> 변수 설명
