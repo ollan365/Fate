@@ -60,6 +60,10 @@ public class MemoManager : PageContentsManager
         }
 
         LoadMemos();
+        
+        // Initialize unseen memo pages based on current revealed memos
+        RebuildUnseenMemoPages();
+        
         UpdateNotification();
     }
     
@@ -109,6 +113,63 @@ public class MemoManager : PageContentsManager
             SavedMemoList[sceneIndex].Add(memo);
         }
     }
+    
+    public void RebuildUnseenMemoPages(){
+        unseenMemoPages.Clear();
+        
+        for (int sceneIndex = 0; sceneIndex < RevealedMemoList.Count; sceneIndex++){
+            for (int memoIndex = 0; memoIndex < SavedMemoList[sceneIndex].Count; memoIndex++) {
+                string memoID = SavedMemoList[sceneIndex][memoIndex][0];
+                string scriptID = memoScripts[memoID];
+                
+                if (RevealedMemoList[sceneIndex].Contains(scriptID) && 
+                    SavedMemoList[sceneIndex][memoIndex][1] != "가려진 메모") {
+                    int pageNum = CalculateFirstPageNumber(sceneIndex) + memoIndex;
+                    if (!unseenMemoPages.Contains(pageNum))
+                        unseenMemoPages.Add(pageNum);
+                }
+            }
+        }
+        
+        UpdateNotification();
+    }
+    
+    public void RefreshGaugeAfterSaveLoad() {
+        RebuildUnseenMemoPages();
+        SynchronizeMemoCounts();
+        StartCoroutine(DelayedChangeMemoGauge());
+    }
+    
+    private void SynchronizeMemoCounts() {
+        for (int sceneIndex = 0; sceneIndex < RevealedMemoList.Count; sceneIndex++) {
+            int revealedCount = RevealedMemoList[sceneIndex].Count;
+            string sceneName = ((SceneType)(sceneIndex + 1)).ToString();
+            
+            GameManager.Instance.SetVariable($"MemoCount_{sceneName}", revealedCount);
+        }
+    }
+    
+    public void ClearUnseenMemoPages() {
+        unseenMemoPages.Clear();
+        UpdateNotification();
+    }
+    
+    public int GetUnseenMemoPagesCount() {
+        return unseenMemoPages.Count;
+    }
+    
+    public void ResetMemoSystem() {
+        for (int i = 0; i < RevealedMemoList.Count; i++)
+            RevealedMemoList[i].Clear();
+        
+        for (int i = 0; i < SavedMemoList.Count; i++)
+            for (int j = 0; j < SavedMemoList[i].Count; j++)
+                SavedMemoList[i][j][1] = "가려진 메모";
+        
+        ClearUnseenMemoPages();
+        
+        UpdateNotification();
+    }
 
     public void OnExit()
     {
@@ -123,35 +184,68 @@ public class MemoManager : PageContentsManager
     // 메모 추가하기
     public void RevealMemo(string memoID)
     {
+        if (string.IsNullOrEmpty(memoID) || !memoScripts.ContainsKey(memoID)) {
+            Debug.LogWarning($"Invalid memo ID: {memoID}");
+            return;
+        }
+
         var scriptID = memoScripts[memoID];
         int currentSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt();
-        for (int i = 0; i < currentSceneIndex; i++)
-        {
-            if (RevealedMemoList[i].Contains(scriptID)) 
-                continue;
-            
-            RevealedMemoList[i].Add(scriptID);
-            for (var j = 0; j < SavedMemoList[i].Count; j++)
-            {
-                if (SavedMemoList[i][j][0] != memoID) continue;
-                string script = DialogueManager.Instance.scripts[scriptID].GetScript();
-                SavedMemoList[i][j][1] = script;
-                
-                // Calculate the page number and add it to the unseen memo pages
-                int pageNum = CalculateFirstPageNumber(i) + j;
-                if (!unseenMemoPages.Contains(pageNum))
-                {
-                    unseenMemoPages.Add(pageNum);
-                    // Debug.Log($"Added page {pageNum} to unseen memo pages");
-
-                    GameManager.Instance.IncrementVariable($"MemoCount_{GameSceneManager.Instance.GetActiveScene()}");
-                    ChangeMemoGauge();
-                }
-                break;
-            }
+        bool memoRevealed = false;
+        
+        if (currentSceneIndex <= 0 || currentSceneIndex > RevealedMemoList.Count) {
+            Debug.LogWarning($"Invalid current scene index: {currentSceneIndex}");
+            return;
         }
         
+        int memoSceneIndex = GetMemoSceneIndex(memoID);
+        if (memoSceneIndex < 0 || memoSceneIndex >= RevealedMemoList.Count) {
+            Debug.LogWarning($"Invalid memo scene index: {memoSceneIndex} for memo {memoID}");
+            return;
+        }
+        
+        if (RevealedMemoList[memoSceneIndex].Contains(scriptID)) {
+            Debug.Log($"Memo {memoID} is already revealed in scene {memoSceneIndex}");
+            return;
+        }
+        
+        RevealedMemoList[memoSceneIndex].Add(scriptID);
+        
+        for (var j = 0; j < SavedMemoList[memoSceneIndex].Count; j++) {
+            if (SavedMemoList[memoSceneIndex][j][0] != memoID) continue;
+            
+            string script = DialogueManager.Instance.scripts[scriptID].GetScript();
+            SavedMemoList[memoSceneIndex][j][1] = script;
+            
+            int pageNum = CalculateFirstPageNumber(memoSceneIndex) + j;
+            if (!unseenMemoPages.Contains(pageNum)) {
+                unseenMemoPages.Add(pageNum);
+                Debug.Log($"Added page {pageNum} to unseen memo pages for memo {memoID}");
+
+                GameManager.Instance.IncrementVariable($"MemoCount_{GameSceneManager.Instance.GetActiveScene()}");
+                memoRevealed = true;
+            }
+            break;
+        }
+        
+        if (memoRevealed)
+            StartCoroutine(DelayedChangeMemoGauge());
+        
         UpdateNotification();
+    }
+    
+    private int GetMemoSceneIndex(string memoID) {
+        if (string.IsNullOrEmpty(memoID) || memoID.Length < 2)
+            return -1;
+            
+        var memoType = memoID.Substring(0, 2);
+        switch (memoType) {
+            case "R1": return 0;
+            case "F1": return 1;
+            case "R2": return 2;
+            case "F2": return 3;
+            default: return -1;
+        }
     }
 
     public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false)
@@ -168,6 +262,13 @@ public class MemoManager : PageContentsManager
 
     public void SetMemoGauge(GameObject memoGaugeParent) 
     {
+        if (!memoGaugeParent) {
+            Debug.LogWarning("Memo gauge parent is null, cannot set up gauge");
+            return;
+        }
+
+        memoGauge = memoGaugeParent;
+        
         switch (GameSceneManager.Instance.GetActiveScene())
         {
             case SceneType.START:
@@ -175,44 +276,118 @@ public class MemoManager : PageContentsManager
             
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
-                GameObject gaugeImageGameObject = memoGaugeParent.transform.Find("Gauge Image").gameObject; 
-                gaugeImage = gaugeImageGameObject.GetComponent<Image>();
+                GameObject gaugeImageGameObject = memoGaugeParent.transform.Find("Gauge Image")?.gameObject;
+                if (gaugeImageGameObject)
+                    gaugeImage = gaugeImageGameObject.GetComponent<Image>();
+                else {
+                    Debug.LogError("Could not find Gauge Image in memo gauge parent");
+                    return;
+                }
 
                 clearFlagSlider = memoGaugeParent.GetComponentInChildren<Slider>();
+                if (!clearFlagSlider) {
+                    Debug.LogError("Could not find Slider component in memo gauge parent");
+                    return;
+                }
 
-                GameObject handleSlideAreaGameObjectRoom = clearFlagSlider.transform.Find("Handle Slide Area")
-                    .gameObject;
-                GameObject handleGameObject = handleSlideAreaGameObjectRoom.transform.Find("Handle").gameObject;
-                clearFlagImage = handleGameObject.GetComponent<Image>();
+                GameObject handleSlideAreaGameObjectRoom = clearFlagSlider.transform.Find("Handle Slide Area")?.gameObject;
+                if (handleSlideAreaGameObjectRoom) {
+                    GameObject handleGameObject = handleSlideAreaGameObjectRoom.transform.Find("Handle")?.gameObject;
+                    if (handleGameObject)
+                        clearFlagImage = handleGameObject.GetComponent<Image>();
+                }
                 break;
             
             case SceneType.FOLLOW_1:
             case SceneType.FOLLOW_2:
-                GameObject backgroundGameObject = memoGaugeParent.transform.Find("Fill").gameObject;
-                gaugeImage = backgroundGameObject.GetComponent<Image>();
+                GameObject backgroundGameObject = memoGaugeParent.transform.Find("Fill")?.gameObject;
+                if (backgroundGameObject)
+                    gaugeImage = backgroundGameObject.GetComponent<Image>();
+                else {
+                    Debug.LogError("Could not find Fill in memo gauge parent");
+                    return;
+                }
 
                 clearFlagSlider = memoGaugeParent.GetComponentInChildren<Slider>();
+                if (!clearFlagSlider) {
+                    Debug.LogError("Could not find Slider component in memo gauge parent");
+                    return;
+                }
                 
-                GameObject handleSlideAreaGameObjectFollow = clearFlagSlider.transform.Find("Handle Slide Area")
-                    .gameObject;
-                handleGameObject = handleSlideAreaGameObjectFollow.transform.Find("Handle").gameObject;
-                clearFlagImage = handleGameObject.GetComponent<Image>();
+                GameObject handleSlideAreaGameObjectFollow = clearFlagSlider.transform.Find("Handle Slide Area")?.gameObject;
+                if (handleSlideAreaGameObjectFollow) {
+                    GameObject handleGameObject = handleSlideAreaGameObjectFollow.transform.Find("Handle")?.gameObject;
+                    if (handleGameObject)
+                        clearFlagImage = handleGameObject.GetComponent<Image>();
+                }
                 break;
         }
+        
+        StartCoroutine(DelayedChangeMemoGauge());
+    }
+    
+    private System.Collections.IEnumerator DelayedChangeMemoGauge() {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.1f);
+        
         ChangeMemoGauge();
     }
     
-    public void ShowMemoGauge(bool show)
-    {
-        memoGauge.SetActive(show);
+    public void ShowMemoGauge(bool show) {
+        if (memoGauge != null)
+            memoGauge.SetActive(show);
+    }
+    
+    public void ForceRefreshMemoGauge() {
+        Debug.Log("ForceRefreshMemoGauge called");
+        
+        if (!gaugeImage || !clearFlagSlider || !clearFlagImage) {
+            Debug.LogWarning("Memo gauge components not available, attempting to reinitialize...");
+            StartCoroutine(DelayedChangeMemoGauge());
+            return;
+        }
+        
+        Debug.Log("Memo gauge components available, calling ChangeMemoGauge");
+        ChangeMemoGauge();
+    }
+    
+    private bool ValidateMemoData() {
+        if (SavedMemoList == null || SavedMemoList.Count == 0) {
+            Debug.LogWarning("SavedMemoList is null or empty");
+            return false;
+        }
+
+        if (RevealedMemoList != null && RevealedMemoList.Count != 0) 
+            return true;
+        
+        Debug.LogWarning("RevealedMemoList is null or empty");
+        return false;
     }
 
     private void ChangeMemoGauge()
     {
+        // Check if all required components are available
+        if (!gaugeImage || !clearFlagSlider || !clearFlagImage) {
+            Debug.LogError("Memo gauge components not properly initialized, retrying...");
+            StartCoroutine(DelayedChangeMemoGauge());
+            return;
+        }
+
+        if (!ValidateMemoData()) {
+            Debug.LogWarning("Memo data not properly loaded, retrying...");
+            StartCoroutine(DelayedChangeMemoGauge());
+            return;
+        }
+
         int currentSceneIndex = GameSceneManager.Instance.GetActiveScene().ToInt();
         int previousSceneIndex = currentSceneIndex - 1;
         if (currentSceneIndex is (int)SceneType.START or (int)SceneType.ENDING) 
             return;
+
+        if (previousSceneIndex < 0 || previousSceneIndex >= SavedMemoList.Count || SavedMemoList[previousSceneIndex].Count == 0) {
+            Debug.LogWarning($"Invalid memo data for scene {currentSceneIndex}, previousSceneIndex: {previousSceneIndex}");
+            return;
+        }
 
         int cutLine = (int)GameManager.Instance.GetVariable($"CutLine_{currentSceneIndex.ToEnum()}");
         int currentMemoCount = (int)GameManager.Instance.GetVariable($"MemoCount_{currentSceneIndex.ToEnum()}");
@@ -221,7 +396,6 @@ public class MemoManager : PageContentsManager
         StartCoroutine(AnimateGaugeChanging(gaugeTargetValue));
 
         clearFlagSlider.value = (float)cutLine / SavedMemoList[previousSceneIndex].Count;
-
         clearFlagImage.color = currentMemoCount < cutLine ? unclearColor : clearColor;
     }
 
@@ -349,36 +523,47 @@ public class MemoManager : PageContentsManager
     }
 
     // 게이지 증가 애니메이션 코루틴
-    private System.Collections.IEnumerator AnimateGaugeChanging(float targetValue)
-    {
+    private System.Collections.IEnumerator AnimateGaugeChanging(float targetValue) {
+        if (!gaugeImage) {
+            Debug.LogWarning("Gauge image is null, cannot animate gauge");
+            yield break;
+        }
+
         float duration = 0.5f; // 애니메이션 지속 시간 (초)
         float elapsed = 0f;
         float startValue = gaugeImage.fillAmount;
-
         while (elapsed < duration)
         {
+            if (!gaugeImage) {
+                Debug.LogWarning("Gauge image became null during animation");
+                yield break;
+            }
+
             elapsed += Time.deltaTime;
             gaugeImage.fillAmount = Mathf.Lerp(startValue, targetValue, elapsed / duration);
             yield return null;
         }
 
-        gaugeImage.fillAmount = targetValue; // 마지막에 정확히 맞춰줌
+        if (gaugeImage)
+            gaugeImage.fillAmount = targetValue; // 마지막에 정확히 맞춰줌
     }
 
+    private void UpdateNotification() {
+        if (notificationImage == null || leftButtonNotificationImage == null || rightButtonNotificationImage == null) {
+            Debug.LogWarning("Notification components not initialized");
+            return;
+        }
+        
+        if (memoPages == null) {
+            Debug.LogWarning("Memo pages not initialized");
+            return;
+        }
 
-    private void UpdateNotification()
-    {
         notificationImage.SetActive(unseenMemoPages.Count > 0);
 
         int currentPage = memoPages.currentPage;
-
-        // foreach (var pageNum in unseenMemoPages) Debug.Log($"Unseen Memo Page: {pageNum}");
-        
         bool hasUnreadLeft = unseenMemoPages.Exists(pageNum => pageNum < currentPage);
         bool hasUnreadRight = unseenMemoPages.Exists(pageNum => pageNum > currentPage + 1);
-
-        // Debug.Log($"Current Page: {currentPage}, Has Unread Left: {hasUnreadLeft}, Has Unread Right: {hasUnreadRight}");
-        
         leftButtonNotificationImage.SetActive(hasUnreadLeft);
         rightButtonNotificationImage.SetActive(hasUnreadRight);
     }

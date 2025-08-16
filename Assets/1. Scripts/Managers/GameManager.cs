@@ -60,9 +60,12 @@ public class GameManager : MonoBehaviour
         variablesCSV = Resources.Load<TextAsset>("Datas/variables");
         CreateVariables();
 
-        if (isDebug)
+        if (isDebug) {
             ShowVariables();
-        
+            // set timescale to 0.5f for debugging
+            Time.timeScale = 4f;
+        }
+
         if (isDemoBuild)
             SaveManager.Instance.CreateNewGameData();
     }

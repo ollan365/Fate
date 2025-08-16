@@ -71,14 +71,17 @@ public class FollowManager : MonoBehaviour
 
         StartCoroutine(ChangeBeaconSprite());
 
-        if (GameManager.Instance.skipTutorial) { StartFollow(); }
-        else if (GameSceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
-        {
-            if((int)GameManager.Instance.GetVariable("ReplayCount") > 0 || (bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1")) { StartFollow(); }
-            else StartCoroutine(followTutorial.StartTutorial());
-        }
-        else StartCoroutine(followTutorial.StartTutorial());
+        if (GameManager.Instance.skipTutorial)
+            StartFollow();
+        else if (GameSceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1) {
+            if((bool)GameManager.Instance.GetVariable("EndTutorial_FOLLOW_1"))
+                StartFollow();
+            else 
+                StartCoroutine(followTutorial.StartTutorial());
+        } else 
+            StartCoroutine(followTutorial.StartTutorial());
     }
+    
     private void SetUI()
     {
         if (GameSceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)

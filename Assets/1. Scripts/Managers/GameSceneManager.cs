@@ -170,7 +170,17 @@ public class GameSceneManager : MonoBehaviour
         MemoManager.Instance.SetShouldHideMemoButton(false);
         MemoManager.Instance.SetMemoButtons(true);
 
+        if (GetActiveScene() == SceneType.ROOM_1 || GetActiveScene() == SceneType.FOLLOW_1)
+            StartCoroutine(DelayedMemoGaugeRefresh());
+
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+    }
+
+    private IEnumerator DelayedMemoGaugeRefresh() {
+        yield return new WaitForSeconds(0.5f);
+        
+        MemoManager.Instance.RebuildUnseenMemoPages();
+        MemoManager.Instance.ForceRefreshMemoGauge();
     }
 
     public void NotClearThisScene()
