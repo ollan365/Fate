@@ -24,9 +24,10 @@ public class GameManager : MonoBehaviour
 
     // 디버깅용
     [SerializeField] private TextMeshProUGUI variablesText;
-    public bool isDebug = false;
-    public bool skipTutorial = false;
-    public bool skipInquiry = false;
+    public bool isDebug;
+    public bool skipTutorial;
+    public bool skipInquiry;
+    public bool isDemoBuild;
 
     // 조사 시스템에서 현재 조사하고 있는 오브젝트의 evnetId를 저장함
     private string currentInquiryObjectId = "";
@@ -59,8 +60,14 @@ public class GameManager : MonoBehaviour
         variablesCSV = Resources.Load<TextAsset>("Datas/variables");
         CreateVariables();
 
-        if (isDebug)
+        if (isDebug) {
             ShowVariables();
+            // set timescale to 0.5f for debugging
+            Time.timeScale = 4f;
+        }
+
+        if (isDemoBuild)
+            SaveManager.Instance.CreateNewGameData();
     }
 
     private void CreateVariables() {

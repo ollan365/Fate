@@ -83,6 +83,10 @@ public class GameSceneManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
+        
+        // Reset loading UI elements before starting fade-in to prevent previous elements from showing
+        UIManager.Instance.ResetLoadingUI();
+        
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         StartCoroutine(UIManager.Instance.SetLoadingAnimation(0, 1, 1));
@@ -166,7 +170,17 @@ public class GameSceneManager : MonoBehaviour
         MemoManager.Instance.SetShouldHideMemoButton(false);
         MemoManager.Instance.SetMemoButtons(true);
 
+        if (GetActiveScene() == SceneType.ROOM_1 || GetActiveScene() == SceneType.FOLLOW_1)
+            StartCoroutine(DelayedMemoGaugeRefresh());
+
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+    }
+
+    private IEnumerator DelayedMemoGaugeRefresh() {
+        yield return new WaitForSeconds(0.5f);
+        
+        MemoManager.Instance.RebuildUnseenMemoPages();
+        MemoManager.Instance.ForceRefreshMemoGauge();
     }
 
     public void NotClearThisScene()

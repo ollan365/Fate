@@ -30,15 +30,19 @@ public class FollowGameManager : MonoBehaviour
     private bool IsEnd { get => FollowManager.Instance.IsEnd; }
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
     public bool IsFateHide { get; private set; }
-    private bool IsFateMove { get; set; }
     private bool IsTutorial { get => FollowManager.Instance.IsTutorial; }
+    private void Start()
+    {
+        UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider, Accidy.transform.position.x / endPositonOfMap, 0);
+    }
     void Update()
     {
         if (!Accidy) return;
 
         if (!StopAccidy && !IsTutorial && !IsEnd) MoveAccidy();
 
-        if (!IsEnd && !IsDialogueOpen || IsTutorial) MoveFate();
+        if (!IsEnd && !IsDialogueOpen) MoveFate();
+        else SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, false);
 
         if (!IsEnd) FollowManager.Instance.CheckPosition();
     }
@@ -58,23 +62,23 @@ public class FollowGameManager : MonoBehaviour
 
         if (!IsFateHide && !FollowManager.Instance.TutorialFateNotMovable)
         {
-            IsFateMove = false;
+            bool isFateMove = false;
             if (Input.GetKey(KeyCode.A))
             {
                 // 나중에 아트 리소스 추가되면 Vector3.right를 Vector3.left로 변경
-                if (Fate.transform.position.x > -1) Fate.transform.Translate(Vector3.right * fateMoveSpeed * Time.deltaTime);
+                if (Fate.transform.position.x > -1) Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
 
                 Fate.SetBool("Right", false);
-                IsFateMove = true;
+                isFateMove = true;
             }
             if (Input.GetKey(KeyCode.D))
             {
                 if (!IsTutorial || Fate.transform.position.x < 2) Fate.transform.Translate(Vector3.right * fateMoveSpeed * Time.deltaTime);
                 Fate.SetBool("Right", true);
-                IsFateMove = true;
+                isFateMove = true;
             }
-            SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, IsFateMove);
-            Fate.SetBool("Walking", IsFateMove);
+            SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, isFateMove);
+            Fate.SetBool("Walking", isFateMove);
 
             if (GameSceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)
                 UIManager.Instance.ChangeSliderValue(eUIGameObjectName.FatePositionSlider,
@@ -116,7 +120,6 @@ public class FollowGameManager : MonoBehaviour
     private IEnumerator StartGameLogic()
     {
         StopAccidy = false;
-        IsFateMove = false;
         IsFateHide = false;
 
         if (GameSceneManager.Instance.GetActiveScene() == SceneType.FOLLOW_1)

@@ -10,7 +10,8 @@ public class LobbyManager : MonoBehaviour
     
     public GameObject lobbyButtons;
     public Image backgroundImage;
-    public Sprite titleWithLogo, titleWithoutLogo, room1Side1BackgroundSprite;
+    public Sprite titleWithLogo, room1Side1BackgroundSprite, blackBgSprite;
+    [SerializeField] private GameObject gotoSceneButtons;
     [SerializeField] private GameObject lobbyPanels;
     [SerializeField] private GameObject clockSecondGameObject;
     [SerializeField] private TMP_InputField nameInput;
@@ -33,6 +34,12 @@ public class LobbyManager : MonoBehaviour
         isLobby = true;
         lobbyButtons.SetActive(true);
         lobbyPanels.SetActive(true);
+
+        if (GameManager.Instance.isDemoBuild) { // default: -20
+            lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -60;
+            lobbyButtons.transform.GetChild(1).gameObject.SetActive(false);
+            gotoSceneButtons.SetActive(false);
+        }
         
         StartCoroutine(WaitForGameManagerStartFunction());
     }
@@ -45,6 +52,7 @@ public class LobbyManager : MonoBehaviour
             GameManager.Instance.SetVariable("SkipLobby", false);
             SaveManager.Instance.SaveGameData();
             lobbyButtons.SetActive(false);
+            backgroundImage.sprite = blackBgSprite;
             StartCoroutine(StartPrologue());
         } else if (UIManager.Instance) {
             StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 2f, false, 0, 0));
@@ -65,19 +73,10 @@ public class LobbyManager : MonoBehaviour
     }
     
     public void StartNewGame() {
-        if (SaveManager.Instance.CheckGameData()) {  // 저장된 게임 데이터가 없는 경우
+        if (!GameManager.Instance.isDemoBuild && SaveManager.Instance.CheckGameData())  // 저장된 게임 데이터가 없는 경우
             UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, true);
-            backgroundImage.sprite = titleWithoutLogo;
-        } else {
-            isLobby = false;
-            lobbyButtons.SetActive(false);
-            clockSecondGameObject.SetActive(false);
+        else
             StartCoroutine(StartPrologue());
-        }
-    }
-    
-    public void OriginBackground() {
-        backgroundImage.sprite = titleWithLogo;
     }
     
     public void LoadGame() {
@@ -109,17 +108,18 @@ public class LobbyManager : MonoBehaviour
 
     // ========== 프롤로그 시작 ========== //
     private IEnumerator StartPrologue() {
-        if (!UIManager.Instance.coverPanel.gameObject.activeSelf)
-            StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
-
-        MemoManager.Instance.SetShouldHideMemoButton(true); // 프롤로그 중에 메모 버튼이 켜지지 않도록 변경
+        StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
+        lobbyButtons.SetActive(false);
+        clockSecondGameObject.SetActive(false);
+        MemoManager.Instance.SetShouldHideMemoButton(true);
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
-
         SoundPlayer.Instance.ChangeBGM(Constants.BGM_PROLOGUE);
+        isLobby = false;
+        
+        yield return new WaitForSeconds(1f);
+        backgroundImage.sprite = blackBgSprite;
+        UIManager.Instance.coverPanel.gameObject.SetActive(false);
         EventManager.Instance.CallEvent("EventFirstPrologue");
-        yield return new WaitForSeconds(1);
-        backgroundImage.sprite = room1Side1BackgroundSprite;
-        StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }
     
     // ===== 이름 설정 ===== //

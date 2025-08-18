@@ -62,7 +62,7 @@ public static class Constants
         FOLLOW,
         FOLLOW_THINKING,
         FOLLOW_EXTRA,
-        CENTER
+        ENDING
     }
 
     public static int ToInt(this DialogueType dialogueType)
@@ -76,7 +76,7 @@ public static class Constants
             case DialogueType.FOLLOW: return 3;
             case DialogueType.FOLLOW_THINKING: return 4;
             case DialogueType.FOLLOW_EXTRA: return 5;
-            case DialogueType.CENTER: return 7;
+            case DialogueType.ENDING: return 7;
             default: return 0;
         }
     }

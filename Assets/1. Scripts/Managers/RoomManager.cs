@@ -37,7 +37,8 @@ public class RoomManager : MonoBehaviour
         
         imageAndLockPanelCanvas.worldCamera = UIManager.Instance.uiCamera;
         ResultManager.Instance.InitializeExecutableObjects();
-        MemoManager.Instance.SetMemoGauge(UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge));
+        
+        StartCoroutine(SetupMemoGaugeAfterUI());
         
         UIManager.Instance.SetUI(eUIGameObjectName.NormalVignette, true);
         UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, true);
@@ -45,6 +46,16 @@ public class RoomManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.DayText, true);
         UIManager.Instance.SetUI(eUIGameObjectName.HeartParent, true);
         UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, true);
+    }
+    
+    private IEnumerator SetupMemoGaugeAfterUI() {
+        yield return new WaitForEndOfFrame();
+        
+        GameObject memoGaugeUI = UIManager.Instance.GetUI(eUIGameObjectName.MemoGauge);
+        if (memoGaugeUI)
+            MemoManager.Instance.SetMemoGauge(memoGaugeUI);
+        else
+            Debug.LogError("Could not find memo gauge UI");
     }
     
     void Start()
@@ -72,12 +83,15 @@ public class RoomManager : MonoBehaviour
 
         actionPointManager.CreateHearts();  // create hearts on room start
 
+        tutorialManager = gameObject.GetComponent<TutorialManager>();
+        tutorialManager.AddTutorialObjects();
         if (GameManager.Instance.skipTutorial ||
             GameSceneManager.Instance.GetActiveScene() != Constants.SceneType.ROOM_1 ||
-            (int)GameManager.Instance.GetVariable("ReplayCount") > 0)
+            (int)GameManager.Instance.GetVariable("ReplayCount") > 0) {
+            tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);
             return;
+        }
 
-        tutorialManager = gameObject.GetComponent<TutorialManager>();
         tutorialManager.StartTutorial();
     }
 

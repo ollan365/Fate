@@ -12,8 +12,7 @@ public class FollowDialogueManager : MonoBehaviour
     [SerializeField] private GameObject extraBlockingPanel;
     [SerializeField] private GameObject[] extraCanvas;
     [SerializeField] private TextMeshProUGUI[] extraDialogueText;
-    //[SerializeField] private GameObject specialObjectButton;
-    //[SerializeField] private Image specialObjectButtonImage;
+    [SerializeField] private GameObject[] extraTeddyBearIcon;
     [SerializeField] private Transform frontObjects;
     private FollowExtra extra = FollowExtra.None;
 
@@ -62,6 +61,7 @@ public class FollowDialogueManager : MonoBehaviour
 
         DialogueManager.Instance.dialogueSet[DialogueType.FOLLOW_EXTRA.ToInt()] = extraCanvas[Int(extra)];
         DialogueManager.Instance.scriptText[DialogueType.FOLLOW_EXTRA.ToInt()] = extraDialogueText[Int(extra)];
+        DialogueManager.Instance.teddyBearIcons[DialogueType.FOLLOW_EXTRA.ToInt()] = extraTeddyBearIcon[Int(extra)];
         DialogueManager.Instance.dialogueType = DialogueType.FOLLOW_EXTRA;
 
         foreach(GameObject extra in extraCanvas) extra.SetActive(false);
@@ -148,6 +148,7 @@ public class FollowDialogueManager : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
             }
 
+            extraTeddyBearIcon[speakerIndex].SetActive(true);
             yield return new WaitForSeconds(0.25f);
 
             // 대사가 끝난 후

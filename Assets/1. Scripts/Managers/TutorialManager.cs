@@ -27,13 +27,15 @@ public class TutorialManager : MonoBehaviour
     
     public Dictionary<eTutorialObjectName, GameObject> tutorialGameObjects = new();
 
-    public void StartTutorial() {
+    public void AddTutorialObjects() {
         tutorialGameObjects.Add(eTutorialObjectName.CarpetClosed, carpetClosedGameObject);
         tutorialGameObjects.Add(eTutorialObjectName.CarpetOpen, carpetOpenGameObject);
         tutorialGameObjects.Add(eTutorialObjectName.Chair, chairGameObject);
         tutorialGameObjects[eTutorialObjectName.Chair].GetComponent<CapsuleCollider2D>().enabled = false;  // 의자 클릭 안되게 함
         tutorialGameObjects.Add(eTutorialObjectName.LoR, letterOfResignationGameObject);
-        
+    }
+    
+    public void StartTutorial() {
         GameManager.Instance.SetVariable("isTutorial", true);
         currentPhase = (int)GameManager.Instance.GetVariable("TutorialPhase");
         
@@ -64,6 +66,7 @@ public class TutorialManager : MonoBehaviour
         GameManager.Instance.SetVariable("TutorialPhase", currentPhase);
         switch (currentPhase) {
             case 1:
+                ToggleCollider(eTutorialObjectName.Chair, false);
                 ResultManager.Instance.ExecuteResult(resultTutorialPhase1);
                 break;
 
@@ -85,9 +88,10 @@ public class TutorialManager : MonoBehaviour
             
             case 6:
                 MemoManager.Instance.SetShouldHideMemoButton(false);
-                UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.MemoButton, true);
+                if ((int)GameManager.Instance.GetVariable("ReplayCount") == 0)
+                    UIManager.Instance.ToggleHighlightAnimationEffect(eUIGameObjectName.MemoButton, true);
                 UIManager.Instance.ToggleHighlightAnimationEffect(tutorialGameObjects[eTutorialObjectName.CarpetOpen], false);
-                ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);
+                ToggleCollider(eTutorialObjectName.Chair, true);
                 ResultManager.Instance.ExecuteResult(resultTutorialPhase6);
                 
                 CompleteTutorial();

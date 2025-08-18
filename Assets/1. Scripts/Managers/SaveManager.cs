@@ -101,6 +101,7 @@ public class SaveManager : MonoBehaviour
         // n회차이거나 Room1의 튜토리얼을 끝냈으면 게임 데이터가 있는 것으로 판단
         return (int)saveData.Variables["ReplayCount"] != 0 || (bool)saveData.Variables["EndTutorial_ROOM_1"];
     }
+
     // 불러오기
     public void ApplySavedGameData()
     {
@@ -115,7 +116,10 @@ public class SaveManager : MonoBehaviour
         GameManager.Instance.eventObjectsStatusDict = saveData.EventObjectStatusDictionary;
         MemoManager.Instance.SavedMemoList = saveData.SavedMemoList;
         MemoManager.Instance.RevealedMemoList = saveData.RevealedMemoList;
+        if (GameSceneManager.Instance.GetActiveScene() is not (SceneType.START or SceneType.ENDING))
+            MemoManager.Instance.RefreshGaugeAfterSaveLoad();
     }
+
     // 저장하기
     public void SaveGameData(SaveData newSaveData = null)
     {

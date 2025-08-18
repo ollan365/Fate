@@ -22,6 +22,11 @@ public class DialogueManager : MonoBehaviour
     public Transform[] choicesContainer;
     public GameObject choicePrefab;
     public GameObject[] skipText;
+    
+    // 엔딩 연출용
+    public Image endingDialougeBlackImage;
+    public GameObject endingDialogueNextPanel;
+
     [Header("teddyBearIcons")] public GameObject[] teddyBearIcons;
 
     // 타자 효과 속도
@@ -42,6 +47,7 @@ public class DialogueManager : MonoBehaviour
     private bool isAuto = false;
     private bool isFast = false;
     private bool isMulti = false;
+    private bool isEnding = false;
     private string fullSentence;
 
     // Dialogue Queue
@@ -178,10 +184,11 @@ public class DialogueManager : MonoBehaviour
                     : scripts[dialogueLine.SpeakerID].GetScript();
     }
     
-    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast, out bool multi) {
+    private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast, out bool multi, out bool ending) {
         auto = false;
         fast = false;
         multi = false;
+        ending = false;
         var sentence = scripts[dialogueLine.ScriptID].GetScript();
     
         if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0) {
@@ -204,8 +211,9 @@ public class DialogueManager : MonoBehaviour
                         var fateName = (string)GameManager.Instance.GetVariable("FateName");
                         sentence = sentence.Replace("{PlayerName}", fateName);
                         break;
-                    case "CENTER":
-                        dialogueType = DialogueType.CENTER;
+                    case "ENDING":
+                        ending = true;
+                        dialogueType = DialogueType.ENDING;
                         foreach (GameObject canvas in dialogueSet)
                             if (canvas)
                                 canvas.SetActive(false);
@@ -304,10 +312,11 @@ public class DialogueManager : MonoBehaviour
         SetupCanvasAndSpeakerText(dialogueLine);
 
         // Process placeholders and get final sentence.
-        string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast, out bool multi);
+        string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast, out bool multi, out bool ending);
         isAuto = auto;
         isFast = fast;
         isMulti = multi;
+        isEnding = ending;
 
         isTyping = true;
         StartCoroutine(TypeSentence(sentence));
@@ -482,6 +491,13 @@ public class DialogueManager : MonoBehaviour
         if (isFast) 
             typeSpeed /= 1.75f;
 
+        if (isEnding)
+        {
+            StartCoroutine(UIManager.Instance.OnFade(endingDialougeBlackImage, 1, 0, 1, true, 1));
+            yield return new WaitForSeconds(3.5f);
+            typeSpeed *= 1.5f;
+        }
+
         foreach (char letter in sentence) {
             if (letter == '<') {
                 effectText = ""; // effectText 초기화
@@ -513,7 +529,12 @@ public class DialogueManager : MonoBehaviour
             typeSpeed *= 1.75f; // 타이핑 속도 되돌려 놓기
             isFast = false;
         }
-        
+        if (isEnding)
+        {
+            SoundPlayer.Instance.UISoundPlay(Sound_EndingImpact);
+            typeSpeed /= 1.5f;
+            endingDialogueNextPanel.SetActive(true);
+        }
         if (isAuto) {
             isAuto = false;
             yield return new WaitForSeconds(0.25f);
@@ -527,6 +548,8 @@ public class DialogueManager : MonoBehaviour
     public void OnDialoguePanelClick() {
         if (isAuto) 
             return;
+        if (isEnding)
+            endingDialogueNextPanel.SetActive(false);
         
         if (isMulti) {
             isMulti = false;

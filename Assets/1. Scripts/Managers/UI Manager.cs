@@ -57,8 +57,9 @@ public enum eUIGameObjectName {
     DoubtGaugeSlider_Night,
     FatePositionSlider_Night,
     AccidyPositionSlider_Night,
-    FollowEventButton,
     FollowEventButtonImage,
+    FollowEventButton,
+    followEventButtonNextButton,
     DayChangingGameObject,
     YesterdayNumText,
     TodayNumText,
@@ -167,6 +168,7 @@ public class UIManager : MonoBehaviour {
     public GameObject accidyPositionSlider_Night;
     public GameObject followEventButton;
     public GameObject followEventButtonImage;
+    public GameObject followEventButtonNextButton;
 
     private readonly Dictionary<eUIGameObjectName, GameObject> uiGameObjects = new();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -207,6 +209,16 @@ public class UIManager : MonoBehaviour {
         // UI Objects that should be active by default
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
         SetUI(eUIGameObjectName.AlbumButton, true);
+
+        if (GameManager.Instance.isDemoBuild) {
+            whiteMenu.transform.GetChild(2).gameObject.SetActive(false);
+            blackMenu.transform.GetChild(2).gameObject.SetActive(false);
+        }
+    }
+
+    private void Start() {
+        ChangeBgmOrSoundEffectValue(true);
+        ChangeBgmOrSoundEffectValue(false);
     }
 
     private void AddUIGameObjects() {
@@ -267,7 +279,7 @@ public class UIManager : MonoBehaviour {
 
         uiGameObjects.Add(eUIGameObjectName.FollowEventButton, followEventButton);
         uiGameObjects.Add(eUIGameObjectName.FollowEventButtonImage, followEventButtonImage);
-
+        uiGameObjects.Add(eUIGameObjectName.followEventButtonNextButton, followEventButtonNextButton);
 
         uiGameObjects.Add(eUIGameObjectName.MainGear, mainGear);
         uiGameObjects.Add(eUIGameObjectName.SubGear, subGear);
@@ -462,9 +474,9 @@ public class UIManager : MonoBehaviour {
             Time.timeScale = 1f;
         } else {
             SetUI(eUIGameObjectName.MenuUI, true);
-            SetUI(UnityEngine.Random.Range(0, 2) == 0 
-                ? eUIGameObjectName.WhiteMenu 
-                : eUIGameObjectName.BlackMenu, true);
+            SetUI(GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.FOLLOW_1 
+                ? eUIGameObjectName.BlackMenu
+                : eUIGameObjectName.WhiteMenu, true);
             Time.timeScale = 0f;
         }
     }
@@ -530,14 +542,16 @@ public class UIManager : MonoBehaviour {
     {
         AnimateUI(followEventButton, true, true);
         followEventButtonImage.SetActive(true);
+        followEventButtonNextButton.SetActive(true);
 
         followEventButtonImage.GetComponent<Image>().sprite = followObject.specialSprite;
         followEventButtonImage.GetComponent<Image>().SetNativeSize();
         followEventButtonImage.GetComponent<RectTransform>().localScale = new Vector3(followObject.scaleValue, followObject.scaleValue, followObject.scaleValue);
 
-        followEventButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        followEventButton.GetComponent<Button>().onClick.AddListener(() => followObject.OnMouseDown_Normal());
-        followEventButton.GetComponent<Button>().onClick.AddListener(() => AnimateUI(followEventButton, false, true));
+        followEventButtonNextButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        followEventButtonNextButton.GetComponent<Button>().onClick.AddListener(() => followObject.OnMouseDown_Normal());
+        followEventButtonNextButton.GetComponent<Button>().onClick.AddListener(() => followEventButtonNextButton.SetActive(false));
+        followEventButtonNextButton.GetComponent<Button>().onClick.AddListener(() => AnimateUI(followEventButton, false, true));
     }
 
     // <summary> 변수 설명
@@ -599,6 +613,20 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+    public void ResetLoadingUI() {
+        if (coverText) 
+            coverText.gameObject.SetActive(false);
+        if (progressBarGroup) 
+            progressBarGroup.gameObject.SetActive(false);
+        if (Loading_AnimationGroup) 
+            Loading_AnimationGroup.gameObject.SetActive(false);
+        if (progressBar) 
+            progressBar.fillAmount = 0f;
+        foreach (GameObject character in loading_characters)
+            if (character)
+                character.gameObject.SetActive(false);
+    }
+
     public void TextOnFade(string text) {
         coverText.gameObject.SetActive(true);
         coverText.text = text;
@@ -629,51 +657,36 @@ public class UIManager : MonoBehaviour {
     // </summary>
     public IEnumerator OnMoveUI(GameObject screen, Vector3 direction, float distance, float time) {
         RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
-        // 원래 위치 (목적지)
-        var localPosition = screenRectTransform.localPosition;
+        var localPosition = screenRectTransform.localPosition; // 원래 위치 (목적지)
         Vector3 originPosition = localPosition;
-        // 출발 지점
-        Vector3 startPosition = localPosition + direction * distance;
+        Vector3 startPosition = localPosition + direction * distance; // 출발 지점
         screen.GetComponent<RectTransform>().localPosition = startPosition;
 
         float elapsedTime = 0f;
         while (elapsedTime < time) {
             elapsedTime += Time.deltaTime;
             float percent = Mathf.Clamp01(elapsedTime / time);
-
             screen.transform.localPosition = Vector3.Lerp(startPosition, originPosition, percent);
 
             yield return null;
         }
 
-        // 원래 위치로 설정
-        screen.GetComponent<RectTransform>().localPosition = originPosition;
+        screen.GetComponent<RectTransform>().localPosition = originPosition; // 원래 위치로 설정
     }
 
-    public void ChangeSoundValue(string uiName) {
-        TMP_Text text;
-        Slider slider;
-
-        if (uiName == eUIGameObjectName.BGMSlider.ToString()) {
-            text = uiGameObjects[eUIGameObjectName.BGMValue].GetComponent<TextMeshProUGUI>();
-            slider = uiGameObjects[eUIGameObjectName.BGMSlider].GetComponent<Slider>();
-            SoundPlayer.Instance.ChangeVolume(slider.value, -1);
-        }
-        else {
-            text = uiGameObjects[eUIGameObjectName.SoundEffectValue].GetComponent<TextMeshProUGUI>();
-            slider = uiGameObjects[eUIGameObjectName.SoundEffectSlider].GetComponent<Slider>();
-            SoundPlayer.Instance.ChangeVolume(-1, slider.value);
-        }
-
-        text.text = (slider.value * 100).ToString("F0");
+    public void ChangeBgmOrSoundEffectValue(bool isChangeBGM) {
+        float sliderValue = uiGameObjects[isChangeBGM
+                ? eUIGameObjectName.BGMSlider
+                : eUIGameObjectName.SoundEffectSlider].GetComponent<Slider>().value;
+        SoundPlayer.Instance.ChangeVolume(isChangeBGM, sliderValue);
+        uiGameObjects[isChangeBGM
+                ? eUIGameObjectName.BGMValue
+                : eUIGameObjectName.SoundEffectValue].GetComponent<TextMeshProUGUI>().text = (sliderValue * 100).ToString("F0");
     }
 
     public void ChangeSliderValue(eUIGameObjectName uiName, float absoluteValue, float addValue) {
         Slider slider = uiGameObjects[uiName].GetComponent<Slider>();
-        if (addValue != 0)
-            slider.value += addValue;
-        else
-            slider.value = absoluteValue;
+        slider.value = addValue == 0 ? absoluteValue : slider.value + addValue;
     }
 
     private void InitializeUIToCheck() {
