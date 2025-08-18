@@ -19,6 +19,9 @@ public class Box : EventObject, IResultExecutable
 
     public new void OnMouseDown()
     {
+        bool isBusy = GameManager.Instance.GetIsBusy();
+        if (isBusy) return;
+
         base.OnMouseDown();
     }
 
