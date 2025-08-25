@@ -14,6 +14,7 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private Sprite background_room1;
     [SerializeField] private Sprite background_follow1;
     [SerializeField] private Sprite background_follow2;
+    public GameObject particle;
 
     [Header("시계")]
     [SerializeField] private GameObject clock;

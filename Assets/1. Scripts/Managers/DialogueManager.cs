@@ -493,6 +493,7 @@ public class DialogueManager : MonoBehaviour
 
         if (isEnding)
         {
+            if (EndingManager.Instance) EndingManager.Instance.particle.SetActive(true);
             StartCoroutine(UIManager.Instance.OnFade(endingDialougeBlackImage, 1, 0, 1, true, 1));
             yield return new WaitForSeconds(3.5f);
             typeSpeed *= 1.5f;
@@ -533,6 +534,11 @@ public class DialogueManager : MonoBehaviour
         {
             SoundPlayer.Instance.UISoundPlay(Sound_EndingImpact);
             typeSpeed /= 1.5f;
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(UIManager.Instance.OnFade(endingDialougeBlackImage, 1, 0, 1, false));
+            StartCoroutine(UIManager.Instance.OnFadeText(scriptText[dialogueType.ToInt()], 1, 0, 1, true));
+            yield return new WaitForSeconds(1f);
+            endingDialougeBlackImage.gameObject.SetActive(false);
             endingDialogueNextPanel.SetActive(true);
         }
         if (isAuto) {
@@ -549,7 +555,12 @@ public class DialogueManager : MonoBehaviour
         if (isAuto) 
             return;
         if (isEnding)
+        {
             endingDialogueNextPanel.SetActive(false);
+            scriptText[dialogueType.ToInt()].gameObject.SetActive(true);
+            scriptText[dialogueType.ToInt()].color = new Color(1, 1, 1, 1);
+            if (EndingManager.Instance) EndingManager.Instance.particle.SetActive(false);
+        }
         
         if (isMulti) {
             isMulti = false;
