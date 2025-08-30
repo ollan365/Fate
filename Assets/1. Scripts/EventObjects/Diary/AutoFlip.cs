@@ -1,69 +1,84 @@
 using System;
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(PageFlip))]
 public class AutoFlip : MonoBehaviour
 {
-    public float pageFlipTime = 0.2f; // Time it takes to flip one page
-    public PageFlip controlledBook; // Reference to the PageFlip script
-    public int animationFramesCount = 80; // Number of frames for the flip animation
-    private bool isFlipping = false; // Flag to control flip status
+    [Header("Timing")]
+    [Tooltip("Time spent 'dragging' across before release.")]
+    public float pageFlipTime = 0.4f;
 
-    private int currentPage;
+    [Tooltip("Additional tiny pause after releasing, to avoid UI flickers.")]
+    public float settleDelay = 0.01f;
+
+    [Header("Motion")]
+    [Tooltip("Ease for the progress across the page (0→1).")]
+    public AnimationCurve progressCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [Tooltip("Vertical lift profile (0 at edges, 1 at mid). Example: (0,0) (0.5,1) (1,0)")]
+    public AnimationCurve arcCurve = new AnimationCurve(
+        new Keyframe(0f, 0f, 0f, 0f),
+        new Keyframe(0.5f, 1f, 0f, 0f),
+        new Keyframe(1f, 0f, 0f, 0f)
+    );
+
+    [Range(0.1f, 1.0f), Tooltip("How far inward from each edge we start/finish (as a fraction of half-width).")]
+    public float edgeInsetRatio = 0.2f;
+
+    [Range(0.1f, 1.2f), Tooltip("How high the page is lifted at peak (relative to page height).")]
+    public float liftHeightRatio = 0.1f;
+
+    [Header("References")]
+    public PageFlip controlledBook;
+
+    private bool isFlipping;
 
     private void Start()
     {
-        if (!controlledBook) 
+        if (!controlledBook)
             controlledBook = GetComponent<PageFlip>();
     }
 
     public void FlipRightPage()
     {
-        // Debug.Log("flip right page");
-
-        if (isFlipping || controlledBook.currentPage >= controlledBook.totalPageCount - 1) 
+        if (isFlipping || controlledBook.currentPage >= controlledBook.totalPageCount - 1)
             return;
+
         StartCoroutine(FlipPage(FlipMode.RightToLeft));
     }
 
     public void FlipLeftPage()
     {
-        // Debug.Log("flip left page");
-
-        if (isFlipping || controlledBook.currentPage <= 0) 
+        if (isFlipping || controlledBook.currentPage <= 0)
             return;
+
         StartCoroutine(FlipPage(FlipMode.LeftToRight));
     }
 
     public void FlipToPage(int pageNum)
     {
+        // Right page indices are even in this setup.
         if (pageNum % 2 != 0)
         {
-            Debug.LogWarning("pageNum should be even!.");
+            Debug.LogWarning("FlipToPage: target page must be even (right page index).");
             return;
         }
-
-        // Debug.Log($"flip to page {pageNum}");
-
-        if (isFlipping || pageNum < 0 || pageNum >= controlledBook.totalPageCount) 
+        if (isFlipping || pageNum < 0 || pageNum >= controlledBook.totalPageCount)
             return;
+
         StartCoroutine(FlipToPageCoroutine(pageNum));
     }
 
-    private IEnumerator FlipToPageCoroutine(int pageNum)
+    private IEnumerator FlipToPageCoroutine(int targetPage)
     {
-        currentPage = controlledBook.currentPage;
-        while (currentPage != pageNum)
+        // Use the book’s authoritative currentPage (don’t track a shadow copy).
+        while (controlledBook.currentPage != targetPage)
         {
-            // Debug.Log($"current page: {currentPage}, target page: {pageNum}");
-
-            if (currentPage < pageNum)
+            if (controlledBook.currentPage < targetPage)
                 yield return StartCoroutine(FlipPage(FlipMode.RightToLeft));
-            else if (currentPage > pageNum)
+            else
                 yield return StartCoroutine(FlipPage(FlipMode.LeftToRight));
         }
     }
@@ -71,60 +86,80 @@ public class AutoFlip : MonoBehaviour
     private IEnumerator FlipPage(FlipMode flipMode)
     {
         isFlipping = true;
-        controlledBook.mode = flipMode;
 
-        controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
-        controlledBook.pageContentsManager.flipRightButton.SetActive(false);
+        // Disable UI interactions while flipping
+        if (controlledBook.pageContentsManager)
+        {
+            controlledBook.pageContentsManager.flipLeftButton.SetActive(false);
+            controlledBook.pageContentsManager.flipRightButton.SetActive(false);
+        }
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, false);
         UIManager.Instance.GetUI(eUIGameObjectName.BlurImage).GetComponent<Button>().interactable = false;
 
-        float elapsedTime = 0;
-        float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) / 2;
-        float xl = ((controlledBook.EdgeBottomRight.x - controlledBook.EdgeBottomLeft.x) / 2) * 0.9f;
-        float h = Mathf.Abs(controlledBook.EdgeBottomRight.y) * 0.9f;
+        // Tell PageFlip not to chase the mouse while we animate.
+        controlledBook.BeginAutoFlip();
 
-        Vector3 startPoint = new Vector3(
-            flipMode == FlipMode.RightToLeft ? xc + xl : xc - xl,
-            0,
-            0
-        );
-        Vector3 endPoint = new Vector3(
-            flipMode == FlipMode.RightToLeft ? xc - xl : xc + xl,
-            0,
-            0
-        );
+        // Geometry snapshot
+        float xc = (controlledBook.EdgeBottomRight.x + controlledBook.EdgeBottomLeft.x) * 0.5f;
+        float halfSpan = (controlledBook.EdgeBottomRight.x - controlledBook.EdgeBottomLeft.x) * 0.5f;
+        float xl = halfSpan * edgeInsetRatio;
+        float pageHeight = Mathf.Abs(controlledBook.EdgeBottomRight.y) * 2f;
+        float lift = pageHeight * liftHeightRatio * 0.5f; // relative to half-height
 
-        while (elapsedTime < pageFlipTime)
+        float startX = (flipMode == FlipMode.RightToLeft) ? xc + xl : xc - xl;
+        float endX   = (flipMode == FlipMode.RightToLeft) ? xc - xl : xc + xl;
+
+        // Small base Y above the bottom avoids shadow pops at exactly y=0
+        const float baseY = 0.001f;
+
+        // First frame: use Drag* to set up pivots/sprites/clipping, then drive with UpdateBook*.
+        Vector3 startPt = new Vector3(startX, baseY, 0f);
+        if (flipMode == FlipMode.RightToLeft)
+            controlledBook.DragRightPageToPoint(startPt);
+        else
+            controlledBook.DragLeftPageToPoint(startPt);
+
+        // Animate a smooth, human-like arc across the spread
+        float t = 0f;
+        while (t < 1f)
         {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / pageFlipTime;
+            t += Time.deltaTime / Mathf.Max(0.01f, pageFlipTime);
+            float p = Mathf.Clamp01(progressCurve.Evaluate(t));
+            float x = Mathf.Lerp(startX, endX, p);
+            float y = baseY + arcCurve.Evaluate(p) * lift;
+            Vector3 follow = new Vector3(x, y, 0f);
 
-            // Use smooth step for more natural movement
-            t = Mathf.SmoothStep(0, 1, t);
-
-            // Calculate current position
-            float x = Mathf.Lerp(startPoint.x, endPoint.x, t);
-            float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
-            Vector3 point = new Vector3(x, y, 0);
-
-            // Only call DragPageToPoint, not both
             if (flipMode == FlipMode.RightToLeft)
-                controlledBook.DragRightPageToPoint(point);
+                controlledBook.UpdateBookRtlToPoint(follow);
             else
-                controlledBook.DragLeftPageToPoint(point);
+                controlledBook.UpdateBookLtrToPoint(follow);
 
-            yield return null; // Wait for next frame instead of fixed time
+            yield return null;
         }
 
+        // Release to the book's own forward tween (no manual page index mutation here).
         controlledBook.ReleasePage();
-        isFlipping = false;
 
-        if (flipMode == FlipMode.RightToLeft) 
-            currentPage += 2;
-        else 
-            currentPage -= 2;
+        // Wait until PageFlip finishes (both working page images become inactive).
+        yield return new WaitUntil(() =>
+            controlledBook.left != null && controlledBook.right != null &&
+            !controlledBook.left.gameObject.activeSelf && !controlledBook.right.gameObject.activeSelf
+        );
 
+        // Tiny settle delay helps avoid end-of-flip flashes on some GPUs
+        if (settleDelay > 0f) yield return new WaitForSeconds(settleDelay);
+
+        controlledBook.EndAutoFlip();
+
+        // Re-enable UI
+        if (controlledBook.pageContentsManager)
+        {
+            controlledBook.pageContentsManager.flipLeftButton.SetActive(true);
+            controlledBook.pageContentsManager.flipRightButton.SetActive(true);
+        }
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, true);
         UIManager.Instance.GetUI(eUIGameObjectName.BlurImage).GetComponent<Button>().interactable = true;
+
+        isFlipping = false;
     }
 }

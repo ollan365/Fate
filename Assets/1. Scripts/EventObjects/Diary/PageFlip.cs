@@ -451,4 +451,19 @@ public class PageFlip : MonoBehaviour
 
         onFinish?.Invoke();
     }
+
+    public void BeginAutoFlip() {
+        autoFlipping = true;
+    }
+
+    public void EndAutoFlip()
+    {
+        autoFlipping = false;
+        var wasDragging = pageDragging;
+        pageDragging = false;
+        if (wasDragging) {
+            shadow.gameObject.SetActive(false);
+            shadowLtr.gameObject.SetActive(false);
+        }
+    }
 }
