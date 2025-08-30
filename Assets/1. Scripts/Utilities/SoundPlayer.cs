@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using static Constants;
+using System;
 
 public class SoundPlayer : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class SoundPlayer : MonoBehaviour
     
     private float bgmVolume = 0.5f;
     private Coroutine bgmCoroutine;
+    private Coroutine bgmFadeCoroutine;
 
     // 동시에 여러 UI 효과음들이 플레이 될 수도 있으므로 여러 플레이어를 두고 순차적으로 실행하기 위한 변수
     private int uiSoundPlayerCursor;
@@ -37,7 +39,7 @@ public class SoundPlayer : MonoBehaviour
     
     private void Start() {
         bgmPlayer.volume = 0f;
-        bgmCoroutine = StartCoroutine(ChangeBGMFade(BGM_OPENING));
+        bgmFadeCoroutine = StartCoroutine(ChangeBGMFade(BGM_OPENING));
     }
     
     private void Update()
@@ -70,48 +72,70 @@ public class SoundPlayer : MonoBehaviour
     }
     
     private IEnumerator ChangeBGMFade(int bgm) {
-        const float fadeDuration = 2f;
+        float fadeDuration = 2f;
+        if (bgmFadeCoroutine != null)
+        {
+            StopCoroutine(bgmFadeCoroutine);
+            bgmFadeCoroutine = null;
+        }
 
+        // BGM 정지 요청 시 BGM fade out
         if (bgm == BGM_STOP) {
-            float startVol = bgmPlayer.volume;
-            float t = 0f;
-            while (t < fadeDuration) {
-                t += Time.unscaledDeltaTime;
-                bgmPlayer.volume = Mathf.Lerp(startVol, 0f, t / fadeDuration);
-                yield return null;
-            }
-            bgmPlayer.volume = 0f;
+            yield return FadeTo(0f, fadeDuration);
             bgmPlayer.Stop();
+            bgmCoroutine = null;
             yield break;
         }
 
+        // 다른 BGM으로 전환 시 현재 곡을 먼저 fade out
         if (bgmPlayer.isPlaying && bgmPlayer.volume > 0f) {
-            float startVol = bgmPlayer.volume;
-            float t = 0f;
-            while (t < fadeDuration * 0.5f) {
-                t += Time.unscaledDeltaTime;
-                bgmPlayer.volume = Mathf.Lerp(startVol, 0f, t / (fadeDuration * 0.5f));
-                yield return null;
-            }
-            bgmPlayer.volume = 0f;
+            yield return FadeTo(0f, fadeDuration);
         }
 
+        // 새 클립 할당 후 재생
         if (bgm >= 0 && bgm < bgmClip.Length) {
             bgmPlayer.clip = bgmClip[bgm];
             bgmPlayer.Play();
         }
 
-        {
-            float t = 0f;
-            while (t < fadeDuration * 0.5f) {
-                t += Time.unscaledDeltaTime;
-                bgmPlayer.volume = Mathf.Lerp(0f, bgmVolume, t / (fadeDuration * 0.5f));
-                yield return null;
-            }
-            bgmPlayer.volume = bgmVolume;
-        }
+        // 새로운 BGM 페이드 인
+        yield return FadeTo(bgmVolume, fadeDuration * 0.5f);
 
         bgmCoroutine = null;
+    }
+
+    public void SetMuteBGM(bool isMute)
+    {
+        if (bgmPlayer == null) return;
+
+        if (bgmFadeCoroutine != null)
+            StopCoroutine(bgmFadeCoroutine);
+
+        float target = isMute ? 0f : Mathf.Clamp01(bgmVolume);
+        bgmFadeCoroutine = StartCoroutine(FadeTo(target, 1));
+    }
+
+    private IEnumerator FadeTo(float targetVolume, float duration)
+    {
+        // 켜질 목표(>0)인데 재생 중이 아니면 먼저 재생 시작
+        if (targetVolume > 0f && !bgmPlayer.isPlaying)
+            bgmPlayer.Play();
+
+        float start = bgmPlayer.volume;
+        float t = 0f;
+
+        // unscaledDeltaTime을 쓰면 게임 일시정지 중에도 페이드 가능
+        while (t < duration)
+        {
+            t += Time.unscaledDeltaTime;
+            float u = Mathf.Clamp01(t / Mathf.Max(0.0001f, duration));
+            bgmPlayer.volume = Mathf.Lerp(start, targetVolume, u);
+            yield return null;
+        }
+
+        bgmPlayer.volume = targetVolume;
+
+        bgmFadeCoroutine = null;
     }
 
     public void UISoundPlay_LOOP(int num, bool play)
@@ -152,7 +176,7 @@ public class SoundPlayer : MonoBehaviour
 
         // 음악이 여러개인 경우 랜덤으로 재생
         if (num == Sound_LockerKeyMovement || num == Sound_ChairMovement)
-            num = Random.Range(num, num + 2);
+            num = UnityEngine.Random.Range(num, num + 2);
         
         // 재생할 효과음 변경
         UISoundPlayer[uiSoundPlayerCursor].clip = UISoundClip[num];
