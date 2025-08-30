@@ -46,11 +46,13 @@ public class ClockHand : MonoBehaviour
         if (dragging && Input.GetMouseButton(0))
         {
             Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - minuteHand.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            float delta = Mathf.DeltaAngle(lastAngle, angle);
+            float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            
+            float smoothedAngle = Mathf.MoveTowardsAngle(lastAngle, targetAngle, 2.0f);
+            float delta = Mathf.DeltaAngle(lastAngle, smoothedAngle);
             RotateMinuteHand(delta);
             RotateHourHand(delta);
-            lastAngle = angle;
+            lastAngle = smoothedAngle;
         }
         if (dragging && Input.GetMouseButtonUp(0))
         {
@@ -59,6 +61,7 @@ public class ClockHand : MonoBehaviour
             StartCoroutine(SnapHandsToNearestTick(beforeTime));
         }
     }
+    
     private void RotateMinuteHand(float delta)
     {
         minuteAngle += delta;
