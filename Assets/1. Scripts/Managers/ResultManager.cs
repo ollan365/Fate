@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Constants;
@@ -8,20 +7,16 @@ public class ResultManager : MonoBehaviour
 {
     public static ResultManager Instance { get; private set; }
 
-    private TextAsset resultsCSV;
-    
     // results: dictionary of "Results"s indexed by string "Result ID"
-    public Dictionary<string, Result> results = new Dictionary<string, Result>();
+    public readonly Dictionary<string, Result> Results = new Dictionary<string, Result>();
     
     // 이벤트 오브젝트 참조
     private Dictionary<string, IResultExecutable> executableObjects = new Dictionary<string, IResultExecutable>();
     
-    public void RegisterExecutable(string objectName, IResultExecutable executable)
-    {
+    public void RegisterExecutable(string objectName, IResultExecutable executable) {
         //Debug.Log($"registered {objectName}");
 
-        if (!executableObjects.ContainsKey(objectName))
-            executableObjects[objectName] = executable;
+        executableObjects.TryAdd(objectName, executable);
     }
 
     public void InitializeExecutableObjects()
@@ -43,7 +38,6 @@ public class ResultManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            resultsCSV = Resources.Load<TextAsset>("Datas/results");
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -55,7 +49,7 @@ public class ResultManager : MonoBehaviour
     
     public void ParseResults()
     {
-        string[] lines = resultsCSV.text.Split('\n');
+        string[] lines = Resources.Load<TextAsset>("Datas/results").text.Split('\n');
         for (int i = 1; i < lines.Length; i++)
         {
             string[] fields = lines[i].Split(',');
@@ -68,7 +62,7 @@ public class ResultManager : MonoBehaviour
                 fields[2].Trim()
                 );
             
-            results[result.ResultID] = result;
+            Results[result.ResultID] = result;
         }
     }
 
@@ -86,37 +80,37 @@ public class ResultManager : MonoBehaviour
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
         switch (resultID)
         {
-            case string when resultID.StartsWith("Result_RevealMemo"): // 메모 획득
+            case not null when resultID.StartsWith("Result_RevealMemo"): // 메모 획득
                 variableName = resultID["Result_RevealMemo".Length..];
                 MemoManager.Instance.RevealMemo(variableName);
                 break;
 
-            case string when resultID.StartsWith("Result_StartDialogue"):  // 대사 시작
+            case not null when resultID.StartsWith("Result_StartDialogue"):  // 대사 시작
                 variableName = resultID["Result_StartDialogue".Length..];
                 DialogueManager.Instance.StartDialogue(variableName);
                 break;
             
-            case string when resultID.StartsWith("Result_Increment"):  // 값++
+            case not null when resultID.StartsWith("Result_Increment"):  // 값++
                 variableName = resultID["Result_Increment".Length..];
                 GameManager.Instance.IncrementVariable(variableName);
                 break;
 
-            case string when resultID.StartsWith("Result_Decrement"):  // 값--
+            case not null when resultID.StartsWith("Result_Decrement"):  // 값--
                 variableName = resultID["Result_Decrement".Length..];
                 GameManager.Instance.DecrementVariable(variableName);
                 break;
 
-            case string when resultID.StartsWith("Result_Inverse"):  // !값
+            case not null when resultID.StartsWith("Result_Inverse"):  // !값
                 variableName = resultID["Result_Inverse".Length..];
                 GameManager.Instance.InverseVariable(variableName);
                 break;
 
-            case string when resultID.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
+            case not null when resultID.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
                 variableName = resultID["Result_isFinished".Length..];
                 GameManager.Instance.SetEventFinished(variableName);
                 break;
 
-            case string when resultID.StartsWith("Result_IsUnFinished"):  
+            case not null when resultID.StartsWith("Result_IsUnFinished"):  
                 // EventObject의 isFinished를 false로 (포스터 커터칼 있는채로 다시 조사하면 처음 조사 스크립트 나와야 해서 추가됨)
                 variableName = resultID["Result_IsUnFinished".Length..];
                 GameManager.Instance.SetEventUnFinished(variableName);
@@ -124,16 +118,16 @@ public class ResultManager : MonoBehaviour
 
             case "Result_girl":  // 우연의 성별을 여자로 설정
                 GameManager.Instance.SetVariable("AccidyGender", 0);
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 break;
             
             case "Result_boy":  // 우연의 성별을 남자로 설정
                 GameManager.Instance.SetVariable("AccidyGender", 1);
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 break;
 
             case "ResultCloseEyes": // 눈 깜빡이는 효과
-                StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, true, 0.5f, 0));
+                StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, true, 0.5f));
                 break;
 
             case "Result_FadeOut":  // fade out
@@ -174,11 +168,9 @@ public class ResultManager : MonoBehaviour
 
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
-                //Debug.Log("현재 오브젝트 : "+ GameManager.Instance.GetCurrentInquiryObjectId()
-                //    +" : "+ GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()));
                 if (!GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
-                    DialogueManager.Instance.EndDialogue();
+                    // DialogueManager.Instance.EndDialogue();
 
                     EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                     GameManager.Instance.SetVariable("isInquiry", false);
@@ -192,7 +184,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultInquiryYes": // 조사 예 선택
                 GameManager.Instance.SetVariable("isInquiry", true);
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
 
                 EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                 GameManager.Instance.SetVariable("isInquiry", false);
@@ -200,40 +192,40 @@ public class ResultManager : MonoBehaviour
 
             case "ResultInquiryNo": // 조사 아니오 선택
                 GameManager.Instance.SetVariable("isInquiry",false);
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 break;
             
             // 휴식 시스템
             case "Result_restButton":
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 break;
 
             case "Result_restYes": // 휴식에서 예 버튼
                 SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 // 휴식취함(다음날로 넘어가는 만큼 행동력 감소, 날짜와 하트 업데이트)
                 // fade in, fade out 이후 휴식 대사 출력되고 우연 랜덤 대사 출력됨
                 StartCoroutine(RoomManager.Instance.actionPointManager.TakeRest());
                 break;
 
             case "Result_restNo": // 휴식에서 아니오 버튼
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 break;
 
             case "Result_StartHomecoming":
                 // 휴식 대사 스크립트 끝난 다음 귀가 대사 스크립트 출력되게 RefillHeartsOrEndDay 호출.
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
                 break;
 
             case "Result_NextMorningDay":    // 휴식 대사 스크립트 마지막인 Next에서 호출됨.
                 // fade in/out effect 실행 후 아침 대사 출력하는 메소드 호출
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 StartCoroutine(RoomManager.Instance.actionPointManager.nextMorningDay());
                 break;
 
             case "ResultBlanketCheck": // 조사하기 버튼 누르면 침대 조사할 수 있게 함
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 GameManager.Instance.SetVariable("isInquiry", true);
                 GameManager.Instance.SetCurrentInquiryObjectId("EventBlanket");
                 EventManager.Instance.CallEvent("Event_Inquiry");
@@ -610,7 +602,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultBrokenTeddyBear2Yes": // 선택지 약을 먹음
                 GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 break;
 
             case "ResultEatEnergySupplement":
@@ -619,7 +611,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
                 RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(true);
-                DialogueManager.Instance.EndDialogue();
+                // DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
                 RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(false);
                 break;
@@ -639,7 +631,7 @@ public class ResultManager : MonoBehaviour
 
             // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
-                if (GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1) {
+                if (GameSceneManager.Instance.GetActiveScene() == SceneType.ROOM_1) {
                     executableObjects["Box Unzoomed-open 2"].ExecuteAction();
                     executableObjects["Box Unzoomed-open 3"].ExecuteAction();
                 }

@@ -325,8 +325,12 @@ public class UIManager : MonoBehaviour {
     }
 
     public void SetUI(eUIGameObjectName uiName, bool isActive, bool fade = false,
-        FloatDirection floatDir = FloatDirection.None) {
-        AnimateUI(uiGameObjects[uiName], isActive, fade, floatDir);
+                        FloatDirection floatDir = FloatDirection.None) 
+    {
+        if (fade || floatDir != FloatDirection.None)
+            AnimateUI(uiGameObjects[uiName], isActive, fade, floatDir);
+        else
+            uiGameObjects[uiName].SetActive(isActive);
     }
 
     public GameObject GetUI(eUIGameObjectName uiName) {
@@ -351,6 +355,9 @@ public class UIManager : MonoBehaviour {
             targetUI.SetActive(isActive);
             return;
         }
+        
+        if ((isActive && targetUI.activeSelf) || (!isActive && !targetUI.activeSelf))
+            return;
 
         if (isActive)
             targetUI.SetActive(true);
@@ -362,14 +369,21 @@ public class UIManager : MonoBehaviour {
     }
 
     private IEnumerator AnimateUICoroutine(GameObject targetUI,
-        CanvasGroup canvasGroup,
-        bool show,
-        bool fade,
-        FloatDirection floatDir) {
+                                            CanvasGroup canvasGroup,
+                                            bool show,
+                                            bool fade,
+                                            FloatDirection floatDir) 
+    {
         float targetAlpha = show ? 1f : 0f;
         float startAlpha = show ? 0f : 1f;
-        float fadeTime = fadeAnimationDuration;
         float elapsedTime = 0f;
+
+        Button button = targetUI.GetComponent<Button>();
+        bool buttonInteractableOriginalValue = false;
+        if (button) {
+            buttonInteractableOriginalValue = button.interactable;
+            button.interactable = false;
+        }
 
         if (fade)
             canvasGroup.alpha = startAlpha;
@@ -390,9 +404,9 @@ public class UIManager : MonoBehaviour {
             rectTransform.anchoredPosition = startPos;
         }
 
-        while (elapsedTime < fadeTime) {
+        while (elapsedTime < fadeAnimationDuration) {
             if (fade)
-                canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeTime);
+                canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeAnimationDuration);
 
             if (floatDir != FloatDirection.None && rectTransform)
                 rectTransform.anchoredPosition =
@@ -410,6 +424,9 @@ public class UIManager : MonoBehaviour {
 
         if (!show)
             targetUI.SetActive(false);
+
+        if (button)
+            button.interactable = buttonInteractableOriginalValue;
     }
 
     private FloatDirection GetReverseDirection(FloatDirection direction) {

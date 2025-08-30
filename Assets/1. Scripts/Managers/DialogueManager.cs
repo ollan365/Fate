@@ -106,7 +106,7 @@ public class DialogueManager : MonoBehaviour
         currentDialogueID = dialogueID;
         
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
-        UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, initialDialogueLine.Blur == "TRUE");
+        UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, initialDialogueLine.Blur == "TRUE", true);
         DisplayDialogueLine(initialDialogueLine);
 
         if (RoomManager.Instance) 
@@ -144,9 +144,9 @@ public class DialogueManager : MonoBehaviour
         DialogueLine initialDialogueLine = dialogues[dialogueID].Lines[0];
 
         if (initialDialogueLine.Blur == "TRUE")
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
         else if (!GetIsImageOrLockPanelActive())
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
 
         if (FollowManager.Instance) FollowManager.Instance.ClickObject();
 
@@ -383,7 +383,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
     
-    public void EndDialogue() {
+    private void EndDialogue() {
         isDialogueActive = false;
         dialogueSet[dialogueType.ToInt()].SetActive(false);
         foreach (Image characterImage in characterImages)
@@ -398,12 +398,13 @@ public class DialogueManager : MonoBehaviour
         MemoManager.Instance.SetMemoButtons(true);
         
         if (!GetIsImageOrLockPanelActive())
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
         
         UIManager.Instance.SetCursorAuto();
         
         if (FollowManager.Instance) 
             FollowManager.Instance.EndScript();
+        
         if (!RoomManager.Instance)
             return;
 

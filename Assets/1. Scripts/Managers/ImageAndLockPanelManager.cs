@@ -171,13 +171,13 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
         }
 
         UIManager.Instance.SetUI(eUIGameObjectName.ObjectImageParentRoom, isTrue, true);
         
         if (!GetIsImageOrLockPanelActive())
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
     }
 
     public IEnumerator SetObjectImageGroupCoroutine(bool isTrue, string eventObjectName = null, float delayTime = 0.1f) {
@@ -199,7 +199,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
         } else if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects)) {
             foreach (var puzzleObject in puzzleObjects)
                 UIManager.Instance.AnimateUI(puzzleObject, false, true);
@@ -211,7 +211,7 @@ public class ImageAndLockPanelManager : MonoBehaviour
         }
 
         if (!GetIsImageOrLockPanelActive())
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false);
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
         currentLockObjectName = lockObjectName;
     }
     

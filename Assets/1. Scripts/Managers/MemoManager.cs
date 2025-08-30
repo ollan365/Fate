@@ -204,10 +204,8 @@ public class MemoManager : PageContentsManager
             return;
         }
         
-        if (RevealedMemoList[memoSceneIndex].Contains(scriptID)) {
-            Debug.Log($"Memo {memoID} is already revealed in scene {memoSceneIndex}");
+        if (RevealedMemoList[memoSceneIndex].Contains(scriptID))
             return;
-        }
         
         RevealedMemoList[memoSceneIndex].Add(scriptID);
         
@@ -220,7 +218,6 @@ public class MemoManager : PageContentsManager
             int pageNum = CalculateFirstPageNumber(memoSceneIndex) + j;
             if (!unseenMemoPages.Contains(pageNum)) {
                 unseenMemoPages.Add(pageNum);
-                Debug.Log($"Added page {pageNum} to unseen memo pages for memo {memoID}");
 
                 GameManager.Instance.IncrementVariable($"MemoCount_{GameSceneManager.Instance.GetActiveScene()}");
                 memoRevealed = true;
@@ -339,16 +336,10 @@ public class MemoManager : PageContentsManager
     }
     
     public void ForceRefreshMemoGauge() {
-        Debug.Log("ForceRefreshMemoGauge called");
-        
-        if (!gaugeImage || !clearFlagSlider || !clearFlagImage) {
-            Debug.LogWarning("Memo gauge components not available, attempting to reinitialize...");
+        if (gaugeImage && clearFlagSlider && clearFlagImage)
+            ChangeMemoGauge();
+        else
             StartCoroutine(DelayedChangeMemoGauge());
-            return;
-        }
-        
-        Debug.Log("Memo gauge components available, calling ChangeMemoGauge");
-        ChangeMemoGauge();
     }
     
     private bool ValidateMemoData() {
@@ -367,7 +358,7 @@ public class MemoManager : PageContentsManager
     private void ChangeMemoGauge()
     {
         // Check if all required components are available
-        if (!gaugeImage || !clearFlagSlider || !clearFlagImage) {
+        if ((gaugeImage && clearFlagSlider && clearFlagImage) == false) {
             Debug.LogError("Memo gauge components not properly initialized, retrying...");
             StartCoroutine(DelayedChangeMemoGauge());
             return;
@@ -406,7 +397,7 @@ public class MemoManager : PageContentsManager
          
         UIManager.Instance.SetUI(eUIGameObjectName.MemoContents, isActive, fade, floatDirection);
         UIManager.Instance.SetUI(eUIGameObjectName.BlurImage,
-            RoomManager.Instance.imageAndLockPanelManager.GetIsImageOrLockPanelActive() || isActive);
+            RoomManager.Instance.imageAndLockPanelManager.GetIsImageOrLockPanelActive() || isActive, true);
         isMemoOpen = isActive;
 
         if (isActive) {
@@ -517,8 +508,6 @@ public class MemoManager : PageContentsManager
         {
             unseenMemoPages.Remove(pageNum);
             UpdateNotification();
-            
-            // Debug.Log($"Marked page {pageNum} as read");
         }
     }
 

@@ -89,7 +89,7 @@ public class EventManager : MonoBehaviour
                 }
                 else
                 {
-                    results.Add(ResultManager.Instance.results[resultIDTrimmed]);
+                    results.Add(ResultManager.Instance.Results[resultIDTrimmed]);
                 }
             }
 
