@@ -178,7 +178,7 @@ public class ResultManager : MonoBehaviour
                 //    +" : "+ GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()));
                 if (!GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
-                    DialogueManager.Instance.EndDialogue();
+                    //DialogueManager.Instance.EndDialogue();
 
                     EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                     GameManager.Instance.SetVariable("isInquiry", false);
@@ -192,7 +192,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultInquiryYes": // 조사 예 선택
                 GameManager.Instance.SetVariable("isInquiry", true);
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
 
                 EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                 GameManager.Instance.SetVariable("isInquiry", false);
@@ -200,40 +200,40 @@ public class ResultManager : MonoBehaviour
 
             case "ResultInquiryNo": // 조사 아니오 선택
                 GameManager.Instance.SetVariable("isInquiry",false);
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 break;
             
             // 휴식 시스템
             case "Result_restButton":
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 break;
 
             case "Result_restYes": // 휴식에서 예 버튼
                 SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 // 휴식취함(다음날로 넘어가는 만큼 행동력 감소, 날짜와 하트 업데이트)
                 // fade in, fade out 이후 휴식 대사 출력되고 우연 랜덤 대사 출력됨
                 StartCoroutine(RoomManager.Instance.actionPointManager.TakeRest());
                 break;
 
             case "Result_restNo": // 휴식에서 아니오 버튼
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 break;
 
             case "Result_StartHomecoming":
                 // 휴식 대사 스크립트 끝난 다음 귀가 대사 스크립트 출력되게 RefillHeartsOrEndDay 호출.
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
                 break;
 
             case "Result_NextMorningDay":    // 휴식 대사 스크립트 마지막인 Next에서 호출됨.
                 // fade in/out effect 실행 후 아침 대사 출력하는 메소드 호출
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 StartCoroutine(RoomManager.Instance.actionPointManager.nextMorningDay());
                 break;
 
             case "ResultBlanketCheck": // 조사하기 버튼 누르면 침대 조사할 수 있게 함
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 GameManager.Instance.SetVariable("isInquiry", true);
                 GameManager.Instance.SetCurrentInquiryObjectId("EventBlanket");
                 EventManager.Instance.CallEvent("Event_Inquiry");
@@ -610,7 +610,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultBrokenTeddyBear2Yes": // 선택지 약을 먹음
                 GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 break;
 
             case "ResultEatEnergySupplement":
@@ -619,7 +619,7 @@ public class ResultManager : MonoBehaviour
 
             case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
                 RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(true);
-                DialogueManager.Instance.EndDialogue();
+                //DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
                 RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(false);
                 break;
