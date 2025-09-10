@@ -153,9 +153,7 @@ public class AutoFlip : MonoBehaviour
 
         // Re-enable UI and update flip button visibility based on current page
         if (controlledBook.pageContentsManager)
-        {
             controlledBook.pageContentsManager.DisplayPagesStatic(controlledBook.currentPage);
-        }
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, true);
         UIManager.Instance.GetUI(eUIGameObjectName.BlurImage).GetComponent<Button>().interactable = true;
 

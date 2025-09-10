@@ -560,9 +560,10 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnExitButtonClick() {
-        if (MemoManager.Instance && MemoManager.Instance.isMemoOpen)
+        if (MemoManager.Instance && MemoManager.Instance.isMemoOpen) {
             MemoManager.Instance.OnExit();
-        else
+        }
+        else {
             switch (GameSceneManager.Instance.GetActiveScene()) {
                 case SceneType.START:
                     SetUI(eUIGameObjectName.Album, false, true, FloatDirection.Down);
@@ -577,6 +578,7 @@ public class UIManager : MonoBehaviour {
                     Debug.Log("Exit button is not implemented in this scene.");
                     break;
             }
+        }
 
         SetCursorAuto();
     }
@@ -584,7 +586,7 @@ public class UIManager : MonoBehaviour {
     // 방에서 이동 버튼 눌렀을 때
     public void MoveSideEffect(GameObject screen, Vector3 direction) {
         StartCoroutine(OnMoveUI(screen, direction, 100, 0.5f));
-        StartCoroutine(OnFade(null, 0, 1, 0, true, 0.2f, +0.25f));
+        StartCoroutine(OnFade(null, 0, 1, 0, true, 0.25f, 0.25f));
     }
 
     public void FollowEventButtonSet(FollowObject followObject)
@@ -865,5 +867,12 @@ public class UIManager : MonoBehaviour {
 
     public void ToggleHighlightAnimationEffect(eUIGameObjectName uiName, bool isOn) {
         ToggleHighlightAnimationEffect(uiGameObjects[uiName], isOn);
+    }
+
+    public IEnumerator HideTemporarily(eUIGameObjectName targetUIGameObjectName, float duration)
+    {
+        SetUI(targetUIGameObjectName, false);
+        yield return new WaitForSeconds(duration);
+        SetUI(targetUIGameObjectName, true);
     }
 }

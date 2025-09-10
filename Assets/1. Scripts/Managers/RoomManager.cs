@@ -107,9 +107,8 @@ public class RoomManager : MonoBehaviour
         SetCurrentSide(newSideIndex);
         
         UIManager.Instance.MoveSideEffect(sides[newSideIndex], new Vector3(leftOrRight, 0, 0));
-
-        // 시점에 맞춰서 버튼 끄고 키게 함.(사이드 2번에선 오른쪽 버튼만 3번에선 왼쪽 버튼만 나오게 함)
-        SetMoveButtons(true);
+        UIManager.Instance.StartCoroutine(UIManager.Instance.HideTemporarily(eUIGameObjectName.LeftButton, 0.5f));
+        UIManager.Instance.StartCoroutine(UIManager.Instance.HideTemporarily(eUIGameObjectName.RightButton, 0.5f));
 
         if ((bool)GameManager.Instance.GetVariable("isTutorial"))
             tutorialManager.SetSeenSide(newSideIndex);
@@ -117,16 +116,18 @@ public class RoomManager : MonoBehaviour
 
     public void OnExitButtonClick()
     {
-        if (isInvestigating) 
+        if (isInvestigating) {
             imageAndLockPanelManager.OnExitButtonClick();
+        }
         else if (isZoomed) {
             UIManager.Instance.MoveSideEffect(sides[currentSideIndex], new Vector3(0, -0.5f, 0)); // 화면 전환 효과
+            UIManager.Instance.StartCoroutine(UIManager.Instance.HideTemporarily(eUIGameObjectName.ExitButton, 0.5f));
 
             SetCurrentView(sides[currentSideIndex]);
             isZoomed = false;
         }
 
-        SetButtons();
+        StartCoroutine(SetButtonsAfterDelay(0.5f));
 
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
         if (refillHeartsOrEndDay)
@@ -196,16 +197,6 @@ public class RoomManager : MonoBehaviour
     {
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, isTrue);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, isTrue);
-        
-        //switch (currentSideIndex)
-        //{
-        //    case 1:
-        //        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
-        //        break;
-        //    case 2:
-        //        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
-        //        break;
-        //}
     }
     
     public void SetButtons()
@@ -227,5 +218,11 @@ public class RoomManager : MonoBehaviour
         // MemoManager.Instance.SetMemoButton(!isDialogueActive && !isMemoOpen);
         
         UIManager.Instance.SetCursorAuto();
+    }
+    
+    private IEnumerator SetButtonsAfterDelay(float delayTime = 0.5f)
+    {
+        yield return new WaitForSeconds(delayTime);
+        SetButtons();
     }
 }
