@@ -250,7 +250,7 @@ public class MemoManager : PageContentsManager
         if (showMemoIcon && shouldHideMemoButton)
             return;
 
-        UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, showMemoIcon);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, showMemoIcon, showMemoIcon);
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, showMemoExitButton);
 
         if (RoomManager.Instance && GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.ROOM_2)

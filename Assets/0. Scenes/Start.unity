@@ -1543,6 +1543,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Background Image Room Accidy
       objectReference: {fileID: 0}
+    - target: {fileID: 7136689812986704960, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7595251551454855802, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       propertyPath: m_Name
       value: teddy bear icon Room Think
@@ -1618,6 +1622,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4087764435736269419, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 826967929}
+    - targetCorrespondingSourceObject: {fileID: 4087764435736269419, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 826967931}
   m_SourcePrefab: {fileID: 100100000, guid: 2024fef4f5a574148ad3fedd00550aa8, type: 3}
 --- !u!1 &104333522
 GameObject:
@@ -6236,13 +6243,25 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3871163308069001895, guid: 0d0745512208748b4ab80d8978b562a3, type: 3}
+      propertyPath: settleDelay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3871163308069001895, guid: 0d0745512208748b4ab80d8978b562a3, type: 3}
       propertyPath: pageFlipTime
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3871163308069001895, guid: 0d0745512208748b4ab80d8978b562a3, type: 3}
       propertyPath: controlledBook
       value: 
       objectReference: {fileID: 573806205}
+    - target: {fileID: 3871163308069001895, guid: 0d0745512208748b4ab80d8978b562a3, type: 3}
+      propertyPath: edgeInsetRatio
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3871163308069001895, guid: 0d0745512208748b4ab80d8978b562a3, type: 3}
+      propertyPath: liftHeightRatio
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3871163308069001895, guid: 0d0745512208748b4ab80d8978b562a3, type: 3}
       propertyPath: animationFramesCount
       value: 80
@@ -9630,6 +9649,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!225 &826967931
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826967923}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &827005542
 GameObject:
   m_ObjectHideFlags: 0
@@ -10478,6 +10509,7 @@ GameObject:
   - component: {fileID: 894882444}
   - component: {fileID: 894882449}
   - component: {fileID: 894882450}
+  - component: {fileID: 894882451}
   m_Layer: 10
   m_Name: Memo button
   m_TagString: Untagged
@@ -10584,7 +10616,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
@@ -10698,6 +10730,18 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   pulseScale: 1.1
   cycleDuration: 1
+--- !u!225 &894882451
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894882442}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &904045784
 GameObject:
   m_ObjectHideFlags: 0
@@ -12271,9 +12315,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c36a76143c4ed422787e2b76593e8993, type: 3}
     - target: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      propertyPath: settleDelay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      propertyPath: pageFlipTime
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: controlledBook
       value: 
       objectReference: {fileID: 1582762748}
+    - target: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      propertyPath: edgeInsetRatio
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      propertyPath: dragSensitivity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+      propertyPath: liftHeightRatio
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6919832356820414045, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -17652,9 +17716,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   variablesText: {fileID: 1186971534}
   isDebug: 0
-  skipTutorial: 0
+  skipTutorial: 1
   skipInquiry: 0
-  isDemoBuild: 1
+  isDemoBuild: 0
 --- !u!1 &1571167329
 GameObject:
   m_ObjectHideFlags: 0
@@ -26680,6 +26744,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1650594755425547196, guid: d4f25a6a9f9b348bcaee7321fa274f84, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240975998817358537, guid: d4f25a6a9f9b348bcaee7321fa274f84, type: 3}
+      propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3766474057162231561, guid: d4f25a6a9f9b348bcaee7321fa274f84, type: 3}
