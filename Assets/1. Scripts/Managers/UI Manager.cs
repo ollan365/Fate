@@ -190,6 +190,11 @@ public class UIManager : MonoBehaviour {
     [Header("Animation Settings")] public float fadeAnimationDuration = 0.3f;
     public float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
+    
+    // Track currently running UI animations so newer calls can cancel older ones
+    private readonly Dictionary<GameObject, Coroutine> activeUiAnimations = new Dictionary<GameObject, Coroutine>();
+    // Track original Button.interactable per target so we can restore on cancel/finish
+    private readonly Dictionary<GameObject, bool> originalButtonInteractable = new Dictionary<GameObject, bool>();
 
     public static UIManager Instance { get; private set; }
 
@@ -355,17 +360,21 @@ public class UIManager : MonoBehaviour {
             targetUI.SetActive(isActive);
             return;
         }
-        
-        if ((isActive && targetUI.activeSelf) || (!isActive && !targetUI.activeSelf))
-            return;
 
         if (isActive)
             targetUI.SetActive(true);
 
-        string coroutineName = $"Animate_{targetUI.name}";
-        if (IsInvoking(coroutineName))
-            StopCoroutine(coroutineName);
-        StartCoroutine(AnimateUICoroutine(targetUI, canvasGroup, isActive, fade, floatDir));
+        // Cancel any previous animation for this target and start a new one
+        if (activeUiAnimations.TryGetValue(targetUI, out Coroutine running)) {
+            // Restore any button state that might have been disabled by the previous animation
+            RestoreTargetUIButtonState(targetUI);
+            if (running != null)
+                StopCoroutine(running);
+            activeUiAnimations.Remove(targetUI);
+        }
+
+        Coroutine coroutine = StartCoroutine(AnimateUICoroutine(targetUI, canvasGroup, isActive, fade, floatDir));
+        activeUiAnimations[targetUI] = coroutine;
     }
 
     private IEnumerator AnimateUICoroutine(GameObject targetUI,
@@ -375,13 +384,16 @@ public class UIManager : MonoBehaviour {
                                             FloatDirection floatDir) 
     {
         float targetAlpha = show ? 1f : 0f;
-        float startAlpha = show ? 0f : 1f;
+        float startAlpha = canvasGroup.alpha; // start from current alpha for smooth interruption handling
         float elapsedTime = 0f;
 
         Button button = targetUI.GetComponent<Button>();
         bool buttonInteractableOriginalValue = false;
         if (button) {
-            buttonInteractableOriginalValue = button.interactable;
+            // Store original interactable state if not stored yet
+            if (!originalButtonInteractable.ContainsKey(targetUI))
+                originalButtonInteractable[targetUI] = button.interactable;
+            buttonInteractableOriginalValue = originalButtonInteractable[targetUI];
             button.interactable = false;
         }
 
@@ -427,6 +439,26 @@ public class UIManager : MonoBehaviour {
 
         if (button)
             button.interactable = buttonInteractableOriginalValue;
+
+        // Mark this target as no longer animating
+        if (activeUiAnimations.ContainsKey(targetUI))
+            activeUiAnimations.Remove(targetUI);
+        // Clear stored original button state after completion
+        if (originalButtonInteractable.ContainsKey(targetUI))
+            originalButtonInteractable.Remove(targetUI);
+    }
+
+    private void RestoreTargetUIButtonState(GameObject targetUI) {
+        Button btn = targetUI ? targetUI.GetComponent<Button>() : null;
+        if (!btn)
+            return;
+        if (originalButtonInteractable.TryGetValue(targetUI, out bool original)) {
+            btn.interactable = original;
+            originalButtonInteractable.Remove(targetUI);
+        } else {
+            // If we don't have a stored value, ensure it's at least enabled
+            btn.interactable = true;
+        }
     }
 
     private FloatDirection GetReverseDirection(FloatDirection direction) {

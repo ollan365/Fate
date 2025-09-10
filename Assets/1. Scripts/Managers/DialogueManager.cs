@@ -610,10 +610,10 @@ public class DialogueManager : MonoBehaviour
 
     private void OnChoiceSelected(string next)
     {
-        if (dialogues.ContainsKey(next)) {
-            EndDialogue();
+        EndDialogue();
+        if (dialogues.ContainsKey(next))
             StartDialogue(next);
-        } else if (EventManager.Instance.events.ContainsKey(next))
+        else if (EventManager.Instance.events.ContainsKey(next))
             EventManager.Instance.CallEvent(next);
 
         foreach (Transform child in choicesContainer[dialogueType.ToInt()])
