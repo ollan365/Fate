@@ -9,9 +9,11 @@ public class ClockHand : MonoBehaviour
     private float minuteAngle = 90f;
     private float hourAngle = -112.5f;
 
-    private bool dragging = false;
-    private bool isSnapping = false;
+    [SerializeField] private bool dragging = false;
+    [SerializeField] private bool isSnapping = false;
     private float smoothSnapSpeed = 40f;  // 달라붙는 속도
+
+    private Coroutine snapCo = null;
 
     private int correctMinute;
     private int correctHour;
@@ -23,6 +25,16 @@ public class ClockHand : MonoBehaviour
     private void Awake() {
         correctMinute = (int)GameManager.Instance.GetVariable("ClockPasswordMinute");
         correctHour = (int)GameManager.Instance.GetVariable("ClockPasswordHour");
+    }
+
+    private void OnDisable()
+    {
+        StopSnapNow(); // 스냅 정리
+        if (dragging)
+        {
+            dragging = false;
+            SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_ClockMovement, false);
+        }
     }
 
     private void Update() {
@@ -56,9 +68,26 @@ public class ClockHand : MonoBehaviour
         {
             SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_ClockMovement, false);
             dragging = false;
-            StartCoroutine(SnapHandsToNearestTick(beforeTime));
+
+            if (!DialogueManager.Instance.isDialogueActive)
+            {
+                if (snapCo != null) { StopCoroutine(snapCo); snapCo = null; }
+                snapCo = StartCoroutine(SnapHandsToNearestTick(beforeTime));
+            }
         }
     }
+
+    private void StopSnapNow()
+    {
+        if (!isSnapping) return;
+        isSnapping = false;          // 상태 먼저 정리
+        if (snapCo != null)
+        {
+            StopCoroutine(snapCo);   // 다음 프레임부터 코루틴 중단
+            snapCo = null;
+        }
+    }
+
     private void RotateMinuteHand(float delta)
     {
         minuteAngle += delta;
@@ -99,7 +128,8 @@ public class ClockHand : MonoBehaviour
             yield return null;
         }
         isSnapping = false;
-        
+        snapCo = null;
+
         var timeAfter = CalculateHourFromAngle(hourAngle) * 60 + CalculateMinuteFromAngle(minuteAngle);
         if (timeBefore != timeAfter)
             CompareClockHands();
