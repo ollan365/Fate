@@ -252,14 +252,14 @@ public class Book2IndexManager : PageContentsManager
         DisplayFlags();
     }
 
-    // ������ �Ѿ ������ �ش� �ε��� flags�� ��ġ�� �°� ����
-    // presentPageNum�� ���� �ش��ϴ� �ε����� �ִ� ������ ���ҽ��� ������
+    // Each time a page is turned, the corresponding index flags are turned on according to the position.
+    // Depending on presentPageNum, the page resource with the corresponding index is changed.
     private void DisplayFlags()
     {
         switch (presentPageNum)
         {
             case 1:
-                //������ �ε���
+                // the red index
                 SetFlags("RightNextFlags", 0,true);
                 SetFlags("RightDownFlags", 1, true);
                 SetFlags("RightDownFlags", 2, true);
@@ -272,7 +272,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 2:
-                // 1������ �巡�� ��
+                // Dragging page 1
                 bookPages.left.sprite = BookRedR;
                 bookPages.right.sprite = BookRedL;
 
@@ -281,7 +281,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 3:
-                //����� �ε���
+                // the yellow index
                 SetFlags("RightNextFlags", 1, true);
                 SetFlags("LeftNextFlags", 0, true);
                 SetFlags("RightDownFlags", 2, true);
@@ -294,7 +294,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 4:
-                // 3������ �巡�� ��
+                // Dragging page 3
                 bookPages.left.sprite = BookYellowR;
                 bookPages.right.sprite = BookYellowL;
 
@@ -306,7 +306,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 5:
-                //�Ķ��� �ε���
+                // the blue index
                 SetFlags("RightNextFlags", 2, true);
                 SetFlags("LeftFlags", 0, true);
                 SetFlags("LeftNextFlags", 1, true);
@@ -317,7 +317,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
 
             case 6:
-                // 5������ �巡�� ��
+                // Dragging page 5
                 bookPages.left.sprite = BookBlueR;
                 bookPages.right.sprite = BookBlueL;
 
@@ -328,7 +328,8 @@ public class Book2IndexManager : PageContentsManager
                 bookPages.leftNext.sprite = BookL2;
                 break;
 
-            // 5�������� �������� �ڿ� ���� 2�������� ������ 5���������� ���������� �ѱ�� �ɷ� ������ ���ܼ� ������ ����
+            // Page 5 is the end, but if there are no 2 pages of margins behind it, 
+            // an error occurs when turning to the next page from page 5, so a margin is created.
             case 7:
                 SetFlags("LeftFlags", 0, true);
                 SetFlags("LeftFlags", 1, true);
@@ -352,8 +353,8 @@ public class Book2IndexManager : PageContentsManager
                 break;
         }
 
-        // �������� �ڵ����� �Ѿ �� RightDownFlagsParent�� index�� RightNextGameObject�� ��ĭ �տ� �־�� �ϴµ�
-        // ������Ʈ���� ��ġ�� ����Ǿ SetSiblingIndex�� ������ ������.
+        // When the page automatically turns, RightDownFlagsParent should have an index one space before RightNextGameObject.
+        // The positions of the objects have changed, so we use SetSiblingIndex to sort the order.
         LeftFlagsParent.transform.SetAsFirstSibling();
         int rightPageIndex = NextPageClipGameObject.transform.GetSiblingIndex();
         RightNextGameObject.transform.SetSiblingIndex(rightPageIndex - 2);
