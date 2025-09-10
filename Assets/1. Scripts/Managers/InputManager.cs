@@ -97,6 +97,11 @@ public class InputManager : MonoBehaviour
             if (IsClickable(UIManager.Instance.exitButton))
                 UIManager.Instance.OnExitButtonClick();
         }
+        
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+                DialogueManager.Instance.OnDialoguePanelClick();
+        }
     }
 
     private static bool IsDesktopEnvironment()
