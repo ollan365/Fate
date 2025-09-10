@@ -63,11 +63,11 @@ public class ImageAndLockPanelManager : MonoBehaviour
     [SerializeField] private GameObject dreamDiaryPuzzleObject;
 
     private Dictionary<string, Sprite> imageDictionary;
-    private Dictionary<string, GameObject> lockObjectDictionary;
-    private Dictionary<string, GameObject[]> puzzleObjectDictionary;
+    public Dictionary<string, GameObject> lockObjectDictionary;
+    public Dictionary<string, GameObject[]> puzzleObjectDictionary;
     [SerializeField] public bool isImageActive = false;
     [SerializeField] public bool isLockObjectActive = false;
-    private string currentLockObjectName = null;
+    public string currentLockObjectName = null;
     private float maxHeight = 550f;
     private float maxWidth = 890f;
 

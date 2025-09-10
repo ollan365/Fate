@@ -36,15 +36,67 @@ public class InputManager : MonoBehaviour
 
         if (UIManager.Instance is null)
             return;
-
-        if (Input.GetKeyDown(KeyCode.A) && IsClickable(UIManager.Instance.leftButton))
-            UIManager.Instance.OnLeftButtonClick();
-
-        if (Input.GetKeyDown(KeyCode.D) && IsClickable(UIManager.Instance.rightButton))
-            UIManager.Instance.OnRightButtonClick();
         
-        if (Input.GetKeyDown(KeyCode.S) && IsClickable(UIManager.Instance.exitButton))
-            UIManager.Instance.OnExitButtonClick();
+        if (Input.GetKeyDown(KeyCode.A)) {
+            if (MemoManager.Instance != null && MemoManager.Instance.isMemoOpen) {
+                MemoManager.Instance.autoFlip.FlipLeftPage();
+            }
+            else if (UIManager.Instance.GetUI(eUIGameObjectName.Album).activeInHierarchy) {
+                UIManager.Instance.GetUI(eUIGameObjectName.Album).GetComponent<PageContentsManager>().autoFlip.FlipLeftPage();
+            }
+            else if (GameSceneManager.Instance.GetActiveScene() is Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2) {
+                ImageAndLockPanelManager imageAndLockPanelManager = RoomManager.Instance?.imageAndLockPanelManager;
+                GameObject currentLockObject = null;
+                string currentLockObjectName = imageAndLockPanelManager?.currentLockObjectName;
+                if (string.IsNullOrEmpty(currentLockObjectName) == false &&
+                    imageAndLockPanelManager?.lockObjectDictionary != null)
+                    imageAndLockPanelManager.lockObjectDictionary.TryGetValue(currentLockObjectName, out currentLockObject);
+                AutoFlip autoFlip = currentLockObject?.GetComponent<PageContentsManager>()?.autoFlip;
+                CalendarPanel calendarPanel = currentLockObject?.GetComponent<CalendarPanel>();
+                if (autoFlip && autoFlip.controlledBook.pageContentsManager.flipLeftButton.activeInHierarchy) {
+                    autoFlip.FlipLeftPage();
+                }
+                else if (calendarPanel && currentLockObject.activeInHierarchy && calendarPanel.prevButton.gameObject.activeInHierarchy) {
+                    calendarPanel.ChangeMonth(-1);
+                }
+                else if (IsClickable(UIManager.Instance.leftButton)) {
+                    UIManager.Instance.OnLeftButtonClick();
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.D)) {
+            if (MemoManager.Instance != null && MemoManager.Instance.isMemoOpen) {
+                MemoManager.Instance.autoFlip.FlipRightPage();
+            }
+            else if (UIManager.Instance.GetUI(eUIGameObjectName.Album).activeInHierarchy) {
+                UIManager.Instance.GetUI(eUIGameObjectName.Album).GetComponent<PageContentsManager>().autoFlip.FlipRightPage();
+            }
+            else if (GameSceneManager.Instance.GetActiveScene() is Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2) {
+                ImageAndLockPanelManager imageAndLockPanelManager = RoomManager.Instance?.imageAndLockPanelManager;
+                GameObject currentLockObject = null;
+                string currentLockObjectName = imageAndLockPanelManager?.currentLockObjectName;
+                if (string.IsNullOrEmpty(currentLockObjectName) == false &&
+                    imageAndLockPanelManager?.lockObjectDictionary != null)
+                    imageAndLockPanelManager.lockObjectDictionary.TryGetValue(currentLockObjectName, out currentLockObject);
+                AutoFlip autoFlip = currentLockObject?.GetComponent<PageContentsManager>()?.autoFlip;
+                CalendarPanel calendarPanel = currentLockObject?.GetComponent<CalendarPanel>();
+                if (autoFlip && autoFlip.controlledBook.pageContentsManager.flipRightButton.activeInHierarchy) {
+                    autoFlip.FlipRightPage();
+                } 
+                else if (calendarPanel && currentLockObject.activeInHierarchy && calendarPanel.nextButton.gameObject.activeInHierarchy) {
+                    calendarPanel.ChangeMonth(1);
+                }
+                else if (IsClickable(UIManager.Instance.rightButton)) {
+                    UIManager.Instance.OnRightButtonClick();
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.S)) {
+            if (IsClickable(UIManager.Instance.exitButton))
+                UIManager.Instance.OnExitButtonClick();
+        }
     }
 
     private static bool IsDesktopEnvironment()

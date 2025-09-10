@@ -7559,6 +7559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flipLeftButton: {fileID: 52215567}
   flipRightButton: {fileID: 457181643}
+  autoFlip: {fileID: 1582762750}
   leftPage: {fileID: 84677391}
   rightPage: {fileID: 1443228013}
   backPage: {fileID: 1763086361}
@@ -12761,6 +12762,7 @@ GameObject:
   - component: {fileID: 1164648558}
   - component: {fileID: 1164648557}
   - component: {fileID: 1164648564}
+  - component: {fileID: 1164648565}
   m_Layer: 5
   m_Name: Left Button
   m_TagString: Controlled Button
@@ -12981,6 +12983,18 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   pulseScale: 1.1
   cycleDuration: 1
+--- !u!225 &1164648565
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164648555}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &1178303514 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6199873577827573671, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
@@ -18096,6 +18110,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4446b7192d8bf914ebaf797b64fe8b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1582762750 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+  m_PrefabInstance: {fileID: 1142755267}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d498fc4a0aaf24519a97279ceaf7b725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1592003332 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7449668999292076359, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
@@ -18781,6 +18806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flipLeftButton: {fileID: 573806212}
   flipRightButton: {fileID: 573806211}
+  autoFlip: {fileID: 573806200}
   leftPage: {fileID: 573806210}
   rightPage: {fileID: 573806209}
   backPage: {fileID: 573806208}
@@ -19442,6 +19468,7 @@ GameObject:
   - component: {fileID: 1716126141}
   - component: {fileID: 1716126140}
   - component: {fileID: 1716126146}
+  - component: {fileID: 1716126147}
   m_Layer: 5
   m_Name: Right Button
   m_TagString: Controlled Button
@@ -19662,6 +19689,18 @@ MonoBehaviour:
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   pulseScale: 1.1
   cycleDuration: 1
+--- !u!225 &1716126147
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716126138}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1718493772
 GameObject:
   m_ObjectHideFlags: 0

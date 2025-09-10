@@ -11,10 +11,12 @@ public enum PageType
     Front
 }
 
-abstract public class PageContentsManager : MonoBehaviour
+public abstract class PageContentsManager : MonoBehaviour
 {
     [SerializeField] public GameObject flipLeftButton;
     [SerializeField] public GameObject flipRightButton;
+    
+    public AutoFlip autoFlip;
     
     protected Dictionary<string, string> PagesDictionary = new Dictionary<string, string>();
     [SerializeField] protected TextMeshProUGUI leftPage;
