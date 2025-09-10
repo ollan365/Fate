@@ -108,7 +108,7 @@ abstract public class ActionPointManager : MonoBehaviour
     // 외출(아침) 스크립트 출력 부분
     public abstract IEnumerator nextMorningDay();
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         heartParent = UIManager.Instance.heartParent;
         dayText = UIManager.Instance.dayTextTextMeshProUGUI;
@@ -234,6 +234,7 @@ abstract public class ActionPointManager : MonoBehaviour
         int yesterdayNum = nowDayNum - 1;
         yesterDayNumText.text = $"Day {yesterdayNum}";
         nowDayNumText.text = $"Day {nowDayNum}";
+        dayText.text = $"Day {nowDayNum}";
 
         // 배경 어두워지는 코루틴 실행
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, dayScalingTime));
