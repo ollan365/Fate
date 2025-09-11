@@ -75,6 +75,7 @@ public enum eUIGameObjectName {
     EndingTypeGameObject,
     EndingNameGameObject,
     TutorialBlockingPanel,
+    EndOfDemoPage
 }
 
 public class UIManager : MonoBehaviour {
@@ -169,6 +170,9 @@ public class UIManager : MonoBehaviour {
     public GameObject followEventButton;
     public GameObject followEventButtonImage;
     public GameObject followEventButtonNextButton;
+
+    [Header("UI Game Objects - End of Demo Page")] 
+    public GameObject endOfDemoPage;
 
     private readonly Dictionary<eUIGameObjectName, GameObject> uiGameObjects = new();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -301,6 +305,8 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.AlbumImageGameObject, albumImageGameObject);
         uiGameObjects.Add(eUIGameObjectName.EndingTypeGameObject, endingTypeGameObject);
         uiGameObjects.Add(eUIGameObjectName.EndingNameGameObject, endingNameGameObject);
+        
+        uiGameObjects.Add(eUIGameObjectName.EndOfDemoPage, endOfDemoPage);
 
         // uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
 

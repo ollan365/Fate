@@ -69,6 +69,18 @@ public class GameManager : MonoBehaviour
         if (isDemoBuild)
             SaveManager.Instance.CreateNewGameData();
     }
+    
+    // 디버깅 용
+    private void Update() {
+        if (isDebug)
+            ShowVariables();
+
+        if (isDemoBuild) {
+            if (GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_2 &&
+                UIManager.Instance.GetUI(eUIGameObjectName.EndOfDemoPage).activeInHierarchy == false)
+                UIManager.Instance.SetUI(eUIGameObjectName.EndOfDemoPage, true);
+        }
+    }
 
     private void CreateVariables() {
         string[] variableLines = variablesCSV.text.Split('\n');
@@ -175,11 +187,6 @@ public class GameManager : MonoBehaviour
         SetVariable(variableName, !(bool)GetVariable(variableName));
     }
 
-    // 디버깅 용
-    private void Update() {
-        if (isDebug) ShowVariables();
-    }
-
     private void ShowVariables() {
         variablesText.text = "";  // 텍스트 초기화
 
@@ -227,4 +234,12 @@ public class GameManager : MonoBehaviour
     public bool GetEventStatus(string eventId) {
         return eventObjectsStatusDict.ContainsKey(eventId) && eventObjectsStatusDict[eventId];
     }
-}
+    
+    public void QuitGame() {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+        }
+    }
