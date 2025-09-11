@@ -50,7 +50,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void HandleLeftKeyClick() {
+    private static void HandleLeftKeyClick() {
         if (MemoManager.Instance is not null && MemoManager.Instance.isMemoOpen) {
             MemoManager.Instance.autoFlip.FlipLeftPage();
             return;
@@ -62,7 +62,8 @@ public class InputManager : MonoBehaviour
         }
 
         if (GameSceneManager.Instance is null ||
-            GameSceneManager.Instance.GetActiveScene() is not (Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2)) return;
+            GameSceneManager.Instance.GetActiveScene() is not (Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2)) 
+            return;
         
         GetCurrentLockObject(out GameObject currentLockObject);
         AutoFlip autoFlip = currentLockObject?.GetComponent<PageContentsManager>()?.autoFlip;
@@ -81,7 +82,7 @@ public class InputManager : MonoBehaviour
             UIManager.Instance.OnLeftButtonClick();
     }
     
-    private void HandleRightKeyClick() {
+    private static void HandleRightKeyClick() {
         if (MemoManager.Instance is not null && MemoManager.Instance.isMemoOpen) {
             MemoManager.Instance.autoFlip.FlipRightPage();
             return;
@@ -93,7 +94,8 @@ public class InputManager : MonoBehaviour
         }
 
         if (GameSceneManager.Instance is null ||
-            GameSceneManager.Instance.GetActiveScene() is not (Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2)) return;
+            GameSceneManager.Instance.GetActiveScene() is not (Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2)) 
+            return;
         
         GetCurrentLockObject(out GameObject currentLockObject);
         AutoFlip autoFlip = currentLockObject?.GetComponent<PageContentsManager>()?.autoFlip;

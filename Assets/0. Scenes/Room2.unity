@@ -6858,6 +6858,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 481520308}
+  - component: {fileID: 481520309}
   m_Layer: 5
   m_Name: Diary
   m_TagString: Untagged
@@ -6886,6 +6887,56 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &481520309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481520307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7cc5d43296a4174874a4e3a09d123c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flipLeftButton: {fileID: 638661646}
+  flipRightButton: {fileID: 638661640}
+  autoFlip: {fileID: 1624382701}
+  leftPage: {fileID: 638661644}
+  rightPage: {fileID: 638661642}
+  backPage: {fileID: 638661645}
+  frontPage: {fileID: 638661643}
+  leftPageNum: {fileID: 1759211167}
+  rightPageNum: {fileID: 1148606616}
+  frontPageNum: {fileID: 397398875}
+  backPageNum: {fileID: 1914709511}
+  totalPageCount: 0
+  diaryPages: {fileID: 638661641}
+  diaryType: Diary2
+  leftPageImage: {fileID: 1227019824}
+  rightPageImage: {fileID: 751147636}
+  backPageImage: {fileID: 2130437974}
+  frontPageImage: {fileID: 1386719267}
+  leftPageEndingFrames: {fileID: 0}
+  rightPageEndingFrames: {fileID: 0}
+  backPageEndingFrames: {fileID: 0}
+  frontPageEndingFrames: {fileID: 0}
+  leftPageEndingFrameTop: {fileID: 0}
+  leftPageEndingFrameBottom: {fileID: 0}
+  rightPageEndingFrameTop: {fileID: 0}
+  rightPageEndingFrameBottom: {fileID: 0}
+  backPageEndingFrameTop: {fileID: 0}
+  backPageEndingFrameBottom: {fileID: 0}
+  frontPageEndingFrameTop: {fileID: 0}
+  frontPageEndingFrameBottom: {fileID: 0}
+  leftPageEndingButtonTop: {fileID: 0}
+  leftPageEndingButtonBottom: {fileID: 0}
+  rightPageEndingButtonTop: {fileID: 0}
+  rightPageEndingButtonBottom: {fileID: 0}
+  backPageEndingButtonTop: {fileID: 0}
+  backPageEndingButtonBottom: {fileID: 0}
+  frontPageEndingButtonTop: {fileID: 0}
+  frontPageEndingButtonBottom: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -7831,96 +7882,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619520741}
   m_CullTransparentMesh: 1
---- !u!1 &635174612
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 635174614}
-  - component: {fileID: 635174615}
-  m_Layer: 0
-  m_Name: Book2 Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &635174614
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635174612}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 61.857857, y: -30.925343, z: -5399.696}
-  m_LocalScale: {x: 53.9811, y: 53.9811, z: 53.9811}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1953225435}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &635174615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635174612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c3b1b2a2b3b3c943848a5b195680004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flipLeftButton: {fileID: 805745601}
-  flipRightButton: {fileID: 805745600}
-  autoFlip: {fileID: 8455631714162162469}
-  leftPage: {fileID: 1981495865}
-  rightPage: {fileID: 1371615962}
-  backPage: {fileID: 805745597}
-  frontPage: {fileID: 805745596}
-  leftPageNum: {fileID: 8455631714162162467}
-  rightPageNum: {fileID: 8455631714162162465}
-  frontPageNum: {fileID: 8455631714162162466}
-  backPageNum: {fileID: 8455631714162162468}
-  totalPageCount: 0
-  bookPages: {fileID: 805745595}
-  bookType: Room2Book
-  RightDownFlags:
-  - {fileID: 217840302}
-  - {fileID: 217840301}
-  - {fileID: 217840300}
-  LeftFlags:
-  - {fileID: 217840303}
-  - {fileID: 217840304}
-  - {fileID: 217840305}
-  RightNextFlags:
-  - {fileID: 247999091}
-  - {fileID: 1183384046}
-  - {fileID: 678966432}
-  LeftNextFlags:
-  - {fileID: 185830637}
-  - {fileID: 1301817454}
-  - {fileID: 1443703188}
-  presentPageNum: 0
-  RightDownFlagsParent: {fileID: 1756318942}
-  LeftFlagsParent: {fileID: 1756318943}
-  RightNextGameObject: {fileID: 955527354}
-  NextPageClipGameObject: {fileID: 920979795}
-  BookL2: {fileID: 21300000, guid: 507aa504445ea5d4f9cd61cf2202e9c3, type: 3}
-  BookRedL: {fileID: 21300000, guid: 670f9479d6487e746aea16b42e7976d5, type: 3}
-  BookYellowL: {fileID: 21300000, guid: 054947520f90b3b48ad5096909c497e9, type: 3}
-  BookBlueL: {fileID: 21300000, guid: 2d630b7e6c64a74469c9691f19a793bf, type: 3}
-  BookR2: {fileID: 21300000, guid: 84a6ecd4f9cf5fb428cfca962ddfae94, type: 3}
-  BookRedR: {fileID: 21300000, guid: ec5bd8ee62e710744874c4e32ab0d90b, type: 3}
-  BookYellowR: {fileID: 21300000, guid: cb09a757b7d56f94994ab174c543beb9, type: 3}
-  BookBlueR: {fileID: 21300000, guid: d9345258065e46d44920ccb5a921f6dc, type: 3}
-  IndexBlueR: {fileID: 21300000, guid: 08a0c8ba60543e84fb0dd5aad9d388ef, type: 3}
-  IndexBlueR2: {fileID: 21300000, guid: 24f94c6437b335d43a0349470c485d93, type: 3}
-  RightDownFlagThird: {fileID: 914149419}
 --- !u!1001 &638661638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8028,7 +7989,7 @@ PrefabInstance:
     - target: {fileID: 3389570640511174528, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: diaryManager
       value: 
-      objectReference: {fileID: 922364972}
+      objectReference: {fileID: 0}
     - target: {fileID: 3389570640511174528, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: totalPageCount
       value: 8
@@ -8036,7 +7997,7 @@ PrefabInstance:
     - target: {fileID: 3389570640511174528, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: pageContentsManager
       value: 
-      objectReference: {fileID: 922364972}
+      objectReference: {fileID: 481520309}
     - target: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
       propertyPath: pageFlipTime
       value: 0.2
@@ -8331,6 +8292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 666211133}
+  - component: {fileID: 666211134}
   m_Layer: 5
   m_Name: DreamDiary
   m_TagString: Untagged
@@ -8358,6 +8320,56 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &666211134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666211132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7cc5d43296a4174874a4e3a09d123c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flipLeftButton: {fileID: 1310898492}
+  flipRightButton: {fileID: 1310898486}
+  autoFlip: {fileID: 146772055}
+  leftPage: {fileID: 1310898490}
+  rightPage: {fileID: 1310898488}
+  backPage: {fileID: 1310898491}
+  frontPage: {fileID: 1310898489}
+  leftPageNum: {fileID: 191990901}
+  rightPageNum: {fileID: 934223718}
+  frontPageNum: {fileID: 196502318}
+  backPageNum: {fileID: 2078373627}
+  totalPageCount: 0
+  diaryPages: {fileID: 1310898487}
+  diaryType: DreamDiary
+  leftPageImage: {fileID: 2049395622}
+  rightPageImage: {fileID: 1856067097}
+  backPageImage: {fileID: 1680398439}
+  frontPageImage: {fileID: 956877641}
+  leftPageEndingFrames: {fileID: 0}
+  rightPageEndingFrames: {fileID: 0}
+  backPageEndingFrames: {fileID: 0}
+  frontPageEndingFrames: {fileID: 0}
+  leftPageEndingFrameTop: {fileID: 0}
+  leftPageEndingFrameBottom: {fileID: 0}
+  rightPageEndingFrameTop: {fileID: 0}
+  rightPageEndingFrameBottom: {fileID: 0}
+  backPageEndingFrameTop: {fileID: 0}
+  backPageEndingFrameBottom: {fileID: 0}
+  frontPageEndingFrameTop: {fileID: 0}
+  frontPageEndingFrameBottom: {fileID: 0}
+  leftPageEndingButtonTop: {fileID: 0}
+  leftPageEndingButtonBottom: {fileID: 0}
+  rightPageEndingButtonTop: {fileID: 0}
+  rightPageEndingButtonBottom: {fileID: 0}
+  backPageEndingButtonTop: {fileID: 0}
+  backPageEndingButtonBottom: {fileID: 0}
+  frontPageEndingButtonTop: {fileID: 0}
+  frontPageEndingButtonBottom: {fileID: 0}
 --- !u!1 &670706793
 GameObject:
   m_ObjectHideFlags: 0
@@ -10004,6 +10016,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 859280853}
+  - component: {fileID: 859280854}
   m_Layer: 0
   m_Name: Book2
   m_TagString: Untagged
@@ -10027,6 +10040,64 @@ Transform:
   - {fileID: 805745602}
   m_Father: {fileID: 1953225435}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &859280854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859280852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3b1b2a2b3b3c943848a5b195680004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flipLeftButton: {fileID: 805745601}
+  flipRightButton: {fileID: 805745600}
+  autoFlip: {fileID: 8455631714162162469}
+  leftPage: {fileID: 1981495865}
+  rightPage: {fileID: 1371615962}
+  backPage: {fileID: 805745597}
+  frontPage: {fileID: 805745596}
+  leftPageNum: {fileID: 8455631714162162467}
+  rightPageNum: {fileID: 8455631714162162465}
+  frontPageNum: {fileID: 8455631714162162466}
+  backPageNum: {fileID: 8455631714162162468}
+  totalPageCount: 0
+  bookPages: {fileID: 805745595}
+  bookType: Room2Book
+  RightDownFlags:
+  - {fileID: 217840302}
+  - {fileID: 217840301}
+  - {fileID: 217840300}
+  LeftFlags:
+  - {fileID: 217840303}
+  - {fileID: 217840304}
+  - {fileID: 217840305}
+  RightNextFlags:
+  - {fileID: 247999091}
+  - {fileID: 1183384046}
+  - {fileID: 678966432}
+  LeftNextFlags:
+  - {fileID: 185830637}
+  - {fileID: 1301817454}
+  - {fileID: 1443703188}
+  presentPageNum: 0
+  RightDownFlagsParent: {fileID: 1756318942}
+  LeftFlagsParent: {fileID: 1756318943}
+  RightNextGameObject: {fileID: 955527354}
+  NextPageClipGameObject: {fileID: 920979795}
+  BookL2: {fileID: 21300000, guid: 507aa504445ea5d4f9cd61cf2202e9c3, type: 3}
+  BookRedL: {fileID: 21300000, guid: 670f9479d6487e746aea16b42e7976d5, type: 3}
+  BookYellowL: {fileID: 21300000, guid: 054947520f90b3b48ad5096909c497e9, type: 3}
+  BookBlueL: {fileID: 21300000, guid: 2d630b7e6c64a74469c9691f19a793bf, type: 3}
+  BookR2: {fileID: 21300000, guid: 84a6ecd4f9cf5fb428cfca962ddfae94, type: 3}
+  BookRedR: {fileID: 21300000, guid: ec5bd8ee62e710744874c4e32ab0d90b, type: 3}
+  BookYellowR: {fileID: 21300000, guid: cb09a757b7d56f94994ab174c543beb9, type: 3}
+  BookBlueR: {fileID: 21300000, guid: d9345258065e46d44920ccb5a921f6dc, type: 3}
+  IndexBlueR: {fileID: 21300000, guid: 08a0c8ba60543e84fb0dd5aad9d388ef, type: 3}
+  IndexBlueR2: {fileID: 21300000, guid: 24f94c6437b335d43a0349470c485d93, type: 3}
+  RightDownFlagThird: {fileID: 914149419}
 --- !u!1 &865057510
 GameObject:
   m_ObjectHideFlags: 0
@@ -10624,88 +10695,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6733823943656923420, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
   m_PrefabInstance: {fileID: 8455631714162162464}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &922364971
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 922364973}
-  - component: {fileID: 922364972}
-  m_Layer: 0
-  m_Name: Diary Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &922364972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922364971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f7cc5d43296a4174874a4e3a09d123c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flipLeftButton: {fileID: 638661646}
-  flipRightButton: {fileID: 638661640}
-  autoFlip: {fileID: 1624382701}
-  leftPage: {fileID: 638661644}
-  rightPage: {fileID: 638661642}
-  backPage: {fileID: 638661645}
-  frontPage: {fileID: 638661643}
-  leftPageNum: {fileID: 1759211167}
-  rightPageNum: {fileID: 1148606616}
-  frontPageNum: {fileID: 397398875}
-  backPageNum: {fileID: 1914709511}
-  totalPageCount: 0
-  diaryPages: {fileID: 638661641}
-  diaryType: Diary2
-  leftPageImage: {fileID: 1227019824}
-  rightPageImage: {fileID: 751147636}
-  backPageImage: {fileID: 2130437974}
-  frontPageImage: {fileID: 1386719267}
-  leftPageEndingFrames: {fileID: 0}
-  rightPageEndingFrames: {fileID: 0}
-  backPageEndingFrames: {fileID: 0}
-  frontPageEndingFrames: {fileID: 0}
-  leftPageEndingFrameTop: {fileID: 0}
-  leftPageEndingFrameBottom: {fileID: 0}
-  rightPageEndingFrameTop: {fileID: 0}
-  rightPageEndingFrameBottom: {fileID: 0}
-  backPageEndingFrameTop: {fileID: 0}
-  backPageEndingFrameBottom: {fileID: 0}
-  frontPageEndingFrameTop: {fileID: 0}
-  frontPageEndingFrameBottom: {fileID: 0}
-  leftPageEndingButtonTop: {fileID: 0}
-  leftPageEndingButtonBottom: {fileID: 0}
-  rightPageEndingButtonTop: {fileID: 0}
-  rightPageEndingButtonBottom: {fileID: 0}
-  backPageEndingButtonTop: {fileID: 0}
-  backPageEndingButtonBottom: {fileID: 0}
-  frontPageEndingButtonTop: {fileID: 0}
-  frontPageEndingButtonBottom: {fileID: 0}
---- !u!4 &922364973
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922364971}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 61.857857, y: -30.925343, z: -5399.696}
-  m_LocalScale: {x: 53.9811, y: 53.9811, z: 53.9811}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1953225435}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &927323238
 GameObject:
   m_ObjectHideFlags: 0
@@ -14951,7 +14940,7 @@ PrefabInstance:
     - target: {fileID: 5606744899715782523, guid: 9fb8beea047907c498adac59dd91967a, type: 3}
       propertyPath: pageContentsManager
       value: 
-      objectReference: {fileID: 1865136552}
+      objectReference: {fileID: 666211134}
     - target: {fileID: 6361045280611463498, guid: 9fb8beea047907c498adac59dd91967a, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 26.369995
@@ -17846,7 +17835,7 @@ MonoBehaviour:
   passwordText: {fileID: 1117613218}
   diaryA: {fileID: 78613631}
   diaryLockExecutableName: Diary2Lock
-  diaryManager: {fileID: 922364972}
+  diaryManager: {fileID: 481520309}
 --- !u!225 &1700588280
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -19333,88 +19322,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1856067095}
   m_CullTransparentMesh: 0
---- !u!1 &1865136551
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1865136553}
-  - component: {fileID: 1865136552}
-  m_Layer: 0
-  m_Name: DreamDiary Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1865136552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1865136551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f7cc5d43296a4174874a4e3a09d123c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flipLeftButton: {fileID: 1310898492}
-  flipRightButton: {fileID: 1310898486}
-  autoFlip: {fileID: 146772055}
-  leftPage: {fileID: 1310898490}
-  rightPage: {fileID: 1310898488}
-  backPage: {fileID: 1310898491}
-  frontPage: {fileID: 1310898489}
-  leftPageNum: {fileID: 191990901}
-  rightPageNum: {fileID: 934223718}
-  frontPageNum: {fileID: 196502318}
-  backPageNum: {fileID: 2078373627}
-  totalPageCount: 0
-  diaryPages: {fileID: 1310898487}
-  diaryType: DreamDiary
-  leftPageImage: {fileID: 2049395622}
-  rightPageImage: {fileID: 1856067097}
-  backPageImage: {fileID: 1680398439}
-  frontPageImage: {fileID: 956877641}
-  leftPageEndingFrames: {fileID: 0}
-  rightPageEndingFrames: {fileID: 0}
-  backPageEndingFrames: {fileID: 0}
-  frontPageEndingFrames: {fileID: 0}
-  leftPageEndingFrameTop: {fileID: 0}
-  leftPageEndingFrameBottom: {fileID: 0}
-  rightPageEndingFrameTop: {fileID: 0}
-  rightPageEndingFrameBottom: {fileID: 0}
-  backPageEndingFrameTop: {fileID: 0}
-  backPageEndingFrameBottom: {fileID: 0}
-  frontPageEndingFrameTop: {fileID: 0}
-  frontPageEndingFrameBottom: {fileID: 0}
-  leftPageEndingButtonTop: {fileID: 0}
-  leftPageEndingButtonBottom: {fileID: 0}
-  rightPageEndingButtonTop: {fileID: 0}
-  rightPageEndingButtonBottom: {fileID: 0}
-  backPageEndingButtonTop: {fileID: 0}
-  backPageEndingButtonBottom: {fileID: 0}
-  frontPageEndingButtonTop: {fileID: 0}
-  frontPageEndingButtonBottom: {fileID: 0}
---- !u!4 &1865136553
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1865136551}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 61.857857, y: -30.925343, z: -5399.696}
-  m_LocalScale: {x: 53.9811, y: 53.9811, z: 53.9811}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1953225435}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1899501866
 GameObject:
   m_ObjectHideFlags: 0
@@ -20043,11 +19950,8 @@ RectTransform:
   m_Children:
   - {fileID: 865057511}
   - {fileID: 1000633619}
-  - {fileID: 922364973}
   - {fileID: 481520308}
-  - {fileID: 635174614}
   - {fileID: 859280853}
-  - {fileID: 1865136553}
   - {fileID: 666211133}
   - {fileID: 1935857040}
   - {fileID: 1901866360}
@@ -20928,7 +20832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 4.000218, y: 21.581116}
+  m_AnchoredPosition: {x: 4.0002193, y: 21.581116}
   m_SizeDelta: {x: 306.9275, y: -40.96399}
   m_Pivot: {x: 0.00000008009374, y: -0.00000007264316}
 --- !u!114 &2049395622
@@ -23554,7 +23458,7 @@ PrefabInstance:
     - target: {fileID: 6334997712603763647, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
       propertyPath: pageContentsManager
       value: 
-      objectReference: {fileID: 635174615}
+      objectReference: {fileID: 859280854}
     - target: {fileID: 6898986956632524374, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
