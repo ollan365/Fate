@@ -84,15 +84,15 @@ public class RoomManager : MonoBehaviour
         actionPointManager.CreateHearts();  // create hearts on room start
 
         tutorialManager = gameObject.GetComponent<TutorialManager>();
-        tutorialManager.AddTutorialObjects();
+        tutorialManager?.AddTutorialObjects();
         if (GameManager.Instance.skipTutorial ||
             GameSceneManager.Instance.GetActiveScene() != Constants.SceneType.ROOM_1 ||
             (int)GameManager.Instance.GetVariable("ReplayCount") > 0) {
-            tutorialManager.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);
+            tutorialManager?.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);
             return;
         }
 
-        tutorialManager.StartTutorial();
+        tutorialManager?.StartTutorial();
     }
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
@@ -111,7 +111,7 @@ public class RoomManager : MonoBehaviour
         UIManager.Instance.StartCoroutine(UIManager.Instance.HideTemporarily(eUIGameObjectName.RightButton, 0.5f));
 
         if ((bool)GameManager.Instance.GetVariable("isTutorial"))
-            tutorialManager.SetSeenSide(newSideIndex);
+            tutorialManager?.SetSeenSide(newSideIndex);
     }
 
     public void OnExitButtonClick()

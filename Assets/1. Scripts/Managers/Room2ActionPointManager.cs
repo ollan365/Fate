@@ -9,7 +9,7 @@ public class Room2ActionPointManager : ActionPointManager
 
     private bool isChoosingBrokenBearChoice = false;
 
-    private new void Awake()
+    protected override void Awake()
     {
         base.Awake();
         

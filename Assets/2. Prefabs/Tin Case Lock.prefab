@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8652768956999719387}
+  - component: {fileID: 926945772015663327}
   m_Layer: 5
   m_Name: Tin Case Lock
   m_TagString: Untagged
@@ -38,6 +39,18 @@ RectTransform:
   m_AnchoredPosition: {x: 30, y: 23}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &926945772015663327
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292818176794772210}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4362973738062295758
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +136,6 @@ MonoBehaviour:
   - {fileID: 5847974026751691412}
   - {fileID: 8326112645707888247}
   tinCaseA: {fileID: 0}
-  completeLockImage: {fileID: 0}
 --- !u!1 &7764787792977547520
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,6 +527,10 @@ PrefabInstance:
     - target: {fileID: 1161917385779570040, guid: 34121c2241bd8486e987d6d88dd3fff1, type: 3}
       propertyPath: m_SortingLayer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005562969904647615, guid: 34121c2241bd8486e987d6d88dd3fff1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3434447240180636463, guid: 34121c2241bd8486e987d6d88dd3fff1, type: 3}
       propertyPath: m_SortingLayer

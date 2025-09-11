@@ -108,7 +108,7 @@ abstract public class ActionPointManager : MonoBehaviour
     // 외출(아침) 스크립트 출력 부분
     public abstract IEnumerator nextMorningDay();
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         heartParent = UIManager.Instance.heartParent;
         dayText = UIManager.Instance.dayTextTextMeshProUGUI;
@@ -172,9 +172,10 @@ abstract public class ActionPointManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
 
-        float totalTime = 2f;
+        float totalTime = 1.5f;
+
         // 페이드 인
-        yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime / 2));
+        yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime));
 
         // 휴식하면 그날 하루에 남아있는 행동력 다 사용되기에 현재 있는 하트들 삭제
         foreach (Transform child in heartParent.transform)
@@ -184,15 +185,13 @@ abstract public class ActionPointManager : MonoBehaviour
         }
 
         // 페이드 아웃
-        yield return StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime / 2));
+        yield return StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime));
 
         // 대사 출력 전 조사 오브젝트 클릭 막기용
         UIManager.Instance.loadingScreen.SetActive(true);
 
         // 휴식 대사 출력. 
-        yield return StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscape_035", totalTime));
-
-        UIManager.Instance.loadingScreen.SetActive(false);
+        DialogueManager.Instance.StartDialogue("RoomEscape_035");
 
         int actionPoint;
         if (nowDayNum < maxDayNum) {
@@ -208,6 +207,9 @@ abstract public class ActionPointManager : MonoBehaviour
             actionPoint = 0; // 마지막 날인 5일에 휴식했을 경우: 행동력이 0이 된 상태
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
+
+        UIManager.Instance.loadingScreen.SetActive(false);
+        
         RoomManager.Instance.SetIsInvestigating(false);
         SaveManager.Instance.SaveGameData();
     }
@@ -232,6 +234,7 @@ abstract public class ActionPointManager : MonoBehaviour
         int yesterdayNum = nowDayNum - 1;
         yesterDayNumText.text = $"Day {yesterdayNum}";
         nowDayNumText.text = $"Day {nowDayNum}";
+        dayText.text = $"Day {nowDayNum}";
 
         // 배경 어두워지는 코루틴 실행
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, dayScalingTime));

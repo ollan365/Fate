@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room1ActionPointManager : ActionPointManager
 {
-    private new void Awake()
+    protected override void Awake()
     {
         base.Awake();
         
@@ -48,17 +48,13 @@ public class Room1ActionPointManager : ActionPointManager
 
         // pop heart on screen
         GameObject heart = heartParent.transform.GetChild(presentHeartIndex).gameObject;
-
         // animate heart by triggering "break" animation
         heart.GetComponent<Animator>().SetTrigger("Break");
-
         // deactivate heart after animation
         StartCoroutine(DeactivateHeart(heart));
-
         presentHeartIndex--;
 
         int actionPoint;
-
         // If all the hearts are used
         if (presentHeartIndex == -1)
         {
@@ -67,11 +63,9 @@ public class Room1ActionPointManager : ActionPointManager
                 // update current date to next day
                 nowDayNum += 1;
                 GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
-
                 // presentHeartIndex를 맨 끝 row로 업데이트
                 presentHeartIndex = (int)GameManager.Instance.GetVariable("ActionPointsPerDay") - 1;
                 GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
-
                 actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
             }
             else
@@ -82,7 +76,6 @@ public class Room1ActionPointManager : ActionPointManager
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
         GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
-
         Warning();
 
         if (actionPoint % actionPointsPerDay == 0)
@@ -96,7 +89,6 @@ public class Room1ActionPointManager : ActionPointManager
             else
                 GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
         }
-
         SaveManager.Instance.SaveGameData();
     }
 
