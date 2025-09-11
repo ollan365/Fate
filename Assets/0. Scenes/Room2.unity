@@ -2632,6 +2632,17 @@ CapsuleCollider2D:
   m_Offset: {x: 85.713646, y: -8.505484}
   m_Size: {x: 166.0199, y: 286.4141}
   m_Direction: 0
+--- !u!114 &146772055 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3866022360625168551, guid: 9fb8beea047907c498adac59dd91967a, type: 3}
+  m_PrefabInstance: {fileID: 1310898484}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d498fc4a0aaf24519a97279ceaf7b725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &171903449
 GameObject:
   m_ObjectHideFlags: 0
@@ -5698,6 +5709,7 @@ MonoBehaviour:
   dreamDiaryPuzzleObject: {fileID: 1204193688}
   isImageActive: 0
   isLockObjectActive: 0
+  currentLockObjectName: 
 --- !u!1 &383443410
 GameObject:
   m_ObjectHideFlags: 0
@@ -7865,6 +7877,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flipLeftButton: {fileID: 805745601}
   flipRightButton: {fileID: 805745600}
+  autoFlip: {fileID: 8455631714162162469}
   leftPage: {fileID: 1981495865}
   rightPage: {fileID: 1371615962}
   backPage: {fileID: 805745597}
@@ -10642,6 +10655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flipLeftButton: {fileID: 638661646}
   flipRightButton: {fileID: 638661640}
+  autoFlip: {fileID: 1624382701}
   leftPage: {fileID: 638661644}
   rightPage: {fileID: 638661642}
   backPage: {fileID: 638661645}
@@ -11666,6 +11680,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minuteHand: {fileID: 412036798}
   hourHand: {fileID: 60935246}
+  dragging: 0
+  isSnapping: 0
   clockA: {fileID: 1209573879}
 --- !u!224 &1031299568
 RectTransform:
@@ -17124,6 +17140,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1616795625}
   m_CullTransparentMesh: 1
+--- !u!114 &1624382701 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6852400870571900685, guid: 8639ee5e0290547d6ab6fad2d32121d8, type: 3}
+  m_PrefabInstance: {fileID: 638661638}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d498fc4a0aaf24519a97279ceaf7b725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1625075169 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7703607396539813144, guid: 515482b5866416f4fac74eb8d8a57dbb, type: 3}
@@ -19337,6 +19364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flipLeftButton: {fileID: 1310898492}
   flipRightButton: {fileID: 1310898486}
+  autoFlip: {fileID: 146772055}
   leftPage: {fileID: 1310898490}
   rightPage: {fileID: 1310898488}
   backPage: {fileID: 1310898491}
@@ -20900,7 +20928,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 4.0002174, y: 21.581116}
+  m_AnchoredPosition: {x: 4.000218, y: 21.581116}
   m_SizeDelta: {x: 306.9275, y: -40.96399}
   m_Pivot: {x: 0.00000008009374, y: -0.00000007264316}
 --- !u!114 &2049395622
@@ -23654,6 +23682,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8455631714162162469 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2880293967229365042, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
+  m_PrefabInstance: {fileID: 8455631714162162464}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d498fc4a0aaf24519a97279ceaf7b725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8751264302532556430
