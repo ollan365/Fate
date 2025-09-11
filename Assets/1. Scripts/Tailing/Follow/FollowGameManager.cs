@@ -169,6 +169,7 @@ public class FollowGameManager : MonoBehaviour
     {
         IsFateHide = hide;
         Fate.SetBool("Hide", hide);
+        if(hide) SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, false);
 
         UIManager.Instance.ChangeCursor();
     }
@@ -205,7 +206,7 @@ public class FollowGameManager : MonoBehaviour
                     ChangeAnimStatusToStop(true);
                     accidyStatus = AccidyStatus.YELLOW;
                     nextAccidyAction = AccidyAction.Turn;
-                    SoundPlayer.Instance.ChangeBGM(BGM_STOP);
+                    SoundPlayer.Instance.SetMuteBGM(true);
                     break;
 
                 case AccidyAction.Turn:
@@ -224,7 +225,7 @@ public class FollowGameManager : MonoBehaviour
                     if(FollowManager.Instance.CanClick) UIManager.Instance.ChangeCursor(false);
                     Accidy.SetBool("Back", false);
                     nextAccidyAction = AccidyAction.Move;
-                    SoundPlayer.Instance.ChangeBGM(BGM_FOLLOW1);
+                    SoundPlayer.Instance.SetMuteBGM(false);
                     break;
             }
 

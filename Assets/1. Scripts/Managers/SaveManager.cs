@@ -12,7 +12,6 @@ public class SaveManager : MonoBehaviour
     // --- 게임 데이터 파일이름 설정 ("원하는 이름(영문).json") --- //
     private string SAVE_DATA_FILE_PATH = "/GameData.json";
     private SaveData InitData { set; get; }
-    private List<string> endingVariableNames;
 
     void Awake()
     {
@@ -27,14 +26,6 @@ public class SaveManager : MonoBehaviour
         }
 
         SAVE_DATA_FILE_PATH = Application.persistentDataPath + SAVE_DATA_FILE_PATH;
-
-        // 엔딩 후에도 초기화되면 안되는 변수들
-        endingVariableNames = new List<string>
-        {
-            "ReplayCount", "LastEnding","BadEndingCollect", "SkipLobby",
-            "BadACollect", "BadBCollect", "TrueCollect", "HiddenCollect",
-            "FateName","Language","AccidyGender","FateBirthday"
-        };
     }
 
     // 게임 데이터를 초기화 시킬 값 저장
@@ -48,7 +39,7 @@ public class SaveManager : MonoBehaviour
             MemoManager.Instance.SavedMemoList,
             MemoManager.Instance.RevealedMemoList);
     }
-    
+
     // 엔딩을 저장하고 게임 데이터 초기화 (엔딩 데이터는 초기화하지 않음)
     public void SaveEndingDataAndInitGameDataExceptEndingData(EndingType ending)
     {
@@ -79,16 +70,11 @@ public class SaveManager : MonoBehaviour
         GameManager.Instance.IncrementVariable("ReplayCount");
         GameManager.Instance.SetVariable("LastEnding", ending.ToString());
 
-        // 초기화용 데이터에서 엔딩 데이터(회차가 넘어가도 유지되어야하는 데이터)를 변경
-        Dictionary<string, object> tmpDictionary = InitData.Variables;
-        for (int i = 0; i < endingVariableNames.Count; i++)
-        {
-            string dataName = endingVariableNames[i];
-            tmpDictionary[dataName] = GameManager.Instance.GetVariable(dataName);
-        }
+        // 게임 변수 초기화 (유지되어야 할 데이터는 초기화 제외)
+        GameManager.Instance.ResetVariables();
 
         // 초기화용 변수로 저장 후 로드
-        SaveGameData(new SaveData(tmpDictionary, InitData.EventObjectStatusDictionary, InitData.SavedMemoList, InitData.RevealedMemoList));
+        SaveGameData(new SaveData(GameManager.Instance.Variables, InitData.EventObjectStatusDictionary, InitData.SavedMemoList, InitData.RevealedMemoList));
         ApplySavedGameData();
     }
 

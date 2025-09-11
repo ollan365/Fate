@@ -664,6 +664,40 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+    public IEnumerator OnFadeText(TMP_Text text, float startAlpha, float endAlpha, float fadeTime, bool deactivateOnEnd = false)
+    {
+        if (text == null) yield break;
+
+        // 시작 알파 적용
+        Color c = text.color;
+        c.a = startAlpha;
+        text.color = c;
+
+        float elapsed = 0f;
+
+        while (elapsed < fadeTime)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / fadeTime);
+
+            float a = Mathf.Lerp(startAlpha, endAlpha, t);
+            c = text.color;
+            c.a = a;
+            text.color = c;
+
+            yield return null;
+        }
+
+        // 최종 알파 보정
+        c = text.color;
+        c.a = endAlpha;
+        text.color = c;
+
+        // 필요 시 오브젝트 비활성화
+        if (deactivateOnEnd)
+            text.gameObject.SetActive(false);
+    }
+
     public void ResetLoadingUI() {
         if (coverText) 
             coverText.gameObject.SetActive(false);
