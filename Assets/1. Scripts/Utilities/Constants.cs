@@ -150,9 +150,7 @@ public static class Constants
         Sound_Click = 20,
         Sound_Correct = 21,
         Sound_Wrong = 22,
-        Sound_CursorMovement = 42;
-
-    public const int
+        Sound_CursorMovement = 42,
         Sound_AccidentSound = 27,
         Sound_Run2_1 = 28,
         Sound_9_1_LockerKeyMovement = 29,
@@ -165,8 +163,8 @@ public static class Constants
         Sound_Wavecrash__ = 36,
         Sound_Truck_honk_1 = 37,
         Sound_TrafficOutside = 44,
-        Sound_EndingImpact = 45;
-
+        Sound_EndingImpact = 45,
+        Sound_Memo_Clue = 46;
     // 시계 부분
 
     // -------------- 미행 관련 변수들 -------------- //

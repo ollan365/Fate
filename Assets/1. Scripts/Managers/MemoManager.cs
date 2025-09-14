@@ -220,6 +220,7 @@ public class MemoManager : PageContentsManager
                 unseenMemoPages.Add(pageNum);
 
                 GameManager.Instance.IncrementVariable($"MemoCount_{GameSceneManager.Instance.GetActiveScene()}");
+                SoundPlayer.Instance.UISoundPlay(Sound_Memo_Clue);
                 memoRevealed = true;
             }
             break;
