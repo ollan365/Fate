@@ -20,6 +20,10 @@ public class OnMouseScale : MonoBehaviour
         transform.localScale = new Vector2(originalScale, originalScale);
     }
 
+    private void Awake() {
+        Debug.Log($"GameObject [{gameObject.name}]");
+    }
+
     private void Start()
     {
         if (!checkMouseHover)
