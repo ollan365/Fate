@@ -191,7 +191,8 @@ public class UIManager : MonoBehaviour {
     // UI GameObjects to explicitly check for cursor hover
     private List<RectTransform> uiToCheck;
 
-    [Header("Animation Settings")] public float fadeAnimationDuration = 0.3f;
+    [Header("Animation Settings")]
+    public float fadeAnimationDuration = 0.3f;
     public float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
     
