@@ -33,6 +33,43 @@ public class InputManager : MonoBehaviour
         if (!IsDesktopEnvironment())
             return;
 
+        // Spacebar press-and-hold skip handling for Dialogue
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+                spacePressedTime = Time.unscaledTime;
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            {
+                if (DialogueManager.Instance.IsSkipActive() && spacePressedTime > 0f)
+                {
+                    float held = Time.unscaledTime - spacePressedTime;
+                    float progress = Mathf.Clamp01(held / SpaceSkipHoldSeconds);
+                    DialogueManager.Instance.UpdateSkipHoldProgress(progress);
+                }
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            {
+                bool heldLongEnough = spacePressedTime > 0f && (Time.unscaledTime - spacePressedTime) >= SpaceSkipHoldSeconds;
+                bool skipActive = DialogueManager.Instance.IsSkipActive();
+
+                if (skipActive && heldLongEnough)
+                    DialogueManager.Instance.SkipButtonClick();
+                else
+                    DialogueManager.Instance.OnDialoguePanelClick();
+
+                spacePressedTime = 0f;
+                DialogueManager.Instance.ResetSkipHoldProgress();
+                return;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.A))
             HandleLeftKeyClick();
 
@@ -43,12 +80,10 @@ public class InputManager : MonoBehaviour
             if (IsClickable(UIManager.Instance.exitButton))
                 UIManager.Instance.OnExitButtonClick();
         }
-        
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
-                DialogueManager.Instance.OnDialoguePanelClick();
-        }
     }
+
+    private const float SpaceSkipHoldSeconds = 0.5f;
+    private float spacePressedTime = 0f;
 
     private static void HandleLeftKeyClick() {
         if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)

@@ -640,4 +640,43 @@ public class DialogueManager : MonoBehaviour
         
         return false;
     }
+
+    public bool IsSkipActive(){
+        if (skipText == null || skipText.Length == 0)
+            return false;
+
+        foreach (GameObject skip in skipText) {
+            if (skip != null && skip.activeInHierarchy)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void UpdateSkipHoldProgress(float progress)
+    {
+        if (skipText == null || skipText.Length == 0)
+            return;
+
+        foreach (GameObject skip in skipText)
+        {
+            if (skip == null || !skip.activeInHierarchy)
+                continue;
+
+            var tmp = skip.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (tmp == null)
+                continue;
+
+            var effect = tmp.GetComponent<SkipHoldProgressEffect>();
+            if (effect == null)
+                effect = tmp.gameObject.AddComponent<SkipHoldProgressEffect>();
+
+            effect.UpdateProgress(progress);
+        }
+    }
+
+    public void ResetSkipHoldProgress()
+    {
+        UpdateSkipHoldProgress(0f);
+    }
 }

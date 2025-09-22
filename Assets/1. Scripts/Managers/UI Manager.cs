@@ -196,10 +196,8 @@ public class UIManager : MonoBehaviour {
     public float floatAnimationDuration = 0.3f;
     [SerializeField] private float floatDistance = 50f;
     
-    // Track currently running UI animations so newer calls can cancel older ones
-    private readonly Dictionary<GameObject, Coroutine> activeUiAnimations = new Dictionary<GameObject, Coroutine>();
-    // Track original Button.interactable per target so we can restore on cancel/finish
-    private readonly Dictionary<GameObject, bool> originalButtonInteractable = new Dictionary<GameObject, bool>();
+    private readonly Dictionary<GameObject, Coroutine> activeUiAnimations = new();    // Track currently running UI animations so newer calls can cancel older ones
+    private readonly Dictionary<GameObject, bool> originalButtonInteractable = new(); // Track original Button.interactable per target so we can restore on cancel/finish
 
     public static UIManager Instance { get; private set; }
 
@@ -207,9 +205,9 @@ public class UIManager : MonoBehaviour {
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-        }
-        else
+        } else {
             Destroy(gameObject);
+        }
 
         AddUIGameObjects();
         SetAllUI(false);
@@ -309,8 +307,6 @@ public class UIManager : MonoBehaviour {
         
         uiGameObjects.Add(eUIGameObjectName.EndOfDemoPage, endOfDemoPage);
 
-        // uiGameObjects.Add(eUIGameObjectName.FollowUIBackground, followUIBackground);
-
         yesterdayNumTextTextMeshProUGUI = yesterdayNumText.GetComponent<TextMeshProUGUI>();
         todayNumTextTextMeshProUGUI = todayNumText.GetComponent<TextMeshProUGUI>();
         yesterdayRectTransform = yesterday.GetComponent<RectTransform>();
@@ -325,7 +321,7 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape) && !GameSceneManager.Instance.IsSceneChanging) 
+        if (Input.GetKeyDown(KeyCode.Escape) && GameSceneManager.Instance.IsSceneChanging == false) 
             SetMenuUI();
 
         CheckCursorTouchingUIs();
@@ -336,9 +332,7 @@ public class UIManager : MonoBehaviour {
             SetUI(ui.Key, isActive);
     }
 
-    public void SetUI(eUIGameObjectName uiName, bool isActive, bool fade = false,
-                        FloatDirection floatDir = FloatDirection.None) 
-    {
+    public void SetUI(eUIGameObjectName uiName, bool isActive, bool fade = false, FloatDirection floatDir = FloatDirection.None) {
         if (fade || floatDir != FloatDirection.None)
             AnimateUI(uiGameObjects[uiName], isActive, fade, floatDir);
         else
@@ -349,8 +343,7 @@ public class UIManager : MonoBehaviour {
         return uiGameObjects[uiName];
     }
 
-    public void AnimateUI(GameObject targetUI, bool isActive, bool fade = false,
-        FloatDirection floatDir = FloatDirection.None) {
+    public void AnimateUI(GameObject targetUI, bool isActive, bool fade = false, FloatDirection floatDir = FloatDirection.None) {
         if (!targetUI) {
             Debug.LogWarning("Target UI is null!");
             return;
