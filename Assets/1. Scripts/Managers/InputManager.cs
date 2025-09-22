@@ -51,6 +51,9 @@ public class InputManager : MonoBehaviour
     }
 
     private static void HandleLeftKeyClick() {
+        if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            return;
+
         if (MemoManager.Instance is not null && MemoManager.Instance.isMemoOpen) {
             MemoManager.Instance.autoFlip.FlipLeftPage();
             return;
@@ -83,6 +86,9 @@ public class InputManager : MonoBehaviour
     }
     
     private static void HandleRightKeyClick() {
+        if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            return;
+            
         if (MemoManager.Instance is not null && MemoManager.Instance.isMemoOpen) {
             MemoManager.Instance.autoFlip.FlipRightPage();
             return;
@@ -125,7 +131,8 @@ public class InputManager : MonoBehaviour
 
     private static bool IsDesktopEnvironment()
     {
-        return Application.platform is RuntimePlatform.OSXEditor
+        return Application.platform 
+            is RuntimePlatform.OSXEditor
             or RuntimePlatform.WindowsEditor
             or RuntimePlatform.LinuxEditor
             or RuntimePlatform.OSXPlayer
