@@ -94,6 +94,9 @@ public class Room1ActionPointManager : ActionPointManager
 
     public override void RefillHeartsOrEndDay()
     {
+        // update Day text on screen
+        dayText.text = $"Day {nowDayNum - 1}";
+
         // turn off all ImageAndLockPanel objects and zoom out
         RoomManager.Instance.ExitToRoot();
 
@@ -104,7 +107,12 @@ public class Room1ActionPointManager : ActionPointManager
             GameSceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
             return;
         }
-        
+
+        // isHomeComingComplete 귀가스크립트 진행 상태 false로 변경
+        GameManager.Instance.SetVariable("isHomeComingComplete", false);
+        SaveManager.Instance.SaveGameData();
+
+        // 귀가 스크립트 출력
         EventManager.Instance.CallEvent("EventRoom1HomeComing");
         GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
     }
@@ -128,9 +136,9 @@ public class Room1ActionPointManager : ActionPointManager
 
         yield return new WaitWhile(() => isDayChanging);
 
+        // 하트 생성, 다음날로 날짜 업데이트
         StartCoroutine(RefillHearts(0f));
 
-        // 하트 생성, 다음날로 날짜 업데이트
         RoomManager.Instance.SetIsInvestigating(false);
         UIManager.Instance.SetCursorAuto();
     }

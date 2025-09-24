@@ -81,7 +81,13 @@ public class RoomManager : MonoBehaviour
         MemoManager.Instance.SetShouldHideMemoButton(false);
         SetButtons();
 
-        actionPointManager.CreateHearts();  // create hearts on room start
+        // 귀가 스크립트 출력 미완이면 RefillHeartsOrEndDay 호출하여 스크립트 처음부터 다시 출력
+        if (!(bool)GameManager.Instance.GetVariable("isHomeComingComplete"))
+        {
+            actionPointManager.RefillHeartsOrEndDay();
+        }
+        else
+            actionPointManager.CreateHearts();  // create hearts on room start
 
         tutorialManager = gameObject.GetComponent<TutorialManager>();
         tutorialManager?.AddTutorialObjects();
@@ -91,7 +97,6 @@ public class RoomManager : MonoBehaviour
             tutorialManager?.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);
             return;
         }
-
         tutorialManager?.StartTutorial();
     }
 
