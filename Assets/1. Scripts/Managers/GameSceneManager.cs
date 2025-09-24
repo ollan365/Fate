@@ -51,6 +51,11 @@ public class GameSceneManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        if((int)GameManager.Instance.GetVariable("SavedCurrentSceneIndex") != SceneType.ENDING.ToInt()
+            && (int)GameManager.Instance.GetVariable("SavedCurrentSceneIndex") != SceneType.START.ToInt())
+            GameManager.Instance.SetVariable("EndingLoadScene", GameManager.Instance.GetVariable("SavedCurrentSceneIndex"));
+        
+        GameManager.Instance.SetVariable("SavedCurrentSceneIndex", SceneType.ENDING.ToInt());
         SceneManager.LoadScene(SceneType.ENDING.ToInt());
     }
     
@@ -172,6 +177,9 @@ public class GameSceneManager : MonoBehaviour
 
         if (GetActiveScene() == SceneType.ROOM_1 || GetActiveScene() == SceneType.FOLLOW_1)
             StartCoroutine(DelayedMemoGaugeRefresh());
+
+        // 씬 바뀐 후 저장
+        SaveManager.Instance.SaveGameData();
 
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
     }

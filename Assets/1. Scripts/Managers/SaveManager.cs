@@ -85,7 +85,7 @@ public class SaveManager : MonoBehaviour
         SaveData saveData = JsonUtility.FromJson<SaveData>(FromJsonData);
 
         // n회차이거나 Room1의 튜토리얼을 끝냈으면 게임 데이터가 있는 것으로 판단
-        return (int)saveData.Variables["ReplayCount"] != 0 || (bool)saveData.Variables["EndTutorial_ROOM_1"];
+        return (int)saveData.Variables["ReplayCount"] != 0 || (int)saveData.Variables["SavedCurrentSceneIndex"] != 0;
     }
 
     // 불러오기
