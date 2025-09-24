@@ -22,10 +22,10 @@ public class SewingBox : EventObject, IResultExecutable
         ActivateSewingBoxPuzzle();
     }
 
-    // ¹ÝÁù°í¸® Àá±Ý ÀåÄ¡ ½ÇÇà
+    // ë°˜ì§‡ê³ ë¦¬ ìž ê¸ˆ ìž¥ì¹˜ ì‹¤í–‰
     public void ActivateSewingBoxPuzzle()
     {
-        isInquiry = false;  // Á¶»ç ½Ã½ºÅÛ ¿¹ ¾Æ´Ï¿À ½ºÅµ
+        //isInquiry = false;  // ì¡°ì‚¬ ì‹œìŠ¤í…œ ì˜ˆ ì•„ë‹ˆì˜¤ ìŠ¤í‚µ
         UIManager.Instance.AnimateUI(SewingBoxPuzzle, true, true);
         SetCurrentLockObjectCanvasGroup(SewingBoxPuzzle);
     }

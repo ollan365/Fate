@@ -42,7 +42,7 @@ public class Doors : EventObject, IResultExecutable
 
     private void ToggleDoors()
     {
-        isInquiry = false;  // 조사 시스템 예 아니오 스킵
+        //isInquiry = false;  // 조사 시스템 예 아니오 스킵
         for (int i = 0; i < objectBehindColliders.Count; i++)
         {
             objectBehindColliders[i].enabled = isClosedDoors;

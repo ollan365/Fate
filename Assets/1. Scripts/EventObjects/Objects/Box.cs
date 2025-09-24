@@ -7,8 +7,6 @@ public class Box : EventObject, IResultExecutable
     [SerializeField] private Animator boxAnimator;
     // ********************************************************************************
 
-    public bool isClosed;
-
     public List<GameObject> sideClosedBox;
     public List<GameObject> sideOpenBox;
 
@@ -16,6 +14,12 @@ public class Box : EventObject, IResultExecutable
     {
         ResultManager.Instance.RegisterExecutable("Box", this);
     }
+
+    private void OnEnable()
+    {
+        UpdateImageState();
+    }
+
 
     public new void OnMouseDown()
     {
@@ -38,24 +42,22 @@ public class Box : EventObject, IResultExecutable
         {
             RoomManager.Instance.SetIsInvestigating(true);
             boxAnimator.SetBool("open_Box", true);
-            isClosed = false;
+            GameManager.Instance.SetVariable("BoxOpened", true);
 
-            ChangeBoxOpenImage();
+            UpdateImageState();
         }
     }
     // *******************************************************************************
 
-    private void ChangeBoxOpenImage()
+    private void UpdateImageState()
     {
-        // Side 2, 3에 있는 Box 이미지들 open 상태로 변경
-        if(!isClosed)
-        {
-            foreach (GameObject closedBox in sideClosedBox)
-                closedBox.SetActive(false);
+        bool boxOpened = (bool)GameManager.Instance.GetVariable("BoxOpened");
 
-            foreach (GameObject openBox in sideOpenBox)
-                openBox.SetActive(true);
-        }
+        foreach (GameObject closedBox in sideClosedBox)
+            closedBox.SetActive(!boxOpened);
+
+        foreach (GameObject openBox in sideOpenBox)
+            openBox.SetActive(boxOpened);
     }
 
 }
