@@ -25,7 +25,13 @@ public class SoundPlayer : MonoBehaviour
 
     // 동시에 여러 UI 효과음들이 플레이 될 수도 있으므로 여러 플레이어를 두고 순차적으로 실행하기 위한 변수
     private int uiSoundPlayerCursor;
-    
+
+    public enum SfxPriority { Low = 0, High = 1 }
+    [SerializeField] private int reservedHighPriorityChannels = 1;
+    // UISoundPlayer 배열의 [0..reserved-1] 는 High 전용, [reserved..end] 는 Low 전용
+    private float lastClickTime;
+    [SerializeField] private float clickMinInterval = 0.05f; // 50ms 디바운스
+
     void Awake()
     {
         if (Instance == null)
@@ -166,29 +172,73 @@ public class SoundPlayer : MonoBehaviour
         
         return;
     }
-    public void UISoundPlay(int num)
-    {
-        // 타이핑인 경우
-        if (num == Sound_Typing) {
-            typingSoundPlayer.Play();
-            return;
-        }
 
-        // 음악이 여러개인 경우 랜덤으로 재생
+    // 우선순위 버전의 재생
+    public void UISoundPlay(int num, SfxPriority prio = SfxPriority.Low)
+    {
+        // 0) 타이핑인 경우 루프
+        if (num == Sound_Typing) { typingSoundPlayer.Play(); return; }
+
+        // 1) 클릭 디바운스 : 너무 빠른 연속 클릭으로 인한 효과음 재생이 풀을 잠식하는 걸 막음.
+        if (num == Sound_Click && Time.unscaledTime - lastClickTime < clickMinInterval) return;
+        if (num == Sound_Click) lastClickTime = Time.unscaledTime;
+
+        // 2) 랜덤 후보 처리 (의자/락커 움직임)
         if (num == Sound_LockerKeyMovement || num == Sound_ChairMovement)
             num = UnityEngine.Random.Range(num, num + 2);
-        
+
+        // 3) 우선순위 구간 결정
+        int start = (prio == SfxPriority.High) ? 0 : reservedHighPriorityChannels;
+        int end = UISoundPlayer.Length;
+        int len = Mathf.Max(0, end - start);
+        if (len <= 0) { Debug.LogWarning("[SoundPlayer] No channels available for this priority range."); return; }
+
+        // 4) 라운드로빈 시작점(공평하게 분산)
+        int begin = start + (uiSoundPlayerCursor % Mathf.Max(1, len));
+
+        // 5) 빈 채널 우선 탐색 (begin부터 한 바퀴)
+        for (int k = 0; k < len; k++)
+        {
+            int i = start + ((begin - start + k) % len);
+            var src = UISoundPlayer[i];
+            if (!src.isPlaying)
+            {
+                PlayOnUISound(src, num);             // clip, pan, Play()
+                uiSoundPlayerCursor++;        // 다음 시작점을 옮겨 공평 분산
+                return;
+            }
+        }
+
+        // 6) 빈 채널이 없고 High면 → Low 영역에서 보이스 스틸링
+        if (prio == SfxPriority.High)
+        {
+            int lowStart = Mathf.Clamp(reservedHighPriorityChannels, 0, UISoundPlayer.Length);
+            int lowLen = Mathf.Max(0, end - lowStart);
+            if (lowLen > 0)
+            {
+                int stealBegin = lowStart + (uiSoundPlayerCursor % lowLen);
+                for (int k = 0; k < lowLen; k++)
+                {
+                    int i = lowStart + ((stealBegin - lowStart + k) % lowLen);
+                    var src = UISoundPlayer[i];
+                    if (src.isPlaying)
+                    {
+                        src.Stop();               // 낮은 우선순위 재생 중지
+                        PlayOnUISound(src, num);         // High를 꽂아 넣음
+                        uiSoundPlayerCursor++;    // 커서 전진
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void PlayOnUISound(AudioSource src, int num)
+    {
         // 재생할 효과음 변경
-        UISoundPlayer[uiSoundPlayerCursor].clip = UISoundClip[num];
-
-        // 일부 효과음의 경우 음악이 재생되는 위치를 바꾼다
-        UISoundPlayer[uiSoundPlayerCursor].panStereo = SoundPosition();
-
-        // 음악 재생
-        UISoundPlayer[uiSoundPlayerCursor].Play();
-
-        // 다음 효과음 Player로 넘긴다
-        uiSoundPlayerCursor = (uiSoundPlayerCursor + 1) % UISoundPlayer.Length;
+        src.clip = UISoundClip[num];
+        src.panStereo = SoundPosition(); // 일부 효과음의 경우  클릭 위치 기반 PAN
+        src.Play(); // 음악 재생
     }
 
 
