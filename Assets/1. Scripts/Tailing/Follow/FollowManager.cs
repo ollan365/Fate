@@ -103,12 +103,12 @@ public class FollowManager : MonoBehaviour
             UIManager.Instance.SetUI(eUIGameObjectName.DoubtGaugeSlider_Night, true);
             UIManager.Instance.SetUI(eUIGameObjectName.FatePositionSlider_Night, true);
             UIManager.Instance.SetUI(eUIGameObjectName.AccidyPositionSlider_Night, true);
-            // 방탈출2 UI 비활성화
-            UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, false);
-            UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
-            UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
-            UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
         }
+        // 방탈출 UI 비활성화
+        UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
     }
     public void TutorialNextStep(string step)
     {
