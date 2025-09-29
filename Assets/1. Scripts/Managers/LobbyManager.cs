@@ -48,6 +48,9 @@ public class LobbyManager : MonoBehaviour
         yield return null;
         SaveManager.Instance.ApplySavedGameData();
 
+        if (LocalizationManager.Instance)
+            LocalizationManager.Instance.InitializeLanguageFromDeviceIfUnset();
+
         if ((bool)GameManager.Instance.GetVariable("SkipLobby")) {
             GameManager.Instance.SetVariable("SkipLobby", false);
             SaveManager.Instance.SaveGameData();
@@ -173,7 +176,10 @@ public class LobbyManager : MonoBehaviour
 
     // 필연 설정 완료
     private void SettingsComplete() {
-        GameManager.Instance.SetVariable("Language", language);
+        if (LocalizationManager.Instance)
+            LocalizationManager.Instance.SetLanguage(language);
+        else
+            GameManager.Instance.SetVariable("Language", language);
         GameManager.Instance.SetVariable("FateGender", 0);  // 필연 성별 설정 (선택 기능이 없어졌음)
 
         string birthday = ((monthDropdown.value + 1) * 100 + (dayDropdown.value + 1)).ToString();

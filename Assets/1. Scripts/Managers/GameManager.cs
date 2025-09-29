@@ -192,13 +192,13 @@ public class GameManager : MonoBehaviour
 
         // 화면에 표시하고 싶은 변수명 추가
         List<string> keysToShow = new List<string>(new string[] {
-            "TutorialPhase",
-            "ChairMoved",
-            "isChairMoving"
+            "Language"
         });
 
         foreach (var item in variables)
             if (keysToShow.Contains(item.Key)) variablesText.text += $"{item.Key}: {item.Value}\n";
+        
+        variablesText.gameObject.SetActive(true);
     }
 
     public bool GetIsBusy() { // 클릭을 막아야 하는 상황들
