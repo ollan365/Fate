@@ -19,39 +19,42 @@ public class Script
     
     public string GetScript()
     {
-        switch (GameManager.Instance.GetVariable("Language"))
-        {
-            case 0: return TextFormat(EngScript);
-            case 1: return TextFormat(KorScript);
-            case 2: return TextFormat(JP_M_Script);
-            case 3: return TextFormat(JP_W_Script);
-            default: return TextFormat(KorScript);
-        }
+        return GetScriptByLanguageIndex((int)GameManager.Instance.GetVariable("Language"));
     }
-    private string TextFormat(string text)
+
+    public string GetScriptByLanguageIndex(int languageIndex)
+    {
+        string localizedText = EngScript;
+        switch (languageIndex) {
+            case 1:
+                localizedText = KorScript;
+                break;
+        }
+        return GetFormattedText(localizedText);
+    }
+    private string GetFormattedText(string text)
     {
         string newText = text;
         bool textEffect = false;
-        int startIndex = -1, endIndex = -1;
+        int startIndex = -1;
         for (int i = 0; i < text.Length; i++)
         {
-            if(text[i] == '[')
-            {
+            if (text[i] == '[') {
                 textEffect = true;
                 startIndex = i;
             }
-            if(textEffect && text[i] == ']')
-            {
-                endIndex = i;
 
-                newText = text.Substring(0, startIndex);
-                newText += "<color=red>";
-                newText += text.Substring(startIndex + 1, endIndex - startIndex - 1);
-                newText += "</color>";
-                newText += text.Substring(endIndex + 1);
+            if (!textEffect || text[i] != ']') 
+                continue;
+            
+            int endIndex = i;
+            newText = text.Substring(0, startIndex);
+            newText += "<color=red>";
+            newText += text.Substring(startIndex + 1, endIndex - startIndex - 1);
+            newText += "</color>";
+            newText += text.Substring(endIndex + 1);
 
-                text = newText;
-            }
+            text = newText;
         }
         return newText;
     }

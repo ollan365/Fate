@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     private void Start() {
         variablesCSV = Resources.Load<TextAsset>("Datas/variables");
         CreateVariables();
-
+        
         if (isDebug) {
             ShowVariables();
             // set timescale to 0.5f for debugging

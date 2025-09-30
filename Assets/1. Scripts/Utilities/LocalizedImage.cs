@@ -11,33 +11,23 @@ public class LocalizedImage : MonoBehaviour
 
 	private Image targetImage;
 
-	private void Awake()
-	{
+	private void Awake() {
 		targetImage = GetComponent<Image>();
 	}
 
-	private void OnEnable()
-	{
+	private void OnEnable()	{
 		if (LocalizationManager.Instance != null)
-		{
 			LocalizationManager.Instance.OnLanguageChanged += Apply;
-			Apply(LocalizationManager.Instance.GetLanguage());
-		}
 	}
 
-	private void OnDisable()
-	{
+	private void OnDisable() {
 		if (LocalizationManager.Instance != null)
-		{
 			LocalizationManager.Instance.OnLanguageChanged -= Apply;
-		}
 	}
 
-	private void Apply(int languageIndex)
-	{
+	private void Apply(int languageIndex) {
 		Sprite next = null;
-		switch (languageIndex)
-		{
+		switch (languageIndex) {
 			case 0: next = englishSprite; break;
 			case 1: next = koreanSprite; break;
 			case 2: next = japaneseMaleSprite; break;

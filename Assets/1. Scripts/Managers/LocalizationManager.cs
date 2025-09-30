@@ -19,8 +19,8 @@ public class LocalizationManager : MonoBehaviour
 	}
 
 	private void Start() {
-		object langObj = GameManager.Instance.GetVariable("Language");
-		currentLanguage = langObj is int ? (int)langObj : 1; // default to Korean index used in project
+		currentLanguage = (int)GameManager.Instance.GetVariable("Language");
+		OnLanguageChanged?.Invoke(currentLanguage);
 	}
 
 	public int GetLanguage() {
@@ -40,10 +40,8 @@ public class LocalizationManager : MonoBehaviour
 
 	public void InitializeLanguageFromDeviceIfUnset() {
 		int langValue = (int)GameManager.Instance.GetVariable("Language");
-		if (langValue == -1) {
-			Debug.Log("langValue is -1, systemLanguage: " + Application.systemLanguage);
+		if (langValue == -1)
 			SetLanguage(Application.systemLanguage == SystemLanguage.Korean ? 1 : 0);
-		}
 		else
 			SetLanguage(langValue);
 	}

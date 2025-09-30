@@ -18,6 +18,11 @@ ConditionSceneROOM_2,현재 씬이 ROOM_2 씬,SavedCurrentSceneIndex,==,3
 ConditionSceneFOLLOW_2,현재 씬이 FOLLOW_2 씬,SavedCurrentSceneIndex,==,4
 ConditionSceneENDING,현재 씬이 ENDING 씬,SavedCurrentSceneIndex,==,5
 ,,,,
+LoadEndingFrom_ROOM_1,현재 씬이 ROOM_1 씬,EndingLoadScene,==,1
+LoadEndingFrom_FOLLOW_1,현재 씬이 FOLLOW_1 씬,EndingLoadScene,==,2
+LoadEndingFrom_ROOM_2,현재 씬이 ROOM_2 씬,EndingLoadScene,==,3
+LoadEndingFrom_FOLLOW_2,현재 씬이 FOLLOW_2 씬,EndingLoadScene,==,4
+,,,,
 ConditionCurrentSide1,현재 사이드 1번,currentSideIndex,==,0
 ConditionCurrentSide2Or3,현재 사이드 1번 아님,currentSideIndex,>,0
 ,,,,
@@ -208,6 +213,7 @@ ConditionDiary2PasswordNotCorrect,다이어리 비밀번호를 맞추지 않은 
 ConditionDiary2ManyClick,다이어리를 한번 이상 클릭,Diary2Click,>,0
 ,,,,
 ConditionDiary2Diary2PageNumberIs3,다이어리 마지막페이지인 3페이지까지 내용 확인,Diary2PresentPageNumber,==,3
+ConditionhasNotEventDiary2ContentRun,,hasEventDiary2ContentRun,==,FALSE
 ,,,,
 ConditionTinCaseFirstClick,틴케이스를 처음 클릭,TinCaseClick,==,0
 ConditionTinCaseManyClick,틴케이스를 한 번 이상 클릭,TinCaseClick,>,0

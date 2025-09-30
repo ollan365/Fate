@@ -13,6 +13,7 @@ ReplayCount,0,int,FALSE,게임 플레이 회차
 DoodlesOrder,81362475,string,TRUE,낙서 표시 순서
 RefillHeartsOrEndDay,false,bool,TRUE,
 SavedCurrentSceneIndex,0,int,TRUE,
+EndingLoadScene,0,int,TRUE,
 MemoCount_ROOM_1,0,int,TRUE,각 씬에서 모은 메모의 개수
 MemoCount_FOLLOW_1,0,int,TRUE,
 MemoCount_ROOM_2,0,int,TRUE,
@@ -181,3 +182,13 @@ UpDrawerMoved,false,bool,TRUE,
 DownDrawerMoved,false,bool,TRUE,
 isUpDrawerMoving,false,bool,TRUE,
 isDownDrawerMoving,false,bool,TRUE,
+hasEventDiary2ContentRun,false,bool,TRUE,방2에서 다이어리 중요단서 열 때마다 한번만 출력되게 하는 플래그
+isHomeComingComplete,true,bool,TRUE,귀가스크립트 다 봤는지 보다 말았는지 저장하는 변수
+currentDialogueID,NONE,string,TRUE,현재 진행 중인 다이얼로그ID
+isDialogueActive,false,bool,TRUE,다이얼로그가 진행 중인가
+isZoomed,false,bool,TRUE,zoom 뷰가 켜져 있는가
+currentZoomViewName,NONE,string,TRUE,현재 켜져있는 zoom 뷰 이름(result의 executable 등록되는 이름)
+isImageActive,false,bool,TRUE,확대 이미지 패널이 켜져있는가
+currentEventObjectName,NONE,string,TRUE,켜져있는 확대 이미지 패널 오브젝트 이름
+isLockObjectActive,false,bool,TRUE,lock 오브젝트가 켜져있는가
+currentLockObjectName,NONE,string,TRUE,켜져있는 lock 오브젝트 이름
