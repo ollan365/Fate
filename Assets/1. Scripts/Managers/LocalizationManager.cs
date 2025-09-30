@@ -33,13 +33,17 @@ public class LocalizationManager : MonoBehaviour
 
 		currentLanguage = languageIndex;
 		GameManager.Instance.SetVariable("Language", currentLanguage);
+		if (SaveManager.Instance != null)
+			SaveManager.Instance.SaveGameData();
 		OnLanguageChanged?.Invoke(currentLanguage);
 	}
 
 	public void InitializeLanguageFromDeviceIfUnset() {
 		int langValue = (int)GameManager.Instance.GetVariable("Language");
-		if (langValue == -1)
+		if (langValue == -1) {
+			Debug.Log("langValue is -1, systemLanguage: " + Application.systemLanguage);
 			SetLanguage(Application.systemLanguage == SystemLanguage.Korean ? 1 : 0);
+		}
 		else
 			SetLanguage(langValue);
 	}
