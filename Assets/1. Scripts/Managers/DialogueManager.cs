@@ -15,6 +15,8 @@ public class DialogueManager : MonoBehaviour
     public GameObject[] dialogueSet;
     public TextMeshProUGUI[] speakerTexts;
     public TextMeshProUGUI[] scriptText;
+    [Header("Localization")]
+    [SerializeField] private LocalizedText[] scriptLocalizedTexts;
     public TextEffect accidyMultiScript;
     public Image[] backgroundImages;
     public Image[] characterImages;
@@ -81,6 +83,15 @@ public class DialogueManager : MonoBehaviour
             Destroy(gameObject);
         }
         dialogueSet[dialogueType.ToInt()].SetActive(false);
+
+        // Cache LocalizedText components attached to script text objects
+        if (scriptText != null && scriptText.Length > 0)
+        {
+            scriptLocalizedTexts = new LocalizedText[scriptText.Length];
+            for (int i = 0; i < scriptText.Length; i++)
+                if (scriptText[i])
+                    scriptLocalizedTexts[i] = scriptText[i].GetComponent<LocalizedText>();
+        }
     }
 
     // ---------------------------------------------- Dialogue methods ----------------------------------------------
@@ -296,6 +307,11 @@ public class DialogueManager : MonoBehaviour
         
         ClearPreviousChoices();
         SetupCanvasAndSpeakerText(dialogueLine);
+
+        // Store script ID on LocalizedText so it can re-localize on language changes
+        int canvasIndex = dialogueType.ToInt();
+        if (scriptLocalizedTexts != null && canvasIndex < scriptLocalizedTexts.Length && scriptLocalizedTexts[canvasIndex] != null)
+            scriptLocalizedTexts[canvasIndex].SetScriptId(dialogueLine.ScriptID);
 
         // Process placeholders and get final sentence.
         string sentence = ProcessPlaceholders(dialogueLine, out bool auto, out bool fast, out bool multi, out bool ending);
@@ -583,7 +599,13 @@ public class DialogueManager : MonoBehaviour
             var choiceButton = Instantiate(choicePrefab, choicesContainer[dialogueType.ToInt()]).GetComponent<Button>();
             var choiceText = choiceButton.GetComponentInChildren<TextMeshProUGUI>();
 
-            choiceText.text = scripts[choiceLine.ScriptID].GetScript().ProcessedText;
+            // Use LocalizedText if present; otherwise set text directly
+            var localized = choiceText ? choiceText.GetComponent<LocalizedText>() : null;
+            if (localized != null)
+                localized.SetScriptId(choiceLine.ScriptID);
+            else
+                choiceText.text = scripts[choiceLine.ScriptID].GetScript().ProcessedText;
+
             choiceButton.onClick.AddListener(() => OnChoiceSelected(choiceLine.Next));
 
             // 만약 잠김 선택지(엔딩)라면 잠김으로 뜨도록 표시
@@ -598,7 +620,13 @@ public class DialogueManager : MonoBehaviour
                         choiceButton.onClick.AddListener(() => EventManager.Instance.CallEvent($"EventChangeBGMOf{effect}"));
                         break;
                     case "LOCK":
-                        choiceText.text = $"<color=#101010>{scripts[choiceLine.ScriptID].GetScript()}</color>";
+                        if (localized != null) {
+                            // If locked, still show localized but dimmed
+                            var locked = scripts[choiceLine.ScriptID].GetScript().ProcessedText;
+                            choiceText.text = $"<color=#101010>{locked}</color>";
+                        } else {
+                            choiceText.text = $"<color=#101010>{scripts[choiceLine.ScriptID].GetScript()}</color>";
+                        }
                         choiceButton.onClick.RemoveAllListeners();
                         break;
                 }

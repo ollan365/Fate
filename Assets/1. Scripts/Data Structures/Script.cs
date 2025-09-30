@@ -80,7 +80,28 @@ public class Script
                 }
             }
         }
+        result.ProcessedText = ReplaceBracketMarkup(result.ProcessedText);
         return result;
     }
-    
+
+    private string ReplaceBracketMarkup(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return text;
+
+        int searchStart = 0;
+        while (true)
+        {
+            int openIdx = text.IndexOf('[', searchStart);
+            if (openIdx == -1) break;
+            int closeIdx = text.IndexOf(']', openIdx + 1);
+            if (closeIdx == -1) break;
+
+            string inner = text.Substring(openIdx + 1, closeIdx - openIdx - 1);
+            string replacement = $"<color=red>{inner}</color>";
+            text = text.Substring(0, openIdx) + replacement + text.Substring(closeIdx + 1);
+            searchStart = openIdx + replacement.Length;
+        }
+
+        return text;
+    }
 }

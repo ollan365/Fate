@@ -16,8 +16,11 @@ public class LocalizedImage : MonoBehaviour
 	}
 
 	private void OnEnable()	{
-		if (LocalizationManager.Instance != null)
+		if (LocalizationManager.Instance != null) {
 			LocalizationManager.Instance.OnLanguageChanged += Apply;
+			if (LocalizationManager.Instance.IsInitialized)
+				Apply(LocalizationManager.Instance.GetLanguage());
+		}
 	}
 
 	private void OnDisable() {

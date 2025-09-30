@@ -345,7 +345,7 @@ public class UIManager : MonoBehaviour {
 
     public void AnimateUI(GameObject targetUI, bool isActive, bool fade = false, FloatDirection floatDir = FloatDirection.None) {
         if (!targetUI) {
-            Debug.LogWarning("Target UI is null!");
+            Debug.LogWarning($"Target UI is null! GameObject name: {targetUI.name}");
             return;
         }
 

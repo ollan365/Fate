@@ -8,6 +8,7 @@ public class LocalizationManager : MonoBehaviour
 	public event Action<int> OnLanguageChanged;
 
 	[SerializeField] private int currentLanguage;
+	public bool IsInitialized { get; private set; }
 
 	private void Awake() {
 		if (Instance == null) {
@@ -20,6 +21,7 @@ public class LocalizationManager : MonoBehaviour
 
 	private void Start() {
 		currentLanguage = (int)GameManager.Instance.GetVariable("Language");
+		IsInitialized = true;
 		OnLanguageChanged?.Invoke(currentLanguage);
 	}
 

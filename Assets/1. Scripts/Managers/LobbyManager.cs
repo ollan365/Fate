@@ -19,6 +19,8 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown monthDropdown, dayDropdown;
     
     private string fateName;
+    private string previousFateName;
+    private LocalizedText nameCheckQuestionLocalized;
     private int language = 1;
     public int Language { set => language = value; }
     private bool isLobby;
@@ -131,13 +133,26 @@ public class LobbyManager : MonoBehaviour
     }
     
     public void SetName() {
-        fateName = nameInput.text == "" ? "필연" : nameInput.text;
-        nameCheckQuestion.text = $"\"{fateName}\"으로 확정하시겠습니까?";
+        if (nameCheckQuestionLocalized == null && nameCheckQuestion)
+            nameCheckQuestionLocalized = nameCheckQuestion.GetComponent<LocalizedText>();
+
+        Script.ScriptPlaceholderResult defaultFateNameScript = DialogueManager.Instance.scripts["DialogueC_003"].GetScript();
+        fateName = string.IsNullOrEmpty(nameInput.text) ? defaultFateNameScript.ProcessedText : nameInput.text;
+
+        if (nameCheckQuestionLocalized == null)
+            return;
+        
+        previousFateName = (string)GameManager.Instance.GetVariable("FateName");
+        GameManager.Instance.SetVariable("FateName", fateName);
     }
     
     public void NameSetting() {
         GameManager.Instance.SetVariable("FateName", fateName);
         EventManager.Instance.CallEvent("Event_NameSetting");
+    }
+    
+    public void NameChangeCancel() {
+        GameManager.Instance.SetVariable("FateName", previousFateName);
     }
 
     // ===== 생일 설정 ===== //
@@ -174,13 +189,8 @@ public class LobbyManager : MonoBehaviour
         EventManager.Instance.CallEvent("Event_BirthSetting");
     }
 
-    // 필연 설정 완료
     private void SettingsComplete() {
-        if (LocalizationManager.Instance)
-            LocalizationManager.Instance.SetLanguage(language);
-        else
-            GameManager.Instance.SetVariable("Language", language);
-        GameManager.Instance.SetVariable("FateGender", 0);  // 필연 성별 설정 (선택 기능이 없어졌음)
+        GameManager.Instance.SetVariable("FateGender", 0);  // 필연 성별 설정
 
         string birthday = ((monthDropdown.value + 1) * 100 + (dayDropdown.value + 1)).ToString();
         if (birthday.Length == 3) 

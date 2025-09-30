@@ -23,8 +23,9 @@ public class DialoguesParser
     private string Escaper(string originalString)
     {
         string modifiedString = originalString.Replace("\\n", "\n");
+        modifiedString = modifiedString.Replace("''", "\"");
         modifiedString = modifiedString.Replace("`", ",");
-        modifiedString = modifiedString.Replace("", "");
+        modifiedString = modifiedString.Replace("\b", "");
 
         return modifiedString;
     }

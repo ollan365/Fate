@@ -31,7 +31,7 @@ public class LocalizedText : MonoBehaviour
 		Apply(lang);
 	}
 
-	private void Apply(int languageIndex) {
+	public void Apply(int languageIndex) {
 		if (string.IsNullOrEmpty(scriptId))
 			return;
 
