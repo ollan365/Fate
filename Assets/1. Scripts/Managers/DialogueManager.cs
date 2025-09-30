@@ -189,42 +189,31 @@ public class DialogueManager : MonoBehaviour
         fast = false;
         multi = false;
         ending = false;
-        var sentence = scripts[dialogueLine.ScriptID].GetScript();
-    
-        if (scripts[dialogueLine.ScriptID].Placeholder.Length > 0) {
-            var effects = scripts[dialogueLine.ScriptID].Placeholder.Split('/');
-            foreach (var effect in effects)
-                switch (effect)
-                {
-                    case "RED":
-                        sentence = $"<color=red>{sentence}</color>";
-                        break;
-                    case "AUTO":
-                        auto = true;
-                        foreach (GameObject skip in skipText)
-                            skip.SetActive(false);
-                        break;
-                    case "FAST":
-                        fast = true;
-                        break;
-                    case "TRUE":
-                        var fateName = (string)GameManager.Instance.GetVariable("FateName");
-                        sentence = sentence.Replace("{PlayerName}", fateName);
-                        break;
-                    case "ENDING":
-                        ending = true;
-                        dialogueType = DialogueType.ENDING;
-                        foreach (GameObject canvas in dialogueSet)
-                            if (canvas)
-                                canvas.SetActive(false);
-                        dialogueSet[dialogueType.ToInt()].SetActive(true);
-                        break;
-                    case "MULTI":
-                        multi = true;
-                        accidyMultiScript.gameObject.SetActive(true);
-                        break;
-                }
+
+        var processed = scripts[dialogueLine.ScriptID].GetProcessedScript();
+        var sentence = processed.ProcessedText;
+
+        // Apply side-effects based on flags
+        if (processed.Auto) {
+            auto = true;
+            foreach (GameObject skip in skipText)
+                skip.SetActive(false);
         }
+        if (processed.Fast)
+            fast = true;
+        if (processed.Multi) {
+            multi = true;
+            accidyMultiScript.gameObject.SetActive(true);
+        }
+        if (processed.Ending) {
+            ending = true;
+            dialogueType = DialogueType.ENDING;
+            foreach (GameObject canvas in dialogueSet)
+                if (canvas)
+                    canvas.SetActive(false);
+            dialogueSet[dialogueType.ToInt()].SetActive(true);
+        }
+
         return sentence;
     }
 
