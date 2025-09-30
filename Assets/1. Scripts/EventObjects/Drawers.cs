@@ -6,25 +6,25 @@ public class Drawers : EventObject, IResultExecutable
 {
     public bool isClosedDrawers;
     public GameObject otherDrawers;
-    public string parentObjectName;  // ¹æÅ»Ãâ2 ¿ÊÀå ¼­¶øÀå. ºÎ¸ğ ¿ÀºêÁ§Æ® ÀÌ¸§
+    public string parentObjectName;  // ë°©íƒˆì¶œ2 ì˜·ì¥ ì„œëì¥. ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ ì´ë¦„
     private string closedOrOpen;
 
     public bool isUpDrawer;
 
-    [Header("¼­¶øÀå ¾Æ·§Ä­")]
+    [Header("ì„œëì¥ ì•„ë«ì¹¸")]
     public List<GameObject> sideClosedDownDrawerObjects;
     public List<GameObject> sideOpenDownDrawerObjects;
 
-    [Header("¼­¶øÀå À­Ä­")]
+    [Header("ì„œëì¥ ìœ—ì¹¸")]
     public List<GameObject> sideClosedUpDrawerObjects;
     public List<GameObject> sideOpenUpDrawerObjects;
 
     // ************************* temporary members for moving *************************
-    private Vector2 originalPosition;  // ±âÁ¸ À§Ä¡ 
+    private Vector2 originalPosition;  // ê¸°ì¡´ ìœ„ì¹˜ 
     private List<Vector2> movedPositions = new List<Vector2> { Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero };
-    private RectTransform rectTransform;  // targetPosition¿¡ À§ÀÇ origin À§Ä¡¶û moved À§Ä¡¸¦ ´ëÀÔÇØ¼­ °Å±â±îÁö ¿òÁ÷ÀÌ°Ô ÇÔ.
-    [SerializeField] private float moveDuration = 0.3f; // ÀÌµ¿¿¡ °É¸®´Â ½Ã°£
-    private bool isMoving = false; // ¿òÁ÷ÀÌ´Â ÁßÀÎÁö ¿©ºÎ
+    private RectTransform rectTransform;  // targetPositionì— ìœ„ì˜ origin ìœ„ì¹˜ë‘ moved ìœ„ì¹˜ë¥¼ ëŒ€ì…í•´ì„œ ê±°ê¸°ê¹Œì§€ ì›€ì§ì´ê²Œ í•¨.
+    [SerializeField] private float moveDuration = 0.3f; // ì´ë™ì— ê±¸ë¦¬ëŠ” ì‹œê°„
+    private bool isMoving = false; // ì›€ì§ì´ëŠ” ì¤‘ì¸ì§€ ì—¬ë¶€
     // ********************************************************************************
 
     private void Awake()
@@ -35,7 +35,7 @@ public class Drawers : EventObject, IResultExecutable
 
         rectTransform = GetComponent<RectTransform>();
 
-        originalPosition = rectTransform.anchoredPosition;  // ÃÊ±â À§Ä¡ ÀúÀå
+        originalPosition = rectTransform.anchoredPosition;  // ì´ˆê¸° ìœ„ì¹˜ ì €ì¥
         switch (isUpDrawer)
         {
             case true:
@@ -64,7 +64,7 @@ public class Drawers : EventObject, IResultExecutable
 
     private void ToggleDoors()
     {
-        isInquiry = false;  // Á¶»ç ½Ã½ºÅÛ ¿¹ ¾Æ´Ï¿À ½ºÅµ
+        //isInquiry = false;  // ì¡°ì‚¬ ì‹œìŠ¤í…œ ì˜ˆ ì•„ë‹ˆì˜¤ ìŠ¤í‚µ
 
         //GameManager.Instance.InverseVariable($"{parentObjectName}DrawersClosed");
 
@@ -90,12 +90,12 @@ public class Drawers : EventObject, IResultExecutable
 
     private void showDrawersInSide()
     {
-        // ¼­¶øÀå À­Ä­
+        // ì„œëì¥ ìœ—ì¹¸
         if (isUpDrawer)
         {
             if (closedOrOpen == "Closed" && !gameObject.activeSelf)
             {
-                // ¹®ÀÌ ¿­¸° »óÅÂ
+                // ë¬¸ì´ ì—´ë¦° ìƒíƒœ
                 foreach (GameObject closedDrawer in sideClosedUpDrawerObjects)
                     closedDrawer.SetActive(false);
 
@@ -104,7 +104,7 @@ public class Drawers : EventObject, IResultExecutable
             }
             else
             {
-                // ¹®ÀÌ ´İÈù »óÅÂ
+                // ë¬¸ì´ ë‹«íŒ ìƒíƒœ
                 foreach (GameObject closedDrawer in sideClosedUpDrawerObjects)
                     closedDrawer.SetActive(true);
 
@@ -112,11 +112,11 @@ public class Drawers : EventObject, IResultExecutable
                     openDrawer.SetActive(false);
             }
         }
-        else // ¼­¶øÀå ¾Æ·§Ä­
+        else // ì„œëì¥ ì•„ë«ì¹¸
         {
             if (closedOrOpen == "Closed" && !gameObject.activeSelf)
             {
-                // ¹®ÀÌ ¿­¸° »óÅÂ
+                // ë¬¸ì´ ì—´ë¦° ìƒíƒœ
                 foreach (GameObject closedDrawer in sideClosedDownDrawerObjects)
                     closedDrawer.SetActive(false);
 
@@ -125,7 +125,7 @@ public class Drawers : EventObject, IResultExecutable
             }
             else
             {
-                // ¹®ÀÌ ´İÈù »óÅÂ
+                // ë¬¸ì´ ë‹«íŒ ìƒíƒœ
                 foreach (GameObject closedDrawer in sideClosedDownDrawerObjects)
                     closedDrawer.SetActive(true);
 

@@ -13,6 +13,11 @@ public class Clock : EventObject, IResultExecutable
         ResultManager.Instance.RegisterExecutable("Clock", this);
     }
 
+    private void OnEnable()
+    {
+        UpdateImageState();
+    }
+
     public new void OnMouseDown() {
         base.OnMouseDown();
     }
@@ -23,16 +28,18 @@ public class Clock : EventObject, IResultExecutable
 
     // 시계 시간 맞추는 장치 실행
     private void ActivateClockPuzzle() {
-        isInquiry = false;  // 조사 시스템 예 아니오 스킵
+        //isInquiry = false;  // 조사 시스템 예 아니오 스킵
         UIManager.Instance.AnimateUI(clockPuzzle, true, true);
         SetCurrentLockObjectCanvasGroup(clockPuzzle);
     }
 
-    public void SwapAfterImage() {
-        if ((bool)GameManager.Instance.GetVariable("ClockTimeCorrect") == false)
-            return;
-
-        for (int i = 0; i < Clocks.Count; i++)
-            Clocks[i].sprite = (i == 2) ? AfterClockImages[1] : AfterClockImages[0];
+    public void UpdateImageState() {
+        if ((bool)GameManager.Instance.GetVariable("ClockTimeCorrect"))
+        {
+            for (int i = 0; i < Clocks.Count; i++)
+            {
+                Clocks[i].sprite = (i == 2) ? AfterClockImages[1] : AfterClockImages[0];
+            }
+        }
     }
 }

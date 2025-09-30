@@ -148,8 +148,9 @@ public class ClockHand : MonoBehaviour
 
         if (CalculateHourFromAngle(hourAngle) == correctHour && CalculateMinuteFromAngle(minuteAngle) == correctMinute) {
             GameManager.Instance.SetVariable("ClockTimeCorrect", true);
-            clockA.SetIsInquiry(true); // 시계 맞춘 이후에 시계 다시 클릭하면 조사창 패스된거 다시 조사창 나오게 함.
-            clockA.SwapAfterImage();
+            // 시계 맞춘 이후에 시계 다시 클릭하면 조사창 패스된거 다시 조사창 나오게 함.
+            clockA.SetIsInquiry(true);
+            clockA.UpdateImageState();
             isClockTimeCorrect = true;
         }
 

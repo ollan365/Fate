@@ -175,6 +175,9 @@ public class Room2ActionPointManager : ActionPointManager
     // 귀가 스크립트 출력 부분
     public override void RefillHeartsOrEndDay()
     {
+        // update Day text on screen
+        dayText.text = $"Day {nowDayNum - 1}";
+
         // turn off all ImageAndLockPanel objects and zoom out
         RoomManager.Instance.ExitToRoot();
 
@@ -186,11 +189,14 @@ public class Room2ActionPointManager : ActionPointManager
 
             return;
         }
+
+        // isHomeComingComplete 귀가스크립트 진행 상태 false로 변경
+        GameManager.Instance.SetVariable("isHomeComingComplete", false);
+        SaveManager.Instance.SaveGameData();
+
         // 귀가 스크립트 출력
         EventManager.Instance.CallEvent("EventRoom2HomeComing");
-
         GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
-        // 귀가 스크립트 이후 끝나면 Next의 Event_NextMorningDay fade in/out 이펙트 나옴
     }
 
     // 외출(아침) 스크립트 출력 부분
@@ -216,9 +222,9 @@ public class Room2ActionPointManager : ActionPointManager
 
         yield return new WaitWhile(() => isDayChanging);
 
+        // 여기서 하트 생성 및 다음날로 날짜 업데이트
         StartCoroutine(RefillHearts(0f));
 
-        // 여기서 하트 생성 및 다음날로 날짜 업데이트
         RoomManager.Instance.SetIsInvestigating(false);
         UIManager.Instance.SetCursorAuto();
     }

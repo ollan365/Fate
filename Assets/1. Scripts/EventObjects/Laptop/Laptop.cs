@@ -21,7 +21,7 @@ public class Laptop : EventObject, IResultExecutable
     }
 
     public void ActivateLaptopLock() { // 노트북 잠금 장치 실행 (로그인 페이지 켜짐)
-        isInquiry = false;  // 조사 시스템 예 아니오 스킵
+        //isInquiry = false;  // 조사 시스템 예 아니오 스킵
         UIManager.Instance.AnimateUI(laptopLock, true, true);
         SetCurrentLockObjectCanvasGroup(laptopLock);
     }

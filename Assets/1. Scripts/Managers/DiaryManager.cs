@@ -55,6 +55,12 @@ public class DiaryManager : PageContentsManager
         endingSprites = UIManager.Instance.endingSprites;
     }
 
+    private void OnDisable()
+    {
+        if (GetDiaryType() == "Diary2")
+            GameManager.Instance.SetVariable("hasEventDiary2ContentRun", false);
+    }
+
     public void SetTotalPages()
     {
         switch (diaryType)
@@ -321,7 +327,8 @@ public class DiaryManager : PageContentsManager
         if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect") && GetDiaryType() == "Diary2")
         {
             GameManager.Instance.SetVariable("Diary2PresentPageNumber", presentPageNum);
-            EventManager.Instance.CallEvent("EventDiary2Content");
+            if(!(bool)GameManager.Instance.GetVariable("hasEventDiary2ContentRun"))
+                EventManager.Instance.CallEvent("EventDiary2Content");
         }
     }
 

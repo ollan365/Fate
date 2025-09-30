@@ -491,17 +491,17 @@ abstract public class ActionPointManager : MonoBehaviour
             case StartDayChangeBGM:
                 // BGM 정지 및 Daychange_start bgm 재생 (아이콘이 내려왔다가)
                 SoundPlayer.Instance.ChangeBGM(Constants.BGM_STOP);
-                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_start);
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_start, SoundPlayer.SfxPriority.High);
                 break;
 
             case MiddleDayChangeBGM:
                 // Daychange_middle bgm 재생 (한 장 넘어가고)
-                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_middle);
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_middle, SoundPlayer.SfxPriority.High);
                 break;
 
             case EndDayChangeBGM:
                 // Daychange_end bgm 재생 (다시 원위치)
-                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_end);
+                SoundPlayer.Instance.UISoundPlay(Constants.Sound_Daychange_end, SoundPlayer.SfxPriority.High);
                 break;
 
             case FinishDayChangeBGM:

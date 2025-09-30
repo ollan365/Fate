@@ -20,6 +20,11 @@ public class Carpet : EventObject, IResultExecutable
             gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        UpdateImageState();
+    }
+
     public new void OnMouseDown()
     {
         GameManager.Instance.SetVariable("isInquiry", false);
@@ -41,8 +46,18 @@ public class Carpet : EventObject, IResultExecutable
     {
         if (objectBehindCollider != null)
             objectBehindCollider.enabled = isClosedCarpet;
-        GameManager.Instance.InverseVariable($"CarpetClosed");
+        GameManager.Instance.InverseVariable("CarpetClosed");
         otherCarpet.SetActive(true);
         gameObject.SetActive(false);
     }
+
+    private void UpdateImageState()
+    {
+        bool carpetClosed = (bool)GameManager.Instance.GetVariable("CarpetClosed");
+        bool shouldActivateSelf = (carpetClosed == isClosedCarpet);
+
+        gameObject.SetActive(shouldActivateSelf);
+        otherCarpet.SetActive(!shouldActivateSelf);
+    }
+
 }

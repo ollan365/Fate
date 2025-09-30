@@ -111,7 +111,8 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case not null when resultID.StartsWith("Result_IsUnFinished"):  
-                // EventObject의 isFinished를 false로 (포스터 커터칼 있는채로 다시 조사하면 처음 조사 스크립트 나와야 해서 추가됨)
+                // EventObject의 isFinished를 false로 (포스터 커터칼 있는채로 다시 조사하면
+                // 처음 조사 스크립트 나와야 해서 추가됨)
                 variableName = resultID["Result_IsUnFinished".Length..];
                 GameManager.Instance.SetEventUnFinished(variableName);
                 break;
@@ -214,13 +215,14 @@ public class ResultManager : MonoBehaviour
 
             case "Result_StartHomecoming":
                 // 휴식 대사 스크립트 끝난 다음 귀가 대사 스크립트 출력되게 RefillHeartsOrEndDay 호출.
-                // DialogueManager.Instance.EndDialogue();
                 RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
                 break;
 
             case "Result_NextMorningDay":    // 휴식 대사 스크립트 마지막인 Next에서 호출됨.
                 // fade in/out effect 실행 후 아침 대사 출력하는 메소드 호출
-                // DialogueManager.Instance.EndDialogue();
+                // 귀가 스크립트 다 끝난 상태 : 저장 함수 호출, 귀가스크립트 진행 상태 true로 변경
+                GameManager.Instance.SetVariable("isHomeComingComplete", true);
+                SaveManager.Instance.SaveGameData();
                 StartCoroutine(RoomManager.Instance.actionPointManager.nextMorningDay());
                 break;
 

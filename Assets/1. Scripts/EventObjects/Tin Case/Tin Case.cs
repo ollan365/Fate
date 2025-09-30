@@ -26,7 +26,7 @@ public class TinCase : EventObject, IResultExecutable
     // 틴케이스 잠금 장치 실행
     private void ActivateTinCaseLock()
     {
-        isInquiry = false;  // 조사 시스템 예 아니오 스킵
+        //isInquiry = false;  // 조사 시스템 예 아니오 스킵
         UIManager.Instance.AnimateUI(tinCaseLock, true, true);
         SetCurrentLockObjectCanvasGroup(tinCaseLock);
     }
