@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class DiaryManager : PageContentsManager
 {
-    private Dictionary<string, (string, string)> diary1Pages = new Dictionary<string, (string, string)>();
-    private Dictionary<string, (string, string)> diary2Pages = new Dictionary<string, (string, string)>();
-    private Dictionary<string, (string, string)> room2BookPages = new Dictionary<string, (string, string)>();
-    private Dictionary<string, (string, string)> dreamDiaryPages = new Dictionary<string, (string, string)>();
-    private Dictionary<string, (string, string)> albumPages = new Dictionary<string, (string, string)>();
+    // Stores: (list of Script IDs, doodleID)
+    private Dictionary<string, (List<string>, string)> diary1Pages = new Dictionary<string, (List<string>, string)>();
+    private Dictionary<string, (List<string>, string)> diary2Pages = new Dictionary<string, (List<string>, string)>();
+    private Dictionary<string, (List<string>, string)> room2BookPages = new Dictionary<string, (List<string>, string)>();
+    private Dictionary<string, (List<string>, string)> dreamDiaryPages = new Dictionary<string, (List<string>, string)>();
+    private Dictionary<string, (List<string>, string)> albumPages = new Dictionary<string, (List<string>, string)>();
 
     public int totalPageCount = 0;
     
@@ -40,6 +41,8 @@ public class DiaryManager : PageContentsManager
     private Sprite[] endingSprites;
 
     private int presentPageNum;
+    private int lastCurrentPage;
+    private bool lastWasStatic;
 
     private string doodlesOrder = "";
     private int replayCount = 1; 
@@ -80,7 +83,7 @@ public class DiaryManager : PageContentsManager
     
     public override void DisplayPage(PageType pageType, int pageNum)
     {
-        Dictionary<string, (string, string)> currentPages = GetCurrentPagesDictionary();
+        Dictionary<string, (List<string>, string)> currentPages = GetCurrentPagesDictionary();
         if (currentPages == null)
         {
             SetPageText(pageType, "", pageNum);
@@ -104,8 +107,10 @@ public class DiaryManager : PageContentsManager
             return;
         }
 
-        string pageText = currentPages[diaryID].Item1;
+        List<string> scriptIds = currentPages[diaryID].Item1;
         string doodleID = currentPages[diaryID].Item2;
+
+        string pageText = BuildPageText(scriptIds);
 
         SetPageText(pageType, pageText, pageNum);
         SetPageImage(pageType, doodleID);
@@ -271,7 +276,7 @@ public class DiaryManager : PageContentsManager
         return diaryType;
     }
 
-    private Dictionary<string, (string, string)> GetCurrentPagesDictionary()
+    private Dictionary<string, (List<string>, string)> GetCurrentPagesDictionary()
     {
         switch (diaryType)
         {
@@ -292,6 +297,8 @@ public class DiaryManager : PageContentsManager
     
     public override void DisplayPagesDynamic(int currentPage)
     {
+        lastWasStatic = false;
+        lastCurrentPage = currentPage;
         DisplayPage(PageType.Left, currentPage);
         DisplayPage(PageType.Right, currentPage + 3);
         DisplayPage(PageType.Back, currentPage + 1);
@@ -300,6 +307,8 @@ public class DiaryManager : PageContentsManager
 
     public override void DisplayPagesStatic(int currentPage)
     {
+        lastWasStatic = true;
+        lastCurrentPage = currentPage;
         DisplayPage(PageType.Left, currentPage);
         DisplayPage(PageType.Right, currentPage + 1);
 
@@ -346,8 +355,7 @@ public class DiaryManager : PageContentsManager
                 continue;
             }
 
-            var script = DialogueManager.Instance.scripts[scriptID].GetScript().ProcessedText;
-            Dictionary<string, (string, string)> targetDictionary = null;
+            Dictionary<string, (List<string>, string)> targetDictionary = null;
 
             if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
             else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
@@ -368,15 +376,51 @@ public class DiaryManager : PageContentsManager
 
             if (targetDictionary.ContainsKey(diaryPageID))
             {
-                var currentString = targetDictionary[diaryPageID].Item1;
-                currentString += "\n\n" + script;
-                targetDictionary[diaryPageID] = (currentString, doodleID);
+                var list = targetDictionary[diaryPageID].Item1;
+                list.Add(scriptID);
+                targetDictionary[diaryPageID] = (list, doodleID);
             }
-            else targetDictionary.Add(diaryPageID, (script, doodleID));
+            else targetDictionary.Add(diaryPageID, (new List<string> { scriptID }, doodleID));
         }
 
         // Set totalPageCount based on the current scene's dictionary size
         totalPageCount = GetCurrentPagesDictionary()?.Count ?? 0;
+    }
+
+    private string BuildPageText(List<string> scriptIds)
+    {
+        if (scriptIds == null || scriptIds.Count == 0) return "";
+        int lang = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
+        List<string> localizedLines = new List<string>(scriptIds.Count);
+        foreach (var id in scriptIds)
+        {
+            if (!DialogueManager.Instance.scripts.ContainsKey(id))
+                continue;
+            var sentence = DialogueManager.Instance.scripts[id].GetScript(lang).ProcessedText;
+            localizedLines.Add(sentence);
+        }
+        return string.Join("\n\n", localizedLines);
+    }
+
+    private void OnEnable()
+    {
+        if (LocalizationManager.Instance != null)
+            LocalizationManager.Instance.OnLanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (LocalizationManager.Instance != null)
+            LocalizationManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+    }
+
+    private void OnLanguageChanged(int _)
+    {
+        // Re-display current pages using stored script IDs
+        if (lastWasStatic)
+            DisplayPagesStatic(lastCurrentPage);
+        else
+            DisplayPagesDynamic(lastCurrentPage);
     }
     
     public void SetDoodlesOrder(int doodlesCount=8)

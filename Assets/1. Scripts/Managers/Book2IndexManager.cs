@@ -6,10 +6,11 @@ using TMPro;
 
 public class Book2IndexManager : PageContentsManager
 {
-    private Dictionary<string, string> diary1Pages = new Dictionary<string, string>();
-    private Dictionary<string, string> diary2Pages = new Dictionary<string, string>();
-    private Dictionary<string, string> room2BookPages = new Dictionary<string, string>();
-    private Dictionary<string, string> dreamDiaryPages = new Dictionary<string, string>();
+    // Store script IDs per page; text is built at display time
+    private Dictionary<string, List<string>> diary1Pages = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> diary2Pages = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> room2BookPages = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> dreamDiaryPages = new Dictionary<string, List<string>>();
 
     public int totalPageCount = 0;
 
@@ -92,7 +93,7 @@ public class Book2IndexManager : PageContentsManager
                 break;
         }
 
-        Dictionary<string, string> currentPages = GetCurrentPagesDictionary();
+        Dictionary<string, List<string>> currentPages = GetCurrentPagesDictionary();
         if (currentPages == null)
         {
             SetPageText(pageType, "");
@@ -116,7 +117,8 @@ public class Book2IndexManager : PageContentsManager
             return;
         }
 
-        string pageText = currentPages[diaryID];
+        var scriptIds = currentPages[diaryID];
+        string pageText = BuildPageText(scriptIds);
 
         SetPageText(pageType, pageText);
 
@@ -152,7 +154,7 @@ public class Book2IndexManager : PageContentsManager
         return bookType + "_" + pageNum.ToString().PadLeft(3, '0');
     }
 
-    private Dictionary<string, string> GetCurrentPagesDictionary()
+    private Dictionary<string, List<string>> GetCurrentPagesDictionary()
     {
         switch (bookType)
         {
@@ -222,8 +224,7 @@ public class Book2IndexManager : PageContentsManager
                 continue;
             }
 
-            var script = DialogueManager.Instance.scripts[scriptID].GetScript().ProcessedText;
-            Dictionary<string, string> targetDictionary = null;
+            Dictionary<string, List<string>> targetDictionary = null;
 
             if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;
             else if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
@@ -236,20 +237,51 @@ public class Book2IndexManager : PageContentsManager
                 continue;
             }
 
-            if (targetDictionary.ContainsKey(diaryPageID)) targetDictionary[diaryPageID] += "\n\n" + script;
-            else targetDictionary.Add(diaryPageID, script);
+            if (targetDictionary.ContainsKey(diaryPageID)) {
+                targetDictionary[diaryPageID].Add(scriptID);
+            } else {
+                targetDictionary.Add(diaryPageID, new List<string> { scriptID });
+            }
         }
 
         // Set totalPageCount based on the current scene's dictionary size
         totalPageCount = GetCurrentPagesDictionary()?.Count ?? 0;
 
-        foreach (var page in GetCurrentPagesDictionary()) // Print all pages for debugging
-        {
-            // Debug.Log($"diaryID: {page.Key}\n\ttext: {page.Value}");
-        }
-
-
         DisplayFlags();
+    }
+
+    private string BuildPageText(List<string> scriptIds)
+    {
+        if (scriptIds == null || scriptIds.Count == 0) return string.Empty;
+        int lang = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
+        List<string> lines = new List<string>(scriptIds.Count);
+        foreach (var id in scriptIds)
+        {
+            if (!DialogueManager.Instance || DialogueManager.Instance.scripts == null ||
+                !DialogueManager.Instance.scripts.ContainsKey(id))
+                continue;
+            var sentence = DialogueManager.Instance.scripts[id].GetScript(lang).ProcessedText;
+            lines.Add(sentence);
+        }
+        return string.Join("\n\n", lines);
+    }
+
+    private void OnEnable()
+    {
+        if (LocalizationManager.Instance != null)
+            LocalizationManager.Instance.OnLanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (LocalizationManager.Instance != null)
+            LocalizationManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+    }
+
+    private void OnLanguageChanged(int _)
+    {
+        // Re-render current pages to reflect language change
+        DisplayPagesStatic(presentPageNum);
     }
 
     // Each time a page is turned, the corresponding index flags are turned on according to the position.

@@ -154,23 +154,6 @@ public class MemoManager : PageContentsManager
         UpdateNotification();
     }
     
-    public int GetUnseenMemoPagesCount() {
-        return unseenMemoPages.Count;
-    }
-    
-    public void ResetMemoSystem() {
-        for (int i = 0; i < RevealedMemoList.Count; i++)
-            RevealedMemoList[i].Clear();
-        
-        for (int i = 0; i < SavedMemoList.Count; i++)
-            for (int j = 0; j < SavedMemoList[i].Count; j++)
-                SavedMemoList[i][j][1] = "가려진 메모";
-        
-        ClearUnseenMemoPages();
-        
-        UpdateNotification();
-    }
-
     public void OnExit()
     {
         SetMemoContents(false);
@@ -454,7 +437,10 @@ public class MemoManager : PageContentsManager
         var allMemos = GetAggregatedMemos();
         string memoText = "";
         if (pageNum > 0 && pageNum <= allMemos.Count)
-            memoText = allMemos[pageNum - 1][1];
+        {
+            string memoID = allMemos[pageNum - 1][0];
+            memoText = GetMemoText(memoID);
+        }
         switch (pageType)
         {
             case PageType.Left:
@@ -501,6 +487,49 @@ public class MemoManager : PageContentsManager
         var allMemos = GetAggregatedMemos();
         flipRightButton.SetActive(currentPage < allMemos.Count - 1);
         UpdateNotification();
+    }
+
+    private string GetMemoText(string memoID)
+    {
+        if (!memoScripts.ContainsKey(memoID))
+            return "";
+
+        string scriptID = memoScripts[memoID];
+
+        // Unrevealed memos show placeholder text
+        int memoSceneIndex = GetMemoSceneIndex(memoID);
+        if (memoSceneIndex < 0 || memoSceneIndex >= RevealedMemoList.Count)
+            return "";
+
+        bool revealed = RevealedMemoList[memoSceneIndex].Contains(scriptID);
+        if (!revealed)
+            return "가려진 메모";
+
+        int lang = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
+        if (!DialogueManager.Instance || DialogueManager.Instance.scripts == null ||
+            !DialogueManager.Instance.scripts.ContainsKey(scriptID))
+            return "";
+
+        return DialogueManager.Instance.scripts[scriptID].GetScript(lang).ProcessedText;
+    }
+
+    private void OnEnable()
+    {
+        if (LocalizationManager.Instance != null)
+            LocalizationManager.Instance.OnLanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (LocalizationManager.Instance != null)
+            LocalizationManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+    }
+
+    private void OnLanguageChanged(int _)
+    {
+        if (!isMemoOpen || memoPages == null)
+            return;
+        DisplayPagesStatic(memoPages.currentPage);
     }
 
     private void MarkPageAsRead(int pageNum)
