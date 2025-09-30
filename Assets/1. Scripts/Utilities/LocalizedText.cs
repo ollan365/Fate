@@ -15,7 +15,8 @@ public class LocalizedText : MonoBehaviour
     private void OnEnable()	{
 		if (LocalizationManager.Instance != null) {
 			LocalizationManager.Instance.OnLanguageChanged += Apply;
-			Apply(LocalizationManager.Instance.GetLanguage());
+			if (LocalizationManager.Instance.IsInitialized)
+				Apply(LocalizationManager.Instance.GetLanguage());
 		}
     }
 
@@ -42,7 +43,7 @@ public class LocalizedText : MonoBehaviour
 			return;
 		}
 
-		string sentence = DialogueManager.Instance.scripts[scriptId].GetScriptByLanguageIndex(languageIndex);
+		string sentence = DialogueManager.Instance.scripts[scriptId].GetScript(languageIndex).ProcessedText;
 
 		if (tmpText != null)
 			tmpText.text = sentence;

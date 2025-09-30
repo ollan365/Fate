@@ -222,7 +222,7 @@ public class Book2IndexManager : PageContentsManager
                 continue;
             }
 
-            var script = DialogueManager.Instance.scripts[scriptID].GetScript();
+            var script = DialogueManager.Instance.scripts[scriptID].GetScript().ProcessedText;
             Dictionary<string, string> targetDictionary = null;
 
             if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;

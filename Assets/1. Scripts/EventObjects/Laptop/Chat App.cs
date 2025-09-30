@@ -80,8 +80,8 @@ public class ChatApp : MonoBehaviour
             {
                 Date = fields[2].Trim(),
                 Time = fields[3].Trim(),
-                SpeakerName = DialogueManager.Instance.scripts[fields[4].Trim()].GetScript(),
-                ScriptContent = DialogueManager.Instance.scripts[fields[5].Trim()].GetScript()
+                SpeakerName = DialogueManager.Instance.scripts[fields[4].Trim()].GetScript().ProcessedText,
+                ScriptContent = DialogueManager.Instance.scripts[fields[5].Trim()].GetScript().ProcessedText
             };
 
             if (string.IsNullOrWhiteSpace(currentConversationID)) currentConversationID = previousConversationID;

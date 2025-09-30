@@ -62,7 +62,6 @@ public class GameManager : MonoBehaviour
         
         if (isDebug) {
             ShowVariables();
-            // set timescale to 0.5f for debugging
             Time.timeScale = 4f;
         }
 
@@ -70,7 +69,6 @@ public class GameManager : MonoBehaviour
             SaveManager.Instance.CreateNewGameData();
     }
     
-    // 디버깅 용
     private void Update() {
         if (isDebug)
             ShowVariables();

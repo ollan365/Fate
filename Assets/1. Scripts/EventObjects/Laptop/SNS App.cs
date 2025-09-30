@@ -63,7 +63,7 @@ public class SNSApp : MonoBehaviour
             // Assuming DialogueManager.Instance.scripts[post.ScriptID].GetScript() returns the script content
             if (DialogueManager.Instance.scripts.ContainsKey(post.ScriptID))
             {
-                string scriptContent = DialogueManager.Instance.scripts[post.ScriptID].GetScript();
+                string scriptContent = DialogueManager.Instance.scripts[post.ScriptID].GetScript().ProcessedText;
                 newPost.transform.Find("ScriptText").GetComponent<TextMeshProUGUI>().text = scriptContent;
             }
             else

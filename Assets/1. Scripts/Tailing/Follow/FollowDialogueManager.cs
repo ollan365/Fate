@@ -110,7 +110,7 @@ public class FollowDialogueManager : MonoBehaviour
         {
             DialogueManager.Instance.dialogues[dialogueID].SetCurrentLineIndex(currentDialogueLineIndex);
             DialogueLine dialogueLine = DialogueManager.Instance.dialogues[dialogueID].Lines[currentDialogueLineIndex];
-            string sentence = DialogueManager.Instance.scripts[dialogueLine.ScriptID].GetScript();
+            string sentence = DialogueManager.Instance.scripts[dialogueLine.ScriptID].GetScript().ProcessedText;
             int speakerIndex = Int(ToEnum(dialogueLine.SpeakerID));
 
             // 대사가 출력된 판넬과 텍스트 받아오기

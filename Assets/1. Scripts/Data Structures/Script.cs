@@ -26,29 +26,21 @@ public class Script
         Placeholder = placeholder;
     }
     
-    public string GetScript()
+    public ScriptPlaceholderResult GetScript(int languageIndex=-1)
     {
-        return GetScriptByLanguageIndex((int)GameManager.Instance.GetVariable("Language"));
-    }
-
-    public string GetScriptByLanguageIndex(int languageIndex)
-    {
+        if (languageIndex == -1)
+            languageIndex = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
+        
         string localizedText = EngScript;
         switch (languageIndex) {
             case 1:
                 localizedText = KorScript;
                 break;
         }
-        return GetFormattedText(localizedText);
+        return ProcessPlaceholders(localizedText);
     }
     
-    public ScriptPlaceholderResult GetProcessedScript()
-    {
-        string sentence = GetScript();
-        return ProcessPlaceholders(sentence);
-    }
-    
-    public ScriptPlaceholderResult ProcessPlaceholders(string baseText)
+    private ScriptPlaceholderResult ProcessPlaceholders(string baseText)
     {
         var result = new ScriptPlaceholderResult
         {
@@ -90,30 +82,5 @@ public class Script
         }
         return result;
     }
-    private string GetFormattedText(string text)
-    {
-        string newText = text;
-        bool textEffect = false;
-        int startIndex = -1;
-        for (int i = 0; i < text.Length; i++)
-        {
-            if (text[i] == '[') {
-                textEffect = true;
-                startIndex = i;
-            }
-
-            if (!textEffect || text[i] != ']') 
-                continue;
-            
-            int endIndex = i;
-            newText = text.Substring(0, startIndex);
-            newText += "<color=red>";
-            newText += text.Substring(startIndex + 1, endIndex - startIndex - 1);
-            newText += "</color>";
-            newText += text.Substring(endIndex + 1);
-
-            text = newText;
-        }
-        return newText;
-    }
+    
 }

@@ -836,19 +836,19 @@ public class UIManager : MonoBehaviour {
         switch (endingIndex) {
             case badA:
                 endingTypeText.text = "# 배드 엔딩 A";
-                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0417"].GetScript();
+                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0417"].GetScript().ProcessedText;
                 break;
             case badB:
                 endingTypeText.text = "# 배드 엔딩 B";
-                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0618"].GetScript();
+                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0618"].GetScript().ProcessedText;
                 break;
             case trueEnding:
                 endingTypeText.text = "# 트루 엔딩";
-                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0678"].GetScript();
+                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0678"].GetScript().ProcessedText;
                 break;
             case hidden:
                 endingTypeText.text = "# 히든 엔딩";
-                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0777"].GetScript();
+                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0777"].GetScript().ProcessedText;
                 break;
         }
 

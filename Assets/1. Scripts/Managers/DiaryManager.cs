@@ -346,7 +346,7 @@ public class DiaryManager : PageContentsManager
                 continue;
             }
 
-            var script = DialogueManager.Instance.scripts[scriptID].GetProcessedScript().ProcessedText;
+            var script = DialogueManager.Instance.scripts[scriptID].GetScript().ProcessedText;
             Dictionary<string, (string, string)> targetDictionary = null;
 
             if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;

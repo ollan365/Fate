@@ -212,7 +212,7 @@ public class MemoManager : PageContentsManager
         for (var j = 0; j < SavedMemoList[memoSceneIndex].Count; j++) {
             if (SavedMemoList[memoSceneIndex][j][0] != memoID) continue;
             
-            string script = DialogueManager.Instance.scripts[scriptID].GetScript();
+            string script = DialogueManager.Instance.scripts[scriptID].GetScript().ProcessedText;
             SavedMemoList[memoSceneIndex][j][1] = script;
             
             int pageNum = CalculateFirstPageNumber(memoSceneIndex) + j;

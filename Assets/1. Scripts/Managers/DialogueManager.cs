@@ -181,7 +181,7 @@ public class DialogueManager : MonoBehaviour
             foreach (TextMeshProUGUI speakerText in speakerTexts)
                 speakerText.text = dialogueLine.SpeakerID == "DialogueC_003"
                     ? GameManager.Instance.GetVariable("FateName").ToString()
-                    : scripts[dialogueLine.SpeakerID].GetScript();
+                    : scripts[dialogueLine.SpeakerID].GetScript().ProcessedText;
     }
     
     private string ProcessPlaceholders(DialogueLine dialogueLine, out bool auto, out bool fast, out bool multi, out bool ending) {
@@ -190,10 +190,7 @@ public class DialogueManager : MonoBehaviour
         multi = false;
         ending = false;
 
-        var processed = scripts[dialogueLine.ScriptID].GetProcessedScript();
-        var sentence = processed.ProcessedText;
-
-        // Apply side-effects based on flags
+        Script.ScriptPlaceholderResult processed = scripts[dialogueLine.ScriptID].GetScript();
         if (processed.Auto) {
             auto = true;
             foreach (GameObject skip in skipText)
@@ -214,7 +211,7 @@ public class DialogueManager : MonoBehaviour
             dialogueSet[dialogueType.ToInt()].SetActive(true);
         }
 
-        return sentence;
+        return processed.ProcessedText;
     }
 
     private void UpdateBackground(DialogueLine dialogueLine) {
@@ -586,7 +583,7 @@ public class DialogueManager : MonoBehaviour
             var choiceButton = Instantiate(choicePrefab, choicesContainer[dialogueType.ToInt()]).GetComponent<Button>();
             var choiceText = choiceButton.GetComponentInChildren<TextMeshProUGUI>();
 
-            choiceText.text = scripts[choiceLine.ScriptID].GetScript();
+            choiceText.text = scripts[choiceLine.ScriptID].GetScript().ProcessedText;
             choiceButton.onClick.AddListener(() => OnChoiceSelected(choiceLine.Next));
 
             // 만약 잠김 선택지(엔딩)라면 잠김으로 뜨도록 표시
