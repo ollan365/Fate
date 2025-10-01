@@ -7,6 +7,8 @@ public class LobbyPanel : MonoBehaviour
     }
     
     private void OnDisable() {
+        if (!Application.isPlaying)
+            return;
         if (DialogueManager.Instance?.isDialogueActive == false)
             UIManager.Instance?.SetUI(eUIGameObjectName.BlurImage, false, true);
     }

@@ -200,6 +200,7 @@ public class UIManager : MonoBehaviour {
     private readonly Dictionary<GameObject, bool> originalButtonInteractable = new(); // Track original Button.interactable per target so we can restore on cancel/finish
 
     public static UIManager Instance { get; private set; }
+    private bool isQuitting;
 
     private void Awake() {
         if (Instance == null) {
@@ -227,6 +228,10 @@ public class UIManager : MonoBehaviour {
     private void Start() {
         ChangeBgmOrSoundEffectValue(true);
         ChangeBgmOrSoundEffectValue(false);
+    }
+
+    private void OnApplicationQuit() {
+        isQuitting = true;
     }
 
     private void AddUIGameObjects() {
@@ -345,12 +350,28 @@ public class UIManager : MonoBehaviour {
 
     public void AnimateUI(GameObject targetUI, bool isActive, bool fade = false, FloatDirection floatDir = FloatDirection.None) {
         if (!targetUI) {
-            Debug.LogWarning($"Target UI is null! GameObject name: {targetUI.name}");
+            Debug.LogWarning("Target UI is null!");
             return;
         }
 
         if (!fade && floatDir == FloatDirection.None) {
             targetUI.SetActive(isActive);
+            return;
+        }
+
+        // If the application is quitting or this component is inactive, skip animations and set state immediately
+        if (!Application.isPlaying || isQuitting || !isActiveAndEnabled || !gameObject.activeInHierarchy) {
+            if (isActive) {
+                targetUI.SetActive(true);
+                var cg = targetUI.GetComponent<CanvasGroup>();
+                if (cg)
+                    cg.alpha = 1f;
+            } else {
+                var cg = targetUI.GetComponent<CanvasGroup>();
+                if (cg)
+                    cg.alpha = 0f;
+                targetUI.SetActive(false);
+            }
             return;
         }
 
