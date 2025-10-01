@@ -55,12 +55,6 @@ public class DiaryManager : PageContentsManager
         endingSprites = UIManager.Instance.endingSprites;
     }
 
-    private void OnDisable()
-    {
-        if (GetDiaryType() == "Diary2")
-            GameManager.Instance.SetVariable("hasEventDiary2ContentRun", false);
-    }
-
     public void SetTotalPages()
     {
         switch (diaryType)
@@ -419,6 +413,9 @@ public class DiaryManager : PageContentsManager
     {
         if (LocalizationManager.Instance != null)
             LocalizationManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+        
+        if (GetDiaryType() == "Diary2")
+            GameManager.Instance.SetVariable("hasEventDiary2ContentRun", false);
     }
 
     private void OnLanguageChanged(int _)
