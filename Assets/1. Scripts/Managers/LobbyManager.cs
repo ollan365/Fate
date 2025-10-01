@@ -9,8 +9,10 @@ public class LobbyManager : MonoBehaviour
     public static LobbyManager Instance { get; private set; }
     
     public GameObject lobbyButtons;
+    public GameObject particleSystemObject;
+    public Image titleImage;
     public Image backgroundImage;
-    public Sprite titleWithLogo, room1Side1BackgroundSprite, blackBgSprite;
+    public Sprite room1Side1BackgroundSprite, blackBgSprite;
     [SerializeField] private GameObject gotoSceneButtons;
     [SerializeField] private GameObject lobbyPanels;
     [SerializeField] private GameObject clockSecondGameObject;
@@ -21,8 +23,6 @@ public class LobbyManager : MonoBehaviour
     private string fateName;
     private string previousFateName;
     private LocalizedText nameCheckQuestionLocalized;
-    private int language = 1;
-    public int Language { set => language = value; }
     private bool isLobby;
 
     private void Awake() {
@@ -36,6 +36,9 @@ public class LobbyManager : MonoBehaviour
         isLobby = true;
         lobbyButtons.SetActive(true);
         lobbyPanels.SetActive(true);
+        particleSystemObject.SetActive(true);
+        titleImage.gameObject.SetActive(true);
+        backgroundImage.gameObject.SetActive(false);
 
         if (GameManager.Instance.isDemoBuild) { // default: -20
             lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -60;
@@ -116,12 +119,15 @@ public class LobbyManager : MonoBehaviour
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
         lobbyButtons.SetActive(false);
         clockSecondGameObject.SetActive(false);
+        particleSystemObject.SetActive(false);
         MemoManager.Instance.SetShouldHideMemoButton(true);
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         SoundPlayer.Instance.ChangeBGM(Constants.BGM_PROLOGUE);
         isLobby = false;
         
         yield return new WaitForSeconds(1f);
+        titleImage.gameObject.SetActive(false);
+        backgroundImage.gameObject.SetActive(true);
         backgroundImage.sprite = blackBgSprite;
         UIManager.Instance.coverPanel.gameObject.SetActive(false);
         EventManager.Instance.CallEvent("EventFirstPrologue");
