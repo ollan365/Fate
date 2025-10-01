@@ -82,7 +82,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private const float SpaceSkipHoldSeconds = 0.5f;
+    private const float SpaceSkipHoldSeconds = 1f;
     private float spacePressedTime = 0f;
 
     private static void HandleLeftKeyClick() {
