@@ -20,7 +20,9 @@ public class CalendarPanel : MonoBehaviour
 
     void Start()
     {
-        currentDate = new DateTime(2024, 10, 1);  // 2024년 10월 시작으로 고정
+        int savedMonth = (int)(GameManager.Instance.GetVariable("CalendarMonth") ?? 10);
+        savedMonth = Mathf.Clamp(savedMonth, 1, 12);
+        currentDate = new DateTime(2024, savedMonth, 1);  // 시작 월 세이브에서 로드
         GameManager.Instance.SetVariable("CalendarMonth", currentDate.Month);
         UpdateCalendar();
     }

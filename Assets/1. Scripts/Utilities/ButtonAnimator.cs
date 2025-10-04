@@ -32,6 +32,7 @@ public class ButtonAnimator : MonoBehaviour
     private Vector3 originalPosition;
     private Quaternion originalRotation;
     private Coroutine animationCoroutine;
+    private Coroutine hoverCoroutine;
     private bool isHovering = false;
     
     public enum AnimationType
@@ -73,7 +74,7 @@ public class ButtonAnimator : MonoBehaviour
     {
         // Start animation loop when enabled
         StopAllCoroutines();
-        StartCoroutine(AnimationLoop());
+        animationCoroutine = StartCoroutine(AnimationLoop());
     }
     
     private void OnDisable()
@@ -279,15 +280,17 @@ public class ButtonAnimator : MonoBehaviour
     private void OnPointerEnter(BaseEventData eventData)
     {
         isHovering = true;
-        StopAllCoroutines();
-        StartCoroutine(HoverAnimation(true));
+        if (hoverCoroutine != null)
+            StopCoroutine(hoverCoroutine);
+        hoverCoroutine = StartCoroutine(HoverAnimation(true));
     }
     
     private void OnPointerExit(BaseEventData eventData)
     {
         isHovering = false;
-        StopAllCoroutines();
-        StartCoroutine(HoverAnimation(false));
+        if (hoverCoroutine != null)
+            StopCoroutine(hoverCoroutine);
+        hoverCoroutine = StartCoroutine(HoverAnimation(false));
     }
     
     private IEnumerator HoverAnimation(bool hovering)
@@ -308,11 +311,6 @@ public class ButtonAnimator : MonoBehaviour
         }
         
         rectTransform.localScale = targetScale;
-        
-        if (!hovering)
-        {
-            StartCoroutine(AnimationLoop());
-        }
     }
     
     private void AddEventTriggerListener(EventTrigger trigger,
