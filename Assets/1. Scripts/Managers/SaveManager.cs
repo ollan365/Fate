@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading;
 using System.Collections.Generic;
 using UnityEngine;
 using static Constants;
@@ -11,6 +12,10 @@ public class SaveManager : MonoBehaviour
 
     // --- 게임 데이터 파일이름 설정 ("원하는 이름(영문).json") --- //
     private string SAVE_DATA_FILE_PATH = "/GameData.json";
+
+    // 게임 데이터 저장 동기화를 위한 공용 락
+    private static readonly object _saveLock = new object();
+
     private SaveData InitData { set; get; }
 
     void Awake()
@@ -109,16 +114,67 @@ public class SaveManager : MonoBehaviour
     // 저장하기
     public void SaveGameData(SaveData newSaveData = null)
     {
-        // 일반적인 저장의 경우, 현재 게임의 상태를 저장
-        if (newSaveData == null)
-            newSaveData = new SaveData(
-                GameManager.Instance.Variables,
-                GameManager.Instance.eventObjectsStatusDict,
-                MemoManager.Instance.SavedMemoList,
-                MemoManager.Instance.RevealedMemoList);
-        
-        // 클래스를 Json 형식으로 전환하여 저장
-        File.WriteAllText(SAVE_DATA_FILE_PATH, JsonUtility.ToJson(newSaveData, true));
+        lock (_saveLock)
+        {
+            // 일반적인 저장의 경우, 현재 게임의 상태를 저장
+            if (newSaveData == null)
+                newSaveData = new SaveData(
+                    GameManager.Instance.Variables,
+                    GameManager.Instance.eventObjectsStatusDict,
+                    MemoManager.Instance.SavedMemoList,
+                    MemoManager.Instance.RevealedMemoList);
+
+            string json = JsonUtility.ToJson(newSaveData, true);
+            AtomicWrite(SAVE_DATA_FILE_PATH, json);
+        }
+    }
+
+    public void SaveVariable(string variableName)
+    {
+        lock (_saveLock)
+        {
+            SaveData save;
+            if (File.Exists(SAVE_DATA_FILE_PATH))
+            {
+                string json = File.ReadAllText(SAVE_DATA_FILE_PATH);
+                save = JsonUtility.FromJson<SaveData>(json);
+
+                // 파일에 문제가 있으면 전체 저장
+                if (save == null)
+                {
+                    SaveGameData();
+                    save = JsonUtility.FromJson<SaveData>(File.ReadAllText(SAVE_DATA_FILE_PATH));
+                }
+            }
+            else // 저장된 전체 데이터가 없으면 전체 저장
+            {
+                SaveGameData();
+                save = JsonUtility.FromJson<SaveData>(File.ReadAllText(SAVE_DATA_FILE_PATH));
+            }
+
+            var stringVars = JsonConvert.DeserializeObject<Dictionary<string, string>>(save.variablesToJson);
+            stringVars[variableName] = GameManager.Instance.GetVariable(variableName).ToString();
+
+            save.variablesToJson = JsonConvert.SerializeObject(stringVars);
+
+            AtomicWrite(SAVE_DATA_FILE_PATH, JsonUtility.ToJson(save, true));
+        }
+    }
+
+    private static void AtomicWrite(string path, string content)
+    {
+        string tmp = path + ".tmp";
+        File.WriteAllText(tmp, content);
+
+        try
+        {
+            File.Replace(tmp, path, path + ".bak", true);
+        }
+        catch
+        {
+            if(File.Exists(path)) File.Delete(path);
+            File.Move(tmp,path);
+        }
     }
 
     // 저장된 게임 데이터 삭제
