@@ -26,6 +26,11 @@ public class ResultManager : MonoBehaviour
         executableObjects = new Dictionary<string, IResultExecutable>();
     }
 
+    public void ExecuteActionObject(string objectName)
+    {
+        executableObjects[objectName].ExecuteAction();
+    }
+
     //public void executableObjectsKeyCheck(string objectName)
     //{
     //    if (executableObjects.ContainsKey(objectName))
@@ -197,10 +202,6 @@ public class ResultManager : MonoBehaviour
                 break;
             
             // 휴식 시스템
-            case "Result_restButton":
-                // DialogueManager.Instance.EndDialogue();
-                break;
-
             case "Result_restYes": // 휴식에서 예 버튼
                 SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
                 // DialogueManager.Instance.EndDialogue();
@@ -209,9 +210,13 @@ public class ResultManager : MonoBehaviour
                 StartCoroutine(RoomManager.Instance.actionPointManager.TakeRest());
                 break;
 
-            case "Result_restNo": // 휴식에서 아니오 버튼
-                // DialogueManager.Instance.EndDialogue();
-                break;
+            //case "Result_restButton":
+            //    // DialogueManager.Instance.EndDialogue();
+            //    break;
+
+            //case "Result_restNo": // 휴식에서 아니오 버튼
+            //    // DialogueManager.Instance.EndDialogue();
+            //    break;
 
             case "Result_StartHomecoming":
                 // 휴식 대사 스크립트 끝난 다음 귀가 대사 스크립트 출력되게 RefillHeartsOrEndDay 호출.
