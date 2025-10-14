@@ -36,7 +36,7 @@ public class LocalizationManager : MonoBehaviour
 		currentLanguage = languageIndex;
 		GameManager.Instance.SetVariable("Language", currentLanguage);
 		if (SaveManager.Instance != null)
-			SaveManager.Instance.SaveGameData();
+			SaveManager.Instance.SaveVariable("Language");
 		OnLanguageChanged?.Invoke(currentLanguage);
 	}
 
