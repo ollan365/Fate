@@ -24,6 +24,15 @@ public class Doors : EventObject, IResultExecutable
         }
     }
 
+    private void OnEnable()
+    {
+        // objectBehindColliders의 enabled를 Doors 열림 상태에 따라 활성화, 비활성화 적용
+        foreach (var behindCollider in objectBehindColliders)
+        {
+            behindCollider.enabled = !isClosedDoors;
+        }
+    }
+
     public new void OnMouseDown()
     {
         bool isBusy = GameManager.Instance.GetIsBusy();

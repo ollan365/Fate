@@ -19,14 +19,16 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private Canvas imageAndLockPanelCanvas;
     // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
     public bool isInvestigating = false;
-    private bool isZoomed = false;
-    
+    [SerializeField] private bool isZoomed = false;
+    public string currentZoomViewName = null;
+
     // 액션포인트 매니저
     [Header("행동력 매니저")]
     public ActionPointManager actionPointManager;
     public Room2ActionPointManager room2ActionPointManager;
     
     [HideInInspector] public TutorialManager tutorialManager;
+    private const string restDialogueId = "RoomEscape_035";
 
     void Awake()
     {
@@ -74,20 +76,16 @@ public class RoomManager : MonoBehaviour
             zoomView.SetActive(false);
         }
 
-        // Side 1으로 초기화
-        currentView = sides[currentSideIndex];
-        SetCurrentSide(currentSideIndex);
+        // SaveManager에 저장되어 있던 currentSideIndex으로 초기화
+        currentView = sides[(int)GameManager.Instance.GetVariable("currentSideIndex")];
+        SetCurrentSide((int)GameManager.Instance.GetVariable("currentSideIndex"));
 
         MemoManager.Instance.SetShouldHideMemoButton(false);
         SetButtons();
 
-        // 귀가 스크립트 출력 미완이면 RefillHeartsOrEndDay 호출하여 스크립트 처음부터 다시 출력
-        if (!(bool)GameManager.Instance.GetVariable("isHomeComingComplete"))
-        {
-            actionPointManager.RefillHeartsOrEndDay();
-        }
-        else
-            actionPointManager.CreateHearts();  // create hearts on room start
+        // Start 시 저장 데이터를 기반으로 씬 상태를 복원하고,
+        // 미완 진행(다이얼로그 진행 중 중단 등)이면 저장되어 있던 상태로 재시작.
+        RestoreSceneStateFromSave();
 
         tutorialManager = gameObject.GetComponent<TutorialManager>();
         tutorialManager?.AddTutorialObjects();
@@ -99,6 +97,68 @@ public class RoomManager : MonoBehaviour
         }
         tutorialManager?.StartTutorial();
     }
+
+    private void RestoreSceneStateFromSave()
+    {
+        // 귀가 스크립트 출력 미완이면 처음부터 다시 실행
+        if (!(bool)GameManager.Instance.GetVariable("isHomeComingComplete"))
+        {
+            actionPointManager.RefillHeartsOrEndDay();
+            return;
+        }
+
+        // 완료 상태면 각 요소 복원
+        // 휴식 다이얼로그가 출력 중이 아닐 때만 하트 만들기
+        // 휴식 다이얼로그가 출력 중이면 Day 텍스트만 업데이트.
+        if ((string)GameManager.Instance.GetVariable("currentDialogueID") == restDialogueId)
+            actionPointManager.TryUpdateDayTextDuringRest();
+        else
+            actionPointManager.CreateHearts();
+
+        // 미완성인 상태가 있으면 재시작 처리
+        if ((bool)GameManager.Instance.GetVariable("isDialogueActive"))
+        {
+            string currentDialogueID = (string)GameManager.Instance.GetVariable("currentDialogueID");
+            if (!string.IsNullOrEmpty(currentDialogueID) &&
+                !string.Equals(currentDialogueID, "NONE", System.StringComparison.OrdinalIgnoreCase))
+            {
+                DialogueManager.Instance.StartDialogue(currentDialogueID);
+            }
+        }
+
+        if ((bool)GameManager.Instance.GetVariable("isZoomed"))
+        {
+            string currentZoomName = (string)GameManager.Instance.GetVariable("currentZoomViewName");
+            if (!string.IsNullOrEmpty(currentZoomName) &&
+                !string.Equals(currentZoomName, "NONE", System.StringComparison.OrdinalIgnoreCase))
+            {
+                ResultManager.Instance.ExecuteActionObject(currentZoomName);
+            }
+        }
+
+        bool isImageActive = (bool)GameManager.Instance.GetVariable("isImageActive");
+        bool isLockObjectActive = (bool)GameManager.Instance.GetVariable("isLockObjectActive");
+
+        if (isImageActive)
+        {
+            string currentObjectImageName = (string)GameManager.Instance.GetVariable("currentEventObjectName");
+            if (!string.IsNullOrEmpty(currentObjectImageName) &&
+                !string.Equals(currentObjectImageName, "NONE", System.StringComparison.OrdinalIgnoreCase))
+            {
+                imageAndLockPanelManager.SetObjectImageGroup(true, currentObjectImageName);
+            }
+        }
+        else if (isLockObjectActive)
+        {
+            string currentLockObjectName = (string)GameManager.Instance.GetVariable("currentLockObjectName");
+            if (!string.IsNullOrEmpty(currentLockObjectName) &&
+                !string.Equals(currentLockObjectName, "NONE", System.StringComparison.OrdinalIgnoreCase))
+            {
+                imageAndLockPanelManager.SetLockObject(true, currentLockObjectName);
+            }
+        }
+    }
+
 
     public void MoveSides(int leftOrRight)  // left: -1, right: 1
     {
@@ -129,6 +189,7 @@ public class RoomManager : MonoBehaviour
             UIManager.Instance.StartCoroutine(UIManager.Instance.HideTemporarily(eUIGameObjectName.ExitButton, 0.5f));
 
             SetCurrentView(sides[currentSideIndex]);
+            currentZoomViewName = null;
             isZoomed = false;
         }
 
@@ -137,6 +198,11 @@ public class RoomManager : MonoBehaviour
         var refillHeartsOrEndDay = (bool)GameManager.Instance.GetVariable("RefillHeartsOrEndDay");
         if (refillHeartsOrEndDay)
             actionPointManager.RefillHeartsOrEndDay();
+
+        GameManager.Instance.SetVariable("isZoomed", isZoomed);
+        GameManager.Instance.SetVariable("currentZoomViewName", "NONE");
+
+        SaveManager.Instance.SaveGameData();
     }
 
     // 비밀번호 무한 입력 시도 방지
@@ -153,10 +219,16 @@ public class RoomManager : MonoBehaviour
         if (isZoomed)
         {
             SetCurrentView(sides[currentSideIndex]);
+            currentZoomViewName = null;
             isZoomed = false;
         }
         
         SetButtons();
+
+        GameManager.Instance.SetVariable("isZoomed", isZoomed);
+        GameManager.Instance.SetVariable("currentZoomViewName", "NONE");
+
+        SaveManager.Instance.SaveGameData();
     }
 
     public bool GetIsInvestigating()
@@ -173,6 +245,11 @@ public class RoomManager : MonoBehaviour
     public void SetIsZoomed(bool isTrue)
     {
         isZoomed = isTrue;
+
+        GameManager.Instance.SetVariable("isZoomed", isZoomed);
+        GameManager.Instance.SetVariable("currentZoomViewName", currentZoomViewName);
+
+        SaveManager.Instance.SaveGameData();
     }
 
     // 시점 전환
@@ -181,6 +258,7 @@ public class RoomManager : MonoBehaviour
         SetCurrentView(sides[newSideIndex]);
         currentSideIndex = newSideIndex;
         GameManager.Instance.SetVariable("currentSideIndex", currentSideIndex);
+        SaveManager.Instance.SaveGameData();
     }
     
     // 뷰 전환
