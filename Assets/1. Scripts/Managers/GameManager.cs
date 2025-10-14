@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public bool isDebug;
     public bool skipTutorial;
     public bool skipInquiry;
+    public bool isReleaseBuild;
     public bool isDemoBuild;
 
     // 조사 시스템에서 현재 조사하고 있는 오브젝트의 evnetId를 저장함
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
         if (isDebug)
             ShowVariables();
 
-        if (isDemoBuild) {
+        if (isDemoBuild || isReleaseBuild) {
             if (GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_2 &&
                 UIManager.Instance.GetUI(eUIGameObjectName.EndOfDemoPage).activeInHierarchy == false)
                 UIManager.Instance.SetUI(eUIGameObjectName.EndOfDemoPage, true);

@@ -44,6 +44,8 @@ public class LobbyManager : MonoBehaviour
             lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -60;
             lobbyButtons.transform.GetChild(1).gameObject.SetActive(false);
             gotoSceneButtons.SetActive(false);
+        } else if (GameManager.Instance.isReleaseBuild) {
+            gotoSceneButtons.SetActive(false);
         }
         
         StartCoroutine(WaitForGameManagerStartFunction());
@@ -81,7 +83,7 @@ public class LobbyManager : MonoBehaviour
     }
     
     public void StartNewGame() {
-        if (!GameManager.Instance.isDemoBuild && SaveManager.Instance.CheckGameData())  // 저장된 게임 데이터가 없는 경우
+        if (GameManager.Instance.isDemoBuild == false && SaveManager.Instance.CheckGameData())  // 저장된 게임 데이터가 없는 경우
             UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, true);
         else
             StartCoroutine(StartPrologue());

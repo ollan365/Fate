@@ -219,7 +219,7 @@ public class UIManager : MonoBehaviour {
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
         SetUI(eUIGameObjectName.AlbumButton, true);
 
-        if (GameManager.Instance.isDemoBuild) {
+        if (GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild) {
             whiteMenu.transform.GetChild(2).gameObject.SetActive(false);
             blackMenu.transform.GetChild(2).gameObject.SetActive(false);
         }
