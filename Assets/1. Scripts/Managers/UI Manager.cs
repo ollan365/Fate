@@ -522,6 +522,10 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+    public void SetMenuOpenByStartSceneButton(bool value) {
+        menuOpenByStartSceneButton = value;
+    }
+
     public void SetMenuUI(bool startSceneButtonClick = false) {
         if (startSceneButtonClick)
             menuOpenByStartSceneButton = true;
