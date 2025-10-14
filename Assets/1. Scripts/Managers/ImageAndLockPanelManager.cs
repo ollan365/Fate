@@ -67,7 +67,6 @@ public class ImageAndLockPanelManager : MonoBehaviour
     public Dictionary<string, GameObject[]> puzzleObjectDictionary;
     [SerializeField] public bool isImageActive = false;
     [SerializeField] public bool isLockObjectActive = false;
-    public string currentEventObjectName = null; 
     public string currentLockObjectName = null;
     private float maxHeight = 550f;
     private float maxWidth = 890f;
@@ -179,12 +178,6 @@ public class ImageAndLockPanelManager : MonoBehaviour
         
         if (!GetIsImageOrLockPanelActive())
             UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
-        currentEventObjectName = eventObjectName;
-
-        GameManager.Instance.SetVariable("isImageActive", isImageActive);
-        GameManager.Instance.SetVariable("currentEventObjectName", currentEventObjectName == null ? "NONE" : currentEventObjectName);
-
-        SaveManager.Instance.SaveGameData();
     }
 
     public IEnumerator SetObjectImageGroupCoroutine(bool isTrue, string eventObjectName = null, float delayTime = 0.1f) {
@@ -200,52 +193,26 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
         isLockObjectActive = isTrue;
 
-        if (isTrue)
-        {
-            SetObjectImageGroup(false);
-
-            if (!lockObjectDictionary.TryGetValue(lockObjectName, out var lockGO))
-            {
-                Debug.LogError($"[Lock] Unknown key: {lockObjectName}");
-                return;
-            }
-
-            // 자식 포함 CanvasGroup 탐색 (비활성 자식까지)
-            var cg = lockGO.GetComponentInChildren<CanvasGroup>(true);
-            currentLockObjectCanvasGroup = cg;
-
-            // 루트와 CG 보유 GO 모두 켜기
-            lockGO.SetActive(true);
-            cg.gameObject.SetActive(true);
+        if (isTrue) {
+            SetObjectImageGroup(false);  // 이미지 켜져있을 때 Lock object activate하면 이미지 숨기기
+            lockObjectDictionary[lockObjectName].gameObject.SetActive(true);
 
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
             UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
+        } else if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects)) {
+            foreach (var puzzleObject in puzzleObjects)
+                UIManager.Instance.AnimateUI(puzzleObject, false, true);
+            StartCoroutine(DeactivateLockObjectWithDelay(currentLockObjectName, UIManager.Instance.fadeAnimationDuration));
+            currentLockObjectCanvasGroup = null; 
+        } else {
+            lockObjectDictionary[currentLockObjectName].gameObject.SetActive(false);
+            currentLockObjectCanvasGroup = null; 
         }
-        else
-        {
-            if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects))
-            {
-                foreach (var puzzleObject in puzzleObjects) UIManager.Instance.AnimateUI(puzzleObject, false, true);
-                StartCoroutine(DeactivateLockObjectWithDelay(currentLockObjectName, UIManager.Instance.fadeAnimationDuration));
-            }
-            else if (lockObjectDictionary.TryGetValue(currentLockObjectName, out var lockGO))
-            {
-                var cg = lockGO.GetComponentInChildren<CanvasGroup>(true);
-                if (cg != null) UIManager.Instance.AnimateUI(cg.gameObject, false, true);
-                StartCoroutine(DeactivateLockObjectWithDelay(currentLockObjectName, UIManager.Instance.fadeAnimationDuration));
-            }
-            currentLockObjectCanvasGroup = null;
 
-            if (!GetIsImageOrLockPanelActive())
-                UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
-        }
+        if (!GetIsImageOrLockPanelActive())
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
         currentLockObjectName = lockObjectName;
-
-        GameManager.Instance.SetVariable("isLockObjectActive", isLockObjectActive);
-        GameManager.Instance.SetVariable("currentLockObjectName", currentLockObjectName == null ? "NONE" : currentLockObjectName);
-
-        SaveManager.Instance.SaveGameData();
     }
     
     private IEnumerator DeactivateLockObjectWithDelay(string lockObjectName, float delayTime = 0.5f) {

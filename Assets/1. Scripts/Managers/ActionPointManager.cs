@@ -102,11 +102,6 @@ abstract public class ActionPointManager : MonoBehaviour
 
     public abstract void DecrementActionPoint();
 
-    public void TryUpdateDayTextDuringRest()
-    {
-        dayText.text = $"Day {nowDayNum - 1}";
-    }
-
     // 귀가 스크립트 출력 부분
     public abstract void RefillHeartsOrEndDay();
 

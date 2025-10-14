@@ -26,8 +26,7 @@ public class ZoomView : EventObject, IResultExecutable
     {
         //Debug.Log($"{name} {sideNum}" + " 줌 켜기");
         if (!isActiveAndEnabled) return;
-
-        RoomManager.Instance.currentZoomViewName = $"{name} {sideNum}";
+        
         RoomManager.Instance.SetCurrentView(zoomedView);
         RoomManager.Instance.SetIsZoomed(true);
         RoomManager.Instance.SetButtons();

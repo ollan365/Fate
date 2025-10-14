@@ -126,10 +126,6 @@ public class DialogueManager : MonoBehaviour
             FollowManager.Instance.ClickObject();
         if (MemoManager.Instance)
             MemoManager.Instance.SetMemoButtons(false);
-
-        GameManager.Instance.SetVariable("currentDialogueID", currentDialogueID);
-        GameManager.Instance.SetVariable("isDialogueActive", isDialogueActive);
-        SaveManager.Instance.SaveGameData();
     }
     
     public IEnumerator StartDialogue(string dialogueID, float delay = 0f)
@@ -173,10 +169,6 @@ public class DialogueManager : MonoBehaviour
             FollowManager.Instance.ClickObject();
         if (MemoManager.Instance)
             MemoManager.Instance.SetMemoButtons(false);
-
-        GameManager.Instance.SetVariable("currentDialogueID", currentDialogueID);
-        GameManager.Instance.SetVariable("isDialogueActive", isDialogueActive);
-        SaveManager.Instance.SaveGameData();
     }
 
     private void ClearPreviousChoices()
@@ -434,10 +426,6 @@ public class DialogueManager : MonoBehaviour
             RoomManager.Instance.imageAndLockPanelManager &&
             RoomManager.Instance.imageAndLockPanelManager.currentLockObjectCanvasGroup)
             RoomManager.Instance.imageAndLockPanelManager.currentLockObjectCanvasGroup.blocksRaycasts = true;
-
-        GameManager.Instance.SetVariable("currentDialogueID", "NONE");
-        GameManager.Instance.SetVariable("isDialogueActive", isDialogueActive);
-        SaveManager.Instance.SaveGameData();
     }
 
     public void SkipButtonClick() {
