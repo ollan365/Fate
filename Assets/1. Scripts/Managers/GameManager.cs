@@ -24,9 +24,9 @@ public class GameManager : MonoBehaviour
 
     // 디버깅용
     [SerializeField] private TextMeshProUGUI variablesText;
-    public bool isDebug;
     public bool skipTutorial;
     public bool skipInquiry;
+    public bool isDebug;
     public bool isReleaseBuild;
     public bool isDemoBuild;
 
