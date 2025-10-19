@@ -109,7 +109,7 @@ public class MemoManager : PageContentsManager
                     break;
             }
             
-            string[] memo = { memoID, "가려진 메모" };
+            string[] memo = { memoID, "Localized_HiddenMemo" };
             SavedMemoList[sceneIndex].Add(memo);
         }
     }
@@ -123,7 +123,7 @@ public class MemoManager : PageContentsManager
                 string scriptID = memoScripts[memoID];
                 
                 if (RevealedMemoList[sceneIndex].Contains(scriptID) && 
-                    SavedMemoList[sceneIndex][memoIndex][1] != "가려진 메모") {
+                    SavedMemoList[sceneIndex][memoIndex][1] != "Localized_HiddenMemo") {
                     int pageNum = CalculateFirstPageNumber(sceneIndex) + memoIndex;
                     if (!unseenMemoPages.Contains(pageNum))
                         unseenMemoPages.Add(pageNum);
@@ -502,10 +502,16 @@ public class MemoManager : PageContentsManager
             return "";
 
         bool revealed = RevealedMemoList[memoSceneIndex].Contains(scriptID);
-        if (!revealed)
-            return "가려진 메모";
-
         int lang = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
+        
+        if (!revealed)
+        {
+            if (DialogueManager.Instance != null && DialogueManager.Instance.scripts != null &&
+                DialogueManager.Instance.scripts.ContainsKey("Localized_HiddenMemo"))
+                return DialogueManager.Instance.scripts["Localized_HiddenMemo"].GetScript(lang).ProcessedText;
+            return "가려진 메모"; // Fallback
+        }
+
         if (!DialogueManager.Instance || DialogueManager.Instance.scripts == null ||
             !DialogueManager.Instance.scripts.ContainsKey(scriptID))
             return "";
