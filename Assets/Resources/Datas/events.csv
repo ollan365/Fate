@@ -96,10 +96,10 @@ EventPoster,포스터,포스터를 열람하지 않고 커터칼 있는 상태�
 EventPosterOverside,포스터 뒷면,포스터 뒷면 이미지와 효과음 재생,,ConditionGetKnife,ResultPosterOversideImageAndSound,
 ,,,,,,
 EventClosetZoom,확대 안 된 옷장,확대 되지 않은 상태에서 옷장을 클릭,,,ResultClosetZoom,30일 추가
-EventClosetClosed,닫힌 옷장 문,닫힌 옷장 문을 처음 클릭,AND,ConditionFirstClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/ Result_StartDialogueRoomEscape_022 /Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed/ResultTimePass,새로 추가(나은)
-EventClosetClosed,닫힌 옷장 문,가방 조사 후 닫힌 문을 클릭,,ConditionClosetBagManyClick,ResultClosetDoorsOpen/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,새로 추가(나은)
-EventClosetClosed,닫힌 옷장 문,가방 조사 안 한 상태에서 닫힌 옷장 문 다시 클릭,AND,ConditionClosetBagFirstClick/ConditionManyClosedClosetDoorsClick/ConditionClosetDoorsClosed,ResultClosetDoorsOpen/Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed,
-EventClosetOpen,열린 옷장 문,열린 옷장 문을 클릭,,ConditionClosetDoorsOpen,ResultClosetDoorsClosed/Result_InverseClosetDoorsClosed,새로 추가(나은)
+EventClosetClosed,닫힌 옷장 문,닫힌 옷장 문을 처음 클릭,AND,ConditionFirstClosedClosetDoorsClick/ConditionClosetDoorsClosed,Result_StartDialogueRoomEscape_022 /Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed/ResultClosetDoorsOpen/ResultTimePass,새로 추가(나은)
+EventClosetClosed,닫힌 옷장 문,가방 조사 후 닫힌 문을 클릭,,ConditionClosetBagManyClick,Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed/ResultClosetDoorsOpen,새로 추가(나은)
+EventClosetClosed,닫힌 옷장 문,가방 조사 안 한 상태에서 닫힌 옷장 문 다시 클릭,AND,ConditionClosetBagFirstClick/ConditionManyClosedClosetDoorsClick/ConditionClosetDoorsClosed,Result_IncrementClosedClosetDoorsClick/Result_InverseClosetDoorsClosed/ResultClosetDoorsOpen,
+EventClosetOpen,열린 옷장 문,열린 옷장 문을 클릭,,ConditionClosetDoorsOpen,Result_InverseClosetDoorsClosed/ResultClosetDoorsOpen,새로 추가(나은)
 EventClosetBag,옷장 안 가방,가방을 처음 클릭,,ConditionClosetBagFirstClick,ResultClosetBagScript / Result_StartDialogueRoomEscape_023 / Result_IncrementBagClick/Result_IsFinishedEventClosetBag/Result_RevealMemoR1Memo_013/ResultTimePass,Result_IsFinished 추가
 EventClosetBag,옷장 안 가방,가방을 다시 클릭,,ConditionClosetBagManyClick,ResultClosetBagScript / Result_StartDialogueRoomEscape_023 / Result_IncrementBagClick/ResultTimePass,새로 추가(나은)
 ,,,,,,
@@ -109,9 +109,9 @@ EventClosetBox,옷장 위 상자,열쇠 없는 상태에서 상자 처음 클릭
 EventClosetBox,옷장 위 상자,상자를 열어보지 않고 열쇠 있는 상태에서 상자 클릭,AND,ConditionBoxNotOpen/ConditionClockCorrect,ResultClosetBoxOpenScript/ Result_RevealMemoR1Memo_011 /Result_IncrementBoxClick/Result_IsFinishedEventClosetBox/ResultTimePass,Result_IsFinished 추가
 ,,,,,,
 EventStorageZoom,확대 안 된 서랍장,확대 되지 않은 상태에서 서랍장을 클릭,,,ResultCabinetZoom,30일 추가
-EventStorageClosed,닫힌 서랍장 문,닫힌 서랍장 문을 처음 클릭,AND,ConditionCabinetDoorsClosed/ConditionCabinetDoorsFirstClick,ResultCabinetDoorsOpen/ Result_StartDialogueRoomEscape_026 /Result_IncrementClosedCabinetDoorsClick/Result_InverseCabinetDoorsClosed/ResultTimePass,
-EventStorageClosed,닫힌 서랍장 문,닫힌 서랍장 문을 다시 클릭,AND,ConditionCabinetDoorsClosed/ConditionCabinetDoorsManyClick,ResultCabinetDoorsOpen/Result_IncrementClosedCabinetDoorsClick/Result_InverseCabinetDoorsClosed,
-EventStorageOpen,열린 서랍장 문,열린 서랍장 문을 클릭,,ConditionCabinetDoorsOpen,ResultCabinetDoorsClosed/Result_InverseCabinetDoorsClosed,
+EventStorageClosed,닫힌 서랍장 문,닫힌 서랍장 문을 처음 클릭,AND,ConditionCabinetDoorsClosed/ConditionCabinetDoorsFirstClick,Result_InverseCabinetDoorsClosed/ResultCabinetDoorsOpen/Result_StartDialogueRoomEscape_026 /Result_IncrementClosedCabinetDoorsClick/ResultTimePass,
+EventStorageClosed,닫힌 서랍장 문,닫힌 서랍장 문을 다시 클릭,AND,ConditionCabinetDoorsClosed/ConditionCabinetDoorsManyClick,Result_InverseCabinetDoorsClosed/ResultCabinetDoorsOpen/Result_IncrementClosedCabinetDoorsClick,
+EventStorageOpen,열린 서랍장 문,열린 서랍장 문을 클릭,,ConditionCabinetDoorsOpen,Result_InverseCabinetDoorsClosed/ResultCabinetDoorsClosed,
 ,,,,,,
 EventCalendar,서랍장 내 달력,달력 관련 이벤트를 모두 보지 않은 상태에서 달력을 클릭,,ConditionCalendarCluesNotFound,ResultCalendarOpen/ResultTimePass,
 EventCalendar,서랍장 내 달력,달력 관련 이벤트를 모두 본 상태에서 달력을 클릭,,ConditionCalendarCluesFound,ResultCalendarOpen/ResultTimePass,

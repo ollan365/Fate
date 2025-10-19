@@ -633,7 +633,10 @@ public class ResultManager : MonoBehaviour
 
             // 방탈출2의 확대 화면 전환 result 
             case "Result_showZoomedBox": // 옷장 위 상자 확대 화면으로 전환
-                if (GameSceneManager.Instance.GetActiveScene() == SceneType.ROOM_1) {
+                bool boxOpened = (bool)GameManager.Instance.GetVariable("BoxOpened");
+                if (GameSceneManager.Instance.GetActiveScene() == SceneType.ROOM_1
+                    && boxOpened)
+                {
                     executableObjects["Box Unzoomed-open 2"].ExecuteAction();
                     executableObjects["Box Unzoomed-open 3"].ExecuteAction();
                 }

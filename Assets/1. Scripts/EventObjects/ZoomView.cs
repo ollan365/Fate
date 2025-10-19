@@ -11,9 +11,6 @@ public class ZoomView : EventObject, IResultExecutable
         ResultManager.Instance.RegisterExecutable(executableName, this);
 
         //ResultManager.Instance.executableObjectsKeyCheck(executableName);
-
-        if (!isClosed)
-            gameObject.SetActive(false);
     }
 
     public new void OnMouseDown()
