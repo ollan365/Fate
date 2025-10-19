@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -899,7 +898,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15.04, y: 8.18}
+    oldSize: {x: 15.039999, y: 8.180938}
     newSize: {x: 15.01, y: 11}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -4692,7 +4691,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.68, y: 11.34}
+    oldSize: {x: 10.679999, y: 11.344729}
     newSize: {x: 10.68, y: 11.34}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -5753,7 +5752,6 @@ MonoBehaviour:
   dreamDiaryPuzzleObject: {fileID: 1204193688}
   isImageActive: 0
   isLockObjectActive: 0
-  currentEventObjectName: 
   currentLockObjectName: 
 --- !u!1 &383443410
 GameObject:
@@ -9445,7 +9443,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 38.510002, y: 40.843338}
+    oldSize: {x: 38.5268, y: 40.840004}
     newSize: {x: 18.95, y: 20.03}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -9480,9 +9478,11 @@ MonoBehaviour:
   sideClosedDoorObjects:
   - {fileID: 1082676157}
   - {fileID: 480678298}
+  - {fileID: 744799711}
   sideOpenDoorObjects:
   - {fileID: 1305102414}
   - {fileID: 212661709}
+  - {fileID: 1705609170}
 --- !u!1 &761556275
 GameObject:
   m_ObjectHideFlags: 0
@@ -12306,7 +12306,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.82, y: 3.76}
+    oldSize: {x: 10.82, y: 3.7616405}
     newSize: {x: 10.82, y: 3.76}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -13373,8 +13373,6 @@ MonoBehaviour:
   imageAndLockPanelManager: {fileID: 370811677}
   imageAndLockPanelCanvas: {fileID: 1418986091}
   isInvestigating: 0
-  isZoomed: 0
-  currentZoomViewName: 
   actionPointManager: {fileID: 1738100056}
   room2ActionPointManager: {fileID: 1738100056}
   tutorialManager: {fileID: 0}
@@ -16368,7 +16366,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15.61, y: 16.92}
+    oldSize: {x: 15.614649, y: 16.92}
     newSize: {x: 15.61, y: 16.92}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -18172,9 +18170,11 @@ MonoBehaviour:
   sideClosedDoorObjects:
   - {fileID: 1082676157}
   - {fileID: 480678298}
+  - {fileID: 744799711}
   sideOpenDoorObjects:
   - {fileID: 1305102414}
   - {fileID: 212661709}
+  - {fileID: 1705609170}
 --- !u!1 &1716161190 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1279750320198181236, guid: fdd87bd70d3a2344098c754d83555f8b, type: 3}
@@ -18337,10 +18337,12 @@ MonoBehaviour:
   - {fileID: 1349669490}
   - {fileID: 1632417568}
   - {fileID: 401887671}
+  - {fileID: 1963323793}
   sideOpenDoorObjects:
   - {fileID: 845765300}
   - {fileID: 351151530}
   - {fileID: 2090713460}
+  - {fileID: 1719483299}
 --- !u!212 &1719483304
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20278,7 +20280,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 42.44, y: 34.669003}
+    oldSize: {x: 42.454357, y: 34.660004}
     newSize: {x: 18.95, y: 20.03}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -20374,10 +20376,12 @@ MonoBehaviour:
   - {fileID: 1349669490}
   - {fileID: 1632417568}
   - {fileID: 401887671}
+  - {fileID: 1963323793}
   sideOpenDoorObjects:
   - {fileID: 845765300}
   - {fileID: 351151530}
   - {fileID: 2090713460}
+  - {fileID: 1719483299}
 --- !u!114 &1981495865 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 271649890608978183, guid: ff4b0bb1ab947084d8fe2d2c67001577, type: 3}
@@ -20940,7 +20944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 4.0002275, y: 21.581116}
+  m_AnchoredPosition: {x: 4.000228, y: 21.581116}
   m_SizeDelta: {x: 306.9275, y: -40.96399}
   m_Pivot: {x: 0.00000008009374, y: -0.00000007264316}
 --- !u!114 &2049395622
