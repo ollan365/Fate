@@ -16,8 +16,8 @@ public class Carpet : EventObject, IResultExecutable
 
         //Debug.Log($"{closedOrOpen}Carpet{sideNum}");
 
-        if(!isClosedCarpet)
-            gameObject.SetActive(false);
+        //if(!isClosedCarpet)
+        //    gameObject.SetActive(false);
     }
 
     private void OnEnable()
