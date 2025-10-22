@@ -116,6 +116,8 @@ public class SaveManager : MonoBehaviour
     {
         lock (_saveLock)
         {
+            UIManager.Instance.PlaySaveAnimation();
+
             // 일반적인 저장의 경우, 현재 게임의 상태를 저장
             if (newSaveData == null)
                 newSaveData = new SaveData(
@@ -133,6 +135,8 @@ public class SaveManager : MonoBehaviour
     {
         lock (_saveLock)
         {
+            UIManager.Instance.PlaySaveAnimation();
+
             SaveData save;
             if (File.Exists(SAVE_DATA_FILE_PATH))
             {

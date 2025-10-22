@@ -29,6 +29,8 @@ public enum eUIGameObjectName {
     ExitButton,
     LeftButton,
     RightButton,
+    SaveImage,
+    SaveText,
     MemoButton,
     MemoContents,
     MemoGauge,
@@ -171,6 +173,10 @@ public class UIManager : MonoBehaviour {
     public GameObject followEventButtonImage;
     public GameObject followEventButtonNextButton;
 
+    [Header("UI Game Objects - Save")]
+    public GameObject saveImage;
+    public GameObject saveText;
+
     [Header("UI Game Objects - End of Demo Page")] 
     public GameObject endOfDemoPage;
 
@@ -257,6 +263,9 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.MemoButton, memoButton);
         uiGameObjects.Add(eUIGameObjectName.MemoContents, memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge, memoGauge);
+
+        uiGameObjects.Add(eUIGameObjectName.SaveImage, saveImage);
+        uiGameObjects.Add(eUIGameObjectName.SaveText, saveText);
 
         uiGameObjects.Add(eUIGameObjectName.TutorialBlockingPanel, tutorialBlockingPanel);
         
@@ -520,6 +529,15 @@ public class UIManager : MonoBehaviour {
                 targetPos.y = show ? basePosition.y : basePosition.y + floatDistance;
                 break;
         }
+    }
+    public void SetMenuOpenByStartSceneButton(bool value) {
+        menuOpenByStartSceneButton = value;
+    }
+
+    public void PlaySaveAnimation()
+    {
+        saveImage.GetComponent<Animator>().SetTrigger("Play");
+        saveText.GetComponent<Animator>().SetTrigger("Play");
     }
 
     public void SetMenuUI(bool startSceneButtonClick = false) {

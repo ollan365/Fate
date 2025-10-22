@@ -67,6 +67,9 @@ public class LobbyManager : MonoBehaviour
             clockSecondGameObject.SetActive(true);
             StartCoroutine(RotateSecond());
         }
+
+        UIManager.Instance.SetUI(eUIGameObjectName.SaveImage, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.SaveText, true);
     }
     
     private IEnumerator RotateSecond() {
