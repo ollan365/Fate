@@ -42,14 +42,13 @@ public class Chair : EventObject, IResultExecutable
                 movedPositions[4] = new Vector2(-533f, -424f);
                 break;
         }
-    }
 
-    private void Start()
-    {
         if (sideNum == 1)
         {
-            deskMovedChair.SetActive(true);
-            deskMovedChair.SetActive(false);
+            if (deskUnMovedChair != null)
+                ResultManager.Instance.RegisterExecutable($"{deskUnMovedChair.name} {sideNum}", deskUnMovedChair.GetComponent<IResultExecutable>());
+            if (deskMovedChair != null)
+                ResultManager.Instance.RegisterExecutable($"{deskMovedChair.name} {sideNum}", deskMovedChair.GetComponent<IResultExecutable>());
         }
     }
 
