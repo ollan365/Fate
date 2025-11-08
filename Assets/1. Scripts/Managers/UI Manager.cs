@@ -40,8 +40,7 @@ public enum eUIGameObjectName {
     NameConfirmPanel,
     BirthdayPanel,
     MenuUI,
-    WhiteMenu,
-    BlackMenu,
+    Menu,
     OptionUI,
     BGMSlider,
     SoundEffectSlider,
@@ -147,8 +146,8 @@ public class UIManager : MonoBehaviour {
     
     [Header("UI Game Objects - Menu")] 
     public GameObject menuUI;
-    public GameObject whiteMenu;
-    public GameObject blackMenu;
+    public GameObject menu;
+    public Sprite[] optionButtonImages;
     public GameObject optionUI;
     public GameObject BGMSlider;
     public GameObject SoundEffectSlider;
@@ -226,8 +225,7 @@ public class UIManager : MonoBehaviour {
         SetUI(eUIGameObjectName.AlbumButton, true);
 
         if (GameManager.Instance.isDemoBuild) {
-            whiteMenu.transform.GetChild(2).gameObject.SetActive(false);
-            blackMenu.transform.GetChild(2).gameObject.SetActive(false);
+            menu.transform.GetChild(2).gameObject.SetActive(false);
         }
     }
 
@@ -276,8 +274,7 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.BirthdayPanel, birthdayPanel);
 
         uiGameObjects.Add(eUIGameObjectName.MenuUI, menuUI);
-        uiGameObjects.Add(eUIGameObjectName.WhiteMenu, whiteMenu);
-        uiGameObjects.Add(eUIGameObjectName.BlackMenu, blackMenu);
+        uiGameObjects.Add(eUIGameObjectName.Menu, menu);
 
         uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
         uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
@@ -546,13 +543,13 @@ public class UIManager : MonoBehaviour {
 
         if (GetUI(eUIGameObjectName.MenuUI).activeSelf) {
             SetUI(eUIGameObjectName.MenuUI, false);
-            SetUI(eUIGameObjectName.WhiteMenu, false);
-            SetUI(eUIGameObjectName.BlackMenu, false);
+            SetUI(eUIGameObjectName.Menu, false);
             if (menuOpenByStartSceneButton) {
                 LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
             Time.timeScale = 1f;
+            InputManager.Instance.IgnoreInput = false;
         } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
             SetUI(eUIGameObjectName.OptionUI, false);
             if (menuOpenByStartSceneButton) {
@@ -560,12 +557,36 @@ public class UIManager : MonoBehaviour {
                 menuOpenByStartSceneButton = false;
             }
             Time.timeScale = 1f;
+            InputManager.Instance.IgnoreInput = false;
         } else {
             SetUI(eUIGameObjectName.MenuUI, true);
-            SetUI(GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.FOLLOW_1 
-                ? eUIGameObjectName.BlackMenu
-                : eUIGameObjectName.WhiteMenu, true);
+            SetUI(eUIGameObjectName.Menu, true);
+            if (GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.FOLLOW_1) SetMenuColor(false);
+            else SetMenuColor(true);
             Time.timeScale = 0f;
+            InputManager.Instance.IgnoreInput = true;
+        }
+    }
+
+    private void SetMenuColor(bool white)
+    {
+        if (white)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Transform child = GetUI(eUIGameObjectName.Menu).transform.GetChild(i);
+                child.GetComponent<Image>().sprite = optionButtonImages[i % 2];
+                child.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.black;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Transform child = GetUI(eUIGameObjectName.Menu).transform.GetChild(i);
+                child.GetComponent<Image>().sprite = optionButtonImages[i % 2 + 2];
+                child.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.white;
+            }
         }
     }
 
