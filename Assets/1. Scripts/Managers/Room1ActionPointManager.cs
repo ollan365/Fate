@@ -95,7 +95,8 @@ public class Room1ActionPointManager : ActionPointManager
     public override void RefillHeartsOrEndDay()
     {
         // update Day text on screen
-        dayText.text = $"Day {nowDayNum - 1}";
+        if (nowDayNum != maxDayNum)
+            dayText.text = $"Day {nowDayNum - 1}";
 
         // turn off all ImageAndLockPanel objects and zoom out
         RoomManager.Instance.ExitToRoot();
