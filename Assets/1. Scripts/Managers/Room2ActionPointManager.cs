@@ -9,11 +9,16 @@ public class Room2ActionPointManager : ActionPointManager
 
     private bool isChoosingBrokenBearChoice = false;
 
+    private const int INITIAL_DAY_NUM = 1;
+
     protected override void Awake()
     {
         base.Awake();
         
         maxDayNum = (int)GameManager.Instance.GetVariable("MaxDayNum");
+        // 방1 지난 후에는 NowDayNum이 5로 되어 있기에 1로 초기화
+        nowDayNum = INITIAL_DAY_NUM;
+        GameManager.Instance.SetVariable("NowDayNum",nowDayNum);
         nowDayNum = (int)GameManager.Instance.GetVariable("NowDayNum");
         actionPointsPerDay = (int)GameManager.Instance.GetVariable("ActionPointsPerDay");
         presentHeartIndex = (int)GameManager.Instance.GetVariable("PresentHeartIndex");
@@ -176,7 +181,8 @@ public class Room2ActionPointManager : ActionPointManager
     public override void RefillHeartsOrEndDay()
     {
         // update Day text on screen
-        dayText.text = $"Day {nowDayNum - 1}";
+        if(nowDayNum!=maxDayNum)
+            dayText.text = $"Day {nowDayNum - 1}";
 
         // turn off all ImageAndLockPanel objects and zoom out
         RoomManager.Instance.ExitToRoot();

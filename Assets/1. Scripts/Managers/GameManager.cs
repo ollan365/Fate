@@ -193,6 +193,8 @@ public class GameManager : MonoBehaviour
         List<string> keysToShow = new List<string>(new string[] {
             "Language",
             "FateName",
+            "NowDayNum",
+            "ActionPoint"
         });
 
         foreach (var item in variables)
