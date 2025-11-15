@@ -606,4 +606,48 @@ public class MemoManager : PageContentsManager
         }
         GameSceneManager.Instance.LoadScene(SceneType.ENDING);
     }
+
+    // 치트: 현재 씬의 메모 개수를 10으로 설정
+    public void CheatSetMemoCount(int memoCount) {
+        SceneType currentScene = GameSceneManager.Instance.GetActiveScene();
+        if (currentScene == SceneType.START || currentScene == SceneType.ENDING) {
+            Debug.LogWarning("Cannot set memo count in START or ENDING scene");
+            return;
+        }
+
+        int sceneIndex = currentScene.ToInt() - 1;
+        if (sceneIndex < 0 || sceneIndex >= RevealedMemoList.Count) {
+            Debug.LogWarning($"Invalid scene index: {sceneIndex} for scene {currentScene}");
+            return;
+        }
+
+        // 메모 개수 변수 설정
+        string sceneName = currentScene.ToString();
+        GameManager.Instance.SetVariable($"MemoCount_{sceneName}", memoCount);
+
+        // RevealedMemoList에 메모 추가 (실제 메모 ID 사용)
+        RevealedMemoList[sceneIndex].Clear();
+        
+        int memosToReveal = Mathf.Min(10, SavedMemoList[sceneIndex].Count);
+        for (int i = 0; i < memosToReveal; i++) {
+            string memoID = SavedMemoList[sceneIndex][i][0];
+            if (memoScripts.ContainsKey(memoID)) {
+                string scriptID = memoScripts[memoID];
+                if (RevealedMemoList[sceneIndex].Contains(scriptID) == false) {
+                    RevealedMemoList[sceneIndex].Add(scriptID);
+                    if (DialogueManager.Instance != null && 
+                        DialogueManager.Instance.scripts != null &&
+                        DialogueManager.Instance.scripts.ContainsKey(scriptID)) {
+                        string script = DialogueManager.Instance.scripts[scriptID].GetScript().ProcessedText;
+                        SavedMemoList[sceneIndex][i][1] = script;
+                    }
+                }
+            }
+        }
+
+        // 메모 게이지 및 알림 업데이트
+        RebuildUnseenMemoPages();
+        ForceRefreshMemoGauge();
+        Debug.Log($"Cheat: Set memo count to 10 for scene {sceneName}");
+    }
 }

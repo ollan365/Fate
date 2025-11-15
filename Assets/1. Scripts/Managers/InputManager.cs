@@ -80,6 +80,22 @@ public class InputManager : MonoBehaviour
             if (IsClickable(UIManager.Instance.exitButton))
                 UIManager.Instance.OnExitButtonClick();
         }
+
+        if (GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild)
+            return;
+        
+        // cheats
+        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
+            Input.GetKeyDown(KeyCode.M)) {
+            if (MemoManager.Instance != null)
+                MemoManager.Instance.CheatSetMemoCount(10); // set memo count to 10
+        }
+
+        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
+            Input.GetKeyDown(KeyCode.C)) {
+            if (GameManager.Instance != null)
+                GameManager.Instance.CheatEndSceneImmediately(5, 0, -1); // set day to 5, action points to 0, present heart index to -1
+        }
     }
 
     private const float SpaceSkipHoldSeconds = 1f;
