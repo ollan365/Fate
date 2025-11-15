@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using static Constants;
 
 public class GameManager : MonoBehaviour
 {
@@ -244,4 +245,23 @@ public class GameManager : MonoBehaviour
         Application.Quit();
 #endif
         }
+
+    // 치트: 날짜를 5일로, 행동력을 0으로 설정하여 씬을 즉시 종료
+    public void CheatEndSceneImmediately(int todayDayNum, int actionPoint, int presentHeartIndex) {
+        SetVariable("NowDayNum", todayDayNum);
+        SetVariable("ActionPoint", actionPoint);
+        SetVariable("PresentHeartIndex", presentHeartIndex);
+        
+        if (GameSceneManager.Instance != null) {
+            var currentScene = GameSceneManager.Instance.GetActiveScene();
+            if (currentScene == SceneType.ROOM_1 || currentScene == SceneType.ROOM_2) {
+                if (RoomManager.Instance != null && RoomManager.Instance.actionPointManager != null)
+                    RoomManager.Instance.actionPointManager.RefillHeartsOrEndDay();
+                else
+                    GameSceneManager.Instance.LoadScene(SceneType.ENDING);
+            }
+        }
+        
+        Debug.Log("Cheat: Set day to 5, action points to 0");
     }
+}
