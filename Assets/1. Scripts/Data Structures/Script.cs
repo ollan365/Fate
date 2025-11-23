@@ -37,10 +37,10 @@ public class Script
                 localizedText = KorScript;
                 break;
         }
-        return ProcessPlaceholders(localizedText);
+        return ProcessPlaceholders(localizedText, languageIndex);
     }
     
-    private ScriptPlaceholderResult ProcessPlaceholders(string baseText)
+    private ScriptPlaceholderResult ProcessPlaceholders(string baseText, int languageIndex)
     {
         var result = new ScriptPlaceholderResult
         {
@@ -80,8 +80,29 @@ public class Script
                 }
             }
         }
+        
+        if (languageIndex == 0)
+            result.ProcessedText = ApplyPronounPlaceholders(result.ProcessedText);
         result.ProcessedText = ReplaceBracketMarkup(result.ProcessedText);
         return result;
+    }
+
+    private string ApplyPronounPlaceholders(string text)
+    {
+        if (string.IsNullOrEmpty(text)) 
+            return text;
+
+        int accidyGender = GameManager.Instance != null ? (int)GameManager.Instance.GetVariable("AccidyGender") : 0;
+        bool isMale = accidyGender == 1;
+
+        text = text.Replace("{subject}", isMale ? "he" : "she");
+        text = text.Replace("{Subject}", isMale ? "He" : "She");
+        text = text.Replace("{object}", isMale ? "him" : "her");
+        text = text.Replace("{Object}", isMale ? "Him" : "Her");
+        text = text.Replace("{possessive}", isMale ? "his" : "her");
+        text = text.Replace("{Possessive}", isMale ? "His" : "Her");
+
+        return text;
     }
 
     private string ReplaceBracketMarkup(string text)
