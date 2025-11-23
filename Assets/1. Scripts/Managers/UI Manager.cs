@@ -538,25 +538,23 @@ public class UIManager : MonoBehaviour {
                 LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
-            Time.timeScale = 1f;
         } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
             SetUI(eUIGameObjectName.OptionUI, false);
             if (menuOpenByStartSceneButton) {
                 LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
-            Time.timeScale = 1f;
         } else {
             SetUI(eUIGameObjectName.MenuUI, true);
             SetUI(GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.FOLLOW_1 
                 ? eUIGameObjectName.BlackMenu
                 : eUIGameObjectName.WhiteMenu, true);
-            Time.timeScale = 0f;
         }
+        SetTimeScale();
     }
 
     public void SetTimeScale() {
-        Time.timeScale = 1f;
+        Time.timeScale = GameManager.Instance.isDebug ? 4f : 1f;
     }
 
     private void SetOptionUI() {

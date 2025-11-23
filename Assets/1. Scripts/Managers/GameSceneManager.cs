@@ -97,12 +97,17 @@ public class GameSceneManager : MonoBehaviour
         StartCoroutine(UIManager.Instance.SetLoadingAnimation(0, 1, 1));
         UIManager.Instance.progressBar.fillAmount = 0f;
         string[] textOnFade = { "Prologue", "Chapter I", "Chapter II", "Chapter III", "Chapter IV" };
-        UIManager.Instance.TextOnFade(textOnFade[loadSceneType.ToInt()]);
-        GameManager.Instance.SetVariable("SavedCurrentSceneIndex", loadSceneType.ToInt());
+        int sceneTypeToInt = loadSceneType.ToInt();
+        string loadingText = textOnFade[sceneTypeToInt];
+        if (loadSceneType == SceneType.START && (bool)GameManager.Instance.GetVariable("SkipLobby") == false)
+            loadingText = "";
+        UIManager.Instance.TextOnFade(loadingText);
+        
+        GameManager.Instance.SetVariable("SavedCurrentSceneIndex", sceneTypeToInt);
         yield return new WaitForSeconds(1f);
 
         // 씬 로드
-        StartCoroutine(Load(loadSceneType.ToInt()));
+        StartCoroutine(Load(sceneTypeToInt));
     }
 
     private IEnumerator Load(int sceneName) { // 씬 비동기 로드 및 진행률 표시
@@ -132,8 +137,7 @@ public class GameSceneManager : MonoBehaviour
             }
         }
     }
-
-
+    
     private void ChangeSceneEffect() { // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
         switch (GetActiveScene()) {
             case SceneType.START:
