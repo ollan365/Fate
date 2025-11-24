@@ -12409,7 +12409,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -360}
+  m_AnchoredPosition: {x: 0, y: -540}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &985790677
@@ -19450,9 +19450,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   variablesText: {fileID: 1186971534}
-  isDebug: 1
   skipTutorial: 1
   skipInquiry: 0
+  isDebug: 0
   isReleaseBuild: 0
   isDemoBuild: 0
 --- !u!1 &1571167329
@@ -20178,6 +20178,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1633657069}
     m_Modifications:
+    - target: {fileID: 151923611508668419, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 705
+      objectReference: {fileID: 0}
+    - target: {fileID: 151923611508668419, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 901593920709260789, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_fontSize
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 901593920709260789, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
+    - target: {fileID: 901593920709260789, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901593920709260789, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 901593920709260789, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 7239409008639042079, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
+    - target: {fileID: 901593920709260789, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 901593920709260789, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 901593920709260789, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6801258002238301059, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -20258,9 +20298,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7040049067741134837, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: scriptId
+      value: Localized_Saving
+      objectReference: {fileID: 0}
     - target: {fileID: 7676286084030117378, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
       propertyPath: m_Name
       value: Save Animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291758772068016169, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 560
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291758772068016169, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 132
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291758772068016169, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 165
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291758772068016169, guid: 2b1d4dbee52771a43ba19efcd3e2c9ea, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 23
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
