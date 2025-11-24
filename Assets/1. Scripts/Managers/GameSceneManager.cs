@@ -9,6 +9,8 @@ public class GameSceneManager : MonoBehaviour
     
     public bool IsSceneChanging { get; private set; }
     
+    private bool shouldInitializeLobbyOnTitleLoad;
+    
     void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -32,6 +34,14 @@ public class GameSceneManager : MonoBehaviour
     }
     
     public void GoTitle() {
+        UIManager.Instance.SetAllUI(false);
+        UIManager.Instance.SetTimeScale();
+        if (GetActiveScene() == SceneType.START) {
+            LobbyManager.Instance.InitializeLobbyScene();
+            return;
+        }
+
+        shouldInitializeLobbyOnTitleLoad = true;
         LoadScene(SceneType.START);
     }
     
@@ -85,7 +95,8 @@ public class GameSceneManager : MonoBehaviour
         while (DialogueManager.Instance.isDialogueActive) // 대사 출력 중이면 기다리기
             yield return null;
 
-        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
+        if (GetActiveScene()  == SceneType.START)
+            UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         UIManager.Instance.ResetLoadingUI();
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
@@ -159,6 +170,10 @@ public class GameSceneManager : MonoBehaviour
         int bgmIndex = -1;
         switch (GetActiveScene()) {
             case SceneType.START:
+                if (shouldInitializeLobbyOnTitleLoad && LobbyManager.Instance) {
+                    shouldInitializeLobbyOnTitleLoad = false;
+                    LobbyManager.Instance.InitializeLobbyScene();
+                }
                 SoundPlayer.Instance.ChangeBGM(BGM_OPENING);
                 return;
             

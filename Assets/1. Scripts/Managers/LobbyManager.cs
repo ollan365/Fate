@@ -33,13 +33,20 @@ public class LobbyManager : MonoBehaviour
     }
 
     private void Start() {
+        InitializeLobbyScene();
+    }
+
+    public void InitializeLobbyScene() {
+        UIManager.Instance.SetUI(eUIGameObjectName.StartupImage, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, true);
+        UIManager.Instance.SetOptionUI();
+        
         isLobby = true;
         lobbyButtons.SetActive(true);
         lobbyPanels.SetActive(true);
         particleSystemObject.SetActive(true);
         titleImage.gameObject.SetActive(true);
         backgroundImage.gameObject.SetActive(false);
-        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, true);
 
         if (GameManager.Instance.isDemoBuild) { // default: -20
             lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -60;
@@ -54,6 +61,7 @@ public class LobbyManager : MonoBehaviour
     
     private IEnumerator WaitForGameManagerStartFunction() {
         yield return null;
+        
         SaveManager.Instance.ApplySavedGameData();
 
         if (LocalizationManager.Instance)
@@ -73,6 +81,10 @@ public class LobbyManager : MonoBehaviour
 
         UIManager.Instance.SetUI(eUIGameObjectName.SaveImage, true);
         UIManager.Instance.SetUI(eUIGameObjectName.SaveText, true);
+        UIManager.Instance.SetUI(eUIGameObjectName.StartupImage, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, false);
     }
     
     private IEnumerator RotateSecond() {
@@ -103,6 +115,11 @@ public class LobbyManager : MonoBehaviour
                 GameSceneManager.Instance.LoadScene(savedScene);
         } else 
             UIManager.Instance?.SetUI(eUIGameObjectName.NoGameDataPanel, true);
+    }
+
+    public void OpenSettings() {
+        UIManager.Instance.SetUI(eUIGameObjectName.OptionUI, true);
+        UIManager.Instance.SetMenuOpenByStartSceneButton();
     }
     
     public void GoScene(int sceneNum) {

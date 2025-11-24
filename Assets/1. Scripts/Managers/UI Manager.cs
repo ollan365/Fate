@@ -17,6 +17,7 @@ public enum FloatDirection {
 
 public enum eUIGameObjectName {
     BlurImage,
+    StartupImage,
     ObjectImageParentRoom, // object image panel parent in room scene
     ObjectImageRoom, // object image panel in room scene
     LoadingScreen,
@@ -90,6 +91,9 @@ public class UIManager : MonoBehaviour {
     
     [Header("Blur Image")]
     public GameObject blurImage;
+    
+    [Header("Startup Image")]
+    public GameObject startupImage;
 
     [Header("Object Image")]
     public GameObject objectImageParentRoom;
@@ -239,6 +243,8 @@ public class UIManager : MonoBehaviour {
 
     private void AddUIGameObjects() {
         uiGameObjects.Add(eUIGameObjectName.BlurImage, blurImage);
+        
+        uiGameObjects.Add(eUIGameObjectName.StartupImage, startupImage);
 
         uiGameObjects.Add(eUIGameObjectName.ObjectImageParentRoom, objectImageParentRoom);
         uiGameObjects.Add(eUIGameObjectName.ObjectImageRoom, objectImageRoom);
@@ -331,6 +337,7 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Update() {
+
         CheckCursorTouchingUIs();
     }
     
@@ -568,7 +575,15 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    private void SetOptionUI() {
+    public void SetTimeScale() {
+        Time.timeScale = GameManager.Instance.isDebug ? 4f : 1f;
+    }
+
+    public void SetMenuOpenByStartSceneButton() {
+        menuOpenByStartSceneButton = true;
+    }
+
+    public void SetOptionUI() {
         SetUI(eUIGameObjectName.BGMSlider, true);
         SetUI(eUIGameObjectName.SoundEffectSlider, true);
         SetUI(eUIGameObjectName.BGMValue, true);

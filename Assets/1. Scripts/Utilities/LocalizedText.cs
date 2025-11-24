@@ -31,15 +31,15 @@ public class LocalizedText : MonoBehaviour
 		Apply(lang);
 	}
 
-	public void Apply(int languageIndex) {
+	private void Apply(int languageIndex) {
 		if (string.IsNullOrEmpty(scriptId))
 			return;
 
 		if (DialogueManager.Instance == null || DialogueManager.Instance.scripts == null)
 			return;
 
-		if (!DialogueManager.Instance.scripts.ContainsKey(scriptId)) {
-			Debug.LogWarning($"LocalizedText: Script ID '{scriptId}' not found.");
+		if (DialogueManager.Instance.scripts.ContainsKey(scriptId) == false) {
+			Debug.LogWarning($"[{gameObject.name}] LocalizedText: Script ID '{scriptId}' not found.");
 			return;
 		}
 
