@@ -29,6 +29,8 @@ public enum eUIGameObjectName {
     ExitButton,
     LeftButton,
     RightButton,
+    SaveImage,
+    SaveText,
     MemoButton,
     MemoContents,
     MemoGauge,
@@ -38,8 +40,7 @@ public enum eUIGameObjectName {
     NameConfirmPanel,
     BirthdayPanel,
     MenuUI,
-    WhiteMenu,
-    BlackMenu,
+    Menu,
     OptionUI,
     BGMSlider,
     SoundEffectSlider,
@@ -145,8 +146,8 @@ public class UIManager : MonoBehaviour {
     
     [Header("UI Game Objects - Menu")] 
     public GameObject menuUI;
-    public GameObject whiteMenu;
-    public GameObject blackMenu;
+    public GameObject menu;
+    public Sprite[] optionButtonImages;
     public GameObject optionUI;
     public GameObject BGMSlider;
     public GameObject SoundEffectSlider;
@@ -170,6 +171,10 @@ public class UIManager : MonoBehaviour {
     public GameObject followEventButton;
     public GameObject followEventButtonImage;
     public GameObject followEventButtonNextButton;
+
+    [Header("UI Game Objects - Save")]
+    public GameObject saveImage;
+    public GameObject saveText;
 
     [Header("UI Game Objects - End of Demo Page")] 
     public GameObject endOfDemoPage;
@@ -219,10 +224,8 @@ public class UIManager : MonoBehaviour {
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
         SetUI(eUIGameObjectName.AlbumButton, true);
 
-        if (GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild) {
-            whiteMenu.transform.GetChild(2).gameObject.SetActive(false);
-            blackMenu.transform.GetChild(2).gameObject.SetActive(false);
-        }
+        if (GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild)
+            menu.transform.GetChild(2).gameObject.SetActive(false);
     }
 
     private void Start() {
@@ -258,6 +261,9 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.MemoContents, memoContents);
         uiGameObjects.Add(eUIGameObjectName.MemoGauge, memoGauge);
 
+        uiGameObjects.Add(eUIGameObjectName.SaveImage, saveImage);
+        uiGameObjects.Add(eUIGameObjectName.SaveText, saveText);
+
         uiGameObjects.Add(eUIGameObjectName.TutorialBlockingPanel, tutorialBlockingPanel);
         
         uiGameObjects.Add(eUIGameObjectName.NewGamePanel, newGamePanel);
@@ -267,8 +273,7 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.BirthdayPanel, birthdayPanel);
 
         uiGameObjects.Add(eUIGameObjectName.MenuUI, menuUI);
-        uiGameObjects.Add(eUIGameObjectName.WhiteMenu, whiteMenu);
-        uiGameObjects.Add(eUIGameObjectName.BlackMenu, blackMenu);
+        uiGameObjects.Add(eUIGameObjectName.Menu, menu);
 
         uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
         uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
@@ -521,9 +526,10 @@ public class UIManager : MonoBehaviour {
                 break;
         }
     }
-
-    public void SetMenuOpenByStartSceneButton(bool value) {
-        menuOpenByStartSceneButton = value;
+    public void PlaySaveAnimation()
+    {
+        saveImage.GetComponent<Animator>().SetTrigger("Play");
+        saveText.GetComponent<Animator>().SetTrigger("Play");
     }
 
     public void SetMenuUI(bool startSceneButtonClick = false) {
@@ -532,29 +538,37 @@ public class UIManager : MonoBehaviour {
 
         if (GetUI(eUIGameObjectName.MenuUI).activeSelf) {
             SetUI(eUIGameObjectName.MenuUI, false);
-            SetUI(eUIGameObjectName.WhiteMenu, false);
-            SetUI(eUIGameObjectName.BlackMenu, false);
+            SetUI(eUIGameObjectName.Menu, false);
             if (menuOpenByStartSceneButton) {
                 LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
+            Time.timeScale = GameManager.Instance.isDebug ? 4f : 1f;
+            InputManager.Instance.IgnoreInput = false;
         } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
             SetUI(eUIGameObjectName.OptionUI, false);
             if (menuOpenByStartSceneButton) {
                 LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
+            Time.timeScale = GameManager.Instance.isDebug ? 4f : 1f;
+            InputManager.Instance.IgnoreInput = false;
         } else {
             SetUI(eUIGameObjectName.MenuUI, true);
-            SetUI(GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.FOLLOW_1 
-                ? eUIGameObjectName.BlackMenu
-                : eUIGameObjectName.WhiteMenu, true);
+            SetUI(eUIGameObjectName.Menu, true);
+            SetMenuColor(GameSceneManager.Instance.GetActiveScene() is not (SceneType.ROOM_1 or SceneType.FOLLOW_1));
+            Time.timeScale = 0f;
+            InputManager.Instance.IgnoreInput = true;
         }
-        SetTimeScale();
     }
 
-    public void SetTimeScale() {
-        Time.timeScale = GameManager.Instance.isDebug ? 4f : 1f;
+    private void SetMenuColor(bool isWhite)
+    {
+        for (int i = 0; i < 3; i++) {
+            Transform child = GetUI(eUIGameObjectName.Menu).transform.GetChild(i);
+            child.GetComponent<Image>().sprite = optionButtonImages[i % 2 + (isWhite ? 0 : 2)];
+            child.GetChild(0).GetComponent<TextMeshProUGUI>().color = isWhite ? Color.black : Color.white; // font color is opposite
+        }
     }
 
     private void SetOptionUI() {
