@@ -331,9 +331,6 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape) && GameSceneManager.Instance.IsSceneChanging == false) 
-            SetMenuUI();
-
         CheckCursorTouchingUIs();
     }
     

@@ -86,12 +86,11 @@ public class GameSceneManager : MonoBehaviour
             yield return null;
 
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
+        UIManager.Instance.ResetLoadingUI();
         MemoManager.Instance.SetMemoButtons(false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
-        
-        // Reset loading UI elements before starting fade-in to prevent previous elements from showing
-        UIManager.Instance.ResetLoadingUI();
-        
+
+        InputManager.Instance.IgnoreInput = true;
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
 
         StartCoroutine(UIManager.Instance.SetLoadingAnimation(0, 1, 1));
@@ -108,6 +107,7 @@ public class GameSceneManager : MonoBehaviour
 
         // 씬 로드
         StartCoroutine(Load(sceneTypeToInt));
+        InputManager.Instance.IgnoreInput = false;
     }
 
     private IEnumerator Load(int sceneName) { // 씬 비동기 로드 및 진행률 표시

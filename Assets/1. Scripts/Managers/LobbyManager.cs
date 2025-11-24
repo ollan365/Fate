@@ -39,6 +39,7 @@ public class LobbyManager : MonoBehaviour
         particleSystemObject.SetActive(true);
         titleImage.gameObject.SetActive(true);
         backgroundImage.gameObject.SetActive(false);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, true);
 
         if (GameManager.Instance.isDemoBuild) { // default: -20
             lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -60;
