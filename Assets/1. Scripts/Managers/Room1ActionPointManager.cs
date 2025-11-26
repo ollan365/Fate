@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Room1ActionPointManager : ActionPointManager
 {
+    private const int INITIAL_DAY_NUM = 1;
+    private const int INITIAL_PRESENTHEARTINDEX = 4;
+
     protected override void Awake()
     {
         base.Awake();
@@ -16,7 +19,8 @@ public class Room1ActionPointManager : ActionPointManager
         CreateActionPointsArray(actionPointsPerDay);
 
         // The First Room Escape ActionPoint
-        GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[0, presentHeartIndex]);
+        int dayIndex = nowDayNum - 1;
+        GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[dayIndex, presentHeartIndex]);
 
         GameManager.Instance.AddEventObject("EventRoom1HomeComing");
         GameManager.Instance.AddEventObject("EventRoom1Morning");
@@ -25,7 +29,20 @@ public class Room1ActionPointManager : ActionPointManager
     // create 5 hearts on screen on room start
     public override void CreateHearts()
     {
-        int heartCount = presentHeartIndex + 1;
+        // 하트 생성 전 기존 하트가 만약에 남아있다면 삭제
+        if (heartParent.transform.childCount > 0)
+        {
+            foreach (Transform child in heartParent.transform)
+            {
+                if (child != null)
+                    Destroy(child.gameObject);
+            }
+        }
+
+        int actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
+        // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
+        //int heartCount = presentHeartIndex + 1;
+        int heartCount = (actionPoint - 1) % actionPointsPerDay + 1;
 
         if (heartCount == 0)
             heartCount = actionPointsPerDay;
@@ -105,6 +122,8 @@ public class Room1ActionPointManager : ActionPointManager
         int actionPoint = (int)GameManager.Instance.GetVariable("ActionPoint");
         if (actionPoint == 0)
         {
+            // Room2로 넘어가기 전 AP 관련 변수들 초기화
+            InitActionPointVariables();
             GameSceneManager.Instance.LoadScene(Constants.SceneType.ENDING);
             return;
         }
@@ -116,6 +135,19 @@ public class Room1ActionPointManager : ActionPointManager
         // 귀가 스크립트 출력
         EventManager.Instance.CallEvent("EventRoom1HomeComing");
         GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
+    }
+
+    private void InitActionPointVariables()
+    {
+        // 방1 지난 후에는 NowDayNum이 5로 되어 있기에 1로 초기화
+        nowDayNum = INITIAL_DAY_NUM;
+        GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
+
+        // PresentHeartIndex 초기화
+        presentHeartIndex = INITIAL_PRESENTHEARTINDEX;
+        GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
+
+        SaveManager.Instance.SaveGameData();
     }
 
     // 외출(아침) 스크립트 출력 부분

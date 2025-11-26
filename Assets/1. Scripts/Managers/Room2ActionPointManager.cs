@@ -9,16 +9,11 @@ public class Room2ActionPointManager : ActionPointManager
 
     private bool isChoosingBrokenBearChoice = false;
 
-    private const int INITIAL_DAY_NUM = 1;
-
     protected override void Awake()
     {
         base.Awake();
-        
+
         maxDayNum = (int)GameManager.Instance.GetVariable("MaxDayNum");
-        // 방1 지난 후에는 NowDayNum이 5로 되어 있기에 1로 초기화
-        nowDayNum = INITIAL_DAY_NUM;
-        GameManager.Instance.SetVariable("NowDayNum",nowDayNum);
         nowDayNum = (int)GameManager.Instance.GetVariable("NowDayNum");
         actionPointsPerDay = (int)GameManager.Instance.GetVariable("ActionPointsPerDay");
         presentHeartIndex = (int)GameManager.Instance.GetVariable("PresentHeartIndex");
@@ -27,18 +22,32 @@ public class Room2ActionPointManager : ActionPointManager
         CreateActionPointsArray(actionPointsPerDay);
 
         // 처음 방탈출의 actionPoint
-        GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[0, presentHeartIndex]);
+        int dayIndex = nowDayNum - 1;
+        GameManager.Instance.SetVariable("ActionPoint", actionPointsArray[dayIndex, presentHeartIndex]);
 
         GameManager.Instance.AddEventObject("EventRoom2HomeComing");
         GameManager.Instance.AddEventObject("EventRoom2Morning");
+
+       // SaveManager.Instance.SaveGameData();
     }
 
     // create 5 hearts on screen on room start
     public override void CreateHearts()
     {
+        // 하트 생성 전 기존 하트가 만약에 남아있다면 삭제
+        if (heartParent.transform.childCount > 0)
+        {
+            foreach (Transform child in heartParent.transform)
+            {
+                if (child != null)
+                    Destroy(child.gameObject);
+            }
+        }
+
         int actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
         // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
-        int heartCount = presentHeartIndex + 1;
+        //int heartCount = presentHeartIndex + 1;
+        int heartCount = (actionPoint - 1) % actionPointsPerDay + 1;
 
         // 회복제 먹어서 actionPoint가 2개 더 늘어남
         if (isEatenEnergySupplement)
@@ -101,6 +110,7 @@ public class Room2ActionPointManager : ActionPointManager
             isEatenEnergySupplement = false;
 
         //Debug.Log(heartParent.transform.childCount);
+        SaveManager.Instance.SaveGameData();
     }
 
     public override void DecrementActionPoint()
