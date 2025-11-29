@@ -229,7 +229,7 @@ public class MemoManager : PageContentsManager
         }
     }
 
-    public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false)
+    public void SetMemoButtons(bool showMemoIcon, bool showMemoExitButton = false, bool setRoomButtons = true)
     {
         if (showMemoIcon && shouldHideMemoButton)
             return;
@@ -237,7 +237,7 @@ public class MemoManager : PageContentsManager
         UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, showMemoIcon, showMemoIcon);
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, showMemoExitButton);
 
-        if (RoomManager.Instance && GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.ROOM_2)
+        if (setRoomButtons && RoomManager.Instance && GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.ROOM_2)
             RoomManager.Instance.SetButtons();
     }
 

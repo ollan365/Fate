@@ -101,6 +101,7 @@ public class TutorialManager : MonoBehaviour
 
     private void CompleteTutorial() {
         GameManager.Instance.SetVariable("isTutorial", false);
+        GameManager.Instance.SetVariable("EndTutorial_ROOM_1", true);
         UIManager.Instance.SetUI(eUIGameObjectName.TutorialBlockingPanel, false);
     }
     

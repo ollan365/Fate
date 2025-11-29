@@ -33,7 +33,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (!IsDesktopEnvironment() || IgnoreInput)
+        if (!IsDesktopEnvironment() || (IgnoreInput && Input.GetKeyDown(KeyCode.Escape) == false))
             return;
 
         if (Input.GetKeyDown(KeyCode.Escape) && GameSceneManager.Instance.IsSceneChanging == false) 
@@ -44,7 +44,6 @@ public class InputManager : MonoBehaviour
             if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
                 spacePressedTime = Time.unscaledTime;
         }
-
         if (Input.GetKey(KeyCode.Space))
         {
             if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
@@ -57,7 +56,6 @@ public class InputManager : MonoBehaviour
                 }
             }
         }
-
         if (Input.GetKeyUp(KeyCode.Space))
         {
             if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)

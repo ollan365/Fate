@@ -42,6 +42,7 @@ public enum eUIGameObjectName {
     BirthdayPanel,
     MenuUI,
     Menu,
+    GoToTitleButton,
     OptionUI,
     BGMSlider,
     SoundEffectSlider,
@@ -151,6 +152,7 @@ public class UIManager : MonoBehaviour {
     [Header("UI Game Objects - Menu")] 
     public GameObject menuUI;
     public GameObject menu;
+    public GameObject goToTitleButton;
     public Sprite[] optionButtonImages;
     public GameObject optionUI;
     public GameObject BGMSlider;
@@ -280,6 +282,7 @@ public class UIManager : MonoBehaviour {
 
         uiGameObjects.Add(eUIGameObjectName.MenuUI, menuUI);
         uiGameObjects.Add(eUIGameObjectName.Menu, menu);
+        uiGameObjects.Add(eUIGameObjectName.GoToTitleButton, goToTitleButton);
 
         uiGameObjects.Add(eUIGameObjectName.OptionUI, optionUI);
         uiGameObjects.Add(eUIGameObjectName.BGMSlider, BGMSlider);
@@ -540,27 +543,29 @@ public class UIManager : MonoBehaviour {
         if (startSceneButtonClick)
             menuOpenByStartSceneButton = true;
 
-        if (GetUI(eUIGameObjectName.MenuUI).activeSelf) {
+        if (GetUI(eUIGameObjectName.MenuUI).activeInHierarchy) {
             SetUI(eUIGameObjectName.MenuUI, false);
             SetUI(eUIGameObjectName.Menu, false);
             if (menuOpenByStartSceneButton) {
                 LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
-            Time.timeScale = GameManager.Instance.isDebug ? 4f : 1f;
+            SetTimeScale();
             InputManager.Instance.IgnoreInput = false;
-        } else if (GetUI(eUIGameObjectName.OptionUI).activeSelf) {
+        } else if (GetUI(eUIGameObjectName.OptionUI).activeInHierarchy) {
             SetUI(eUIGameObjectName.OptionUI, false);
             if (menuOpenByStartSceneButton) {
                 LobbyManager.Instance.lobbyButtons.SetActive(true);
                 menuOpenByStartSceneButton = false;
             }
-            Time.timeScale = GameManager.Instance.isDebug ? 4f : 1f;
+            SetTimeScale();
             InputManager.Instance.IgnoreInput = false;
         } else {
             SetUI(eUIGameObjectName.MenuUI, true);
             SetUI(eUIGameObjectName.Menu, true);
             SetMenuColor(GameSceneManager.Instance.GetActiveScene() is not (SceneType.ROOM_1 or SceneType.FOLLOW_1));
+            
+            GetUI(eUIGameObjectName.GoToTitleButton).SetActive(GameSceneManager.Instance.GetActiveScene() != SceneType.START);
             Time.timeScale = 0f;
             InputManager.Instance.IgnoreInput = true;
         }
@@ -591,6 +596,9 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnLeftButtonClick() {
+        if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            return;
+        
         switch (GameSceneManager.Instance.GetActiveScene()) {
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
@@ -600,6 +608,9 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnRightButtonClick() {
+        if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            return;
+        
         switch (GameSceneManager.Instance.GetActiveScene()) {
             case SceneType.ROOM_1:
             case SceneType.ROOM_2:
@@ -618,6 +629,7 @@ public class UIManager : MonoBehaviour {
                     SetUI(eUIGameObjectName.Album, false, true, FloatDirection.Down);
                     SetUI(eUIGameObjectName.AlbumButton, true);
                     SetUI(eUIGameObjectName.ExitButton, false);
+                    SetUI(eUIGameObjectName.BlurImage, false, true);
                     break;
                 case SceneType.ROOM_1:
                 case SceneType.ROOM_2:

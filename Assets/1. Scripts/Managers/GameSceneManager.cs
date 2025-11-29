@@ -33,14 +33,33 @@ public class GameSceneManager : MonoBehaviour
         ChangeSceneEffect();
     }
     
-    public void GoTitle() {
-        UIManager.Instance.SetAllUI(false);
-        UIManager.Instance.SetTimeScale();
-        if (GetActiveScene() == SceneType.START) {
-            LobbyManager.Instance.InitializeLobbyScene();
-            return;
-        }
+    private void PrepareCurrentSceneForTitle()
+    {
+        if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            DialogueManager.Instance.ForceHideDialogueForSceneChange();
 
+        if (MemoManager.Instance && MemoManager.Instance.isMemoOpen)
+            MemoManager.Instance.OnExit();
+
+        SceneType currentScene = GetActiveScene();
+        if (currentScene is SceneType.ROOM_1 or SceneType.ROOM_2)
+        {
+            if (RoomManager.Instance)
+                RoomManager.Instance.ExitToRoot();
+
+            if (UIManager.Instance)
+            {
+                UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
+                UIManager.Instance.SetCursorAuto();
+            }
+        }
+    }
+    
+    public void GoTitle() {
+        UIManager.Instance.SetTimeScale();
+        PrepareCurrentSceneForTitle();
+        
         shouldInitializeLobbyOnTitleLoad = true;
         LoadScene(SceneType.START);
     }
@@ -98,7 +117,7 @@ public class GameSceneManager : MonoBehaviour
         if (GetActiveScene()  == SceneType.START)
             UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         UIManager.Instance.ResetLoadingUI();
-        MemoManager.Instance.SetMemoButtons(false);
+        MemoManager.Instance.SetMemoButtons(false, false, false);
         SoundPlayer.Instance.ChangeBGM(BGM_STOP);
 
         InputManager.Instance.IgnoreInput = true;

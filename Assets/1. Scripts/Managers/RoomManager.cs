@@ -82,16 +82,14 @@ public class RoomManager : MonoBehaviour
         SetButtons();
 
         // 귀가 스크립트 출력 미완이면 RefillHeartsOrEndDay 호출하여 스크립트 처음부터 다시 출력
-        if (!(bool)GameManager.Instance.GetVariable("isHomeComingComplete"))
-        {
+        if ((bool)GameManager.Instance.GetVariable("isHomeComingComplete") == false)
             actionPointManager.RefillHeartsOrEndDay();
-        }
         else
             actionPointManager.CreateHearts();  // create hearts on room start
 
         tutorialManager = gameObject.GetComponent<TutorialManager>();
         tutorialManager?.AddTutorialObjects();
-        if (GameManager.Instance.skipTutorial ||
+        if (GameManager.Instance.skipTutorial || (bool)GameManager.Instance.GetVariable("EndTutorial_ROOM_1") || 
             GameSceneManager.Instance.GetActiveScene() != Constants.SceneType.ROOM_1 ||
             (int)GameManager.Instance.GetVariable("ReplayCount") > 0) {
             tutorialManager?.ToggleCollider(TutorialManager.eTutorialObjectName.Chair, true);

@@ -94,6 +94,47 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    public void ForceHideDialogueForSceneChange()
+    {
+        StopAllCoroutines();
+
+        dialogueQueue.Clear();
+        isDialogueActive = false;
+        isTyping = false;
+        isAuto = false;
+        isFast = false;
+        isMulti = false;
+        isEnding = false;
+
+        foreach (GameObject canvas in dialogueSet)
+            if (canvas)
+                canvas.SetActive(false);
+
+        if (characterImages != null)
+            foreach (Image characterImage in characterImages)
+                if (characterImage)
+                    characterImage.gameObject.SetActive(false);
+
+        if (characterFadeImages != null)
+            foreach (Image fadeImage in characterFadeImages)
+                if (fadeImage)
+                    fadeImage.gameObject.SetActive(false);
+
+        if (choicesContainer != null)
+            foreach (Transform container in choicesContainer)
+                if (container)
+                    foreach (Transform child in container)
+                        Destroy(child.gameObject);
+
+        if (MemoManager.Instance)
+            MemoManager.Instance.SetMemoButtons(true);
+
+        if (!GetIsImageOrLockPanelActive())
+            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
+
+        UIManager.Instance.SetCursorAuto();
+    }
+
     // ---------------------------------------------- Dialogue methods ----------------------------------------------
     public void StartDialogue(string dialogueID)
     {

@@ -207,7 +207,8 @@ public class GameManager : MonoBehaviour
     public bool GetIsBusy() { // 클릭을 막아야 하는 상황들
         return DialogueManager.Instance.isDialogueActive ||
                (RoomManager.Instance && RoomManager.Instance.isInvestigating) ||
-               MemoManager.Instance.isMemoOpen;
+               MemoManager.Instance.isMemoOpen ||
+               UIManager.Instance.GetUI(eUIGameObjectName.MenuUI).activeInHierarchy;
     }
 
     // 원래 EventObjectManager 기능들 GameManager에 옮김
