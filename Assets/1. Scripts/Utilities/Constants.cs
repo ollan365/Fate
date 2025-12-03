@@ -198,6 +198,7 @@ public static class Constants
         Light2,
         Con2,
         Clothes_1F,
+        Hospital,
 
         // ========== 기타 등등 ========== //
         Extra
@@ -270,6 +271,7 @@ public static class Constants
             case FollowObjectName.DrinkC: return "EventFollow2DrinkC";
             case FollowObjectName.BeerB: return "EventFollow2BeerB";
             case FollowObjectName.Club2: return "EventFollow2Club";
+            case FollowObjectName.Hospital: return "EventFollow2Hospital";
             default: return null;
         }
     }
@@ -342,6 +344,7 @@ public static class Constants
             case FollowObjectName.Light2: return "LightClick2";
             case FollowObjectName.Con2: return "ConClick2";
             case FollowObjectName.Clothes_1F: return "1FClothesClick2";
+            case FollowObjectName.Hospital: return "HospitalClick2";
             default: return null;
         }
     }
