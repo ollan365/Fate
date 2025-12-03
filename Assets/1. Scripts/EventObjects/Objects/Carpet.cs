@@ -37,7 +37,7 @@ public class Carpet : EventObject, IResultExecutable
 
     public void ExecuteAction()
     {
-        if (isClosedCarpet) GameManager.Instance.IncrementVariable("ClosedCarpetClick");
+        //if (isClosedCarpet) GameManager.Instance.IncrementVariable("ClosedCarpetClick");
         
         ToggleCarpet();
     }
