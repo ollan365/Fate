@@ -75,12 +75,12 @@ EventLaptopB,노트북,노트북의 비밀번호를 틀림,,ConditionLaptopNotCo
 ,,,,,,
 EventCarpetClosed,닫힌 카펫,의자 이동하지 않은 상태에서 닫힌 카펫을 처음 클릭 + 튜토리얼O,AND,Condition_tutorial / ConditionChairNotMoved / ConditionCarpetFirstClick / ConditionCarpetClosed,Result_TutorialPhase2ForceChair / Result_StartDialogueTutorial_002_A2 / Result_IncrementClosedCarpetClick,
 EventCarpetClosed,닫힌 카펫,의자 이동하지 않은 상태에서 닫힌 카펫을 다시 클릭 + 튜토리얼O,AND,Condition_tutorial / ConditionChairNotMoved / ConditionCarpetManyClick / ConditionCarpetClosed,Result_StartDialogueTutorial_002_A2,
-EventCarpetClosed,닫힌 카펫,의자 이동한 상태에서 닫힌 카펫을 다시 클릭 + 튜토리얼O,AND,Condition_tutorial/ConditionChairMoved/ConditionCarpetManyClick/ConditionCarpetClosed,ResultCarpetOpen/Result_nextTutorialPhase/Result_InverseCarpetClosed,
+EventCarpetClosed,닫힌 카펫,의자 이동한 상태에서 닫힌 카펫을 다시 클릭 + 튜토리얼O,AND,Condition_tutorial/ConditionChairMoved/ConditionCarpetManyClick/ConditionCarpetClosed,ResultCarpetOpen/Result_nextTutorialPhase/Result_InverseCarpetClosed/ Result_IncrementClosedCarpetClick,
 EventCarpetClosed,닫힌 카펫,의자 이동한 상태에서 닫힌 카펫을 처음 클릭 + 튜토리얼X,AND,Condition_notTutorial/ConditionChairMoved/ConditionCarpetFirstClick/ConditionCarpetClosed,ResultCarpetOpen/Result_InverseCarpetClosed,그리고 튜토리얼2인 상태 | T_Condition_002 | Tutorial_ResultDrinkAndMedicineScript 삭제함
-EventCarpetClosed,닫힌 카펫,의자 이동하고 자퇴서 안 본 상태에서 닫힌 카펫 다시 클릭,AND,Condition_notTutorial/ConditionChairMoved/ConditionCarpetManyClick/CoditionZeroPaperFirstClick/ConditionCarpetClosed,ResultCarpetOpen/Result_InverseCarpetClosed,새로 추가(나은)
-EventCarpetClosed,닫힌 카펫,의자 이동한 상태에서 자퇴서 조사 후 닫힌 카펫 클릭,AND,Condition_notTutorial/ConditionChairMoved/ConditionCarpetManyClick/ConditionZeroPaperManyClick/ConditionCarpetClosed,ResultCarpetOpen/Result_InverseCarpetClosed,새로 추가(나은)
+EventCarpetClosed,닫힌 카펫,의자 이동하고 자퇴서 안 본 상태에서 닫힌 카펫 다시 클릭,AND,Condition_notTutorial/ConditionChairMoved/ConditionCarpetManyClick/CoditionZeroPaperFirstClick/ConditionCarpetClosed,ResultCarpetOpen/Result_InverseCarpetClosed/ Result_IncrementClosedCarpetClick,새로 추가(나은)
+EventCarpetClosed,닫힌 카펫,의자 이동한 상태에서 자퇴서 조사 후 닫힌 카펫 클릭,AND,Condition_notTutorial/ConditionChairMoved/ConditionCarpetManyClick/ConditionZeroPaperManyClick/ConditionCarpetClosed,ResultCarpetOpen/Result_InverseCarpetClosed/ Result_IncrementClosedCarpetClick,새로 추가(나은)
 EventCarpetOpen,열린 카펫,자퇴서 본 상태에서 열린 카펫을 클릭 + 튜토리얼O,AND,Condition_tutorial/ConditionCarpetOpen/ConditionZeroPaperManyClick,ResultCarpetClosed / Result_StartDialogueRoomEscape_018 / Result_nextTutorialPhase/Result_InverseCarpetClosed,새로 추가(나은)
-EventCarpetOpen,열린 카펫,자퇴서 안 본 상태에서 열린 카펫을 클릭 + 튜토리얼O,AND,Condition_tutorial/ConditionCarpetOpen/CoditionZeroPaperFirstClick,ResultCarpetClosed / Result_StartDialogueRoomEscape_018/Result_InverseCarpetClosed,새로 추가(나은)
+EventCarpetOpen,열린 카펫,자퇴서 안 본 상태에서 열린 카펫을 클릭 + 튜토리얼O,AND,Condition_tutorial/ConditionCarpetOpen/CoditionZeroPaperFirstClick,Result_TutorialPhase3ForceLoR / Result_StartDialogueTutorialForce_004B,새로 추가(나은)
 EventCarpetOpen,열린 카펫,열린 카펫을 클릭 + 튜토리얼X,AND,Condition_notTutorial/ConditionCarpetOpen,ResultCarpetClosed / Result_InverseCarpetClosed,새로 추가(나은)
 EventCarpetLetterOfResignation,카펫(종이),자퇴서 처음 클릭,AND,CoditionZeroPaperFirstClick / Condition_tutorial,ResultCarpetDropOutLetterZoom/ Result_StartDialogueRoomEscape_017 /Result_nextTutorialPhase/Result_IncrementPaperClick/ Result_RevealMemoR1Memo_006 /Result_IsFinishedEventCarpetLetterOfResignation/ResultTimePass,Result_IsFinished 추가
 EventCarpetLetterOfResignation,카펫(종이),자퇴서 다시 클릭,,ConditionZeroPaperManyClick,ResultCarpetDropOutLetterZoom/ Result_StartDialogueRoomEscape_017 /Result_IncrementPaperClick/ Result_RevealMemoR1Memo_006 /ResultTimePass,
@@ -411,6 +411,10 @@ EventFollow2Cigarette,담배피는 사람,담배피는 사람 처음 클릭,,Con
 EventFollow2Cigarette,담배피는 사람,담배피는 사람 여러번 클릭,,ConditionCigaretteManyClick2,Result_StartDialogueFollow2_028,
 EventFollow2Guard,클럽 가드,클럽 가드를 처음 클릭,,ConditionGuardFirstClick2,Result_StartDialogueFollow2_029 / Result_RevealMemoF2Memo_008,
 EventFollow2Guard,클럽 가드,클럽 가드를 여러번 클릭,,ConditionGuardManyClick2,Result_StartDialogueFollow2_029,
+EventFollow2Hospital,병원,병원을 처음 클릭,,ConditionHospitalFirstClick2,Result_StartDialogueFollow2_023/ Result_RevealMemoF2Memo_009,
+EventFollow2Hospital,병원,병원을 여러번 클릭 ,,ConditionHospitalManyClick2,Result_StartDialogueFollow2_023,
+,,,,,,
+,,,,,,
 ,,,,,,
 ,,,,,,
 EventBadA_End,,,,,ResultBadA_End,
