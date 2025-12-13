@@ -957,7 +957,7 @@ public class UIManager : MonoBehaviour {
         }
 
         RectTransform target = targetAlbumImages[endingIndex].GetComponent<RectTransform>();
-        if ((int)GameManager.Instance.GetVariable(endingVariable) > 1) // 이전에 본 엔딩이면 다른 연출
+        if ((int)GameManager.Instance.GetVariable(endingVariable) > 0) // 이전에 본 엔딩이면 다른 연출
         {
             StartCoroutine(AnimationRoutine(target, false));
             return 1;
@@ -966,7 +966,7 @@ public class UIManager : MonoBehaviour {
         albumImageDestination = target.position;
         target.gameObject.SetActive(false);
 
-        albumEndingImage.SetActive(true);
+        SetUI(eUIGameObjectName.AlbumEndingImage,true, true, FloatDirection.Up);
         albumEndingImage.GetComponent<Image>().sprite = endingSprites[endingIndex * 2 + 1 - (int)GameManager.Instance.GetVariable("AccidyGender")];
         albumEndingImage.GetComponent<RectTransform>().position = new Vector3(0, 0, 10);
         albumEndingImage.GetComponent<RectTransform>().localScale = new Vector3(2, 2, 2);

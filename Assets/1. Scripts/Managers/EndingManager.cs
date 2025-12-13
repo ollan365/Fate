@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using static Constants;
+using Unity.VisualScripting;
 
 public class EndingManager : MonoBehaviour
 {
@@ -96,7 +97,6 @@ public class EndingManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         // 엔딩 연출
-        Debug.Log("엔딩 연출 시작");
         StartCoroutine(AlbumEffect(endingType));
         yield return new WaitForSeconds(4f);
         SaveManager.Instance.SaveEndingDataAndInitGameDataExceptEndingData(endingType);
@@ -116,14 +116,16 @@ public class EndingManager : MonoBehaviour
     private IEnumerator AlbumEffect(EndingType endingType)
     {
         // 앨범 활성화(키보드 입력 무시, 좌우 버튼 비활성화, 터치 무시)
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumNextPageButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumPreviousPageButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.Album, true, true, FloatDirection.Up);
         InputManager.Instance.IgnoreInput = true;
         // DiaryManager.Instance.ToggleTouchInput(false);
         yield return new WaitForSeconds(0.3f);
 
-        // 한 페이지 넘기기
-        UIManager.Instance.GetUI(eUIGameObjectName.AlbumNextPageButton).GetComponent<Button>().onClick.Invoke();
-        yield return new WaitForSeconds(0.5f);
+        // 페이지 이동
+        yield return StartCoroutine(UIManager.Instance.GetUI(eUIGameObjectName.Album).transform.GetComponentInChildren<AutoFlip>().FlipToPageInEndingAlbum(2));
+        yield return new WaitForSeconds(0.3f);
 
         // 엔딩에 따라 애니메이션 연출
         float anmationTime = UIManager.Instance.PlayEndingAlbumAnimation(endingType);
