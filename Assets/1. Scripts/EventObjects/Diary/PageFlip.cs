@@ -25,7 +25,7 @@ public class PageFlip : MonoBehaviour
     public Sprite leftPage;
     public Sprite rightPage;
     
-    private bool interactable = true;
+    public bool interactable = true;
     private bool pageDragging;
     private bool autoFlipping = false;
     private bool enableShadowEffect = true;

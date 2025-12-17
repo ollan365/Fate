@@ -633,9 +633,14 @@ public class UIManager : MonoBehaviour {
         else {
             switch (GameSceneManager.Instance.GetActiveScene()) {
                 case SceneType.START:
-                case SceneType.ENDING:
                     SetUI(eUIGameObjectName.Album, false, true, FloatDirection.Down);
                     SetUI(eUIGameObjectName.AlbumButton, true);
+                    SetUI(eUIGameObjectName.ExitButton, false);
+                    SetUI(eUIGameObjectName.BlurImage, false, true);
+                    break;
+                case SceneType.ENDING:
+                    SetUI(eUIGameObjectName.Album, false, true, FloatDirection.Down);
+                    SetUI(eUIGameObjectName.AlbumButton, false);
                     SetUI(eUIGameObjectName.ExitButton, false);
                     SetUI(eUIGameObjectName.BlurImage, false, true);
                     break;

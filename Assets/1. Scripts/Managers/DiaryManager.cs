@@ -48,11 +48,14 @@ public class DiaryManager : PageContentsManager
     private int replayCount = 1; 
     private const int AlbumFramePageNumMinimum = 2, AlbumFramePageNumMaximum = 3;
 
+    private bool isAlbumInteractable;
+
     private void Awake()
     {
         // SetDoodlesOrder();
         ParsePageContents();
         endingSprites = UIManager.Instance.endingSprites;
+        isAlbumInteractable = true;
     }
 
     public void SetTotalPages()
@@ -275,6 +278,14 @@ public class DiaryManager : PageContentsManager
     {
         return diaryType;
     }
+    
+    public void SetAlbumInteractable(bool isInteractable)
+    {
+        isAlbumInteractable  = isInteractable;
+        diaryPages.interactable = isInteractable;
+        flipLeftButton.SetActive(isInteractable);
+        flipRightButton.SetActive(isInteractable);
+    }
 
     private Dictionary<string, (List<string>, string)> GetCurrentPagesDictionary()
     {
@@ -312,11 +323,8 @@ public class DiaryManager : PageContentsManager
         DisplayPage(PageType.Left, currentPage);
         DisplayPage(PageType.Right, currentPage + 1);
 
-        flipLeftButton.SetActive(currentPage > 0);
-        
-        bool flipRightButtonOn = currentPage < totalPageCount - 1;
-        // Debug.Log($"flipRightButtonOn: {flipRightButtonOn}\n\tcurrentPage: {currentPage}\n\ttotalPageCount: {totalPageCount}");
-        flipRightButton.SetActive(flipRightButtonOn);
+        flipLeftButton.SetActive(isAlbumInteractable && currentPage > 0);
+        flipRightButton.SetActive(isAlbumInteractable && currentPage < totalPageCount - 1);
 
         if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect") && GetDiaryType() == "Diary2")
         {
