@@ -51,8 +51,14 @@ public class GameSceneManager : MonoBehaviour
             {
                 UIManager.Instance.SetUI(eUIGameObjectName.ActionPoints, false);
                 UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.TutorialBlockingPanel, false);
                 UIManager.Instance.SetCursorAuto();
             }
+        }
+        else if (currentScene is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
+        {
+            if (UIManager.Instance)
+                UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, false);
         }
     }
     

@@ -14,11 +14,10 @@ public class LobbyManager : MonoBehaviour
     public Image backgroundImage;
     public Sprite room1Side1BackgroundSprite, blackBgSprite;
     [SerializeField] private GameObject gotoSceneButtons;
-    [SerializeField] private GameObject lobbyPanels;
     [SerializeField] private GameObject clockSecondGameObject;
-    [SerializeField] private TMP_InputField nameInput;
-    [SerializeField] private TextMeshProUGUI nameCheckQuestion;
-    [SerializeField] private TMP_Dropdown monthDropdown, dayDropdown;
+    private TMP_InputField nameInput;
+    private TextMeshProUGUI nameCheckQuestion;
+    private TMP_Dropdown monthDropdown, dayDropdown;
     
     private string fateName;
     private string previousFateName;
@@ -37,23 +36,27 @@ public class LobbyManager : MonoBehaviour
     }
 
     public void InitializeLobbyScene() {
+        nameInput = UIManager.Instance.GetUI(eUIGameObjectName.NamePanel).transform.Find("Name").GetComponent<TMP_InputField>();
+        nameCheckQuestion = UIManager.Instance.GetUI(eUIGameObjectName.NameConfirmPanel).transform.Find("Question").GetComponent<TextMeshProUGUI>();
+        monthDropdown = UIManager.Instance.GetUI(eUIGameObjectName.BirthdayPanel).transform.Find("Month").GetComponent<TMP_Dropdown>();
+        dayDropdown = UIManager.Instance.GetUI(eUIGameObjectName.BirthdayPanel).transform.Find("Day").GetComponent<TMP_Dropdown>();
+
         UIManager.Instance.SetUI(eUIGameObjectName.StartupImage, true);
         UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, true);
         UIManager.Instance.SetOptionUI();
         
         isLobby = true;
         lobbyButtons.SetActive(true);
-        lobbyPanels.SetActive(true);
+        UIManager.Instance.SetUI(eUIGameObjectName.LobbyPanels, true);
         particleSystemObject.SetActive(true);
         titleImage.gameObject.SetActive(true);
         backgroundImage.gameObject.SetActive(false);
 
+        gotoSceneButtons.SetActive(GameManager.Instance.isDebug);
+
         if (GameManager.Instance.isDemoBuild) { // default: -20
             lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -60;
             lobbyButtons.transform.GetChild(1).gameObject.SetActive(false);
-            gotoSceneButtons.SetActive(false);
-        } else if (GameManager.Instance.isReleaseBuild) {
-            gotoSceneButtons.SetActive(false);
         }
         
         StartCoroutine(WaitForGameManagerStartFunction());
@@ -118,6 +121,7 @@ public class LobbyManager : MonoBehaviour
     }
 
     public void OpenSettings() {
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.OptionUI, true);
         UIManager.Instance.SetMenuOpenByStartSceneButton();
     }
@@ -225,5 +229,16 @@ public class LobbyManager : MonoBehaviour
         if (birthday.Length == 3) 
             birthday = "0" + birthday;
         GameManager.Instance.SetVariable("FateBirthday", birthday);
+    }
+
+    public void OnNewGameNoButtonClick() {
+        UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, false);
+        lobbyButtons.SetActive(true);
+    }
+
+    public void OnNewGameYesButtonClick() {
+        SaveManager.Instance.CreateNewGameData();
+        UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, false);
+        StartNewGame();
     }
 }

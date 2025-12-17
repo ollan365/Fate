@@ -35,6 +35,7 @@ public enum eUIGameObjectName {
     MemoButton,
     MemoContents,
     MemoGauge,
+    LobbyPanels,
     NewGamePanel,
     NoGameDataPanel,
     NamePanel,
@@ -143,6 +144,7 @@ public class UIManager : MonoBehaviour {
     private Image albumImage;
 
     [Header("UI Game Objects - Lobby Panels")]
+    public GameObject lobbyPanels;
     public GameObject newGamePanel;
     public GameObject noGameDataPanel;
     public GameObject namePanel;
@@ -229,9 +231,6 @@ public class UIManager : MonoBehaviour {
         // UI Objects that should be active by default
         SetUI(eUIGameObjectName.ObjectImageRoom, true);
         SetUI(eUIGameObjectName.AlbumButton, true);
-
-        if (GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild)
-            menu.transform.GetChild(2).gameObject.SetActive(false);
     }
 
     private void Start() {
@@ -274,6 +273,7 @@ public class UIManager : MonoBehaviour {
 
         uiGameObjects.Add(eUIGameObjectName.TutorialBlockingPanel, tutorialBlockingPanel);
         
+        uiGameObjects.Add(eUIGameObjectName.LobbyPanels, lobbyPanels);
         uiGameObjects.Add(eUIGameObjectName.NewGamePanel, newGamePanel);
         uiGameObjects.Add(eUIGameObjectName.NoGameDataPanel, noGameDataPanel);
         uiGameObjects.Add(eUIGameObjectName.NamePanel, namePanel);
@@ -340,7 +340,6 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Update() {
-
         CheckCursorTouchingUIs();
     }
     
@@ -543,29 +542,31 @@ public class UIManager : MonoBehaviour {
         if (startSceneButtonClick)
             menuOpenByStartSceneButton = true;
 
-        if (GetUI(eUIGameObjectName.MenuUI).activeInHierarchy) {
-            SetUI(eUIGameObjectName.MenuUI, false);
-            SetUI(eUIGameObjectName.Menu, false);
+        bool isMenuUIOpen = GetUI(eUIGameObjectName.MenuUI).activeInHierarchy;
+        bool isOptionUIOpen = GetUI(eUIGameObjectName.OptionUI).activeInHierarchy;
+        if (isMenuUIOpen || isOptionUIOpen) {
+            if (isMenuUIOpen) {
+                SetUI(eUIGameObjectName.MenuUI, false);
+                SetUI(eUIGameObjectName.Menu, false);
+            } else {
+                SetUI(eUIGameObjectName.OptionUI, false);
+            }
+            
             if (menuOpenByStartSceneButton) {
                 LobbyManager.Instance.lobbyButtons.SetActive(true);
+                SetUI(eUIGameObjectName.AlbumButton, true);
                 menuOpenByStartSceneButton = false;
             }
             SetTimeScale();
             InputManager.Instance.IgnoreInput = false;
-        } else if (GetUI(eUIGameObjectName.OptionUI).activeInHierarchy) {
-            SetUI(eUIGameObjectName.OptionUI, false);
-            if (menuOpenByStartSceneButton) {
-                LobbyManager.Instance.lobbyButtons.SetActive(true);
-                menuOpenByStartSceneButton = false;
-            }
-            SetTimeScale();
-            InputManager.Instance.IgnoreInput = false;
-        } else {
+        }
+        else {
             SetUI(eUIGameObjectName.MenuUI, true);
             SetUI(eUIGameObjectName.Menu, true);
-            SetMenuColor(GameSceneManager.Instance.GetActiveScene() is not (SceneType.ROOM_1 or SceneType.FOLLOW_1));
-            
-            GetUI(eUIGameObjectName.GoToTitleButton).SetActive(GameSceneManager.Instance.GetActiveScene() != SceneType.START);
+
+            SceneType currentScene = GameSceneManager.Instance.GetActiveScene();
+            SetUI(eUIGameObjectName.GoToTitleButton, currentScene is not SceneType.START);
+            SetMenuColor(currentScene is not (SceneType.ROOM_1 or SceneType.FOLLOW_1));
             Time.timeScale = 0f;
             InputManager.Instance.IgnoreInput = true;
         }
@@ -626,6 +627,7 @@ public class UIManager : MonoBehaviour {
         else {
             switch (GameSceneManager.Instance.GetActiveScene()) {
                 case SceneType.START:
+                case SceneType.ENDING:
                     SetUI(eUIGameObjectName.Album, false, true, FloatDirection.Down);
                     SetUI(eUIGameObjectName.AlbumButton, true);
                     SetUI(eUIGameObjectName.ExitButton, false);
@@ -855,11 +857,20 @@ public class UIManager : MonoBehaviour {
 
     private void CheckCursorTouchingUIs() { // Check if the cursor is touching any of the buttons
         bool isCursorOverUIs = false;
-        foreach (RectTransform uiRectTransform in uiToCheck) {
-            if (!uiRectTransform.gameObject.activeSelf || 
-                !RectTransformUtility.RectangleContainsScreenPoint(uiRectTransform, Input.mousePosition, uiCamera)) 
+        for (int i = uiToCheck.Count - 1; i >= 0; i--) {
+            RectTransform uiRectTransform = uiToCheck[i];
+            if (uiRectTransform == null) {
+                uiToCheck.RemoveAt(i);
                 continue;
-            
+            }
+
+            GameObject go = uiRectTransform.gameObject;
+            if ((go && go.activeSelf) == false)
+                continue;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(uiRectTransform, Input.mousePosition, uiCamera) == false)
+                continue;
+
             isCursorOverUIs = true;
             break;
         }

@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
         if (isDebug)
             ShowVariables();
 
-        if (isDemoBuild || isReleaseBuild) {
+        if (isDemoBuild) {
             if (GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_2 &&
                 UIManager.Instance.GetUI(eUIGameObjectName.EndOfDemoPage).activeInHierarchy == false)
                 UIManager.Instance.SetUI(eUIGameObjectName.EndOfDemoPage, true);

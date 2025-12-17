@@ -33,10 +33,10 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (!IsDesktopEnvironment() || (IgnoreInput && Input.GetKeyDown(KeyCode.Escape) == false))
+        if (IsDesktopEnvironment() == false || (IgnoreInput && Input.GetKeyDown(KeyCode.Escape) == false))
             return;
 
-        if (Input.GetKeyDown(KeyCode.Escape) && GameSceneManager.Instance.IsSceneChanging == false) 
+        if (GameSceneManager.Instance.IsSceneChanging == false && Input.GetKeyDown(KeyCode.Escape)) 
             UIManager.Instance.SetMenuUI();
 
         // Spacebar press-and-hold skip handling for Dialogue
