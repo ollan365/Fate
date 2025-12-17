@@ -78,8 +78,6 @@ public enum eUIGameObjectName {
     AlbumPage,
     AlbumImageGameObject,
     AlbumEndingImage,
-    AlbumNextPageButton,
-    AlbumPreviousPageButton,
     EndingTypeGameObject,
     EndingNameGameObject,
     TutorialBlockingPanel,
@@ -130,8 +128,6 @@ public class UIManager : MonoBehaviour {
     public Sprite[] endingSprites;
     public Image[] targetAlbumImages;
     private Vector3 albumImageDestination;
-    public GameObject albumNextPageButton;
-    public GameObject albumPreviousPageButton;
     public GameObject albumEndingImage;
 
     [Header("UI Game Objects - Day Animation")]
@@ -332,8 +328,6 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.AlbumImageGameObject, albumImageGameObject);
         uiGameObjects.Add(eUIGameObjectName.EndingTypeGameObject, endingTypeGameObject);
         uiGameObjects.Add(eUIGameObjectName.EndingNameGameObject, endingNameGameObject);
-        uiGameObjects.Add(eUIGameObjectName.AlbumNextPageButton, albumNextPageButton);
-        uiGameObjects.Add(eUIGameObjectName.AlbumPreviousPageButton, albumPreviousPageButton);
         uiGameObjects.Add(eUIGameObjectName.AlbumEndingImage, albumEndingImage);
         
         uiGameObjects.Add(eUIGameObjectName.EndOfDemoPage, endOfDemoPage);

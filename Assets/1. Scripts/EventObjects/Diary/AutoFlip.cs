@@ -82,8 +82,6 @@ public class AutoFlip : MonoBehaviour
             yield break;
 
         yield return StartCoroutine(FlipToPageCoroutine(pageNum));
-        UIManager.Instance.SetUI(eUIGameObjectName.AlbumNextPageButton, false);
-        UIManager.Instance.SetUI(eUIGameObjectName.AlbumPreviousPageButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, false);
     }
 

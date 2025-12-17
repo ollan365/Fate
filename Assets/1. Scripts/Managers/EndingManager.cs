@@ -116,8 +116,6 @@ public class EndingManager : MonoBehaviour
     private IEnumerator AlbumEffect(EndingType endingType)
     {
         // 앨범 활성화(키보드 입력 무시, 좌우 버튼 비활성화, 터치 무시)
-        UIManager.Instance.SetUI(eUIGameObjectName.AlbumNextPageButton, false);
-        UIManager.Instance.SetUI(eUIGameObjectName.AlbumPreviousPageButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.Album, true, true, FloatDirection.Up);
         InputManager.Instance.IgnoreInput = true;
         // DiaryManager.Instance.ToggleTouchInput(false);
