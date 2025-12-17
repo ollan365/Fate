@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -76,6 +77,9 @@ public enum eUIGameObjectName {
     AlbumButton,
     AlbumPage,
     AlbumImageGameObject,
+    AlbumEndingImage,
+    AlbumNextPageButton,
+    AlbumPreviousPageButton,
     EndingTypeGameObject,
     EndingNameGameObject,
     TutorialBlockingPanel,
@@ -124,6 +128,11 @@ public class UIManager : MonoBehaviour {
     public GameObject endingTypeGameObject;
     public GameObject endingNameGameObject;
     public Sprite[] endingSprites;
+    public Image[] targetAlbumImages;
+    private Vector3 albumImageDestination;
+    public GameObject albumNextPageButton;
+    public GameObject albumPreviousPageButton;
+    public GameObject albumEndingImage;
 
     [Header("UI Game Objects - Day Animation")]
     public GameObject dayChangingGameObject;
@@ -323,6 +332,9 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.AlbumImageGameObject, albumImageGameObject);
         uiGameObjects.Add(eUIGameObjectName.EndingTypeGameObject, endingTypeGameObject);
         uiGameObjects.Add(eUIGameObjectName.EndingNameGameObject, endingNameGameObject);
+        uiGameObjects.Add(eUIGameObjectName.AlbumNextPageButton, albumNextPageButton);
+        uiGameObjects.Add(eUIGameObjectName.AlbumPreviousPageButton, albumPreviousPageButton);
+        uiGameObjects.Add(eUIGameObjectName.AlbumEndingImage, albumEndingImage);
         
         uiGameObjects.Add(eUIGameObjectName.EndOfDemoPage, endOfDemoPage);
 
@@ -928,6 +940,104 @@ public class UIManager : MonoBehaviour {
         endingTypeGameObject.SetActive(true);
         endingNameGameObject.SetActive(true);
         albumPage.SetActive(true);
+    }
+
+    public float PlayEndingAlbumAnimation(EndingType endingType)
+    {
+        int endingIndex = 0;
+        string endingVariable = "";
+        switch (endingType)
+        {
+            case EndingType.BAD_A:
+                endingIndex = 0;
+                endingVariable = "BadACollect";
+                break;
+            case EndingType.BAD_B:
+                endingIndex = 1;
+                endingVariable = "BadBCollect";
+                break;
+            case EndingType.TRUE:
+                endingIndex = 0;
+                endingVariable = "TrueCollect";
+                break;
+            case EndingType.HIDDEN:
+                endingIndex = 0;
+                endingVariable = "HiddenCollect";
+                break;
+        }
+
+        RectTransform target = targetAlbumImages[endingIndex].GetComponent<RectTransform>();
+        if ((int)GameManager.Instance.GetVariable(endingVariable) > 0) // 이전에 본 엔딩이면 다른 연출
+        {
+            StartCoroutine(AnimationRoutine(target, false));
+            return 1;
+        }
+
+        albumImageDestination = target.position;
+        target.gameObject.SetActive(false);
+
+        SetUI(eUIGameObjectName.AlbumEndingImage,true, true, FloatDirection.Up);
+        albumEndingImage.GetComponent<Image>().sprite = endingSprites[endingIndex * 2 + 1 - (int)GameManager.Instance.GetVariable("AccidyGender")];
+        albumEndingImage.GetComponent<RectTransform>().position = new Vector3(0, 0, 10);
+        albumEndingImage.GetComponent<RectTransform>().localScale = new Vector3(2, 2, 2);
+        StartCoroutine(AnimationRoutine(albumEndingImage.GetComponent<RectTransform>(), true));
+
+        return 2.5f;
+    }
+
+    private IEnumerator AnimationRoutine(RectTransform target, bool move)
+    {
+        // 회전 시퀀스 리스트
+        float[] rotations = { 10f, -10f, 10f, -10f, 0f };
+
+        foreach (float rot in rotations)
+        {
+            yield return StartCoroutine(RotateToZ(target, rot, 0.2f));
+        }
+
+        // 이동 & 스케일 축소
+        if (move) StartCoroutine(MoveAndScale(target, 1f));
+    }
+
+    private IEnumerator RotateToZ(RectTransform target, float targetZ, float duration)
+    {
+        float t = 0f;
+        float startZ = target.localEulerAngles.z;
+
+        // 360도 wrap-around 보정
+        if (startZ > 180) startZ -= 360;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float z = Mathf.Lerp(startZ, targetZ, t / duration);
+            target.localEulerAngles = new Vector3(0, 0, z);
+            yield return null;
+        }
+
+        target.localEulerAngles = new Vector3(0, 0, targetZ);
+    }
+
+    private IEnumerator MoveAndScale(RectTransform target, float duration)
+    {
+        float t = 0f;
+        Vector3 startPos = target.anchoredPosition;
+        Vector3 startScale = target.localScale;
+        Vector3 endScale = Vector3.one;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float lerp = Mathf.SmoothStep(0, 1, t / duration);
+
+            target.position = Vector3.Lerp(startPos, albumImageDestination, lerp);
+            target.localScale = Vector3.Lerp(startScale, endScale, lerp);
+
+            yield return null;
+        }
+
+        target.position = albumImageDestination;
+        target.localScale = endScale;
     }
 
     /*

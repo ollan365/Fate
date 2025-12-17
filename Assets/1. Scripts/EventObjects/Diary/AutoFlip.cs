@@ -70,6 +70,22 @@ public class AutoFlip : MonoBehaviour
 
         StartCoroutine(FlipToPageCoroutine(pageNum));
     }
+    public IEnumerator FlipToPageInEndingAlbum(int pageNum)
+    {
+        // Right page indices are even in this setup.
+        if (pageNum % 2 != 0)
+        {
+            Debug.LogWarning("FlipToPage: target page must be even (right page index).");
+            yield break;
+        }
+        if (isFlipping || pageNum < 0 || pageNum >= controlledBook.totalPageCount)
+            yield break;
+
+        yield return StartCoroutine(FlipToPageCoroutine(pageNum));
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumNextPageButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumPreviousPageButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.ExitButton, false);
+    }
 
     private IEnumerator FlipToPageCoroutine(int targetPage)
     {

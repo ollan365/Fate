@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using static Constants;
+using Unity.VisualScripting;
 
 public class EndingManager : MonoBehaviour
 {
@@ -75,34 +76,65 @@ public class EndingManager : MonoBehaviour
 
     public void EndEnding(EndingType endingType)
     {
-        SaveManager.Instance.SaveEndingDataAndInitGameDataExceptEndingData(endingType);
         if (endingType != EndingType.HIDDEN)
-            StartCoroutine(DelayLoadScene());
+            StartCoroutine(DelayLoadScene(endingType));
         else
         {
+            SaveManager.Instance.SaveEndingDataAndInitGameDataExceptEndingData(endingType);
             SoundPlayer.Instance.UISoundStop(-1);
             GameSceneManager.Instance.LoadScene(SceneType.START);
         }
     }
     public void TestClock()
     {
-        StartCoroutine(DelayLoadScene(true));
+        StartCoroutine(DelayLoadScene(EndingType.BAD_A, true));
     }
-    private IEnumerator DelayLoadScene(bool isTest = false)
+    private IEnumerator DelayLoadScene(EndingType endingType, bool isTest = false)
     {
         SoundPlayer.Instance.UISoundStop(-1);
         SoundPlayer.Instance.ChangeBGM(BGM_ENDINGCLOCK); 
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 0.5f, true, 0, 0.5f));
         yield return new WaitForSeconds(0.5f);
+
+        // 엔딩 연출
+        StartCoroutine(AlbumEffect(endingType));
+        yield return new WaitForSeconds(4f);
+        SaveManager.Instance.SaveEndingDataAndInitGameDataExceptEndingData(endingType);
+
+        // 시계 연출
         clock.SetActive(true);
         StartCoroutine(ClockEffect());
         yield return new WaitForSeconds(16.5f);
 
+        // 씬 이동
         if (!isTest)
         {
             GameSceneManager.Instance.LoadScene(SceneType.START);
         }
         if (isTest) GameSceneManager.Instance.LoadScene(SceneType.ENDING);
+    }
+    private IEnumerator AlbumEffect(EndingType endingType)
+    {
+        // 앨범 활성화(키보드 입력 무시, 좌우 버튼 비활성화, 터치 무시)
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumNextPageButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumPreviousPageButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.Album, true, true, FloatDirection.Up);
+        InputManager.Instance.IgnoreInput = true;
+        // DiaryManager.Instance.ToggleTouchInput(false);
+        yield return new WaitForSeconds(0.3f);
+
+        // 페이지 이동
+        yield return StartCoroutine(UIManager.Instance.GetUI(eUIGameObjectName.Album).transform.GetComponentInChildren<AutoFlip>().FlipToPageInEndingAlbum(2));
+        yield return new WaitForSeconds(0.3f);
+
+        // 엔딩에 따라 애니메이션 연출
+        float anmationTime = UIManager.Instance.PlayEndingAlbumAnimation(endingType);
+        yield return new WaitForSeconds(anmationTime);
+
+        // 앨범 비활성화 (키보드 입력 무시X, 터치 무시 X)
+        UIManager.Instance.OnExitButtonClick();
+        InputManager.Instance.IgnoreInput = false;
+        // DiaryManager.Instance.ToggleTouchInput(true);
     }
     private IEnumerator ClockEffect()
     {
