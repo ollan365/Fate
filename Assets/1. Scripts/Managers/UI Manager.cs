@@ -78,7 +78,6 @@ public enum eUIGameObjectName {
     AlbumPage,
     AlbumImageGameObject,
     AlbumEndingImage,
-    EndingTypeGameObject,
     EndingNameGameObject,
     TutorialBlockingPanel,
     EndOfDemoPage
@@ -144,7 +143,6 @@ public class UIManager : MonoBehaviour {
     [HideInInspector] public TextMeshProUGUI todayNumTextTextMeshProUGUI;
     [HideInInspector] public RectTransform yesterdayRectTransform;
     [HideInInspector] public RectTransform dayChangingGroupRectTransform;
-    private TextMeshProUGUI endingTypeText;
     private TextMeshProUGUI endingNameText;
     private Image albumImage;
 
@@ -326,7 +324,6 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.AlbumButton, albumButton);
         uiGameObjects.Add(eUIGameObjectName.AlbumPage, albumPage);
         uiGameObjects.Add(eUIGameObjectName.AlbumImageGameObject, albumImageGameObject);
-        uiGameObjects.Add(eUIGameObjectName.EndingTypeGameObject, endingTypeGameObject);
         uiGameObjects.Add(eUIGameObjectName.EndingNameGameObject, endingNameGameObject);
         uiGameObjects.Add(eUIGameObjectName.AlbumEndingImage, albumEndingImage);
         
@@ -340,7 +337,6 @@ public class UIManager : MonoBehaviour {
         warningVignetteQVignetteSingle = warningVignette.GetComponent<Q_Vignette_Single>();
         dayTextTextMeshProUGUI = dayText.GetComponent<TextMeshProUGUI>();
 
-        endingTypeText = endingTypeGameObject.GetComponentInChildren<TextMeshProUGUI>();
         endingNameText = endingNameGameObject.GetComponent<TextMeshProUGUI>();
         albumImage = albumImageGameObject.GetComponent<Image>();
     }
@@ -911,32 +907,19 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OpenAlbumPage(int endingIndex) {
-        const int badA = 0;
-        const int badB = 1;
-        const int trueEnding = 2;
-        const int hidden = 3;
         albumImage.sprite = endingSprites[endingIndex * 2 + (int)GameManager.Instance.GetVariable("AccidyGender")];
-        switch (endingIndex) {
-            case badA:
-                endingTypeText.text = "# 배드 엔딩 A";
-                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0417"].GetScript().ProcessedText;
-                break;
-            case badB:
-                endingTypeText.text = "# 배드 엔딩 B";
-                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0618"].GetScript().ProcessedText;
-                break;
-            case trueEnding:
-                endingTypeText.text = "# 트루 엔딩";
-                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0678"].GetScript().ProcessedText;
-                break;
-            case hidden:
-                endingTypeText.text = "# 히든 엔딩";
-                endingNameText.text = DialogueManager.Instance.scripts["Dialogue_0777"].GetScript().ProcessedText;
-                break;
-        }
+        string[] scriptIds = {
+            "Dialogue_0417", 
+            "Dialogue_0618", 
+            "Dialogue_0678", 
+            "Dialogue_0777"
+        };
+        string scriptId = scriptIds[endingIndex];
+        endingNameText.text = DialogueManager.Instance.scripts[scriptId].GetScript().ProcessedText;
+        LocalizedText localizedText = endingNameText.GetComponent<LocalizedText>();
+        localizedText.SetScriptId(scriptId);
 
         albumImageGameObject.SetActive(true);
-        endingTypeGameObject.SetActive(true);
         endingNameGameObject.SetActive(true);
         albumPage.SetActive(true);
     }
