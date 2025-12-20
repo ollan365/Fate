@@ -617,7 +617,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -120, y: -30}
+  m_AnchoredPosition: {x: -50, y: -30}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &65231508
@@ -3082,6 +3082,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 539863388}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &219087752
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3147,7 +3159,6 @@ GameObject:
   - component: {fileID: 221451231}
   - component: {fileID: 221451233}
   - component: {fileID: 221451232}
-  - component: {fileID: 221451234}
   m_Layer: 5
   m_Name: Month Text
   m_TagString: Untagged
@@ -3171,8 +3182,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30, y: -30}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -150, y: -30}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &221451232
 MonoBehaviour:
@@ -3194,7 +3205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC6D4"
+  m_text: 'mm:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
   m_sharedMaterial: {fileID: 7239409008639042079, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
@@ -3228,7 +3239,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3271,20 +3282,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221451230}
   m_CullTransparentMesh: 1
---- !u!114 &221451234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 221451230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52568ea7db4064c258dec29cbc1052c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptId: Localized_Month
-  tmpText: {fileID: 0}
 --- !u!1 &237138543
 GameObject:
   m_ObjectHideFlags: 0
@@ -3558,7 +3555,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 60, y: -30}
+  m_AnchoredPosition: {x: 150, y: -30}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &260248967
@@ -17274,10 +17271,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1946900114}
-  - {fileID: 65231507}
-  - {fileID: 260248966}
   - {fileID: 221451231}
+  - {fileID: 65231507}
   - {fileID: 1803871782}
+  - {fileID: 260248966}
   - {fileID: 2128058251}
   m_Father: {fileID: 1748946841}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17354,7 +17351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1432098554
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18929,8 +18926,8 @@ MonoBehaviour:
   variablesText: {fileID: 1186971534}
   skipTutorial: 0
   skipInquiry: 0
-  isDebug: 0
-  isReleaseBuild: 1
+  isDebug: 1
+  isReleaseBuild: 0
   isDemoBuild: 0
 --- !u!1 &1571167329
 GameObject:
@@ -21237,6 +21234,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 539863388}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1718493775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21738,7 +21747,6 @@ GameObject:
   - component: {fileID: 1803871782}
   - component: {fileID: 1803871784}
   - component: {fileID: 1803871783}
-  - component: {fileID: 1803871785}
   m_Layer: 5
   m_Name: Day Text
   m_TagString: Untagged
@@ -21762,8 +21770,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 150, y: -30}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 50, y: -30}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1803871783
 MonoBehaviour:
@@ -21785,7 +21793,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC77C"
+  m_text: 'dd:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
   m_sharedMaterial: {fileID: 7239409008639042079, guid: 17c11699898ea45f58a0129942760a5b, type: 2}
@@ -21819,7 +21827,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -21862,20 +21870,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1803871781}
   m_CullTransparentMesh: 1
---- !u!114 &1803871785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803871781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52568ea7db4064c258dec29cbc1052c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptId: Localized_Day
-  tmpText: {fileID: 0}
 --- !u!1 &1807211041 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9069565230760587667, guid: 8a7c71f93c37e1d4b81adb495cb01eca, type: 3}

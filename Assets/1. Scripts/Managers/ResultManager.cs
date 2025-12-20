@@ -159,6 +159,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultPrologueEnd":
+                GameManager.Instance.isPrologueInProgress = false;
                 GameSceneManager.Instance.LoadScene(SceneType.ROOM_1);
                 break;
 

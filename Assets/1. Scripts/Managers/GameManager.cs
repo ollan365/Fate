@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public bool isDebug;
     public bool isReleaseBuild;
     public bool isDemoBuild;
+    public bool isPrologueInProgress;
 
     // 조사 시스템에서 현재 조사하고 있는 오브젝트의 evnetId를 저장함
     private string currentInquiryObjectId = "";
@@ -61,6 +62,8 @@ public class GameManager : MonoBehaviour
     private void Start() {
         variablesCSV = Resources.Load<TextAsset>("Datas/variables");
         CreateVariables();
+
+        isPrologueInProgress = false;
         
         if (isDebug) {
             ShowVariables();

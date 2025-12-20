@@ -17,7 +17,8 @@ public class BlockingPanel : MonoBehaviour
 
         switch (GameSceneManager.Instance.GetActiveScene()) {
             case Constants.SceneType.START:
-                UIManager.Instance.OnExitButtonClick();
+                if (GameManager.Instance.isPrologueInProgress == false)
+                    UIManager.Instance.OnExitButtonClick();
                 break;
             case Constants.SceneType.ROOM_1:
             case Constants.SceneType.ROOM_2:

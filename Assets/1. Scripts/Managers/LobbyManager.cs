@@ -145,6 +145,7 @@ public class LobbyManager : MonoBehaviour
 
     // ========== 프롤로그 시작 ========== //
     private IEnumerator StartPrologue() {
+        GameManager.Instance.isPrologueInProgress = true;
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, false, 0, 0));
         lobbyButtons.SetActive(false);
         clockSecondGameObject.SetActive(false);
