@@ -59,6 +59,8 @@ public class LobbyManager : MonoBehaviour
             lobbyButtons.transform.GetChild(1).gameObject.SetActive(false);
         }
         
+        ReconnectButtonReferences();
+        
         StartCoroutine(WaitForGameManagerStartFunction());
     }
     
@@ -240,5 +242,21 @@ public class LobbyManager : MonoBehaviour
         SaveManager.Instance.CreateNewGameData();
         UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, false);
         StartNewGame();
+    }
+    
+    private void ReconnectButtonReferences() {
+        GameObject newGamePanel = UIManager.Instance.GetUI(eUIGameObjectName.NewGamePanel);
+        if (newGamePanel == null) 
+            return;
+        
+        Button[] buttons = newGamePanel.GetComponentsInChildren<Button>(true);
+        foreach (Button button in buttons) {
+            if (button == null) 
+                continue;
+            
+            button.onClick.RemoveListener(OnNewGameYesButtonClick);
+            button.onClick.RemoveListener(OnNewGameNoButtonClick);
+            button.onClick.AddListener(button.name == "Yes" ? OnNewGameYesButtonClick : OnNewGameNoButtonClick);
+        }
     }
 }
