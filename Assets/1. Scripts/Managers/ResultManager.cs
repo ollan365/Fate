@@ -551,13 +551,13 @@ public class ResultManager : MonoBehaviour
 
             case "Result_Room1Morning3":
             case "Result_Room1Morning4":
-                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_015", totalTime));
+                StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_016", totalTime));
                 break;
 
             case "Result_Room1Morning5":
                 StartCoroutine(DialogueManager.Instance.StartDialogue("RoomEscapeS_014", totalTime));
                 break;
-
+                
             //case "ResultChangeBGM_Dream":
             //    SoundPlayer.Instance.ChangeBGM(BGM_DREAM);
             //    break;
