@@ -104,6 +104,9 @@ public class LobbyManager : MonoBehaviour
     }
     
     public void StartNewGame() {
+        lobbyButtons.SetActive(false);
+        UIManager.Instance?.SetUI(eUIGameObjectName.AlbumButton, false);
+
         if (GameManager.Instance.isDemoBuild == false && SaveManager.Instance.CheckGameData())  // 저장된 게임 데이터가 없는 경우
             UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, true);
         else
@@ -194,10 +197,10 @@ public class LobbyManager : MonoBehaviour
     // ===== 생일 설정 ===== //
     public void OpenBirthPanel() {
         UIManager.Instance?.SetUI(eUIGameObjectName.BirthdayPanel, true);
-        ChangeDayOption();
+        ChangeDayOption(monthDropdown.value);
     }
     
-    public void ChangeDayOption() {
+    public void ChangeDayOption(int value) {
         List<TMP_Dropdown.OptionData> optionList = new();
         for (int i = 1; i <= 29; i++)
             optionList.Add(new TMP_Dropdown.OptionData(i.ToString()));
@@ -236,6 +239,7 @@ public class LobbyManager : MonoBehaviour
 
     public void OnNewGameNoButtonClick() {
         UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, false);
+        UIManager.Instance?.SetUI(eUIGameObjectName.AlbumButton, true);
         lobbyButtons.SetActive(true);
     }
 
@@ -244,13 +248,44 @@ public class LobbyManager : MonoBehaviour
         UIManager.Instance?.SetUI(eUIGameObjectName.NewGamePanel, false);
         StartNewGame();
     }
+
+    public void OnNoGameDataCheckButtonClick() {
+        lobbyButtons.SetActive(true);
+        UIManager.Instance?.SetUI(eUIGameObjectName.NoGameDataPanel, false);
+    }
+
+    public void OnNameCheckButtonClick() {
+        SetName();
+        UIManager.Instance?.SetUI(eUIGameObjectName.NamePanel, false);
+        UIManager.Instance?.SetUI(eUIGameObjectName.NameConfirmPanel, true);
+    }
+
+    public void OnNameConfirmCheckButtonClick() {
+        UIManager.Instance?.SetUI(eUIGameObjectName.NameConfirmPanel, false);
+        NameSetting();
+    }
+
+    public void OnNameConfirmReturnButtonClick() {
+        UIManager.Instance?.SetUI(eUIGameObjectName.NameConfirmPanel, false);
+        UIManager.Instance?.SetUI(eUIGameObjectName.NamePanel, true);
+        NameChangeCancel();
+    }
+
+    public void OnBirthdayCheckButtonClick() {
+        UIManager.Instance?.SetUI(eUIGameObjectName.BirthdayPanel, false);
+        BirthSetting();
+    }
     
     private void ReconnectButtonReferences() {
-        GameObject newGamePanel = UIManager.Instance.GetUI(eUIGameObjectName.NewGamePanel);
-        if (newGamePanel == null) 
-            return;
-        
-        Button[] buttons = newGamePanel.GetComponentsInChildren<Button>(true);
+        ReconnectNewGamePanelButtonReferences();
+        ReconnectNoGameDataPanelButtonReferences();
+        ReconnectNamePanelButtonReferences();
+        ReconnectNameConfirmPanelButtonReferences();
+        ReconnectBirthPanelButtonReferences();
+    }
+
+    private void ReconnectNewGamePanelButtonReferences() {
+        Button[] buttons = UIManager.Instance.GetUI(eUIGameObjectName.NewGamePanel).GetComponentsInChildren<Button>(true);
         foreach (Button button in buttons) {
             if (button == null) 
                 continue;
@@ -259,5 +294,53 @@ public class LobbyManager : MonoBehaviour
             button.onClick.RemoveListener(OnNewGameNoButtonClick);
             button.onClick.AddListener(button.name == "Yes" ? OnNewGameYesButtonClick : OnNewGameNoButtonClick);
         }
+    }
+
+    private void ReconnectNoGameDataPanelButtonReferences() {
+        Button[] buttons = UIManager.Instance.GetUI(eUIGameObjectName.NoGameDataPanel).GetComponentsInChildren<Button>(true);
+        foreach (Button button in buttons) {
+            if (button == null)
+                continue;
+            
+            button.onClick.RemoveListener(OnNoGameDataCheckButtonClick);
+            button.onClick.AddListener(OnNoGameDataCheckButtonClick);
+        }
+    }
+
+    private void ReconnectNamePanelButtonReferences() {
+        Button[] buttons = UIManager.Instance.GetUI(eUIGameObjectName.NamePanel).GetComponentsInChildren<Button>(true);
+        foreach (Button button in buttons) {
+            if (button == null) 
+                continue;
+            
+            button.onClick.RemoveListener(OnNameCheckButtonClick);
+            button.onClick.AddListener(OnNameCheckButtonClick);
+        }
+    }
+
+    private void ReconnectNameConfirmPanelButtonReferences() {
+        Button[] buttons = UIManager.Instance.GetUI(eUIGameObjectName.NameConfirmPanel).GetComponentsInChildren<Button>(true);
+        foreach (Button button in buttons) {
+            if (button == null) 
+                continue;
+            
+            button.onClick.RemoveListener(OnNameConfirmCheckButtonClick);
+            button.onClick.RemoveListener(OnNameConfirmReturnButtonClick);
+            button.onClick.AddListener(button.name == "Check" ? OnNameConfirmCheckButtonClick : OnNameConfirmReturnButtonClick);
+        }
+    }
+
+    private void ReconnectBirthPanelButtonReferences() {
+        Button[] buttons = UIManager.Instance.GetUI(eUIGameObjectName.BirthdayPanel).GetComponentsInChildren<Button>(true);
+        foreach (Button button in buttons) {
+            if (button == null) 
+                continue;
+            
+            button.onClick.RemoveListener(OnBirthdayCheckButtonClick);
+            button.onClick.AddListener(OnBirthdayCheckButtonClick);
+        }
+
+        monthDropdown.onValueChanged.RemoveListener(ChangeDayOption);
+        monthDropdown.onValueChanged.AddListener(ChangeDayOption);
     }
 }
