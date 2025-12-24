@@ -101,10 +101,10 @@ public class Room1ActionPointManager : ActionPointManager
             bool isInvestigating = RoomManager.Instance.GetIsInvestigating();
             if (!isDialogueActive && !isInvestigating) 
                 RefillHeartsOrEndDay();
-            else if (isInvestigating) 
-                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            else if (isInvestigating)
+                refillHeartsOrEndDayState = true;
             else
-                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+                refillHeartsOrEndDayState = true;
         }
         SaveManager.Instance.SaveGameData();
     }
@@ -134,7 +134,7 @@ public class Room1ActionPointManager : ActionPointManager
 
         // 귀가 스크립트 출력
         EventManager.Instance.CallEvent("EventRoom1HomeComing");
-        GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
+        refillHeartsOrEndDayState = false;
     }
 
     private void InitActionPointVariables()
