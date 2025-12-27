@@ -10,7 +10,7 @@ public class SewingBoxPuzzle : MonoBehaviour
 
     [SerializeField] private SewingBox sewingBoxA;
 
-    [Header("ºñÁîµé")]
+    [Header("ë¹„ì¦ˆë“¤")]
     public List<SewingBoxBead> Beads;
 
     protected Dictionary<int, int> BeadsAnswer = new Dictionary<int, int>();
@@ -35,28 +35,22 @@ public class SewingBoxPuzzle : MonoBehaviour
         BeadsAnswer.Add(6,5);
     }
 
-    // ÇÏ´Ü ¹İÁù°í¸® ¶Ñ²± ¹öÆ° ´©¸£¸é ÆÛÁñ Á¤´ä ºñ±³ÇÏ°Ô ÇÔ
+    // í•˜ë‹¨ ë°˜ì§‡ê³ ë¦¬ ëšœê»‘ ë²„íŠ¼ ëˆ„ë¥´ë©´ í¼ì¦ ì •ë‹µ ë¹„êµí•˜ê²Œ í•¨
     public void CompareBeads()
     {
-        // ºñ¹Ğ¹øÈ£ ¹«ÇÑ ÀÔ·Â ½Ãµµ ¹æÁö
+        // ë¹„ë°€ë²ˆí˜¸ ë¬´í•œ ì…ë ¥ ì‹œë„ ë°©ì§€
         RoomManager.Instance.ProhibitInput();
 
         if (isBeadsCorrect) 
             return;
 
-        // ºñÁîµé °¡Á®¿Í¼­ °Ë»ç
+        // ë¹„ì¦ˆë“¤ ê°€ì ¸ì™€ì„œ ê²€ì‚¬
         if (CheckBeadsAnswer())
         {
             GameManager.Instance.SetVariable("SewingBoxCorrect", true);
-            // ÆÛÁñ ¸ÂÃá ÀÌÈÄ¿¡ ¹İÁù°í¸® ´Ù½Ã Å¬¸¯ÇÏ¸é Á¶»çÃ¢ ÆĞ½ºµÈ°Å ´Ù½Ã Á¶»çÃ¢ ³ª¿À°Ô ÇÔ.
+            // í¼ì¦ ë§ì¶˜ ì´í›„ì— ë°˜ì§‡ê³ ë¦¬ ë‹¤ì‹œ í´ë¦­í•˜ë©´ ì¡°ì‚¬ì°½ íŒ¨ìŠ¤ëœê±° ë‹¤ì‹œ ì¡°ì‚¬ì°½ ë‚˜ì˜¤ê²Œ í•¨.
             sewingBoxA.SetIsInquiry(true);
             isBeadsCorrect = true;
-
-            //Debug.Log("¸ÂÃè½À´Ï´Ù!");
-        }
-        else
-        {
-            //Debug.Log("Æ²·È½À´Ï´Ù!");
         }
 
         EventManager.Instance.CallEvent("EventSewingBoxB");
@@ -66,7 +60,7 @@ public class SewingBoxPuzzle : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-            //Debug.Log((i + 1) + "¹ø ºñÁîÀÇ ÇöÀç À§Ä¡ " + Beads[i].currentPositionNumber + "/ Á¤´ä À§Ä¡ : " + BeadsAnswer[i + 1]);
+            //Debug.Log((i + 1) + "ë²ˆ ë¹„ì¦ˆì˜ í˜„ì¬ ìœ„ì¹˜ " + Beads[i].currentPositionNumber + "/ ì •ë‹µ ìœ„ì¹˜ : " + BeadsAnswer[i + 1]);
             if (Beads[i].currentPositionNumber == BeadsAnswer[i + 1])
                 continue;
 
