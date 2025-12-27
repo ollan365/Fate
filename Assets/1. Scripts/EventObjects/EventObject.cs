@@ -28,7 +28,7 @@ public class EventObject : MonoBehaviour
         }
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         GameManager.Instance.AddEventObject(this);
     }

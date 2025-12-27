@@ -172,8 +172,6 @@ public class ResultManager : MonoBehaviour
             case "ResultInquiry": // 조사 선택 묻기
                 if (!GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
                 {
-                    // DialogueManager.Instance.EndDialogue();
-
                     EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
                     GameManager.Instance.SetVariable("isInquiry", false);
                 }
@@ -437,15 +435,9 @@ public class ResultManager : MonoBehaviour
                 GameManager.Instance.SetVariable("BoxOpened", true);
                 break;
 
-            //case "ResultClosetBoxSound": // 상자 열리는 사운드
-            //    SoundPlayer.Instance.UISoundPlay(Sound_LockerKeyMovement);
-            //    executableObjects["Box"].ExecuteAction();
-            //    break;
-
-            //case "ResultClosetBoxPicturesUI": // 상자 안 사진들이 UI로 보임
-            //    RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "photoInsideBox");
-            //    GameManager.Instance.SetVariable("BoxOpened", true);
-            //    break;
+            case "ResultClosetBoxPictures": // 상자 안 사진들이 바로 보임(중복조사 했을 경우)
+                RoomManager.Instance.imageAndLockPanelManager.SetObjectImageGroup(true, "photoInsideBox");
+                break;
 
             case "ResultCabinetDoorsOpen": // 서랍장이 열림
                 SoundPlayer.Instance.UISoundPlay(Sound_StorageOpen);
