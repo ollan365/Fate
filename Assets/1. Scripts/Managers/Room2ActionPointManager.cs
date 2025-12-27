@@ -179,8 +179,8 @@ public class Room2ActionPointManager : ActionPointManager
             bool isInvestigating = RoomManager.Instance.GetIsInvestigating();
             if (!isDialogueActive && !isInvestigating) RefillHeartsOrEndDay();
             //else if (!isDialogueActive) RefillHeartsOrEndDay();
-            else if (isInvestigating) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
-            else if (isDialogueActive) GameManager.Instance.SetVariable("RefillHeartsOrEndDay", true);
+            else if (isInvestigating) refillHeartsOrEndDayState = true;
+            else if (isDialogueActive) refillHeartsOrEndDayState = true;
         }
 
         SaveManager.Instance.SaveGameData();
@@ -212,7 +212,7 @@ public class Room2ActionPointManager : ActionPointManager
 
         // 귀가 스크립트 출력
         EventManager.Instance.CallEvent("EventRoom2HomeComing");
-        GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
+        refillHeartsOrEndDayState = false;
     }
 
     // 외출(아침) 스크립트 출력 부분

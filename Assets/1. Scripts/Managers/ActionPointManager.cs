@@ -29,6 +29,9 @@ abstract public class ActionPointManager : MonoBehaviour
     // 설정한 actionPointsPerDay에 따라 달라지는 actionpoints배열
     protected int[,] actionPointsArray;
 
+    // 귀가 이벤트 실행 여부
+    public bool refillHeartsOrEndDayState = false;
+
     // ************************* temporary members for Day Animation *************************
     int MidRotationIndex = 0;
     int EndRotationIndex = 1;
@@ -114,6 +117,11 @@ abstract public class ActionPointManager : MonoBehaviour
         dayText = UIManager.Instance.dayTextTextMeshProUGUI;
 
         loadDayChangeVariables();
+    }
+
+    private void Start()
+    {
+        refillHeartsOrEndDayState = false;
     }
 
     private void loadDayChangeVariables()

@@ -604,8 +604,7 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultBrokenTeddyBear2Yes": // 선택지 약을 먹음
-                GameManager.Instance.SetVariable("RefillHeartsOrEndDay", false);
-                // DialogueManager.Instance.EndDialogue();
+                RoomManager.Instance.actionPointManager.refillHeartsOrEndDayState = false;
                 break;
 
             case "ResultEatEnergySupplement":
@@ -614,7 +613,6 @@ public class ResultManager : MonoBehaviour
 
             case "ResultBrokenTeddyBear2No": // 선택지 약을 안 먹음
                 RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(true);
-                // DialogueManager.Instance.EndDialogue();
                 DialogueManager.Instance.StartDialogue("RoomEscape2_025");
                 RoomManager.Instance.room2ActionPointManager.SetChoosingBrokenBearChoice(false);
                 break;
