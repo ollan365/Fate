@@ -5,6 +5,7 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
     public bool IgnoreInput { get; set; }
+    public bool IgnoreEscape { get; set; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Bootstrap()
@@ -24,6 +25,7 @@ public class InputManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
 
             IgnoreInput = false;
+            IgnoreEscape = false;
         }
         else if (Instance != this)
         {
@@ -36,7 +38,7 @@ public class InputManager : MonoBehaviour
         if (IsDesktopEnvironment() == false || (IgnoreInput && Input.GetKeyDown(KeyCode.Escape) == false))
             return;
 
-        if (GameSceneManager.Instance.IsSceneChanging == false && Input.GetKeyDown(KeyCode.Escape)) 
+        if (GameSceneManager.Instance.IsSceneChanging == false && Input.GetKeyDown(KeyCode.Escape) && !IgnoreEscape) 
             UIManager.Instance.SetMenuUI();
 
         // Spacebar press-and-hold skip handling for Dialogue
