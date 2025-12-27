@@ -38,12 +38,12 @@ public class ChatApp : MonoBehaviour
 
     public void OnEnable()
     {
-        GameManager.Instance.SetVariable("isLaptopOpen", true);
+        RoomManager.Instance.isLaptopOpen = true;
     }
     
     public void OnDisable()
     {
-        GameManager.Instance.SetVariable("isLaptopOpen", false);
+        RoomManager.Instance.isLaptopOpen = false;
     }
 
     private void LoadConversations()

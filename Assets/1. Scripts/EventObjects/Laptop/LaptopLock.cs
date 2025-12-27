@@ -29,11 +29,22 @@ public class LaptopLock : EventObject, IResultExecutable
     {
         imageComponent = GetComponent<Image>();
 
-        ResultManager.Instance.RegisterExecutable("LaptopLock", this);
+        RegisterWithResultManager();
 
         imageComponent.sprite = (int)GameManager.Instance.GetVariable("AccidyGender") == 0
             ? girlVersionBackground
             : boyVersionBackground;
+    }
+
+    private void OnEnable()
+    {
+        RegisterWithResultManager();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("LaptopLock", this);
     }
 
     public void ExecuteAction()
@@ -46,7 +57,7 @@ public class LaptopLock : EventObject, IResultExecutable
     {
         gameObject.SetActive(false);
         laptopContent.SetActive(true);
-        GameManager.Instance.SetVariable("isLaptopOpen", true);
+        RoomManager.Instance.isLaptopOpen = true;
     } 
 
     // 로그인 화면에서 암호 입력 후 엔터 치면

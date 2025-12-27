@@ -9,7 +9,18 @@ public class DreamDiary : EventObject, IResultExecutable
 
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable("DreamDiary", this);
+        RegisterWithResultManager();
+    }
+
+    private void OnEnable()
+    {
+        RegisterWithResultManager();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("DreamDiary", this);
     }
 
     public new void OnMouseDown()
@@ -24,7 +35,7 @@ public class DreamDiary : EventObject, IResultExecutable
 
     private void ReadBooks()
     {
-        //isInquiry = false;  // а╤╩Г ╫ц╫╨еш ©╧ ╬ф╢о©ю ╫╨е╣
+        //isInquiry = false;  // О©╫О©╫О©╫О©╫ О©╫ц╫О©╫О©╫О©╫ О©╫О©╫ О©╫ф╢о©О©╫ О©╫О©╫е╣
         DreamDiaryContents.SetActive(true);
         UIManager.Instance.AnimateUI(DreamDiaryContents, true, true);
         SetCurrentLockObjectCanvasGroup(DreamDiaryContents);

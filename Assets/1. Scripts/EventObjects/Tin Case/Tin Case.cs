@@ -8,7 +8,18 @@ public class TinCase : EventObject, IResultExecutable
     
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable("TinCase", this);
+        RegisterWithResultManager();
+    }
+
+    private void OnEnable()
+    {
+        RegisterWithResultManager();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("TinCase", this);
     }
     
     public new void OnMouseDown()

@@ -8,7 +8,7 @@ public class BrokenTeddyBear : EventObject, IResultExecutable
 
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable($"BrokenTeddyBear{sideNum}", this);
+        RegisterWithResultManager();
     }
 
     public new void OnMouseDown()
@@ -29,11 +29,18 @@ public class BrokenTeddyBear : EventObject, IResultExecutable
 
     private void OnEnable()
     {
+        RegisterWithResultManager();
         bool teddyBearFixed = (bool)GameManager.Instance.GetVariable("TeddyBearFixed");
         if (teddyBearFixed) 
         {
             gameObject.SetActive(false);
             FixedTeddyBear.SetActive(true);
         }
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable($"BrokenTeddyBear{sideNum}", this);
     }
 }

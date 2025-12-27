@@ -178,10 +178,14 @@ public class InputManager : MonoBehaviour
     private static void GetCurrentLockObject(out GameObject currentLockObject){
         ImageAndLockPanelManager imageAndLockPanelManager = RoomManager.Instance?.imageAndLockPanelManager;
         string currentLockObjectName = imageAndLockPanelManager?.currentLockObjectName;
-        if (string.IsNullOrEmpty(currentLockObjectName) == false && imageAndLockPanelManager.lockObjectDictionary != null)
-            currentLockObject = imageAndLockPanelManager.lockObjectDictionary[currentLockObjectName];
-        else
+        if (string.IsNullOrEmpty(currentLockObjectName) == false && imageAndLockPanelManager?.lockObjectDictionary != null) {
+            if (imageAndLockPanelManager.lockObjectDictionary.TryGetValue(currentLockObjectName, out var lockObject))
+                currentLockObject = lockObject;
+            else
+                currentLockObject = null;
+        } else {
             currentLockObject = null;
+        }
     }
 
     private static bool IsDesktopEnvironment()

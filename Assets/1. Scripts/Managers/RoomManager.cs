@@ -20,6 +20,8 @@ public class RoomManager : MonoBehaviour
     // 조사 중이거나 확대 중이면 이동키로 시점 바꾸지 못하게 함
     public bool isInvestigating = false;
     private bool isZoomed = false;
+
+    [HideInInspector] public bool isLaptopOpen = false;
     
     // 액션포인트 매니저
     [Header("행동력 매니저")]
@@ -207,11 +209,9 @@ public class RoomManager : MonoBehaviour
         bool isInvestigatingOrZoomed = isInvestigating || isZoomed;
         bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
         bool isMemoOpen = MemoManager.Instance.isMemoOpen;
-        bool isLaptopOpen = (bool)GameManager.Instance.GetVariable("isLaptopOpen");
-        bool isLaptopAppOpen = (bool)GameManager.Instance.GetVariable("isLaptopAppOpen");
         
         SetExitButton((isInvestigatingOrZoomed && !isDialogueActive) 
-                      || (!isDialogueActive && isLaptopOpen && !isLaptopAppOpen)
+                      || (!isDialogueActive && isLaptopOpen)
                       || isMemoOpen);
         SetMoveButtons(!isInvestigatingOrZoomed && !isDialogueActive && !isMemoOpen);
         

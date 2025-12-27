@@ -9,7 +9,18 @@ public class Laptop : EventObject, IResultExecutable
     private GameObject laptopLock;
 
     private void Start() {
-        ResultManager.Instance.RegisterExecutable("Laptop", this);
+        RegisterWithResultManager();
+    }
+
+    private void OnEnable()
+    {
+        RegisterWithResultManager();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("Laptop", this);
     }
 
     public new void OnMouseDown() {

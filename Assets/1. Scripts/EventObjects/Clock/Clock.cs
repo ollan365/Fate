@@ -10,12 +10,19 @@ public class Clock : EventObject, IResultExecutable
     [SerializeField] private List<Sprite> AfterClockImages;
 
     private void Start() {
-        ResultManager.Instance.RegisterExecutable("Clock", this);
+        RegisterWithResultManager();
     }
 
     private void OnEnable()
     {
+        RegisterWithResultManager();
         UpdateImageState();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("Clock", this);
     }
 
     public new void OnMouseDown() {

@@ -6,7 +6,7 @@ public class ClosetKey2 : EventObject, IResultExecutable
 {
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable($"ClosetKey2_{sideNum}", this);
+        RegisterWithResultManager();
         if (sideNum == 0)
             GetComponent<Collider2D>().enabled = false;
     }
@@ -31,8 +31,15 @@ public class ClosetKey2 : EventObject, IResultExecutable
 
     private void OnEnable()
     {
+        RegisterWithResultManager();
         bool HasClosetKey2 = (bool)GameManager.Instance.GetVariable("HasClosetKey2");
         //Debug.Log("HasClosetKey2 : " + HasClosetKey2);
         if (HasClosetKey2) gameObject.SetActive(false);
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable($"ClosetKey2_{sideNum}", this);
     }
 }

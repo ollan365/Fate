@@ -12,12 +12,19 @@ public class Box : EventObject, IResultExecutable
 
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable("Box", this);
+        RegisterWithResultManager();
     }
 
     private void OnEnable()
     {
+        RegisterWithResultManager();
         UpdateImageState();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("Box", this);
     }
 
 

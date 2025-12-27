@@ -9,7 +9,18 @@ public class Book2 : EventObject, IResultExecutable
 
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable("Book2", this);
+        RegisterWithResultManager();
+    }
+
+    private void OnEnable()
+    {
+        RegisterWithResultManager();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("Book2", this);
     }
 
     public new void OnMouseDown()
@@ -24,7 +35,7 @@ public class Book2 : EventObject, IResultExecutable
 
     private void ReadBooks()
     {
-        //isInquiry = false;  // а╤╩Г ╫ц╫╨еш ©╧ ╬ф╢о©ю ╫╨е╣
+        //isInquiry = false;  // О©╫О©╫О©╫О©╫ О©╫ц╫О©╫О©╫О©╫ О©╫О©╫ О©╫ф╢о©О©╫ О©╫О©╫е╣
         Book2Contents.SetActive(true);
         UIManager.Instance.AnimateUI(Book2Contents, true, true);
         SetCurrentLockObjectCanvasGroup(Book2Contents);

@@ -9,7 +9,18 @@ public class SewingBox : EventObject, IResultExecutable
 
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable("SewingBox", this);
+        RegisterWithResultManager();
+    }
+
+    private void OnEnable()
+    {
+        RegisterWithResultManager();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("SewingBox", this);
     }
 
     public new void OnMouseDown()

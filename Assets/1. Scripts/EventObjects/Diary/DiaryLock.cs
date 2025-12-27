@@ -20,7 +20,18 @@ public class DiaryLock : EventObject, IResultExecutable
 
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable(diaryLockExecutableName, this);
+        RegisterWithResultManager();
+    }
+
+    private void OnEnable()
+    {
+        RegisterWithResultManager();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable(diaryLockExecutableName, this);
     }
 
     public void ExecuteAction()

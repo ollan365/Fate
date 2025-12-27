@@ -12,7 +12,7 @@ public class Knife : EventObject, IResultExecutable
 
     private void Start()
     {
-        ResultManager.Instance.RegisterExecutable($"Knife{sideNum}", this);
+        RegisterWithResultManager();
     }
 
     public new void OnMouseDown()
@@ -48,8 +48,15 @@ public class Knife : EventObject, IResultExecutable
 
     private void OnEnable()
     {
+        RegisterWithResultManager();
         bool hasKnife = (bool)GameManager.Instance.GetVariable("HasKnife");
         //Debug.Log("hasKnife : " + hasKnife);
         if (hasKnife) gameObject.SetActive(false);
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable($"Knife{sideNum}", this);
     }
 }

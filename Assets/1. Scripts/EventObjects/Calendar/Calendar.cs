@@ -8,7 +8,18 @@ public class Calendar : EventObject, IResultExecutable
     private GameObject calendarPanel;
 
     private void Start() {
-        ResultManager.Instance.RegisterExecutable("Calendar", this);
+        RegisterWithResultManager();
+    }
+
+    private void OnEnable()
+    {
+        RegisterWithResultManager();
+    }
+
+    private void RegisterWithResultManager()
+    {
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.RegisterExecutable("Calendar", this);
     }
 
     public new void OnMouseDown() {

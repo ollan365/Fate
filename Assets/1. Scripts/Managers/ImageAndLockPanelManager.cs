@@ -151,7 +151,10 @@ public class ImageAndLockPanelManager : MonoBehaviour
         isImageActive = isTrue;
 
         if (isTrue) {
-            Sprite rawSprite = imageDictionary[eventObjectName];
+            if (!imageDictionary.TryGetValue(eventObjectName, out Sprite rawSprite)) {
+                Debug.LogWarning($"SetObjectImageGroup: eventObjectName '{eventObjectName}' not found in imageDictionary");
+                return;
+            }
             float rawHeight = rawSprite.rect.height;
             float rawWidth = rawSprite.rect.width;
 
@@ -195,19 +198,28 @@ public class ImageAndLockPanelManager : MonoBehaviour
 
         if (isTrue) {
             SetObjectImageGroup(false);  // 이미지 켜져있을 때 Lock object activate하면 이미지 숨기기
-            lockObjectDictionary[lockObjectName].gameObject.SetActive(true);
+            if (string.IsNullOrEmpty(lockObjectName) == false && lockObjectDictionary.TryGetValue(lockObjectName, out var lockObject))
+                lockObject.gameObject.SetActive(true);
+            else
+                Debug.LogWarning($"SetLockObject: lockObjectName '{lockObjectName}' not found in lockObjectDictionary");
 
             RoomManager.Instance.SetIsInvestigating(true);
             RoomManager.Instance.SetButtons();
             UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
-        } else if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects)) {
-            foreach (var puzzleObject in puzzleObjects)
-                UIManager.Instance.AnimateUI(puzzleObject, false, true);
-            StartCoroutine(DeactivateLockObjectWithDelay(currentLockObjectName, UIManager.Instance.fadeAnimationDuration));
-            currentLockObjectCanvasGroup = null; 
         } else {
-            lockObjectDictionary[currentLockObjectName].gameObject.SetActive(false);
-            currentLockObjectCanvasGroup = null; 
+            if (string.IsNullOrEmpty(currentLockObjectName) == false) {
+                if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects)) {
+                    foreach (var puzzleObject in puzzleObjects)
+                        UIManager.Instance.AnimateUI(puzzleObject, false, true);
+                    StartCoroutine(DeactivateLockObjectWithDelay(currentLockObjectName, UIManager.Instance.fadeAnimationDuration));
+                    currentLockObjectCanvasGroup = null;
+                } else if (lockObjectDictionary.TryGetValue(currentLockObjectName, out var lockObject)) {
+                    lockObject.gameObject.SetActive(false);
+                    currentLockObjectCanvasGroup = null;
+                } else {
+                    Debug.LogWarning($"SetLockObject: currentLockObjectName '{currentLockObjectName}' not found in dictionaries");
+                }
+            }
         }
 
         if (!GetIsImageOrLockPanelActive())
@@ -217,7 +229,10 @@ public class ImageAndLockPanelManager : MonoBehaviour
     
     private IEnumerator DeactivateLockObjectWithDelay(string lockObjectName, float delayTime = 0.5f) {
         yield return new WaitForSeconds(delayTime);
-        lockObjectDictionary[lockObjectName].gameObject.SetActive(false);
+        if (string.IsNullOrEmpty(lockObjectName) == false && lockObjectDictionary.TryGetValue(lockObjectName, out var lockObject))
+            lockObject.gameObject.SetActive(false);
+        else
+            Debug.LogWarning($"DeactivateLockObjectWithDelay: lockObjectName '{lockObjectName}' not found in lockObjectDictionary");
     }
 
     public bool GetIsImageOrLockPanelActive() {
