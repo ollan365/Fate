@@ -15,8 +15,9 @@ public class Doors : EventObject, IResultExecutable
 
     private string DoorsClosedVariable;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         closedOrOpen = isClosedDoors ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Doors", this);
 

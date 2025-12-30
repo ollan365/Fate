@@ -30,8 +30,9 @@ public class Drawers : EventObject, IResultExecutable
     private const string UP_DRAWER_MOVED = "UpDrawerMoved";
     private const string DOWN_DRAWER_MOVED = "DownDrawerMoved";
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         closedOrOpen = isClosedDrawers ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}{parentObjectName}Drawers", this);
 

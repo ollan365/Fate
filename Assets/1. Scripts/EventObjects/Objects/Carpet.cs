@@ -7,8 +7,9 @@ public class Carpet : EventObject, IResultExecutable
     public Collider2D objectBehindCollider;
     private string closedOrOpen;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         closedOrOpen = isClosedCarpet ? "Closed" : "Open";
         ResultManager.Instance.RegisterExecutable($"{closedOrOpen}Carpet{sideNum}", this);
         if(objectBehindCollider!=null)

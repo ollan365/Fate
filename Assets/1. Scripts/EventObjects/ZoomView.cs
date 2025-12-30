@@ -5,8 +5,9 @@ public class ZoomView : EventObject, IResultExecutable
     [SerializeField] private GameObject zoomedView;
     [SerializeField] private bool isClosed;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         string executableName = $"{name} {sideNum}";  // "{이 오브젝트의 이름} + {사이드 번호}"로 executable 등록
         ResultManager.Instance.RegisterExecutable(executableName, this);
 

@@ -24,8 +24,9 @@ public class Chair : EventObject, IResultExecutable
     [SerializeField] private GameObject deskUnMovedChair;
     [SerializeField] private GameObject deskMovedChair;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ResultManager.Instance.RegisterExecutable($"Chair{sideNum}", this);
         rectTransform = GetComponent<RectTransform>();
 
