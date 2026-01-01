@@ -202,7 +202,7 @@ public class Room2ActionPointManager : ActionPointManager
         if (actionPoint == 0)
         {
             EventManager.Instance.CallEvent("EventEndRoom2");
-
+            refillHeartsOrEndDayState = false;
             return;
         }
 
