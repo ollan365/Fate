@@ -84,6 +84,7 @@ EventCarpetOpen,열린 카펫,자퇴서 안 본 상태에서 열린 카펫을 �
 EventCarpetOpen,열린 카펫,열린 카펫을 클릭 + 튜토리얼X,AND,Condition_notTutorial/ConditionCarpetOpen,ResultCarpetClosed / Result_InverseCarpetClosed,새로 추가(나은)
 EventCarpetLetterOfResignation,카펫(종이),자퇴서 처음 클릭,AND,CoditionZeroPaperFirstClick / Condition_tutorial,ResultCarpetDropOutLetterZoom/ Result_StartDialogueRoomEscape_017 /Result_nextTutorialPhase/Result_IncrementPaperClick/ Result_RevealMemoR1Memo_006 /Result_IsFinishedEventCarpetLetterOfResignation/ResultTimePass,Result_IsFinished 추가
 EventCarpetLetterOfResignation,카펫(종이),자퇴서 다시 클릭,,ConditionZeroPaperManyClick,ResultCarpetDropOutLetterZoom/ Result_StartDialogueRoomEscape_017 /Result_IncrementPaperClick/ Result_RevealMemoR1Memo_006 /ResultTimePass,
+EventCarpetLetterOfResignation,카펫(종이),2회차 때 클릭,AND,CoditionZeroPaperFirstClick/Condition_TutorialEnd_ROOM_1,ResultCarpetDropOutLetterZoom/ Result_StartDialogueRoomEscape_017 /Result_IncrementPaperClick/ Result_RevealMemoR1Memo_006 /Result_IsFinishedEventCarpetLetterOfResignation/ResultTimePass,
 EventTutorialNext,,dialogues탭의 다이얼로그 Tutorial_003_B 출력 다 끝나면 next에 EventTutorialNext를 넣어서 바로 다음 튜토리얼페이즈로 넘어갈 수 있게 함,,,Result_nextTutorialPhase,
 ,,,,,,
 EventKnife,커터칼,커터칼 획득,,,ResultCutterKnifeDisappear/ResultCutterKnifeScript/Result_InverseHasKnife/Result_IsUnFinishedEventPoster/ResultTimePass,Result_IsUnFinished 추가
@@ -311,6 +312,10 @@ EventClosetClothAndBag2,옷장 안 정리 안된 옷과 쇼핑백,옷장 안 정
 ,,,,,,
 EventUnderClosetClothes2,밑 옷장 옷들,옷장 밑 수납장 속 헝클어진 옷을 처음 클릭,,ConditionUnderClosetClothes2FirstClick,Result_StartDialogueRoomEscape2_033 / Result_IsFinishedEventUnderClosetClothes2/Result_IncrementUnderClosetClothes2Click/ResultTimePass,
 EventUnderClosetClothes2,밑 옷장 옷들,옷장 밑 수납장 속 헝클어진 옷을 여러번 클릭,,ConditionUnderClosetClothes2ManyClick,Result_StartDialogueRoomEscape2_033 / Result_IncrementUnderClosetClothes2Click/ResultTimePass,
+,,,,,,
+EventDoorKey2,문 앞 떨어진 키,키를 처음 클릭,,ConditionDoorKey2FirstClick,Result_StartDialogueRoomEscape2_040/Result_IsFinishedEventDoorKey2/Result_IncrementDoorKey2Click / ResultTimePass,
+EventDoorKey2,문 앞 떨어진 키,키를 여러번 클릭,,ConditionDoorKey2ManyClick,Result_StartDialogueRoomEscape2_040/Result_IncrementDoorKey2Click/ResultTimePass,
+,,,,,,
 ,,,,,,
 EventRoom2HomeComing,,,,ConditionNowDayNum2,Result_StartDialogueRoomEscape2S_004,
 EventRoom2HomeComing,,,,ConditionNowDayNum3,Result_StartDialogueRoomEscape2S_006,

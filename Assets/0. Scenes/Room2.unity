@@ -3817,7 +3817,6 @@ GameObject:
   - component: {fileID: 213965653}
   - component: {fileID: 213965652}
   - component: {fileID: 213965651}
-  - component: {fileID: 213965650}
   - component: {fileID: 213965649}
   m_Layer: 6
   m_Name: RoomKey
@@ -3857,22 +3856,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1170270a1e2e5614ca8d5aff9b634740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventId: EventDoor
+  eventId: EventDoorKey2
   sideNum: 3
   isInquiry: 1
---- !u!114 &213965650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 213965647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20135711072b9c04b94167fc70f7aa16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AlphaThreshold: 0.1
 --- !u!114 &213965651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13374,6 +13360,7 @@ MonoBehaviour:
   imageAndLockPanelManager: {fileID: 370811677}
   imageAndLockPanelCanvas: {fileID: 1418986091}
   isInvestigating: 0
+  isLaptopOpen: 0
   actionPointManager: {fileID: 1738100056}
   room2ActionPointManager: {fileID: 1738100056}
   tutorialManager: {fileID: 0}
@@ -18765,6 +18752,7 @@ MonoBehaviour:
   nowDayNum: 0
   actionPointsPerDay: 0
   presentHeartIndex: 0
+  refillHeartsOrEndDayState: 0
   dayScalingTime: 2
   dayTurningBackTime: 4
   isDayChanging: 0
@@ -21094,7 +21082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 4.00023, y: 21.581116}
+  m_AnchoredPosition: {x: 4.0002327, y: 21.581116}
   m_SizeDelta: {x: 306.9275, y: -40.96399}
   m_Pivot: {x: 0.00000008009374, y: -0.00000007264316}
 --- !u!114 &2049395622
@@ -21309,7 +21297,7 @@ GameObject:
   - component: {fileID: 2078374011}
   - component: {fileID: 2078374010}
   - component: {fileID: 2078374009}
-  - component: {fileID: 2078374008}
+  - component: {fileID: 2078374013}
   m_Layer: 6
   m_Name: Box
   m_TagString: InquiryObject
@@ -21336,24 +21324,6 @@ RectTransform:
   m_AnchoredPosition: {x: -65.73, y: 9.19}
   m_SizeDelta: {x: 688.28, y: 408.96}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2078374008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078374006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac17d14f8998edc47ab9647e48de868c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventId: EventClosetBox2
-  sideNum: 2
-  isInquiry: 1
-  boxAnimator: {fileID: 0}
-  sideClosedBox: []
-  sideOpenBox: []
 --- !u!114 &2078374009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21411,7 +21381,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2078374008}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Box, Assembly-CSharp
         m_MethodName: OnMouseDown
         m_Mode: 1
@@ -21461,6 +21431,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2078374006}
   m_CullTransparentMesh: 1
+--- !u!114 &2078374013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078374006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0e53d7a013a4496792dcbd21d75c2d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventId: EventClosetBox2
+  sideNum: 2
+  isInquiry: 1
 --- !u!1 &2090713460
 GameObject:
   m_ObjectHideFlags: 0
