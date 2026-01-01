@@ -141,6 +141,7 @@ public class EndingManager : MonoBehaviour
         
         InputManager.Instance.IgnoreInput = false;
         album.SetAlbumInteractable(true);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumEndingImage, false);
     }
     private IEnumerator ClockEffect()
     {
