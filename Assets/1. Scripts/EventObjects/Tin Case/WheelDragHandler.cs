@@ -17,7 +17,7 @@ public class WheelDragHandler : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
-            // ºñ¹Ğ¹øÈ£ ¹«ÇÑ ÀÔ·Â ½Ãµµ ¹æÁö
+            // ë¹„ë°€ë²ˆí˜¸ ë¬´í•œ ì…ë ¥ ì‹œë„ ë°©ì§€
             RoomManager.Instance.ProhibitInput();
 
             if (!IsMouseOverWheel()) return;
@@ -48,6 +48,11 @@ public class WheelDragHandler : MonoBehaviour
 
             lastMousePosition = Input.mousePosition;
         }
+    }
+
+    private void OnDisable()
+    {
+        SoundPlayer.Instance.UISoundPlay_LOOP(Constants.Sound_TincaseScroll, false);
     }
 
     private bool IsMouseOverWheel()
