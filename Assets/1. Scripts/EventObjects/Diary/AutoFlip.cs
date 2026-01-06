@@ -41,6 +41,14 @@ public class AutoFlip : MonoBehaviour
             controlledBook = GetComponent<PageFlip>();
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        isFlipping = false;
+        if (controlledBook != null)
+            controlledBook.CancelFlip();
+    }
+
     public void FlipRightPage()
     {
         if (isFlipping || controlledBook.currentPage >= controlledBook.totalPageCount - 1)

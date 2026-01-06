@@ -29,6 +29,7 @@ public class PageFlip : MonoBehaviour
     private bool pageDragging;
     private bool autoFlipping = false;
     private bool enableShadowEffect = true;
+    private bool pendingReset = false;
 
     [Header("Current and Total Page Count")]
     // represent the index of the sprite shown in the right page
@@ -465,5 +466,44 @@ public class PageFlip : MonoBehaviour
             shadow.gameObject.SetActive(false);
             shadowLtr.gameObject.SetActive(false);
         }
+    }
+
+    public void CancelFlip()
+    {
+        if (currentCoroutine != null) {
+            StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
+        }
+
+        if (pageDragging || autoFlipping)
+            pendingReset = true;
+
+        pageDragging = false;
+        autoFlipping = false;
+    }
+
+    private void OnEnable()
+    {
+        if (!pendingReset) 
+            return;
+        
+        pendingReset = false;
+
+        shadow.gameObject.SetActive(false);
+        shadowLtr.gameObject.SetActive(false);
+
+        left.gameObject.SetActive(false);
+        left.transform.SetParent(bookPanel, true);
+        left.transform.localEulerAngles = Vector3.zero;
+
+        right.gameObject.SetActive(false);
+        right.transform.SetParent(bookPanel, true);
+        right.transform.localEulerAngles = Vector3.zero;
+
+        leftNext.transform.SetParent(bookPanel, true);
+        rightNext.transform.SetParent(bookPanel, true);
+
+        UpdateSprites();
+        pageContentsManager.DisplayPagesStatic(currentPage);
     }
 }
