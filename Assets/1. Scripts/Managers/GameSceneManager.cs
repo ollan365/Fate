@@ -174,10 +174,17 @@ public class GameSceneManager : MonoBehaviour
                     Mathf.Lerp(UIManager.Instance.progressBar.fillAmount, 1f, timer);
                 if (UIManager.Instance.progressBar.fillAmount >= 1.0f) {
                     op.allowSceneActivation = true;
+
+                    InputManager.Instance.IgnoreInput = false;
+                    InputManager.Instance.IgnoreEscape = false;
+
                     yield break;
                 }
             }
         }
+
+        InputManager.Instance.IgnoreInput = false;
+        InputManager.Instance.IgnoreEscape = false;
     }
     
     private void ChangeSceneEffect() { // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경
@@ -232,9 +239,6 @@ public class GameSceneManager : MonoBehaviour
         SaveManager.Instance.SaveGameData();
 
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
-
-        InputManager.Instance.IgnoreInput = false;
-        InputManager.Instance.IgnoreEscape = false;
     }
 
     private IEnumerator DelayedMemoGaugeRefresh() {
