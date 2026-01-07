@@ -71,6 +71,9 @@ public class GameSceneManager : MonoBehaviour
     }
     
     public void LoadScene(SceneType loadSceneType) {
+        InputManager.Instance.IgnoreInput = true;
+        InputManager.Instance.IgnoreEscape = true;
+
         StartCoroutine(loadSceneType == SceneType.ENDING ? LoadEnding() : ChangeScene(loadSceneType));
     }
     
@@ -91,6 +94,10 @@ public class GameSceneManager : MonoBehaviour
             GameManager.Instance.SetVariable("EndingLoadScene", GameManager.Instance.GetVariable("SavedCurrentSceneIndex"));
         
         GameManager.Instance.SetVariable("SavedCurrentSceneIndex", SceneType.ENDING.ToInt());
+
+        InputManager.Instance.IgnoreInput = false;
+        InputManager.Instance.IgnoreEscape = false;
+
         SceneManager.LoadScene(SceneType.ENDING.ToInt());
     }
     
@@ -143,7 +150,6 @@ public class GameSceneManager : MonoBehaviour
 
         // 씬 로드
         StartCoroutine(Load(sceneTypeToInt));
-        InputManager.Instance.IgnoreInput = false;
     }
 
     private IEnumerator Load(int sceneName) { // 씬 비동기 로드 및 진행률 표시
@@ -226,6 +232,9 @@ public class GameSceneManager : MonoBehaviour
         SaveManager.Instance.SaveGameData();
 
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
+
+        InputManager.Instance.IgnoreInput = false;
+        InputManager.Instance.IgnoreEscape = false;
     }
 
     private IEnumerator DelayedMemoGaugeRefresh() {
