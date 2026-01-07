@@ -7,8 +7,6 @@ public class ClosetKey2 : EventObject, IResultExecutable
     private void Start()
     {
         RegisterWithResultManager();
-        if (sideNum == 0)
-            GetComponent<Collider2D>().enabled = false;
     }
 
     public new void OnMouseDown()

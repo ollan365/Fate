@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Namecard2 : EventObject
 {
-    private void Start()
-    {
-        GetComponent<Collider2D>().enabled = false;
-    }
-
     public new void OnMouseDown()
     {
         bool isBusy = GameManager.Instance.GetIsBusy();
