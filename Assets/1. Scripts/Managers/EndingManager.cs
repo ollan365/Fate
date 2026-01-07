@@ -76,14 +76,7 @@ public class EndingManager : MonoBehaviour
 
     public void EndEnding(EndingType endingType)
     {
-        if (endingType != EndingType.HIDDEN)
-            StartCoroutine(DelayLoadScene(endingType));
-        else
-        {
-            SaveManager.Instance.SaveEndingDataAndInitGameDataExceptEndingData(endingType);
-            SoundPlayer.Instance.UISoundStop(-1);
-            GameSceneManager.Instance.LoadScene(SceneType.START);
-        }
+        StartCoroutine(DelayLoadScene(endingType));
     }
     public void TestClock()
     {
@@ -102,6 +95,15 @@ public class EndingManager : MonoBehaviour
         StartCoroutine(AlbumEffect(endingType));
         yield return new WaitForSeconds(4f);
         SaveManager.Instance.SaveEndingDataAndInitGameDataExceptEndingData(endingType);
+
+        // 히든 엔딩이면 시계 연출 없이 종료
+        if(endingType == EndingType.HIDDEN)
+        {
+            SoundPlayer.Instance.UISoundStop(-1);
+            GameSceneManager.Instance.LoadScene(SceneType.START);
+            InputManager.Instance.IgnoreEscape = false;
+            yield break;
+        }
 
         // 시계 연출
         clock.SetActive(true);

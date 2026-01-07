@@ -939,11 +939,11 @@ public class UIManager : MonoBehaviour {
                 endingVariable = "BadBCollect";
                 break;
             case EndingType.TRUE:
-                endingIndex = 0;
+                endingIndex = 2;
                 endingVariable = "TrueCollect";
                 break;
             case EndingType.HIDDEN:
-                endingIndex = 0;
+                endingIndex = 3;
                 endingVariable = "HiddenCollect";
                 break;
         }
