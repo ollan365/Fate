@@ -71,6 +71,9 @@ public class GameSceneManager : MonoBehaviour
     }
     
     public void LoadScene(SceneType loadSceneType) {
+        InputManager.Instance.IgnoreInput = true;
+        InputManager.Instance.IgnoreEscape = true;
+
         StartCoroutine(loadSceneType == SceneType.ENDING ? LoadEnding() : ChangeScene(loadSceneType));
     }
     
@@ -91,6 +94,10 @@ public class GameSceneManager : MonoBehaviour
             GameManager.Instance.SetVariable("EndingLoadScene", GameManager.Instance.GetVariable("SavedCurrentSceneIndex"));
         
         GameManager.Instance.SetVariable("SavedCurrentSceneIndex", SceneType.ENDING.ToInt());
+
+        InputManager.Instance.IgnoreInput = false;
+        InputManager.Instance.IgnoreEscape = false;
+
         SceneManager.LoadScene(SceneType.ENDING.ToInt());
     }
     
@@ -143,7 +150,6 @@ public class GameSceneManager : MonoBehaviour
 
         // 씬 로드
         StartCoroutine(Load(sceneTypeToInt));
-        InputManager.Instance.IgnoreInput = false;
     }
 
     private IEnumerator Load(int sceneName) { // 씬 비동기 로드 및 진행률 표시
@@ -168,10 +174,17 @@ public class GameSceneManager : MonoBehaviour
                     Mathf.Lerp(UIManager.Instance.progressBar.fillAmount, 1f, timer);
                 if (UIManager.Instance.progressBar.fillAmount >= 1.0f) {
                     op.allowSceneActivation = true;
+
+                    InputManager.Instance.IgnoreInput = false;
+                    InputManager.Instance.IgnoreEscape = false;
+
                     yield break;
                 }
             }
         }
+
+        InputManager.Instance.IgnoreInput = false;
+        InputManager.Instance.IgnoreEscape = false;
     }
     
     private void ChangeSceneEffect() { // 방탈출 씬인지 미행 씬인지에 따라 메모 버튼 변경, 대화창의 종류 변경, 방이면 방의 화면 변경

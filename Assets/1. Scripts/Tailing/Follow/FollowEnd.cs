@@ -31,6 +31,8 @@ public class FollowEnd : MonoBehaviour
     }
     public IEnumerator EndFollowLogic_3()
     {
+        InputManager.Instance.IgnoreEscape = true;
+
         yield return new WaitForSeconds(0.5f);
 
         // 우연이 뒤돌아봄

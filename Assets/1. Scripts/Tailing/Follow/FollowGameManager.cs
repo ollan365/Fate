@@ -137,6 +137,8 @@ public class FollowGameManager : MonoBehaviour
         // 미행이 끝날 때까지 반복
         while (!IsEnd)
         {
+            while (Time.timeScale == 0) yield return null;
+
             // 필연이 움직였고 우연이 뒤를 돌아본 상태가 중첩되면 의심 게이지 증가
             if (!IsFateHide && accidyStatus == AccidyStatus.RED)
             {
@@ -188,6 +190,8 @@ public class FollowGameManager : MonoBehaviour
             }
             else
             {
+                while (Time.timeScale == 0) yield return null;
+
                 while (IsDialogueOpen || (!IsFateHide && accidyStatus == AccidyStatus.RED)) { yield return null; } // 대화창이 열려있음
 
                 // if (nextAccidyAction == AccidyAction.Stop && FollowManager.Instance.ClickCount >= clickCountLimit) { FollowManager.Instance.ClickCount = 0; } // 우연이 걷고 있을 때 클릭을 다섯번 이상하면 우연이가 바로 뒤돌아 봄
