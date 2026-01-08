@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SewingBoxPuzzle : MonoBehaviour
 {
-    public static SewingBoxPuzzle Instance { get; private set; }
-
     private bool isBeadsCorrect = false;
 
     [SerializeField] private SewingBox sewingBoxA;
@@ -15,14 +13,9 @@ public class SewingBoxPuzzle : MonoBehaviour
 
     protected Dictionary<int, int> BeadsAnswer = new Dictionary<int, int>();
 
-    private void Awake()
+    private void Start()
     {
-        if (Instance == null) {
-            Instance = this;
-
-            settingBeadsAnswer();
-        } else
-            Destroy(gameObject);
+        settingBeadsAnswer();
     }
 
     private void settingBeadsAnswer()
@@ -52,6 +45,10 @@ public class SewingBoxPuzzle : MonoBehaviour
             sewingBoxA.SetIsInquiry(true);
             isBeadsCorrect = true;
         }
+        else
+        {
+            GameManager.Instance.SetVariable("SewingBoxCorrect", false);
+        }
 
         EventManager.Instance.CallEvent("EventSewingBoxB");
     }
@@ -68,5 +65,4 @@ public class SewingBoxPuzzle : MonoBehaviour
         }
         return true;
     }
-    
 }
