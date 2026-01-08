@@ -104,7 +104,7 @@ public class Room2ActionPointManager : ActionPointManager
         }
 
         // change Day text on screen
-        dayText.text = $"Day {nowDayNum}";
+        dayText.text = $"Day {nowDayNum + ROOM2_DAY_OFFSET}";
 
         if (isEatenEnergySupplement)
             isEatenEnergySupplement = false;
@@ -191,8 +191,8 @@ public class Room2ActionPointManager : ActionPointManager
     public override void RefillHeartsOrEndDay()
     {
         // update Day text on screen
-        if(nowDayNum!=maxDayNum)
-            dayText.text = $"Day {nowDayNum - 1}";
+        if(nowDayNum!= maxDayNum)
+            dayText.text = $"Day {nowDayNum - 1 + ROOM2_DAY_OFFSET}";
 
         // turn off all ImageAndLockPanel objects and zoom out
         RoomManager.Instance.ExitToRoot();
@@ -230,7 +230,7 @@ public class Room2ActionPointManager : ActionPointManager
 
         const float totalTime = 5f;
 
-        StartCoroutine(StartNextDayUIChange(nowDayNum));
+        StartCoroutine(StartNextDayUIChange(nowDayNum + ROOM2_DAY_OFFSET));
 
         // 아침 스크립트 출력
         yield return new WaitForSeconds(totalTime);
