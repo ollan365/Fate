@@ -415,6 +415,9 @@ public class DiaryManager : PageContentsManager
     {
         if (LocalizationManager.Instance != null)
             LocalizationManager.Instance.OnLanguageChanged += OnLanguageChanged;
+
+        if (diaryType == "Album")
+            DisplayPagesStatic(diaryPages.currentPage);
     }
 
     private void OnDisable()
