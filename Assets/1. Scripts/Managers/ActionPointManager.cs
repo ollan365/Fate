@@ -32,6 +32,7 @@ abstract public class ActionPointManager : MonoBehaviour
     // 귀가 이벤트 실행 여부
     public bool refillHeartsOrEndDayState = false;
 
+    public const int ROOM2_DAY_OFFSET = 14;
     // ************************* temporary members for Day Animation *************************
     int MidRotationIndex = 0;
     int EndRotationIndex = 1;

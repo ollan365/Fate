@@ -141,7 +141,7 @@ public class Room1ActionPointManager : ActionPointManager
     {
         refillHeartsOrEndDayState = false;
 
-        // 방1 지난 후에는 NowDayNum이 5로 되어 있기에 1로 초기화
+        // Room2에서는 내부적으로 nowDayNum을 1부터 시작하되, 표시는 15부터
         nowDayNum = INITIAL_DAY_NUM;
         GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
 
