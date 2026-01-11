@@ -1,13 +1,9 @@
-using System;
 using UnityEngine;
 
 public class Bag : EventObject
 {
-    public new void OnMouseDown()
+    protected override bool CanInteract()
     {
-        bool isBusy = GameManager.Instance.GetIsBusy();
-        if (isBusy) return;
-        
-        base.OnMouseDown();
+        return !GameManager.Instance.GetIsBusy();
     }
 }

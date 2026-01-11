@@ -23,11 +23,6 @@ public class DreamDiary : EventObject, IResultExecutable
             ResultManager.Instance.RegisterExecutable("DreamDiary", this);
     }
 
-    public new void OnMouseDown()
-    {
-        base.OnMouseDown();
-    }
-
     public void ExecuteAction()
     {
         ReadBooks();

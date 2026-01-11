@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ClosetClothAndBag2 : EventObject
 {
-    public new void OnMouseDown()
+    protected override bool CanInteract()
     {
-        bool isBusy = GameManager.Instance.GetIsBusy();
-        if (isBusy) return;
-
-        base.OnMouseDown();
+        return !GameManager.Instance.GetIsBusy();
     }
 }

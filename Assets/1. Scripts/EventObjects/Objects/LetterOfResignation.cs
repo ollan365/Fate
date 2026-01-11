@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LetterOfResignation : EventObject
 {
@@ -10,11 +7,8 @@ public class LetterOfResignation : EventObject
         GetComponent<BoxCollider2D>().enabled = false;
     }
 
-    public new void OnMouseDown()
+    protected override bool CanInteract()
     {
-        bool isBusy = GameManager.Instance.GetIsBusy(); 
-        if (isBusy) return;
-
-        base.OnMouseDown();
+        return !GameManager.Instance.GetIsBusy();
     }
 }

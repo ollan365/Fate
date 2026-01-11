@@ -23,11 +23,6 @@ public class SewingBox : EventObject, IResultExecutable
             ResultManager.Instance.RegisterExecutable("SewingBox", this);
     }
 
-    public new void OnMouseDown()
-    {
-        base.OnMouseDown();
-    }
-
     public void ExecuteAction()
     {
         ActivateSewingBoxPuzzle();

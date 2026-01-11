@@ -53,17 +53,11 @@ public class Chair : EventObject, IResultExecutable
         }
     }
 
-    public new void OnMouseDown()
+    protected override bool CanInteract()
     {
-        GameManager.Instance.SetVariable("isInquiry", false);
-
-        bool isBusy = GameManager.Instance.GetIsBusy();
-
-        if (isMoving || isBusy) return;
-        
-        base.OnMouseDown();
+        return !isMoving && !GameManager.Instance.GetIsBusy();
     }
-    
+
     public void ExecuteAction()
     {
         chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");

@@ -25,10 +25,6 @@ public class Clock : EventObject, IResultExecutable
             ResultManager.Instance.RegisterExecutable("Clock", this);
     }
 
-    public new void OnMouseDown() {
-        base.OnMouseDown();
-    }
-
     public void ExecuteAction() {
         ActivateClockPuzzle();
     }

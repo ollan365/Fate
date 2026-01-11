@@ -23,11 +23,6 @@ public class Book2 : EventObject, IResultExecutable
             ResultManager.Instance.RegisterExecutable("Book2", this);
     }
 
-    public new void OnMouseDown()
-    {
-        base.OnMouseDown();
-    }
-
     public void ExecuteAction()
     {
         ReadBooks();

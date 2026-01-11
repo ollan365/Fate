@@ -34,15 +34,9 @@ public class Doors : EventObject, IResultExecutable
         UpdateImageState();
     }
 
-    public new void OnMouseDown()
+    protected override bool CanInteract()
     {
-        bool isBusy = GameManager.Instance.GetIsBusy();
-        // Debug.Log($"isBusy: {isBusy}");
-        if (isBusy) return;
-
-        base.OnMouseDown();
-
-        //if (isClosedDoors) GameManager.Instance.IncrementVariable($"{closedOrOpen}{parentObjectName}DoorsClick");
+        return !GameManager.Instance.GetIsBusy();
     }
 
     public void ExecuteAction()

@@ -10,7 +10,15 @@ public class EventObject : MonoBehaviour
 
     [SerializeField] protected bool isInquiry = true;
 
+    protected virtual bool CanInteract()
+    {
+        return true;
+    }
+
     protected void OnMouseDown() {
+        if (!CanInteract())
+            return;
+
         if (string.IsNullOrEmpty(eventId) || !EventManager.Instance)
             return;
 

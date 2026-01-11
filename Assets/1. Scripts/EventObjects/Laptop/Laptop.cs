@@ -23,10 +23,6 @@ public class Laptop : EventObject, IResultExecutable
             ResultManager.Instance.RegisterExecutable("Laptop", this);
     }
 
-    public new void OnMouseDown() {
-        base.OnMouseDown();
-    }
-
     public void ExecuteAction() {
         ActivateLaptopLock();
     }

@@ -11,11 +11,6 @@ public class BrokenTeddyBear : EventObject, IResultExecutable
         RegisterWithResultManager();
     }
 
-    public new void OnMouseDown()
-    {
-        base.OnMouseDown();
-    }
-
     public void ExecuteAction()
     {
         FixTeddyBear();

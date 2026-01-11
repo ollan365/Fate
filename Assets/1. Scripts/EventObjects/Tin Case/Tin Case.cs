@@ -21,12 +21,10 @@ public class TinCase : EventObject, IResultExecutable
         if (ResultManager.Instance != null)
             ResultManager.Instance.RegisterExecutable("TinCase", this);
     }
-    
-    public new void OnMouseDown()
+
+    protected override bool CanInteract()
     {
-        bool isBusy = GameManager.Instance.GetIsBusy();
-        if (isBusy) return;
-        base.OnMouseDown();
+        return !GameManager.Instance.GetIsBusy();
     }
 
     public void ExecuteAction()

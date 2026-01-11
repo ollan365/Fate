@@ -14,12 +14,6 @@ public class ZoomView : EventObject, IResultExecutable
         //ResultManager.Instance.executableObjectsKeyCheck(executableName);
     }
 
-    public new void OnMouseDown()
-    {
-        //ResultManager.Instance.executableObjectsKeyCheck($"{name} {sideNum}");
-        base.OnMouseDown();
-    }
-
     public void ExecuteAction()
     {
         //Debug.Log($"{name} {sideNum}" + " 줌 켜기");

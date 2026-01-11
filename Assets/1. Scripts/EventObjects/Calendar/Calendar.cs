@@ -22,12 +22,9 @@ public class Calendar : EventObject, IResultExecutable
             ResultManager.Instance.RegisterExecutable("Calendar", this);
     }
 
-    public new void OnMouseDown() {
-        bool isBusy = GameManager.Instance.GetIsBusy();
-        if (isBusy) 
-            return;
-        
-        base.OnMouseDown();
+    protected override bool CanInteract()
+    {
+        return !GameManager.Instance.GetIsBusy();
     }
 
     public void ExecuteAction() {

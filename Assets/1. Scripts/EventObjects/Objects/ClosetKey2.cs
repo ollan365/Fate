@@ -9,12 +9,9 @@ public class ClosetKey2 : EventObject, IResultExecutable
         RegisterWithResultManager();
     }
 
-    public new void OnMouseDown()
+    protected override bool CanInteract()
     {
-        bool isBusy = GameManager.Instance.GetIsBusy();
-        if (isBusy) return;
-
-        base.OnMouseDown();
+        return !GameManager.Instance.GetIsBusy();
     }
 
     public void ExecuteAction()

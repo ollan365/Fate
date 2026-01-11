@@ -26,14 +26,9 @@ public class Carpet : EventObject, IResultExecutable
         UpdateImageState();
     }
 
-    public new void OnMouseDown()
+    protected override bool CanInteract()
     {
-        GameManager.Instance.SetVariable("isInquiry", false);
-
-        bool isBusy = GameManager.Instance.GetIsBusy();
-        if (isBusy) return;
-        
-        base.OnMouseDown();
+        return !GameManager.Instance.GetIsBusy();
     }
 
     public void ExecuteAction()

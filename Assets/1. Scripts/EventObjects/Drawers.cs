@@ -55,11 +55,9 @@ public class Drawers : EventObject, IResultExecutable
         UpdateImageState();
     }
 
-    public new void OnMouseDown()
+    protected override bool CanInteract()
     {
-        if (GameManager.Instance.GetIsBusy()) return;
-
-        base.OnMouseDown();
+        return !GameManager.Instance.GetIsBusy();
     }
 
     public void ExecuteAction()

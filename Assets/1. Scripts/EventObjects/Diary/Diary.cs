@@ -22,10 +22,6 @@ public class Diary : EventObject, IResultExecutable
             ResultManager.Instance.RegisterExecutable(diaryExecutableName, this);
     }
 
-    public new void OnMouseDown() {
-        base.OnMouseDown();
-    }
-
     public void ExecuteAction() {
         ActivateDiaryLock();
     }
