@@ -158,6 +158,7 @@ public class RoomManager : MonoBehaviour
         }
         
         SetButtons();
+        UIManager.Instance.ChangeCursor(true);
     }
 
     public bool GetIsInvestigating()

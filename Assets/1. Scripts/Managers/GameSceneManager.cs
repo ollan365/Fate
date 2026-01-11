@@ -127,7 +127,15 @@ public class GameSceneManager : MonoBehaviour
         while (DialogueManager.Instance.isDialogueActive) // 대사 출력 중이면 기다리기
             yield return null;
 
-        if (GetActiveScene()  == SceneType.START)
+        // Reset cursor to default when exiting room scenes
+        SceneType currentScene = GetActiveScene();
+        if (currentScene is SceneType.ROOM_1 or SceneType.ROOM_2)
+        {
+            if (UIManager.Instance)
+                UIManager.Instance.ChangeCursor(true);
+        }
+
+        if (currentScene == SceneType.START)
             UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
         UIManager.Instance.ResetLoadingUI();
         MemoManager.Instance.SetMemoButtons(false, false, false);
