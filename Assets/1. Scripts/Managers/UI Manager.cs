@@ -907,6 +907,9 @@ public class UIManager : MonoBehaviour {
     }
 
     private void CheckCursorTouchingUIs() { // Check if the cursor is touching any of the buttons
+        if (InputManager.IsiOSEnvironment())
+            return;
+        
         bool isCursorOverUIs = false;
         for (int i = uiToCheck.Count - 1; i >= 0; i--) {
             RectTransform uiRectTransform = uiToCheck[i];

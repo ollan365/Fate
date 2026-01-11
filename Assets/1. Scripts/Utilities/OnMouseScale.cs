@@ -37,6 +37,9 @@ public class OnMouseScale : MonoBehaviour
 
     private void Update()
     {
+        if (InputManager.IsiOSEnvironment())
+            return;
+        
         if (!checkMouseHover || !rectTransform || !uiCamera)
             return;
         
