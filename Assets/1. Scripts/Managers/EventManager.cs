@@ -22,12 +22,26 @@ namespace Fate.Managers
         if (Instance == null)
         {
             eventsCSV = Resources.Load<TextAsset>("Datas/events");
+            if (eventsCSV == null)
+            {
+                Debug.LogError("EventManager: Failed to load events CSV file from Resources/Datas/events");
+                return;
+            }
+
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
             // ParseConditions와 ParseResults가 먼저 실행되어야 함
-            ConditionManager.Instance.ParseConditions();
-            ResultManager.Instance.ParseResults();
+            if (ConditionManager.Instance != null)
+                ConditionManager.Instance.ParseConditions();
+            else
+                Debug.LogError("EventManager: ConditionManager.Instance is null, cannot parse conditions");
+
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.ParseResults();
+            else
+                Debug.LogError("EventManager: ResultManager.Instance is null, cannot parse results");
+
             ParseEvents();
 
             // 디버깅용
@@ -44,15 +58,49 @@ namespace Fate.Managers
     // events.csv 파일 파싱
     private void ParseEvents()
     {
+        if (eventsCSV == null || string.IsNullOrEmpty(eventsCSV.text))
+        {
+            Debug.LogError("EventManager: Cannot parse events - CSV file is null or empty");
+            return;
+        }
+
+        if (ConditionManager.Instance == null)
+        {
+            Debug.LogError("EventManager: ConditionManager.Instance is null, cannot parse events");
+            return;
+        }
+
+        if (ResultManager.Instance == null)
+        {
+            Debug.LogError("EventManager: ResultManager.Instance is null, cannot parse events");
+            return;
+        }
+
         string[] lines = eventsCSV.text.Split('\n');
 
         for (int i = 1; i < lines.Length; i++)
         {
+            if (string.IsNullOrWhiteSpace(lines[i]))
+                continue;
+
             string[] fields = lines[i].Split(',');
             
-            if ((string.IsNullOrWhiteSpace(lines[i])) || (fields[0] == "" && fields[1] == "")) continue;
+            if (fields.Length < 6)
+            {
+                Debug.LogWarning($"EventManager: Invalid event line {i}: expected at least 6 fields, got {fields.Length}");
+                continue;
+            }
+
+            if (fields[0] == "" && fields[1] == "")
+                continue;
 
             string eventID = fields[0].Trim();
+            if (string.IsNullOrEmpty(eventID))
+            {
+                Debug.LogWarning($"EventManager: Event ID is empty at line {i}");
+                continue;
+            }
+
             string eventName = fields[1].Trim();
             string eventDescription = fields[2].Trim();
             string eventLogic = fields[3].Trim();
@@ -66,19 +114,32 @@ namespace Fate.Managers
                 string[] conditionIDs = fields[4].Trim().Split('/');
                 foreach (string conditionID in conditionIDs)
                 {
-                    if (!ConditionManager.Instance.conditions.ContainsKey(conditionID.Trim()))
+                    string trimmedConditionID = conditionID.Trim();
+                    if (string.IsNullOrEmpty(trimmedConditionID))
+                        continue;
+
+                    if (ConditionManager.Instance.conditions == null || !ConditionManager.Instance.conditions.ContainsKey(trimmedConditionID))
                     {
-                        Debug.Log($"Condition ID \"{conditionID.Trim()}\" not found!");
+                        Debug.LogWarning($"EventManager: Condition ID '{trimmedConditionID}' not found at line {i}!");
                         continue;
                     }
-                    conditions.Add(ConditionManager.Instance.conditions[conditionID.Trim()]);
+                    conditions.Add(ConditionManager.Instance.conditions[trimmedConditionID]);
                 }
+            }
+
+            if (string.IsNullOrWhiteSpace(fields[5].Trim()))
+            {
+                Debug.LogWarning($"EventManager: No results specified for event '{eventID}' at line {i}");
+                continue;
             }
 
             string[] resultIDs = fields[5].Trim().Split('/');
             foreach (string resultID in resultIDs)
             {
                 string resultIDTrimmed = resultID.Trim();
+                if (string.IsNullOrEmpty(resultIDTrimmed))
+                    continue;
+
                 // Function-wrapped results
                 if (resultIDTrimmed.StartsWith("Result_RevealMemo") ||
                     resultIDTrimmed.StartsWith("Result_StartDialogue") ||
@@ -93,8 +154,19 @@ namespace Fate.Managers
                 }
                 else
                 {
+                    if (ResultManager.Instance.Results == null || !ResultManager.Instance.Results.ContainsKey(resultIDTrimmed))
+                    {
+                        Debug.LogWarning($"EventManager: Result ID '{resultIDTrimmed}' not found at line {i}!");
+                        continue;
+                    }
                     results.Add(ResultManager.Instance.Results[resultIDTrimmed]);
                 }
+            }
+
+            if (results.Count == 0)
+            {
+                Debug.LogWarning($"EventManager: No valid results found for event '{eventID}' at line {i}");
+                continue;
             }
 
             if (events.ContainsKey(eventID)) // 이미 존재하는 event ID인 경우: EventLine을 추가
@@ -119,22 +191,49 @@ namespace Fate.Managers
     // Event ID를 받아서 전체 조건의 true/false 판단하여 true인 경우 결과 수행
     public void CallEvent(string eventID)
     {
-        if (GameManager.Instance.isDebug) Debug.Log($"-#-#-#-#-#-#-#-#- event: \"{eventID}\" -#-#-#-#-#-#-#-#-");
+        if (string.IsNullOrEmpty(eventID))
+        {
+            Debug.LogWarning("EventManager: CallEvent called with null or empty eventID");
+            return;
+        }
 
-        List<EventLine> eventLines = events[eventID].EventLine;
+        if (!events.ContainsKey(eventID))
+        {
+            Debug.LogWarning($"EventManager: Event '{eventID}' does not exist in events dictionary");
+            return;
+        }
+
+        if (GameManager.Instance != null && GameManager.Instance.isDebug)
+            Debug.Log($"-#-#-#-#-#-#-#-#- event: \"{eventID}\" -#-#-#-#-#-#-#-#-");
+
+        GameEvent gameEvent = events[eventID];
+        if (gameEvent == null || gameEvent.EventLine == null)
+        {
+            Debug.LogWarning($"EventManager: Event '{eventID}' has null EventLine");
+            return;
+        }
+
+        List<EventLine> eventLines = gameEvent.EventLine;
 
         int eventCount = 0;
         
         foreach (EventLine eventLine in eventLines)
         {
+            if (eventLine == null)
+            {
+                Debug.LogWarning($"EventManager: Null EventLine found in event '{eventID}' at index {eventCount}");
+                continue;
+            }
+
             eventCount++;
-            if (GameManager.Instance.isDebug) Debug.Log($"--------- #{eventCount} ---------");
+            if (GameManager.Instance != null && GameManager.Instance.isDebug)
+                Debug.Log($"--------- #{eventCount} ---------");
             
             string logic = eventLine.Logic;
             List<Condition> conditions = eventLine.Conditions;
             List<Result> results = eventLine.Results;
 
-            if (conditions.Count == 0)
+            if (conditions == null || conditions.Count == 0)
             { // 조건이 존재하지 않는 경우 무조건 실행
                 ExecuteResults(results);
                 continue;
@@ -158,14 +257,24 @@ namespace Fate.Managers
             }
             else // logic이 빈칸인 경우
             {
-                string conditionID = conditions[0].ConditionID;
-                bool isCondition = ConditionManager.Instance.IsCondition(conditionID);
-                //Debug.Log(conditionID+" : "+isCondition);
-                if (isCondition)
+                if (conditions.Count > 0 && conditions[0] != null)
                 {
-                    ExecuteResults(results);
-                    // 밑에 return 안 넣어주면 계속 다음에 있는 Conditions에 맞는 Results까지 불러오게 됨
-                    return;
+                    string conditionID = conditions[0].ConditionID;
+                    if (ConditionManager.Instance != null)
+                    {
+                        bool isCondition = ConditionManager.Instance.IsCondition(conditionID);
+                        //Debug.Log(conditionID+" : "+isCondition);
+                        if (isCondition)
+                        {
+                            ExecuteResults(results);
+                            // 밑에 return 안 넣어주면 계속 다음에 있는 Conditions에 맞는 Results까지 불러오게 됨
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("EventManager: ConditionManager.Instance is null, cannot check condition");
+                    }
                 }
             }
         }
@@ -173,9 +282,24 @@ namespace Fate.Managers
 
     private bool CheckConditions_OR(List<Condition> conditions)
     {
+        if (conditions == null || conditions.Count == 0)
+            return false;
+
+        if (ConditionManager.Instance == null)
+        {
+            Debug.LogWarning("EventManager: ConditionManager.Instance is null in CheckConditions_OR");
+            return false;
+        }
+
         foreach (Condition condition in conditions)
         {
+            if (condition == null)
+                continue;
+
             string conditionID = condition.ConditionID;
+            if (string.IsNullOrEmpty(conditionID))
+                continue;
+
             bool isCondition = ConditionManager.Instance.IsCondition(conditionID);
             if (isCondition)
             {
@@ -188,9 +312,24 @@ namespace Fate.Managers
 
     private bool CheckConditions_AND(List<Condition> conditions)
     {
+        if (conditions == null || conditions.Count == 0)
+            return true;
+
+        if (ConditionManager.Instance == null)
+        {
+            Debug.LogWarning("EventManager: ConditionManager.Instance is null in CheckConditions_AND");
+            return false;
+        }
+
         foreach (Condition condition in conditions)
         {
+            if (condition == null)
+                continue;
+
             string conditionID = condition.ConditionID;
+            if (string.IsNullOrEmpty(conditionID))
+                continue;
+
             bool isCondition = ConditionManager.Instance.IsCondition(conditionID);
             if (!isCondition)
             {
@@ -203,9 +342,30 @@ namespace Fate.Managers
 
     private void ExecuteResults(List<Result> results)
     {
+        if (results == null || results.Count == 0)
+            return;
+
+        if (ResultManager.Instance == null)
+        {
+            Debug.LogError("EventManager: ResultManager.Instance is null, cannot execute results");
+            return;
+        }
+
         foreach (Result result in results)
         {
+            if (result == null)
+            {
+                Debug.LogWarning("EventManager: Null result found in ExecuteResults");
+                continue;
+            }
+
             string resultID = result.ResultID;
+            if (string.IsNullOrEmpty(resultID))
+            {
+                Debug.LogWarning("EventManager: Result has null or empty ResultID");
+                continue;
+            }
+
             ResultManager.Instance.ExecuteResult(resultID);
         }
     }

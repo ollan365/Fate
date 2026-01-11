@@ -72,6 +72,12 @@ namespace Fate.Managers
         private void Start()
         {
             variablesCSV = Resources.Load<TextAsset>("Datas/variables");
+            if (variablesCSV == null)
+            {
+                Debug.LogError("GameManager: Failed to load variables CSV file from Resources/Datas/variables");
+                return;
+            }
+
             CreateVariables();
 
             isPrologueInProgress = false;
@@ -82,7 +88,7 @@ namespace Fate.Managers
                 Time.timeScale = 4f;
             }
 
-            if (isDemoBuild)
+            if (isDemoBuild && SaveManager.Instance != null)
                 SaveManager.Instance.CreateNewGameData();
         }
 
@@ -91,16 +97,26 @@ namespace Fate.Managers
             if (isDebug)
                 ShowVariables();
 
-            if (isDemoBuild)
+            if (isDemoBuild && GameSceneManager.Instance != null && UIManager.Instance != null)
             {
-                if (GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_2 &&
-                    UIManager.Instance.GetUI(eUIGameObjectName.EndOfDemoPage).activeInHierarchy == false)
+                var endOfDemoPage = UIManager.Instance.GetUI(eUIGameObjectName.EndOfDemoPage);
+                if (endOfDemoPage != null && 
+                    GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_2 &&
+                    !endOfDemoPage.activeInHierarchy)
+                {
                     UIManager.Instance.SetUI(eUIGameObjectName.EndOfDemoPage, true);
+                }
             }
         }
 
         private void CreateVariables()
         {
+            if (variablesCSV == null || string.IsNullOrEmpty(variablesCSV.text))
+            {
+                Debug.LogError("GameManager: Cannot create variables - CSV file is null or empty");
+                return;
+            }
+
             string[] variableLines = variablesCSV.text.Split('\n');
 
             for (int i = 1; i < variableLines.Length; i++)
@@ -110,32 +126,72 @@ namespace Fate.Managers
 
                 string[] fields = variableLines[i].Split(',');
 
+                if (fields.Length < 3)
+                {
+                    Debug.LogWarning($"GameManager: Invalid variable line {i}: expected at least 3 fields, got {fields.Length}");
+                    continue;
+                }
+
                 string variableName = fields[0].Trim();
+                if (string.IsNullOrEmpty(variableName))
+                {
+                    Debug.LogWarning($"GameManager: Variable name is empty at line {i}");
+                    continue;
+                }
+
                 string variableValue = fields[1].Trim();
                 string variableType = fields[2].Trim();
 
-                switch (variableType)
+                if (variables.ContainsKey(variableName))
                 {
-                    case "int":
-                        variables.Add(variableName, int.Parse(variableValue));
-                        break;
-                    case "bool":
-                        variables.Add(variableName, bool.Parse(variableValue));
-                        break;
-                    case "string":
-                        variables.Add(variableName, variableValue);
-                        break;
-                    default:
-                        Debug.Log("Unknown variable type: " + variableType);
-                        break;
+                    Debug.LogWarning($"GameManager: Duplicate variable name '{variableName}' at line {i}, skipping");
+                    continue;
+                }
+
+                try
+                {
+                    switch (variableType)
+                    {
+                        case "int":
+                            if (int.TryParse(variableValue, out int intValue))
+                                variables.Add(variableName, intValue);
+                            else
+                                Debug.LogWarning($"GameManager: Failed to parse int value '{variableValue}' for variable '{variableName}' at line {i}");
+                            break;
+                        case "bool":
+                            if (bool.TryParse(variableValue, out bool boolValue))
+                                variables.Add(variableName, boolValue);
+                            else
+                                Debug.LogWarning($"GameManager: Failed to parse bool value '{variableValue}' for variable '{variableName}' at line {i}");
+                            break;
+                        case "string":
+                            variables.Add(variableName, variableValue);
+                            break;
+                        default:
+                            Debug.LogWarning($"GameManager: Unknown variable type '{variableType}' for variable '{variableName}' at line {i}");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"GameManager: Error parsing variable '{variableName}' at line {i}: {ex.Message}");
                 }
             }
 
-            SaveManager.Instance.SaveInitGameData();
+            if (SaveManager.Instance != null)
+                SaveManager.Instance.SaveInitGameData();
+            else
+                Debug.LogWarning("GameManager: SaveManager.Instance is null, cannot save init game data");
         }
 
         public void ResetVariables()
         {
+            if (variablesCSV == null || string.IsNullOrEmpty(variablesCSV.text))
+            {
+                Debug.LogError("GameManager: Cannot reset variables - CSV file is null or empty");
+                return;
+            }
+
             string[] variableLines = variablesCSV.text.Split('\n');
 
             for (int i = 1; i < variableLines.Length; i++)
@@ -144,6 +200,12 @@ namespace Fate.Managers
                     continue;
 
                 string[] fields = variableLines[i].Split(',');
+
+                if (fields.Length < 4)
+                {
+                    Debug.LogWarning($"GameManager: Invalid reset variable line {i}: expected at least 4 fields, got {fields.Length}");
+                    continue;
+                }
 
                 string variableName = fields[0].Trim();
                 string variableValue = fields[1].Trim();
@@ -153,68 +215,171 @@ namespace Fate.Managers
                 // 엔딩 때 초기화하지 않을 변수들은 제외
                 if (variableReset == "FALSE") continue;
 
-                switch (variableType)
+                if (!variables.ContainsKey(variableName))
                 {
-                    case "int":
-                        variables[variableName] = int.Parse(variableValue);
-                        break;
-                    case "bool":
-                        variables[variableName] = bool.Parse(variableValue);
-                        break;
-                    case "string":
-                        variables[variableName] = variableValue;
-                        break;
-                    default:
-                        Debug.Log("Unknown variable type: " + variableType);
-                        break;
+                    Debug.LogWarning($"GameManager: Cannot reset variable '{variableName}' - variable does not exist");
+                    continue;
+                }
+
+                try
+                {
+                    switch (variableType)
+                    {
+                        case "int":
+                            if (int.TryParse(variableValue, out int intValue))
+                                variables[variableName] = intValue;
+                            else
+                                Debug.LogWarning($"GameManager: Failed to parse int value '{variableValue}' for variable '{variableName}' at line {i}");
+                            break;
+                        case "bool":
+                            if (bool.TryParse(variableValue, out bool boolValue))
+                                variables[variableName] = boolValue;
+                            else
+                                Debug.LogWarning($"GameManager: Failed to parse bool value '{variableValue}' for variable '{variableName}' at line {i}");
+                            break;
+                        case "string":
+                            variables[variableName] = variableValue;
+                            break;
+                        default:
+                            Debug.LogWarning($"GameManager: Unknown variable type '{variableType}' for variable '{variableName}' at line {i}");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"GameManager: Error resetting variable '{variableName}' at line {i}: {ex.Message}");
                 }
             }
         }
 
         public void SetVariable(string variableName, object value)
         {
+            if (string.IsNullOrEmpty(variableName))
+            {
+                Debug.LogWarning("GameManager: SetVariable called with null or empty variable name");
+                return;
+            }
+
+            if (value == null)
+            {
+                Debug.LogWarning($"GameManager: SetVariable called with null value for variable '{variableName}'");
+                return;
+            }
+
             if (variables.ContainsKey(variableName))
                 variables[variableName] = value;
             else
-                Debug.Log($"variable \"{variableName}\" does not exist!");
+                Debug.LogWarning($"GameManager: Variable '{variableName}' does not exist!");
         }
 
         public object GetVariable(string variableName)
         {
-            if (variables.ContainsKey(variableName))
-                return variables[variableName];
+            if (string.IsNullOrEmpty(variableName))
+            {
+                Debug.LogWarning("GameManager: GetVariable called with null or empty variable name");
+                return null;
+            }
 
-            Debug.Log($"variable: \"{variableName}\" does not exist!");
+            if (variables.TryGetValue(variableName, out object value))
+                return value;
+
+            Debug.LogWarning($"GameManager: Variable '{variableName}' does not exist!");
             return null;
         }
 
         public void IncrementVariable(string variableName)
         {
-            SetVariable(variableName, (int)GetVariable(variableName) + 1);
+            IncrementVariable(variableName, 1);
         }
 
         public void IncrementVariable(string variableName, int count)
         {
-            SetVariable(variableName, (int)GetVariable(variableName) + count);
+            if (string.IsNullOrEmpty(variableName))
+            {
+                Debug.LogWarning("GameManager: IncrementVariable called with null or empty variable name");
+                return;
+            }
+
+            object currentValue = GetVariable(variableName);
+            if (currentValue == null)
+            {
+                Debug.LogWarning($"GameManager: Cannot increment variable '{variableName}' - variable does not exist");
+                return;
+            }
+
+            if (currentValue is int intValue)
+            {
+                SetVariable(variableName, intValue + count);
+            }
+            else
+            {
+                Debug.LogError($"GameManager: Cannot increment variable '{variableName}' - variable is not of type int (current type: {currentValue.GetType().Name})");
+            }
         }
 
         public void DecrementVariable(string variableName)
         {
-            SetVariable(variableName, (int)GetVariable(variableName) - 1);
+            DecrementVariable(variableName, 1);
         }
 
         public void DecrementVariable(string variableName, int count)
         {
-            SetVariable(variableName, (int)GetVariable(variableName) - count);
+            if (string.IsNullOrEmpty(variableName))
+            {
+                Debug.LogWarning("GameManager: DecrementVariable called with null or empty variable name");
+                return;
+            }
+
+            object currentValue = GetVariable(variableName);
+            if (currentValue == null)
+            {
+                Debug.LogWarning($"GameManager: Cannot decrement variable '{variableName}' - variable does not exist");
+                return;
+            }
+
+            if (currentValue is int intValue)
+            {
+                SetVariable(variableName, intValue - count);
+            }
+            else
+            {
+                Debug.LogError($"GameManager: Cannot decrement variable '{variableName}' - variable is not of type int (current type: {currentValue.GetType().Name})");
+            }
         }
 
         public void InverseVariable(string variableName)
         {
-            SetVariable(variableName, !(bool)GetVariable(variableName));
+            if (string.IsNullOrEmpty(variableName))
+            {
+                Debug.LogWarning("GameManager: InverseVariable called with null or empty variable name");
+                return;
+            }
+
+            object currentValue = GetVariable(variableName);
+            if (currentValue == null)
+            {
+                Debug.LogWarning($"GameManager: Cannot inverse variable '{variableName}' - variable does not exist");
+                return;
+            }
+
+            if (currentValue is bool boolValue)
+            {
+                SetVariable(variableName, !boolValue);
+            }
+            else
+            {
+                Debug.LogError($"GameManager: Cannot inverse variable '{variableName}' - variable is not of type bool (current type: {currentValue.GetType().Name})");
+            }
         }
 
         private void ShowVariables()
         {
+            if (variablesText == null)
+            {
+                Debug.LogWarning("GameManager: Cannot show variables - variablesText is null");
+                return;
+            }
+
             variablesText.text = "";  // 텍스트 초기화
 
             // 화면에 표시하고 싶은 변수명 추가
@@ -234,42 +399,94 @@ namespace Fate.Managers
 
         public bool GetIsBusy()
         { // 클릭을 막아야 하는 상황들
-            return DialogueManager.Instance.isDialogueActive ||
-                   (RoomManager.Instance && RoomManager.Instance.isInvestigating) ||
-                   MemoManager.Instance.isMemoOpen ||
-                   UIManager.Instance.GetUI(eUIGameObjectName.MenuUI).activeInHierarchy;
+            if (DialogueManager.Instance != null && DialogueManager.Instance.isDialogueActive)
+                return true;
+
+            if (RoomManager.Instance != null && RoomManager.Instance.isInvestigating)
+                return true;
+
+            if (MemoManager.Instance != null && MemoManager.Instance.isMemoOpen)
+                return true;
+
+            if (UIManager.Instance != null)
+            {
+                var menuUI = UIManager.Instance.GetUI(eUIGameObjectName.MenuUI);
+                if (menuUI != null && menuUI.activeInHierarchy)
+                    return true;
+            }
+
+            return false;
         }
 
         // 원래 EventObjectManager 기능들 GameManager에 옮김
 
         public void AddEventObject(EventObject eventObject)
         {
-            if (!eventObjectsStatusDict.ContainsKey(eventObject.GetEventId()))
-                eventObjectsStatusDict.Add(eventObject.GetEventId(), false);
+            if (eventObject == null)
+            {
+                Debug.LogWarning("GameManager: AddEventObject called with null EventObject");
+                return;
+            }
+
+            string eventId = eventObject.GetEventId();
+            if (string.IsNullOrEmpty(eventId))
+            {
+                Debug.LogWarning("GameManager: AddEventObject called with EventObject that has null or empty eventId");
+                return;
+            }
+
+            if (!eventObjectsStatusDict.ContainsKey(eventId))
+                eventObjectsStatusDict.Add(eventId, false);
         }
 
         public void AddEventObject(string eventObjectId)
         {
+            if (string.IsNullOrEmpty(eventObjectId))
+            {
+                Debug.LogWarning("GameManager: AddEventObject called with null or empty eventObjectId");
+                return;
+            }
+
             if (!eventObjectsStatusDict.ContainsKey(eventObjectId))
                 eventObjectsStatusDict.Add(eventObjectId, false);
         }
 
         public void SetEventFinished(string eventId)
         {
+            if (string.IsNullOrEmpty(eventId))
+            {
+                Debug.LogWarning("GameManager: SetEventFinished called with null or empty eventId");
+                return;
+            }
+
             if (eventObjectsStatusDict.ContainsKey(eventId))
                 eventObjectsStatusDict[eventId] = true;
             else
-                Debug.Log(eventId + " is not existed!");
+                Debug.LogWarning($"GameManager: Event '{eventId}' does not exist in eventObjectsStatusDict");
         }
 
         public void SetEventUnFinished(string eventId)
         {
+            if (string.IsNullOrEmpty(eventId))
+            {
+                Debug.LogWarning("GameManager: SetEventUnFinished called with null or empty eventId");
+                return;
+            }
+
             if (eventObjectsStatusDict.ContainsKey(eventId))
                 eventObjectsStatusDict[eventId] = false;
+            else
+                Debug.LogWarning($"GameManager: Event '{eventId}' does not exist in eventObjectsStatusDict");
         }
 
         public bool GetEventStatus(string eventId)
         {
+            if (string.IsNullOrEmpty(eventId))
+            {
+                Debug.LogWarning("GameManager: GetEventStatus called with null or empty eventId");
+                return false;
+            }
+
             return eventObjectsStatusDict.ContainsKey(eventId) && eventObjectsStatusDict[eventId];
         }
 

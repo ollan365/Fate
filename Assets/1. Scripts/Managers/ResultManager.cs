@@ -53,15 +53,45 @@ namespace Fate.Managers
     
     public void ParseResults()
     {
-        string[] lines = Resources.Load<TextAsset>("Datas/results").text.Split('\n');
+        TextAsset resultsCSV = Resources.Load<TextAsset>("Datas/results");
+        if (resultsCSV == null || string.IsNullOrEmpty(resultsCSV.text))
+        {
+            Debug.LogError("ResultManager: Failed to load results CSV file from Resources/Datas/results");
+            return;
+        }
+
+        string[] lines = resultsCSV.text.Split('\n');
         for (int i = 1; i < lines.Length; i++)
         {
+            if (string.IsNullOrWhiteSpace(lines[i]))
+                continue;
+
             string[] fields = lines[i].Split(',');
             
-            if ((string.IsNullOrWhiteSpace(lines[i])) || (fields[0] == "" && fields[1] == "")) continue;
+            if (fields.Length < 3)
+            {
+                Debug.LogWarning($"ResultManager: Invalid result line {i}: expected at least 3 fields, got {fields.Length}");
+                continue;
+            }
+            
+            if (fields[0] == "" && fields[1] == "")
+                continue;
+            
+            string resultID = fields[0].Trim();
+            if (string.IsNullOrEmpty(resultID))
+            {
+                Debug.LogWarning($"ResultManager: Result ID is empty at line {i}");
+                continue;
+            }
+
+            if (Results.ContainsKey(resultID))
+            {
+                Debug.LogWarning($"ResultManager: Duplicate result ID '{resultID}' at line {i}, skipping");
+                continue;
+            }
             
             Result result = new Result(
-                fields[0].Trim(),
+                resultID,
                 fields[1].Trim(),
                 fields[2].Trim()
                 );
@@ -72,13 +102,19 @@ namespace Fate.Managers
 
     public void ExecuteResult(string resultID)
     {
-        if (GameManager.Instance.isDebug) 
+        if (string.IsNullOrEmpty(resultID))
+        {
+            Debug.LogWarning("ResultManager: ExecuteResult called with null or empty resultID");
+            return;
+        }
+
+        if (GameManager.Instance != null && GameManager.Instance.isDebug) 
             Debug.Log(resultID);
         
         string variableName;
         
         TutorialManager tutorialManager = null;
-        if (RoomManager.Instance && RoomManager.Instance.tutorialManager)
+        if (RoomManager.Instance != null && RoomManager.Instance.tutorialManager != null)
             tutorialManager = RoomManager.Instance.tutorialManager;
         
         // ------------------------ 이곳에 모든 동작을 수동으로 추가 ------------------------
@@ -86,112 +122,200 @@ namespace Fate.Managers
         {
             case not null when resultID.StartsWith("Result_RevealMemo"): // 메모 획득
                 variableName = resultID["Result_RevealMemo".Length..];
-                MemoManager.Instance.RevealMemo(variableName);
+                if (MemoManager.Instance != null)
+                    MemoManager.Instance.RevealMemo(variableName);
+                else
+                    Debug.LogWarning($"ResultManager: MemoManager.Instance is null, cannot reveal memo '{variableName}'");
                 break;
 
             case not null when resultID.StartsWith("Result_StartDialogue"):  // 대사 시작
                 variableName = resultID["Result_StartDialogue".Length..];
-                DialogueManager.Instance.StartDialogue(variableName);
+                if (DialogueManager.Instance != null)
+                    DialogueManager.Instance.StartDialogue(variableName);
+                else
+                    Debug.LogWarning($"ResultManager: DialogueManager.Instance is null, cannot start dialogue '{variableName}'");
                 break;
             
             case not null when resultID.StartsWith("Result_Increment"):  // 값++
                 variableName = resultID["Result_Increment".Length..];
-                GameManager.Instance.IncrementVariable(variableName);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.IncrementVariable(variableName);
+                else
+                    Debug.LogWarning($"ResultManager: GameManager.Instance is null, cannot increment variable '{variableName}'");
                 break;
 
             case not null when resultID.StartsWith("Result_Decrement"):  // 값--
                 variableName = resultID["Result_Decrement".Length..];
-                GameManager.Instance.DecrementVariable(variableName);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.DecrementVariable(variableName);
+                else
+                    Debug.LogWarning($"ResultManager: GameManager.Instance is null, cannot decrement variable '{variableName}'");
                 break;
 
             case not null when resultID.StartsWith("Result_Inverse"):  // !값
                 variableName = resultID["Result_Inverse".Length..];
-                GameManager.Instance.InverseVariable(variableName);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.InverseVariable(variableName);
+                else
+                    Debug.LogWarning($"ResultManager: GameManager.Instance is null, cannot inverse variable '{variableName}'");
                 break;
 
             case not null when resultID.StartsWith("Result_IsFinished"):  // 조사 후 EventObject의 isFinished를 true로
                 variableName = resultID["Result_isFinished".Length..];
-                GameManager.Instance.SetEventFinished(variableName);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.SetEventFinished(variableName);
+                else
+                    Debug.LogWarning($"ResultManager: GameManager.Instance is null, cannot set event finished '{variableName}'");
                 break;
 
             case not null when resultID.StartsWith("Result_IsUnFinished"):  
                 // EventObject의 isFinished를 false로 (포스터 커터칼 있는채로 다시 조사하면
                 // 처음 조사 스크립트 나와야 해서 추가됨)
                 variableName = resultID["Result_IsUnFinished".Length..];
-                GameManager.Instance.SetEventUnFinished(variableName);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.SetEventUnFinished(variableName);
+                else
+                    Debug.LogWarning($"ResultManager: GameManager.Instance is null, cannot set event unfinished '{variableName}'");
                 break;
 
             case "Result_girl":  // 우연의 성별을 여자로 설정
-                GameManager.Instance.SetVariable("AccidyGender", 0);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.SetVariable("AccidyGender", 0);
+                else
+                    Debug.LogWarning("ResultManager: GameManager.Instance is null, cannot set AccidyGender");
                 // DialogueManager.Instance.EndDialogue();
                 break;
             
             case "Result_boy":  // 우연의 성별을 남자로 설정
-                GameManager.Instance.SetVariable("AccidyGender", 1);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.SetVariable("AccidyGender", 1);
+                else
+                    Debug.LogWarning("ResultManager: GameManager.Instance is null, cannot set AccidyGender");
                 // DialogueManager.Instance.EndDialogue();
                 break;
 
             case "ResultCloseEyes": // 눈 깜빡이는 효과
-                StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, true, 0.5f));
+                if (UIManager.Instance != null)
+                    StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, 1, true, 0.5f));
+                else
+                    Debug.LogWarning("ResultManager: UIManager.Instance is null, cannot fade");
                 break;
 
             case "Result_FadeOut":  // fade out
                 float fadeOutTime = 3f;
-                StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, fadeOutTime));
+                if (UIManager.Instance != null)
+                    StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, fadeOutTime));
+                else
+                    Debug.LogWarning("ResultManager: UIManager.Instance is null, cannot fade out");
                 break;
 
-            case "Result_FadeIn":  // fade out
+            case "Result_FadeIn":  // fade in
                 float fadeInTime = 3f;
-                StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, fadeInTime));
+                if (UIManager.Instance != null)
+                    StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, fadeInTime));
+                else
+                    Debug.LogWarning("ResultManager: UIManager.Instance is null, cannot fade in");
                 break;
 
             case "ResultPrologueLimit":
-                StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_000", 3));
+                if (DialogueManager.Instance != null)
+                    StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_000", 3));
+                else
+                    Debug.LogWarning("ResultManager: DialogueManager.Instance is null, cannot start dialogue");
                 break;
 
             case "ResultCommonPrologueA":
-                LobbyManager.Instance.backgroundImage.sprite = LobbyManager.Instance?.room1Side1BackgroundSprite;
-                StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_002", 3));
+                if (LobbyManager.Instance != null)
+                {
+                    if (LobbyManager.Instance.backgroundImage != null && LobbyManager.Instance.room1Side1BackgroundSprite != null)
+                        LobbyManager.Instance.backgroundImage.sprite = LobbyManager.Instance.room1Side1BackgroundSprite;
+                    if (DialogueManager.Instance != null)
+                        StartCoroutine(DialogueManager.Instance.StartDialogue("Prologue_002", 3));
+                    else
+                        Debug.LogWarning("ResultManager: DialogueManager.Instance is null, cannot start dialogue");
+                }
+                else
+                    Debug.LogWarning("ResultManager: LobbyManager.Instance is null");
                 break;
 
             case "ResultName": // 이름 입력창
-                LobbyManager.Instance?.OpenNamePanel();
+                if (LobbyManager.Instance != null)
+                    LobbyManager.Instance.OpenNamePanel();
+                else
+                    Debug.LogWarning("ResultManager: LobbyManager.Instance is null, cannot open name panel");
                 break;
 
             case "ResultBirth": // 생일 입력창
-                LobbyManager.Instance?.OpenBirthPanel();
+                if (LobbyManager.Instance != null)
+                    LobbyManager.Instance.OpenBirthPanel();
+                else
+                    Debug.LogWarning("ResultManager: LobbyManager.Instance is null, cannot open birth panel");
                 break;
 
             case "ResultPrologueEnd":
-                GameManager.Instance.isPrologueInProgress = false;
-                GameSceneManager.Instance.LoadScene(SceneType.ROOM_1);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.isPrologueInProgress = false;
+                if (GameSceneManager.Instance != null)
+                    GameSceneManager.Instance.LoadScene(SceneType.ROOM_1);
+                else
+                    Debug.LogWarning("ResultManager: GameSceneManager.Instance is null, cannot load scene");
                 break;
 
             case "ResultTimePass": // 행동력 감소 (행동력이 감소할 때마다 게임 저장)
-                SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
-                RoomManager.Instance.actionPointManager.DecrementActionPoint();
+                if (SoundPlayer.Instance != null)
+                    SoundPlayer.Instance.UISoundPlay(Sound_HeartPop);
+                if (RoomManager.Instance != null && RoomManager.Instance.actionPointManager != null)
+                    RoomManager.Instance.actionPointManager.DecrementActionPoint();
+                else
+                    Debug.LogWarning("ResultManager: RoomManager.Instance or actionPointManager is null, cannot decrement action point");
                 break;
 
             // 조사 시스템
             case "ResultInquiry": // 조사 선택 묻기
-                if (!GameManager.Instance.GetEventStatus(GameManager.Instance.GetCurrentInquiryObjectId()))
+                if (GameManager.Instance != null)
                 {
-                    EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
-                    GameManager.Instance.SetVariable("isInquiry", false);
+                    string inquiryObjectId = GameManager.Instance.GetCurrentInquiryObjectId();
+                    if (!string.IsNullOrEmpty(inquiryObjectId) && !GameManager.Instance.GetEventStatus(inquiryObjectId))
+                    {
+                        if (EventManager.Instance != null)
+                        {
+                            EventManager.Instance.CallEvent(inquiryObjectId);
+                            GameManager.Instance.SetVariable("isInquiry", false);
+                        }
+                        else
+                            Debug.LogWarning("ResultManager: EventManager.Instance is null, cannot call event");
+                    }
+                    else
+                    {
+                        //Debug.Log("중복조사 발생");
+                        if (DialogueManager.Instance != null)
+                            DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry2");
+                        else
+                            Debug.LogWarning("ResultManager: DialogueManager.Instance is null, cannot start dialogue");
+                    }
                 }
                 else
-                {
-                    //Debug.Log("중복조사 발생");
-                    DialogueManager.Instance.StartDialogue("RoomEscape_Inquiry2");
-                }
+                    Debug.LogWarning("ResultManager: GameManager.Instance is null, cannot process inquiry");
                 break;
 
             case "ResultInquiryYes": // 조사 예 선택
-                GameManager.Instance.SetVariable("isInquiry", true);
-                // DialogueManager.Instance.EndDialogue();
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.SetVariable("isInquiry", true);
+                    // DialogueManager.Instance.EndDialogue();
 
-                EventManager.Instance.CallEvent(GameManager.Instance.GetCurrentInquiryObjectId());
-                GameManager.Instance.SetVariable("isInquiry", false);
+                    string inquiryObjectId = GameManager.Instance.GetCurrentInquiryObjectId();
+                    if (!string.IsNullOrEmpty(inquiryObjectId))
+                    {
+                        if (EventManager.Instance != null)
+                            EventManager.Instance.CallEvent(inquiryObjectId);
+                        else
+                            Debug.LogWarning("ResultManager: EventManager.Instance is null, cannot call event");
+                    }
+                    GameManager.Instance.SetVariable("isInquiry", false);
+                }
+                else
+                    Debug.LogWarning("ResultManager: GameManager.Instance is null, cannot process inquiry yes");
                 break;
 
             case "ResultInquiryNo": // 조사 아니오 선택

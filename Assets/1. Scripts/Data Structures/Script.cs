@@ -1,4 +1,5 @@
 using Fate.Managers;
+using UnityEngine;
 
 namespace Fate.Data
 {
@@ -72,8 +73,22 @@ namespace Fate.Data
                             result.Fast = true;
                             break;
                         case "TRUE":
-                            var fateName = (string)GameManager.Instance.GetVariable("FateName");
-                            result.ProcessedText = result.ProcessedText.Replace("{PlayerName}", fateName);
+                            if (GameManager.Instance != null)
+                            {
+                                var fateNameObj = GameManager.Instance.GetVariable("FateName");
+                                if (fateNameObj is string fateName && !string.IsNullOrEmpty(fateName))
+                                {
+                                    result.ProcessedText = result.ProcessedText.Replace("{PlayerName}", fateName);
+                                }
+                                else
+                                {
+                                    Debug.LogWarning($"Script: FateName variable is null, empty, or not a string for script '{ScriptID}'");
+                                }
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"Script: GameManager.Instance is null when processing TRUE placeholder for script '{ScriptID}'");
+                            }
                             break;
                         case "ENDING":
                             result.Ending = true;
@@ -96,7 +111,24 @@ namespace Fate.Data
             if (string.IsNullOrEmpty(text)) 
                 return text;
 
-            int accidyGender = GameManager.Instance != null ? (int)GameManager.Instance.GetVariable("AccidyGender") : 0;
+            int accidyGender = 0;
+            if (GameManager.Instance != null)
+            {
+                var accidyGenderObj = GameManager.Instance.GetVariable("AccidyGender");
+                if (accidyGenderObj is int gender)
+                {
+                    accidyGender = gender;
+                }
+                else
+                {
+                    Debug.LogWarning($"Script: AccidyGender variable is not an int (got {accidyGenderObj?.GetType().Name ?? "null"}) for script '{ScriptID}', defaulting to 0");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Script: GameManager.Instance is null when applying pronoun placeholders for script '{ScriptID}', defaulting to female");
+            }
+
             bool isMale = accidyGender == 1;
 
             text = text.Replace("{subject}", isMale ? "he" : "she");

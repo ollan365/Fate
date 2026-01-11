@@ -117,8 +117,19 @@ namespace Fate.Managers
 
     protected virtual void Awake()
     {
+        if (UIManager.Instance == null)
+        {
+            Debug.LogError("ActionPointManager: UIManager.Instance is null in Awake");
+            return;
+        }
+
         heartParent = UIManager.Instance.heartParent;
         dayText = UIManager.Instance.dayTextTextMeshProUGUI;
+
+        if (heartParent == null)
+            Debug.LogWarning("ActionPointManager: heartParent is null after assignment");
+        if (dayText == null)
+            Debug.LogWarning("ActionPointManager: dayText is null after assignment");
 
         loadDayChangeVariables();
     }
@@ -130,13 +141,28 @@ namespace Fate.Managers
 
     private void loadDayChangeVariables()
     {
+        if (UIManager.Instance == null)
+        {
+            Debug.LogError("ActionPointManager: UIManager.Instance is null in loadDayChangeVariables");
+            return;
+        }
+
         yesterDayNumText = UIManager.Instance.yesterdayNumTextTextMeshProUGUI;
         nowDayNumText = UIManager.Instance.todayNumTextTextMeshProUGUI;
         yesterDayRectTransform = UIManager.Instance.yesterdayRectTransform;
         DayChangingGroupRectTransform = UIManager.Instance.dayChangingGroupRectTransform;
 
+        if (TurningDayBackRotationValues == null)
+            TurningDayBackRotationValues = new List<Vector3>();
+
         TurningDayBackRotationValues.Add(new Vector3(0, 180, 90));
         TurningDayBackRotationValues.Add(new Vector3(180, 180, 180));
+
+        if (DayChangingGroupRectTransform == null)
+        {
+            Debug.LogError("ActionPointManager: DayChangingGroupRectTransform is null, cannot set ChangeDayOriginalPosition");
+            return;
+        }
 
         ChangeDayOriginalPosition = DayChangingGroupRectTransform.anchoredPosition;  // 초기 위치 저장
         ChangeDayMovedPosition = new Vector3(0, 0, -100);
@@ -149,21 +175,90 @@ namespace Fate.Managers
         GearHourHand = UIManager.Instance.gearHourHand;
         GearMinuteHand = UIManager.Instance.gearMinuteHand;
 
-        GearImages.Add(MainGear.GetComponent<Image>());
-        GearImages.Add(SubGear.GetComponent<Image>());
-        GearImages.Add(GearHourHand.GetComponent<Image>());
-        GearImages.Add(GearMinuteHand.GetComponent<Image>());
+        if (GearImages == null)
+            GearImages = new List<Image>();
 
-        minuteRotationPerSecond = (360f / minuteRotationSpeed)* clockSpeedMultiplier;
-        hourRotationPerSecond = (360f / hourRotationSpeed) * clockSpeedMultiplier;
+        if (MainGear != null)
+        {
+            var mainGearImage = MainGear.GetComponent<Image>();
+            if (mainGearImage != null)
+                GearImages.Add(mainGearImage);
+            else
+                Debug.LogWarning("ActionPointManager: MainGear does not have Image component");
+        }
+        else
+            Debug.LogWarning("ActionPointManager: MainGear is null");
+
+        if (SubGear != null)
+        {
+            var subGearImage = SubGear.GetComponent<Image>();
+            if (subGearImage != null)
+                GearImages.Add(subGearImage);
+            else
+                Debug.LogWarning("ActionPointManager: SubGear does not have Image component");
+        }
+        else
+            Debug.LogWarning("ActionPointManager: SubGear is null");
+
+        if (GearHourHand != null)
+        {
+            var hourHandImage = GearHourHand.GetComponent<Image>();
+            if (hourHandImage != null)
+                GearImages.Add(hourHandImage);
+            else
+                Debug.LogWarning("ActionPointManager: GearHourHand does not have Image component");
+        }
+        else
+            Debug.LogWarning("ActionPointManager: GearHourHand is null");
+
+        if (GearMinuteHand != null)
+        {
+            var minuteHandImage = GearMinuteHand.GetComponent<Image>();
+            if (minuteHandImage != null)
+                GearImages.Add(minuteHandImage);
+            else
+                Debug.LogWarning("ActionPointManager: GearMinuteHand does not have Image component");
+        }
+        else
+            Debug.LogWarning("ActionPointManager: GearMinuteHand is null");
+
+        if (minuteRotationSpeed == 0f)
+        {
+            Debug.LogWarning("ActionPointManager: minuteRotationSpeed is 0, cannot calculate minuteRotationPerSecond");
+            minuteRotationPerSecond = 0f;
+        }
+        else
+            minuteRotationPerSecond = (360f / minuteRotationSpeed) * clockSpeedMultiplier;
+
+        if (hourRotationSpeed == 0f)
+        {
+            Debug.LogWarning("ActionPointManager: hourRotationSpeed is 0, cannot calculate hourRotationPerSecond");
+            hourRotationPerSecond = 0f;
+        }
+        else
+            hourRotationPerSecond = (360f / hourRotationSpeed) * clockSpeedMultiplier;
     }
 
 
     protected static IEnumerator DeactivateHeart(Object heart)
     {
+        if (heart == null)
+        {
+            Debug.LogWarning("ActionPointManager: DeactivateHeart called with null heart");
+            yield break;
+        }
+
         yield return new WaitForSeconds(0.5f);
-        UIManager.Instance.RemoveUIToCheck(heart.GetComponent<RectTransform>());
-        Destroy(heart);
+
+        if (UIManager.Instance != null)
+        {
+            var rectTransform = heart.GetComponent<RectTransform>();
+            if (rectTransform != null)
+                UIManager.Instance.RemoveUIToCheck(rectTransform);
+        }
+
+        if (heart != null)
+            Destroy(heart);
     }
 
     protected IEnumerator RefillHearts(float totalTime)
@@ -171,13 +266,34 @@ namespace Fate.Managers
         yield return new WaitForSeconds(totalTime);
         CreateHearts();
         // turn off all ImageAndLockPanel objects and zoom out
-        RoomManager.Instance.ExitToRoot();
+        if (RoomManager.Instance != null)
+            RoomManager.Instance.ExitToRoot();
+        else
+            Debug.LogWarning("ActionPointManager: RoomManager.Instance is null, cannot call ExitToRoot");
     }
 
     // 침대에서 휴식하면 행동력 강제로 다음날로 넘어감
     // Day1에 하트 4개 남아있어도 Day2로 넘어가고 actionPointsPerDay 만큼 채워짐
     public IEnumerator TakeRest()
     {
+        if (RoomManager.Instance == null)
+        {
+            Debug.LogError("ActionPointManager: RoomManager.Instance is null in TakeRest");
+            yield break;
+        }
+
+        if (UIManager.Instance == null)
+        {
+            Debug.LogError("ActionPointManager: UIManager.Instance is null in TakeRest");
+            yield break;
+        }
+
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError("ActionPointManager: GameManager.Instance is null in TakeRest");
+            yield break;
+        }
+
         RoomManager.Instance.SetIsInvestigating(true);
 
         UIManager.Instance.SetUI(eUIGameObjectName.MemoButton, false);
@@ -190,51 +306,112 @@ namespace Fate.Managers
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, totalTime));
 
         // 휴식하면 그날 하루에 남아있는 행동력 다 사용되기에 현재 있는 하트들 삭제
-        foreach (Transform child in heartParent.transform)
+        if (heartParent != null)
         {
-            UIManager.Instance.RemoveUIToCheck(child.GetComponent<RectTransform>());
-            Destroy(child.gameObject);
+            foreach (Transform child in heartParent.transform)
+            {
+                if (child != null)
+                {
+                    var rectTransform = child.GetComponent<RectTransform>();
+                    if (rectTransform != null)
+                        UIManager.Instance.RemoveUIToCheck(rectTransform);
+                    Destroy(child.gameObject);
+                }
+            }
         }
 
         // 페이드 아웃
         yield return StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, totalTime));
 
         // 대사 출력 전 조사 오브젝트 클릭 막기용
-        UIManager.Instance.loadingScreen.SetActive(true);
+        if (UIManager.Instance.loadingScreen != null)
+            UIManager.Instance.loadingScreen.SetActive(true);
 
         // 휴식 대사 출력. 
-        DialogueManager.Instance.StartDialogue("RoomEscape_035");
+        if (DialogueManager.Instance != null)
+            DialogueManager.Instance.StartDialogue("RoomEscape_035");
+        else
+            Debug.LogWarning("ActionPointManager: DialogueManager.Instance is null, cannot start dialogue");
 
         int actionPoint;
         if (nowDayNum < maxDayNum) {
             nowDayNum += 1;
-            presentHeartIndex = (int)GameManager.Instance.GetVariable("ActionPointsPerDay") - 1;
+            
+            var actionPointsPerDayObj = GameManager.Instance.GetVariable("ActionPointsPerDay");
+            if (actionPointsPerDayObj is int actionPointsPerDay)
+            {
+                presentHeartIndex = actionPointsPerDay - 1;
+            }
+            else
+            {
+                Debug.LogError($"ActionPointManager: ActionPointsPerDay is not an int (got {actionPointsPerDayObj?.GetType().Name ?? "null"})");
+                presentHeartIndex = 0;
+            }
 
             GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
             GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
 
-            actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
+            if (actionPointsArray != null && nowDayNum - 1 < actionPointsArray.GetLength(0) && 
+                presentHeartIndex >= 0 && presentHeartIndex < actionPointsArray.GetLength(1))
+            {
+                actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
+            }
+            else
+            {
+                Debug.LogError($"ActionPointManager: Invalid array indices - nowDayNum: {nowDayNum}, presentHeartIndex: {presentHeartIndex}, array size: {actionPointsArray?.GetLength(0)}x{actionPointsArray?.GetLength(1)}");
+                actionPoint = 0;
+            }
         }
         else
             actionPoint = 0; // 마지막 날인 5일에 휴식했을 경우: 행동력이 0이 된 상태
 
         GameManager.Instance.SetVariable("ActionPoint", actionPoint);
 
-        UIManager.Instance.loadingScreen.SetActive(false);
+        if (UIManager.Instance.loadingScreen != null)
+            UIManager.Instance.loadingScreen.SetActive(false);
         
         RoomManager.Instance.SetIsInvestigating(false);
-        SaveManager.Instance.SaveGameData();
+        
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.SaveGameData();
+        else
+            Debug.LogWarning("ActionPointManager: SaveManager.Instance is null, cannot save game data");
     }
 
     protected void Warning() {
-        if ((int)GameManager.Instance.GetVariable("ActionPoint") <= 0) // actionPoint가 0보다 클 때만 코루틴 실행
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning("ActionPointManager: GameManager.Instance is null in Warning");
             return;
-        
-        StartCoroutine(UIManager.Instance.WarningCoroutine());
+        }
+
+        if (UIManager.Instance == null)
+        {
+            Debug.LogWarning("ActionPointManager: UIManager.Instance is null in Warning");
+            return;
+        }
+
+        var actionPointObj = GameManager.Instance.GetVariable("ActionPoint");
+        if (actionPointObj == null)
+        {
+            Debug.LogWarning("ActionPointManager: ActionPoint variable is null in Warning");
+            return;
+        }
+
+        if (actionPointObj is int actionPoint && actionPoint > 0)
+        {
+            StartCoroutine(UIManager.Instance.WarningCoroutine());
+        }
     }
 
     // ************************* temporary methods for day animation *************************
     protected IEnumerator StartNextDayUIChange(int nowDayNum) {
+        if (UIManager.Instance == null)
+        {
+            Debug.LogError("ActionPointManager: UIManager.Instance is null in StartNextDayUIChange");
+            yield break;
+        }
+
         isDayChanging = true;
 
         // 브금 변경 (Start_Daychange)
@@ -244,9 +421,21 @@ namespace Fate.Managers
         SetChangingDayUI(StartDayUIChange);
 
         int yesterdayNum = nowDayNum - 1;
-        yesterDayNumText.text = $"Day {yesterdayNum}";
-        nowDayNumText.text = $"Day {nowDayNum}";
-        dayText.text = $"Day {nowDayNum}";
+        
+        if (yesterDayNumText != null)
+            yesterDayNumText.text = $"Day {yesterdayNum}";
+        else
+            Debug.LogWarning("ActionPointManager: yesterDayNumText is null");
+
+        if (nowDayNumText != null)
+            nowDayNumText.text = $"Day {nowDayNum}";
+        else
+            Debug.LogWarning("ActionPointManager: nowDayNumText is null");
+
+        if (dayText != null)
+            dayText.text = $"Day {nowDayNum}";
+        else
+            Debug.LogWarning("ActionPointManager: dayText is null");
 
         // 배경 어두워지는 코루틴 실행
         StartCoroutine(UIManager.Instance.OnFade(null, 0, 1, dayScalingTime));
@@ -293,6 +482,25 @@ namespace Fate.Managers
     protected IEnumerator TurnNextDayUIBack()
     {
         if (_isTurningBack) yield break;
+        
+        if (yesterDayRectTransform == null)
+        {
+            Debug.LogError("ActionPointManager: yesterDayRectTransform is null in TurnNextDayUIBack");
+            yield break;
+        }
+
+        if (TurningDayBackRotationValues == null || TurningDayBackRotationValues.Count < 2)
+        {
+            Debug.LogError("ActionPointManager: TurningDayBackRotationValues is null or has insufficient elements");
+            yield break;
+        }
+
+        if (UIManager.Instance == null)
+        {
+            Debug.LogError("ActionPointManager: UIManager.Instance is null in TurnNextDayUIBack");
+            yield break;
+        }
+
         _isTurningBack = true;
 
         // dayui 넘어가게 할 start, mid, end rotation 
@@ -364,6 +572,12 @@ namespace Fate.Managers
     // 기어, 시계 시침분침 회전 시작하는 코루틴
     private IEnumerator StartRotateGearsAndClockHands()
     {
+        if (GearImages == null || GearImages.Count == 0)
+        {
+            Debug.LogWarning("ActionPointManager: GearImages is null or empty in StartRotateGearsAndClockHands");
+            yield break;
+        }
+
         SetChangingDayUI(StartGearsAndClockHandsRotate);
 
         // alpha값 변경되는 시간 (투명해지거나 불투명해지는 시간)
@@ -374,8 +588,14 @@ namespace Fate.Managers
         // dayAnimatingTime 시간이 끝나면 아예 오브젝트가 꺼지기 때문에 
         //  dayAnimatingTime에서 alphaTime을 뺀 triggerTime이 되면 그때부터 기어UI 오브젝트들이 투명해지게 코루틴 시작함.
 
+        if (triggerTime < 0)
+        {
+            Debug.LogWarning($"ActionPointManager: triggerTime is negative ({triggerTime}), using 0 instead");
+            triggerTime = 0;
+        }
+
         // 투명했던 기어UI 오브젝트들을 불투명하게 함
-        StartCoroutine(ControlImagesAlpha(GearImages,true, alphaTime));
+        StartCoroutine(ControlImagesAlpha(GearImages, true, alphaTime));
 
         StartCoroutine(RotateGearsAndClockHands(elapsedTime, triggerTime));
 
@@ -395,14 +615,24 @@ namespace Fate.Managers
     // 기어, 시계 시침분침 회전
     private IEnumerator RotateGearsAndClockHands(float elapsedTime, float turningTime)
     {
+        if (MainGear == null || SubGear == null || GearMinuteHand == null || GearHourHand == null)
+        {
+            Debug.LogWarning("ActionPointManager: One or more gear objects are null in RotateGearsAndClockHands");
+            yield break;
+        }
+
         while (elapsedTime < turningTime)
         {
             // 기어 시계 방향 회전
-            MainGear.transform.Rotate(0, 0, -mainGearSpeed * Time.deltaTime);
-            SubGear.transform.Rotate(0, 0, -subGearSpeed * Time.deltaTime);
+            if (MainGear != null)
+                MainGear.transform.Rotate(0, 0, -mainGearSpeed * Time.deltaTime);
+            if (SubGear != null)
+                SubGear.transform.Rotate(0, 0, -subGearSpeed * Time.deltaTime);
 
-            GearMinuteHand.transform.Rotate(0, 0, -minuteRotationPerSecond * Time.deltaTime); // 분침 회전
-            GearHourHand.transform.Rotate(0, 0, -hourRotationPerSecond * Time.deltaTime); // 시침 회전
+            if (GearMinuteHand != null)
+                GearMinuteHand.transform.Rotate(0, 0, -minuteRotationPerSecond * Time.deltaTime); // 분침 회전
+            if (GearHourHand != null)
+                GearHourHand.transform.Rotate(0, 0, -hourRotationPerSecond * Time.deltaTime); // 시침 회전
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -498,6 +728,12 @@ namespace Fate.Managers
 
     private void SetDayChangeBGM(int num)
     {
+        if (SoundPlayer.Instance == null)
+        {
+            Debug.LogWarning("ActionPointManager: SoundPlayer.Instance is null in SetDayChangeBGM");
+            return;
+        }
+
         switch (num)
         {
             case StartDayChangeBGM:
@@ -518,9 +754,16 @@ namespace Fate.Managers
 
             case FinishDayChangeBGM:
                 // Room Bgm 다시 재생
-                SoundPlayer.Instance.ChangeBGM(GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1
-                    ? Constants.BGM_ROOM1
-                    : Constants.BGM_ROOM2);
+                if (GameSceneManager.Instance != null)
+                {
+                    SoundPlayer.Instance.ChangeBGM(GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_1
+                        ? Constants.BGM_ROOM1
+                        : Constants.BGM_ROOM2);
+                }
+                else
+                {
+                    Debug.LogWarning("ActionPointManager: GameSceneManager.Instance is null, cannot determine scene for BGM");
+                }
                 break;
         }
     }

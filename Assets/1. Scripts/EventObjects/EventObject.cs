@@ -23,8 +23,23 @@ namespace Fate.Events
             if (!CanInteract())
                 return;
 
-            if (string.IsNullOrEmpty(eventId) || !EventManager.Instance)
+            if (string.IsNullOrEmpty(eventId))
+            {
+                Debug.LogWarning($"EventObject: OnMouseDown called but eventId is null or empty on {gameObject.name}");
                 return;
+            }
+
+            if (EventManager.Instance == null)
+            {
+                Debug.LogWarning($"EventObject: EventManager.Instance is null, cannot call event '{eventId}' on {gameObject.name}");
+                return;
+            }
+
+            if (GameManager.Instance == null)
+            {
+                Debug.LogWarning($"EventObject: GameManager.Instance is null, cannot process event '{eventId}' on {gameObject.name}");
+                return;
+            }
 
             if (isInquiry && !GameManager.Instance.skipInquiry)
             {
@@ -42,7 +57,14 @@ namespace Fate.Events
 
         protected virtual void Awake()
         {
-            GameManager.Instance.AddEventObject(this);
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.AddEventObject(this);
+            }
+            else
+            {
+                Debug.LogWarning($"EventObject: GameManager.Instance is null in Awake on {gameObject.name}, cannot register event object");
+            }
         }
 
         public string GetEventId()
@@ -67,13 +89,34 @@ namespace Fate.Events
 
         protected void SetCurrentLockObjectCanvasGroup(GameObject lockObject)
         {
-            RoomManager roomManager = RoomManager.Instance;
-            CanvasGroup canvasGroup = lockObject.GetComponent<CanvasGroup>();
-            if (!(roomManager && roomManager.imageAndLockPanelManager && canvasGroup))
+            if (lockObject == null)
+            {
+                Debug.LogWarning($"EventObject: SetCurrentLockObjectCanvasGroup called with null lockObject on {gameObject.name}");
                 return;
+            }
+
+            RoomManager roomManager = RoomManager.Instance;
+            if (roomManager == null)
+            {
+                Debug.LogWarning($"EventObject: RoomManager.Instance is null on {gameObject.name}");
+                return;
+            }
+
+            CanvasGroup canvasGroup = lockObject.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                Debug.LogWarning($"EventObject: lockObject does not have CanvasGroup component on {gameObject.name}");
+                return;
+            }
+
+            if (roomManager.imageAndLockPanelManager == null)
+            {
+                Debug.LogWarning($"EventObject: RoomManager.imageAndLockPanelManager is null on {gameObject.name}");
+                return;
+            }
 
             roomManager.imageAndLockPanelManager.currentLockObjectCanvasGroup = canvasGroup;
-            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            if (DialogueManager.Instance != null && DialogueManager.Instance.isDialogueActive)
                 canvasGroup.blocksRaycasts = false;
         }
     }
