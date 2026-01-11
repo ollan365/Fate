@@ -76,11 +76,15 @@ public class ChatApp : MonoBehaviour
             }
 
             var currentConversationID = fields[0].Trim();
+            var speakerID = fields[4].Trim();
+            if (string.IsNullOrWhiteSpace(speakerID)) speakerID = previousMessage.SpeakerID;
+
             var currentMessage = new Message
             {
                 Date = fields[2].Trim(),
                 Time = fields[3].Trim(),
-                SpeakerName = DialogueManager.Instance.scripts[fields[4].Trim()].GetScript().ProcessedText,
+                SpeakerID = speakerID,
+                SpeakerName = DialogueManager.Instance.scripts[speakerID].GetScript().ProcessedText,
                 ScriptContent = DialogueManager.Instance.scripts[fields[5].Trim()].GetScript().ProcessedText
             };
 
@@ -120,7 +124,7 @@ public class ChatApp : MonoBehaviour
             TextMeshProUGUI latestMessageText = conversationContents.transform.Find("LatestMessageText").GetComponent<TextMeshProUGUI>();
 
             // Display the SpeakerID if it's not "DialogueC_002"
-            var displaySpeakerID = conversation.Value.FirstOrDefault(m => m.SpeakerName != "우연")?.SpeakerName;
+            var displaySpeakerID = conversation.Value.FirstOrDefault(m => m.SpeakerID != "DialogueC_002")?.SpeakerName;
 
             // Get the latest message in the conversation
             var latestMessage = conversation.Value.OrderByDescending(m => DateTime.ParseExact(m.Date + " " + m.Time,
@@ -154,7 +158,7 @@ public class ChatApp : MonoBehaviour
 
         messageParent.SetActive(true);
         senderText.text = conversations[conversationKey]
-                              .FirstOrDefault(m => m.SpeakerName != "우연")
+                              .FirstOrDefault(m => m.SpeakerID != "DialogueC_002")
                               ?.SpeakerName ??
                           conversationKey;
         
@@ -187,7 +191,7 @@ public class ChatApp : MonoBehaviour
             }
 
             // Instantiate the appropriate message prefab (left or right)
-            GameObject messagePrefab = message.SpeakerName == "우연" ? messagePrefabRight : messagePrefabLeft;
+            GameObject messagePrefab = message.SpeakerID == "DialogueC_002" ? messagePrefabRight : messagePrefabLeft;
             GameObject newMessage = Instantiate(messagePrefab, messageList);
             // GameObject messageParentGameObject = newMessage.transform.Find("Message Parent").gameObject;
             GameObject messageMidParent = newMessage.transform.Find("Message Mid Parent").gameObject;
@@ -209,6 +213,7 @@ public class Message
 {
     public string Date;
     public string Time;
+    public string SpeakerID;
     public string SpeakerName;
     public string ScriptContent;
 }
