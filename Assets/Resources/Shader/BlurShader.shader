@@ -2,6 +2,7 @@ Shader "Custom/BlursShader"
 {
     Properties
     {
+        _MainTex ("Main Texture", 2D) = "white" {}
         _BlurSizeX ("Blur Size X", Float) = 10
         _BlurSizeY ("Blur Size Y", Float) = 10
     }
