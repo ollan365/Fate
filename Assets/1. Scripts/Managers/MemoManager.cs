@@ -380,8 +380,12 @@ public class MemoManager : PageContentsManager
         flipRightButton.SetActive(false);
          
         UIManager.Instance.SetUI(eUIGameObjectName.MemoContents, isActive, fade, floatDirection);
-        UIManager.Instance.SetUI(eUIGameObjectName.BlurImage,
-            RoomManager.Instance.imageAndLockPanelManager.GetIsImageOrLockPanelActive() || isActive, true);
+
+        bool shouldShowBlurImage = isActive;
+        if (isActive == false && GameSceneManager.Instance.GetActiveScene() is SceneType.ROOM_1 or SceneType.ROOM_2)
+            shouldShowBlurImage = RoomManager.Instance.imageAndLockPanelManager.GetIsImageOrLockPanelActive();
+        UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, shouldShowBlurImage, true);
+        
         isMemoOpen = isActive;
 
         if (isActive) {
