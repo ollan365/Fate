@@ -204,6 +204,10 @@ public class RoomManager : MonoBehaviour
     {
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, isTrue);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, isTrue);
+        // iOS 이동 버튼은 방탈출 씬에서는 비활성화
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveLeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveRightButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSHideButton, false);
     }
     
     public void SetButtons()

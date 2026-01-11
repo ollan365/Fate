@@ -109,6 +109,9 @@ public class FollowManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
+        
+        // iOS 이동 버튼 활성화 (will be hidden if dialogue/memo/menu are active)
+        UIManager.Instance.UpdateIOSButtonVisibility();
     }
     public void TutorialNextStep(string step)
     {
@@ -269,6 +272,11 @@ public class FollowManager : MonoBehaviour
 
         UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, false);
         UIManager.Instance.SetUI(eUIGameObjectName.FollowUI_Night, false);
+        
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveLeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveRightButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSHideButton, false);
+        InputManager.ResetIOSButtonStates();
 
         StartCoroutine(followEnd.EndFollowLogic_0());
     }

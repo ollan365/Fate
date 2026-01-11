@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
@@ -31,6 +32,11 @@ public class InputManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        WireButtonsToInputManager();
     }
 
     private void Update()
@@ -106,6 +112,18 @@ public class InputManager : MonoBehaviour
 
     private const float SpaceSkipHoldSeconds = 1f;
     private float spacePressedTime = 0f;
+
+    // iOS button states for follow scenes
+    public static bool iOSLeftPressed { get; private set; }
+    public static bool iOSRightPressed { get; private set; }
+    public static bool iOSHidePressed { get; private set; }
+
+    public static void ResetIOSButtonStates()
+    {
+        iOSLeftPressed = false;
+        iOSRightPressed = false;
+        iOSHidePressed = false;
+    }
 
     private static void HandleLeftKeyClick() {
         if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
@@ -200,6 +218,13 @@ public class InputManager : MonoBehaviour
             or RuntimePlatform.WindowsPlayer
             or RuntimePlatform.LinuxPlayer;
     }
+    
+    public static bool IsiOSEnvironment() {
+        if (GameManager.Instance != null && GameManager.Instance.forceIOSEnvironment)
+            return true;
+        
+        return Application.platform is RuntimePlatform.IPhonePlayer;
+    }
 
     private static bool IsClickable(GameObject target)
     {
@@ -218,6 +243,71 @@ public class InputManager : MonoBehaviour
                canvasGroup.interactable && 
                canvasGroup.blocksRaycasts && 
                canvasGroup.alpha > 0.001f;
+    }
+
+    // iOS button handlers for follow scenes
+    public void OnLeftButtonDown()
+    {
+        iOSLeftPressed = true;
+    }
+
+    public void OnLeftButtonUp()
+    {
+        iOSLeftPressed = false;
+    }
+
+    public void OnRightButtonDown()
+    {
+        iOSRightPressed = true;
+    }
+
+    public void OnRightButtonUp()
+    {
+        iOSRightPressed = false;
+    }
+
+    public void OnHideButtonDown()
+    {
+        iOSHidePressed = true;
+    }
+
+    public void OnHideButtonUp()
+    {
+        iOSHidePressed = false;
+    }
+
+    public void WireButtonsToInputManager()
+    {
+        if (UIManager.Instance == null)
+            return;
+
+        if (UIManager.Instance.iOSMoveLeftButton != null)
+            SetupPressAndHoldButton(UIManager.Instance.iOSMoveLeftButton, OnLeftButtonDown, OnLeftButtonUp);
+
+        if (UIManager.Instance.iOSMoveRightButton != null)
+            SetupPressAndHoldButton(UIManager.Instance.iOSMoveRightButton, OnRightButtonDown, OnRightButtonUp);
+
+        if (UIManager.Instance.iOSHideButton != null)
+            SetupPressAndHoldButton(UIManager.Instance.iOSHideButton, OnHideButtonDown, OnHideButtonUp);
+    }
+
+    private void SetupPressAndHoldButton(GameObject buttonObject, UnityEngine.Events.UnityAction onDown, UnityEngine.Events.UnityAction onUp)
+    {
+        EventTrigger trigger = buttonObject.GetComponent<EventTrigger>();
+        if (trigger == null)
+            trigger = buttonObject.AddComponent<EventTrigger>();
+
+        trigger.triggers.RemoveAll(entry => entry.eventID == EventTriggerType.PointerDown || entry.eventID == EventTriggerType.PointerUp);
+
+        EventTrigger.Entry pointerDown = new EventTrigger.Entry();
+        pointerDown.eventID = EventTriggerType.PointerDown;
+        pointerDown.callback.AddListener((data) => { onDown?.Invoke(); });
+        trigger.triggers.Add(pointerDown);
+
+        EventTrigger.Entry pointerUp = new EventTrigger.Entry();
+        pointerUp.eventID = EventTriggerType.PointerUp;
+        pointerUp.callback.AddListener((data) => { onUp?.Invoke(); });
+        trigger.triggers.Add(pointerUp);
     }
 }
 

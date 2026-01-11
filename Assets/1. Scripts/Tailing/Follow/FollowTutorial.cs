@@ -32,6 +32,10 @@ public class FollowTutorial : MonoBehaviour
         MemoManager.Instance.SetShouldHideMemoButton(true);
         MemoManager.Instance.SetMemoButtons(false);
 
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveLeftButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveRightButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.iOSHideButton, false);
+
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         if (highlightPanel) highlightPanel.SetActive(false);
         yield return new WaitForSeconds(1.5f);
@@ -68,9 +72,22 @@ public class FollowTutorial : MonoBehaviour
     {
         fateMovable = true;
 
-        moveButtons[0].SetActive(true);
-        moveButtons[1].SetActive(true);
-        UIManager.Instance.ToggleHighlightAnimationEffect(moveButtons[1], true);
+        bool isIOS = InputManager.IsiOSEnvironment();
+        
+        if (isIOS == false)
+        {
+            moveButtons[0].SetActive(true);
+            moveButtons[1].SetActive(true);
+            UIManager.Instance.ToggleHighlightAnimationEffect(moveButtons[1], true);
+        }
+
+        // Show iOS move buttons (left & right) during Move step
+        if (isIOS)
+        {
+            UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveLeftButton, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveRightButton, true);
+            UIManager.Instance.ToggleHighlightAnimationEffect(UIManager.Instance.GetUI(eUIGameObjectName.iOSMoveRightButton), true);
+        }
 
         // 필연이 일정 거리 이상 앞으로 이동할 때까지 대기
         while (fate.transform.position.x < 2) yield return null;
@@ -79,9 +96,22 @@ public class FollowTutorial : MonoBehaviour
         fate.GetComponent<Animator>().SetBool("Right", true);
         fate.GetComponent<Animator>().SetBool("Walking", false);
 
-        moveButtons[0].SetActive(false);
-        moveButtons[1].SetActive(false);
-        UIManager.Instance.ToggleHighlightAnimationEffect(moveButtons[1], false);
+        if (isIOS == false)
+        {
+            moveButtons[0].SetActive(false);
+            moveButtons[1].SetActive(false);
+            UIManager.Instance.ToggleHighlightAnimationEffect(moveButtons[1], false);
+        }
+
+        if (isIOS)
+        {
+            UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveLeftButton, false);
+            UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveRightButton, false);
+            UIManager.Instance.ToggleHighlightAnimationEffect(UIManager.Instance.GetUI(eUIGameObjectName.iOSMoveRightButton), false);
+        }
+        
+        // Reset iOS button states to prevent stuck movement
+        InputManager.ResetIOSButtonStates();
 
         accidy.transform.parent.SetAsLastSibling();
         accidyNextLogic = true;
@@ -92,8 +122,19 @@ public class FollowTutorial : MonoBehaviour
     {
         fateCanHide = true;
 
-        hideButton.SetActive(true);
-        UIManager.Instance.ToggleHighlightAnimationEffect(hideButton, true);
+        bool isIOS = InputManager.IsiOSEnvironment();
+        
+        if (isIOS == false)
+        {
+            hideButton.SetActive(true);
+            UIManager.Instance.ToggleHighlightAnimationEffect(hideButton, true);
+        }
+
+        if (isIOS)
+        {
+            UIManager.Instance.SetUI(eUIGameObjectName.iOSHideButton, true);
+            UIManager.Instance.ToggleHighlightAnimationEffect(UIManager.Instance.GetUI(eUIGameObjectName.iOSHideButton), true);
+        }
 
         // 우연이 뒤돌아보기 직전
         accidyNextLogic = true;
@@ -104,7 +145,8 @@ public class FollowTutorial : MonoBehaviour
         float spaceBarClickTime = 3;
         while (spaceBarClickTime > 0)
         {
-            while (Input.GetKey(KeyCode.Space) && spaceBarClickTime > 0)
+            // Check both Space key and iOS hide button
+            while ((Input.GetKey(KeyCode.Space) || InputManager.iOSHidePressed) && spaceBarClickTime > 0)
             {
                 spaceBarClickTime -= Time.deltaTime;
                 yield return null;
@@ -117,8 +159,20 @@ public class FollowTutorial : MonoBehaviour
         fateCanHide = false;
         fate.GetComponent<Animator>().SetBool("Hide", false);
 
-        hideButton.SetActive(false);
-        UIManager.Instance.ToggleHighlightAnimationEffect(hideButton, false);
+        if (isIOS == false)
+        {
+            hideButton.SetActive(false);
+            UIManager.Instance.ToggleHighlightAnimationEffect(hideButton, false);
+        }
+
+        if (isIOS)
+        {
+            UIManager.Instance.SetUI(eUIGameObjectName.iOSHideButton, false);
+            UIManager.Instance.ToggleHighlightAnimationEffect(UIManager.Instance.GetUI(eUIGameObjectName.iOSHideButton), false);
+        }
+        
+        // Reset iOS button states to prevent stuck hide state
+        InputManager.ResetIOSButtonStates();
 
         accidy.transform.parent.SetAsFirstSibling();
         accidyNextLogic = true;
@@ -193,6 +247,12 @@ public class FollowTutorial : MonoBehaviour
         GameManager.Instance.SetVariable("EndTutorial_FOLLOW_1", true);
 
         FollowManager.Instance.IsTutorial = false;
+        
+        // Reset iOS button states before tutorial ends to prevent stuck buttons
+        InputManager.ResetIOSButtonStates();
+        
         FollowManager.Instance.StartFollow();
+        
+        UIManager.Instance.UpdateIOSButtonVisibility();
     }
 }

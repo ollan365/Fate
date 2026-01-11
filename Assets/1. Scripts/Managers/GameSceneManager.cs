@@ -58,7 +58,16 @@ public class GameSceneManager : MonoBehaviour
         else if (currentScene is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
         {
             if (UIManager.Instance)
+            {
                 UIManager.Instance.SetUI(eUIGameObjectName.FollowUI, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.FollowUI_Night, false);
+                // iOS 이동 버튼 비활성화
+                UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveLeftButton, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveRightButton, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.iOSHideButton, false);
+            }
+            // Reset iOS button states when leaving follow scenes
+            InputManager.ResetIOSButtonStates();
         }
     }
     
@@ -127,12 +136,21 @@ public class GameSceneManager : MonoBehaviour
         while (DialogueManager.Instance.isDialogueActive) // 대사 출력 중이면 기다리기
             yield return null;
 
-        // Reset cursor to default when exiting room scenes
         SceneType currentScene = GetActiveScene();
         if (currentScene is SceneType.ROOM_1 or SceneType.ROOM_2)
         {
             if (UIManager.Instance)
                 UIManager.Instance.ChangeCursor(true);
+        }
+        else if (currentScene is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
+        {
+            if (UIManager.Instance)
+            {
+                UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveLeftButton, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.iOSMoveRightButton, false);
+                UIManager.Instance.SetUI(eUIGameObjectName.iOSHideButton, false);
+            }
+            InputManager.ResetIOSButtonStates();
         }
 
         if (currentScene == SceneType.START)

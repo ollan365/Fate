@@ -31,6 +31,7 @@ public class FollowGameManager : MonoBehaviour
     private bool IsDialogueOpen { get => FollowManager.Instance.IsDialogueOpen; }
     public bool IsFateHide { get; private set; }
     private bool IsTutorial { get => FollowManager.Instance.IsTutorial; }
+    private bool wasHidePressedLastFrame = false;
     private void Start()
     {
         UIManager.Instance.ChangeSliderValue(eUIGameObjectName.AccidyPositionSlider, Accidy.transform.position.x / endPositonOfMap, 0);
@@ -58,12 +59,18 @@ public class FollowGameManager : MonoBehaviour
     }
     private void MoveFate()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !FollowManager.Instance.TutorialFateCantHide) FateHide(true);
+        // Check for Space key or iOS hide button press
+        bool hideKeyDown = Input.GetKeyDown(KeyCode.Space) || (InputManager.iOSHidePressed && !wasHidePressedLastFrame);
+        bool hideKeyUp = Input.GetKeyUp(KeyCode.Space) || (!InputManager.iOSHidePressed && wasHidePressedLastFrame);
+        
+        if (hideKeyDown && !FollowManager.Instance.TutorialFateCantHide) FateHide(true);
+        wasHidePressedLastFrame = InputManager.iOSHidePressed;
 
         if (!IsFateHide && !FollowManager.Instance.TutorialFateNotMovable)
         {
             bool isFateMove = false;
-            if (Input.GetKey(KeyCode.A))
+            // Check for A key or iOS left button
+            if (Input.GetKey(KeyCode.A) || InputManager.iOSLeftPressed)
             {
                 // 나중에 아트 리소스 추가되면 Vector3.right를 Vector3.left로 변경
                 if (Fate.transform.position.x > -1) Fate.transform.Translate(Vector3.left * fateMoveSpeed * Time.deltaTime);
@@ -71,7 +78,8 @@ public class FollowGameManager : MonoBehaviour
                 Fate.SetBool("Right", false);
                 isFateMove = true;
             }
-            if (Input.GetKey(KeyCode.D))
+            // Check for D key or iOS right button
+            if (Input.GetKey(KeyCode.D) || InputManager.iOSRightPressed)
             {
                 if (!IsTutorial || Fate.transform.position.x < 2) Fate.transform.Translate(Vector3.right * fateMoveSpeed * Time.deltaTime);
                 Fate.SetBool("Right", true);
@@ -90,7 +98,7 @@ public class FollowGameManager : MonoBehaviour
                 0);
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && !FollowManager.Instance.TutorialFateCantHide) FateHide(false);
+        if (hideKeyUp && !FollowManager.Instance.TutorialFateCantHide) FateHide(false);
     }
     public void ChangeAnimStatusToStop(bool stop)
     {
@@ -167,7 +175,7 @@ public class FollowGameManager : MonoBehaviour
         foreach (Image image in overHeadDoubtGaugeSliderImages) image.color = color;
     }
 
-    private void FateHide(bool hide)
+    public void FateHide(bool hide)
     {
         IsFateHide = hide;
         Fate.SetBool("Hide", hide);

@@ -392,7 +392,16 @@ public class MemoManager : PageContentsManager
             memoPages.totalPageCount = GetAggregatedMemos().Count;
             float delay = UIManager.Instance.fadeAnimationDuration;
             StartCoroutine(DisplayPagesAfterDelay(memoPages.currentPage, delay));
+            UIManager.Instance.UpdateIOSButtonVisibility();
+        } else {
+            StartCoroutine(UpdateIOSButtonsAfterMemoClose());
         }
+    }
+    
+    private System.Collections.IEnumerator UpdateIOSButtonsAfterMemoClose()
+    {
+        yield return new WaitForSeconds(UIManager.Instance.fadeAnimationDuration);
+        UIManager.Instance.UpdateIOSButtonVisibility();
     }
     
     private System.Collections.IEnumerator DisplayPagesAfterDelay(int page, float delay)

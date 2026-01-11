@@ -167,6 +167,8 @@ public class DialogueManager : MonoBehaviour
             FollowManager.Instance.ClickObject();
         if (MemoManager.Instance)
             MemoManager.Instance.SetMemoButtons(false);
+        
+        UIManager.Instance.UpdateIOSButtonVisibility();
     }
     
     public IEnumerator StartDialogue(string dialogueID, float delay = 0f)
@@ -210,6 +212,8 @@ public class DialogueManager : MonoBehaviour
             FollowManager.Instance.ClickObject();
         if (MemoManager.Instance)
             MemoManager.Instance.SetMemoButtons(false);
+        
+        UIManager.Instance.UpdateIOSButtonVisibility();
     }
 
     private void ClearPreviousChoices()
@@ -447,6 +451,8 @@ public class DialogueManager : MonoBehaviour
         
         if (FollowManager.Instance) 
             FollowManager.Instance.EndScript();
+        
+        UIManager.Instance.UpdateIOSButtonVisibility();
         
         if (!RoomManager.Instance)
             return;

@@ -80,7 +80,10 @@ public enum eUIGameObjectName {
     AlbumEndingImage,
     EndingNameGameObject,
     TutorialBlockingPanel,
-    EndOfDemoPage
+    EndOfDemoPage,
+    iOSMoveLeftButton,
+    iOSMoveRightButton,
+    iOSHideButton
 }
 
 public class UIManager : MonoBehaviour {
@@ -189,6 +192,11 @@ public class UIManager : MonoBehaviour {
 
     [Header("UI Game Objects - End of Demo Page")] 
     public GameObject endOfDemoPage;
+
+    [Header("UI Game Objects - iOS Move Buttons")]
+    public GameObject iOSMoveLeftButton;
+    public GameObject iOSMoveRightButton;
+    public GameObject iOSHideButton;
 
     private readonly Dictionary<eUIGameObjectName, GameObject> uiGameObjects = new();
     private Q_Vignette_Single warningVignetteQVignetteSingle;
@@ -328,6 +336,10 @@ public class UIManager : MonoBehaviour {
         uiGameObjects.Add(eUIGameObjectName.AlbumEndingImage, albumEndingImage);
         
         uiGameObjects.Add(eUIGameObjectName.EndOfDemoPage, endOfDemoPage);
+
+        uiGameObjects.Add(eUIGameObjectName.iOSMoveLeftButton, iOSMoveLeftButton);
+        uiGameObjects.Add(eUIGameObjectName.iOSMoveRightButton, iOSMoveRightButton);
+        uiGameObjects.Add(eUIGameObjectName.iOSHideButton, iOSHideButton);
 
         yesterdayNumTextTextMeshProUGUI = yesterdayNumText.GetComponent<TextMeshProUGUI>();
         todayNumTextTextMeshProUGUI = todayNumText.GetComponent<TextMeshProUGUI>();
@@ -561,6 +573,7 @@ public class UIManager : MonoBehaviour {
             }
             SetTimeScale();
             InputManager.Instance.IgnoreInput = false;
+            UpdateIOSButtonVisibility();
         }
         else {
             SetUI(eUIGameObjectName.MenuUI, true);
@@ -571,6 +584,7 @@ public class UIManager : MonoBehaviour {
             SetMenuColor(currentScene is not (SceneType.ROOM_1 or SceneType.FOLLOW_1));
             Time.timeScale = 0f;
             InputManager.Instance.IgnoreInput = true;
+            UpdateIOSButtonVisibility();
         }
     }
 
@@ -585,6 +599,36 @@ public class UIManager : MonoBehaviour {
 
     public void SetTimeScale() {
         Time.timeScale = GameManager.Instance.isDebug ? 4f : 1f;
+    }
+
+    public void UpdateIOSButtonVisibility()
+    {
+        if (InputManager.IsiOSEnvironment() == false)
+        {
+            SetUI(eUIGameObjectName.iOSMoveLeftButton, false);
+            SetUI(eUIGameObjectName.iOSMoveRightButton, false);
+            SetUI(eUIGameObjectName.iOSHideButton, false);
+            return;
+        }
+
+        if (FollowManager.Instance != null && FollowManager.Instance.IsTutorial)
+            return;
+
+        bool isDialogueActive = DialogueManager.Instance != null && DialogueManager.Instance.isDialogueActive;
+        bool isMemoOpen = MemoManager.Instance != null && MemoManager.Instance.isMemoOpen;
+        bool isMenuOpen = GetUI(eUIGameObjectName.MenuUI).activeInHierarchy || GetUI(eUIGameObjectName.OptionUI).activeInHierarchy;
+        
+        bool isFollowUIActive = GetUI(eUIGameObjectName.FollowUI).activeInHierarchy || 
+                                GetUI(eUIGameObjectName.FollowUI_Night).activeInHierarchy;
+        
+        bool shouldShow = (isDialogueActive || isMemoOpen || isMenuOpen) == false && isFollowUIActive;
+        SceneType currentScene = GameSceneManager.Instance != null ? GameSceneManager.Instance.GetActiveScene() : SceneType.START;
+        if (currentScene is SceneType.FOLLOW_1 or SceneType.FOLLOW_2)
+        {
+            SetUI(eUIGameObjectName.iOSMoveLeftButton, shouldShow);
+            SetUI(eUIGameObjectName.iOSMoveRightButton, shouldShow);
+            SetUI(eUIGameObjectName.iOSHideButton, shouldShow);
+        }
     }
 
     public void SetMenuOpenByStartSceneButton() {
