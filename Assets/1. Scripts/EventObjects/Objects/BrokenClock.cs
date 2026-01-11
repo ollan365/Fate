@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class BrokenClock : EventObject { }
+
+namespace Fate.Events
+{
+    public class BrokenClock : EventObject { }
+}

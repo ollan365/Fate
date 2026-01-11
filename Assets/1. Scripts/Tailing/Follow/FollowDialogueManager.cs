@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using static Constants;
+using static Fate.Utilities.Constants;
+using Fate.Managers;
+using Fate.Utilities;
+using Fate.Data;
 
 public class FollowDialogueManager : MonoBehaviour
 {

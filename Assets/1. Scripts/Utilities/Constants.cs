@@ -1,5 +1,7 @@
-public static class Constants
+namespace Fate.Utilities
 {
+    public static class Constants
+    {
     // 씬의 종류
     public enum SceneType
     {
@@ -365,5 +367,6 @@ public static class Constants
             case FollowExtra.Clubber_2: return "GuardClick2";
             default: return null;
         }
+    }
     }
 }

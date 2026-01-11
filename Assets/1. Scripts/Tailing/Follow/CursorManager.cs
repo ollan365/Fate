@@ -1,5 +1,5 @@
 using UnityEngine;
-using static Constants;
+using static Fate.Utilities.Constants;
 
 public class CursorManager : MonoBehaviour
 {

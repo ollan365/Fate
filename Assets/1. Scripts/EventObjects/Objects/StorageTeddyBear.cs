@@ -1,9 +1,14 @@
 using UnityEngine;
+using Fate.Managers;
 
-public class StorageTeddyBear : EventObject
+
+namespace Fate.Events
 {
-    protected override bool CanInteract()
+    public class StorageTeddyBear : EventObject
     {
-        return !GameManager.Instance.GetIsBusy();
+        protected override bool CanInteract()
+        {
+            return !GameManager.Instance.GetIsBusy();
+        }
     }
 }

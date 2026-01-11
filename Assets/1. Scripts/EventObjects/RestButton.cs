@@ -1,3 +1,8 @@
 using UnityEngine;
+using Fate.Managers;
 
-public class RestButton : EventObject { }
+
+namespace Fate.Events
+{
+    public class RestButton : EventObject { }
+}

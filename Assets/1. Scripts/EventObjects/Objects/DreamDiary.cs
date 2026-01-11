@@ -1,38 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fate.Managers;
 
-public class DreamDiary : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    [SerializeField]
-    private GameObject DreamDiaryContents;
-
-    private void Start()
+    public class DreamDiary : EventObject, IResultExecutable
     {
-        RegisterWithResultManager();
-    }
+        [SerializeField]
+        private GameObject DreamDiaryContents;
 
-    private void OnEnable()
-    {
-        RegisterWithResultManager();
-    }
+        private void Start()
+        {
+            RegisterWithResultManager();
+        }
 
-    private void RegisterWithResultManager()
-    {
-        if (ResultManager.Instance != null)
-            ResultManager.Instance.RegisterExecutable("DreamDiary", this);
-    }
+        private void OnEnable()
+        {
+            RegisterWithResultManager();
+        }
 
-    public void ExecuteAction()
-    {
-        ReadBooks();
-    }
+        private void RegisterWithResultManager()
+        {
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.RegisterExecutable("DreamDiary", this);
+        }
 
-    private void ReadBooks()
-    {
-        //isInquiry = false;  // ���� �ý��� �� �ƴϿ� ��ŵ
-        DreamDiaryContents.SetActive(true);
-        UIManager.Instance.AnimateUI(DreamDiaryContents, true, true);
-        SetCurrentLockObjectCanvasGroup(DreamDiaryContents);
+        public void ExecuteAction()
+        {
+            ReadBooks();
+        }
+
+        private void ReadBooks()
+        {
+            //isInquiry = false;  // ���� �ý��� �� �ƴϿ� ��ŵ
+            DreamDiaryContents.SetActive(true);
+            UIManager.Instance.AnimateUI(DreamDiaryContents, true, true);
+            SetCurrentLockObjectCanvasGroup(DreamDiaryContents);
+        }
     }
 }

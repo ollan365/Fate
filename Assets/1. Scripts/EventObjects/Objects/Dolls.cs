@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class Dolls : EventObject { }
+
+namespace Fate.Events
+{
+    public class Dolls : EventObject { }
+}

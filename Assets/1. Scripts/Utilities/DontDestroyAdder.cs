@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DontDestroyAdder : MonoBehaviour
+
+namespace Fate.Utilities
 {
-    void Awake()
+    public class DontDestroyAdder : MonoBehaviour
     {
-        DontDestroyOnLoad(gameObject);
+        void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
     }
 }

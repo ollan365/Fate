@@ -1,38 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fate.Managers;
 
-public class Book2 : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    [SerializeField]
-    private GameObject Book2Contents;
-
-    private void Start()
+    public class Book2 : EventObject, IResultExecutable
     {
-        RegisterWithResultManager();
-    }
+        [SerializeField]
+        private GameObject Book2Contents;
 
-    private void OnEnable()
-    {
-        RegisterWithResultManager();
-    }
+        private void Start()
+        {
+            RegisterWithResultManager();
+        }
 
-    private void RegisterWithResultManager()
-    {
-        if (ResultManager.Instance != null)
-            ResultManager.Instance.RegisterExecutable("Book2", this);
-    }
+        private void OnEnable()
+        {
+            RegisterWithResultManager();
+        }
 
-    public void ExecuteAction()
-    {
-        ReadBooks();
-    }
+        private void RegisterWithResultManager()
+        {
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.RegisterExecutable("Book2", this);
+        }
 
-    private void ReadBooks()
-    {
-        //isInquiry = false;  // ���� �ý��� �� �ƴϿ� ��ŵ
-        Book2Contents.SetActive(true);
-        UIManager.Instance.AnimateUI(Book2Contents, true, true);
-        SetCurrentLockObjectCanvasGroup(Book2Contents);
+        public void ExecuteAction()
+        {
+            ReadBooks();
+        }
+
+        private void ReadBooks()
+        {
+            //isInquiry = false;  // ���� �ý��� �� �ƴϿ� ��ŵ
+            Book2Contents.SetActive(true);
+            UIManager.Instance.AnimateUI(Book2Contents, true, true);
+            SetCurrentLockObjectCanvasGroup(Book2Contents);
+        }
     }
 }

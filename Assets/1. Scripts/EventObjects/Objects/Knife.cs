@@ -2,56 +2,61 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fate.Managers;
 
-public class Knife : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    // ************************* temporary members for grab animation *************************
-    [SerializeField] private Animator knifeAnimator;
-    [SerializeField] private float hideTime = 0.4f;
-    // ********************************************************************************
-
-    private void Start()
+    public class Knife : EventObject, IResultExecutable
     {
-        RegisterWithResultManager();
-    }
+        // ************************* temporary members for grab animation *************************
+        [SerializeField] private Animator knifeAnimator;
+        [SerializeField] private float hideTime = 0.4f;
+        // ********************************************************************************
 
-    public void ExecuteAction()
-    {
-        GrabKnife();
-    }
-
-    // ************************* temporary methods for grab animation *************************
-    private void GrabKnife()
-    {
-        if (sideNum != 0)
+        private void Start()
         {
-            HideKnife();
-            return;
+            RegisterWithResultManager();
         }
 
-        RoomManager.Instance.SetIsInvestigating(true);
+        public void ExecuteAction()
+        {
+            GrabKnife();
+        }
 
-        knifeAnimator.SetBool("grab_Knife", true);
-        Invoke("HideKnife", hideTime);
-    }
+        // ************************* temporary methods for grab animation *************************
+        private void GrabKnife()
+        {
+            if (sideNum != 0)
+            {
+                HideKnife();
+                return;
+            }
 
-    private void HideKnife()
-    {
-        gameObject.SetActive(false);
-    }
-    // *******************************************************************************
+            RoomManager.Instance.SetIsInvestigating(true);
 
-    private void OnEnable()
-    {
-        RegisterWithResultManager();
-        bool hasKnife = (bool)GameManager.Instance.GetVariable("HasKnife");
-        //Debug.Log("hasKnife : " + hasKnife);
-        if (hasKnife) gameObject.SetActive(false);
-    }
+            knifeAnimator.SetBool("grab_Knife", true);
+            Invoke("HideKnife", hideTime);
+        }
 
-    private void RegisterWithResultManager()
-    {
-        if (ResultManager.Instance != null)
-            ResultManager.Instance.RegisterExecutable($"Knife{sideNum}", this);
+        private void HideKnife()
+        {
+            gameObject.SetActive(false);
+        }
+        // *******************************************************************************
+
+        private void OnEnable()
+        {
+            RegisterWithResultManager();
+            bool hasKnife = (bool)GameManager.Instance.GetVariable("HasKnife");
+            //Debug.Log("hasKnife : " + hasKnife);
+            if (hasKnife) gameObject.SetActive(false);
+        }
+
+        private void RegisterWithResultManager()
+        {
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.RegisterExecutable($"Knife{sideNum}", this);
+        }
     }
 }

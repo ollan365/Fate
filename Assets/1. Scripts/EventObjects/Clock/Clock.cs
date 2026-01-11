@@ -2,46 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Fate.Managers;
 
-public class Clock : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    [SerializeField] private GameObject clockPuzzle;
-    [SerializeField] private List<Image> Clocks;
-    [SerializeField] private List<Sprite> AfterClockImages;
-
-    private void Start() {
-        RegisterWithResultManager();
-    }
-
-    private void OnEnable()
+    public class Clock : EventObject, IResultExecutable
     {
-        RegisterWithResultManager();
-        UpdateImageState();
-    }
+        [SerializeField] private GameObject clockPuzzle;
+        [SerializeField] private List<Image> Clocks;
+        [SerializeField] private List<Sprite> AfterClockImages;
 
-    private void RegisterWithResultManager()
-    {
-        if (ResultManager.Instance != null)
-            ResultManager.Instance.RegisterExecutable("Clock", this);
-    }
+        private void Start() {
+            RegisterWithResultManager();
+        }
 
-    public void ExecuteAction() {
-        ActivateClockPuzzle();
-    }
-
-    // 시계 시간 맞추는 장치 실행
-    private void ActivateClockPuzzle() {
-        //isInquiry = false;  // 조사 시스템 예 아니오 스킵
-        UIManager.Instance.AnimateUI(clockPuzzle, true, true);
-        SetCurrentLockObjectCanvasGroup(clockPuzzle);
-    }
-
-    public void UpdateImageState() {
-        if ((bool)GameManager.Instance.GetVariable("ClockTimeCorrect"))
+        private void OnEnable()
         {
-            for (int i = 0; i < Clocks.Count; i++)
+            RegisterWithResultManager();
+            UpdateImageState();
+        }
+
+        private void RegisterWithResultManager()
+        {
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.RegisterExecutable("Clock", this);
+        }
+
+        public void ExecuteAction() {
+            ActivateClockPuzzle();
+        }
+
+        // 시계 시간 맞추는 장치 실행
+        private void ActivateClockPuzzle() {
+            //isInquiry = false;  // 조사 시스템 예 아니오 스킵
+            UIManager.Instance.AnimateUI(clockPuzzle, true, true);
+            SetCurrentLockObjectCanvasGroup(clockPuzzle);
+        }
+
+        public void UpdateImageState() {
+            if ((bool)GameManager.Instance.GetVariable("ClockTimeCorrect"))
             {
-                Clocks[i].sprite = (i == 2) ? AfterClockImages[1] : AfterClockImages[0];
+                for (int i = 0; i < Clocks.Count; i++)
+                {
+                    Clocks[i].sprite = (i == 2) ? AfterClockImages[1] : AfterClockImages[0];
+                }
             }
         }
     }

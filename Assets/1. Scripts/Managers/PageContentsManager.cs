@@ -2,39 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Fate.Events;
 
-public enum PageType
+
+namespace Fate.Managers
 {
-    Left,
-    Right,
-    Back,
-    Front
-}
+    public enum PageType
+    {
+        Left,
+        Right,
+        Back,
+        Front
+    }
 
-public abstract class PageContentsManager : MonoBehaviour
-{
-    [SerializeField] public GameObject flipLeftButton;
-    [SerializeField] public GameObject flipRightButton;
+    public abstract class PageContentsManager : MonoBehaviour
+    {
+        [SerializeField] public GameObject flipLeftButton;
+        [SerializeField] public GameObject flipRightButton;
     
-    public AutoFlip autoFlip;
+        public AutoFlip autoFlip;
     
-    protected Dictionary<string, string> PagesDictionary = new Dictionary<string, string>();
-    [SerializeField] protected TextMeshProUGUI leftPage;
-    [SerializeField] protected TextMeshProUGUI rightPage;
-    [SerializeField] protected TextMeshProUGUI backPage;
-    [SerializeField] protected TextMeshProUGUI frontPage;
+        protected Dictionary<string, string> PagesDictionary = new Dictionary<string, string>();
+        [SerializeField] protected TextMeshProUGUI leftPage;
+        [SerializeField] protected TextMeshProUGUI rightPage;
+        [SerializeField] protected TextMeshProUGUI backPage;
+        [SerializeField] protected TextMeshProUGUI frontPage;
     
-    [Header("Page Num Text")]
-    [SerializeField] protected TextMeshProUGUI leftPageNum;
-    [SerializeField] protected TextMeshProUGUI rightPageNum;
-    [SerializeField] protected TextMeshProUGUI frontPageNum;
-    [SerializeField] protected TextMeshProUGUI backPageNum;
+        [Header("Page Num Text")]
+        [SerializeField] protected TextMeshProUGUI leftPageNum;
+        [SerializeField] protected TextMeshProUGUI rightPageNum;
+        [SerializeField] protected TextMeshProUGUI frontPageNum;
+        [SerializeField] protected TextMeshProUGUI backPageNum;
     
-    public abstract void ParsePageContents();
+        public abstract void ParsePageContents();
 
-    public abstract void DisplayPage(PageType pageType, int pageNum);
+        public abstract void DisplayPage(PageType pageType, int pageNum);
 
-    public abstract void DisplayPagesDynamic(int currentPage);
+        public abstract void DisplayPagesDynamic(int currentPage);
 
-    public abstract void DisplayPagesStatic(int currentPage);
+        public abstract void DisplayPagesStatic(int currentPage);
+    }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Fate.Managers;
+using Fate.Utilities;
 
 public class FollowDayMiniGame : MonoBehaviour
 {

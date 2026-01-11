@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class ClosetUnder : EventObject { }
+
+namespace Fate.Events
+{
+    public class ClosetUnder : EventObject { }
+}

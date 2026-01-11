@@ -1,26 +1,31 @@
 using UnityEngine;
+using Fate.Managers;
 
-public class ZoomView : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    [SerializeField] private GameObject zoomedView;
-    [SerializeField] private bool isClosed;
-
-    protected override void Awake()
+    public class ZoomView : EventObject, IResultExecutable
     {
-        base.Awake();
-        string executableName = $"{name} {sideNum}";  // "{이 오브젝트의 이름} + {사이드 번호}"로 executable 등록
-        ResultManager.Instance.RegisterExecutable(executableName, this);
+        [SerializeField] private GameObject zoomedView;
+        [SerializeField] private bool isClosed;
 
-        //ResultManager.Instance.executableObjectsKeyCheck(executableName);
-    }
+        protected override void Awake()
+        {
+            base.Awake();
+            string executableName = $"{name} {sideNum}";  // "{이 오브젝트의 이름} + {사이드 번호}"로 executable 등록
+            ResultManager.Instance.RegisterExecutable(executableName, this);
 
-    public void ExecuteAction()
-    {
-        //Debug.Log($"{name} {sideNum}" + " 줌 켜기");
-        if (!isActiveAndEnabled) return;
+            //ResultManager.Instance.executableObjectsKeyCheck(executableName);
+        }
+
+        public void ExecuteAction()
+        {
+            //Debug.Log($"{name} {sideNum}" + " 줌 켜기");
+            if (!isActiveAndEnabled) return;
         
-        RoomManager.Instance.SetCurrentView(zoomedView);
-        RoomManager.Instance.SetIsZoomed(true);
-        RoomManager.Instance.SetButtons();
+            RoomManager.Instance.SetCurrentView(zoomedView);
+            RoomManager.Instance.SetIsZoomed(true);
+            RoomManager.Instance.SetButtons();
+        }
     }
 }

@@ -1,14 +1,19 @@
 using UnityEngine;
+using Fate.Managers;
 
-public class LetterOfResignation : EventObject
+
+namespace Fate.Events
 {
-    private void Start()
+    public class LetterOfResignation : EventObject
     {
-        GetComponent<BoxCollider2D>().enabled = false;
-    }
+        private void Start()
+        {
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
 
-    protected override bool CanInteract()
-    {
-        return !GameManager.Instance.GetIsBusy();
+        protected override bool CanInteract()
+        {
+            return !GameManager.Instance.GetIsBusy();
+        }
     }
 }

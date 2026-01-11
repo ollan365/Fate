@@ -4,102 +4,107 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Fate.Managers;
 
-public class LaptopLock : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    private string passwordInput = "";
-
-    [SerializeField]
-    private GameObject laptopContent;
-    [SerializeField]
-    private TMP_InputField passwordInputField;
-
-    [SerializeField]
-    private Sprite girlVersionBackground;
-    [SerializeField]
-    private Sprite boyVersionBackground;
-
-    private Image imageComponent;
-
-    [SerializeField] private Laptop laptopA;
-
-    private bool isComparing = false;
-
-    private void Start()
+    public class LaptopLock : EventObject, IResultExecutable
     {
-        imageComponent = GetComponent<Image>();
+        private string passwordInput = "";
 
-        RegisterWithResultManager();
+        [SerializeField]
+        private GameObject laptopContent;
+        [SerializeField]
+        private TMP_InputField passwordInputField;
 
-        imageComponent.sprite = (int)GameManager.Instance.GetVariable("AccidyGender") == 0
-            ? girlVersionBackground
-            : boyVersionBackground;
-    }
+        [SerializeField]
+        private Sprite girlVersionBackground;
+        [SerializeField]
+        private Sprite boyVersionBackground;
 
-    private void OnEnable()
-    {
-        RegisterWithResultManager();
-    }
+        private Image imageComponent;
 
-    private void RegisterWithResultManager()
-    {
-        if (ResultManager.Instance != null)
-            ResultManager.Instance.RegisterExecutable("LaptopLock", this);
-    }
+        [SerializeField] private Laptop laptopA;
 
-    public void ExecuteAction()
-    {
-        ShowLaptopContent();
-    }
+        private bool isComparing = false;
 
-    // 노트북 잠금 풀림
-    private void ShowLaptopContent()
-    {
-        gameObject.SetActive(false);
-        laptopContent.SetActive(true);
-        RoomManager.Instance.isLaptopOpen = true;
-    } 
-
-    // 로그인 화면에서 암호 입력 후 엔터 치면
-    public void TryLogin(string input)
-    {
-        bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
-
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        private void Start()
         {
-            // 이미 처리 중이라면 추가 실행 방지
-            if (isDialogueActive) return;
+            imageComponent = GetComponent<Image>();
 
-            passwordInput = input;
-            
-            if(!isComparing)
-                StartCoroutine(ComparePassword());
+            RegisterWithResultManager();
+
+            imageComponent.sprite = (int)GameManager.Instance.GetVariable("AccidyGender") == 0
+                ? girlVersionBackground
+                : boyVersionBackground;
         }
-    }
 
-    IEnumerator ComparePassword()
-    {
-        isComparing = true;
+        private void OnEnable()
+        {
+            RegisterWithResultManager();
+        }
 
-        yield return new WaitForSeconds(0.2f);
-        string correctPassword = (string)GameManager.Instance.GetVariable("LaptopPassword");
-        GameManager.Instance.SetVariable("LaptopPasswordCorrect", passwordInput == correctPassword);
+        private void RegisterWithResultManager()
+        {
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.RegisterExecutable("LaptopLock", this);
+        }
 
-        // 노트북 비번 맞춘 이후에 노트북 다시 클릭하면 조사창 패스된거 다시 조사창 나오게 함.
-        if ((bool)GameManager.Instance.GetVariable("LaptopPasswordCorrect"))
-            laptopA.SetIsInquiry(true);
+        public void ExecuteAction()
+        {
+            ShowLaptopContent();
+        }
 
-        OnMouseDown();
-        yield return new WaitForSeconds(0.3f);
-        ResetPassword();
+        // 노트북 잠금 풀림
+        private void ShowLaptopContent()
+        {
+            gameObject.SetActive(false);
+            laptopContent.SetActive(true);
+            RoomManager.Instance.isLaptopOpen = true;
+        } 
 
-        isComparing = false;
-    }
+        // 로그인 화면에서 암호 입력 후 엔터 치면
+        public void TryLogin(string input)
+        {
+            bool isDialogueActive = DialogueManager.Instance.isDialogueActive;
+
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                // 이미 처리 중이라면 추가 실행 방지
+                if (isDialogueActive) return;
+
+                passwordInput = input;
+            
+                if(!isComparing)
+                    StartCoroutine(ComparePassword());
+            }
+        }
+
+        IEnumerator ComparePassword()
+        {
+            isComparing = true;
+
+            yield return new WaitForSeconds(0.2f);
+            string correctPassword = (string)GameManager.Instance.GetVariable("LaptopPassword");
+            GameManager.Instance.SetVariable("LaptopPasswordCorrect", passwordInput == correctPassword);
+
+            // 노트북 비번 맞춘 이후에 노트북 다시 클릭하면 조사창 패스된거 다시 조사창 나오게 함.
+            if ((bool)GameManager.Instance.GetVariable("LaptopPasswordCorrect"))
+                laptopA.SetIsInquiry(true);
+
+            OnMouseDown();
+            yield return new WaitForSeconds(0.3f);
+            ResetPassword();
+
+            isComparing = false;
+        }
     
-    // 비밀번호 입력 초기화
-    private void ResetPassword()
-    {
-        passwordInput = "";
-        passwordInputField.text = passwordInput;
+        // 비밀번호 입력 초기화
+        private void ResetPassword()
+        {
+            passwordInput = "";
+            passwordInputField.text = passwordInput;
+        }
     }
 }

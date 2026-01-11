@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class Bed : EventObject { }
+
+namespace Fate.Events
+{
+    public class Bed : EventObject { }
+}

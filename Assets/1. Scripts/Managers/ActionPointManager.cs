@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Fate.Utilities;
 
 //public enum RoomType
 //{
@@ -12,7 +13,9 @@ using UnityEngine.UI;
 //    Room2
 //}
 
-abstract public class ActionPointManager : MonoBehaviour
+namespace Fate.Managers
+{
+    abstract public class ActionPointManager : MonoBehaviour
 {
     // ************************* temporary members for action points *************************
     public GameObject heartPrefab;
@@ -519,6 +522,7 @@ abstract public class ActionPointManager : MonoBehaviour
                     ? Constants.BGM_ROOM1
                     : Constants.BGM_ROOM2);
                 break;
-        }    
+        }
     }
+}
 }

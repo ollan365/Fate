@@ -1,24 +1,29 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Fate.Managers;
 
-public class DialogueListManager : MonoBehaviour
+
+namespace Fate.Utilities
 {
-    public GameObject buttonPrefab;
-    public Transform scrollViewContent;
-
-    void Start()
+    public class DialogueListManager : MonoBehaviour
     {
-        PopulateDialogueList();
-    }
+        public GameObject buttonPrefab;
+        public Transform scrollViewContent;
 
-    void PopulateDialogueList()
-    {
-        foreach (var dialogueID in DialogueManager.Instance.dialogues.Keys)
+        void Start()
         {
-            GameObject buttonObj = Instantiate(buttonPrefab, scrollViewContent);
-            buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = dialogueID;
-            buttonObj.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.StartDialogue(dialogueID));
+            PopulateDialogueList();
+        }
+
+        void PopulateDialogueList()
+        {
+            foreach (var dialogueID in DialogueManager.Instance.dialogues.Keys)
+            {
+                GameObject buttonObj = Instantiate(buttonPrefab, scrollViewContent);
+                buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = dialogueID;
+                buttonObj.GetComponent<Button>().onClick.AddListener(() => DialogueManager.Instance.StartDialogue(dialogueID));
+            }
         }
     }
 }

@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class Lamp : EventObject { }
+
+namespace Fate.Events
+{
+    public class Lamp : EventObject { }
+}

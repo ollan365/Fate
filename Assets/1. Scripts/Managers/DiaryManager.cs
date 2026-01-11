@@ -3,466 +3,471 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Fate.Events;
 
-public class DiaryManager : PageContentsManager
+
+namespace Fate.Managers
 {
-    // Stores: (list of Script IDs, doodleID)
-    private Dictionary<string, (List<string>, string)> diary1Pages = new Dictionary<string, (List<string>, string)>();
-    private Dictionary<string, (List<string>, string)> diary2Pages = new Dictionary<string, (List<string>, string)>();
-    private Dictionary<string, (List<string>, string)> room2BookPages = new Dictionary<string, (List<string>, string)>();
-    private Dictionary<string, (List<string>, string)> dreamDiaryPages = new Dictionary<string, (List<string>, string)>();
-    private Dictionary<string, (List<string>, string)> albumPages = new Dictionary<string, (List<string>, string)>();
-
-    public int totalPageCount = 0;
-    
-    [SerializeField] private PageFlip diaryPages;
-    [SerializeField] private string diaryType;
-
-    public Image leftPageImage;
-    public Image rightPageImage;
-    public Image backPageImage;
-    public Image frontPageImage;
-
-    [SerializeField] private GameObject leftPageEndingFrames,
-        rightPageEndingFrames,
-        backPageEndingFrames,
-        frontPageEndingFrames;
-    
-    [SerializeField] private Image leftPageEndingFrameTop, leftPageEndingFrameBottom, 
-        rightPageEndingFrameTop, rightPageEndingFrameBottom,
-        backPageEndingFrameTop, backPageEndingFrameBottom,
-        frontPageEndingFrameTop, frontPageEndingFrameBottom;
-    
-    [SerializeField] private Button leftPageEndingButtonTop, leftPageEndingButtonBottom,
-        rightPageEndingButtonTop, rightPageEndingButtonBottom,
-        backPageEndingButtonTop, backPageEndingButtonBottom,
-        frontPageEndingButtonTop, frontPageEndingButtonBottom;
-    
-    private Sprite[] endingSprites;
-
-    private int presentPageNum;
-    private int lastCurrentPage;
-    private bool lastWasStatic;
-
-    private string doodlesOrder = "";
-    private int replayCount = 1; 
-    private const int AlbumFramePageNumMinimum = 2, AlbumFramePageNumMaximum = 3;
-
-    private bool isAlbumInteractable;
-
-    private void Awake()
+    public class DiaryManager : PageContentsManager
     {
-        // SetDoodlesOrder();
-        ParsePageContents();
-        endingSprites = UIManager.Instance.endingSprites;
-        isAlbumInteractable = true;
-    }
+        // Stores: (list of Script IDs, doodleID)
+        private Dictionary<string, (List<string>, string)> diary1Pages = new Dictionary<string, (List<string>, string)>();
+        private Dictionary<string, (List<string>, string)> diary2Pages = new Dictionary<string, (List<string>, string)>();
+        private Dictionary<string, (List<string>, string)> room2BookPages = new Dictionary<string, (List<string>, string)>();
+        private Dictionary<string, (List<string>, string)> dreamDiaryPages = new Dictionary<string, (List<string>, string)>();
+        private Dictionary<string, (List<string>, string)> albumPages = new Dictionary<string, (List<string>, string)>();
 
-    public void SetTotalPages()
-    {
-        switch (diaryType)
+        public int totalPageCount = 0;
+    
+        [SerializeField] private PageFlip diaryPages;
+        [SerializeField] private string diaryType;
+
+        public Image leftPageImage;
+        public Image rightPageImage;
+        public Image backPageImage;
+        public Image frontPageImage;
+
+        [SerializeField] private GameObject leftPageEndingFrames,
+            rightPageEndingFrames,
+            backPageEndingFrames,
+            frontPageEndingFrames;
+    
+        [SerializeField] private Image leftPageEndingFrameTop, leftPageEndingFrameBottom, 
+            rightPageEndingFrameTop, rightPageEndingFrameBottom,
+            backPageEndingFrameTop, backPageEndingFrameBottom,
+            frontPageEndingFrameTop, frontPageEndingFrameBottom;
+    
+        [SerializeField] private Button leftPageEndingButtonTop, leftPageEndingButtonBottom,
+            rightPageEndingButtonTop, rightPageEndingButtonBottom,
+            backPageEndingButtonTop, backPageEndingButtonBottom,
+            frontPageEndingButtonTop, frontPageEndingButtonBottom;
+    
+        private Sprite[] endingSprites;
+
+        private int presentPageNum;
+        private int lastCurrentPage;
+        private bool lastWasStatic;
+
+        private string doodlesOrder = "";
+        private int replayCount = 1; 
+        private const int AlbumFramePageNumMinimum = 2, AlbumFramePageNumMaximum = 3;
+
+        private bool isAlbumInteractable;
+
+        private void Awake()
         {
-            case "Diary1":
-                diaryPages.totalPageCount = diary1Pages.Count;
-                break;
-            
-            case "Diary2":
-                diaryPages.totalPageCount = diary2Pages.Count;
-                break;
-
-            case "Room2Book":
-                diaryPages.totalPageCount = room2BookPages.Count;
-                break;
-
-            case "DreamDiary":
-                diaryPages.totalPageCount = dreamDiaryPages.Count;
-                break;
-            
-            case "Album":
-                diaryPages.totalPageCount = albumPages.Count;
-                break;
-        }
-    }
-    
-    public override void DisplayPage(PageType pageType, int pageNum)
-    {
-        Dictionary<string, (List<string>, string)> currentPages = GetCurrentPagesDictionary();
-        if (currentPages == null)
-        {
-            SetPageText(pageType, "", pageNum);
-            return;
+            // SetDoodlesOrder();
+            ParsePageContents();
+            endingSprites = UIManager.Instance.endingSprites;
+            isAlbumInteractable = true;
         }
 
-        if (pageNum < 1 || pageNum > totalPageCount)
+        public void SetTotalPages()
         {
-            SetPageText(pageType, "", pageNum);
-            SetPageImage(pageType, "");
-            if (diaryType == "Album") // Hide album frames
+            switch (diaryType)
+            {
+                case "Diary1":
+                    diaryPages.totalPageCount = diary1Pages.Count;
+                    break;
+            
+                case "Diary2":
+                    diaryPages.totalPageCount = diary2Pages.Count;
+                    break;
+
+                case "Room2Book":
+                    diaryPages.totalPageCount = room2BookPages.Count;
+                    break;
+
+                case "DreamDiary":
+                    diaryPages.totalPageCount = dreamDiaryPages.Count;
+                    break;
+            
+                case "Album":
+                    diaryPages.totalPageCount = albumPages.Count;
+                    break;
+            }
+        }
+    
+        public override void DisplayPage(PageType pageType, int pageNum)
+        {
+            Dictionary<string, (List<string>, string)> currentPages = GetCurrentPagesDictionary();
+            if (currentPages == null)
+            {
+                SetPageText(pageType, "", pageNum);
+                return;
+            }
+
+            if (pageNum < 1 || pageNum > totalPageCount)
+            {
+                SetPageText(pageType, "", pageNum);
+                SetPageImage(pageType, "");
+                if (diaryType == "Album") // Hide album frames
+                    SetPageFrame(pageType, pageNum);
+                return;
+            }
+
+            string diaryID = GetDiaryID(pageNum);
+            if (diaryID == null || !currentPages.ContainsKey(diaryID))
+            {
+                SetPageText(pageType, "", pageNum);
+                Debug.LogWarning($"Diary ID '{diaryID}' not found in current pages dictionary");
+                return;
+            }
+
+            List<string> scriptIds = currentPages[diaryID].Item1;
+            string doodleID = currentPages[diaryID].Item2;
+
+            string pageText = BuildPageText(scriptIds);
+
+            SetPageText(pageType, pageText, pageNum);
+            SetPageImage(pageType, doodleID);
+            if (diaryType == "Album") // Show/hide album frames
                 SetPageFrame(pageType, pageNum);
-            return;
+
+            presentPageNum = pageNum;
         }
 
-        string diaryID = GetDiaryID(pageNum);
-        if (diaryID == null || !currentPages.ContainsKey(diaryID))
-        {
-            SetPageText(pageType, "", pageNum);
-            Debug.LogWarning($"Diary ID '{diaryID}' not found in current pages dictionary");
-            return;
-        }
-
-        List<string> scriptIds = currentPages[diaryID].Item1;
-        string doodleID = currentPages[diaryID].Item2;
-
-        string pageText = BuildPageText(scriptIds);
-
-        SetPageText(pageType, pageText, pageNum);
-        SetPageImage(pageType, doodleID);
-        if (diaryType == "Album") // Show/hide album frames
-            SetPageFrame(pageType, pageNum);
-
-        presentPageNum = pageNum;
-    }
-
-    private void SetPageFrame(PageType pageType, int pageNum) {
-        switch (pageType) {
-            case PageType.Left:
-                if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
-                    leftPageEndingFrames.SetActive(true);
-                    SetAlbumFrame(leftPageEndingFrameTop,
-                        leftPageEndingFrameBottom,
-                        leftPageEndingButtonTop,
-                        leftPageEndingButtonBottom,
-                        pageNum);
-                } else 
-                    leftPageEndingFrames.SetActive(false);
-                break;
+        private void SetPageFrame(PageType pageType, int pageNum) {
+            switch (pageType) {
+                case PageType.Left:
+                    if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
+                        leftPageEndingFrames.SetActive(true);
+                        SetAlbumFrame(leftPageEndingFrameTop,
+                            leftPageEndingFrameBottom,
+                            leftPageEndingButtonTop,
+                            leftPageEndingButtonBottom,
+                            pageNum);
+                    } else 
+                        leftPageEndingFrames.SetActive(false);
+                    break;
             
-            case PageType.Right:
-                if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
-                    rightPageEndingFrames.SetActive(true);
-                    SetAlbumFrame(rightPageEndingFrameTop,
-                        rightPageEndingFrameBottom,
-                        rightPageEndingButtonTop,
-                        rightPageEndingButtonBottom,
-                        pageNum);
-                } else 
-                    rightPageEndingFrames.SetActive(false);
-                break;
+                case PageType.Right:
+                    if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
+                        rightPageEndingFrames.SetActive(true);
+                        SetAlbumFrame(rightPageEndingFrameTop,
+                            rightPageEndingFrameBottom,
+                            rightPageEndingButtonTop,
+                            rightPageEndingButtonBottom,
+                            pageNum);
+                    } else 
+                        rightPageEndingFrames.SetActive(false);
+                    break;
             
-            case PageType.Back:
-                if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
-                    backPageEndingFrames.SetActive(true);
-                    SetAlbumFrame(backPageEndingFrameTop,
-                        backPageEndingFrameBottom,
-                        backPageEndingButtonTop,
-                        backPageEndingButtonBottom,
-                        pageNum);
-                } else 
-                    backPageEndingFrames.SetActive(false);
-                break;
+                case PageType.Back:
+                    if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
+                        backPageEndingFrames.SetActive(true);
+                        SetAlbumFrame(backPageEndingFrameTop,
+                            backPageEndingFrameBottom,
+                            backPageEndingButtonTop,
+                            backPageEndingButtonBottom,
+                            pageNum);
+                    } else 
+                        backPageEndingFrames.SetActive(false);
+                    break;
             
-            case PageType.Front:
-                if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
-                    frontPageEndingFrames.SetActive(true);
-                    SetAlbumFrame(frontPageEndingFrameTop,
-                        frontPageEndingFrameBottom,
-                        frontPageEndingButtonTop,
-                        frontPageEndingButtonBottom,
-                        pageNum);
-                } else 
-                    frontPageEndingFrames.SetActive(false);
-                break;
-        }
-    }
-
-    private void SetAlbumFrame(
-        Image topFrame,
-        Image bottomFrame,
-        Button topButton,
-        Button bottomButton,
-        int pageNum)
-    {
-        topButton.onClick.RemoveAllListeners();
-        bottomButton.onClick.RemoveAllListeners();
-
-        int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
-        int pageIndex = pageNum - 2;
-        int spriteBase = pageIndex * 4;
-        int albumOffset = pageIndex * 2;
-
-        bool isTopFrameCollected, isBottomFrameCollected;
-        if (pageNum == 2) {
-            isTopFrameCollected = (int)GameManager.Instance.GetVariable("BadACollect") > 0;
-            isBottomFrameCollected = (int)GameManager.Instance.GetVariable("BadBCollect") > 0;
-        } else {
-            isTopFrameCollected = (int)GameManager.Instance.GetVariable("TrueCollect") > 0;
-            isBottomFrameCollected = (int)GameManager.Instance.GetVariable("HiddenCollect") > 0;
+                case PageType.Front:
+                    if (pageNum is >= AlbumFramePageNumMinimum and <= AlbumFramePageNumMaximum) {
+                        frontPageEndingFrames.SetActive(true);
+                        SetAlbumFrame(frontPageEndingFrameTop,
+                            frontPageEndingFrameBottom,
+                            frontPageEndingButtonTop,
+                            frontPageEndingButtonBottom,
+                            pageNum);
+                    } else 
+                        frontPageEndingFrames.SetActive(false);
+                    break;
+            }
         }
 
-        // top
-        topFrame.gameObject.SetActive(isTopFrameCollected);
-        topFrame.sprite = endingSprites[spriteBase + accidyGender];
-        topButton.onClick.AddListener(() =>
-            UIManager.Instance.OpenAlbumPage(albumOffset)
-        );
-
-        // bottom
-        bottomFrame.gameObject.SetActive(isBottomFrameCollected);
-        bottomFrame.sprite = endingSprites[spriteBase + 2 + accidyGender];
-        bottomButton.onClick.AddListener(() =>
-            UIManager.Instance.OpenAlbumPage(albumOffset + 1)
-        );
-    }
-
-    private void SetPageText(PageType pageType, string text, int pageNum)
-    {
-        switch (pageType)
+        private void SetAlbumFrame(
+            Image topFrame,
+            Image bottomFrame,
+            Button topButton,
+            Button bottomButton,
+            int pageNum)
         {
-            case PageType.Left:
-                leftPage.text = text;
-                leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
-                break;
+            topButton.onClick.RemoveAllListeners();
+            bottomButton.onClick.RemoveAllListeners();
 
-            case PageType.Right:
-                rightPage.text = text;
-                rightPageNum.text = pageNum.ToString();
-                break;
+            int accidyGender = (int)GameManager.Instance.GetVariable("AccidyGender");
+            int pageIndex = pageNum - 2;
+            int spriteBase = pageIndex * 4;
+            int albumOffset = pageIndex * 2;
 
-            case PageType.Back:
-                backPage.text = text;
-                backPageNum.text = pageNum.ToString();
-                break;
-
-            case PageType.Front:
-                frontPage.text = text;
-                frontPageNum.text = pageNum.ToString();
-                break;
-        }
-    }
-    
-    private void SetPageImage(PageType pageType, string imageID) {
-        string path = "Room/Diary/doodles/" + imageID;
-        var sprite = Resources.Load<Sprite>(path);
-        var imageAlpha = imageID == "" ? 0 : 1;
-        
-        switch (pageType)
-        {
-            case PageType.Left:
-                leftPageImage.sprite = sprite ? sprite : null;
-                leftPageImage.color = new Color(1, 1, 1, imageAlpha);
-                break;
-
-            case PageType.Right:
-                rightPageImage.sprite = sprite ? sprite : null;
-                rightPageImage.color = new Color(1, 1, 1, imageAlpha);
-                break;
-
-            case PageType.Back:
-                backPageImage.sprite = sprite ? sprite : null;
-                backPageImage.color = new Color(1, 1, 1, imageAlpha);
-                break;
-
-            case PageType.Front:
-                frontPageImage.sprite = sprite ? sprite : null;
-                frontPageImage.color = new Color(1, 1, 1, imageAlpha);
-                break;
-        }
-    }
-
-    private string GetDiaryID(int pageNum)
-    {
-        return diaryType + "_" + pageNum.ToString().PadLeft(3, '0');
-    }
-
-    public string GetDiaryType()
-    {
-        return diaryType;
-    }
-    
-    public void SetAlbumInteractable(bool isInteractable)
-    {
-        isAlbumInteractable  = isInteractable;
-        diaryPages.interactable = isInteractable;
-        flipLeftButton.SetActive(isInteractable);
-        flipRightButton.SetActive(isInteractable);
-    }
-
-    private Dictionary<string, (List<string>, string)> GetCurrentPagesDictionary()
-    {
-        switch (diaryType)
-        {
-            case "Diary1":
-                return diary1Pages;
-            case "Diary2":
-                return diary2Pages;
-            case "Room2Book":
-                return room2BookPages;
-            case "DreamDiary":
-                return dreamDiaryPages;
-            case "Album":
-                return albumPages;
-            default:
-                return diary1Pages;
-        }
-    }
-    
-    public override void DisplayPagesDynamic(int currentPage)
-    {
-        lastWasStatic = false;
-        lastCurrentPage = currentPage;
-        DisplayPage(PageType.Left, currentPage);
-        DisplayPage(PageType.Right, currentPage + 3);
-        DisplayPage(PageType.Back, currentPage + 1);
-        DisplayPage(PageType.Front, currentPage + 2);
-    }
-
-    public override void DisplayPagesStatic(int currentPage)
-    {
-        lastWasStatic = true;
-        lastCurrentPage = currentPage;
-        DisplayPage(PageType.Left, currentPage);
-        DisplayPage(PageType.Right, currentPage + 1);
-
-        flipLeftButton.SetActive(isAlbumInteractable && currentPage > 0);
-        flipRightButton.SetActive(isAlbumInteractable && currentPage < totalPageCount - 1);
-
-        if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect") && GetDiaryType() == "Diary2")
-        {
-            GameManager.Instance.SetVariable("Diary2PresentPageNumber", presentPageNum);
-            if(!(bool)GameManager.Instance.GetVariable("hasEventDiary2ContentRun"))
-                EventManager.Instance.CallEvent("EventDiary2Content");
-        }
-    }
-
-    public override void ParsePageContents()
-    {
-        TextAsset diaryCsv = Resources.Load<TextAsset>("Datas/diary");
-        if (diaryCsv == null)
-        {
-            Debug.LogError("Failed to load diary CSV file");
-            return;
-        }
-
-        string[] lines = diaryCsv.text.Split('\n');
-        string previousDiaryPageID = "";
-        doodlesOrder = GameManager.Instance.GetVariable("DoodlesOrder") as string;
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-
-            string[] fields = lines[i].Split(',');
-
-            string diaryPageID = fields[0].Trim();
-            if (diaryPageID == "") diaryPageID = previousDiaryPageID;
-            else previousDiaryPageID = diaryPageID;
-
-            string scriptID = fields[2].Trim();
-            if (!DialogueManager.Instance.scripts.ContainsKey(scriptID))
-            {
-                Debug.LogWarning($"Script ID '{scriptID}' not found in DialogueManager scripts");
-                continue;
+            bool isTopFrameCollected, isBottomFrameCollected;
+            if (pageNum == 2) {
+                isTopFrameCollected = (int)GameManager.Instance.GetVariable("BadACollect") > 0;
+                isBottomFrameCollected = (int)GameManager.Instance.GetVariable("BadBCollect") > 0;
+            } else {
+                isTopFrameCollected = (int)GameManager.Instance.GetVariable("TrueCollect") > 0;
+                isBottomFrameCollected = (int)GameManager.Instance.GetVariable("HiddenCollect") > 0;
             }
 
-            Dictionary<string, (List<string>, string)> targetDictionary = null;
+            // top
+            topFrame.gameObject.SetActive(isTopFrameCollected);
+            topFrame.sprite = endingSprites[spriteBase + accidyGender];
+            topButton.onClick.AddListener(() =>
+                UIManager.Instance.OpenAlbumPage(albumOffset)
+            );
 
-            if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
-            else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
-            else if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;
-            else if (diaryPageID.StartsWith("DreamDiary_")) targetDictionary = dreamDiaryPages;
-            else if (diaryPageID.StartsWith("Album_")) targetDictionary = albumPages;
+            // bottom
+            bottomFrame.gameObject.SetActive(isBottomFrameCollected);
+            bottomFrame.sprite = endingSprites[spriteBase + 2 + accidyGender];
+            bottomButton.onClick.AddListener(() =>
+                UIManager.Instance.OpenAlbumPage(albumOffset + 1)
+            );
+        }
+
+        private void SetPageText(PageType pageType, string text, int pageNum)
+        {
+            switch (pageType)
+            {
+                case PageType.Left:
+                    leftPage.text = text;
+                    leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
+                    break;
+
+                case PageType.Right:
+                    rightPage.text = text;
+                    rightPageNum.text = pageNum.ToString();
+                    break;
+
+                case PageType.Back:
+                    backPage.text = text;
+                    backPageNum.text = pageNum.ToString();
+                    break;
+
+                case PageType.Front:
+                    frontPage.text = text;
+                    frontPageNum.text = pageNum.ToString();
+                    break;
+            }
+        }
+    
+        private void SetPageImage(PageType pageType, string imageID) {
+            string path = "Room/Diary/doodles/" + imageID;
+            var sprite = Resources.Load<Sprite>(path);
+            var imageAlpha = imageID == "" ? 0 : 1;
+        
+            switch (pageType)
+            {
+                case PageType.Left:
+                    leftPageImage.sprite = sprite ? sprite : null;
+                    leftPageImage.color = new Color(1, 1, 1, imageAlpha);
+                    break;
+
+                case PageType.Right:
+                    rightPageImage.sprite = sprite ? sprite : null;
+                    rightPageImage.color = new Color(1, 1, 1, imageAlpha);
+                    break;
+
+                case PageType.Back:
+                    backPageImage.sprite = sprite ? sprite : null;
+                    backPageImage.color = new Color(1, 1, 1, imageAlpha);
+                    break;
+
+                case PageType.Front:
+                    frontPageImage.sprite = sprite ? sprite : null;
+                    frontPageImage.color = new Color(1, 1, 1, imageAlpha);
+                    break;
+            }
+        }
+
+        private string GetDiaryID(int pageNum)
+        {
+            return diaryType + "_" + pageNum.ToString().PadLeft(3, '0');
+        }
+
+        public string GetDiaryType()
+        {
+            return diaryType;
+        }
+    
+        public void SetAlbumInteractable(bool isInteractable)
+        {
+            isAlbumInteractable  = isInteractable;
+            diaryPages.interactable = isInteractable;
+            flipLeftButton.SetActive(isInteractable);
+            flipRightButton.SetActive(isInteractable);
+        }
+
+        private Dictionary<string, (List<string>, string)> GetCurrentPagesDictionary()
+        {
+            switch (diaryType)
+            {
+                case "Diary1":
+                    return diary1Pages;
+                case "Diary2":
+                    return diary2Pages;
+                case "Room2Book":
+                    return room2BookPages;
+                case "DreamDiary":
+                    return dreamDiaryPages;
+                case "Album":
+                    return albumPages;
+                default:
+                    return diary1Pages;
+            }
+        }
+    
+        public override void DisplayPagesDynamic(int currentPage)
+        {
+            lastWasStatic = false;
+            lastCurrentPage = currentPage;
+            DisplayPage(PageType.Left, currentPage);
+            DisplayPage(PageType.Right, currentPage + 3);
+            DisplayPage(PageType.Back, currentPage + 1);
+            DisplayPage(PageType.Front, currentPage + 2);
+        }
+
+        public override void DisplayPagesStatic(int currentPage)
+        {
+            lastWasStatic = true;
+            lastCurrentPage = currentPage;
+            DisplayPage(PageType.Left, currentPage);
+            DisplayPage(PageType.Right, currentPage + 1);
+
+            flipLeftButton.SetActive(isAlbumInteractable && currentPage > 0);
+            flipRightButton.SetActive(isAlbumInteractable && currentPage < totalPageCount - 1);
+
+            if ((bool)GameManager.Instance.GetVariable("Diary2PasswordCorrect") && GetDiaryType() == "Diary2")
+            {
+                GameManager.Instance.SetVariable("Diary2PresentPageNumber", presentPageNum);
+                if(!(bool)GameManager.Instance.GetVariable("hasEventDiary2ContentRun"))
+                    EventManager.Instance.CallEvent("EventDiary2Content");
+            }
+        }
+
+        public override void ParsePageContents()
+        {
+            TextAsset diaryCsv = Resources.Load<TextAsset>("Datas/diary");
+            if (diaryCsv == null)
+            {
+                Debug.LogError("Failed to load diary CSV file");
+                return;
+            }
+
+            string[] lines = diaryCsv.text.Split('\n');
+            string previousDiaryPageID = "";
+            doodlesOrder = GameManager.Instance.GetVariable("DoodlesOrder") as string;
+
+            for (int i = 1; i < lines.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(lines[i])) continue;
+
+                string[] fields = lines[i].Split(',');
+
+                string diaryPageID = fields[0].Trim();
+                if (diaryPageID == "") diaryPageID = previousDiaryPageID;
+                else previousDiaryPageID = diaryPageID;
+
+                string scriptID = fields[2].Trim();
+                if (!DialogueManager.Instance.scripts.ContainsKey(scriptID))
+                {
+                    Debug.LogWarning($"Script ID '{scriptID}' not found in DialogueManager scripts");
+                    continue;
+                }
+
+                Dictionary<string, (List<string>, string)> targetDictionary = null;
+
+                if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
+                else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
+                else if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;
+                else if (diaryPageID.StartsWith("DreamDiary_")) targetDictionary = dreamDiaryPages;
+                else if (diaryPageID.StartsWith("Album_")) targetDictionary = albumPages;
+                else
+                {
+                    Debug.LogWarning($"Unknown diary page ID format: {diaryPageID}");
+                    continue;
+                }
+
+                // add doodles
+                bool isDoodle = fields[3].Trim() == "TRUE";
+                string doodleID = "";
+                if (isDoodle)
+                    doodleID = $"doodling{doodlesOrder[replayCount - 1]}_2";
+
+                if (targetDictionary.ContainsKey(diaryPageID))
+                {
+                    var list = targetDictionary[diaryPageID].Item1;
+                    list.Add(scriptID);
+                    targetDictionary[diaryPageID] = (list, doodleID);
+                }
+                else targetDictionary.Add(diaryPageID, (new List<string> { scriptID }, doodleID));
+            }
+
+            // Set totalPageCount based on the current scene's dictionary size
+            totalPageCount = GetCurrentPagesDictionary()?.Count ?? 0;
+        }
+
+        private string BuildPageText(List<string> scriptIds)
+        {
+            if (scriptIds == null || scriptIds.Count == 0) return "";
+            int lang = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
+            List<string> localizedLines = new List<string>(scriptIds.Count);
+            foreach (var id in scriptIds)
+            {
+                if (!DialogueManager.Instance.scripts.ContainsKey(id))
+                    continue;
+                var sentence = DialogueManager.Instance.scripts[id].GetScript(lang).ProcessedText;
+                localizedLines.Add(sentence);
+            }
+            return string.Join("\n\n", localizedLines);
+        }
+
+        private void OnEnable()
+        {
+            if (LocalizationManager.Instance != null)
+                LocalizationManager.Instance.OnLanguageChanged += OnLanguageChanged;
+
+            if (diaryType == "Album")
+                DisplayPagesStatic(diaryPages.currentPage);
+        }
+
+        private void OnDisable()
+        {
+            if (LocalizationManager.Instance != null)
+                LocalizationManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+        
+            if (GetDiaryType() == "Diary2")
+                GameManager.Instance.SetVariable("hasEventDiary2ContentRun", false);
+        }
+
+        private void OnLanguageChanged(int _)
+        {
+            // Re-display current pages using stored script IDs
+            if (lastWasStatic)
+                DisplayPagesStatic(lastCurrentPage);
             else
-            {
-                Debug.LogWarning($"Unknown diary page ID format: {diaryPageID}");
-                continue;
-            }
-
-            // add doodles
-            bool isDoodle = fields[3].Trim() == "TRUE";
-            string doodleID = "";
-            if (isDoodle)
-                doodleID = $"doodling{doodlesOrder[replayCount - 1]}_2";
-
-            if (targetDictionary.ContainsKey(diaryPageID))
-            {
-                var list = targetDictionary[diaryPageID].Item1;
-                list.Add(scriptID);
-                targetDictionary[diaryPageID] = (list, doodleID);
-            }
-            else targetDictionary.Add(diaryPageID, (new List<string> { scriptID }, doodleID));
+                DisplayPagesDynamic(lastCurrentPage);
         }
-
-        // Set totalPageCount based on the current scene's dictionary size
-        totalPageCount = GetCurrentPagesDictionary()?.Count ?? 0;
-    }
-
-    private string BuildPageText(List<string> scriptIds)
-    {
-        if (scriptIds == null || scriptIds.Count == 0) return "";
-        int lang = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
-        List<string> localizedLines = new List<string>(scriptIds.Count);
-        foreach (var id in scriptIds)
-        {
-            if (!DialogueManager.Instance.scripts.ContainsKey(id))
-                continue;
-            var sentence = DialogueManager.Instance.scripts[id].GetScript(lang).ProcessedText;
-            localizedLines.Add(sentence);
-        }
-        return string.Join("\n\n", localizedLines);
-    }
-
-    private void OnEnable()
-    {
-        if (LocalizationManager.Instance != null)
-            LocalizationManager.Instance.OnLanguageChanged += OnLanguageChanged;
-
-        if (diaryType == "Album")
-            DisplayPagesStatic(diaryPages.currentPage);
-    }
-
-    private void OnDisable()
-    {
-        if (LocalizationManager.Instance != null)
-            LocalizationManager.Instance.OnLanguageChanged -= OnLanguageChanged;
-        
-        if (GetDiaryType() == "Diary2")
-            GameManager.Instance.SetVariable("hasEventDiary2ContentRun", false);
-    }
-
-    private void OnLanguageChanged(int _)
-    {
-        // Re-display current pages using stored script IDs
-        if (lastWasStatic)
-            DisplayPagesStatic(lastCurrentPage);
-        else
-            DisplayPagesDynamic(lastCurrentPage);
-    }
     
-    public void SetDoodlesOrder(int doodlesCount=8)
-    {
-        replayCount = (int)GameManager.Instance.GetVariable("ReplayCount");
-        if (replayCount != 1)
+        public void SetDoodlesOrder(int doodlesCount=8)
         {
-            doodlesOrder = (string)GameManager.Instance.GetVariable("DoodlesOrder");
-            return;
-        }
+            replayCount = (int)GameManager.Instance.GetVariable("ReplayCount");
+            if (replayCount != 1)
+            {
+                doodlesOrder = (string)GameManager.Instance.GetVariable("DoodlesOrder");
+                return;
+            }
         
-        bool[] visited = new bool[doodlesCount + 1];
-        for (int i = 1; i <= doodlesCount; i++)
-            visited[i] = false;
+            bool[] visited = new bool[doodlesCount + 1];
+            for (int i = 1; i <= doodlesCount; i++)
+                visited[i] = false;
         
-        for (int i = 1; i <= doodlesCount; i++)
-        {
-            int randomIndex = UnityEngine.Random.Range(1, doodlesCount + 1);
-            while (visited[randomIndex])
-                randomIndex = UnityEngine.Random.Range(1, doodlesCount + 1);
+            for (int i = 1; i <= doodlesCount; i++)
+            {
+                int randomIndex = UnityEngine.Random.Range(1, doodlesCount + 1);
+                while (visited[randomIndex])
+                    randomIndex = UnityEngine.Random.Range(1, doodlesCount + 1);
             
-            visited[randomIndex] = true;
-            doodlesOrder += randomIndex.ToString();
+                visited[randomIndex] = true;
+                doodlesOrder += randomIndex.ToString();
+            }
+        
+            GameManager.Instance.SetVariable("DoodlesOrder", doodlesOrder);
+        
+            Debug.Log(doodlesOrder);
         }
-        
-        GameManager.Instance.SetVariable("DoodlesOrder", doodlesOrder);
-        
-        Debug.Log(doodlesOrder);
     }
 }

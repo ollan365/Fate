@@ -1,4 +1,5 @@
 using UnityEngine;
+using Fate.Managers;
 
 public class MemoButton : MonoBehaviour
 {

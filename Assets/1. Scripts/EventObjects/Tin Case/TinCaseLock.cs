@@ -3,58 +3,63 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using Fate.Managers;
 
-public class TinCaseLock : MonoBehaviour
+
+namespace Fate.Events
 {
-    [SerializeField] private Wheel[] wheels;
+    public class TinCaseLock : MonoBehaviour
+    {
+        [SerializeField] private Wheel[] wheels;
     
-    private string correctAnswer = "1102";
-    //private bool showCorrectAnswer = false;
+        private string correctAnswer = "1102";
+        //private bool showCorrectAnswer = false;
 
-    [SerializeField] private TinCase tinCaseA;
+        [SerializeField] private TinCase tinCaseA;
 
-    public void CheckAnswer()
-    {
-        // 비밀번호 무한 입력 시도 방지
-        RoomManager.Instance.ProhibitInput();
-
-        string answer = "";
-        foreach (var wheel in wheels)
+        public void CheckAnswer()
         {
-            answer += wheel.currentNumber.ToString();
+            // 비밀번호 무한 입력 시도 방지
+            RoomManager.Instance.ProhibitInput();
+
+            string answer = "";
+            foreach (var wheel in wheels)
+            {
+                answer += wheel.currentNumber.ToString();
+            }
+
+            if (answer == correctAnswer)
+            {
+                //showCorrectAnswer = true;
+                StartCoroutine(ClearMessageAfterDelay(2));
+                tinCaseA.SetIsInquiry(true);
+                GameManager.Instance.SetVariable("TinCaseCorrect", true);
+            }
+            else
+            {
+                //showCorrectAnswer = false;
+                GameManager.Instance.SetVariable("TinCaseCorrect", false);
+            }
+
+            EventManager.Instance.CallEvent("EventTinCaseB");
         }
 
-        if (answer == correctAnswer)
+        //void OnGUI()
+        //{
+        //    if (showCorrectAnswer)
+        //    {
+        //        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
+        //        guiStyle.fontSize = 24;
+        //        guiStyle.normal.textColor = Color.green;
+
+        //        GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 + 200, 200, 50), "Correct Answer!", guiStyle);
+        //    }
+        //}
+
+        IEnumerator ClearMessageAfterDelay(float delay)
         {
-            //showCorrectAnswer = true;
-            StartCoroutine(ClearMessageAfterDelay(2));
-            tinCaseA.SetIsInquiry(true);
-            GameManager.Instance.SetVariable("TinCaseCorrect", true);
-        }
-        else
-        {
+            yield return new WaitForSeconds(delay);
             //showCorrectAnswer = false;
-            GameManager.Instance.SetVariable("TinCaseCorrect", false);
         }
-
-        EventManager.Instance.CallEvent("EventTinCaseB");
-    }
-
-    //void OnGUI()
-    //{
-    //    if (showCorrectAnswer)
-    //    {
-    //        GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
-    //        guiStyle.fontSize = 24;
-    //        guiStyle.normal.textColor = Color.green;
-
-    //        GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 + 200, 200, 50), "Correct Answer!", guiStyle);
-    //    }
-    //}
-
-    IEnumerator ClearMessageAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        //showCorrectAnswer = false;
     }
 }

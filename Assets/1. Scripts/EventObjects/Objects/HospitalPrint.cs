@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class HospitalPrint : EventObject { }
+
+namespace Fate.Events
+{
+    public class HospitalPrint : EventObject { }
+}

@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class Blankets : EventObject { }
+
+namespace Fate.Events
+{
+    public class Blankets : EventObject { }
+}

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static Constants;
+using static Fate.Utilities.Constants;
+using Fate.Managers;
+using Fate.Utilities;
 
 public class FollowGameManager : MonoBehaviour
 {

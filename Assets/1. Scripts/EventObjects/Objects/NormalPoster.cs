@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class NormalPoster : EventObject { }
+
+namespace Fate.Events
+{
+    public class NormalPoster : EventObject { }
+}

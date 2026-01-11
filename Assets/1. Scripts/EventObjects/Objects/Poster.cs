@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class Poster : EventObject { }
+
+namespace Fate.Events
+{
+    public class Poster : EventObject { }
+}

@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class RoomDoorBear : EventObject { }
+
+namespace Fate.Events
+{
+    public class RoomDoorBear : EventObject { }
+}

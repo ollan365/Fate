@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class Shelves : EventObject { }
+
+namespace Fate.Events
+{
+    public class Shelves : EventObject { }
+}

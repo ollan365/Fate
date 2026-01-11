@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fate.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class RoomManager : MonoBehaviour
+namespace Fate.Managers
+{
+    public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
     
@@ -227,6 +230,7 @@ public class RoomManager : MonoBehaviour
     private IEnumerator SetButtonsAfterDelay(float delayTime = 0.5f)
     {
         yield return new WaitForSeconds(delayTime);
-        SetButtons();
+                SetButtons();
+    }
     }
 }

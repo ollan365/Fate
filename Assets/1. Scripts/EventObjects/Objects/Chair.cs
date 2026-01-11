@@ -1,3 +1,4 @@
+using Fate.Managers;
 
 using System;
 using System.Collections;
@@ -6,102 +7,106 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Chair : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    // 의자 위치
-    private Vector2 originalPosition;  // 기존 위치 
-    [SerializeField] private List<Vector2> movedPositions = new List<Vector2> { Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero };  // 사이드별 이동한 위치
-
-    // targetPosition에 위의 origin 위치랑 moved 위치를 대입해서 거기까지 움직이게 함.
-    private RectTransform rectTransform;
-
-    [SerializeField] private float moveDuration = 0.3f; // 이동에 걸리는 시간
-
-    private bool isMoving = false; // 의자가 움직이는 중인지 여부
-
-    private bool chairMoved = false;
-
-    [SerializeField] private GameObject deskUnMovedChair;
-    [SerializeField] private GameObject deskMovedChair;
-
-    protected override void Awake()
+    public class Chair : EventObject, IResultExecutable
     {
-        base.Awake();
-        ResultManager.Instance.RegisterExecutable($"Chair{sideNum}", this);
-        rectTransform = GetComponent<RectTransform>();
+        // 의자 위치
+        private Vector2 originalPosition;  // 기존 위치 
+        [SerializeField] private List<Vector2> movedPositions = new List<Vector2> { Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero };  // 사이드별 이동한 위치
 
-        originalPosition = rectTransform.anchoredPosition;  // 초기 위치 저장
-        switch (sideNum)  // 사이드별 이동한 의자 위치
+        // targetPosition에 위의 origin 위치랑 moved 위치를 대입해서 거기까지 움직이게 함.
+        private RectTransform rectTransform;
+
+        [SerializeField] private float moveDuration = 0.3f; // 이동에 걸리는 시간
+
+        private bool isMoving = false; // 의자가 움직이는 중인지 여부
+
+        private bool chairMoved = false;
+
+        [SerializeField] private GameObject deskUnMovedChair;
+        [SerializeField] private GameObject deskMovedChair;
+
+        protected override void Awake()
         {
-            case 1:
-                movedPositions[1] = new Vector2(-125f, originalPosition.y);
-                break;
-            case 2:
-                movedPositions[2] = new Vector2(652f, -497f);
-                break;
-            case 4:
-                movedPositions[4] = new Vector2(-533f, -424f);
-                break;
+            base.Awake();
+            ResultManager.Instance.RegisterExecutable($"Chair{sideNum}", this);
+            rectTransform = GetComponent<RectTransform>();
+
+            originalPosition = rectTransform.anchoredPosition;  // 초기 위치 저장
+            switch (sideNum)  // 사이드별 이동한 의자 위치
+            {
+                case 1:
+                    movedPositions[1] = new Vector2(-125f, originalPosition.y);
+                    break;
+                case 2:
+                    movedPositions[2] = new Vector2(652f, -497f);
+                    break;
+                case 4:
+                    movedPositions[4] = new Vector2(-533f, -424f);
+                    break;
+            }
+
+            if (sideNum == 1)
+            {
+                if (deskUnMovedChair != null)
+                    ResultManager.Instance.RegisterExecutable($"{deskUnMovedChair.name} {sideNum}", deskUnMovedChair.GetComponent<IResultExecutable>());
+                if (deskMovedChair != null)
+                    ResultManager.Instance.RegisterExecutable($"{deskMovedChair.name} {sideNum}", deskMovedChair.GetComponent<IResultExecutable>());
+            }
         }
 
-        if (sideNum == 1)
+        protected override bool CanInteract()
         {
-            if (deskUnMovedChair != null)
-                ResultManager.Instance.RegisterExecutable($"{deskUnMovedChair.name} {sideNum}", deskUnMovedChair.GetComponent<IResultExecutable>());
-            if (deskMovedChair != null)
-                ResultManager.Instance.RegisterExecutable($"{deskMovedChair.name} {sideNum}", deskMovedChair.GetComponent<IResultExecutable>());
+            return !isMoving && !GameManager.Instance.GetIsBusy();
         }
-    }
 
-    protected override bool CanInteract()
-    {
-        return !isMoving && !GameManager.Instance.GetIsBusy();
-    }
-
-    public void ExecuteAction()
-    {
-        chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
-        Vector2 targetPosition = chairMoved ? originalPosition : movedPositions[sideNum];
-        if (isActiveAndEnabled) StartCoroutine(MoveChair(targetPosition));
-    }
+        public void ExecuteAction()
+        {
+            chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
+            Vector2 targetPosition = chairMoved ? originalPosition : movedPositions[sideNum];
+            if (isActiveAndEnabled) StartCoroutine(MoveChair(targetPosition));
+        }
     
-    IEnumerator MoveChair(Vector2 targetPosition)
-    {
-        isMoving = true;
-
-        GameManager.Instance.SetVariable("isChairMoving",isMoving);
-
-        float elapsedTime = 0;
-        Vector2 startingPosition = rectTransform.anchoredPosition;
-
-        while (elapsedTime < moveDuration)
+        IEnumerator MoveChair(Vector2 targetPosition)
         {
-            rectTransform.anchoredPosition = Vector2.Lerp(startingPosition, targetPosition, (elapsedTime / moveDuration));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+            isMoving = true;
 
-        rectTransform.anchoredPosition = targetPosition;
+            GameManager.Instance.SetVariable("isChairMoving",isMoving);
+
+            float elapsedTime = 0;
+            Vector2 startingPosition = rectTransform.anchoredPosition;
+
+            while (elapsedTime < moveDuration)
+            {
+                rectTransform.anchoredPosition = Vector2.Lerp(startingPosition, targetPosition, (elapsedTime / moveDuration));
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            rectTransform.anchoredPosition = targetPosition;
         
-        isMoving = false;
+            isMoving = false;
 
-        chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
-        if (sideNum == 1) {
-            deskUnMovedChair.SetActive(!chairMoved);
-            deskMovedChair.SetActive(chairMoved);
+            chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
+            if (sideNum == 1) {
+                deskUnMovedChair.SetActive(!chairMoved);
+                deskMovedChair.SetActive(chairMoved);
+            }
+
+            GameManager.Instance.SetVariable("isChairMoving", isMoving);
         }
 
-        GameManager.Instance.SetVariable("isChairMoving", isMoving);
-    }
+        private void OnEnable()
+        {
+            chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
+            rectTransform.anchoredPosition = chairMoved ? movedPositions[sideNum] : originalPosition;
 
-    private void OnEnable()
-    {
-        chairMoved = (bool)GameManager.Instance.GetVariable("ChairMoved");
-        rectTransform.anchoredPosition = chairMoved ? movedPositions[sideNum] : originalPosition;
-
-        if (sideNum == 1) {
-            deskUnMovedChair.SetActive(!chairMoved);
-            deskMovedChair.SetActive(chairMoved);
+            if (sideNum == 1) {
+                deskUnMovedChair.SetActive(!chairMoved);
+                deskMovedChair.SetActive(chairMoved);
+            }
         }
     }
 }

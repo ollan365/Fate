@@ -1,12 +1,17 @@
 using UnityEngine;
+using Fate.Managers;
 
-public class NewTeddyBear : EventObject
+
+namespace Fate.Events
 {
-    private void Start()
+    public class NewTeddyBear : EventObject
     {
-        if ((int)GameManager.Instance.GetVariable("ReplayCount") > 0)
-            gameObject.SetActive(true);
-        else
-            gameObject.SetActive(false);
+        private void Start()
+        {
+            if ((int)GameManager.Instance.GetVariable("ReplayCount") > 0)
+                gameObject.SetActive(true);
+            else
+                gameObject.SetActive(false);
+        }
     }
 }

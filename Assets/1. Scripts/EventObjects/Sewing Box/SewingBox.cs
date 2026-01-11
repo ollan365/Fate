@@ -1,38 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fate.Managers;
 
-public class SewingBox : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    [SerializeField]
-    private GameObject SewingBoxPuzzle;
-
-    private void Start()
+    public class SewingBox : EventObject, IResultExecutable
     {
-        RegisterWithResultManager();
-    }
+        [SerializeField]
+        private GameObject SewingBoxPuzzle;
 
-    private void OnEnable()
-    {
-        RegisterWithResultManager();
-    }
+        private void Start()
+        {
+            RegisterWithResultManager();
+        }
 
-    private void RegisterWithResultManager()
-    {
-        if (ResultManager.Instance != null)
-            ResultManager.Instance.RegisterExecutable("SewingBox", this);
-    }
+        private void OnEnable()
+        {
+            RegisterWithResultManager();
+        }
 
-    public void ExecuteAction()
-    {
-        ActivateSewingBoxPuzzle();
-    }
+        private void RegisterWithResultManager()
+        {
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.RegisterExecutable("SewingBox", this);
+        }
 
-    // 반짇고리 잠금 장치 실행
-    public void ActivateSewingBoxPuzzle()
-    {
-        //isInquiry = false;  // 조사 시스템 예 아니오 스킵
-        UIManager.Instance.AnimateUI(SewingBoxPuzzle, true, true);
-        SetCurrentLockObjectCanvasGroup(SewingBoxPuzzle);
+        public void ExecuteAction()
+        {
+            ActivateSewingBoxPuzzle();
+        }
+
+        // 반짇고리 잠금 장치 실행
+        public void ActivateSewingBoxPuzzle()
+        {
+            //isInquiry = false;  // 조사 시스템 예 아니오 스킵
+            UIManager.Instance.AnimateUI(SewingBoxPuzzle, true, true);
+            SetCurrentLockObjectCanvasGroup(SewingBoxPuzzle);
+        }
     }
 }

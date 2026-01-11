@@ -3,430 +3,435 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Fate.Events;
 
-public class Book2IndexManager : PageContentsManager
+
+namespace Fate.Managers
 {
-    // Store script IDs per page; text is built at display time
-    private Dictionary<string, List<string>> diary1Pages = new Dictionary<string, List<string>>();
-    private Dictionary<string, List<string>> diary2Pages = new Dictionary<string, List<string>>();
-    private Dictionary<string, List<string>> room2BookPages = new Dictionary<string, List<string>>();
-    private Dictionary<string, List<string>> dreamDiaryPages = new Dictionary<string, List<string>>();
-
-    public int totalPageCount = 0;
-
-    [SerializeField] private PageFlip bookPages;
-    [SerializeField] private string bookType;
-    //[SerializeField] private List<Button> RightUpFlags;
-    [SerializeField] private List<Button> RightDownFlags;
-    [SerializeField] private List<Button> LeftFlags;
-    [SerializeField] private List<Button> RightNextFlags;
-    [SerializeField] private List<Button> LeftNextFlags;
-
-    [SerializeField] private int presentPageNum;
-
-    //[SerializeField] private GameObject RightUpFlagsParent;
-    [SerializeField] private GameObject RightDownFlagsParent;
-    [SerializeField] private GameObject LeftFlagsParent;
-    [SerializeField] private GameObject RightNextGameObject;
-
-    [SerializeField] private GameObject NextPageClipGameObject;
-
-    [Header("bookPages.leftPage's Sprites")]
-    public Sprite BookL2;
-    public Sprite BookRedL;
-    public Sprite BookYellowL;
-    public Sprite BookBlueL;
-    [Header("bookPages.rightPage's Sprites")]
-    public Sprite BookR2;
-    public Sprite BookRedR;
-    public Sprite BookYellowR;
-    public Sprite BookBlueR;
-    [Header("Right Index Sprites")]
-    public Sprite IndexBlueR;
-    public Sprite IndexBlueR2;
-    public Image RightDownFlagThird;
-
-    private void Awake()
+    public class Book2IndexManager : PageContentsManager
     {
-        ParsePageContents();
-    }
+        // Store script IDs per page; text is built at display time
+        private Dictionary<string, List<string>> diary1Pages = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> diary2Pages = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> room2BookPages = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> dreamDiaryPages = new Dictionary<string, List<string>>();
 
-    public void SetTotalPages()
-    {
-        switch (bookType)
+        public int totalPageCount = 0;
+
+        [SerializeField] private PageFlip bookPages;
+        [SerializeField] private string bookType;
+        //[SerializeField] private List<Button> RightUpFlags;
+        [SerializeField] private List<Button> RightDownFlags;
+        [SerializeField] private List<Button> LeftFlags;
+        [SerializeField] private List<Button> RightNextFlags;
+        [SerializeField] private List<Button> LeftNextFlags;
+
+        [SerializeField] private int presentPageNum;
+
+        //[SerializeField] private GameObject RightUpFlagsParent;
+        [SerializeField] private GameObject RightDownFlagsParent;
+        [SerializeField] private GameObject LeftFlagsParent;
+        [SerializeField] private GameObject RightNextGameObject;
+
+        [SerializeField] private GameObject NextPageClipGameObject;
+
+        [Header("bookPages.leftPage's Sprites")]
+        public Sprite BookL2;
+        public Sprite BookRedL;
+        public Sprite BookYellowL;
+        public Sprite BookBlueL;
+        [Header("bookPages.rightPage's Sprites")]
+        public Sprite BookR2;
+        public Sprite BookRedR;
+        public Sprite BookYellowR;
+        public Sprite BookBlueR;
+        [Header("Right Index Sprites")]
+        public Sprite IndexBlueR;
+        public Sprite IndexBlueR2;
+        public Image RightDownFlagThird;
+
+        private void Awake()
         {
-            case "Diary1":
-                bookPages.totalPageCount = diary1Pages.Count;
-                break;
-
-            case "Diary2":
-                bookPages.totalPageCount = diary2Pages.Count;
-                break;
-            case "Room2Book":
-                bookPages.totalPageCount = room2BookPages.Count;
-                break;
-
-            case "DreamDiary":
-                bookPages.totalPageCount = dreamDiaryPages.Count;
-                break;
-        }
-    }
-
-    public override void DisplayPage(PageType pageType, int pageNum)
-    {
-        switch (pageType)
-        {
-            case PageType.Left:
-                leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
-                break;
-
-            case PageType.Right:
-                rightPageNum.text = pageNum.ToString();
-                break;
-
-            case PageType.Back:
-                backPageNum.text = pageNum.ToString();
-                break;
-
-            case PageType.Front:
-                frontPageNum.text = pageNum.ToString();
-                break;
+            ParsePageContents();
         }
 
-        Dictionary<string, List<string>> currentPages = GetCurrentPagesDictionary();
-        if (currentPages == null)
+        public void SetTotalPages()
         {
-            SetPageText(pageType, "");
-            // Debug.LogWarning("Current pages dictionary is null");
-            return;
-        }
-
-        if (pageNum < 1 || pageNum > totalPageCount)
-        {
-            SetPageText(pageType, "");
-            // Debug.LogWarning($"Invalid page number {pageNum}. Total pages: {totalPageCount}");
-            return;
-        }
-
-        string diaryID = GetBookID(pageNum);
-
-        if (diaryID == null || !currentPages.ContainsKey(diaryID))
-        {
-            SetPageText(pageType, "");
-            Debug.LogWarning($"Diary ID '{diaryID}' not found in current pages dictionary");
-            return;
-        }
-
-        var scriptIds = currentPages[diaryID];
-        string pageText = BuildPageText(scriptIds);
-
-        SetPageText(pageType, pageText);
-
-        presentPageNum = pageNum;
-
-        //DisplayFlags();
-    }
-
-    private void SetPageText(PageType pageType, string text)
-    {
-        switch (pageType)
-        {
-            case PageType.Left:
-                leftPage.text = text;
-                break;
-
-            case PageType.Right:
-                rightPage.text = text;
-                break;
-
-            case PageType.Back:
-                backPage.text = text;
-                break;
-
-            case PageType.Front:
-                frontPage.text = text;
-                break;
-        }
-    }
-
-    private string GetBookID(int pageNum)
-    {
-        return bookType + "_" + pageNum.ToString().PadLeft(3, '0');
-    }
-
-    private Dictionary<string, List<string>> GetCurrentPagesDictionary()
-    {
-        switch (bookType)
-        {
-            case "Diary1":
-                return diary1Pages;
-            case "Diary2":
-                return diary2Pages;
-            case "Room2Book":
-                return room2BookPages;
-            case "DreamDiary":
-                return dreamDiaryPages;
-            default:
-                return room2BookPages;
-        }
-    }
-
-    public override void DisplayPagesDynamic(int currentPage)
-    {
-        DisplayPage(PageType.Left, currentPage);
-        DisplayPage(PageType.Right, currentPage + 3);
-        DisplayPage(PageType.Back, currentPage + 1);
-        DisplayPage(PageType.Front, currentPage + 2);
-
-        DisplayFlags();
-    }
-
-    public override void DisplayPagesStatic(int currentPage)
-    {
-        DisplayPage(PageType.Left, currentPage);
-        DisplayPage(PageType.Right, currentPage + 1);
-
-        flipLeftButton.SetActive(currentPage > 0);
-
-        bool flipRightButtonOn = currentPage < totalPageCount - 1;
-        // Debug.Log($"flipRightButtonOn: {flipRightButtonOn}\n\tcurrentPage: {currentPage}\n\ttotalPageCount: {totalPageCount}");
-        flipRightButton.SetActive(flipRightButtonOn);
-
-        DisplayFlags();
-    }
-
-    public override void ParsePageContents()
-    {
-        TextAsset diaryCsv = Resources.Load<TextAsset>("Datas/diary");
-        if (diaryCsv == null)
-        {
-            Debug.LogError("Failed to load diary CSV file");
-            return;
-        }
-
-        string[] lines = diaryCsv.text.Split('\n');
-        string previousDiaryPageID = "";
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-
-            string[] fields = lines[i].Split(',');
-
-            string diaryPageID = fields[0].Trim();
-            if (diaryPageID == "") diaryPageID = previousDiaryPageID;
-            else previousDiaryPageID = diaryPageID;
-
-            string scriptID = fields[2].Trim();
-            if (!DialogueManager.Instance.scripts.ContainsKey(scriptID))
+            switch (bookType)
             {
-                Debug.LogWarning($"Script ID '{scriptID}' not found in DialogueManager scripts");
-                continue;
+                case "Diary1":
+                    bookPages.totalPageCount = diary1Pages.Count;
+                    break;
+
+                case "Diary2":
+                    bookPages.totalPageCount = diary2Pages.Count;
+                    break;
+                case "Room2Book":
+                    bookPages.totalPageCount = room2BookPages.Count;
+                    break;
+
+                case "DreamDiary":
+                    bookPages.totalPageCount = dreamDiaryPages.Count;
+                    break;
             }
+        }
 
-            Dictionary<string, List<string>> targetDictionary = null;
-
-            if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;
-            else if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
-            else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
-            else if (diaryPageID.StartsWith("DreamDiary_")) targetDictionary = dreamDiaryPages;
-            else if (diaryPageID.StartsWith("Album_")) continue;
-            else
+        public override void DisplayPage(PageType pageType, int pageNum)
+        {
+            switch (pageType)
             {
-                Debug.LogWarning($"Unknown diary page ID format: {diaryPageID}");
-                continue;
+                case PageType.Left:
+                    leftPageNum.text = pageNum == 0 ? "" : pageNum.ToString();
+                    break;
+
+                case PageType.Right:
+                    rightPageNum.text = pageNum.ToString();
+                    break;
+
+                case PageType.Back:
+                    backPageNum.text = pageNum.ToString();
+                    break;
+
+                case PageType.Front:
+                    frontPageNum.text = pageNum.ToString();
+                    break;
             }
 
-            if (targetDictionary.ContainsKey(diaryPageID)) {
-                targetDictionary[diaryPageID].Add(scriptID);
-            } else {
-                targetDictionary.Add(diaryPageID, new List<string> { scriptID });
+            Dictionary<string, List<string>> currentPages = GetCurrentPagesDictionary();
+            if (currentPages == null)
+            {
+                SetPageText(pageType, "");
+                // Debug.LogWarning("Current pages dictionary is null");
+                return;
+            }
+
+            if (pageNum < 1 || pageNum > totalPageCount)
+            {
+                SetPageText(pageType, "");
+                // Debug.LogWarning($"Invalid page number {pageNum}. Total pages: {totalPageCount}");
+                return;
+            }
+
+            string diaryID = GetBookID(pageNum);
+
+            if (diaryID == null || !currentPages.ContainsKey(diaryID))
+            {
+                SetPageText(pageType, "");
+                Debug.LogWarning($"Diary ID '{diaryID}' not found in current pages dictionary");
+                return;
+            }
+
+            var scriptIds = currentPages[diaryID];
+            string pageText = BuildPageText(scriptIds);
+
+            SetPageText(pageType, pageText);
+
+            presentPageNum = pageNum;
+
+            //DisplayFlags();
+        }
+
+        private void SetPageText(PageType pageType, string text)
+        {
+            switch (pageType)
+            {
+                case PageType.Left:
+                    leftPage.text = text;
+                    break;
+
+                case PageType.Right:
+                    rightPage.text = text;
+                    break;
+
+                case PageType.Back:
+                    backPage.text = text;
+                    break;
+
+                case PageType.Front:
+                    frontPage.text = text;
+                    break;
             }
         }
 
-        // Set totalPageCount based on the current scene's dictionary size
-        totalPageCount = GetCurrentPagesDictionary()?.Count ?? 0;
-
-        DisplayFlags();
-    }
-
-    private string BuildPageText(List<string> scriptIds)
-    {
-        if (scriptIds == null || scriptIds.Count == 0) return string.Empty;
-        int lang = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
-        List<string> lines = new List<string>(scriptIds.Count);
-        foreach (var id in scriptIds)
+        private string GetBookID(int pageNum)
         {
-            if (!DialogueManager.Instance || DialogueManager.Instance.scripts == null ||
-                !DialogueManager.Instance.scripts.ContainsKey(id))
-                continue;
-            var sentence = DialogueManager.Instance.scripts[id].GetScript(lang).ProcessedText;
-            lines.Add(sentence);
-        }
-        return string.Join("\n\n", lines);
-    }
-
-    private void OnEnable()
-    {
-        if (LocalizationManager.Instance != null)
-            LocalizationManager.Instance.OnLanguageChanged += OnLanguageChanged;
-    }
-
-    private void OnDisable()
-    {
-        if (LocalizationManager.Instance != null)
-            LocalizationManager.Instance.OnLanguageChanged -= OnLanguageChanged;
-    }
-
-    private void OnLanguageChanged(int _)
-    {
-        // Re-render current pages to reflect language change
-        DisplayPagesStatic(presentPageNum);
-    }
-
-    // Each time a page is turned, the corresponding index flags are turned on according to the position.
-    // Depending on presentPageNum, the page resource with the corresponding index is changed.
-    private void DisplayFlags()
-    {
-        switch (presentPageNum)
-        {
-            case 1:
-                // the red index
-                SetFlags("RightNextFlags", 0,true);
-                SetFlags("RightDownFlags", 1, true);
-                SetFlags("RightDownFlags", 2, true);
-                bookPages.leftNext.sprite = BookL2;
-                bookPages.leftPage = BookL2;
-                bookPages.rightNext.sprite = BookRedR;
-                bookPages.rightPage = BookRedR;
-
-                RightDownFlagThird.sprite = IndexBlueR2;
-                break;
-
-            case 2:
-                // Dragging page 1
-                bookPages.left.sprite = BookRedR;
-                bookPages.right.sprite = BookRedL;
-
-                bookPages.rightNext.sprite = BookYellowR;
-                bookPages.rightPage = BookYellowR;
-                break;
-
-            case 3:
-                // the yellow index
-                SetFlags("RightNextFlags", 1, true);
-                SetFlags("LeftNextFlags", 0, true);
-                SetFlags("RightDownFlags", 2, true);
-                bookPages.leftNext.sprite = BookRedL;
-                bookPages.leftPage = BookRedL;
-                bookPages.rightNext.sprite = BookYellowR;
-                bookPages.rightPage = BookYellowR;
-
-                RightDownFlagThird.sprite = IndexBlueR;
-                break;
-
-            case 4:
-                // Dragging page 3
-                bookPages.left.sprite = BookYellowR;
-                bookPages.right.sprite = BookYellowL;
-
-                bookPages.rightNext.sprite = BookBlueR;
-                bookPages.rightPage = BookBlueR;
-
-                SetFlags("LeftFlags", 0, true);
-                bookPages.leftNext.sprite = BookL2;
-                break;
-
-            case 5:
-                // the blue index
-                SetFlags("RightNextFlags", 2, true);
-                SetFlags("LeftFlags", 0, true);
-                SetFlags("LeftNextFlags", 1, true);
-                bookPages.leftNext.sprite = BookYellowL;
-                bookPages.leftPage = BookYellowL;
-                bookPages.rightNext.sprite = BookBlueR;
-                bookPages.rightPage = BookBlueR;
-                break;
-
-            case 6:
-                // Dragging page 5
-                bookPages.left.sprite = BookBlueR;
-                bookPages.right.sprite = BookBlueL;
-
-                bookPages.rightNext.sprite = BookR2;
-                bookPages.rightPage = BookR2;
-
-                SetFlags("LeftFlags", 1, true);
-                bookPages.leftNext.sprite = BookL2;
-                break;
-
-            // Page 5 is the end, but if there are no 2 pages of margins behind it, 
-            // an error occurs when turning to the next page from page 5, so a margin is created.
-            case 7:
-                SetFlags("LeftFlags", 0, true);
-                SetFlags("LeftFlags", 1, true);
-                SetFlags("LeftNextFlags", 2, true);
-                bookPages.leftNext.sprite = BookBlueL;
-                bookPages.leftPage = BookBlueL;
-                bookPages.rightNext.sprite = BookR2;
-                bookPages.rightPage = BookR2;
-                break;
-            case 8:
-                SetFlags("LeftFlags", 0, true);
-                SetFlags("LeftFlags", 1, true);
-                SetFlags("LeftFlags", 2, true);
-                bookPages.left.sprite = BookR2;
-                bookPages.right.sprite = BookL2;
-
-                bookPages.leftNext.sprite = BookL2;
-                bookPages.leftPage = BookL2;
-                bookPages.rightNext.sprite = BookR2;
-                bookPages.rightPage = BookR2;
-                break;
+            return bookType + "_" + pageNum.ToString().PadLeft(3, '0');
         }
 
-        // When the page automatically turns, RightDownFlagsParent should have an index one space before RightNextGameObject.
-        // The positions of the objects have changed, so we use SetSiblingIndex to sort the order.
-        LeftFlagsParent.transform.SetAsFirstSibling();
-        int rightPageIndex = NextPageClipGameObject.transform.GetSiblingIndex();
-        RightNextGameObject.transform.SetSiblingIndex(rightPageIndex - 2);
-        RightDownFlagsParent.transform.SetSiblingIndex(rightPageIndex - 3);
-    }
-
-    private void SetFlags(string flagsListName, int index, bool isShown)
-    {
-        switch (flagsListName)
+        private Dictionary<string, List<string>> GetCurrentPagesDictionary()
         {
-            case "RightDownFlags":
-                RightDownFlags[index].gameObject.SetActive(isShown);
-                LeftFlags[index].gameObject.SetActive(!isShown);
+            switch (bookType)
+            {
+                case "Diary1":
+                    return diary1Pages;
+                case "Diary2":
+                    return diary2Pages;
+                case "Room2Book":
+                    return room2BookPages;
+                case "DreamDiary":
+                    return dreamDiaryPages;
+                default:
+                    return room2BookPages;
+            }
+        }
 
-                RightNextFlags[index].gameObject.SetActive(!isShown);
-                LeftNextFlags[index].gameObject.SetActive(!isShown);
-                break;
+        public override void DisplayPagesDynamic(int currentPage)
+        {
+            DisplayPage(PageType.Left, currentPage);
+            DisplayPage(PageType.Right, currentPage + 3);
+            DisplayPage(PageType.Back, currentPage + 1);
+            DisplayPage(PageType.Front, currentPage + 2);
 
-            case "LeftFlags":
-                RightDownFlags[index].gameObject.SetActive(!isShown);
-                LeftFlags[index].gameObject.SetActive(isShown);
+            DisplayFlags();
+        }
 
-                RightNextFlags[index].gameObject.SetActive(!isShown);
-                LeftNextFlags[index].gameObject.SetActive(!isShown);
-                break;
+        public override void DisplayPagesStatic(int currentPage)
+        {
+            DisplayPage(PageType.Left, currentPage);
+            DisplayPage(PageType.Right, currentPage + 1);
 
-            case "RightNextFlags":
-                RightNextFlags[index].gameObject.SetActive(isShown);
-                LeftNextFlags[index].gameObject.SetActive(!isShown);
+            flipLeftButton.SetActive(currentPage > 0);
 
-                RightDownFlags[index].gameObject.SetActive(!isShown);
-                LeftFlags[index].gameObject.SetActive(!isShown);
-                break;
-            case "LeftNextFlags":
-                RightNextFlags[index].gameObject.SetActive(!isShown);
-                LeftNextFlags[index].gameObject.SetActive(isShown);
+            bool flipRightButtonOn = currentPage < totalPageCount - 1;
+            // Debug.Log($"flipRightButtonOn: {flipRightButtonOn}\n\tcurrentPage: {currentPage}\n\ttotalPageCount: {totalPageCount}");
+            flipRightButton.SetActive(flipRightButtonOn);
 
-                RightDownFlags[index].gameObject.SetActive(!isShown);
-                LeftFlags[index].gameObject.SetActive(!isShown);
-                break;
+            DisplayFlags();
+        }
+
+        public override void ParsePageContents()
+        {
+            TextAsset diaryCsv = Resources.Load<TextAsset>("Datas/diary");
+            if (diaryCsv == null)
+            {
+                Debug.LogError("Failed to load diary CSV file");
+                return;
+            }
+
+            string[] lines = diaryCsv.text.Split('\n');
+            string previousDiaryPageID = "";
+
+            for (int i = 1; i < lines.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(lines[i])) continue;
+
+                string[] fields = lines[i].Split(',');
+
+                string diaryPageID = fields[0].Trim();
+                if (diaryPageID == "") diaryPageID = previousDiaryPageID;
+                else previousDiaryPageID = diaryPageID;
+
+                string scriptID = fields[2].Trim();
+                if (!DialogueManager.Instance.scripts.ContainsKey(scriptID))
+                {
+                    Debug.LogWarning($"Script ID '{scriptID}' not found in DialogueManager scripts");
+                    continue;
+                }
+
+                Dictionary<string, List<string>> targetDictionary = null;
+
+                if (diaryPageID.StartsWith("Room2Book_")) targetDictionary = room2BookPages;
+                else if (diaryPageID.StartsWith("Diary1_")) targetDictionary = diary1Pages;
+                else if (diaryPageID.StartsWith("Diary2_")) targetDictionary = diary2Pages;
+                else if (diaryPageID.StartsWith("DreamDiary_")) targetDictionary = dreamDiaryPages;
+                else if (diaryPageID.StartsWith("Album_")) continue;
+                else
+                {
+                    Debug.LogWarning($"Unknown diary page ID format: {diaryPageID}");
+                    continue;
+                }
+
+                if (targetDictionary.ContainsKey(diaryPageID)) {
+                    targetDictionary[diaryPageID].Add(scriptID);
+                } else {
+                    targetDictionary.Add(diaryPageID, new List<string> { scriptID });
+                }
+            }
+
+            // Set totalPageCount based on the current scene's dictionary size
+            totalPageCount = GetCurrentPagesDictionary()?.Count ?? 0;
+
+            DisplayFlags();
+        }
+
+        private string BuildPageText(List<string> scriptIds)
+        {
+            if (scriptIds == null || scriptIds.Count == 0) return string.Empty;
+            int lang = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetLanguage() : 0;
+            List<string> lines = new List<string>(scriptIds.Count);
+            foreach (var id in scriptIds)
+            {
+                if (!DialogueManager.Instance || DialogueManager.Instance.scripts == null ||
+                    !DialogueManager.Instance.scripts.ContainsKey(id))
+                    continue;
+                var sentence = DialogueManager.Instance.scripts[id].GetScript(lang).ProcessedText;
+                lines.Add(sentence);
+            }
+            return string.Join("\n\n", lines);
+        }
+
+        private void OnEnable()
+        {
+            if (LocalizationManager.Instance != null)
+                LocalizationManager.Instance.OnLanguageChanged += OnLanguageChanged;
+        }
+
+        private void OnDisable()
+        {
+            if (LocalizationManager.Instance != null)
+                LocalizationManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+        }
+
+        private void OnLanguageChanged(int _)
+        {
+            // Re-render current pages to reflect language change
+            DisplayPagesStatic(presentPageNum);
+        }
+
+        // Each time a page is turned, the corresponding index flags are turned on according to the position.
+        // Depending on presentPageNum, the page resource with the corresponding index is changed.
+        private void DisplayFlags()
+        {
+            switch (presentPageNum)
+            {
+                case 1:
+                    // the red index
+                    SetFlags("RightNextFlags", 0,true);
+                    SetFlags("RightDownFlags", 1, true);
+                    SetFlags("RightDownFlags", 2, true);
+                    bookPages.leftNext.sprite = BookL2;
+                    bookPages.leftPage = BookL2;
+                    bookPages.rightNext.sprite = BookRedR;
+                    bookPages.rightPage = BookRedR;
+
+                    RightDownFlagThird.sprite = IndexBlueR2;
+                    break;
+
+                case 2:
+                    // Dragging page 1
+                    bookPages.left.sprite = BookRedR;
+                    bookPages.right.sprite = BookRedL;
+
+                    bookPages.rightNext.sprite = BookYellowR;
+                    bookPages.rightPage = BookYellowR;
+                    break;
+
+                case 3:
+                    // the yellow index
+                    SetFlags("RightNextFlags", 1, true);
+                    SetFlags("LeftNextFlags", 0, true);
+                    SetFlags("RightDownFlags", 2, true);
+                    bookPages.leftNext.sprite = BookRedL;
+                    bookPages.leftPage = BookRedL;
+                    bookPages.rightNext.sprite = BookYellowR;
+                    bookPages.rightPage = BookYellowR;
+
+                    RightDownFlagThird.sprite = IndexBlueR;
+                    break;
+
+                case 4:
+                    // Dragging page 3
+                    bookPages.left.sprite = BookYellowR;
+                    bookPages.right.sprite = BookYellowL;
+
+                    bookPages.rightNext.sprite = BookBlueR;
+                    bookPages.rightPage = BookBlueR;
+
+                    SetFlags("LeftFlags", 0, true);
+                    bookPages.leftNext.sprite = BookL2;
+                    break;
+
+                case 5:
+                    // the blue index
+                    SetFlags("RightNextFlags", 2, true);
+                    SetFlags("LeftFlags", 0, true);
+                    SetFlags("LeftNextFlags", 1, true);
+                    bookPages.leftNext.sprite = BookYellowL;
+                    bookPages.leftPage = BookYellowL;
+                    bookPages.rightNext.sprite = BookBlueR;
+                    bookPages.rightPage = BookBlueR;
+                    break;
+
+                case 6:
+                    // Dragging page 5
+                    bookPages.left.sprite = BookBlueR;
+                    bookPages.right.sprite = BookBlueL;
+
+                    bookPages.rightNext.sprite = BookR2;
+                    bookPages.rightPage = BookR2;
+
+                    SetFlags("LeftFlags", 1, true);
+                    bookPages.leftNext.sprite = BookL2;
+                    break;
+
+                // Page 5 is the end, but if there are no 2 pages of margins behind it, 
+                // an error occurs when turning to the next page from page 5, so a margin is created.
+                case 7:
+                    SetFlags("LeftFlags", 0, true);
+                    SetFlags("LeftFlags", 1, true);
+                    SetFlags("LeftNextFlags", 2, true);
+                    bookPages.leftNext.sprite = BookBlueL;
+                    bookPages.leftPage = BookBlueL;
+                    bookPages.rightNext.sprite = BookR2;
+                    bookPages.rightPage = BookR2;
+                    break;
+                case 8:
+                    SetFlags("LeftFlags", 0, true);
+                    SetFlags("LeftFlags", 1, true);
+                    SetFlags("LeftFlags", 2, true);
+                    bookPages.left.sprite = BookR2;
+                    bookPages.right.sprite = BookL2;
+
+                    bookPages.leftNext.sprite = BookL2;
+                    bookPages.leftPage = BookL2;
+                    bookPages.rightNext.sprite = BookR2;
+                    bookPages.rightPage = BookR2;
+                    break;
+            }
+
+            // When the page automatically turns, RightDownFlagsParent should have an index one space before RightNextGameObject.
+            // The positions of the objects have changed, so we use SetSiblingIndex to sort the order.
+            LeftFlagsParent.transform.SetAsFirstSibling();
+            int rightPageIndex = NextPageClipGameObject.transform.GetSiblingIndex();
+            RightNextGameObject.transform.SetSiblingIndex(rightPageIndex - 2);
+            RightDownFlagsParent.transform.SetSiblingIndex(rightPageIndex - 3);
+        }
+
+        private void SetFlags(string flagsListName, int index, bool isShown)
+        {
+            switch (flagsListName)
+            {
+                case "RightDownFlags":
+                    RightDownFlags[index].gameObject.SetActive(isShown);
+                    LeftFlags[index].gameObject.SetActive(!isShown);
+
+                    RightNextFlags[index].gameObject.SetActive(!isShown);
+                    LeftNextFlags[index].gameObject.SetActive(!isShown);
+                    break;
+
+                case "LeftFlags":
+                    RightDownFlags[index].gameObject.SetActive(!isShown);
+                    LeftFlags[index].gameObject.SetActive(isShown);
+
+                    RightNextFlags[index].gameObject.SetActive(!isShown);
+                    LeftNextFlags[index].gameObject.SetActive(!isShown);
+                    break;
+
+                case "RightNextFlags":
+                    RightNextFlags[index].gameObject.SetActive(isShown);
+                    LeftNextFlags[index].gameObject.SetActive(!isShown);
+
+                    RightDownFlags[index].gameObject.SetActive(!isShown);
+                    LeftFlags[index].gameObject.SetActive(!isShown);
+                    break;
+                case "LeftNextFlags":
+                    RightNextFlags[index].gameObject.SetActive(!isShown);
+                    LeftNextFlags[index].gameObject.SetActive(isShown);
+
+                    RightDownFlags[index].gameObject.SetActive(!isShown);
+                    LeftFlags[index].gameObject.SetActive(!isShown);
+                    break;
+            }
         }
     }
 }

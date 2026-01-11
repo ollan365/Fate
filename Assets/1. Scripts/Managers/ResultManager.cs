@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using Fate.Data;
+using Fate.Utilities;
 using UnityEngine;
-using static Constants;
+using static Fate.Utilities.Constants;
 using Random = Unity.Mathematics.Random;
 
-public class ResultManager : MonoBehaviour
+namespace Fate.Managers
+{
+    public class ResultManager : MonoBehaviour
 {
     public static ResultManager Instance { get; private set; }
 
@@ -868,5 +872,6 @@ public class ResultManager : MonoBehaviour
                 Debug.LogWarning($"Result ID: {resultID} not found!");
                 break;
         }
+    }
     }
 }

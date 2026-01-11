@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class Pillow : EventObject { }
+
+namespace Fate.Events
+{
+    public class Pillow : EventObject { }
+}

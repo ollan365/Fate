@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fate.Data;
 using UnityEngine;
+using GameEvent = Fate.Data.Event;
 
-public class EventManager : MonoBehaviour
+namespace Fate.Managers
+{
+    public class EventManager : MonoBehaviour
 {
     // EventManager를 싱글턴으로 생성
     public static EventManager Instance { get; private set; }
@@ -10,7 +14,7 @@ public class EventManager : MonoBehaviour
     private TextAsset eventsCSV;
 
     // events: dictionary of "Event"s indexed by string "Event ID"
-    public Dictionary<string, Event> events = new Dictionary<string, Event>();
+    public Dictionary<string, GameEvent> events = new Dictionary<string, GameEvent>();
 
 
     void Awake()
@@ -100,7 +104,7 @@ public class EventManager : MonoBehaviour
             else // 새로운 event ID인 경우: events에 새로 추가
             {
                 // 예약어 event를 피하기 위해 event_라고 이름 지음
-                Event event_ = new Event(
+                GameEvent event_ = new GameEvent(
                     eventID,
                     eventName,
                     eventDescription
@@ -251,5 +255,6 @@ public class EventManager : MonoBehaviour
                 }
             }
         }
+    }
     }
 }

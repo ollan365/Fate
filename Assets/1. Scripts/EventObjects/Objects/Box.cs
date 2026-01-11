@@ -2,96 +2,101 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Fate.Managers;
 
-public class Box : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    // ************************* temporary members for open animation *************************
-    [SerializeField] private Animator boxAnimator;
-    // ********************************************************************************
-    [SerializeField] private Image boxImage;
-    [SerializeField] private Sprite closedBoxSprite;
-    [SerializeField] private Sprite openBoxSprite;
-
-    public List<GameObject> sideClosedBox;
-    public List<GameObject> sideOpenBox;
-
-    protected override void Awake()
+    public class Box : EventObject, IResultExecutable
     {
-        base.Awake();
-        boxImage = GetComponent<Image>();
-    }
+        // ************************* temporary members for open animation *************************
+        [SerializeField] private Animator boxAnimator;
+        // ********************************************************************************
+        [SerializeField] private Image boxImage;
+        [SerializeField] private Sprite closedBoxSprite;
+        [SerializeField] private Sprite openBoxSprite;
 
-    private void Start()
-    {
-        RegisterWithResultManager();
-    }
+        public List<GameObject> sideClosedBox;
+        public List<GameObject> sideOpenBox;
 
-    private void OnEnable()
-    {
-        RegisterWithResultManager();
-        UpdateImageState();
-    }
-
-    private void RegisterWithResultManager()
-    {
-        if (ResultManager.Instance != null)
-            ResultManager.Instance.RegisterExecutable("Box", this);
-    }
-
-    protected override bool CanInteract()
-    {
-        return !GameManager.Instance.GetIsBusy();
-    }
-
-    public void ExecuteAction()
-    {
-        StartCoroutine(OpenBoxCoroutine());
-    }
-
-    // ************************* temporary methods for open animation *************************
-    private IEnumerator OpenBoxCoroutine()
-    {
-        bool clockTimeCorrect = (bool)GameManager.Instance.GetVariable("ClockTimeCorrect");
-        if (clockTimeCorrect)
+        protected override void Awake()
         {
-            RoomManager.Instance.SetIsInvestigating(true);
-            boxAnimator.SetBool("open_Box", true);
+            base.Awake();
+            boxImage = GetComponent<Image>();
+        }
 
-            // 애니메이션이 끝날 때까지 대기
-            yield return new WaitForSeconds(GetAnimationLength("open_Box"));
+        private void Start()
+        {
+            RegisterWithResultManager();
+        }
 
-            GameManager.Instance.SetVariable("BoxOpened", true);
+        private void OnEnable()
+        {
+            RegisterWithResultManager();
             UpdateImageState();
         }
-    }
 
-    private float GetAnimationLength(string animationName)
-    {
-        AnimationClip[] clips = boxAnimator.runtimeAnimatorController.animationClips;
-        foreach (AnimationClip clip in clips)
+        private void RegisterWithResultManager()
         {
-            if (clip.name == animationName)
-                return clip.length;
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.RegisterExecutable("Box", this);
         }
-        return 0f;
-    }
-    // *******************************************************************************
 
-    private void UpdateImageState()
-    {
-        bool boxOpened = (bool)GameManager.Instance.GetVariable("BoxOpened");
-
-        foreach (GameObject closedBox in sideClosedBox)
-            closedBox.SetActive(!boxOpened);
-
-        foreach (GameObject openBox in sideOpenBox)
-            openBox.SetActive(boxOpened);
-
-        // 확대 시점의 Box 이미지 상태 변경
-        if (boxImage != null)
+        protected override bool CanInteract()
         {
-            boxImage.sprite = boxOpened ? openBoxSprite : closedBoxSprite;
+            return !GameManager.Instance.GetIsBusy();
         }
-    }
 
+        public void ExecuteAction()
+        {
+            StartCoroutine(OpenBoxCoroutine());
+        }
+
+        // ************************* temporary methods for open animation *************************
+        private IEnumerator OpenBoxCoroutine()
+        {
+            bool clockTimeCorrect = (bool)GameManager.Instance.GetVariable("ClockTimeCorrect");
+            if (clockTimeCorrect)
+            {
+                RoomManager.Instance.SetIsInvestigating(true);
+                boxAnimator.SetBool("open_Box", true);
+
+                // 애니메이션이 끝날 때까지 대기
+                yield return new WaitForSeconds(GetAnimationLength("open_Box"));
+
+                GameManager.Instance.SetVariable("BoxOpened", true);
+                UpdateImageState();
+            }
+        }
+
+        private float GetAnimationLength(string animationName)
+        {
+            AnimationClip[] clips = boxAnimator.runtimeAnimatorController.animationClips;
+            foreach (AnimationClip clip in clips)
+            {
+                if (clip.name == animationName)
+                    return clip.length;
+            }
+            return 0f;
+        }
+        // *******************************************************************************
+
+        private void UpdateImageState()
+        {
+            bool boxOpened = (bool)GameManager.Instance.GetVariable("BoxOpened");
+
+            foreach (GameObject closedBox in sideClosedBox)
+                closedBox.SetActive(!boxOpened);
+
+            foreach (GameObject openBox in sideOpenBox)
+                openBox.SetActive(boxOpened);
+
+            // 확대 시점의 Box 이미지 상태 변경
+            if (boxImage != null)
+            {
+                boxImage.sprite = boxOpened ? openBoxSprite : closedBoxSprite;
+            }
+        }
+
+    }
 }

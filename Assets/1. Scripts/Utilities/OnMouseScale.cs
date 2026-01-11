@@ -1,52 +1,57 @@
 using UnityEngine;
+using Fate.Managers;
 
-public class OnMouseScale : MonoBehaviour
+
+namespace Fate.Utilities
 {
-    public float originalScale = 1f;
-    public float scaleMultiplier = 1.2f;
-    private RectTransform rectTransform;
-    [SerializeField] private bool checkMouseHover;
-    private Camera uiCamera;
-
-    public void PointerEnter()
+    public class OnMouseScale : MonoBehaviour
     {
-        UIManager.Instance.ChangeCursor();
-        transform.localScale = new Vector2(originalScale * scaleMultiplier, originalScale * scaleMultiplier);
-    }
+        public float originalScale = 1f;
+        public float scaleMultiplier = 1.2f;
+        private RectTransform rectTransform;
+        [SerializeField] private bool checkMouseHover;
+        private Camera uiCamera;
+
+        public void PointerEnter()
+        {
+            UIManager.Instance.ChangeCursor();
+            transform.localScale = new Vector2(originalScale * scaleMultiplier, originalScale * scaleMultiplier);
+        }
     
-    public void PointerExit()
-    {
-        UIManager.Instance.SetCursorAuto();
-        transform.localScale = new Vector2(originalScale, originalScale);
-    }
+        public void PointerExit()
+        {
+            UIManager.Instance.SetCursorAuto();
+            transform.localScale = new Vector2(originalScale, originalScale);
+        }
 
-    private void Awake() {
-        Debug.Log($"GameObject [{gameObject.name}]");
-    }
+        private void Awake() {
+            Debug.Log($"GameObject [{gameObject.name}]");
+        }
 
-    private void Start()
-    {
-        if (!checkMouseHover)
-            return;
+        private void Start()
+        {
+            if (!checkMouseHover)
+                return;
 
-        uiCamera = UIManager.Instance.uiCamera;
-        rectTransform = GetComponent<RectTransform>();
-        if (rectTransform == null)
-            Debug.LogError("RectTransform not found on the object.");
-    }
+            uiCamera = UIManager.Instance.uiCamera;
+            rectTransform = GetComponent<RectTransform>();
+            if (rectTransform == null)
+                Debug.LogError("RectTransform not found on the object.");
+        }
 
-    private void Update()
-    {
-        if (!checkMouseHover || !rectTransform || !uiCamera)
-            return;
+        private void Update()
+        {
+            if (!checkMouseHover || !rectTransform || !uiCamera)
+                return;
         
-        // if touching mouse pointer
-        bool isPointerOverUI = RectTransformUtility.RectangleContainsScreenPoint(rectTransform,
-            Input.mousePosition,
-            uiCamera);
-        if (isPointerOverUI)
-            PointerEnter();
-        else
-            PointerExit();
+            // if touching mouse pointer
+            bool isPointerOverUI = RectTransformUtility.RectangleContainsScreenPoint(rectTransform,
+                Input.mousePosition,
+                uiCamera);
+            if (isPointerOverUI)
+                PointerEnter();
+            else
+                PointerExit();
+        }
     }
 }

@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class UnderPhoto : EventObject { }
+
+namespace Fate.Events
+{
+    public class UnderPhoto : EventObject { }
+}

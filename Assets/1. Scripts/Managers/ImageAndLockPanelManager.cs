@@ -5,237 +5,241 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class ImageAndLockPanelManager : MonoBehaviour
+
+namespace Fate.Managers
 {
-    private GameObject objectImageGroup;
-    private Image objectImageImageComponent;
-    private RectTransform objectImageRectTransform;
-    public CanvasGroup currentLockObjectCanvasGroup;
-
-    [Header("방탈출 다회차 이벤트 오브젝트 확대 이미지")]
-    [SerializeField] private Sprite newTeddyBearImage;
-
-    [Header("방탈출1 이벤트 오브젝트 확대 이미지")]
-    [SerializeField] private Sprite amuletImage;
-    [SerializeField] private Sprite clockImage;
-    [SerializeField] private Sprite keysImage;
-    [SerializeField] private Sprite knifeImage;
-    [SerializeField] private Sprite posterImage;
-    [SerializeField] private Sprite liquorAndPillsImage;
-    [SerializeField] private Sprite letterOfResignationImage;
-    [SerializeField] private Sprite photoInsideBoxImage;
-    [SerializeField] private Sprite cafePintInBagImage;
-    [SerializeField] private Sprite posterOversideImage;
-
-    [Header("방탈출2 이벤트 오브젝트 확대 이미지")]
-    [SerializeField] private Sprite tinCaseImage;
-    [SerializeField] private Sprite sewingBoxImage;
-    [SerializeField] private Sprite threadImage;
-    [SerializeField] private Sprite hospitalPrintImage;
-    [SerializeField] private Sprite poster2Image;
-    [SerializeField] private Sprite starStickerImage;
-    [SerializeField] private Sprite shoppingBag2Image;
-    [SerializeField] private Sprite medicine2Image;
-    [SerializeField] private Sprite ticketImage;
-    [SerializeField] private Sprite book2CoverImage;
-    [SerializeField] private Sprite closetKey2Image;
-
-    [Header("잠금 장치들")]
-    [SerializeField] private GameObject laptopGameObject;
-    [SerializeField] private GameObject clockGameObject;
-    [SerializeField] private GameObject diaryGameObject;
-    [SerializeField] private GameObject calendarGameObject;
-    [SerializeField] private GameObject tinCaseGameObject;
-    [SerializeField] private GameObject sewingBoxGameObject;
-    [SerializeField] private GameObject diary2GameObject;
-    [SerializeField] private GameObject book2GameObject;
-    [SerializeField] private GameObject dreamDiaryGameObject;
-    
-    [Header("퍼즐 오브젝트들")]
-    [SerializeField] private GameObject laptopPuzzleObject;
-    [SerializeField] private GameObject clockPuzzleObject;
-    [SerializeField] private GameObject diaryPuzzleObjectClosed;
-    [SerializeField] private GameObject diaryPuzzleObjectOpen;
-    [SerializeField] private GameObject calendarPuzzleObject;
-    [SerializeField] private GameObject tinCasePuzzleObject;
-    [SerializeField] private GameObject sewingBoxPuzzleObject;
-    [SerializeField] private GameObject book2PuzzleObject;
-    [SerializeField] private GameObject dreamDiaryPuzzleObject;
-
-    private Dictionary<string, Sprite> imageDictionary;
-    public Dictionary<string, GameObject> lockObjectDictionary;
-    public Dictionary<string, GameObject[]> puzzleObjectDictionary;
-    [SerializeField] public bool isImageActive = false;
-    [SerializeField] public bool isLockObjectActive = false;
-    public string currentLockObjectName = null;
-    private float maxHeight = 550f;
-    private float maxWidth = 890f;
-
-    private void Awake() {
-        objectImageGroup = UIManager.Instance.objectImageParentRoom;
-        GameObject objectImage = UIManager.Instance.objectImageRoom;
-        objectImageImageComponent = objectImage.GetComponent<Image>();
-        objectImageRectTransform = objectImage.GetComponent<RectTransform>();
-
-        imageDictionary = new Dictionary<string, Sprite>()  // imageDictionary 초기화
-        {
-            // 방탈출 다회차 Object 확대 이미지
-            {"newTeddyBear", newTeddyBearImage},
-
-            // 방탈출1 확대 이미지
-            {"amulet", amuletImage},
-            {"clock", clockImage},
-            {"keys", keysImage },
-            {"knife", knifeImage },
-            {"poster", posterImage },
-            {"liquorAndPills", liquorAndPillsImage },
-            {"letterOfResignation", letterOfResignationImage},
-            {"photoInsideBox", photoInsideBoxImage},
-            {"cafePintInBagImage", cafePintInBagImage},
-            {"posterOverside", posterOversideImage},
-
-            // 방탈출2 확대 이미지
-            {"tinCase", tinCaseImage},
-            {"sewingBox", sewingBoxImage},
-            {"thread", threadImage},
-            {"hospitalPrint", hospitalPrintImage},
-            {"poster2", poster2Image},
-            {"starSticker", starStickerImage},
-            {"shoppingBag2", shoppingBag2Image},
-            {"medicine2", medicine2Image},
-            {"ticket",ticketImage},
-            {"book2Cover", book2CoverImage},
-            {"closetKey2", closetKey2Image},
-        };
-
-        lockObjectDictionary = new Dictionary<string, GameObject>() {
-            { "laptop", laptopGameObject },
-            { "clock", clockGameObject },
-            { "diary", diaryGameObject },
-            { "calendar", calendarGameObject },
-            { "tinCase", tinCaseGameObject },
-            { "sewingBox", sewingBoxGameObject},
-            { "diary2", diary2GameObject },
-            { "book2", book2GameObject },
-            { "dreamDiary",dreamDiaryGameObject},
-        };
-
-        puzzleObjectDictionary = new Dictionary<string, GameObject[]>() {
-            { "laptop", new[] { laptopPuzzleObject } },
-            { "clock", new[] { clockPuzzleObject } },
-            { "diary", new[] { diaryPuzzleObjectClosed, diaryPuzzleObjectOpen } },
-            { "calendar", new[] { calendarPuzzleObject } },
-            { "tinCase", new[] { tinCasePuzzleObject } },
-            { "sewingBox", new[] { sewingBoxPuzzleObject } },
-            { "book2", new[] { book2PuzzleObject } },
-            { "dreamDiary", new[] { dreamDiaryPuzzleObject } }
-        };
-    }
-
-    public void OnExitButtonClick() {
-        if (isImageActive)
-            SetObjectImageGroup(false);
-        else if (isLockObjectActive)
-            SetLockObject(false);
-
-        RoomManager.Instance.SetIsInvestigating(isImageActive || isLockObjectActive);
-    }
-
-    public void SetObjectImageGroup(bool isTrue, string eventObjectName = null)
+    public class ImageAndLockPanelManager : MonoBehaviour
     {
-        if (isTrue && eventObjectName == null) {
-            Debug.Log("eventObjectName must be a correct value!");
-            return;
+        private GameObject objectImageGroup;
+        private Image objectImageImageComponent;
+        private RectTransform objectImageRectTransform;
+        public CanvasGroup currentLockObjectCanvasGroup;
+
+        [Header("방탈출 다회차 이벤트 오브젝트 확대 이미지")]
+        [SerializeField] private Sprite newTeddyBearImage;
+
+        [Header("방탈출1 이벤트 오브젝트 확대 이미지")]
+        [SerializeField] private Sprite amuletImage;
+        [SerializeField] private Sprite clockImage;
+        [SerializeField] private Sprite keysImage;
+        [SerializeField] private Sprite knifeImage;
+        [SerializeField] private Sprite posterImage;
+        [SerializeField] private Sprite liquorAndPillsImage;
+        [SerializeField] private Sprite letterOfResignationImage;
+        [SerializeField] private Sprite photoInsideBoxImage;
+        [SerializeField] private Sprite cafePintInBagImage;
+        [SerializeField] private Sprite posterOversideImage;
+
+        [Header("방탈출2 이벤트 오브젝트 확대 이미지")]
+        [SerializeField] private Sprite tinCaseImage;
+        [SerializeField] private Sprite sewingBoxImage;
+        [SerializeField] private Sprite threadImage;
+        [SerializeField] private Sprite hospitalPrintImage;
+        [SerializeField] private Sprite poster2Image;
+        [SerializeField] private Sprite starStickerImage;
+        [SerializeField] private Sprite shoppingBag2Image;
+        [SerializeField] private Sprite medicine2Image;
+        [SerializeField] private Sprite ticketImage;
+        [SerializeField] private Sprite book2CoverImage;
+        [SerializeField] private Sprite closetKey2Image;
+
+        [Header("잠금 장치들")]
+        [SerializeField] private GameObject laptopGameObject;
+        [SerializeField] private GameObject clockGameObject;
+        [SerializeField] private GameObject diaryGameObject;
+        [SerializeField] private GameObject calendarGameObject;
+        [SerializeField] private GameObject tinCaseGameObject;
+        [SerializeField] private GameObject sewingBoxGameObject;
+        [SerializeField] private GameObject diary2GameObject;
+        [SerializeField] private GameObject book2GameObject;
+        [SerializeField] private GameObject dreamDiaryGameObject;
+    
+        [Header("퍼즐 오브젝트들")]
+        [SerializeField] private GameObject laptopPuzzleObject;
+        [SerializeField] private GameObject clockPuzzleObject;
+        [SerializeField] private GameObject diaryPuzzleObjectClosed;
+        [SerializeField] private GameObject diaryPuzzleObjectOpen;
+        [SerializeField] private GameObject calendarPuzzleObject;
+        [SerializeField] private GameObject tinCasePuzzleObject;
+        [SerializeField] private GameObject sewingBoxPuzzleObject;
+        [SerializeField] private GameObject book2PuzzleObject;
+        [SerializeField] private GameObject dreamDiaryPuzzleObject;
+
+        private Dictionary<string, Sprite> imageDictionary;
+        public Dictionary<string, GameObject> lockObjectDictionary;
+        public Dictionary<string, GameObject[]> puzzleObjectDictionary;
+        [SerializeField] public bool isImageActive = false;
+        [SerializeField] public bool isLockObjectActive = false;
+        public string currentLockObjectName = null;
+        private float maxHeight = 550f;
+        private float maxWidth = 890f;
+
+        private void Awake() {
+            objectImageGroup = UIManager.Instance.objectImageParentRoom;
+            GameObject objectImage = UIManager.Instance.objectImageRoom;
+            objectImageImageComponent = objectImage.GetComponent<Image>();
+            objectImageRectTransform = objectImage.GetComponent<RectTransform>();
+
+            imageDictionary = new Dictionary<string, Sprite>()  // imageDictionary 초기화
+            {
+                // 방탈출 다회차 Object 확대 이미지
+                {"newTeddyBear", newTeddyBearImage},
+
+                // 방탈출1 확대 이미지
+                {"amulet", amuletImage},
+                {"clock", clockImage},
+                {"keys", keysImage },
+                {"knife", knifeImage },
+                {"poster", posterImage },
+                {"liquorAndPills", liquorAndPillsImage },
+                {"letterOfResignation", letterOfResignationImage},
+                {"photoInsideBox", photoInsideBoxImage},
+                {"cafePintInBagImage", cafePintInBagImage},
+                {"posterOverside", posterOversideImage},
+
+                // 방탈출2 확대 이미지
+                {"tinCase", tinCaseImage},
+                {"sewingBox", sewingBoxImage},
+                {"thread", threadImage},
+                {"hospitalPrint", hospitalPrintImage},
+                {"poster2", poster2Image},
+                {"starSticker", starStickerImage},
+                {"shoppingBag2", shoppingBag2Image},
+                {"medicine2", medicine2Image},
+                {"ticket",ticketImage},
+                {"book2Cover", book2CoverImage},
+                {"closetKey2", closetKey2Image},
+            };
+
+            lockObjectDictionary = new Dictionary<string, GameObject>() {
+                { "laptop", laptopGameObject },
+                { "clock", clockGameObject },
+                { "diary", diaryGameObject },
+                { "calendar", calendarGameObject },
+                { "tinCase", tinCaseGameObject },
+                { "sewingBox", sewingBoxGameObject},
+                { "diary2", diary2GameObject },
+                { "book2", book2GameObject },
+                { "dreamDiary",dreamDiaryGameObject},
+            };
+
+            puzzleObjectDictionary = new Dictionary<string, GameObject[]>() {
+                { "laptop", new[] { laptopPuzzleObject } },
+                { "clock", new[] { clockPuzzleObject } },
+                { "diary", new[] { diaryPuzzleObjectClosed, diaryPuzzleObjectOpen } },
+                { "calendar", new[] { calendarPuzzleObject } },
+                { "tinCase", new[] { tinCasePuzzleObject } },
+                { "sewingBox", new[] { sewingBoxPuzzleObject } },
+                { "book2", new[] { book2PuzzleObject } },
+                { "dreamDiary", new[] { dreamDiaryPuzzleObject } }
+            };
         }
 
-        isImageActive = isTrue;
+        public void OnExitButtonClick() {
+            if (isImageActive)
+                SetObjectImageGroup(false);
+            else if (isLockObjectActive)
+                SetLockObject(false);
 
-        if (isTrue) {
-            if (!imageDictionary.TryGetValue(eventObjectName, out Sprite rawSprite)) {
-                Debug.LogWarning($"SetObjectImageGroup: eventObjectName '{eventObjectName}' not found in imageDictionary");
+            RoomManager.Instance.SetIsInvestigating(isImageActive || isLockObjectActive);
+        }
+
+        public void SetObjectImageGroup(bool isTrue, string eventObjectName = null)
+        {
+            if (isTrue && eventObjectName == null) {
+                Debug.Log("eventObjectName must be a correct value!");
                 return;
             }
-            float rawHeight = rawSprite.rect.height;
-            float rawWidth = rawSprite.rect.width;
 
-            float multiplier = maxHeight / rawHeight;;
-            float preferredHeight = maxHeight;
-            float preferredWidth = rawWidth * multiplier;
+            isImageActive = isTrue;
 
-            if (preferredWidth > maxWidth)
-            {
-                multiplier = maxWidth / preferredWidth;;
-                preferredWidth = maxWidth;
-                preferredHeight *= multiplier;
+            if (isTrue) {
+                if (!imageDictionary.TryGetValue(eventObjectName, out Sprite rawSprite)) {
+                    Debug.LogWarning($"SetObjectImageGroup: eventObjectName '{eventObjectName}' not found in imageDictionary");
+                    return;
+                }
+                float rawHeight = rawSprite.rect.height;
+                float rawWidth = rawSprite.rect.width;
+
+                float multiplier = maxHeight / rawHeight;;
+                float preferredHeight = maxHeight;
+                float preferredWidth = rawWidth * multiplier;
+
+                if (preferredWidth > maxWidth)
+                {
+                    multiplier = maxWidth / preferredWidth;;
+                    preferredWidth = maxWidth;
+                    preferredHeight *= multiplier;
+                }
+
+                objectImageImageComponent.sprite = rawSprite;
+                objectImageRectTransform.sizeDelta = new Vector2(preferredWidth, preferredHeight);
+
+                RoomManager.Instance.SetIsInvestigating(true);
+                RoomManager.Instance.SetButtons();
+                UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
             }
 
-            objectImageImageComponent.sprite = rawSprite;
-            objectImageRectTransform.sizeDelta = new Vector2(preferredWidth, preferredHeight);
-
-            RoomManager.Instance.SetIsInvestigating(true);
-            RoomManager.Instance.SetButtons();
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
-        }
-
-        UIManager.Instance.SetUI(eUIGameObjectName.ObjectImageParentRoom, isTrue, true);
+            UIManager.Instance.SetUI(eUIGameObjectName.ObjectImageParentRoom, isTrue, true);
         
-        if (!GetIsImageOrLockPanelActive())
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
-    }
-
-    public IEnumerator SetObjectImageGroupCoroutine(bool isTrue, string eventObjectName = null, float delayTime = 0.1f) {
-        yield return new WaitForSeconds(delayTime);
-        SetObjectImageGroup(isTrue, eventObjectName);
-    }
-
-    public void SetLockObject(bool isTrue, string lockObjectName = null) {
-        if (isTrue && lockObjectName == null) {
-            Debug.Log("lockObjectName must be a correct value!");
-            return;
+            if (!GetIsImageOrLockPanelActive())
+                UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
         }
 
-        isLockObjectActive = isTrue;
+        public IEnumerator SetObjectImageGroupCoroutine(bool isTrue, string eventObjectName = null, float delayTime = 0.1f) {
+            yield return new WaitForSeconds(delayTime);
+            SetObjectImageGroup(isTrue, eventObjectName);
+        }
 
-        if (isTrue) {
-            SetObjectImageGroup(false);  // 이미지 켜져있을 때 Lock object activate하면 이미지 숨기기
-            if (string.IsNullOrEmpty(lockObjectName) == false && lockObjectDictionary.TryGetValue(lockObjectName, out var lockObject))
-                lockObject.gameObject.SetActive(true);
-            else
-                Debug.LogWarning($"SetLockObject: lockObjectName '{lockObjectName}' not found in lockObjectDictionary");
+        public void SetLockObject(bool isTrue, string lockObjectName = null) {
+            if (isTrue && lockObjectName == null) {
+                Debug.Log("lockObjectName must be a correct value!");
+                return;
+            }
 
-            RoomManager.Instance.SetIsInvestigating(true);
-            RoomManager.Instance.SetButtons();
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
-        } else {
-            if (string.IsNullOrEmpty(currentLockObjectName) == false) {
-                if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects)) {
-                    foreach (var puzzleObject in puzzleObjects)
-                        UIManager.Instance.AnimateUI(puzzleObject, false, true);
-                    StartCoroutine(DeactivateLockObjectWithDelay(currentLockObjectName, UIManager.Instance.fadeAnimationDuration));
-                    currentLockObjectCanvasGroup = null;
-                } else if (lockObjectDictionary.TryGetValue(currentLockObjectName, out var lockObject)) {
-                    lockObject.gameObject.SetActive(false);
-                    currentLockObjectCanvasGroup = null;
-                } else {
-                    Debug.LogWarning($"SetLockObject: currentLockObjectName '{currentLockObjectName}' not found in dictionaries");
+            isLockObjectActive = isTrue;
+
+            if (isTrue) {
+                SetObjectImageGroup(false);  // 이미지 켜져있을 때 Lock object activate하면 이미지 숨기기
+                if (string.IsNullOrEmpty(lockObjectName) == false && lockObjectDictionary.TryGetValue(lockObjectName, out var lockObject))
+                    lockObject.gameObject.SetActive(true);
+                else
+                    Debug.LogWarning($"SetLockObject: lockObjectName '{lockObjectName}' not found in lockObjectDictionary");
+
+                RoomManager.Instance.SetIsInvestigating(true);
+                RoomManager.Instance.SetButtons();
+                UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, true, true);
+            } else {
+                if (string.IsNullOrEmpty(currentLockObjectName) == false) {
+                    if (puzzleObjectDictionary.TryGetValue(currentLockObjectName, out var puzzleObjects)) {
+                        foreach (var puzzleObject in puzzleObjects)
+                            UIManager.Instance.AnimateUI(puzzleObject, false, true);
+                        StartCoroutine(DeactivateLockObjectWithDelay(currentLockObjectName, UIManager.Instance.fadeAnimationDuration));
+                        currentLockObjectCanvasGroup = null;
+                    } else if (lockObjectDictionary.TryGetValue(currentLockObjectName, out var lockObject)) {
+                        lockObject.gameObject.SetActive(false);
+                        currentLockObjectCanvasGroup = null;
+                    } else {
+                        Debug.LogWarning($"SetLockObject: currentLockObjectName '{currentLockObjectName}' not found in dictionaries");
+                    }
                 }
             }
+
+            if (!GetIsImageOrLockPanelActive())
+                UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
+            currentLockObjectName = lockObjectName;
+        }
+    
+        private IEnumerator DeactivateLockObjectWithDelay(string lockObjectName, float delayTime = 0.5f) {
+            yield return new WaitForSeconds(delayTime);
+            if (string.IsNullOrEmpty(lockObjectName) == false && lockObjectDictionary.TryGetValue(lockObjectName, out var lockObject))
+                lockObject.gameObject.SetActive(false);
+            else
+                Debug.LogWarning($"DeactivateLockObjectWithDelay: lockObjectName '{lockObjectName}' not found in lockObjectDictionary");
         }
 
-        if (!GetIsImageOrLockPanelActive())
-            UIManager.Instance.SetUI(eUIGameObjectName.BlurImage, false, true);
-        currentLockObjectName = lockObjectName;
-    }
-    
-    private IEnumerator DeactivateLockObjectWithDelay(string lockObjectName, float delayTime = 0.5f) {
-        yield return new WaitForSeconds(delayTime);
-        if (string.IsNullOrEmpty(lockObjectName) == false && lockObjectDictionary.TryGetValue(lockObjectName, out var lockObject))
-            lockObject.gameObject.SetActive(false);
-        else
-            Debug.LogWarning($"DeactivateLockObjectWithDelay: lockObjectName '{lockObjectName}' not found in lockObjectDictionary");
-    }
-
-    public bool GetIsImageOrLockPanelActive() {
-        return isImageActive || isLockObjectActive;
+        public bool GetIsImageOrLockPanelActive() {
+            return isImageActive || isLockObjectActive;
+        }
     }
 }

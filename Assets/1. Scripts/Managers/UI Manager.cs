@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Fate.Utilities;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using static Constants;
+using static Fate.Utilities.Constants;
 
-public enum FloatDirection {
+namespace Fate.Managers
+{
+    public enum FloatDirection {
     None,
     Left,
     Right,
@@ -1072,5 +1075,6 @@ public class UIManager : MonoBehaviour {
         SetUI(targetUIGameObjectName, false);
         yield return new WaitForSeconds(duration);
         SetUI(targetUIGameObjectName, true);
+    }
     }
 }

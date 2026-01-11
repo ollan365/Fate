@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class UnderDeskBook : EventObject { }
+
+namespace Fate.Events
+{
+    public class UnderDeskBook : EventObject { }
+}

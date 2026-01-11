@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class StarStickers : EventObject { }
+
+namespace Fate.Events
+{
+    public class StarStickers : EventObject { }
+}

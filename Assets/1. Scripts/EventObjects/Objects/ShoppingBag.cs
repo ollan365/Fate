@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class ShoppingBag : EventObject { }
+
+namespace Fate.Events
+{
+    public class ShoppingBag : EventObject { }
+}

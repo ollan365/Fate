@@ -1,38 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fate.Managers;
 
-public class Calendar : EventObject, IResultExecutable
+
+namespace Fate.Events
 {
-    [SerializeField]
-    private GameObject calendarPanel;
-
-    private void Start() {
-        RegisterWithResultManager();
-    }
-
-    private void OnEnable()
+    public class Calendar : EventObject, IResultExecutable
     {
-        RegisterWithResultManager();
-    }
+        [SerializeField]
+        private GameObject calendarPanel;
 
-    private void RegisterWithResultManager()
-    {
-        if (ResultManager.Instance != null)
-            ResultManager.Instance.RegisterExecutable("Calendar", this);
-    }
+        private void Start() {
+            RegisterWithResultManager();
+        }
 
-    protected override bool CanInteract()
-    {
-        return !GameManager.Instance.GetIsBusy();
-    }
+        private void OnEnable()
+        {
+            RegisterWithResultManager();
+        }
 
-    public void ExecuteAction() {
-        ActivateCalendarPanel();
-    }
+        private void RegisterWithResultManager()
+        {
+            if (ResultManager.Instance != null)
+                ResultManager.Instance.RegisterExecutable("Calendar", this);
+        }
 
-    private void ActivateCalendarPanel() {
-        UIManager.Instance.AnimateUI(calendarPanel, true, true);
-        SetCurrentLockObjectCanvasGroup(calendarPanel);
+        protected override bool CanInteract()
+        {
+            return !GameManager.Instance.GetIsBusy();
+        }
+
+        public void ExecuteAction() {
+            ActivateCalendarPanel();
+        }
+
+        private void ActivateCalendarPanel() {
+            UIManager.Instance.AnimateUI(calendarPanel, true, true);
+            SetCurrentLockObjectCanvasGroup(calendarPanel);
+        }
     }
 }

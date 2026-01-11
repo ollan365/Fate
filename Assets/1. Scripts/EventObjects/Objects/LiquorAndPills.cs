@@ -1,3 +1,7 @@
 using UnityEngine;
 
-public class LiquorAndPills : EventObject { }
+
+namespace Fate.Events
+{
+    public class LiquorAndPills : EventObject { }
+}

@@ -1,4 +1,7 @@
-public interface IResultExecutable
+namespace Fate
 {
-    void ExecuteAction();
+    public interface IResultExecutable
+    {
+        void ExecuteAction();
+    }
 }

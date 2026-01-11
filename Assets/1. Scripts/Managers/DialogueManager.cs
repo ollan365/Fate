@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fate.Data;
+using Fate.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static Constants;
+using static Fate.Utilities.Constants;
 
-public class DialogueManager : MonoBehaviour
+namespace Fate.Managers
+{
+    public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
@@ -730,8 +734,9 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void ResetSkipHoldProgress()
-    {
-        UpdateSkipHoldProgress(0f);
+        public void ResetSkipHoldProgress()
+        {
+            UpdateSkipHoldProgress(0f);
+        }
     }
 }

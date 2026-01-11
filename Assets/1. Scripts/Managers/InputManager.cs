@@ -1,224 +1,228 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Fate.Utilities;
+using Fate.Events;
 
-public class InputManager : MonoBehaviour
+
+namespace Fate.Managers
 {
-    public static InputManager Instance { get; private set; }
-    public bool IgnoreInput { get; set; }
-    public bool IgnoreEscape { get; set; }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void Bootstrap()
+    public class InputManager : MonoBehaviour
     {
-        if (Instance != null)
-            return;
+        public static InputManager Instance { get; private set; }
+        public bool IgnoreInput { get; set; }
+        public bool IgnoreEscape { get; set; }
 
-        GameObject go = new ("InputManager");
-        go.AddComponent<InputManager>();
-    }
-
-    private void Awake()
-    {
-        if (Instance == null)
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Bootstrap()
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Instance != null)
+                return;
 
-            IgnoreInput = false;
-            IgnoreEscape = false;
+            GameObject go = new ("InputManager");
+            go.AddComponent<InputManager>();
         }
-        else if (Instance != this)
+
+        private void Awake()
         {
-            Destroy(gameObject);
-        }
-    }
-
-    private void Update()
-    {
-        if (IsDesktopEnvironment() == false || (IgnoreInput && Input.GetKeyDown(KeyCode.Escape) == false))
-            return;
-
-        if (GameSceneManager.Instance.IsSceneChanging == false && Input.GetKeyDown(KeyCode.Escape) && !IgnoreEscape) 
-            UIManager.Instance.SetMenuUI();
-
-        // Spacebar press-and-hold skip handling for Dialogue
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
-                spacePressedTime = Time.unscaledTime;
-        }
-        if (Input.GetKey(KeyCode.Space))
-        {
-            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            if (Instance == null)
             {
-                if (DialogueManager.Instance.IsSkipActive() && spacePressedTime > 0f)
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+
+                IgnoreInput = false;
+                IgnoreEscape = false;
+            }
+            else if (Instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        private void Update()
+        {
+            if (IsDesktopEnvironment() == false || (IgnoreInput && Input.GetKeyDown(KeyCode.Escape) == false))
+                return;
+
+            if (GameSceneManager.Instance.IsSceneChanging == false && Input.GetKeyDown(KeyCode.Escape) && !IgnoreEscape) 
+                UIManager.Instance.SetMenuUI();
+
+            // Spacebar press-and-hold skip handling for Dialogue
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+                    spacePressedTime = Time.unscaledTime;
+            }
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
                 {
-                    float held = Time.unscaledTime - spacePressedTime;
-                    float progress = Mathf.Clamp01(held / SpaceSkipHoldSeconds);
-                    DialogueManager.Instance.UpdateSkipHoldProgress(progress);
+                    if (DialogueManager.Instance.IsSkipActive() && spacePressedTime > 0f)
+                    {
+                        float held = Time.unscaledTime - spacePressedTime;
+                        float progress = Mathf.Clamp01(held / SpaceSkipHoldSeconds);
+                        DialogueManager.Instance.UpdateSkipHoldProgress(progress);
+                    }
                 }
             }
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+            if (Input.GetKeyUp(KeyCode.Space))
             {
-                bool heldLongEnough = spacePressedTime > 0f && (Time.unscaledTime - spacePressedTime) >= SpaceSkipHoldSeconds;
-                bool skipActive = DialogueManager.Instance.IsSkipActive();
+                if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+                {
+                    bool heldLongEnough = spacePressedTime > 0f && (Time.unscaledTime - spacePressedTime) >= SpaceSkipHoldSeconds;
+                    bool skipActive = DialogueManager.Instance.IsSkipActive();
 
-                if (skipActive && heldLongEnough)
-                    DialogueManager.Instance.SkipButtonClick();
-                else
-                    DialogueManager.Instance.OnDialoguePanelClick();
+                    if (skipActive && heldLongEnough)
+                        DialogueManager.Instance.SkipButtonClick();
+                    else
+                        DialogueManager.Instance.OnDialoguePanelClick();
 
-                spacePressedTime = 0f;
-                DialogueManager.Instance.ResetSkipHoldProgress();
+                    spacePressedTime = 0f;
+                    DialogueManager.Instance.ResetSkipHoldProgress();
+                    return;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+                HandleLeftKeyClick();
+
+            if (Input.GetKeyDown(KeyCode.D))
+                HandleRightKeyClick();
+
+            if (Input.GetKeyDown(KeyCode.S)) {
+                if (IsClickable(UIManager.Instance.exitButton))
+                    UIManager.Instance.OnExitButtonClick();
+            }
+
+            if (GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild)
                 return;
+        
+            // cheats
+            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
+                Input.GetKeyDown(KeyCode.M)) {
+                if (MemoManager.Instance != null)
+                    MemoManager.Instance.CheatSetMemoCount(10); // set memo count to 10
+            }
+
+            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
+                Input.GetKeyDown(KeyCode.C)) {
+                if (GameManager.Instance != null)
+                    GameManager.Instance.CheatEndSceneImmediately(5, 0, -1); // set day to 5, action points to 0, present heart index to -1
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
-            HandleLeftKeyClick();
+        private const float SpaceSkipHoldSeconds = 1f;
+        private float spacePressedTime = 0f;
 
-        if (Input.GetKeyDown(KeyCode.D))
-            HandleRightKeyClick();
+        private static void HandleLeftKeyClick() {
+            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+                return;
 
-        if (Input.GetKeyDown(KeyCode.S)) {
-            if (IsClickable(UIManager.Instance.exitButton))
-                UIManager.Instance.OnExitButtonClick();
-        }
-
-        if (GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild)
-            return;
-        
-        // cheats
-        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
-            Input.GetKeyDown(KeyCode.M)) {
-            if (MemoManager.Instance != null)
-                MemoManager.Instance.CheatSetMemoCount(10); // set memo count to 10
-        }
-
-        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
-            Input.GetKeyDown(KeyCode.C)) {
-            if (GameManager.Instance != null)
-                GameManager.Instance.CheatEndSceneImmediately(5, 0, -1); // set day to 5, action points to 0, present heart index to -1
-        }
-    }
-
-    private const float SpaceSkipHoldSeconds = 1f;
-    private float spacePressedTime = 0f;
-
-    private static void HandleLeftKeyClick() {
-        if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
-            return;
-
-        if (MemoManager.Instance is not null && MemoManager.Instance.isMemoOpen) {
-            MemoManager.Instance.autoFlip.FlipLeftPage();
-            return;
-        }
+            if (MemoManager.Instance is not null && MemoManager.Instance.isMemoOpen) {
+                MemoManager.Instance.autoFlip.FlipLeftPage();
+                return;
+            }
             
-        if (UIManager.Instance is not null && UIManager.Instance.GetUI(eUIGameObjectName.Album).activeInHierarchy) {
-            UIManager.Instance.GetUI(eUIGameObjectName.Album).GetComponent<PageContentsManager>().autoFlip.FlipLeftPage();
-            return;
-        }
+            if (UIManager.Instance is not null && UIManager.Instance.GetUI(eUIGameObjectName.Album).activeInHierarchy) {
+                UIManager.Instance.GetUI(eUIGameObjectName.Album).GetComponent<PageContentsManager>().autoFlip.FlipLeftPage();
+                return;
+            }
 
-        if (GameSceneManager.Instance is null ||
-            GameSceneManager.Instance.GetActiveScene() is not (Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2)) 
-            return;
+            if (GameSceneManager.Instance is null ||
+                GameSceneManager.Instance.GetActiveScene() is not (Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2)) 
+                return;
         
-        GetCurrentLockObject(out GameObject currentLockObject);
-        AutoFlip autoFlip = currentLockObject?.GetComponent<PageContentsManager>()?.autoFlip;
-        if (autoFlip && autoFlip.controlledBook.pageContentsManager.flipLeftButton.activeInHierarchy) {
-            autoFlip.FlipLeftPage();
-            return;
-        }
+            GetCurrentLockObject(out GameObject currentLockObject);
+            AutoFlip autoFlip = currentLockObject?.GetComponent<PageContentsManager>()?.autoFlip;
+            if (autoFlip && autoFlip.controlledBook.pageContentsManager.flipLeftButton.activeInHierarchy) {
+                autoFlip.FlipLeftPage();
+                return;
+            }
                 
-        CalendarPanel calendarPanel = currentLockObject?.GetComponent<CalendarPanel>();
-        if (calendarPanel && currentLockObject.activeInHierarchy && calendarPanel.prevButton.gameObject.activeInHierarchy) {
-            calendarPanel.ChangeMonth(-1);
-            return;
-        }
+            CalendarPanel calendarPanel = currentLockObject?.GetComponent<CalendarPanel>();
+            if (calendarPanel && currentLockObject.activeInHierarchy && calendarPanel.prevButton.gameObject.activeInHierarchy) {
+                calendarPanel.ChangeMonth(-1);
+                return;
+            }
                 
-        if (UIManager.Instance is not null && IsClickable(UIManager.Instance.leftButton))
-            UIManager.Instance.OnLeftButtonClick();
-    }
+            if (UIManager.Instance is not null && IsClickable(UIManager.Instance.leftButton))
+                UIManager.Instance.OnLeftButtonClick();
+        }
     
-    private static void HandleRightKeyClick() {
-        if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
-            return;
+        private static void HandleRightKeyClick() {
+            if (DialogueManager.Instance && DialogueManager.Instance.isDialogueActive)
+                return;
             
-        if (MemoManager.Instance is not null && MemoManager.Instance.isMemoOpen) {
-            MemoManager.Instance.autoFlip.FlipRightPage();
-            return;
-        }
+            if (MemoManager.Instance is not null && MemoManager.Instance.isMemoOpen) {
+                MemoManager.Instance.autoFlip.FlipRightPage();
+                return;
+            }
             
-        if (UIManager.Instance is not null && UIManager.Instance.GetUI(eUIGameObjectName.Album).activeInHierarchy) {
-            UIManager.Instance.GetUI(eUIGameObjectName.Album).GetComponent<PageContentsManager>().autoFlip.FlipRightPage();
-            return;
-        }
+            if (UIManager.Instance is not null && UIManager.Instance.GetUI(eUIGameObjectName.Album).activeInHierarchy) {
+                UIManager.Instance.GetUI(eUIGameObjectName.Album).GetComponent<PageContentsManager>().autoFlip.FlipRightPage();
+                return;
+            }
 
-        if (GameSceneManager.Instance is null ||
-            GameSceneManager.Instance.GetActiveScene() is not (Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2)) 
-            return;
+            if (GameSceneManager.Instance is null ||
+                GameSceneManager.Instance.GetActiveScene() is not (Constants.SceneType.ROOM_1 or Constants.SceneType.ROOM_2)) 
+                return;
         
-        GetCurrentLockObject(out GameObject currentLockObject);
-        AutoFlip autoFlip = currentLockObject?.GetComponent<PageContentsManager>()?.autoFlip;
-        if (autoFlip && autoFlip.controlledBook.pageContentsManager.flipRightButton.activeInHierarchy) {
-            autoFlip.FlipRightPage();
-            return;
-        }
+            GetCurrentLockObject(out GameObject currentLockObject);
+            AutoFlip autoFlip = currentLockObject?.GetComponent<PageContentsManager>()?.autoFlip;
+            if (autoFlip && autoFlip.controlledBook.pageContentsManager.flipRightButton.activeInHierarchy) {
+                autoFlip.FlipRightPage();
+                return;
+            }
                 
-        CalendarPanel calendarPanel = currentLockObject?.GetComponent<CalendarPanel>();
-        if (calendarPanel && currentLockObject.activeInHierarchy && calendarPanel.nextButton.gameObject.activeInHierarchy) {
-            calendarPanel.ChangeMonth(1);
-            return;
-        }
+            CalendarPanel calendarPanel = currentLockObject?.GetComponent<CalendarPanel>();
+            if (calendarPanel && currentLockObject.activeInHierarchy && calendarPanel.nextButton.gameObject.activeInHierarchy) {
+                calendarPanel.ChangeMonth(1);
+                return;
+            }
                 
-        if (UIManager.Instance is not null && IsClickable(UIManager.Instance.rightButton))
-            UIManager.Instance.OnRightButtonClick();
-    }
+            if (UIManager.Instance is not null && IsClickable(UIManager.Instance.rightButton))
+                UIManager.Instance.OnRightButtonClick();
+        }
 
-    private static void GetCurrentLockObject(out GameObject currentLockObject){
-        ImageAndLockPanelManager imageAndLockPanelManager = RoomManager.Instance?.imageAndLockPanelManager;
-        string currentLockObjectName = imageAndLockPanelManager?.currentLockObjectName;
-        if (string.IsNullOrEmpty(currentLockObjectName) == false && imageAndLockPanelManager?.lockObjectDictionary != null) {
-            if (imageAndLockPanelManager.lockObjectDictionary.TryGetValue(currentLockObjectName, out var lockObject))
-                currentLockObject = lockObject;
-            else
+        private static void GetCurrentLockObject(out GameObject currentLockObject){
+            ImageAndLockPanelManager imageAndLockPanelManager = RoomManager.Instance?.imageAndLockPanelManager;
+            string currentLockObjectName = imageAndLockPanelManager?.currentLockObjectName;
+            if (string.IsNullOrEmpty(currentLockObjectName) == false && imageAndLockPanelManager?.lockObjectDictionary != null) {
+                if (imageAndLockPanelManager.lockObjectDictionary.TryGetValue(currentLockObjectName, out var lockObject))
+                    currentLockObject = lockObject;
+                else
+                    currentLockObject = null;
+            } else {
                 currentLockObject = null;
-        } else {
-            currentLockObject = null;
+            }
         }
-    }
 
-    private static bool IsDesktopEnvironment()
-    {
-        return Application.platform 
-            is RuntimePlatform.OSXEditor
-            or RuntimePlatform.WindowsEditor
-            or RuntimePlatform.LinuxEditor
-            or RuntimePlatform.OSXPlayer
-            or RuntimePlatform.WindowsPlayer
-            or RuntimePlatform.LinuxPlayer;
-    }
+        private static bool IsDesktopEnvironment()
+        {
+            return Application.platform 
+                is RuntimePlatform.OSXEditor
+                or RuntimePlatform.WindowsEditor
+                or RuntimePlatform.LinuxEditor
+                or RuntimePlatform.OSXPlayer
+                or RuntimePlatform.WindowsPlayer
+                or RuntimePlatform.LinuxPlayer;
+        }
 
-    private static bool IsClickable(GameObject target)
-    {
-        if (target is null)
-            return false;
+        private static bool IsClickable(GameObject target)
+        {
+            if (target is null)
+                return false;
 
-        if (target.activeInHierarchy == false)
-            return false;
+            if (target.activeInHierarchy == false)
+                return false;
 
-        Button button = target.GetComponent<Button>();
-        if (button is not null && button.interactable == false)
-            return false;
+            Button button = target.GetComponent<Button>();
+            if (button is not null && button.interactable == false)
+                return false;
 
-        CanvasGroup canvasGroup = target.GetComponent<CanvasGroup>();
-        return canvasGroup is not null && 
-               canvasGroup.interactable && 
-               canvasGroup.blocksRaycasts && 
-               canvasGroup.alpha > 0.001f;
+            CanvasGroup canvasGroup = target.GetComponent<CanvasGroup>();
+            return canvasGroup is not null && 
+                   canvasGroup.interactable && 
+                   canvasGroup.blocksRaycasts && 
+                   canvasGroup.alpha > 0.001f;
+        }
     }
 }
-
-

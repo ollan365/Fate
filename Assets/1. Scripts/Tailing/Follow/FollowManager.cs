@@ -3,8 +3,11 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 using TMPro;
-using static Constants;
+using static Fate.Utilities.Constants;
 using static FollowGameManager;
+using Fate.Managers;
+using Fate.Utilities;
+
 public class FollowManager : MonoBehaviour
 {
     // FollowManager를 싱글턴으로 생성

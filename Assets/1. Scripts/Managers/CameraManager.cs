@@ -1,19 +1,23 @@
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour
-{
-    public static CameraManager Instance;
 
-    void Awake()
+namespace Fate.Managers
+{
+    public class CameraManager : MonoBehaviour
     {
-        if (Instance == null)
+        public static CameraManager Instance;
+
+        void Awake()
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

@@ -1,7 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using static Constants;
+using static Fate.Utilities.Constants;
+using Fate.Events;
+using Fate.Managers;
+using Fate.Utilities;
 
 public class FollowObject : EventObject, IPointerEnterHandler, IPointerExitHandler
 {

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fate.Managers;
+using Fate.Utilities;
 
 public class FollowEnd : MonoBehaviour
 {
