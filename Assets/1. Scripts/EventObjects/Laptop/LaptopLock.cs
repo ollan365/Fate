@@ -22,6 +22,7 @@ public class LaptopLock : EventObject, IResultExecutable
     private Image imageComponent;
 
     [SerializeField] private Laptop laptopA;
+    [SerializeField] private Button submitButton;
 
     private bool isComparing = false;
 
@@ -71,10 +72,20 @@ public class LaptopLock : EventObject, IResultExecutable
             if (isDialogueActive) return;
 
             passwordInput = input;
-            
+
             if(!isComparing)
                 StartCoroutine(ComparePassword());
         }
+    }
+
+    public void OnSubmitButtonClick()
+    {
+        if (DialogueManager.Instance.isDialogueActive)
+            return;
+
+        passwordInput = passwordInputField.text;
+        if (isComparing == false)
+            StartCoroutine(ComparePassword());
     }
 
     IEnumerator ComparePassword()
