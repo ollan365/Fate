@@ -245,6 +245,9 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Start() {
+        uiGameObjects[eUIGameObjectName.BGMSlider].GetComponent<Slider>().value = SoundPlayer.Instance.GetBGMVolume();
+        uiGameObjects[eUIGameObjectName.SoundEffectSlider].GetComponent<Slider>().value = SoundPlayer.Instance.GetSFXVolume();
+
         ChangeBgmOrSoundEffectValue(true);
         ChangeBgmOrSoundEffectValue(false);
     }

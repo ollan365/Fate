@@ -18,8 +18,12 @@ public class SoundPlayer : MonoBehaviour
     [SerializeField] private AudioClip[] UISoundClip; // UI 효과음들
     [SerializeField] private AudioClip[] UISoundClip_LOOP; // UI 효과음들
 
-    
-    private float bgmVolume = 0.5f;
+    private const string BGM_VOLUME_KEY = "BGMVolume";
+    private const string SFX_VOLUME_KEY = "SFXVolume";
+    private const float DEFAULT_VOLUME = 0.5f;
+
+    private float bgmVolume = DEFAULT_VOLUME;
+    private float sfxVolume = DEFAULT_VOLUME;
     private Coroutine bgmCoroutine;
     private Coroutine bgmFadeCoroutine;
 
@@ -38,15 +42,30 @@ public class SoundPlayer : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            LoadVolumeSettings();
         }
         else
             Destroy(gameObject);
     }
-    
+
     private void Start() {
         bgmPlayer.volume = 0f;
         bgmFadeCoroutine = StartCoroutine(ChangeBGMFade(BGM_OPENING));
     }
+
+    private void LoadVolumeSettings() {
+        bgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, DEFAULT_VOLUME);
+        sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, DEFAULT_VOLUME);
+
+        typingSoundPlayer.volume = sfxVolume;
+        foreach (AudioSource audioSource in UISoundLoopPlayer)
+            audioSource.volume = sfxVolume;
+        foreach (AudioSource audioSource in UISoundPlayer)
+            audioSource.volume = sfxVolume;
+    }
+
+    public float GetBGMVolume() => bgmVolume;
+    public float GetSFXVolume() => sfxVolume;
     
     private void Update()
     {
@@ -59,13 +78,17 @@ public class SoundPlayer : MonoBehaviour
         if (isChangeBGM) {
             bgmVolume = targetVolume;
             bgmPlayer.volume = targetVolume;
+            PlayerPrefs.SetFloat(BGM_VOLUME_KEY, targetVolume);
         } else {
+            sfxVolume = targetVolume;
             typingSoundPlayer.volume = targetVolume;
-            foreach (AudioSource audioSource in UISoundLoopPlayer) 
+            foreach (AudioSource audioSource in UISoundLoopPlayer)
                 audioSource.volume = targetVolume;
-            foreach (AudioSource audioSource in UISoundPlayer) 
+            foreach (AudioSource audioSource in UISoundPlayer)
                 audioSource.volume = targetVolume;
+            PlayerPrefs.SetFloat(SFX_VOLUME_KEY, targetVolume);
         }
+        PlayerPrefs.Save();
     }
     
     public void ChangeBGM(int bgm)
