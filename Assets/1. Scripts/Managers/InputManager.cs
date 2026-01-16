@@ -93,9 +93,9 @@ public class InputManager : MonoBehaviour
                 UIManager.Instance.OnExitButtonClick();
         }
 
-        if (GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild)
+        if (GameManager.Instance.isDebug == false || GameManager.Instance.isDemoBuild || GameManager.Instance.isReleaseBuild)
             return;
-        
+
         // cheats
         if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
             Input.GetKeyDown(KeyCode.M)) {
