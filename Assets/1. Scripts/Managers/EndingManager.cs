@@ -55,6 +55,7 @@ public class EndingManager : MonoBehaviour
         UIManager.Instance.SetUI(eUIGameObjectName.MemoGauge, false);
         UIManager.Instance.SetUI(eUIGameObjectName.LeftButton, false);
         UIManager.Instance.SetUI(eUIGameObjectName.RightButton, false);
+        UIManager.Instance.SetUI(eUIGameObjectName.AlbumButton, false);
 
         StartCoroutine(UIManager.Instance.OnFade(null, 1, 0, 1, false, 0, 0));
         MemoManager.Instance.SetShouldHideMemoButton(true);
