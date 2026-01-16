@@ -80,6 +80,8 @@ public class LaptopLock : EventObject, IResultExecutable
 
     public void OnSubmitButtonClick()
     {
+        RoomManager.Instance.ProhibitInput();
+
         if (DialogueManager.Instance.isDialogueActive)
             return;
 
