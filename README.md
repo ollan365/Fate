@@ -10,15 +10,21 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Unity-2022.3-blue?logo=unity" alt="Unity"/>
-  <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20Windows%20%7C%20macOS-green" alt="Platform"/>
-  <img src="https://img.shields.io/badge/Language-한국어%20%7C%20English%20%7C%20日本語-orange" alt="Language"/>
+  <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20Windows%20%7C%20macOS-green" alt="Platform"/>
+  <img src="https://img.shields.io/badge/Language-한국어%20%7C%20English-orange" alt="Language"/>
+</p>
+
+<p align="center">
+  <a href="https://fivestar1103.github.io/fateAndAccidy/links.html">
+    <img src="https://img.shields.io/badge/Download%20%26%20Links-Official%20Page-ff69b4?style=for-the-badge" alt="Official Links"/>
+  </a>
 </p>
 
 ---
 
 ## About
 
-**필연과 우연**은 비주얼 노벨과 추리 요소가 결합된 인터랙티브 스토리 게임입니다. 플레이어는 주인공 '우연(Accidy)'이 되어 신비로운 인물 '필연(Fate)'을 추적하며 운명의 비밀을 파헤칩니다.
+**필연과 우연**은 비주얼 노벨과 추리 요소가 결합된 인터랙티브 스토리 게임입니다. 플레이어는 주인공 '필연(Fate)'이 되어 신비로운 인물 '우연(Accidy)'을 추적하며 운명의 비밀을 파헤칩니다.
 
 <p align="center">
   <img src="Assets/Resources/Background Images/RoomBG.png" alt="Room Screenshot" width="600"/>
@@ -32,8 +38,8 @@
 - **멀티 엔딩** - TRUE, BAD A, BAD B, HIDDEN 등 다양한 엔딩
 - **탐색 & 미행** - 방을 조사하고 캐릭터를 미행하며 단서를 수집하세요
 - **액션 포인트 시스템** - 제한된 행동력 내에서 전략적으로 행동하세요
-- **노트 & 갤러리** - 수집한 정보와 이미지를 확인할 수 있습니다
-- **다국어 지원** - 한국어, English, 日本語
+- **메모 & 앨범** - 수집한 정보와 이미지를 확인할 수 있습니다
+- **다국어 지원** - 한국어, English, 日本語(지원 예정)
 
 ---
 
@@ -46,12 +52,12 @@
 </p>
 
 <p align="center">
-  <em>우연 (Accidy) - 플레이어 캐릭터 (성별 선택 가능)</em>
+  <em>우연 (Accidy) - 나를 납치한 캐릭터 (성별 선택 가능)</em>
 </p>
 
 ---
 
-## Screenshots
+## Cut Scenes
 
 <p align="center">
   <img src="Assets/Resources/Background Images/Street_Morning.png" alt="Street Morning" width="400"/>
@@ -69,6 +75,19 @@
 | UI | TextMesh Pro |
 | Data | CSV-based dialogue & event system |
 | Localization | Custom LocalizationManager |
+
+---
+
+## Editor Tools
+
+개발 편의를 위한 커스텀 에디터 툴들입니다. `Tools` 메뉴에서 사용할 수 있습니다.
+
+| Tool | Menu | Description |
+|------|------|-------------|
+| **CSV Downloader** | `Tools > Download CSVs` | Google Sheets에서 게임 데이터 CSV 일괄 다운로드 |
+| **Save File Manager** | `Tools > Save File Manager` | 세이브 파일 확인 및 삭제 |
+| **Texture Optimizer** | `Tools > Optimize All Textures` | Resources 폴더 내 텍스처 일괄 최적화 |
+| **Audio Optimizer** | `Tools > Optimize All Audio` | Resources 폴더 내 오디오 일괄 압축 최적화 |
 
 ---
 
@@ -98,7 +117,6 @@ Fate/
 | Platform | Status |
 |----------|--------|
 | iOS | Supported (iOS 13.0+) |
-| Android | Supported (API 22+) |
 | Windows | Supported |
 | macOS | Supported |
 
@@ -110,11 +128,6 @@ Fate/
 - Unity 2022.3.62f2 or later
 - TextMesh Pro package
 
-### Build
-1. Open the project in Unity
-2. Select target platform (File > Build Settings)
-3. Build and Run
-
 ---
 
 ## Team
@@ -125,10 +138,14 @@ Fate/
 
 ## License
 
-All rights reserved. This project and its assets are proprietary.
+This project uses a **dual-license** structure:
+
+| Content | License | Commercial Use | Modification |
+|---------|---------|----------------|--------------|
+| Source Code | [MIT](LICENSE) | Allowed | Allowed |
+| Editor Tools | [MIT](LICENSE) | Allowed | Allowed |
+| Art & Sound | [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) | Not Allowed | Not Allowed |
+
+See [LICENSE](LICENSE) for details.
 
 ---
-
-<p align="center">
-  <sub>Made with Unity</sub>
-</p>
