@@ -140,6 +140,7 @@ public class FollowManager : MonoBehaviour
     {
         if (!CanClick) return false;
 
+        InputManager.ResetIOSButtonStates();
         followGameManager.ChangeAnimStatusToStop(true);
         followDialogueManager.ClickObject();
         if (!IsEnd)
