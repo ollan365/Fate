@@ -67,6 +67,8 @@ public class FollowManager : MonoBehaviour
         ClickCount = 0;
         SetCharcter();
 
+        InputManager.ResetIOSButtonStates();
+
         SetUI();
 
         StartCoroutine(ChangeBeaconSprite());
