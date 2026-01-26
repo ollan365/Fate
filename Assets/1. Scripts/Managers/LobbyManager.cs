@@ -58,7 +58,8 @@ public class LobbyManager : MonoBehaviour
             lobbyButtons.GetComponent<VerticalLayoutGroup>().spacing = -60;
             lobbyButtons.transform.GetChild(1).gameObject.SetActive(false);
         }
-        
+
+        SetupButtonPressEffects();
         ReconnectButtonReferences();
         
         StartCoroutine(WaitForGameManagerStartFunction());
@@ -276,6 +277,13 @@ public class LobbyManager : MonoBehaviour
         BirthSetting();
     }
     
+    private void SetupButtonPressEffects() {
+        foreach (Transform child in lobbyButtons.transform) {
+            if (child.GetComponent<Button>() != null && child.GetComponent<ButtonPressEffect>() == null)
+                child.gameObject.AddComponent<ButtonPressEffect>();
+        }
+    }
+
     private void ReconnectButtonReferences() {
         ReconnectNewGamePanelButtonReferences();
         ReconnectNoGameDataPanelButtonReferences();
