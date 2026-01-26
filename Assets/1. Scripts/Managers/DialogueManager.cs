@@ -478,6 +478,12 @@ public class DialogueManager : MonoBehaviour
     public void SkipButtonClick() {
         StopAllCoroutines();
 
+        if (isMulti) {
+            isMulti = false;
+            accidyMultiScript.GetComponent<TextMeshProUGUI>().text = "";
+            accidyMultiScript.gameObject.SetActive(false);
+        }
+
         dialogues[currentDialogueID].SetCurrentLineIndex(dialogues[currentDialogueID].Lines.Count - 2);
         StartCoroutine(SkipDialogue());
     }
