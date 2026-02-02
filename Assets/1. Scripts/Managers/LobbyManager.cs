@@ -281,6 +281,13 @@ public class LobbyManager : MonoBehaviour
         foreach (Transform child in lobbyButtons.transform) {
             if (child.GetComponent<Button>() != null && child.GetComponent<ButtonPressEffect>() == null)
                 child.gameObject.AddComponent<ButtonPressEffect>();
+            
+            // 버튼 전체 영역이 클릭 가능하도록 투명 Image 추가
+            if (child.GetComponent<Button>() != null && child.GetComponent<Image>() == null) {
+                Image raycastImage = child.gameObject.AddComponent<Image>();
+                raycastImage.color = new Color(1, 1, 1, 0); // 완전 투명
+                raycastImage.raycastTarget = true;
+            }
         }
     }
 
