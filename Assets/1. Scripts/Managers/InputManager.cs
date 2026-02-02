@@ -108,6 +108,17 @@ public class InputManager : MonoBehaviour
             if (GameManager.Instance != null)
                 GameManager.Instance.CheatEndSceneImmediately(5, 0, -1); // set day to 5, action points to 0, present heart index to -1
         }
+
+        // Ctrl+P: 회복제 먹기 효과 테스트 (Room2에서만 작동)
+        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && 
+            Input.GetKeyDown(KeyCode.P)) {
+            if (GameSceneManager.Instance.GetActiveScene() == Constants.SceneType.ROOM_2 &&
+                RoomManager.Instance != null && 
+                RoomManager.Instance.room2ActionPointManager != null) {
+                RoomManager.Instance.room2ActionPointManager.EatEnergySupplement();
+                Debug.Log($"Cheat: Energy supplement eaten. Hearts: {UIManager.Instance.heartParent.transform.childCount}");
+            }
+        }
     }
 
     private const float SpaceSkipHoldSeconds = 1f;

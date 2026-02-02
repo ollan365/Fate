@@ -45,43 +45,35 @@ public class Room2ActionPointManager : ActionPointManager
         }
 
         int actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
-        // 25 action points -> 5 hearts, 24 action points -> 4 hearts, so on...
-        //int heartCount = presentHeartIndex + 1;
         int heartCount = (actionPoint - 1) % actionPointsPerDay + 1;
 
         // 회복제 먹어서 actionPoint가 2개 더 늘어남
         if (isEatenEnergySupplement)
         {
-            // 하트 수가 actionPointsPerDay일 때 먹은 것이면 DecrementActionPoint에서 하트가 0이 되면 
-            // 다음날과 최대 하트로 미리 업데이트 해두기에 하트가 0일 때 먹은 것. 하트를 0개에서 2개로 만들어줌
-            if (heartCount == actionPointsPerDay)
-            {
-                nowDayNum -= 1;
-                GameManager.Instance.SetVariable("NowDayNum", nowDayNum);
+            // actionPointsPerDay를 7로 증가
+            actionPointsPerDay = 7;
+            GameManager.Instance.SetVariable("ActionPointsPerDay", actionPointsPerDay);
+            // actionPointPerDay가 변경되어 다시 actionPointsArray 생성
+            CreateActionPointsArray(actionPointsPerDay);
 
-                // presentHeartIndex도 2-1로 업데이트
-                presentHeartIndex = 1;
-
-                actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
-            }
-            else
-            {
-                actionPointsPerDay = 7;
-                GameManager.Instance.SetVariable("ActionPointsPerDay", actionPointsPerDay);
-                // actionPointPerDay가 변경되어 다시 actionPointsArray 생성
-                CreateActionPointsArray(actionPointsPerDay);
-
-                presentHeartIndex += 2;
-            }
+            // 현재 하트 수에 2개 추가 (presentHeartIndex 증가)
+            presentHeartIndex += 2;
+            
+            // presentHeartIndex가 최대값을 초과하지 않도록 제한
+            if (presentHeartIndex >= actionPointsPerDay)
+                presentHeartIndex = actionPointsPerDay - 1;
 
             heartCount = presentHeartIndex + 1;
 
-            // actionPoint도 2개 더 늘어난 상태로 수정
+            // actionPoint도 업데이트
             actionPoint = actionPointsArray[nowDayNum - 1, presentHeartIndex];
 
             GameManager.Instance.SetVariable("ActionPoint", actionPoint);
             GameManager.Instance.SetVariable("PresentHeartIndex", presentHeartIndex);
+            
+            isEatenEnergySupplement = false;
         }
+        
         // 하트가 0이 되면
         if (heartCount == 0)
         {
@@ -105,9 +97,6 @@ public class Room2ActionPointManager : ActionPointManager
 
         // change Day text on screen
         dayText.text = $"Day {nowDayNum + ROOM2_DAY_OFFSET}";
-
-        if (isEatenEnergySupplement)
-            isEatenEnergySupplement = false;
 
         //Debug.Log(heartParent.transform.childCount);
         SaveManager.Instance.SaveGameData();
