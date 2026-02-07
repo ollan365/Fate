@@ -356,7 +356,6 @@ public class ResultManager : MonoBehaviour
                 break;
 
             case "ResultLaptopLockOpen": // 노트북이 열림
-                SoundPlayer.Instance.UISoundPlay(Sound_Correct);
                 executableObjects["LaptopLock"].ExecuteAction();
                 break;
 
