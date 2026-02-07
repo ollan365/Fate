@@ -257,6 +257,7 @@ public class FollowManager : MonoBehaviour
     }
     public void FollowEndLogicStart()
     {
+        if (HapticManager.Instance) HapticManager.Instance.PlayNotification(HapticManager.NotificationType.Error);
         IsEnd = true;
 
         followGameManager.ChangeAnimStatusToStop(true);

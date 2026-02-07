@@ -608,8 +608,9 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void OnDialoguePanelClick() {
-        if (isAuto) 
+        if (isAuto)
             return;
+        if (HapticManager.Instance) HapticManager.Instance.PlayImpact();
         if (isEnding)
         {
             endingDialogueNextPanel.SetActive(false);
@@ -688,6 +689,7 @@ public class DialogueManager : MonoBehaviour
 
     private void OnChoiceSelected(string next)
     {
+        if (HapticManager.Instance) HapticManager.Instance.PlaySelection();
         EndDialogue();
         if (dialogues.ContainsKey(next))
             StartDialogue(next);

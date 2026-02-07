@@ -121,6 +121,7 @@ public class Room2ActionPointManager : ActionPointManager
 
         // animate heart by triggering "break" animation
         heart.GetComponent<Animator>().SetTrigger("Break");
+        if (HapticManager.Instance) HapticManager.Instance.PlayNotification(HapticManager.NotificationType.Warning);
 
         // deactivate heart after animation
         StartCoroutine(DeactivateHeart(heart));

@@ -233,6 +233,7 @@ abstract public class ActionPointManager : MonoBehaviour
     // ************************* temporary methods for day animation *************************
     protected IEnumerator StartNextDayUIChange(int nowDayNum) {
         isDayChanging = true;
+        if (HapticManager.Instance) HapticManager.Instance.PlayImpact(HapticManager.ImpactStyle.Medium);
 
         // 브금 변경 (Start_Daychange)
         // 아이콘 내려오는 브금

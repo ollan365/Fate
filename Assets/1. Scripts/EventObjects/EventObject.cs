@@ -14,6 +14,8 @@ public class EventObject : MonoBehaviour
         if (string.IsNullOrEmpty(eventId) || !EventManager.Instance)
             return;
 
+        if (HapticManager.Instance) HapticManager.Instance.PlayImpact();
+
         if (isInquiry && !GameManager.Instance.skipInquiry)
         {
             GameManager.Instance.SetVariable("isInquiry", true);

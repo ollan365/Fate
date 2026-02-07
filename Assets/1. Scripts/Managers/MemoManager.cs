@@ -204,6 +204,7 @@ public class MemoManager : PageContentsManager
 
                 GameManager.Instance.IncrementVariable($"MemoCount_{GameSceneManager.Instance.GetActiveScene()}");
                 SoundPlayer.Instance.UISoundPlay(Sound_Memo_Clue);
+                if (HapticManager.Instance) HapticManager.Instance.PlayNotification(HapticManager.NotificationType.Success);
                 memoRevealed = true;
             }
             break;

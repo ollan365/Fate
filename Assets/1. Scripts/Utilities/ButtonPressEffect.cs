@@ -30,6 +30,7 @@ public class ButtonPressEffect : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (HapticManager.Instance) HapticManager.Instance.PlayImpact();
         AnimateTo(originalScale * pressedScale, pressedColor);
     }
 

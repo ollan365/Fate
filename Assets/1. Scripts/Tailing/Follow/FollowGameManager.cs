@@ -177,6 +177,7 @@ public class FollowGameManager : MonoBehaviour
 
     public void FateHide(bool hide)
     {
+        if (hide && HapticManager.Instance) HapticManager.Instance.PlayImpact();
         IsFateHide = hide;
         Fate.SetBool("Hide", hide);
         if(hide) SoundPlayer.Instance.UISoundPlay_LOOP(Sound_FootStep_Fate, false);
@@ -223,6 +224,7 @@ public class FollowGameManager : MonoBehaviour
 
                 case AccidyAction.Turn:
                     accidyStatus = AccidyStatus.RED;
+                    if (HapticManager.Instance) HapticManager.Instance.PlayImpact(HapticManager.ImpactStyle.Medium);
                     UIManager.Instance.ChangeCursor();
                     Accidy.SetBool("Back", true);
                     nextAccidyAction = AccidyAction.Inverse_Stop;

@@ -67,6 +67,7 @@ public class Room1ActionPointManager : ActionPointManager
         GameObject heart = heartParent.transform.GetChild(presentHeartIndex).gameObject;
         // animate heart by triggering "break" animation
         heart.GetComponent<Animator>().SetTrigger("Break");
+        if (HapticManager.Instance) HapticManager.Instance.PlayNotification(HapticManager.NotificationType.Warning);
         // deactivate heart after animation
         StartCoroutine(DeactivateHeart(heart));
         presentHeartIndex--;

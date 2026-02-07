@@ -259,6 +259,7 @@ public class InputManager : MonoBehaviour
     // iOS button handlers for follow scenes
     public void OnLeftButtonDown()
     {
+        if (HapticManager.Instance) HapticManager.Instance.PlayImpact();
         iOSLeftPressed = true;
     }
 
@@ -269,6 +270,7 @@ public class InputManager : MonoBehaviour
 
     public void OnRightButtonDown()
     {
+        if (HapticManager.Instance) HapticManager.Instance.PlayImpact();
         iOSRightPressed = true;
     }
 
@@ -279,6 +281,7 @@ public class InputManager : MonoBehaviour
 
     public void OnHideButtonDown()
     {
+        if (HapticManager.Instance) HapticManager.Instance.PlayImpact();
         iOSHidePressed = true;
     }
 
